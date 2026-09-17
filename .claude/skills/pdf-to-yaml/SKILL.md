@@ -74,7 +74,43 @@ Examples:
 
 ### Output Location
 
-Write to current working directory.
+Write to `kb/publications/` when extracting a corpus paper (the normal case,
+via /claim-paper or /fetch-and-curate). Write to the current working
+directory only for ad-hoc extractions outside the corpus workflow.
+
+### Source Publication and Evidence (REQUIRED for kb/ files)
+
+Every kb/ file starts by naming its source paper:
+
+```yaml
+source_publication:
+  reference: "PMID:12345678"
+  reference_title: "<title copied from references_cache/PMID_12345678.md>"
+  doi: "10.1234/example"
+```
+
+Every assay whose numbers come from the paper carries an `evidence:` block —
+an exact quote from the paper supporting what the assay records:
+
+```yaml
+    evidence:
+      - reference: "PMID:12345678"
+        reference_title: "<title copied from the cache file>"
+        supports: SUPPORT
+        evidence_source: IN_VITRO   # or HUMAN_CLINICAL / MODEL_ORGANISM / COMPUTATIONAL
+        snippet: "Exact sentence copied from the paper."
+        explanation: "One sentence on how this quote supports the assay's values."
+```
+
+Rules that make verification work:
+- The `snippet` must be copied word-for-word — it is checked automatically
+  against the cached copy of the paper (`just verify-snippets <file>`), and a
+  paraphrase fails.
+- Copy `reference_title` from the cache file's frontmatter
+  (`head -5 references_cache/PMID_<n>.md`), never from memory — inventing a
+  title next to a verified quote is a documented failure mode.
+- If a quote will not verify, re-read the source and fix the quote or drop
+  the claim. Never loosen the quote to make the checker happy.
 
 ### YAML Structure
 
@@ -111,9 +147,16 @@ Key structural patterns:
 
 ## Phase 5: Validate
 
-After generating the YAML, run validation:
+After generating the YAML, run the full check stack (schema + ontology terms
++ evidence quotes):
 
 ```bash
-uv run linkml-validate -s src/soma/schema/soma.yaml tests/data/valid/<new-file>.yaml
+just validate-file kb/publications/<new-file>.yaml
+just verify-snippets kb/publications/<new-file>.yaml
+```
+
+For a file kept under tests/data/valid/ instead, also run:
+
+```bash
 uv run python -m pytest tests/test_data.py -v -k "<new-file-stem>"
 ```

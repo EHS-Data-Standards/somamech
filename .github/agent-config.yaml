@@ -1,0 +1,15 @@
+# Which Claude model each agent workflow uses — one place instead of
+# scattered --model flags. Keys under `workflows:` are the workflow file
+# stem under .github/workflows/. A workflow_dispatch `model:` input
+# overrides; otherwise the per-workflow model; otherwise default_model.
+
+default_model: claude-opus-5
+
+workflows:
+  # Interactive @claude responder on issues and PRs
+  claude:
+    model: claude-opus-5
+
+  # Automatic review of extraction PRs
+  claude-code-review:
+    model: claude-opus-5

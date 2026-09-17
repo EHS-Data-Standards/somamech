@@ -1,0 +1,159 @@
+# Automatic review of extraction PRs against the extraction-pr-review
+# checklist. Adapted from monarch-initiative/dismech. A human still merges:
+# this review is assistance, not authorization.
+---
+name: Claude Code Review
+run-name: 'Review PR #${{ github.event.pull_request.number || inputs.pr_number }}'
+
+on:  # yamllint disable-line rule:truthy
+  pull_request:
+    types: [opened, synchronize]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to review'
+        required: true
+        type: number
+      model:
+        description: 'Optional model override'
+        required: false
+        type: string
+
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number || inputs.pr_number }}
+  cancel-in-progress: true
+
+jobs:
+  claude-review:
+    # Same-repo PRs only: fork PRs don't get secrets, so the agent can't run
+    # on them (contributors push branches to origin instead).
+    if: >-
+      ${{ github.event_name == 'workflow_dispatch' ||
+          github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: read
+      id-token: write
+
+    steps:
+      # Reviews post under the bot App identity when its secrets are set;
+      # otherwise fall back to the built-in Actions token so the workflow
+      # still works before the App exists.
+      - name: Generate bot App token (optional)
+        id: app-token
+        continue-on-error: true
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.SOMA_AGENT_APP_ID }}
+          private-key: ${{ secrets.SOMA_AGENT_PRIVATE_KEY }}
+
+      - name: Check out repository
+        uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Resolve agent model
+        uses: ./.github/actions/resolve-agent-config
+        with:
+          workflow: claude-code-review
+          model-override: ${{ inputs.model || '' }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Install just
+        run: uv tool install rust-just
+
+      - name: Install project
+        run: uv sync --dev
+
+      - name: Cache OAK ontology databases
+        uses: ./.github/actions/oak-cache
+
+      - name: Resolve PR number
+        run: echo "PR_NUMBER=${{ github.event.pull_request.number || inputs.pr_number }}" >> "$GITHUB_ENV"
+
+      - name: Run Claude Code Review
+        id: claude-review
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.ANTHROPIC_API_KEY == '' && secrets.CLAUDE_CODE_OAUTH_TOKEN || '' }}
+          github_token: ${{ steps.app-token.outputs.token || github.token }}
+          track_progress: ${{ github.event_name == 'pull_request' }}
+          # The reviewer gets read/inspect tools plus the project's own
+          # validation commands — not blanket permissions.
+          claude_args: |
+            --model ${{ env.AGENT_MODEL }}
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*),Bash(gh pr review:*),Bash(gh api:*),Bash(cat:*),Bash(grep:*),Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(find:*),Bash(ls:*),Bash(git diff:*),Bash(git log:*),Bash(just:*),Bash(uv run:*)"
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ env.PR_NUMBER }}
+
+            Review this pull request using the extraction-pr-review skill
+            (.claude/skills/extraction-pr-review/SKILL.md). It is the review
+            checklist: evidence quotes real and exact, reference titles
+            copied not invented, numbers faithful to the paper, ontology
+            terms the right concepts, one paper per PR.
+
+            Run the repository's own checks rather than trusting the diff:
+            `just validate-all`, `just check-stubs`, `just check-duplicate-keys`.
+
+            For each issue found, mark severity:
+            - 🔴 Must fix (fabricated evidence, wrong data, failing validation)
+            - 🟡 Should fix (wrong-concept terms, invented titles, extra files)
+            - 🔵 Suggestion (style, more specific terms, deeper coverage)
+
+            Then set the review status:
+            - Any 🔴 or 🟡: `gh pr review ${{ env.PR_NUMBER }} --request-changes --body "<summary>"`
+            - Only 🔵 or nothing: `gh pr review ${{ env.PR_NUMBER }} --approve --body "<summary>"`
+
+            You ARE permitted to approve, and approving is REQUIRED once
+            blocking items are resolved — a comment saying "looks good"
+            clears nothing, and a stale request-changes blocks the PR
+            forever. A human still merges; your approval is advice, not a
+            merge.
+
+            Start your review with a checklist:
+            - [ ] Validation passes (`just validate-all`)
+            - [ ] All PMIDs real, cache entries fetcher-written
+            - [ ] Evidence snippets are exact quotes
+            - [ ] Reference titles match the cache frontmatter
+            - [ ] Ontology terms are the right concepts
+            - [ ] PR contains exactly one paper's changes
+
+      # claude-code-action exits 0 even when the agent run errored, which
+      # would leave a green check with no review posted. Read the execution
+      # log and fail the job if the run did not actually complete.
+      - name: Verify the review agent actually ran
+        if: ${{ !cancelled() && steps.claude-review.outputs.execution_file != '' }}
+        run: |
+          set -euo pipefail
+          exec_file='${{ steps.claude-review.outputs.execution_file }}'
+          if [ ! -f "$exec_file" ]; then
+            echo "No execution file — cannot confirm the review ran." >&2
+            exit 1
+          fi
+          if python3 - "$exec_file" <<'EOF'
+          import json, sys
+          data = json.load(open(sys.argv[1]))
+          entries = data if isinstance(data, list) else [data]
+          for e in entries:
+              if isinstance(e, dict) and e.get("type") == "result":
+                  sys.exit(1 if e.get("is_error") else 0)
+          sys.exit(0)
+          EOF
+          then
+            echo "Review agent completed."
+          else
+            echo "Review agent errored — failing so this is not a phantom green check." >&2
+            exit 1
+          fi

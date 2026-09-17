@@ -1,0 +1,41 @@
+name: Resolve agent config
+description: >-
+  Look up which Claude model a workflow should use from
+  .github/agent-config.yaml. Exports AGENT_MODEL to the environment and
+  outputs `model`.
+
+inputs:
+  workflow:
+    description: Workflow file stem (e.g. "claude-code-review")
+    required: true
+  model-override:
+    description: Optional explicit model (e.g. from a workflow_dispatch input)
+    required: false
+    default: ""
+
+outputs:
+  model:
+    description: The resolved model id
+    value: ${{ steps.resolve.outputs.model }}
+
+runs:
+  using: composite
+  steps:
+    - id: resolve
+      shell: bash
+      # Inputs go through env, not ${{ }} interpolation inside the script,
+      # to avoid any shell-injection surface.
+      env:
+        WF: ${{ inputs.workflow }}
+        OVERRIDE: ${{ inputs.model-override }}
+      run: |
+        set -euo pipefail
+        python3 -c "import yaml" 2>/dev/null \
+          || pip install --quiet --disable-pip-version-check pyyaml
+        model="$(python3 "$GITHUB_ACTION_PATH/resolve_agent_config.py" \
+          --config "$GITHUB_WORKSPACE/.github/agent-config.yaml" \
+          --workflow "$WF" \
+          --override "$OVERRIDE")"
+        echo "model=$model" >> "$GITHUB_OUTPUT"
+        echo "AGENT_MODEL=$model" >> "$GITHUB_ENV"
+        echo "resolve-agent-config: '$WF' -> $model"
