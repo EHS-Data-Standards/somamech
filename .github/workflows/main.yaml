@@ -19,7 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        # 3.9 dropped: linkml-reference-validator needs >=3.10
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
       fail-fast: false
 
     steps:
@@ -53,3 +54,38 @@ jobs:
 
       - name: Run test suite
         run: just test
+
+  # Quality-control gate for the paper-extraction pipeline: schema validation,
+  # ontology term checks, evidence quote checks, duplicate-key and stub checks.
+  # Runs over the WHOLE repository, not just changed files — checking only
+  # changed files lets two individually-green PRs break each other when both
+  # merge.
+  qc:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Check out repository
+        uses: actions/checkout@v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Install just
+        run: uv tool install rust-just
+
+      - name: Install project
+        run: uv sync --dev
+
+      - name: Cache OAK ontology databases
+        uses: ./.github/actions/oak-cache
+
+      - name: Run QC checks
+        run: just qc

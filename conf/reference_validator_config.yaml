@@ -1,0 +1,37 @@
+# Configuration for linkml-reference-validator (the quote checker).
+# See: https://linkml.github.io/linkml-reference-validator/
+#
+# unknown_prefix_severity: WARNING means that when a reference cannot be
+# fetched (transient network errors, DNS failures, NCBI rate limiting), it is
+# reported as a WARNING instead of an ERROR. This keeps flaky connectivity
+# from blocking a PR while still catching real problems (snippet mismatches,
+# wrong PMIDs).
+unknown_prefix_severity: WARNING
+
+# literal_bracket_patterns: how square brackets inside a quote are treated.
+#
+# By default the validator strips ALL bracketed text from a quote before
+# comparing it with the cached publication, so a curator can gloss a quote
+# ("This cytokine [IL-6] is key") or drop an inline citation marker ("[12]").
+# But biomedical abstracts also define abbreviations in brackets ([MCC],
+# [CBF]) — stripping those makes a perfectly verbatim quote fail the check.
+# dismech diagnosed this after it cost them four curation PRs; these two
+# narrow patterns are their fix, carried over verbatim:
+#
+#   ^[A-Z]{2,}$  keeps an all-caps abbreviation defined in line ([MCC], [CBF],
+#                [CI]) as literal source text. Anything with a digit, hyphen,
+#                space, or lower-case letter is still stripped, so editorial
+#                glosses like [IL-6] keep working.
+#   %            keeps any bracketed span containing a percent sign
+#                ([62%], [95% CI 1.22-2.31]). A numeric citation marker never
+#                contains one, so [12]-style markers are still stripped.
+literal_bracket_patterns:
+  - "^[A-Z]{2,}$"
+  - "%"
+
+# skip_prefixes: reference types the validator has no fetcher for. These are
+# cited in the data but never fetched or quote-checked. DOI is here because
+# the validator's fetcher works on PMIDs — prefer citing the PMID for any
+# paper that has one, so its quotes actually get checked.
+skip_prefixes:
+  - DOI

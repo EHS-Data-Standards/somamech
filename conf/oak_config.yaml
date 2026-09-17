@@ -1,0 +1,81 @@
+# OAK configuration for SOMA term validation
+# Maps each ontology prefix to the place linkml-term-validator looks terms up.
+#
+# Adapter types:
+#   ols:<name>         - EBI Ontology Lookup Service (online, no download)
+#   sqlite:obo:<name>  - Pre-built SQLite database (downloaded once, then offline)
+#   ""                 - Skip validation for this prefix (no warning)
+#
+# Only prefixes listed here are validated; unlisted prefixes are skipped with
+# a warning. Term lookups are cached in cache/<prefix>/terms.csv, so routine
+# validation is offline — the network is only touched for a term nobody has
+# looked up before.
+#
+# Adapter choices follow dismech's experience: the big OBO ontologies are
+# served via OLS (no multi-gigabyte local downloads); small exposure
+# ontologies are kept as local builds.
+
+ontology_adapters:
+  # Cell types
+  CL: ols:cl
+
+  # Chemicals (highest-volume prefix here: exposure agents)
+  CHEBI: ols:chebi
+
+  # Anatomy
+  UBERON: ols:uberon
+
+  # Gene Ontology (biological processes)
+  GO: ols:go
+
+  # Phenotypes
+  HP: ols:hp
+
+  # Qualities/modifiers
+  PATO: ols:pato
+
+  # Environment
+  ENVO: ols:envo
+
+  # Diseases (used for disease_state on in vivo subjects)
+  MONDO: ols:mondo
+
+  # Taxonomy — used for a handful of species terms (mostly human, mouse, rat),
+  # so a live lookup beats the ~13 GB local build
+  NCBITaxon: ols:ncbitaxon
+
+  # Assays and units
+  OBI: ols:obi
+  UO: ols:uo
+
+  # Proteins
+  PR: ols:pr
+
+  # Cell lines
+  CLO: ols:clo
+
+  # Exposure ontologies — small local builds
+  ECTO: sqlite:obo:ecto
+  ExO: sqlite:obo:ecto  # ExO is bundled with ECTO
+  XCO: sqlite:obo:xco
+
+  # Unit systems with no OBO ontology to check against — allowed in data,
+  # skipped by validation
+  UCUM: ""
+  QUDT: ""
+  STATO: ""
+  UCUM_CODE: ""
+
+  # Non-ontology / structural prefixes — skip silently
+  linkml: ""
+  schema: ""
+  xsd: ""
+  rdf: ""
+  rdfs: ""
+  owl: ""
+  dcterms: ""
+  PMID: ""
+  DOI: ""
+  EFO: ""
+  IAO: ""
+  NCBIGene: ""
