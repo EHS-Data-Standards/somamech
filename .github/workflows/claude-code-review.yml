@@ -45,7 +45,7 @@ jobs:
       - name: Generate bot App token (optional)
         id: app-token
         continue-on-error: true
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ secrets.SOMA_AGENT_APP_ID }}
           private-key: ${{ secrets.SOMA_AGENT_PRIVATE_KEY }}
