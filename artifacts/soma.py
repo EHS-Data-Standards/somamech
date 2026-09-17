@@ -1,5 +1,5 @@
 # Auto generated from soma.yaml by pythongen.py version: 0.0.1
-# Generation date: 2026-09-17T22:43:13
+# Generation date: 2026-09-17T22:50:44
 # Schema: soma
 #
 # id: https://w3id.org/EHS-Data-Standards/soma

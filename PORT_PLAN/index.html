@@ -903,9 +903,19 @@ down remain valid future work but are not the active track.</p>
   <code>claude-code-review.yml</code> (reviews via extraction-pr-review skill, verifies
   the agent actually ran), <code>agent-config.yaml</code> + resolve-agent-config action.</li>
 <li><strong>Copyright posture</strong>: <code>references_cache/</code> holds only fetcher-produced
-  abstracts/OA full text; <code>tests/publications/</code>, <code>examples/pdfs/</code> and
-  <code>references_cache_local/</code> are gitignored (the 59 local PDFs are NOT the
-  corpus and never get committed).</li>
+  abstracts/OA full text; <code>tests/publications/</code>, <code>examples/pdfs/</code>, <code>pdfs/</code>
+  and <code>references_cache_local/</code> are gitignored (local PDFs never get
+  committed).</li>
+<li><strong>Derived workbook (2026-09-17)</strong>: kb/publications YAML is the source of
+  truth; <code>just generate-workbook</code> pools every paper into one Excel file
+  (tab per class, row per entity, source paper stamped on every row);
+  <code>just check-entity-ids</code> in qc enforces cross-paper ID rules (KeyEvent ids
+  shared, all others one-paper); <code>.github/workflows/generate-workbook.yaml</code>
+  rebuilds and publishes it to the <code>workbook-latest</code> release on every merge
+  to main — generated products stay out of curation PRs.</li>
+<li><strong>Corpus loaded (2026-09-17)</strong>: 138 PDFs pulled from the Zotero collection
+  (gitignored <code>pdfs/</code> + manifest), corpus.csv (139 papers, 137 with PMIDs),
+  137 stubs in the queue. Repo pushed to github.com/sierra-moxon/somamech.</li>
 </ul>
 <h3 id="paper-extraction-pipeline-manual-setup-still-needed-user-actions">Paper-extraction pipeline — manual setup still needed (user actions)</h3>
 <ul>
