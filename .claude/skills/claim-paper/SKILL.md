@@ -103,6 +103,22 @@ The pdf-to-yaml skill describes the required `source_publication:` header and
 the `evidence:` block every assay must carry — an exact quote from the paper
 beside every extracted measurement.
 
+**Key Events are shared vocabulary — reuse, never re-author.** Different
+papers informing the same key event must carry byte-identical KeyEvent
+blocks: the pooled workbook merges identical blocks and REJECTS the same
+`KE:` ID with different wording (`just check-entity-ids`). So before writing
+any `informs_on_key_event:` block:
+
+```bash
+git grep -h -A6 '"KE:ke-decreased-cftr"' origin/main -- kb/ | head -12
+```
+
+- If the ID exists anywhere in `kb/` on main, copy that block **verbatim** —
+  same name, same description, same fields. Do not improve the wording; a
+  wording fix is its own PR touching every file that uses the block.
+- Mint a new `KE:` ID only when no existing key event fits, and keep its
+  content minimal so it is easy for the next paper to reuse.
+
 ## Step 5 — Verify
 
 ```bash
