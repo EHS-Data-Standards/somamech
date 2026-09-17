@@ -1,0 +1,66 @@
+# Test file for FoxJExpressionAssay (in vitro only)
+# This assay is IN VITRO ONLY (supported_contexts: in_vitro_only)
+# Performed on cell culture systems
+foxj_assays:
+  - id: "FOXJ:001"
+    name: "FoxJ1 mRNA expression"
+    has_specified_output:
+      id: "FOXJ:001-output"
+      name: "FOXJ:001 measurement results"
+      foxj1_mrna_expression:
+        value: "0.65"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+      foxj1_positive_cell_percentage:
+        value: "42"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      foxj1_protein_expression:
+        value: "0.58"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+      foxj1_nuclear_localization:
+        value: "35"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    assay_date: "2024-09-05"
+    informs_on_key_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: altered
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:culture-008"
+      name: "Primary HBE ALI culture"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002031"
+        name: "bronchus"
+      cell_culture_growth_mode: air_liquid_interface
+      days_at_differentiation: 14
+      donor_info: "Healthy donor, non-smoker"
+      replicates_per_donor: 3
+      substrate_type: transwell_insert
+      passage_number: 2
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:qpcr-001"
+        name: "qRT-PCR for FoxJ1"
+        detection_method: "SYBR Green qPCR"
+        reference_gene: "GAPDH"
+        primer_sequences:
+          - "FOXJ1-F: 5'-CAGGCCCAGAACTTTCTCC-3'"
+          - "FOXJ1-R: 5'-GGCCTTTGGTACTGTCTCAC-3'"

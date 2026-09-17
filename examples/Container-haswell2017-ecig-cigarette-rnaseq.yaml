@@ -1,0 +1,766 @@
+# =============================================================================
+# Haswell et al. (2017) - Reduced biological effect of e-cigarette aerosol
+# compared to cigarette smoke evaluated in vitro using normalized nicotine
+# dose and RNA-seq-based toxicogenomics
+# =============================================================================
+#
+# Source: Scientific Reports 7: 888
+# DOI: 10.1038/s41598-017-00852-y
+#
+# Study Design:
+#   - In vitro: MucilAir (reconstituted human nasal airway epithelia) at ALI
+#   - Donor for RNA-seq: #MD058501 (age 41, Caucasian female, non-smoker)
+#   - qPCR validation: 3 donors (#MD058501, #MD008301, #MD009101)
+#   - Products: 3R4F reference cigarette smoke vs Vype ePen e-cigarette aerosol
+#   - Smoking regimen: HCI for 3R4F, CORESTA CRM81 for e-cigarette
+#   - Exposure: 1 hour continuous at ALI, matched puff numbers
+#   - 3R4F smoke: 1/30 dilution (aerosol:air, v-v)
+#   - E-cigarette aerosol: 1/7 (nicotine-matched to 3R4F) and 1/3 (2x nicotine)
+#   - Nicotine delivery: 3R4F 1/30 ~2743 ng/ml; e-cig 1/7 ~2343 ng/ml (p=0.27);
+#     e-cig 1/3 ~8579 ng/ml (p=0.046 vs 3R4F)
+#   - RNA-seq at 24hrs and 48hrs post-exposure; qPCR validation at 24hrs
+#   - Three independent exposure runs with 3 intra-experimental replicates
+#
+# Key findings:
+#   - 3R4F smoke 24hrs: 873 DEGs (pFDR<0.01, |FC|>2); 48hrs: 205 DEGs
+#   - E-cigarette aerosol: max 3 DEGs at |FC|>2 per timepoint
+#   - E-cig 1/3 (time-adjusted): 113 RNAs at pFDR<0.05, only 3 exceeded FC=2
+#   - No reduction in CBF for any treatment vs air
+#   - TEER reduced for e-cig 1/3 vs air (p<0.05) but within functional range
+#   - MUC5AC decreased for e-cig 1/3 vs air (p<0.05)
+#   - No significant change in FOXJ1 for any treatment
+#   - LDH cytotoxicity <5% for all treatments
+#   - 3R4F: enrichment for fibrosis, DNA damage, oxidative stress, lung cancer
+#   - E-cigarette: metabolic/biosynthetic processes, extracellular membrane,
+#     apoptosis, hypoxia (lower confidence)
+#
+# =============================================================================
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:haswell-rnaseq-001"
+    name: "Stranded Total RNA-seq protocol (Illumina TruSeq)"
+    description: "Illumina TruSeq Stranded Total RNA with Ribo-Zero. Libraries pooled and sequenced on NextSeq 500 at 150bp paired-end, target 80M reads/sample. STAR alignment to GRCh38, cufflinks counting (GENCODE v23), voom transformation, TMM normalization."
+    equipment_required:
+      - "Illumina NextSeq 500"
+      - "Illumina TruSeq Stranded Total RNA kit"
+      - "Ribo-Zero Human/Mouse/Rat"
+      - "Agilent 2100 BioAnalyzer"
+
+  - id: "PROTOCOL:haswell-qpcr-001"
+    name: "TaqMan qPCR validation protocol"
+    description: "High-capacity RNA-to-cDNA reverse transcription (Applied Biosystems). Custom TaqMan array 96-well plates. TaqMan Fast Universal Master mix II with UNG. 2^-ddCt method with GAPDH normalization."
+    equipment_required:
+      - "Fast PCR 7500 (Applied Biosystems)"
+      - "Custom TaqMan array 96-well plates"
+
+  - id: "PROTOCOL:haswell-cbf-001"
+    name: "Cilia beat frequency measurement protocol"
+    description: "Inverted AX10 Zeiss microscope (100x magnification, 10x ocular, 10x objective) with heated chamber at 37C. High-speed digital camera (Ammons Engineering). 5 min equilibration, 120 fps, minimum 512 frames captured."
+    equipment_required:
+      - "AX10 Zeiss inverted microscope"
+      - "Pecon heated chamber (37C)"
+      - "High-speed digital camera (Ammons Engineering)"
+
+  - id: "PROTOCOL:haswell-teer-001"
+    name: "Trans-epithelial electrical resistance measurement"
+    description: "PBS added to apical surface, resistance measured with World Precision Instruments meter at 24hrs and 48hrs post-exposure."
+    equipment_required:
+      - "Resistance meter (World Precision Instruments)"
+
+  - id: "PROTOCOL:haswell-ihc-001"
+    name: "Quantitative immunohistochemistry for MUC5AC and FOXJ1"
+    description: "Fixation with 3.6% formaldehyde/PBS, dehydration in 70% ethanol, paraffin inclusion. 4 um sections. Primary antibodies: MUC5AC and FOXJ1 (Abcam) for 1hr RT. Biotinylated secondary (Dako), HRP-conjugated ABC visualization. Quantitative image analysis with ImagePro Plus 6.2, 20 images per insert."
+    equipment_required:
+      - "Microtome"
+      - "Anti-MUC5AC antibody (Abcam)"
+      - "Anti-FOXJ1 antibody (Abcam)"
+      - "Biotinylated secondary antibody (Dako)"
+      - "ImagePro Plus 6.2 (Media Cybernetics)"
+
+  - id: "PROTOCOL:haswell-exposure-001"
+    name: "ALI aerosol exposure protocol"
+    description: "RM20S smoking machine (Borgwaldt KC). 3R4F at HCI regimen (55ml puff, 2s duration, 30s interval, bell-wave profile). E-cigarette at CRM81 (55ml puff, 3s duration, 30s interval, square-wave profile). 1hr continuous exposure in acrylic chambers. Matched puff numbers between products."
+    equipment_required:
+      - "RM20S smoking machine (Borgwaldt KC)"
+      - "Acrylic exposure chambers"
+      - "MucilAir culture inserts (Epithelix Sarl)"
+
+# =============================================================================
+# CILIARY FUNCTION ASSAYS - CBF post-exposure
+# =============================================================================
+
+ciliary_function_assays:
+  # CBF - Air control (no reduction observed)
+  - id: "CBF:haswell-air-control"
+    name: "CBF - Air control immediately post-exposure"
+    description: "Cilia beat frequency measured immediately after 1hr air exposure in MucilAir. No reduction in CBF observed between air controls and any aerosol-treated cells (Supplementary Fig. S1)."
+    has_specified_output:
+      id: "CBF:haswell-air-control-output"
+      name: "CBF air control measurement"
+    assay_date: "2017-01-01"
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:haswell-mucilair-001"
+      name: "MucilAir nasal ALI culture - Donor MD058501"
+      cell_type:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      cell_culture_growth_mode: air_liquid_interface
+      donor_info: "Donor #MD058501, age 41, Caucasian female, non-smoker"
+      substrate_type: transwell_insert
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:haswell-cbf-001"
+        name: "CBF measurement by high-speed digital microscopy"
+        imaging_frame_rate:
+          value: "120"
+          unit:
+            id: "UO:0000106"
+            name: "hertz"
+
+  # CBF - 3R4F 1/30 (no reduction vs air)
+  - id: "CBF:haswell-3r4f-130"
+    name: "CBF - 3R4F smoke 1/30 immediately post-exposure"
+    description: "CBF measured immediately after 1hr exposure to 3R4F smoke at 1/30 dilution. No reduction in CBF observed compared to air control (Supplementary Fig. S1)."
+    has_specified_output:
+      id: "CBF:haswell-3r4f-130-output"
+      name: "CBF 3R4F 1/30 measurement"
+    assay_date: "2017-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:haswell-3r4f-130"
+        name: "3R4F cigarette smoke 1/30 dilution, HCI regimen, 1hr"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "2743"
+          unit:
+            id: "UO:0000024"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "60"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cbf"
+      name: "Decreased ciliary beat frequency"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:haswell-mucilair-001"
+      name: "MucilAir nasal ALI culture - Donor MD058501"
+      cell_type:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:haswell-cbf-001"
+        name: "CBF measurement by high-speed digital microscopy"
+
+  # CBF - E-cigarette 1/7 (no reduction vs air)
+  - id: "CBF:haswell-ecig-17"
+    name: "CBF - E-cigarette aerosol 1/7 immediately post-exposure"
+    description: "CBF measured immediately after 1hr exposure to e-cigarette aerosol at 1/7 dilution (nicotine-matched to 3R4F 1/30). No reduction in CBF observed compared to air control (Supplementary Fig. S1)."
+    has_specified_output:
+      id: "CBF:haswell-ecig-17-output"
+      name: "CBF e-cigarette 1/7 measurement"
+    assay_date: "2017-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:haswell-ecig-17"
+        name: "E-cigarette aerosol 1/7 dilution (nicotine-matched), CRM81, 1hr"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "2343"
+          unit:
+            id: "UO:0000024"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "60"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cbf"
+      name: "Decreased ciliary beat frequency"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:haswell-mucilair-001"
+      name: "MucilAir nasal ALI culture - Donor MD058501"
+      cell_type:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:haswell-cbf-001"
+        name: "CBF measurement by high-speed digital microscopy"
+
+  # CBF - E-cigarette 1/3 (no reduction vs air)
+  - id: "CBF:haswell-ecig-13"
+    name: "CBF - E-cigarette aerosol 1/3 immediately post-exposure"
+    description: "CBF measured immediately after 1hr exposure to e-cigarette aerosol at 1/3 dilution (2x nicotine vs 3R4F 1/30). No reduction in CBF observed compared to air control (Supplementary Fig. S1)."
+    has_specified_output:
+      id: "CBF:haswell-ecig-13-output"
+      name: "CBF e-cigarette 1/3 measurement"
+    assay_date: "2017-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:haswell-ecig-13"
+        name: "E-cigarette aerosol 1/3 dilution (2x nicotine), CRM81, 1hr"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "8579"
+          unit:
+            id: "UO:0000024"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "60"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cbf"
+      name: "Decreased ciliary beat frequency"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:haswell-mucilair-001"
+      name: "MucilAir nasal ALI culture - Donor MD058501"
+      cell_type:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:haswell-cbf-001"
+        name: "CBF measurement by high-speed digital microscopy"
+
+# =============================================================================
+# GOBLET CELL ASSAYS - MUC5AC quantitative immunohistochemistry
+# =============================================================================
+
+goblet_cell_assays:
+  # MUC5AC - Air control
+  - id: "GCM:haswell-muc5ac-air"
+    name: "MUC5AC quantitative IHC - Air control"
+    description: "MUC5AC quantitative immunohistochemistry in MucilAir after air exposure. 24hrs: 0.7 +/- 0.5%; 48hrs: 0.4 +/- 0.3% MUC5AC-positive cells. Limited representation of mucus-producing cells consistent with differentiated 3D airway cultures."
+    has_specified_output:
+      id: "GCM:haswell-muc5ac-air-output"
+      name: "MUC5AC air control measurements"
+      muc5ac_protein_expression:
+        value: "0.7"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    assay_date: "2017-01-01"
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:haswell-mucilair-001"
+      name: "MucilAir nasal ALI culture - Donor MD058501"
+      cell_type:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:haswell-ihc-001"
+        name: "Quantitative IHC for MUC5AC"
+        staining_type: "immunohistochemistry"
+        antibodies_used:
+          - "anti-MUC5AC (Abcam)"
+        fixation_method: "3.6% formaldehyde/PBS"
+        detection_method: "HRP-conjugated ABC, ImagePro Plus 6.2 quantification"
+
+  # MUC5AC - E-cigarette 1/3 (significant decrease vs air, p<0.05)
+  - id: "GCM:haswell-muc5ac-ecig-13"
+    name: "MUC5AC quantitative IHC - E-cigarette 1/3"
+    description: "MUC5AC decreased after e-cigarette aerosol 1/3 exposure vs air (p<0.05). 24hrs: 0.1 +/- 0.1%; 48hrs: 0.05 +/- 0.5%. Result should be interpreted with caution due to limited representation of mucus-producing cells."
+    has_specified_output:
+      id: "GCM:haswell-muc5ac-ecig-13-output"
+      name: "MUC5AC e-cigarette 1/3 measurements"
+      muc5ac_protein_expression:
+        value: "0.1"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    assay_date: "2017-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:haswell-ecig-13"
+        name: "E-cigarette aerosol 1/3 dilution (2x nicotine), CRM81, 1hr"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "8579"
+          unit:
+            id: "UO:0000024"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "60"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke-muc5ac-decrease"
+      name: "Decreased MUC5AC expression"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:haswell-mucilair-001"
+      name: "MucilAir nasal ALI culture - Donor MD058501"
+      cell_type:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:haswell-ihc-001"
+        name: "Quantitative IHC for MUC5AC"
+        staining_type: "immunohistochemistry"
+        antibodies_used:
+          - "anti-MUC5AC (Abcam)"
+        fixation_method: "3.6% formaldehyde/PBS"
+        detection_method: "HRP-conjugated ABC, ImagePro Plus 6.2 quantification"
+
+# =============================================================================
+# FOXJ1 EXPRESSION ASSAYS - Quantitative immunohistochemistry
+# =============================================================================
+
+foxj_assays:
+  # FOXJ1 - No significant change across all treatments
+  - id: "FOXJ:haswell-all-treatments"
+    name: "FOXJ1 quantitative IHC - all treatments"
+    description: "FOXJ1 quantitative immunohistochemistry in MucilAir at 24hrs and 48hrs post-exposure. No significant change in FOXJ1 observed at p<0.05 between air, 3R4F 1/30, e-cigarette 1/7, or e-cigarette 1/3 (Fig. 3D). Micrographs confirmed differentiated pseudostratified tissue with mainly ciliated cells."
+    has_specified_output:
+      id: "FOXJ:haswell-all-treatments-output"
+      name: "FOXJ1 all treatments measurement"
+    assay_date: "2017-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:haswell-3r4f-130"
+        name: "3R4F cigarette smoke 1/30 dilution, HCI regimen, 1hr"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "2743"
+          unit:
+            id: "UO:0000024"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "60"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:haswell-mucilair-001"
+      name: "MucilAir nasal ALI culture - Donor MD058501"
+      cell_type:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:haswell-ihc-001"
+        name: "Quantitative IHC for FOXJ1"
+        staining_type: "immunohistochemistry"
+        antibodies_used:
+          - "anti-FOXJ1 (Abcam)"
+        fixation_method: "3.6% formaldehyde/PBS"
+        detection_method: "HRP-conjugated ABC, ImagePro Plus 6.2 quantification"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS - RNA-seq differential expression
+# =============================================================================
+
+gene_expression_assays:
+  # 3R4F 1/30 - 24hrs: 873 DEGs (massive response)
+  - id: "GE:haswell-3r4f-130-24h"
+    name: "RNA-seq DEGs - 3R4F 1/30, 24hrs post-exposure"
+    description: "RNA-seq differential gene expression after 1hr 3R4F smoke exposure at 1/30 dilution, 24hrs post-exposure. 873 RNAs differentially expressed at pFDR<0.01 and |FC|>2 (318 up, 555 down). Strongest transcriptional response observed. Clear enrichment for fibrosis, DNA damage, oxidative stress, and lung cancer genesets."
+    gene_expression_method: "RNA-seq (Illumina TruSeq Stranded Total RNA, NextSeq 500)"
+    normalization_reference: "TMM normalization, voom transformation"
+    has_specified_output:
+      id: "GE:haswell-3r4f-130-24h-output"
+      name: "3R4F 24hrs RNA-seq DEG counts"
+    assay_date: "2017-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:haswell-3r4f-130"
+        name: "3R4F cigarette smoke 1/30 dilution, HCI regimen, 1hr"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "2743"
+          unit:
+            id: "UO:0000024"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "60"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke-transcriptional-toxicity"
+      name: "Cigarette smoke transcriptional response"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:haswell-mucilair-001"
+      name: "MucilAir nasal ALI culture - Donor MD058501"
+      cell_type:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      cell_culture_growth_mode: air_liquid_interface
+      donor_info: "Donor #MD058501, age 41, Caucasian female, non-smoker"
+      substrate_type: transwell_insert
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:haswell-rnaseq-001"
+        name: "Stranded Total RNA-seq (Illumina TruSeq)"
+        detection_method: "Illumina NextSeq 500, 150bp paired-end"
+        normalization_method: "TMM normalization, voom transformation, Limma"
+
+  # 3R4F 1/30 - 48hrs: 205 DEGs (recovery)
+  - id: "GE:haswell-3r4f-130-48h"
+    name: "RNA-seq DEGs - 3R4F 1/30, 48hrs post-exposure"
+    description: "RNA-seq differential gene expression after 1hr 3R4F smoke exposure at 1/30 dilution, 48hrs post-exposure. 205 RNAs differentially expressed at pFDR<0.01 and |FC|>2 (86 up, 119 down). Recovery from 873 DEGs at 24hrs."
+    gene_expression_method: "RNA-seq (Illumina TruSeq Stranded Total RNA, NextSeq 500)"
+    normalization_reference: "TMM normalization, voom transformation"
+    has_specified_output:
+      id: "GE:haswell-3r4f-130-48h-output"
+      name: "3R4F 48hrs RNA-seq DEG counts"
+    assay_date: "2017-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:haswell-3r4f-130"
+        name: "3R4F cigarette smoke 1/30 dilution, HCI regimen, 1hr"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "2743"
+          unit:
+            id: "UO:0000024"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "60"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke-transcriptional-toxicity"
+      name: "Cigarette smoke transcriptional response"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:haswell-mucilair-001"
+      name: "MucilAir nasal ALI culture - Donor MD058501"
+      cell_type:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:haswell-rnaseq-001"
+        name: "Stranded Total RNA-seq (Illumina TruSeq)"
+        detection_method: "Illumina NextSeq 500, 150bp paired-end"
+
+  # E-cigarette 1/3 - time-adjusted: 113 DEGs at pFDR<0.05
+  - id: "GE:haswell-ecig-13-adj"
+    name: "RNA-seq DEGs - E-cigarette 1/3, time-adjusted"
+    description: "RNA-seq differential gene expression for e-cigarette aerosol 1/3 (2x nicotine vs 3R4F). Combined 24hrs+48hrs, adjusted for post-exposure time. 113 RNAs at pFDR<0.05 (49 up, 64 down), but only 3 exceeded |FC|>2. GO enrichment: extracellular vesicular exosome, negative regulation of metabolic/biosynthetic processes, steroid biosynthetic process, nucleosomal DNA binding."
+    gene_expression_method: "RNA-seq (Illumina TruSeq Stranded Total RNA, NextSeq 500)"
+    normalization_reference: "TMM normalization, voom transformation"
+    has_specified_output:
+      id: "GE:haswell-ecig-13-adj-output"
+      name: "E-cigarette 1/3 time-adjusted RNA-seq DEG counts"
+    assay_date: "2017-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:haswell-ecig-13"
+        name: "E-cigarette aerosol 1/3 dilution (2x nicotine), CRM81, 1hr"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "8579"
+          unit:
+            id: "UO:0000024"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "60"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke-ecig-metabolic-response"
+      name: "E-cigarette aerosol metabolic/biosynthetic response"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:haswell-mucilair-001"
+      name: "MucilAir nasal ALI culture - Donor MD058501"
+      cell_type:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:haswell-rnaseq-001"
+        name: "Stranded Total RNA-seq (Illumina TruSeq)"
+        detection_method: "Illumina NextSeq 500, 150bp paired-end"
+
+  # E-cigarette 1/7 - time-adjusted: 49 DEGs at pFDR<0.05
+  - id: "GE:haswell-ecig-17-adj"
+    name: "RNA-seq DEGs - E-cigarette 1/7, time-adjusted"
+    description: "RNA-seq differential gene expression for e-cigarette aerosol 1/7 (nicotine-matched to 3R4F). Combined 24hrs+48hrs, adjusted for post-exposure time. 49 RNAs at pFDR<0.05 (28 up, 21 down), none exceeded |FC|>2 except 1. GO enrichment: extracellular region, metal ion transport, enzyme inhibitor activity, negative regulation of cellular metabolic process."
+    gene_expression_method: "RNA-seq (Illumina TruSeq Stranded Total RNA, NextSeq 500)"
+    normalization_reference: "TMM normalization, voom transformation"
+    has_specified_output:
+      id: "GE:haswell-ecig-17-adj-output"
+      name: "E-cigarette 1/7 time-adjusted RNA-seq DEG counts"
+    assay_date: "2017-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:haswell-ecig-17"
+        name: "E-cigarette aerosol 1/7 dilution (nicotine-matched), CRM81, 1hr"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "2343"
+          unit:
+            id: "UO:0000024"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "60"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke-ecig-metabolic-response"
+      name: "E-cigarette aerosol metabolic/biosynthetic response"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:haswell-mucilair-001"
+      name: "MucilAir nasal ALI culture - Donor MD058501"
+      cell_type:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:haswell-rnaseq-001"
+        name: "Stranded Total RNA-seq (Illumina TruSeq)"
+        detection_method: "Illumina NextSeq 500, 150bp paired-end"
+
+  # qPCR validation - 3R4F 1/30, 3 donors, 24hrs
+  - id: "GE:haswell-3r4f-qpcr-validation"
+    name: "qPCR validation - 3R4F 1/30, 3 donors, 24hrs"
+    description: "qPCR validation of RNA-seq findings in 3 MucilAir donors (#MD058501, #MD008301, #MD009101) at 24hrs post-exposure. 14 of 20 selected genes differentially expressed at p<0.05, FC>|1.5|, all matched RNA-seq direction. PCA clearly separated 3R4F-treated from air controls. Validated genes include TALDO1, CYP1B1, GPX2, SLC23A1, PAPLN, SERPINE1, ANPEP, SERPINA5B, LSAMP, COL3A1, SLC01A2, IL1B, G6PD."
+    gene_expression_method: "qRT-PCR (TaqMan)"
+    normalization_reference: "GAPDH"
+    has_specified_output:
+      id: "GE:haswell-3r4f-qpcr-output"
+      name: "3R4F qPCR validation measurements"
+    assay_date: "2017-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:haswell-3r4f-130"
+        name: "3R4F cigarette smoke 1/30 dilution, HCI regimen, 1hr"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "2743"
+          unit:
+            id: "UO:0000024"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "60"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke-transcriptional-toxicity"
+      name: "Cigarette smoke transcriptional response"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:haswell-mucilair-multi"
+      name: "MucilAir nasal ALI culture - 3 donors"
+      cell_type:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      cell_culture_growth_mode: air_liquid_interface
+      donor_info: "3 non-smoker donors: #MD058501 (F,41), #MD008301 (M,61), #MD009101 (F,48)"
+      substrate_type: transwell_insert
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:haswell-qpcr-001"
+        name: "TaqMan qPCR validation"
+        detection_method: "TaqMan qPCR, Fast PCR 7500"
+        reference_gene: "GAPDH"
+        normalization_method: "2^-ddCt method"
+
+  # qPCR validation - E-cigarette 1/7, 3 donors (minimal response)
+  - id: "GE:haswell-ecig-17-qpcr"
+    name: "qPCR validation - E-cigarette 1/7, 3 donors, 24hrs"
+    description: "qPCR validation for e-cigarette 1/7 in 3 donors at 24hrs. Only FGF14 and EGR1 significant at p<0.05, FC>|1.5|. PCA showed no separation between air controls and e-cigarette-treated cells. Minimal transcriptional response confirmed."
+    target_gene: "PR:000007180"
+    gene_expression_method: "qRT-PCR (TaqMan)"
+    normalization_reference: "GAPDH"
+    has_specified_output:
+      id: "GE:haswell-ecig-17-qpcr-output"
+      name: "E-cigarette 1/7 qPCR validation measurements"
+    assay_date: "2017-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:haswell-ecig-17"
+        name: "E-cigarette aerosol 1/7 dilution (nicotine-matched), CRM81, 1hr"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "2343"
+          unit:
+            id: "UO:0000024"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "60"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke-ecig-metabolic-response"
+      name: "E-cigarette aerosol metabolic/biosynthetic response"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:haswell-mucilair-multi"
+      name: "MucilAir nasal ALI culture - 3 donors"
+      cell_type:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:haswell-qpcr-001"
+        name: "TaqMan qPCR validation"
+        detection_method: "TaqMan qPCR, Fast PCR 7500"
+        reference_gene: "GAPDH"
+
+  # TEER - Air vs E-cigarette 1/3 (significant difference)
+  - id: "GE:haswell-teer-ecig-13"
+    name: "TEER - E-cigarette 1/3 vs Air"
+    description: "TEER significantly reduced for e-cigarette 1/3 vs air (p<0.05). Air: 24hrs 1432.7 +/- 198 ohm, 48hrs 1342.9 +/- 239 ohm. E-cig 1/3: 24hrs 1130.9 +/- 93 ohm, 48hrs 1105.9 +/- 130 ohm. Values still within functional range indicating tight junction integrity (>600 ohm)."
+    gene_expression_method: "TEER measurement"
+    has_specified_output:
+      id: "GE:haswell-teer-ecig-13-output"
+      name: "TEER e-cigarette 1/3 measurement"
+    assay_date: "2017-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:haswell-ecig-13"
+        name: "E-cigarette aerosol 1/3 dilution (2x nicotine), CRM81, 1hr"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "8579"
+          unit:
+            id: "UO:0000024"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "60"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:haswell-mucilair-001"
+      name: "MucilAir nasal ALI culture - Donor MD058501"
+      cell_type:
+        id: "CL:0002603"
+        name: "nasal epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:haswell-teer-001"
+        name: "TEER measurement"
+        detection_method: "Resistance meter (World Precision Instruments)"

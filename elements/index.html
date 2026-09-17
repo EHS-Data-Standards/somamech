@@ -1,0 +1,2340 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://EHS-Data-Standards.github.io/soma/elements/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../harmonizer.html">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Schema - soma</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#soma-schema" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="soma" class="md-header__button md-logo" aria-label="soma" data-md-component="logo">
+      
+  <img src="../soma-icon.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            soma
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Schema
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/EHS-Data-Standards/soma" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Schema
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../harmonizer.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Data Harmonizer
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../examples/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Examples
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../artifacts/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Artifacts
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../claude-code-skills/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Claude Code Skills
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="soma" class="md-nav__button md-logo" aria-label="soma" data-md-component="logo">
+      
+  <img src="../soma-icon.svg" alt="logo">
+
+    </a>
+    soma
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/EHS-Data-Standards/soma" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Slots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enumerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enumerations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subsets
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../harmonizer.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Harmonizer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../artifacts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Artifacts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude-code-skills/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude Code Skills
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Slots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#enumerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enumerations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subsets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subsets
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="soma-schema">SOMA Schema</h1>
+<p>A LinkML data model for representing biological assays, measurements, and experimental protocols in the context of outcomes research. The schema is centered around ASSAYS that inform on Key Events in Adverse Outcome Pathways (AOPs), with named slots for specific measurements.
+This is the main entry point that imports the AOP framework, assay base schema, and domain-specific assay microschemas.</p>
+<p>URI: https://w3id.org/EHS-Data-Standards/soma</p>
+<p>Name: soma</p>
+<h2 id="classes">Classes</h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="Container/">Container</a></td>
+<td>Root container for outcomes research data</td>
+</tr>
+<tr>
+<td><a href="EvidenceItem/">EvidenceItem</a></td>
+<td>One piece of evidence for a claim: which publication it comes from, an exact ...</td>
+</tr>
+<tr>
+<td><a href="NamedEntity/">NamedEntity</a></td>
+<td>A reference to an entity with an identifier and name</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="AnatomicalEntityReference/">AnatomicalEntityReference</a></td>
+<td>A reference to an anatomical entity from UBERON</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="CellCultureConditions/">CellCultureConditions</a></td>
+<td>Detailed cell culture parameters including medium, environment, and timing</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="CellCultureMedium/">CellCultureMedium</a></td>
+<td>Detailed formulation of cell culture medium including base medium and supplem...</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="CellLine/">CellLine</a></td>
+<td>A cell line - a genetically stable cultured cell population</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="CellTypeReference/">CellTypeReference</a></td>
+<td>A reference to a cell type from the Cell Ontology (CL)</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="ChemicalEntityReference/">ChemicalEntityReference</a></td>
+<td>A reference to a chemical entity from CHEBI, an exposure concept from ECTO, o...</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="ExposureCondition/">ExposureCondition</a></td>
+<td>A structured description of an exposure or treatment applied to a biological ...</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="MediumSupplement/">MediumSupplement</a></td>
+<td>Supplement or additive to cell culture medium</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="SpeciesReference/">SpeciesReference</a></td>
+<td>A reference to a species from the NCBI Taxonomy</td>
+</tr>
+<tr>
+<td><a href="NamedThing/">NamedThing</a></td>
+<td>A generic entity with an identifier and name</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="AdverseOutcome/">AdverseOutcome</a></td>
+<td>A specialized type of key event that represents the apical endpoint of an Adv...</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="AdverseOutcomePathway/">AdverseOutcomePathway</a></td>
+<td>A sequence of causally linked events at different levels of biological organi...</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="Assay/">Assay</a></td>
+<td>A planned process with the objective to produce information about biological ...</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="ASLAssay/">ASLAssay</a></td>
+<td>Assay for measuring airway surface liquid properties including ASL height, pe...</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="BALFSputumAssay/">BALFSputumAssay</a></td>
+<td>Assay for measuring bronchoalveolar lavage fluid (BALF) or sputum composition</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="CFTRFunctionAssay/">CFTRFunctionAssay</a></td>
+<td>Assay for measuring CFTR (Cystic Fibrosis Transmembrane Conductance Regulator...</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="CiliaryFunctionAssay/">CiliaryFunctionAssay</a></td>
+<td>Assay for measuring ciliary function including beat frequency, active area, c...</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="EGFRSignalingAssay/">EGFRSignalingAssay</a></td>
+<td>Assay for measuring EGFR phosphorylation and downstream signaling</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="FoxJExpressionAssay/">FoxJExpressionAssay</a></td>
+<td>Assay for measuring FoxJ1 expression related to ciliogenesis</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="GeneExpressionAssay/">GeneExpressionAssay</a></td>
+<td>General assay for gene expression measurements</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="GobletCellAssay/">GobletCellAssay</a></td>
+<td>Assay for measuring goblet cell populations and mucin production</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="LungFunctionAssay/">LungFunctionAssay</a></td>
+<td>Clinical assay for measuring lung function</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="MucociliaryClearanceAssay/">MucociliaryClearanceAssay</a></td>
+<td>Assay for measuring mucociliary clearance and transport</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="OxidativeStressAssay/">OxidativeStressAssay</a></td>
+<td>Assay for measuring oxidative stress markers</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="AssayOutputMeasurement/">AssayOutputMeasurement</a></td>
+<td>The measurement results produced by an assay</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="ASLOutput/">ASLOutput</a></td>
+<td>Measurement results from an airway surface liquid assay</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="BALFSputumOutput/">BALFSputumOutput</a></td>
+<td>Measurement results from a BALF/sputum assay</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="CFTRFunctionOutput/">CFTRFunctionOutput</a></td>
+<td>Measurement results from a CFTR function assay</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="CiliaryFunctionOutput/">CiliaryFunctionOutput</a></td>
+<td>Measurement results from a ciliary function assay</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="EGFRSignalingOutput/">EGFRSignalingOutput</a></td>
+<td>Measurement results from an EGFR signaling assay</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="FoxJExpressionOutput/">FoxJExpressionOutput</a></td>
+<td>Measurement results from a FoxJ1 expression assay</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="GeneExpressionOutput/">GeneExpressionOutput</a></td>
+<td>Measurement results from a gene expression assay</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="GobletCellOutput/">GobletCellOutput</a></td>
+<td>Measurement results from a goblet cell assay</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="LungFunctionOutput/">LungFunctionOutput</a></td>
+<td>Measurement results from a lung function assay</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="MucociliaryClearanceOutput/">MucociliaryClearanceOutput</a></td>
+<td>Measurement results from a mucociliary clearance assay</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="OxidativeStressOutput/">OxidativeStressOutput</a></td>
+<td>Measurement results from an oxidative stress assay</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="KeyEvent/">KeyEvent</a></td>
+<td>A measurable change in biological state that is a step in an Adverse Outcome ...</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="MolecularInitiatingEvent/">MolecularInitiatingEvent</a></td>
+<td>The initial molecular-level perturbation that starts an Adverse Outcome Pathw...</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="KeyEventRelationship/">KeyEventRelationship</a></td>
+<td>A directional relationship between two key events in an AOP</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="Protocol/">Protocol</a></td>
+<td>A detailed set of steps for how to perform a specific assay</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="ImagingProtocol/">ImagingProtocol</a></td>
+<td>Protocol for imaging-based assays (CBF, ASL, MCC)</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="MolecularAssayProtocol/">MolecularAssayProtocol</a></td>
+<td>Protocol for molecular biology assays (qRT-PCR, Western blot, ELISA)</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="SpirometryProtocol/">SpirometryProtocol</a></td>
+<td>Protocol for lung function / spirometry assays</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="StainingProtocol/">StainingProtocol</a></td>
+<td>Protocol for staining-based assays (goblet cell, immunofluorescence)</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="StudySubject/">StudySubject</a></td>
+<td>The subject of a study — what the assay is performed on</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="InVivoSubject/">InVivoSubject</a></td>
+<td>A living human or animal subject from whom measurements are taken</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="ModelSystem/">ModelSystem</a></td>
+<td>An in vitro or ex vivo model system used to study biological processes</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="CellularSystem/">CellularSystem</a></td>
+<td>Cell-based model systems that use living cells to model biological processes</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="PopulationSubject/">PopulationSubject</a></td>
+<td>A population or cohort of subjects studied in aggregate</td>
+</tr>
+<tr>
+<td><a href="PublicationReference/">PublicationReference</a></td>
+<td>The publication a data file was extracted from</td>
+</tr>
+<tr>
+<td><a href="QuantityRange/">QuantityRange</a></td>
+<td>A range of quantity values with minimum and maximum bounds</td>
+</tr>
+<tr>
+<td><a href="QuantityValue/">QuantityValue</a></td>
+<td>A quantity with a numeric value and unit of measurement</td>
+</tr>
+<tr>
+<td><a href="Unit/">Unit</a></td>
+<td>A unit of measurement from a standard ontology (UO, UCUM, QUDT, STATO)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="slots">Slots</h2>
+<table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="active_area_percentage/">active_area_percentage</a></td>
+<td>Percentage of epithelial surface with actively beating cilia</td>
+</tr>
+<tr>
+<td><a href="adverse_outcome/">adverse_outcome</a></td>
+<td>The adverse outcome that is the apical endpoint of this AOP</td>
+</tr>
+<tr>
+<td><a href="adverse_outcome_pathways/">adverse_outcome_pathways</a></td>
+<td>Collection of Adverse Outcome Pathways</td>
+</tr>
+<tr>
+<td><a href="age/">age</a></td>
+<td>Age of the subject</td>
+</tr>
+<tr>
+<td><a href="age_range/">age_range</a></td>
+<td>Age range of the study population</td>
+</tr>
+<tr>
+<td><a href="airway_region/">airway_region</a></td>
+<td>Region of airway from which cells originated</td>
+</tr>
+<tr>
+<td><a href="akt_phosphorylation/">akt_phosphorylation</a></td>
+<td>AKT phosphorylation level</td>
+</tr>
+<tr>
+<td><a href="alpha_diversity/">alpha_diversity</a></td>
+<td>Alpha diversity (microbiome)</td>
+</tr>
+<tr>
+<td><a href="analysis_software/">analysis_software</a></td>
+<td>Software used for analysis (e</td>
+</tr>
+<tr>
+<td><a href="anatomical_origin/">anatomical_origin</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="antibodies_used/">antibodies_used</a></td>
+<td>Antibodies used in staining or detection</td>
+</tr>
+<tr>
+<td><a href="antioxidant_capacity/">antioxidant_capacity</a></td>
+<td>Total antioxidant capacity or GSH/GSSG ratio</td>
+</tr>
+<tr>
+<td><a href="antioxidant_enzyme_activities/">antioxidant_enzyme_activities</a></td>
+<td>Antioxidant enzyme activities (SOD, catalase, GPx)</td>
+</tr>
+<tr>
+<td><a href="aopwiki_id/">aopwiki_id</a></td>
+<td>The AOP-Wiki identifier for this entity (e</td>
+</tr>
+<tr>
+<td><a href="asl_assays/">asl_assays</a></td>
+<td>Collection of airway surface liquid assays</td>
+</tr>
+<tr>
+<td><a href="asl_height_um/">asl_height_um</a></td>
+<td>Airway surface liquid height in micrometers</td>
+</tr>
+<tr>
+<td><a href="asl_ph/">asl_ph</a></td>
+<td>pH of airway surface liquid</td>
+</tr>
+<tr>
+<td><a href="assay_date/">assay_date</a></td>
+<td>Date when the assay was performed</td>
+</tr>
+<tr>
+<td><a href="authentication_method/">authentication_method</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="bacterial_load/">bacterial_load</a></td>
+<td>Bacterial load (16S copies or CFU)</td>
+</tr>
+<tr>
+<td><a href="balf_sputum_assays/">balf_sputum_assays</a></td>
+<td>Collection of BALF and sputum assays</td>
+</tr>
+<tr>
+<td><a href="base_medium/">base_medium</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="beat_frequency_hz/">beat_frequency_hz</a></td>
+<td>Ciliary beat frequency measured in Hz</td>
+</tr>
+<tr>
+<td><a href="beta_diversity/">beta_diversity</a></td>
+<td>Beta diversity (microbiome)</td>
+</tr>
+<tr>
+<td><a href="biological_action/">biological_action</a></td>
+<td>The type of change (increased, decreased, altered, impaired)</td>
+</tr>
+<tr>
+<td><a href="biological_object/">biological_object</a></td>
+<td>The biological entity affected (protein, cell, tissue, organ)</td>
+</tr>
+<tr>
+<td><a href="biological_process/">biological_process</a></td>
+<td>The biological process affected by this key event</td>
+</tr>
+<tr>
+<td><a href="bronchodilator_agent/">bronchodilator_agent</a></td>
+<td>Bronchodilator agent used (e</td>
+</tr>
+<tr>
+<td><a href="bronchodilator_dose/">bronchodilator_dose</a></td>
+<td>Dose of bronchodilator administered</td>
+</tr>
+<tr>
+<td><a href="bronchodilator_response/">bronchodilator_response</a></td>
+<td>Response to bronchodilator (% change in FEV1)</td>
+</tr>
+<tr>
+<td><a href="catalase_activity/">catalase_activity</a></td>
+<td>Catalase activity</td>
+</tr>
+<tr>
+<td><a href="catalog_number/">catalog_number</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="cell_culture_growth_mode/">cell_culture_growth_mode</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="cell_free_dna/">cell_free_dna</a></td>
+<td>Cell-free DNA concentration</td>
+</tr>
+<tr>
+<td><a href="cell_line/">cell_line</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="cell_type/">cell_type</a></td>
+<td>The cell type being studied</td>
+</tr>
+<tr>
+<td><a href="cell_type_ratios/">cell_type_ratios</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="cftr_assays/">cftr_assays</a></td>
+<td>Collection of CFTR function assays</td>
+</tr>
+<tr>
+<td><a href="cftr_chloride_secretion/">cftr_chloride_secretion</a></td>
+<td>CFTR-mediated chloride secretion in uA/cm2</td>
+</tr>
+<tr>
+<td><a href="cftr_forskolin_response/">cftr_forskolin_response</a></td>
+<td>Forskolin-stimulated CFTR response</td>
+</tr>
+<tr>
+<td><a href="cftr_specific_current/">cftr_specific_current</a></td>
+<td>CFTR-specific chloride secretory current</td>
+</tr>
+<tr>
+<td><a href="cilia_length/">cilia_length</a></td>
+<td>Length of cilia measured in micrometers</td>
+</tr>
+<tr>
+<td><a href="cilia_per_cell/">cilia_per_cell</a></td>
+<td>Number of cilia per ciliated cell</td>
+</tr>
+<tr>
+<td><a href="ciliary_beat_amplitude/">ciliary_beat_amplitude</a></td>
+<td>Amplitude of ciliary beat</td>
+</tr>
+<tr>
+<td><a href="ciliary_function_assays/">ciliary_function_assays</a></td>
+<td>Collection of ciliary function assays</td>
+</tr>
+<tr>
+<td><a href="ciliary_motion_patterns/">ciliary_motion_patterns</a></td>
+<td>Patterns of ciliary motion (coordinated, dyskinetic, immotile)</td>
+</tr>
+<tr>
+<td><a href="clinical_context/">clinical_context</a></td>
+<td>Clinical context for in vivo measurements (e</td>
+</tr>
+<tr>
+<td><a href="coating/">coating</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="cohort_size/">cohort_size</a></td>
+<td>Number of subjects in the cohort or population</td>
+</tr>
+<tr>
+<td><a href="collection_date/">collection_date</a></td>
+<td>Date when the sample was collected</td>
+</tr>
+<tr>
+<td><a href="collection_site/">collection_site</a></td>
+<td>Anatomical site of sample collection</td>
+</tr>
+<tr>
+<td><a href="concentration/">concentration</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="confluence_level/">confluence_level</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="counterstain/">counterstain</a></td>
+<td>Counterstain used (e</td>
+</tr>
+<tr>
+<td><a href="culture_conditions/">culture_conditions</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="culture_media/">culture_media</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="days_at_air_liquid_interface/">days_at_air_liquid_interface</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="days_at_differentiation/">days_at_differentiation</a></td>
+<td>Days at air-liquid interface or differentiation stage</td>
+</tr>
+<tr>
+<td><a href="decline_rate/">decline_rate</a></td>
+<td>Longitudinal decline rate in mL/year</td>
+</tr>
+<tr>
+<td><a href="description/">description</a></td>
+<td>A detailed description of the entity</td>
+</tr>
+<tr>
+<td><a href="detection_method/">detection_method</a></td>
+<td>Detection method used (e</td>
+</tr>
+<tr>
+<td><a href="detection_method_details/">detection_method_details</a></td>
+<td>Detection method details</td>
+</tr>
+<tr>
+<td><a href="disease_state/">disease_state</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="dlco/">dlco</a></td>
+<td>Diffusing capacity for carbon monoxide</td>
+</tr>
+<tr>
+<td><a href="dna_damage_markers/">dna_damage_markers</a></td>
+<td>DNA damage markers (8-OHdG)</td>
+</tr>
+<tr>
+<td><a href="doi/">doi</a></td>
+<td>The publication's DOI, e</td>
+</tr>
+<tr>
+<td><a href="donor_count/">donor_count</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="donor_info/">donor_info</a></td>
+<td>Information about cell donor (e</td>
+</tr>
+<tr>
+<td><a href="downstream_event/">downstream_event</a></td>
+<td>The downstream key event in this relationship (effect)</td>
+</tr>
+<tr>
+<td><a href="downstream_key_events/">downstream_key_events</a></td>
+<td>Key events that follow this key event (downstream in the pathway)</td>
+</tr>
+<tr>
+<td><a href="downstream_kinase_activation/">downstream_kinase_activation</a></td>
+<td>Activation levels of downstream kinases</td>
+</tr>
+<tr>
+<td><a href="egfr_ligand_expression/">egfr_ligand_expression</a></td>
+<td>Expression of EGFR ligands (EGF, TGF-alpha, amphiregulin)</td>
+</tr>
+<tr>
+<td><a href="egfr_membrane_localization/">egfr_membrane_localization</a></td>
+<td>EGFR membrane localization percentage</td>
+</tr>
+<tr>
+<td><a href="egfr_phosphorylation_y1068/">egfr_phosphorylation_y1068</a></td>
+<td>EGFR phosphorylation at Y1068 residue (fold change)</td>
+</tr>
+<tr>
+<td><a href="egfr_phosphorylation_y1173/">egfr_phosphorylation_y1173</a></td>
+<td>EGFR phosphorylation at Y1173 residue (fold change)</td>
+</tr>
+<tr>
+<td><a href="egfr_signaling_assays/">egfr_signaling_assays</a></td>
+<td>Collection of EGFR signaling assays</td>
+</tr>
+<tr>
+<td><a href="eight_isoprostane_level/">eight_isoprostane_level</a></td>
+<td>8-isoprostane level</td>
+</tr>
+<tr>
+<td><a href="eight_ohdg_level/">eight_ohdg_level</a></td>
+<td>8-OHdG level (DNA oxidation marker)</td>
+</tr>
+<tr>
+<td><a href="eosinophil_percentage/">eosinophil_percentage</a></td>
+<td>Eosinophil percentage in BALF/sputum</td>
+</tr>
+<tr>
+<td><a href="equipment_required/">equipment_required</a></td>
+<td>Equipment required for this protocol</td>
+</tr>
+<tr>
+<td><a href="erk_phosphorylation/">erk_phosphorylation</a></td>
+<td>ERK phosphorylation level</td>
+</tr>
+<tr>
+<td><a href="evaporation_prevention/">evaporation_prevention</a></td>
+<td>Method used to prevent evaporation (e</td>
+</tr>
+<tr>
+<td><a href="evidence/">evidence</a></td>
+<td>Evidence items backing this object's claims</td>
+</tr>
+<tr>
+<td><a href="evidence_source/">evidence_source</a></td>
+<td>What kind of study the cited publication reports — classify the paper, not th...</td>
+</tr>
+<tr>
+<td><a href="evidence_support/">evidence_support</a></td>
+<td>Level of evidence supporting this key event relationship</td>
+</tr>
+<tr>
+<td><a href="explanation/">explanation</a></td>
+<td>One or two sentences on how the quoted passage supports the specific claim it...</td>
+</tr>
+<tr>
+<td><a href="exposure_agent/">exposure_agent</a></td>
+<td>The chemical, biological, or environmental agent used for exposure or treatme...</td>
+</tr>
+<tr>
+<td><a href="exposure_concentration/">exposure_concentration</a></td>
+<td>Concentration of the exposure agent applied</td>
+</tr>
+<tr>
+<td><a href="exposure_duration/">exposure_duration</a></td>
+<td>Duration of exposure or treatment</td>
+</tr>
+<tr>
+<td><a href="fef25_75/">fef25_75</a></td>
+<td>Forced expiratory flow 25-75%</td>
+</tr>
+<tr>
+<td><a href="feno/">feno</a></td>
+<td>Fractional exhaled nitric oxide in ppb</td>
+</tr>
+<tr>
+<td><a href="fev1/">fev1</a></td>
+<td>Forced expiratory volume in 1 second</td>
+</tr>
+<tr>
+<td><a href="fev1_fvc_ratio/">fev1_fvc_ratio</a></td>
+<td>Ratio of FEV1 to FVC (Tiffeneau-Pinelli index)</td>
+</tr>
+<tr>
+<td><a href="fixation_method/">fixation_method</a></td>
+<td>Fixation method used for tissue/cell preparation</td>
+</tr>
+<tr>
+<td><a href="fluorescent_labeling/">fluorescent_labeling</a></td>
+<td>Fluorescent label or tracer used</td>
+</tr>
+<tr>
+<td><a href="fluorescent_tracer/">fluorescent_tracer</a></td>
+<td>Fluorescent tracer used for tracking (MCC assays)</td>
+</tr>
+<tr>
+<td><a href="follows_protocols/">follows_protocols</a></td>
+<td>The Protocol(s) that this assay follows</td>
+</tr>
+<tr>
+<td><a href="four_hydroxynonenal_level/">four_hydroxynonenal_level</a></td>
+<td>4-HNE level - lipid peroxidation marker</td>
+</tr>
+<tr>
+<td><a href="foxj1_mrna_expression/">foxj1_mrna_expression</a></td>
+<td>FoxJ1 mRNA expression level</td>
+</tr>
+<tr>
+<td><a href="foxj1_nuclear_localization/">foxj1_nuclear_localization</a></td>
+<td>FoxJ1 nuclear localization</td>
+</tr>
+<tr>
+<td><a href="foxj1_positive_cell_percentage/">foxj1_positive_cell_percentage</a></td>
+<td>Percentage of FoxJ1-positive cells</td>
+</tr>
+<tr>
+<td><a href="foxj1_protein_expression/">foxj1_protein_expression</a></td>
+<td>FoxJ1 protein expression level</td>
+</tr>
+<tr>
+<td><a href="foxj_assays/">foxj_assays</a></td>
+<td>Collection of FoxJ1/ciliogenesis assays</td>
+</tr>
+<tr>
+<td><a href="functional_residual_capacity/">functional_residual_capacity</a></td>
+<td>Functional residual capacity</td>
+</tr>
+<tr>
+<td><a href="fvc/">fvc</a></td>
+<td>Forced vital capacity</td>
+</tr>
+<tr>
+<td><a href="gene_expression_assays/">gene_expression_assays</a></td>
+<td>Collection of gene expression assays</td>
+</tr>
+<tr>
+<td><a href="gene_expression_method/">gene_expression_method</a></td>
+<td>Method used for gene expression (qRT-PCR, RNA-seq, etc</td>
+</tr>
+<tr>
+<td><a href="general_procedure/">general_procedure</a></td>
+<td>High-level description of the procedure</td>
+</tr>
+<tr>
+<td><a href="glutathione_peroxidase_activity/">glutathione_peroxidase_activity</a></td>
+<td>GPx activity</td>
+</tr>
+<tr>
+<td><a href="glutathione_ratio/">glutathione_ratio</a></td>
+<td>GSH/GSSG ratio indicating antioxidant status</td>
+</tr>
+<tr>
+<td><a href="goblet_cell_assays/">goblet_cell_assays</a></td>
+<td>Collection of goblet cell and mucin assays</td>
+</tr>
+<tr>
+<td><a href="goblet_cell_count/">goblet_cell_count</a></td>
+<td>Number of goblet cells (raw count)</td>
+</tr>
+<tr>
+<td><a href="goblet_cell_percentage/">goblet_cell_percentage</a></td>
+<td>Percentage of goblet cells</td>
+</tr>
+<tr>
+<td><a href="goblet_to_ciliated_ratio/">goblet_to_ciliated_ratio</a></td>
+<td>Ratio of goblet cells to ciliated cells</td>
+</tr>
+<tr>
+<td><a href="has_exposure_condition/">has_exposure_condition</a></td>
+<td>The exposure condition(s) applied to the study subject</td>
+</tr>
+<tr>
+<td><a href="has_specified_output/">has_specified_output</a></td>
+<td>The measurement results produced by this assay — the specified output of a pl...</td>
+</tr>
+<tr>
+<td><a href="hemoglobin_level/">hemoglobin_level</a></td>
+<td>Hemoglobin level</td>
+</tr>
+<tr>
+<td><a href="humidity_control/">humidity_control</a></td>
+<td>Humidity conditions during the procedure</td>
+</tr>
+<tr>
+<td><a href="id/">id</a></td>
+<td>A unique identifier for the entity</td>
+</tr>
+<tr>
+<td><a href="il1_beta_concentration/">il1_beta_concentration</a></td>
+<td>IL-1 beta concentration</td>
+</tr>
+<tr>
+<td><a href="il6_concentration/">il6_concentration</a></td>
+<td>IL-6 concentration</td>
+</tr>
+<tr>
+<td><a href="il8_concentration/">il8_concentration</a></td>
+<td>IL-8 concentration</td>
+</tr>
+<tr>
+<td><a href="imaging_duration/">imaging_duration</a></td>
+<td>Duration of imaging session</td>
+</tr>
+<tr>
+<td><a href="imaging_frame_rate/">imaging_frame_rate</a></td>
+<td>Frame rate for video/imaging acquisition (e</td>
+</tr>
+<tr>
+<td><a href="imaging_protocol/">imaging_protocol</a></td>
+<td>Reference to the imaging protocol used</td>
+</tr>
+<tr>
+<td><a href="inclusion_criteria/">inclusion_criteria</a></td>
+<td>Criteria for inclusion in the study population</td>
+</tr>
+<tr>
+<td><a href="informs_on_key_event/">informs_on_key_event</a></td>
+<td>The Key Event that this assay provides evidence for</td>
+</tr>
+<tr>
+<td><a href="inhibitor_sensitive_current/">inhibitor_sensitive_current</a></td>
+<td>Inhibitor-sensitive current measurement</td>
+</tr>
+<tr>
+<td><a href="inhibitor_used/">inhibitor_used</a></td>
+<td>Inhibitor used (e</td>
+</tr>
+<tr>
+<td><a href="institution/">institution</a></td>
+<td>Institution where protocol was developed</td>
+</tr>
+<tr>
+<td><a href="ion_composition/">ion_composition</a></td>
+<td>Ionic composition (Cl-, Na+, K+)</td>
+</tr>
+<tr>
+<td><a href="key_event_relationships/">key_event_relationships</a></td>
+<td>The key event relationships connecting events in this AOP</td>
+</tr>
+<tr>
+<td><a href="key_events/">key_events</a></td>
+<td>The key events in this AOP (intermediate events between MIE and AO)</td>
+</tr>
+<tr>
+<td><a href="key_reagents/">key_reagents</a></td>
+<td>Key reagents needed for this protocol</td>
+</tr>
+<tr>
+<td><a href="last_updated/">last_updated</a></td>
+<td>Date protocol was last updated</td>
+</tr>
+<tr>
+<td><a href="level_of_biological_organization/">level_of_biological_organization</a></td>
+<td>The level of biological organization at which this key event occurs</td>
+</tr>
+<tr>
+<td><a href="lipid_peroxidation/">lipid_peroxidation</a></td>
+<td>Lipid peroxidation level</td>
+</tr>
+<tr>
+<td><a href="lot_number/">lot_number</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="lung_compliance/">lung_compliance</a></td>
+<td>Lung compliance</td>
+</tr>
+<tr>
+<td><a href="lung_elastance/">lung_elastance</a></td>
+<td>Lung elastance</td>
+</tr>
+<tr>
+<td><a href="lung_function_assays/">lung_function_assays</a></td>
+<td>Collection of lung function assays</td>
+</tr>
+<tr>
+<td><a href="lung_resistance/">lung_resistance</a></td>
+<td>Lung resistance</td>
+</tr>
+<tr>
+<td><a href="lymphocyte_percentage/">lymphocyte_percentage</a></td>
+<td>Lymphocyte percentage in BALF/sputum</td>
+</tr>
+<tr>
+<td><a href="lysis_buffer/">lysis_buffer</a></td>
+<td>Lysis buffer used for sample preparation</td>
+</tr>
+<tr>
+<td><a href="macrophage_percentage/">macrophage_percentage</a></td>
+<td>Macrophage percentage in BALF/sputum</td>
+</tr>
+<tr>
+<td><a href="malondialdehyde_level/">malondialdehyde_level</a></td>
+<td>MDA level - lipid peroxidation marker</td>
+</tr>
+<tr>
+<td><a href="manufacturer/">manufacturer</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="matrix_composition/">matrix_composition</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="max_value/">max_value</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="mcc_assays/">mcc_assays</a></td>
+<td>Collection of mucociliary clearance assays</td>
+</tr>
+<tr>
+<td><a href="min_value/">min_value</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="model_species/">model_species</a></td>
+<td>The species of origin for the cells or organism being studied</td>
+</tr>
+<tr>
+<td><a href="molecular_initiating_event/">molecular_initiating_event</a></td>
+<td>The molecular initiating event that starts this AOP</td>
+</tr>
+<tr>
+<td><a href="molecular_protocol/">molecular_protocol</a></td>
+<td>Reference to the molecular assay protocol used</td>
+</tr>
+<tr>
+<td><a href="mrna_level/">mrna_level</a></td>
+<td>mRNA expression level</td>
+</tr>
+<tr>
+<td><a href="muc5ac_mrna_expression/">muc5ac_mrna_expression</a></td>
+<td>MUC5AC mRNA expression level (fold change)</td>
+</tr>
+<tr>
+<td><a href="muc5ac_muc5b_ratio/">muc5ac_muc5b_ratio</a></td>
+<td>MUC5AC to MUC5B ratio</td>
+</tr>
+<tr>
+<td><a href="muc5ac_protein_expression/">muc5ac_protein_expression</a></td>
+<td>MUC5AC protein expression level</td>
+</tr>
+<tr>
+<td><a href="muc5b_mrna_expression/">muc5b_mrna_expression</a></td>
+<td>MUC5B mRNA expression level (fold change)</td>
+</tr>
+<tr>
+<td><a href="muc5b_protein_expression/">muc5b_protein_expression</a></td>
+<td>MUC5B protein expression level</td>
+</tr>
+<tr>
+<td><a href="mucin_protein_concentration/">mucin_protein_concentration</a></td>
+<td>Total mucin protein concentration</td>
+</tr>
+<tr>
+<td><a href="mucin_secretion_rate/">mucin_secretion_rate</a></td>
+<td>Mucin secretion rate</td>
+</tr>
+<tr>
+<td><a href="mucus_composition/">mucus_composition</a></td>
+<td>Composition of mucus</td>
+</tr>
+<tr>
+<td><a href="mucus_layer_thickness/">mucus_layer_thickness</a></td>
+<td>Thickness of the mucus gel layer in micrometers</td>
+</tr>
+<tr>
+<td><a href="mucus_viscosity/">mucus_viscosity</a></td>
+<td>Mucus viscosity in centipoise</td>
+</tr>
+<tr>
+<td><a href="mycoplasma_status/">mycoplasma_status</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="name/">name</a></td>
+<td>A human-readable name for the entity</td>
+</tr>
+<tr>
+<td><a href="nasal_potential_difference/">nasal_potential_difference</a></td>
+<td>Nasal potential difference in mV</td>
+</tr>
+<tr>
+<td><a href="neutrophil_percentage/">neutrophil_percentage</a></td>
+<td>Neutrophil percentage in BALF/sputum</td>
+</tr>
+<tr>
+<td><a href="nitrotyrosine_level/">nitrotyrosine_level</a></td>
+<td>Nitrotyrosine level</td>
+</tr>
+<tr>
+<td><a href="normalization_method/">normalization_method</a></td>
+<td>Method used for data normalization</td>
+</tr>
+<tr>
+<td><a href="normalization_reference/">normalization_reference</a></td>
+<td>Normalization reference (beta-actin, GAPDH, total EGFR)</td>
+</tr>
+<tr>
+<td><a href="nrf2_activation/">nrf2_activation</a></td>
+<td>Nrf2 activation level</td>
+</tr>
+<tr>
+<td><a href="obi_mapping/">obi_mapping</a></td>
+<td>OBI ontology term for this method</td>
+</tr>
+<tr>
+<td><a href="occurs_in_anatomy/">occurs_in_anatomy</a></td>
+<td>The anatomical location where this key event occurs</td>
+</tr>
+<tr>
+<td><a href="occurs_in_cell_type/">occurs_in_cell_type</a></td>
+<td>The cell type in which this key event occurs</td>
+</tr>
+<tr>
+<td><a href="organoid_type/">organoid_type</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="osmolality/">osmolality</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="outcome_level/">outcome_level</a></td>
+<td>The level at which the adverse outcome manifests (individual, population)</td>
+</tr>
+<tr>
+<td><a href="oxidative_stress_assays/">oxidative_stress_assays</a></td>
+<td>Collection of oxidative stress assays</td>
+</tr>
+<tr>
+<td><a href="particle_clearance_time/">particle_clearance_time</a></td>
+<td>Time for particle clearance</td>
+</tr>
+<tr>
+<td><a href="particle_size/">particle_size</a></td>
+<td>Size of tracking particles</td>
+</tr>
+<tr>
+<td><a href="particle_tracking_method/">particle_tracking_method</a></td>
+<td>Method used for tracking particles or mucus</td>
+</tr>
+<tr>
+<td><a href="passage_number/">passage_number</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="pathway_biomarkers/">pathway_biomarkers</a></td>
+<td>Pathway-specific biomarker signatures</td>
+</tr>
+<tr>
+<td><a href="peak_expiratory_flow/">peak_expiratory_flow</a></td>
+<td>Peak expiratory flow</td>
+</tr>
+<tr>
+<td><a href="percent_solids/">percent_solids</a></td>
+<td>Percent solids in apical secretion (overall secretion)</td>
+</tr>
+<tr>
+<td><a href="percentage_active_transport/">percentage_active_transport</a></td>
+<td>Percentage of area showing active transport</td>
+</tr>
+<tr>
+<td><a href="percentage_ciliated_cells/">percentage_ciliated_cells</a></td>
+<td>Percentage of cells that are ciliated</td>
+</tr>
+<tr>
+<td><a href="percentage_positive_cells/">percentage_positive_cells</a></td>
+<td>Percentage of positive cells (IHC, flow cytometry)</td>
+</tr>
+<tr>
+<td><a href="periciliary_layer_depth/">periciliary_layer_depth</a></td>
+<td>Depth of the periciliary layer in micrometers</td>
+</tr>
+<tr>
+<td><a href="phosphorylation_site/">phosphorylation_site</a></td>
+<td>Specific phosphorylation site being measured</td>
+</tr>
+<tr>
+<td><a href="platform/">platform</a></td>
+<td>Assay platform or instrument used (e</td>
+</tr>
+<tr>
+<td><a href="plethysmography_method/">plethysmography_method</a></td>
+<td>Method for plethysmography measurement</td>
+</tr>
+<tr>
+<td><a href="preparation_date/">preparation_date</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="primary_cell/">primary_cell</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="primer_sequences/">primer_sequences</a></td>
+<td>Primer sequences used for PCR-based methods</td>
+</tr>
+<tr>
+<td><a href="protein_carbonyl_content/">protein_carbonyl_content</a></td>
+<td>Protein carbonyl content</td>
+</tr>
+<tr>
+<td><a href="protein_level/">protein_level</a></td>
+<td>Protein expression level</td>
+</tr>
+<tr>
+<td><a href="protein_oxidation_markers/">protein_oxidation_markers</a></td>
+<td>Protein oxidation markers (carbonyls, nitrotyrosine)</td>
+</tr>
+<tr>
+<td><a href="protocol_author/">protocol_author</a></td>
+<td>Author of the protocol</td>
+</tr>
+<tr>
+<td><a href="protocol_type/">protocol_type</a></td>
+<td>The specific type of protocol</td>
+</tr>
+<tr>
+<td><a href="protocol_version/">protocol_version</a></td>
+<td>Version of the protocol</td>
+</tr>
+<tr>
+<td><a href="protocols/">protocols</a></td>
+<td>Collection of protocols</td>
+</tr>
+<tr>
+<td><a href="publication_reference/">publication_reference</a></td>
+<td>Reference to protocol publication</td>
+</tr>
+<tr>
+<td><a href="quality_control_criteria/">quality_control_criteria</a></td>
+<td>Quality control acceptance criteria</td>
+</tr>
+<tr>
+<td><a href="quantitative_understanding/">quantitative_understanding</a></td>
+<td>Level of quantitative understanding of the relationship</td>
+</tr>
+<tr>
+<td><a href="reactive_oxygen_species/">reactive_oxygen_species</a></td>
+<td>ROS level as fold change or fluorescence intensity</td>
+</tr>
+<tr>
+<td><a href="recent_respiratory_illness/">recent_respiratory_illness</a></td>
+<td>Recent respiratory illness (affects spirometry)</td>
+</tr>
+<tr>
+<td><a href="reference/">reference</a></td>
+<td>The cited publication's PubMed ID, e</td>
+</tr>
+<tr>
+<td><a href="reference_dataset/">reference_dataset</a></td>
+<td>Reference dataset for interpretation (GLI-2012 for humans)</td>
+</tr>
+<tr>
+<td><a href="reference_gene/">reference_gene</a></td>
+<td>Reference/housekeeping gene used for normalization</td>
+</tr>
+<tr>
+<td><a href="reference_title/">reference_title</a></td>
+<td>The title of the cited publication, copied from the cached reference record (...</td>
+</tr>
+<tr>
+<td><a href="relationship_type/">relationship_type</a></td>
+<td>The type of causal relationship (directly leads to, indirectly leads to)</td>
+</tr>
+<tr>
+<td><a href="replicate_requirements/">replicate_requirements</a></td>
+<td>Number of replicates required</td>
+</tr>
+<tr>
+<td><a href="replicates_per_donor/">replicates_per_donor</a></td>
+<td>Number of biological replicates per donor</td>
+</tr>
+<tr>
+<td><a href="residual_volume/">residual_volume</a></td>
+<td>Residual volume</td>
+</tr>
+<tr>
+<td><a href="ros_probe_type/">ros_probe_type</a></td>
+<td>Type of ROS probe used (DCFDA, DHE, MitoSOX, etc</td>
+</tr>
+<tr>
+<td><a href="sample_collection_method/">sample_collection_method</a></td>
+<td>Method used for sample collection in vivo (e</td>
+</tr>
+<tr>
+<td><a href="sample_type/">sample_type</a></td>
+<td>Type of biological sample (e</td>
+</tr>
+<tr>
+<td><a href="seeding_density/">seeding_density</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="serum_concentration/">serum_concentration</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="serum_type/">serum_type</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="sex/">sex</a></td>
+<td>Biological sex of the subject</td>
+</tr>
+<tr>
+<td><a href="size_range/">size_range</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="snippet/">snippet</a></td>
+<td>An exact quote from the cited publication that supports or refutes the claim</td>
+</tr>
+<tr>
+<td><a href="sop_reference/">sop_reference</a></td>
+<td>Reference to standard operating procedure document</td>
+</tr>
+<tr>
+<td><a href="source_publication/">source_publication</a></td>
+<td>The publication this data was extracted from</td>
+</tr>
+<tr>
+<td><a href="spatial_resolution/">spatial_resolution</a></td>
+<td>Spatial resolution of imaging (e</td>
+</tr>
+<tr>
+<td><a href="spirometry_protocol/">spirometry_protocol</a></td>
+<td>Reference to the spirometry protocol used</td>
+</tr>
+<tr>
+<td><a href="spirometry_standard/">spirometry_standard</a></td>
+<td>Spirometry standard followed (e</td>
+</tr>
+<tr>
+<td><a href="staining_protocol/">staining_protocol</a></td>
+<td>Reference to staining protocol (AB-PAS, immunochem)</td>
+</tr>
+<tr>
+<td><a href="staining_type/">staining_type</a></td>
+<td>Type of staining used (e</td>
+</tr>
+<tr>
+<td><a href="stimulation_agent/">stimulation_agent</a></td>
+<td>Stimulation agent used (e</td>
+</tr>
+<tr>
+<td><a href="stressors/">stressors</a></td>
+<td>Chemical or physical stressors that can trigger this AOP</td>
+</tr>
+<tr>
+<td><a href="study_subject/">study_subject</a></td>
+<td>The subject of the study — what the assay is performed on</td>
+</tr>
+<tr>
+<td><a href="sub_protocols/">sub_protocols</a></td>
+<td>Other protocols that are part of this protocol's workflow</td>
+</tr>
+<tr>
+<td><a href="subject_characteristics/">subject_characteristics</a></td>
+<td>Relevant subject characteristics (disease state, medications, etc</td>
+</tr>
+<tr>
+<td><a href="subject_type/">subject_type</a></td>
+<td>The specific type of study subject</td>
+</tr>
+<tr>
+<td><a href="subjects/">subjects</a></td>
+<td>Individual subjects in the population or cohort</td>
+</tr>
+<tr>
+<td><a href="substrate_type/">substrate_type</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="superoxide_dismutase_activity/">superoxide_dismutase_activity</a></td>
+<td>SOD activity</td>
+</tr>
+<tr>
+<td><a href="supplement_type/">supplement_type</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="supplements/">supplements</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="supplier/">supplier</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="supports/">supports</a></td>
+<td>Which way the quoted evidence points: does it support the claim, contradict i...</td>
+</tr>
+<tr>
+<td><a href="sweat_chloride_concentration/">sweat_chloride_concentration</a></td>
+<td>Sweat chloride concentration in mEq/L (CF diagnostic)</td>
+</tr>
+<tr>
+<td><a href="target_cell_type/">target_cell_type</a></td>
+<td>The specific cell type that is the primary focus of this assay's analysis, wh...</td>
+</tr>
+<tr>
+<td><a href="target_gene/">target_gene</a></td>
+<td>Target gene being measured</td>
+</tr>
+<tr>
+<td><a href="target_molecule/">target_molecule</a></td>
+<td>The molecular target of the stressor in the MIE (e</td>
+</tr>
+<tr>
+<td><a href="temperature_control/">temperature_control</a></td>
+<td>Temperature conditions during the procedure (e</td>
+</tr>
+<tr>
+<td><a href="timing_post_exposure/">timing_post_exposure</a></td>
+<td>Time after exposure when the measurement was taken</td>
+</tr>
+<tr>
+<td><a href="tissue_origin/">tissue_origin</a></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="tnf_alpha_concentration/">tnf_alpha_concentration</a></td>
+<td>TNF-alpha concentration</td>
+</tr>
+<tr>
+<td><a href="total_antioxidant_capacity/">total_antioxidant_capacity</a></td>
+<td>Total antioxidant capacity</td>
+</tr>
+<tr>
+<td><a href="total_cell_count/">total_cell_count</a></td>
+<td>Total cell count in BALF/sputum</td>
+</tr>
+<tr>
+<td><a href="total_egfr_protein/">total_egfr_protein</a></td>
+<td>Total EGFR protein level (loading control)</td>
+</tr>
+<tr>
+<td><a href="total_lung_capacity/">total_lung_capacity</a></td>
+<td>Total lung capacity</td>
+</tr>
+<tr>
+<td><a href="total_protein_concentration/">total_protein_concentration</a></td>
+<td>Total protein concentration</td>
+</tr>
+<tr>
+<td><a href="transport_directionality/">transport_directionality</a></td>
+<td>Directionality of mucociliary transport</td>
+</tr>
+<tr>
+<td><a href="transport_rate/">transport_rate</a></td>
+<td>Mucociliary transport rate</td>
+</tr>
+<tr>
+<td><a href="unit/">unit</a></td>
+<td>The unit of measurement</td>
+</tr>
+<tr>
+<td><a href="upstream_event/">upstream_event</a></td>
+<td>The upstream key event in this relationship (cause)</td>
+</tr>
+<tr>
+<td><a href="upstream_key_events/">upstream_key_events</a></td>
+<td>Key events that lead to this key event (upstream in the pathway)</td>
+</tr>
+<tr>
+<td><a href="validation_status/">validation_status</a></td>
+<td>Validation status of the protocol</td>
+</tr>
+<tr>
+<td><a href="value/">value</a></td>
+<td>The numeric value of the quantity</td>
+</tr>
+</tbody>
+</table>
+<h2 id="enumerations">Enumerations</h2>
+<table>
+<thead>
+<tr>
+<th>Enumeration</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="AnatomicalEntityTerm/">AnatomicalEntityTerm</a></td>
+<td>An anatomical term from UBERON, under "anatomical entity"</td>
+</tr>
+<tr>
+<td><a href="AssayContextCapabilityEnum/">AssayContextCapabilityEnum</a></td>
+<td>Indicates what experimental contexts an assay class supports</td>
+</tr>
+<tr>
+<td><a href="BiologicalActionEnum/">BiologicalActionEnum</a></td>
+<td>Types of biological changes or actions in key events</td>
+</tr>
+<tr>
+<td><a href="BiologicalOrganizationLevelEnum/">BiologicalOrganizationLevelEnum</a></td>
+<td>Levels of biological organization for key events</td>
+</tr>
+<tr>
+<td><a href="CellCultureGrowthModeEnum/">CellCultureGrowthModeEnum</a></td>
+<td>Cell culture growth modes</td>
+</tr>
+<tr>
+<td><a href="CellTypeTerm/">CellTypeTerm</a></td>
+<td>A cell type term from the Cell Ontology (CL), under "cell"</td>
+</tr>
+<tr>
+<td><a href="ChemicalEntityTerm/">ChemicalEntityTerm</a></td>
+<td>A chemical entity from CHEBI or an exposure concept from ECTO</td>
+</tr>
+<tr>
+<td><a href="CiliaryMotionPatternEnum/">CiliaryMotionPatternEnum</a></td>
+<td>Patterns of ciliary motion</td>
+</tr>
+<tr>
+<td><a href="DirectionalityEnum/">DirectionalityEnum</a></td>
+<td>Directionality of mucociliary transport</td>
+</tr>
+<tr>
+<td><a href="EvidenceItemSupportEnum/">EvidenceItemSupportEnum</a></td>
+<td>Which way the cited evidence points relative to the claim</td>
+</tr>
+<tr>
+<td><a href="EvidenceSourceEnum/">EvidenceSourceEnum</a></td>
+<td>The kind of study the cited publication reports</td>
+</tr>
+<tr>
+<td><a href="EvidenceSupportEnum/">EvidenceSupportEnum</a></td>
+<td>Levels of evidence support for key event relationships</td>
+</tr>
+<tr>
+<td><a href="OutcomeLevelEnum/">OutcomeLevelEnum</a></td>
+<td>Levels at which adverse outcomes manifest</td>
+</tr>
+<tr>
+<td><a href="QuantitativeUnderstandingEnum/">QuantitativeUnderstandingEnum</a></td>
+<td>Levels of quantitative understanding for key event relationships</td>
+</tr>
+<tr>
+<td><a href="SampleTypeEnum/">SampleTypeEnum</a></td>
+<td>Types of biological samples for in vivo assays</td>
+</tr>
+<tr>
+<td><a href="SpeciesTerm/">SpeciesTerm</a></td>
+<td>A species from the NCBI Taxonomy</td>
+</tr>
+<tr>
+<td><a href="SubstrateTypeEnum/">SubstrateTypeEnum</a></td>
+<td>Types of cell culture substrates</td>
+</tr>
+<tr>
+<td><a href="SupplementTypeEnum/">SupplementTypeEnum</a></td>
+<td>Categories of cell culture medium supplements</td>
+</tr>
+<tr>
+<td><a href="UnitTerm/">UnitTerm</a></td>
+<td>A unit of measurement from UO (UCUM/QUDT/STATO ids are also allowed by the Un...</td>
+</tr>
+</tbody>
+</table>
+<h2 id="types">Types</h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="Boolean/">Boolean</a></td>
+<td>A binary (true or false) value</td>
+</tr>
+<tr>
+<td><a href="Curie/">Curie</a></td>
+<td>a compact URI</td>
+</tr>
+<tr>
+<td><a href="Date/">Date</a></td>
+<td>a date (year, month and day) in an idealized calendar</td>
+</tr>
+<tr>
+<td><a href="DateOrDatetime/">DateOrDatetime</a></td>
+<td>Either a date or a datetime</td>
+</tr>
+<tr>
+<td><a href="Datetime/">Datetime</a></td>
+<td>The combination of a date and time</td>
+</tr>
+<tr>
+<td><a href="Decimal/">Decimal</a></td>
+<td>A real number with arbitrary precision that conforms to the xsd:decimal speci...</td>
+</tr>
+<tr>
+<td><a href="Double/">Double</a></td>
+<td>A real number that conforms to the xsd:double specification</td>
+</tr>
+<tr>
+<td><a href="Float/">Float</a></td>
+<td>A real number that conforms to the xsd:float specification</td>
+</tr>
+<tr>
+<td><a href="Integer/">Integer</a></td>
+<td>An integer</td>
+</tr>
+<tr>
+<td><a href="Jsonpath/">Jsonpath</a></td>
+<td>A string encoding a JSON Path</td>
+</tr>
+<tr>
+<td><a href="Jsonpointer/">Jsonpointer</a></td>
+<td>A string encoding a JSON Pointer</td>
+</tr>
+<tr>
+<td><a href="Ncname/">Ncname</a></td>
+<td>Prefix part of CURIE</td>
+</tr>
+<tr>
+<td><a href="Nodeidentifier/">Nodeidentifier</a></td>
+<td>A URI, CURIE or BNODE that represents a node in a model</td>
+</tr>
+<tr>
+<td><a href="Objectidentifier/">Objectidentifier</a></td>
+<td>A URI or CURIE that represents an object in the model</td>
+</tr>
+<tr>
+<td><a href="PMID/">PMID</a></td>
+<td>A PubMed identifier written as a CURIE, e</td>
+</tr>
+<tr>
+<td><a href="Sparqlpath/">Sparqlpath</a></td>
+<td>A string encoding a SPARQL Property Path</td>
+</tr>
+<tr>
+<td><a href="String/">String</a></td>
+<td>A character string</td>
+</tr>
+<tr>
+<td><a href="Time/">Time</a></td>
+<td>A time object represents a (local) time of day, independent of any particular...</td>
+</tr>
+<tr>
+<td><a href="Uri/">Uri</a></td>
+<td>a complete URI</td>
+</tr>
+<tr>
+<td><a href="Uriorcurie/">Uriorcurie</a></td>
+<td>a URI or a CURIE</td>
+</tr>
+</tbody>
+</table>
+<h2 id="subsets">Subsets</h2>
+<table>
+<thead>
+<tr>
+<th>Subset</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.tabs.link", "navigation.tabs", "navigation.top"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>

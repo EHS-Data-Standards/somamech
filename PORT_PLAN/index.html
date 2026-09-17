@@ -1,0 +1,1282 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://EHS-Data-Standards.github.io/soma/PORT_PLAN/">
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Porting the dismech pattern into SOMA — implementation plan & tracker - soma</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+      <link rel="stylesheet" href="../css/ansi-colours.css">
+    
+      <link rel="stylesheet" href="../css/jupyter-cells.css">
+    
+      <link rel="stylesheet" href="../css/pandas-dataframe.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#porting-the-dismech-pattern-into-soma-implementation-plan-tracker" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="soma" class="md-header__button md-logo" aria-label="soma" data-md-component="logo">
+      
+  <img src="../soma-icon.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            soma
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Porting the dismech pattern into SOMA — implementation plan &amp; tracker
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/EHS-Data-Standards/soma" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../elements/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Schema
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../harmonizer.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Data Harmonizer
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../examples/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Examples
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../artifacts/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Artifacts
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../claude-code-skills/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Claude Code Skills
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="soma" class="md-nav__button md-logo" aria-label="soma" data-md-component="logo">
+      
+  <img src="../soma-icon.svg" alt="logo">
+
+    </a>
+    soma
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/EHS-Data-Standards/soma" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../elements/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../harmonizer.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Harmonizer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../artifacts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Artifacts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../claude-code-skills/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Claude Code Skills
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#current-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current state
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Current state">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paper-extraction-pipeline-what-is-done-2026-09-14" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paper-extraction pipeline — what is DONE (2026-09-14)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#paper-extraction-pipeline-manual-setup-still-needed-user-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paper-extraction pipeline — manual setup still needed (user actions)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deviations-from-the-approved-plan-deliberate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deviations from the approved plan (deliberate)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#original-port-plan-eep-track-future-work-below-this-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Original port plan (EEP track — future work below this line)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Original port plan (EEP track — future work below this line)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#next-action" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next action
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decisions-locked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decisions locked
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0-decisions-to-lock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0. Decisions to lock
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-a-schema-de-brand-the-output-add-the-dismech-evidenceterm-machinery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase A — schema: de-brand the output + add the dismech evidence/term machinery
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-b-deterministic-validation-stack-committed-caches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase B — deterministic validation stack + committed caches
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-c-seed-content-backlog-queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase C — seed content + backlog queue
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-d-rendering-export" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase D — rendering &amp; export
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-e-github-authorization-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase E — GitHub authorization layer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-f-agentic-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase F — agentic loop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-g-deep-research-providers-optional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase G — deep-research providers (optional)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-actions-secrets-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference — Actions secrets inventory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-deep-research-providers-all-via-deep-research-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference — deep-research providers (all via deep-research-client)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-external-data-services-mostly-no-auth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference — external data services (mostly no auth)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#files-worth-porting-from-dismech-monarch-initiativedismech" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Files worth porting from dismech (monarch-initiative/dismech)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Files worth porting from dismech (monarch-initiative/dismech)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#domain-specific-gold-already-in-dismechs-claudeskills-directly-reusable-for-soma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain-specific gold already in dismech's .claude/skills/ (directly reusable for SOMA)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#companion-artifact-design-rationale-what-bites-you" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Companion artifact (design rationale + "what bites you")
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="porting-the-dismech-pattern-into-soma-implementation-plan-tracker">Porting the dismech pattern into SOMA — implementation plan &amp; tracker</h1>
+<blockquote>
+<p><strong>Resume protocol (read first, every session):</strong> This file is the single source
+of truth for standing up the dismech-style curation stack in SOMA. Before doing
+anything, read <strong>Current state</strong>, do the item under <strong>Next action</strong>, then update
+both. Check boxes as you go; a half-done phase is recorded as half-done.</p>
+<p><strong>What's being ported:</strong> the <em>dismech</em> operating model — a LinkML schema + YAML
+content, gated by <strong>offline deterministic validators</strong>, curated by an <strong>agentic
+loop</strong> of Claude GitHub workflows backed by bot GitHub Apps and optional
+deep-research providers. SOMA already has the schema substrate; this port adds
+the validation gates, the agentic loop, and (optionally) research providers.</p>
+</blockquote>
+<hr />
+<h2 id="current-state">Current state</h2>
+<blockquote>
+<p><strong>REFRAMED 2026-09-14 (branch <code>somamech</code>):</strong> the work queue is <strong>publications
+to extract</strong>, not diseases/EEPs. A paper-extraction pipeline was implemented
+(see the new section directly below). The EEP/AOP rebranding phases further
+down remain valid future work but are not the active track.</p>
+</blockquote>
+<h3 id="paper-extraction-pipeline-what-is-done-2026-09-14">Paper-extraction pipeline — what is DONE (2026-09-14)</h3>
+<ul>
+<li><strong>Schema</strong> (<code>src/soma/schema/</code>): <code>evidence.yaml</code> module — <code>EvidenceItem</code>
+  (reference/reference_title/snippet/supports/evidence_source/explanation)
+  with the <code>implements:</code> annotations that activate linkml-reference-validator;
+  <code>evidence</code> attached to Assay, AssayOutputMeasurement, KeyEvent,
+  KeyEventRelationship; <code>source_publication</code> on Container; term-checking
+  enums (CellTypeTerm etc.) with bindings on cell_type / exposure_agent /
+  anatomical_origin / model_species / unit slots. ChemicalEntityReference now
+  also allows ENVO (PM2.5 is ENVO:01000415, not a CHEBI term — the validator
+  caught the long-standing CHEBI:74481 mislabel and it is fixed in all data).</li>
+<li><strong>Validation stack</strong>: linkml-term-validator + linkml-reference-validator in
+  dev deps (Python floor now 3.10); <code>conf/oak_config.yaml</code>,
+  <code>conf/reference_validator_config.yaml</code>; wrapper scripts in <code>scripts/</code>;
+  recipes <code>validate-file</code>, <code>validate-all</code>, <code>verify-snippets</code>,
+  <code>check-duplicate-keys</code>, <code>check-stubs</code>, <code>fetch-reference</code>,
+  <code>extract-paper-text</code>, and <code>qc</code> (green offline); CI <code>qc</code> job + oak-cache
+  action added to <code>.github/workflows/main.yaml</code>. Negative test committed:
+  a doctored quote fails validation (tests/test_evidence_validation.py).</li>
+<li><strong>Queue</strong>: <code>corpus.csv</code> (seeded with the 2 already-extracted papers) →
+  <code>scripts/build_stubs.py</code> → <code>stubs/</code> (2 seed stubs, real PubMed metadata);
+  stub schema <code>publication_stub.yaml</code>; <code>fetch-claims</code> / <code>next-unclaimed</code>
+  recipes; <code>conf/pubmed_searches.tsv</code> (the 35 L1–L4 searches) +
+  <code>scripts/search_pubmed.py</code> (open-access filter, dedupe, ranking).</li>
+<li><strong>Skills</strong>: <code>/claim-paper</code> (claim issue → extract → verify → PR),
+  <code>/fetch-and-curate</code> (keyword search, open-access only),
+  <code>extraction-pr-review</code> (review checklist); <code>pdf-to-yaml</code> updated to require
+  source_publication + evidence blocks and output to <code>kb/publications/</code>.</li>
+<li><strong>Workflows</strong>: <code>claude.yml</code> (@claude responder, trusted-author gate),
+  <code>claude-code-review.yml</code> (reviews via extraction-pr-review skill, verifies
+  the agent actually ran), <code>agent-config.yaml</code> + resolve-agent-config action.</li>
+<li><strong>Copyright posture</strong>: <code>references_cache/</code> holds only fetcher-produced
+  abstracts/OA full text; <code>tests/publications/</code>, <code>examples/pdfs/</code> and
+  <code>references_cache_local/</code> are gitignored (the 59 local PDFs are NOT the
+  corpus and never get committed).</li>
+</ul>
+<h3 id="paper-extraction-pipeline-manual-setup-still-needed-user-actions">Paper-extraction pipeline — manual setup still needed (user actions)</h3>
+<ul>
+<li>[ ] Add the real <code>corpus.csv</code> publication list when available, then
+      <code>just build-stubs</code>.</li>
+<li>[ ] Create labels: <code>claim</code>, <code>extraction</code>, <code>curation</code> (<code>gh label create ...</code>).</li>
+<li>[ ] Add Actions secret <code>ANTHROPIC_API_KEY</code> (or <code>CLAUDE_CODE_OAUTH_TOKEN</code>).</li>
+<li>[ ] Optional now, required for bot identity: create the writer GitHub App,
+      install it, add <code>SOMA_AGENT_APP_ID</code> + <code>SOMA_AGENT_PRIVATE_KEY</code> secrets
+      (the review workflow falls back to the Actions token until then).</li>
+<li>[ ] Branch protection on <code>main</code>: require review, dismiss stale reviews,
+      require the <code>qc</code> check.</li>
+<li>[ ] First real dry run: <code>/claim-paper</code> on one open-access paper end-to-end.</li>
+</ul>
+<h3 id="deviations-from-the-approved-plan-deliberate">Deviations from the approved plan (deliberate)</h3>
+<ul>
+<li>The three already-extracted papers stay in <code>tests/data/valid/</code> instead of
+  moving to <code>kb/publications/</code> now: the Excel-converter tests reference them
+  by path, and they don't yet carry full evidence coverage. They are seeded
+  in <code>corpus.csv</code>, so the normal <code>/claim-paper</code> flow will promote them
+  properly (full evidence blocks) as the first claims.</li>
+</ul>
+<hr />
+<h2 id="original-port-plan-eep-track-future-work-below-this-line">Original port plan (EEP track — future work below this line)</h2>
+<ul>
+<li><strong>Repo:</strong> <code>EHS-Data-Standards/soma</code> (<code>../soma</code>, copier/LinkML scaffold)</li>
+<li><strong>Domain:</strong> environmental toxicology &amp; exposure biology</li>
+<li><strong>Native data model:</strong> AOP-centric — <code>aop_framework.yaml</code> already defines
+  <code>MolecularInitiatingEvent</code> → <code>KeyEvent</code> → <code>KeyEventRelationship</code> → <code>AdverseOutcome</code>
+  → <code>AdverseOutcomePathway</code>, plus <code>stressors</code>, <code>target_molecule</code>, and OECD-style
+  <code>EvidenceSupportEnum</code> / <code>QuantitativeUnderstandingEnum</code>. <code>assay_base.yaml</code> +
+  <code>assay_microschemas.yaml</code> model assays that inform Key Events.</li>
+<li><strong>Atomic curated entity:</strong> one YAML per <strong>Exposure–Effect Pathway (EEP)</strong> — the way
+  dismech is one file per Disease. The AOP event chain is the <em>internal</em> model; "AOP" is
+  not the product brand. Kept internally: <code>MolecularInitiatingEvent</code>, <code>KeyEvent</code>,
+  <code>KeyEventRelationship</code>, <code>AdverseOutcome</code>. Renamed (output only): the top-level container
+  <code>AdverseOutcomePathway</code> → <code>ExposureEffectPathway</code>.</li>
+<li><strong>Ontologies already bound (prefixes):</strong> OBI, CHEBI, ENVO, PATO, UO, GO, CL,
+  UBERON, HP, ECTO. <code>aopwiki_id</code> exists as a free-text slot.</li>
+<li><strong>Substrate:</strong> [x] scaffold · [x] domain schema (AOP + assays) · [x] example content
+  under <code>examples/</code> · [x] <code>ontology_grounding_report.tsv</code> started.</li>
+<li><strong>Greenfield (not started):</strong> exact-quote evidence model · term/reference validators
+  · <code>conf/oak_config.yaml</code> · committed caches · custom offline gates · all agentic
+  workflows (<code>.github/workflows/</code> has only deploy-docs / pypi-publish / main).</li>
+</ul>
+<h3 id="next-action">Next action</h3>
+<blockquote>
+<p>Atomic entity + naming are locked (below). The remaining section-0 items are
+schema-detail decisions that can be made inside Phase A. <strong>Start Phase A.</strong></p>
+</blockquote>
+<h3 id="decisions-locked">Decisions locked</h3>
+<ul>
+<li>Domain = environmental toxicology &amp; exposure biology. ✓</li>
+<li>Product/entity name = <strong>Exposure–Effect Pathway (EEP)</strong>. Internal event classes
+  (MIE/KE/KER/AO) unchanged; only the top-level container class is renamed. AOP-Wiki
+  stays a <em>cross-reference and import source</em>, never the product brand. ✓</li>
+<li>Agents self-merge? <code>&lt;DECIDE — default: NO to start; review-assist only, humans merge&gt;</code>.</li>
+</ul>
+<hr />
+<h2 id="0-decisions-to-lock">0. Decisions to lock</h2>
+<ul>
+<li>[x] <strong>Atomic curated entity — LOCKED: one YAML per Exposure–Effect Pathway (EEP).</strong>
+      Internal chain stays MIE→KE→KER→AO; assays attach to Key Events. This is what <code>kb/</code>
+      holds and what the foreign-key/causal checks resolve against.</li>
+<li>[x] <strong>Where curated content lives — LOCKED:</strong> <code>kb/pathways/*.yaml</code>. Keep <code>examples/</code> as
+      illustrative; <code>kb/</code> is the validated corpus.</li>
+<li>[ ] <strong>Exact-quote evidence model.</strong> Adopt dismech's <code>EvidenceItem</code>
+      (<code>reference</code> / <code>supports</code> / <code>evidence_source</code> / <code>snippet</code> / <code>explanation</code>). This is
+      <strong>orthogonal to</strong> the existing <code>evidence_support</code> WoE enum — the enum grades a KER's
+      weight of evidence (OECD tiers), the EvidenceItem attaches a <em>citable exact quote</em> to
+      a specific claim. Both stay.</li>
+<li>[ ] <strong>Reference namespaces + fetchers.</strong> At minimum PMID + DOI. High-value structured
+      sources for this domain: <strong>AOP-Wiki</strong> (<code>aop.events</code> KE/KER/AOP records — there is an
+      <code>aop-wiki-cli</code> + skill already), <strong>EPA CompTox</strong> (DTXSID), <strong>CTD</strong> (chemical–gene–
+      disease), <strong>ECOTOX</strong>, <strong>PubChem</strong> (CID). Each citable ID type needs a fetcher writing
+      a deterministic <code>references_cache/&lt;ID&gt;.md</code>.</li>
+<li>[ ] <strong>Ontologies to add + OAK adapters.</strong> Have OBI/CHEBI/ENVO/PATO/UO/GO/CL/UBERON/HP/
+      ECTO. Consider adding: <strong>AOP-Wiki event IDs</strong> (bind <code>aopwiki_id</code>), <strong>MONDO</strong> (adverse
+      outcomes that are diseases), <strong>NCBITaxon</strong> (test species), <strong>XCO</strong> (experimental
+      conditions), <strong>ExO</strong> (bundled with ECTO), <strong>NCIT/DTXSID</strong> for chemicals. Map each →
+      <code>ols:&lt;name&gt;</code> (no local build) or <code>sqlite:obo:&lt;name&gt;</code> in a new <code>conf/oak_config.yaml</code>.</li>
+<li>[ ] <strong>Dynamic enums (<code>reachable_from</code>).</strong> Decide which slots get term-validated against a
+      root: <code>biological_process</code>→GO, <code>occurs_in_cell_type</code>→CL, <code>occurs_in_anatomy</code>→UBERON,
+      stressor/chemical→CHEBI, exposure→ECTO, adverse outcome→MONDO/HP. Add <code>meaning:</code> +
+      dynamic enum bindings so <code>linkml-term-validator</code> can check them.</li>
+<li>[ ] <strong>Self-merge?</strong> If agents will merge their own PRs, the two-App writer/reviewer split
+      (Phase E) is mandatory. For a standards repo starting out, default to **review-assist<ul>
+<li>human merge** (one writer App), add the reviewer App when curation volume grows.</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="phase-a-schema-de-brand-the-output-add-the-dismech-evidenceterm-machinery">Phase A — schema: de-brand the output + add the dismech evidence/term machinery</h2>
+<p><em>SOMA's internal event graph (MIE→KE→KER→AO) already maps onto dismech's pathograph. This
+phase rebrands the curated product to </em><em>Exposure–Effect Pathway</em><em>, then adds the two things
+the validators need: exact-quote evidence, and ontology-checkable term bindings.</em></p>
+<ul>
+<li>[ ] Add an <code>EvidenceItem</code> class and hang <code>evidence[]</code> on Key Events, KERs, and any
+      claim-bearing assay result. Keep the existing <code>evidence_support</code> WoE enum.</li>
+<li>[ ] Add ontology-bound descriptor pattern (<code>term: {id, label}</code> + free-text <code>preferred_term</code>,
+      <code>label</code> == canonical ontology label) wherever a term is asserted.</li>
+<li>[ ] Add <code>reachable_from</code> dynamic enums for each term-validated slot (section 0).</li>
+<li>[ ] Add the reference-namespace prefixes (PMID, DOI, aop.events, DTXSID, …) to <code>soma.yaml</code>.</li>
+<li>[ ] <strong>Rename the output class</strong> <code>AdverseOutcomePathway</code> → <code>ExposureEffectPathway</code> (product
+      de-brand). Leave <code>MolecularInitiatingEvent</code> / <code>KeyEvent</code> / <code>KeyEventRelationship</code> /
+      <code>AdverseOutcome</code> untouched — they stay AOP-Wiki-aligned so crosswalks are clean.</li>
+<li>[ ] <strong>Make AOP-Wiki a cross-reference, not the identity.</strong> Replace the free-text
+      <code>aopwiki_id</code> with a <code>mappings:</code> slot carrying entries like
+      <code>{id: aop.events:AOP:1, predicate: skos:closeMatch}</code> (alongside CTD / CompTox /
+      PubChem xrefs). AOP-Wiki becomes an import source + crosswalk, like PubMed — not the brand.</li>
+<li>[ ] Add intra-file foreign-key refs where the graph points at its own nodes (KER
+      <code>upstream_event</code>/<code>downstream_event</code> already do this — formalize the <code>&lt;kind&gt;#&lt;name&gt;</code> or
+      bare-name convention so the checks in Phase B can enforce it).</li>
+<li><strong>Done when:</strong> a hand-written AOP entry in <code>kb/</code> passes <code>linkml-validate</code> <strong>and</strong>
+  <code>linkml-term-validator</code>.</li>
+</ul>
+<h2 id="phase-b-deterministic-validation-stack-committed-caches">Phase B — deterministic validation stack + committed caches</h2>
+<p><em>The load-bearing phase. <code>just qc</code> must be green and network-free.</em></p>
+<ul>
+<li>[ ] Add deps: <code>linkml-term-validator</code>, <code>linkml-reference-validator</code> (see dismech
+      <code>pyproject.toml</code>); bump <code>oaklib</code>.</li>
+<li>[ ] Create <code>conf/oak_config.yaml</code> (ontology prefix → OAK adapter).</li>
+<li>[ ] Create <code>references_cache/</code> + a <code>just fetch-reference &lt;ID&gt;</code> recipe. <strong>Never hand-write
+      cache files.</strong> Create <code>cache/&lt;prefix&gt;/terms.csv</code> + <code>cache/enums/*.csv</code>, populated by
+      the term validator.</li>
+<li>[ ] Port the custom offline gates from dismech: duplicate-YAML-key check, entity-ref /
+      causal-target foreign-key check, enum-value check, cache-integrity check. Run them
+      <strong>whole-repo, ungated</strong> in CI (merge-of-two-green-PRs bugs escape path-gated checks).</li>
+<li>[ ] Add a <code>just qc</code> recipe bundling schema + term + reference + structural checks.</li>
+<li><strong>Done when:</strong> <code>just qc</code> passes offline on a clean checkout, and CI runs it.</li>
+</ul>
+<h2 id="phase-c-seed-content-backlog-queue">Phase C — seed content + backlog queue</h2>
+<ul>
+<li>[ ] Hand-curate 5–10 real Exposure–Effect Pathways into <code>kb/pathways/</code> (respiratory-tox
+      examples already exist under <code>examples/</code> — ASL height, cilia beat, MCC, oxidative
+      stress, lung function — good first candidates). Stress-tests the schema against reality.</li>
+<li>[ ] Build <code>stubs/</code> (one file per intended-but-uncurated EEP) + a <code>check-stubs</code> gate.</li>
+<li>[ ] Set up <code>claim</code>-issue coordination (issue title carries the AOP-Wiki / canonical ID).</li>
+<li><strong>Done when:</strong> entries + stub queue validate and a <code>claim</code> issue can be filed.</li>
+</ul>
+<h2 id="phase-d-rendering-export">Phase D — rendering &amp; export</h2>
+<ul>
+<li>[ ] Port/adapt the Jinja2 HTML renderer for AOP pages. <strong>Keep generated pages out of
+      curation PRs</strong> — a separate bot workflow regenerates them.</li>
+<li>[ ] Optional graph export (the AOP network is a natural KGX / CX2 / NDEx graph).</li>
+<li>[ ] Add a <code>generate-pages</code> bot lane (its own <code>auto/</code> PR). <code>deploy-docs.yaml</code> already exists
+      — extend rather than duplicate.</li>
+<li><strong>Done when:</strong> pages build in a bot PR, not a content PR.</li>
+</ul>
+<h2 id="phase-e-github-authorization-layer">Phase E — GitHub authorization layer</h2>
+<ul>
+<li>[ ] Create the GitHub App(s):</li>
+<li><strong>Writer</strong> (<code>contents:write</code>, <code>pull_requests:write</code>, <code>issues:write</code>) — authors curation
+    PRs, commits, comments.</li>
+<li><strong>Reviewer</strong> (<code>pull_requests:write</code>, <code>contents:read</code>) — <em>only if agents self-merge</em>;
+    separate identity so an agent never approves its own work.</li>
+<li>[ ] Install on the repo; store App ID + PEM as the secrets in the table below.</li>
+<li>[ ] Branch protection on <code>main</code>: require review, enable <strong><code>dismiss_stale_reviews</code></strong>, require
+      the Phase-B checks as status gates. Merge queue optional.</li>
+<li>[ ] Disable fork PRs (secrets aren't exposed to fork runs); contributors push to <code>origin</code>.</li>
+<li>[ ] Create labels: <code>claim</code>, <code>curation</code>, <code>low_effort</code> / <code>medium_effort</code> / <code>high_effort</code>.</li>
+<li><strong>Done when:</strong> a manual <code>claude-code-review</code> dispatch reviews a test PR under the bot identity.</li>
+</ul>
+<h2 id="phase-f-agentic-loop">Phase F — agentic loop</h2>
+<ul>
+<li>[ ] Port interactive <code>@claude</code> + <code>claude-code-review</code> workflows (<code>anthropics/claude-code-action@v1</code>).</li>
+<li>[ ] Add <code>resolve-agent-config</code> composite action + <code>.github/agent-config.yaml</code> (model per
+      workflow) + <code>.github/cron-profiles.yaml</code> (cadence). Wire these <strong>before</strong> you have many workflows.</li>
+<li>[ ] Port the curation scanner (effort-tier model matrix) and, if self-merging, the
+      PR-shepherd (deterministic merge controller + LLM tending).</li>
+<li><strong>Done when:</strong> the scanner opens a curation PR that gets reviewed (and, if enabled, merges).</li>
+</ul>
+<h2 id="phase-g-deep-research-providers-optional">Phase G — deep-research providers (optional)</h2>
+<ul>
+<li>[ ] Add <code>deep-research-client[...]</code> to dev deps.</li>
+<li>[ ] Set <strong>one</strong> provider key first (Falcon/FutureHouse or OpenAI), confirm reports arrive as
+      <strong>screened leads</strong> — citations verified before any content lands.</li>
+<li>[ ] Build the screening/preflight step before enabling more providers.</li>
+<li>[ ] Keep Biomni opt-in behind an env flag (local code + large data lake).</li>
+<li><strong>Done when:</strong> a provider report drives a verified-evidence AOP curation PR.</li>
+</ul>
+<hr />
+<h2 id="reference-actions-secrets-inventory">Reference — Actions secrets inventory</h2>
+<table>
+<thead>
+<tr>
+<th>Secret</th>
+<th>Purpose</th>
+<th>Tier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GITHUB_TOKEN</code></td>
+<td>built-in Actions token</td>
+<td>automatic</td>
+</tr>
+<tr>
+<td><code>ANTHROPIC_API_KEY</code></td>
+<td>core Claude agent (all agentic workflows)</td>
+<td><strong>required</strong></td>
+</tr>
+<tr>
+<td><code>CLAUDE_CODE_OAUTH_TOKEN</code></td>
+<td>alt agent auth (Claude subscription)</td>
+<td>alt to above</td>
+</tr>
+<tr>
+<td><code>&lt;WRITER&gt;_APP_ID</code> + <code>&lt;WRITER&gt;_PRIVATE_KEY</code></td>
+<td>writer bot GitHub App</td>
+<td><strong>required</strong></td>
+</tr>
+<tr>
+<td><code>&lt;REVIEWER&gt;_APP_ID</code> + <code>&lt;REVIEWER&gt;_PRIVATE_KEY</code></td>
+<td>reviewer bot GitHub App</td>
+<td>required <strong>if agents self-merge</strong></td>
+</tr>
+<tr>
+<td><code>FUTUREHOUSE_API_KEY</code> / <code>EDISON_API_KEY</code></td>
+<td>Falcon deep research</td>
+<td>optional</td>
+</tr>
+<tr>
+<td><code>OPENAI_API_KEY</code></td>
+<td>OpenScientist provider + embeddings</td>
+<td>optional</td>
+</tr>
+<tr>
+<td><code>CBORG_API_KEY</code></td>
+<td>Anthropic-compatible gateway for cheap triage jobs</td>
+<td>optional</td>
+</tr>
+<tr>
+<td><code>LANGFUSE_BASE_URL</code> / <code>_PUBLIC_KEY</code> / <code>_SECRET_KEY</code></td>
+<td>agent-run tracing</td>
+<td>optional</td>
+</tr>
+<tr>
+<td><code>NDEX_USERNAME</code> / <code>NDEX_PASSWORD</code></td>
+<td>NDEx graph publishing</td>
+<td>export only</td>
+</tr>
+</tbody>
+</table>
+<h2 id="reference-deep-research-providers-all-via-deep-research-client">Reference — deep-research providers (all via <code>deep-research-client</code>)</h2>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Key(s)</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FutureHouse / Falcon</td>
+<td><code>FUTUREHOUSE_API_KEY</code>, <code>EDISON_API_KEY</code></td>
+<td>primary literature research</td>
+</tr>
+<tr>
+<td>OpenScientist / OpenAI</td>
+<td><code>OPENAI_API_KEY</code></td>
+<td>non-NCBI research + embeddings</td>
+</tr>
+<tr>
+<td>Biomni</td>
+<td><code>SOMA_ENABLE_BIOMNI=1</code> (or equiv) + own model key</td>
+<td>opt-in; local code + large lake</td>
+</tr>
+<tr>
+<td>Perplexity / Asta / Kosmos</td>
+<td><code>&lt;provider&gt;_API_KEY</code></td>
+<td>additional lenses</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Providers generate <strong>leads only</strong>. Nothing they emit reaches <code>kb/</code> unscreened.</p>
+</blockquote>
+<h2 id="reference-external-data-services-mostly-no-auth">Reference — external data services (mostly no auth)</h2>
+<p>Literature: PMID via NCBI E-utilities (optional <code>NCBI_API_KEY</code> for rate), DOI via Crossref.
+Tox/exposure structured sources: <strong>AOP-Wiki</strong>, <strong>EPA CompTox (DTXSID)</strong>, <strong>CTD</strong>, <strong>ECOTOX</strong>,
+<strong>PubChem</strong>. Ontology validation: EBI <strong>OLS</strong> + OBO SQLite builds. Rule to keep: <strong>fetch once
+into a committed cache, validate against the cache offline.</strong></p>
+<hr />
+<h2 id="files-worth-porting-from-dismech-monarch-initiativedismech">Files worth porting from dismech (<code>monarch-initiative/dismech</code>)</h2>
+<ul>
+<li><code>justfile</code> recipes: <code>install</code>, <code>qc</code>, <code>validate-all</code>, <code>fetch-reference</code>, <code>validate-terms</code>,
+  <code>count-verified-snippets</code>, <code>normalize-cache</code>, <code>check-duplicate-keys</code>, <code>check-entity-refs</code>,
+  <code>check-causal-targets</code>.</li>
+<li><code>conf/oak_config.yaml</code> — ontology-prefix → adapter map (adapt prefixes to SOMA's set).</li>
+<li><code>.github/agent-config.yaml</code> + <code>.github/cron-profiles.yaml</code> + <code>.github/actions/resolve-agent-config/</code>.</li>
+<li><code>.github/actions/oak-cache/</code> — ontology build caching.</li>
+<li>Workflows: <code>claude.yml</code>, <code>claude-code-review.yml</code>, <code>curation-scanner.yml</code>,
+  <code>pr-shepherd.yml</code>, <code>nightly-kb-sweep.yaml</code>, <code>generate-pages.yaml</code>, <code>close-fork-prs.yml</code>.</li>
+<li>The custom check scripts (duplicate-key, entity-ref foreign-key, causal-target,
+  enum-value, cache-integrity).</li>
+</ul>
+<h3 id="domain-specific-gold-already-in-dismechs-claudeskills-directly-reusable-for-soma">Domain-specific gold already in dismech's <code>.claude/skills/</code> (directly reusable for SOMA)</h3>
+<p>These tox/AOP skills exist in the dismech repo and are almost verbatim applicable here:
+- <strong><code>aop-wiki</code></strong> — query the AOP-Wiki XML export (AOP/KE/KER lookup, WoE tables) via <code>aop-wiki-cli</code>.
+- <strong><code>mie-ker-capture</code></strong> — turn AOP-Wiki Key Events into verified dismech-style causal edges.
+- <strong><code>ker-evidence-triage</code></strong> — judge how much literature evidence a KER actually carries before curating it.
+- <strong><code>disease-trajectories</code></strong> — comorbidity/trajectory mining (if SOMA models outcome sequences).
+- Plus the generic curation/evidence skills: <code>dismech-references</code>, <code>dismech-terms</code>,
+  <code>create-module</code>, <code>initiate-new-disorder-creation</code>.</p>
+<hr />
+<h2 id="companion-artifact-design-rationale-what-bites-you">Companion artifact (design rationale + "what bites you")</h2>
+<p>https://claude.ai/code/artifact/1f570075-a470-42c6-98d5-ca2e525fb5fb</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.tabs.link", "navigation.tabs", "navigation.top"], "search": "../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+    
+  </body>
+</html>

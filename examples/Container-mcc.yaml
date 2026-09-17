@@ -1,0 +1,60 @@
+# Test file for MucociliaryClearanceAssay
+mcc_assays:
+  - id: "MCC:001"
+    name: "Mucociliary transport rate"
+    has_specified_output:
+      id: "MCC:001-output"
+      name: "MCC:001 measurement results"
+      transport_rate:
+        value: "45.3"
+        unit:
+          id: "UO:0000103"
+          name: "micrometer per second"
+      transport_directionality: normal
+      mucus_layer_thickness:
+        value: "28"
+        unit:
+          id: "UO:0000017"
+          name: "micrometer"
+      percentage_active_transport:
+        value: "82"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      particle_clearance_time:
+        value: "120"
+        unit:
+          id: "UO:0000010"
+          name: "second"
+    assay_date: "2024-03-05"
+    informs_on_key_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:culture-007"
+      name: "Primary HBE ALI culture"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:mcc-001"
+        name: "Fluorescent microsphere tracking for MCC"
+        fluorescent_tracer: "1-um fluorescent microspheres"
+        particle_tracking_method: "automated particle tracking"
+        particle_size:
+          value: "1"
+          unit:
+            id: "UO:0000017"
+            name: "micrometer"
+        imaging_frame_rate:
+          value: "30"
+          unit:
+            id: "UO:0000105"
+            name: "hertz"
