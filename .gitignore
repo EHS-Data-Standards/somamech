@@ -175,6 +175,9 @@ dmypy.json
 # against paywalled papers on this machine; must never be pushed)
 /references_cache_local/
 
+# Generated products (rebuilt by `just generate-workbook`; published by CI)
+/exports/
+
 # Claim listings and other scratch output
 /tmp/
 /data/literature_search/raw_retrieval_*.csv

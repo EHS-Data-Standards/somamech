@@ -101,12 +101,29 @@ check-stubs:
     uv run linkml-validate -s {{stub_schema}} -C PublicationStub "${files[@]}"
     uv run python scripts/build_stubs.py --check-only
 
+# Check the cross-paper ID rules over kb/publications: KeyEvent IDs are
+# shared vocabulary (identical content merges; divergent content fails);
+# every other ID must be unique to one paper.
+[group('QC')]
+check-entity-ids:
+    uv run python scripts/build_workbook.py --check-only
+
 # Run every automatic check. This is what CI runs on every PR, over the whole
 # repository (checking only changed files lets two individually-green PRs
 # break each other when both merge).
 [group('QC')]
-qc: check-duplicate-keys check-stubs validate-all pipeline-test
+qc: check-duplicate-keys check-stubs check-entity-ids validate-all pipeline-test
     @echo "All QC checks passed!"
+
+# ============ Derived products ============
+
+# Build the ONE pooled workbook from every per-paper YAML in kb/publications.
+# The YAML files are the source of truth; this workbook is a generated
+# product — never hand-edit it, never commit it in a curation PR (exports/
+# is gitignored; CI publishes the current workbook from main).
+[group('exports')]
+generate-workbook out="exports/soma_extractions.xlsx":
+    uv run python scripts/build_workbook.py --output "{{out}}"
 
 # ============ Paper queue ============
 

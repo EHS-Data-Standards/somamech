@@ -52,9 +52,19 @@
   `claude-code-review.yml` (reviews via extraction-pr-review skill, verifies
   the agent actually ran), `agent-config.yaml` + resolve-agent-config action.
 - **Copyright posture**: `references_cache/` holds only fetcher-produced
-  abstracts/OA full text; `tests/publications/`, `examples/pdfs/` and
-  `references_cache_local/` are gitignored (the 59 local PDFs are NOT the
-  corpus and never get committed).
+  abstracts/OA full text; `tests/publications/`, `examples/pdfs/`, `pdfs/`
+  and `references_cache_local/` are gitignored (local PDFs never get
+  committed).
+- **Derived workbook (2026-09-17)**: kb/publications YAML is the source of
+  truth; `just generate-workbook` pools every paper into one Excel file
+  (tab per class, row per entity, source paper stamped on every row);
+  `just check-entity-ids` in qc enforces cross-paper ID rules (KeyEvent ids
+  shared, all others one-paper); `.github/workflows/generate-workbook.yaml`
+  rebuilds and publishes it to the `workbook-latest` release on every merge
+  to main — generated products stay out of curation PRs.
+- **Corpus loaded (2026-09-17)**: 138 PDFs pulled from the Zotero collection
+  (gitignored `pdfs/` + manifest), corpus.csv (139 papers, 137 with PMIDs),
+  137 stubs in the queue. Repo pushed to github.com/sierra-moxon/somamech.
 
 ### Paper-extraction pipeline — manual setup still needed (user actions)
 
