@@ -187,7 +187,7 @@ cftr_assays:
         reference_title: "PM(2.5) Exposure Inhibits Transepithelial Anion Short-circuit Current by Downregulating P2Y2 Receptor/CFTR Pathway."
         supports: SUPPORT
         evidence_source: IN_VITRO
-        snippet: "In transwell model, the adenosine triphosphate (ATP)-induced transepithelial anion short-circuit current (Isc) and airway surface liquid (ASL) significantly decreased after PM2.5 exposure."
+        snippet: "In transwell model, the adenosine triphosphate (ATP)-induced transepithelial anion short-circuit current (Isc) and airway surface liquid (ASL) was completely abolished after PM2.5 exposure."
         explanation: "The abstract states the study's central in vitro finding: PM2.5 exposure reduced the ATP-induced short-circuit current, which is the decreased CFTR-mediated secretion this assay records."
     has_specified_output:
       id: "CFTR:liu-pm25-24h-output"
