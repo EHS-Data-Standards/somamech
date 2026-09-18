@@ -11,18 +11,18 @@ biomarker_measurements:
     quantity_measured:
       value: "45.2"
       unit:
-        id: UO:0000274
-        name: picogram per milliliter
+        id: "UO:0010070"
+        name: "picogram per milliliter"
     range_low:
       value: "10.0"
       unit:
-        id: UO:0000274
-        name: picogram per milliliter
+        id: "UO:0010070"
+        name: "picogram per milliliter"
     range_high:
       value: "35.0"
       unit:
-        id: UO:0000274
-        name: picogram per milliliter
+        id: "UO:0010070"
+        name: "picogram per milliliter"
     biomarker_type: Oxidative stress
     measured_entity:
       id: CHEBI:27894
@@ -70,18 +70,18 @@ biomarker_measurements:
     quantity_measured:
       value: "2450.0"
       unit:
-        id: UO:0000274
-        name: picogram per milliliter
+        id: "UO:0010070"
+        name: "picogram per milliliter"
     range_low:
       value: "100.0"
       unit:
-        id: UO:0000274
-        name: picogram per milliliter
+        id: "UO:0010070"
+        name: "picogram per milliliter"
     range_high:
       value: "1500.0"
       unit:
-        id: UO:0000274
-        name: picogram per milliliter
+        id: "UO:0010070"
+        name: "picogram per milliliter"
     biomarker_type: Pro-inflammatory cytokine
     measured_entity:
       id: PR:000001562
@@ -99,18 +99,18 @@ biomarker_measurements:
     quantity_measured:
       value: "8.7"
       unit:
-        id: UO:0000274
-        name: picogram per milliliter
+        id: "UO:0010070"
+        name: "picogram per milliliter"
     range_low:
       value: "0.0"
       unit:
-        id: UO:0000274
-        name: picogram per milliliter
+        id: "UO:0010070"
+        name: "picogram per milliliter"
     range_high:
       value: "5.0"
       unit:
-        id: UO:0000274
-        name: picogram per milliliter
+        id: "UO:0010070"
+        name: "picogram per milliliter"
     biomarker_type: Pro-inflammatory cytokine
     measured_entity:
       id: PR:000001461
