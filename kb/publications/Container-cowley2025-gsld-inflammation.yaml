@@ -1,0 +1,730 @@
+# =============================================================================
+# Cowley et al. (2025) - Pro-inflammatory effects of inhaled Great Salt Lake
+# dust particles
+# =============================================================================
+#
+# Source: Part Fibre Toxicol. 2025;22:2
+# DOI: 10.1186/s12989-025-00618-9
+# PMID: 39819386
+#
+# Study design:
+#   - In vivo: male and female C57Bl/6 mice (8-10 weeks), whole-body
+#     inhalation (inExpose, PALAS RBG 1000ID) of Great Salt Lake dust
+#     quasi-PM2.5 (GSLD qPM2.5, PM < 3.1 um) for ~12 min intervals
+#     (1x, 2x, 3x in one day, or 6x over two days); also oropharyngeal
+#     aspiration (2.5-250 ug). Comparison PM: coal fly ash (CFA) qPM2.5.
+#   - In vivo: CRISPR "humanized" Trpv1N606D mice vs wild-type C57Bl/6,
+#     3x inhalation paradigm.
+#   - In vitro: immortalized human bronchial epithelial HBEC3-KT cells
+#     (0.25 mg/mL = 66 ug/cm2, 24 h) and PMA-differentiated THP-1
+#     macrophage-like cells (0.045 mg/mL = 12 ug/cm2).
+#
+# Key findings recorded here:
+#   - Dose-dependent BAL neutrophilia and total cell increases after GSLD
+#     qPM2.5 inhalation; GSLD > CFA at an equivalent dose.
+#   - Trpv1N606D mice: 76 +/- 6% BAL neutrophils vs 58 +/- 9% in wild type.
+#   - IL6 and CXCL1 protein elevated 2-3-fold in BAL after inhalation.
+#   - Il6, Cxcl1, Cxcl2 and Muc5ac mRNA induced in mouse lung.
+#   - IL6/IL8 mRNA induction replicated in HBEC3-KT and THP-1 cells;
+#     attenuated by EGTA + ruthenium red and by TRPV1/TRPV3 antagonists,
+#     less so by the TLR4 inhibitor TAK-242 and deferoxamine.
+#
+# Values shown only in figures are NOT transcribed: those assays carry the
+# qualitative direction plus an exact quote, and no invented numbers.
+#
+# =============================================================================
+
+source_publication:
+  reference: "PMID:39819386"
+  reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+  doi: "10.1186/s12989-025-00618-9"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:cowley-inhalation-001"
+    name: "Whole-body inhalation exposure to resuspended GSLD qPM2.5"
+    equipment_required:
+      - "inExpose whole-body inhalation system (Scireq)"
+      - "PALAS RBG 1000ID dust generator"
+      - "Casella CEL-712 Microdust Pro real-time monitor"
+      - "DustTrack II with PM2.5 inlet filter (TSI)"
+
+  - id: "PROTOCOL:cowley-bal-001"
+    name: "Bronchoalveolar lavage with Giemsa differential cell counts"
+    equipment_required:
+      - "Tracheal cannula"
+      - "Cytospin"
+      - "Giemsa stain"
+      - "Light microscope"
+
+  - id: "PROTOCOL:cowley-elisa-001"
+    name: "Mouse CXCL1 (KC) and IL6 ELISA on BAL supernatant"
+    equipment_required:
+      - "Mouse CXCL1 (KC) ELISA kit (Invitrogen)"
+      - "Mouse IL6 ELISA kit (Invitrogen)"
+      - "Plate reader"
+
+  - id: "PROTOCOL:cowley-qpcr-mouse-001"
+    name: "TaqMan qRT-PCR for mouse cytokine and mucin mRNA"
+    equipment_required:
+      - "Life Technologies QuantStudio 6 Flex"
+      - "ABI High-Capacity cDNA kit"
+      - "TaqMan probes Il6 (Mm00446190_m1), Cxcl1 (Mm04207460_m1), Cxcl2 (Mm00436450_m1), Muc5ac (Mm01276718_m1)"
+
+  - id: "PROTOCOL:cowley-qpcr-human-001"
+    name: "TaqMan qRT-PCR for human IL6 and IL8 mRNA"
+    equipment_required:
+      - "Life Technologies QuantStudio 6 Flex"
+      - "PureLink RNA Mini Kit"
+      - "TaqMan probes IL6 (Hs00174131_m1), IL8 (Hs00174103_m1)"
+
+# =============================================================================
+# BALF ASSAYS - mouse bronchoalveolar lavage after GSLD qPM2.5 inhalation
+# =============================================================================
+
+balf_sputum_assays:
+  # Wild-type C57Bl/6, 3x inhalation paradigm
+  - id: "BALF:cowley-gsld-inhal-wt-3x"
+    name: "BAL neutrophils in wild-type C57Bl/6 mice after GSLD qPM2.5 inhalation"
+    description: "Whole-body inhalation of GSLD qPM2.5 produced dose-dependent increases in total BAL cells and neutrophils 24 h after exposure (Fig. 5a,b). With the 3x exposure paradigm, wild-type C57Bl/6 controls had 58 +/- 9% BAL neutrophils (Fig. 11c). At an equivalent dose, GSLD qPM2.5 elicited greater neutrophilia than coal fly ash (CFA) qPM2.5. Dose-response curves themselves are figure-only and are not transcribed."
+    target_cell_type:
+      id: "CL:0000775"
+      name: "neutrophil"
+    evidence:
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "exhibited dose-dependent increases in total cells and neutrophils in BAL fluid collected 24 h after treatment"
+        explanation: "States the dose-dependent increase in total BAL cells and neutrophils 24 h after GSLD qPM2.5 exposure that this assay records."
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Using the 3x GSLD qPM2.5 inhalation exposure paradigm, Trpv1N606D mice exhibited increased (76 ± 6 vs. 58 ± 9%)"
+        explanation: "Gives the 58 +/- 9% wild-type BAL neutrophil value recorded as this assay's output, measured with the 3x inhalation paradigm."
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Using the 3x exposure paradigm, GSLD qPM 2.5 elicited greater neutrophilia as well as Cxcl2 and Muc5ac mRNA expression than an equivalent dose of CFA qPM 2.5"
+        explanation: "Supports the comparison noted in the description: GSLD qPM2.5 was more neutrophilic than an equivalent dose of coal fly ash."
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "percentage of neutrophils in BAL following inhalation exposure of mice to GSLD qPM2.5 for 12 min (1x), 24 min (2x), or 36 min (3x) over the course of one day or 72 min over 2 days (6x)"
+        explanation: "States that the 3x inhalation paradigm is 36 min of exposure in one day, the exposure duration recorded for this assay."
+    has_specified_output:
+      id: "BALF:cowley-gsld-inhal-wt-3x-output"
+      name: "BAL neutrophil percentage, wild-type mice, 3x GSLD qPM2.5 inhalation"
+      neutrophil_percentage:
+        value: "58"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    assay_date: "2025-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:cowley-gsld-inhal-3x"
+        name: "GSLD qPM2.5 whole-body inhalation, 3x 12-min exposures in one day"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "36"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+        timing_post_exposure:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cowley-mouse-c57bl6"
+      name: "Wild-type C57Bl/6 mice, 8-10 weeks of age"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male and female"
+      subject_characteristics: "Male and female C57Bl/6 mice, 8-10 weeks of age; no differences observed between male and female mice"
+      sample_type: balf
+      collection_site: "lung, via tracheal cannula"
+      sample_collection_method: "Bronchoalveolar lavage with cold saline (1 mL then 4 x 1 mL), pooled cells counted and cytospun"
+    follows_protocols:
+      - protocol_type: Protocol
+        id: "PROTOCOL:cowley-inhalation-001"
+        name: "Whole-body inhalation exposure to resuspended GSLD qPM2.5"
+      - protocol_type: Protocol
+        id: "PROTOCOL:cowley-bal-001"
+        name: "Bronchoalveolar lavage with Giemsa differential cell counts"
+
+  # "Humanized" Trpv1N606D mice, 3x inhalation paradigm
+  - id: "BALF:cowley-gsld-inhal-trpv1n606d-3x"
+    name: "BAL neutrophils in humanized Trpv1N606D mice after GSLD qPM2.5 inhalation"
+    description: "CRISPR 'humanized' Trpv1N606D mice exposed with the 3x GSLD qPM2.5 inhalation paradigm had 76 +/- 6% BAL neutrophils versus 58 +/- 9% in wild-type C57Bl/6 controls (Fig. 11c), supporting a role for TRPV1 in initiating GSLD-induced lung inflammation. mRNA and BAL cytokine protein levels did not differ significantly from wild type."
+    target_cell_type:
+      id: "CL:0000775"
+      name: "neutrophil"
+    evidence:
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Using the 3x GSLD qPM2.5 inhalation exposure paradigm, Trpv1N606D mice exhibited increased (76 ± 6 vs. 58 ± 9%)"
+        explanation: "Gives the 76 +/- 6% BAL neutrophil value in Trpv1N606D mice recorded as this assay's output, against the 58 +/- 9% wild-type comparator."
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Finally, \"humanized\" Trpv1N606D mice exhibited greater neutrophilia than C57Bl/6 mice following GSLD qPM2.5 inhalation."
+        explanation: "The abstract states the same genotype difference in neutrophilia that this assay records."
+    has_specified_output:
+      id: "BALF:cowley-gsld-inhal-trpv1n606d-3x-output"
+      name: "BAL neutrophil percentage, Trpv1N606D mice, 3x GSLD qPM2.5 inhalation"
+      neutrophil_percentage:
+        value: "76"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    assay_date: "2025-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:cowley-gsld-inhal-3x"
+        name: "GSLD qPM2.5 whole-body inhalation, 3x 12-min exposures in one day"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "36"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+        timing_post_exposure:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cowley-mouse-trpv1n606d"
+      name: "CRISPR humanized Trpv1N606D mice"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      subject_characteristics: "Trpv1N606D 'humanized' mice generated by CRISPR Cas9 knock-in of the human TRPV1 pore-loop residue (N606D) on a C57Bl/6 background"
+      sample_type: balf
+      collection_site: "lung, via tracheal cannula"
+    follows_protocols:
+      - protocol_type: Protocol
+        id: "PROTOCOL:cowley-inhalation-001"
+        name: "Whole-body inhalation exposure to resuspended GSLD qPM2.5"
+      - protocol_type: Protocol
+        id: "PROTOCOL:cowley-bal-001"
+        name: "Bronchoalveolar lavage with Giemsa differential cell counts"
+
+  # BAL cytokine protein after inhalation
+  - id: "BALF:cowley-gsld-inhal-cytokines"
+    name: "BAL IL6 and CXCL1 protein after GSLD qPM2.5 inhalation"
+    description: "IL6 and CXCL1 protein measured by ELISA in BAL of 3x-exposed mice were elevated 2-3-fold relative to controls (Fig. 6e,f). Absolute concentrations appear only in the figures and are not transcribed, so no numeric output value is recorded."
+    evidence:
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Exposure of mice via inhalation and oropharyngeal aspiration caused neutrophilia, increased expression of mRNA for Il6, Cxcl1, Cxcl2, and Muc5ac in the lungs, and increased IL6 and CXCL1 in bronchoalveolar lavage."
+        explanation: "States that GSLD qPM2.5 exposure increased IL6 and CXCL1 in bronchoalveolar lavage, the effect this assay records."
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "IL6 and CXCL1 protein in BAL was also elevated 2-3-fold in BAL following inha"
+        explanation: "Gives the 2-3-fold elevation of BAL IL6 and CXCL1 protein after inhalation quoted in the description (the sentence is hyphen-wrapped at 'inha-lation' in the cached PDF text)."
+    has_specified_output:
+      id: "BALF:cowley-gsld-inhal-cytokines-output"
+      name: "BAL IL6 and CXCL1 protein, 3x GSLD qPM2.5 inhalation"
+    assay_date: "2025-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:cowley-gsld-inhal-3x"
+        name: "GSLD qPM2.5 whole-body inhalation, 3x 12-min exposures in one day"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "36"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+        timing_post_exposure:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cowley-mouse-c57bl6"
+      name: "Wild-type C57Bl/6 mice, 8-10 weeks of age"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sample_type: balf
+      collection_site: "lung, via tracheal cannula"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:cowley-elisa-001"
+        name: "Mouse CXCL1 (KC) and IL6 ELISA on BAL supernatant"
+        detection_method: "colorimetric ELISA"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS
+# =============================================================================
+
+gene_expression_assays:
+  # ---- mouse lung, in vivo ----
+  - id: "GE:cowley-il6-mouse-lung"
+    name: "Il6 mRNA in mouse lung after GSLD qPM2.5 exposure"
+    description: "Il6 mRNA in the left lung lobe, measured by TaqMan qRT-PCR normalised to Gapdh, was induced by both inhaled and oropharyngeally aspirated GSLD qPM2.5 (Fig. 6a; Supplemental Fig. 9a). The effect was dose dependent with no male/female difference. Fold-change values are figure-only and are not transcribed."
+    gene_expression_method: "TaqMan qRT-PCR (Mm00446190_m1)"
+    normalization_reference: "Gapdh (Mm99999915_g1), comparative cycle threshold (ddCT) method"
+    evidence:
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "both inhaled (Fig.  6a-d) and OPA-delivered GSLD qPM 2.5 (Supplemental Fig.  9a-d) induced the expression of mRNA for Cxcl1, Cxcl2, Il6"
+        explanation: "States that both inhaled and OPA-delivered GSLD qPM2.5 induced Il6 mRNA in mouse lung, the direction this assay records."
+    has_specified_output:
+      id: "GE:cowley-il6-mouse-lung-output"
+      name: "Il6 mRNA induction in mouse lung"
+    assay_date: "2025-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:cowley-gsld-inhal-3x"
+        name: "GSLD qPM2.5 whole-body inhalation, 3x 12-min exposures in one day"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "36"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+        timing_post_exposure:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cowley-mouse-c57bl6"
+      name: "Wild-type C57Bl/6 mice, 8-10 weeks of age"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      collection_site: "left lung lobe"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:cowley-qpcr-mouse-001"
+        name: "TaqMan qRT-PCR for mouse cytokine and mucin mRNA"
+        detection_method: "TaqMan qRT-PCR"
+        normalization_method: "comparative cycle threshold (ddCT)"
+        reference_gene: "Gapdh"
+        platform: "Life Technologies QuantStudio 6 Flex"
+
+  - id: "GE:cowley-cxcl1-mouse-lung"
+    name: "Cxcl1 mRNA in mouse lung after GSLD qPM2.5 exposure"
+    description: "Cxcl1 mRNA in the left lung lobe was induced by inhaled and OPA-delivered GSLD qPM2.5 (Fig. 6b; Supplemental Fig. 9b). Fold-change values are figure-only and are not transcribed."
+    gene_expression_method: "TaqMan qRT-PCR (Mm04207460_m1)"
+    normalization_reference: "Gapdh (Mm99999915_g1), comparative cycle threshold (ddCT) method"
+    evidence:
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "both inhaled (Fig.  6a-d) and OPA-delivered GSLD qPM 2.5 (Supplemental Fig.  9a-d) induced the expression of mRNA for Cxcl1, Cxcl2, Il6"
+        explanation: "Names Cxcl1 among the mRNAs induced in mouse lung by inhaled and OPA-delivered GSLD qPM2.5."
+    has_specified_output:
+      id: "GE:cowley-cxcl1-mouse-lung-output"
+      name: "Cxcl1 mRNA induction in mouse lung"
+    assay_date: "2025-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:cowley-gsld-inhal-3x"
+        name: "GSLD qPM2.5 whole-body inhalation, 3x 12-min exposures in one day"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "36"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+        timing_post_exposure:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cowley-mouse-c57bl6"
+      name: "Wild-type C57Bl/6 mice, 8-10 weeks of age"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      collection_site: "left lung lobe"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:cowley-qpcr-mouse-001"
+        name: "TaqMan qRT-PCR for mouse cytokine and mucin mRNA"
+        detection_method: "TaqMan qRT-PCR"
+        reference_gene: "Gapdh"
+
+  - id: "GE:cowley-cxcl2-mouse-lung"
+    name: "Cxcl2 mRNA in mouse lung after GSLD qPM2.5 exposure"
+    description: "Cxcl2 mRNA in the left lung lobe was induced by inhaled and OPA-delivered GSLD qPM2.5 (Fig. 6c; Supplemental Fig. 9c), and with the 3x paradigm was induced more strongly by GSLD qPM2.5 than by an equivalent dose of coal fly ash qPM2.5 (Supplemental Fig. 10). Fold-change values are figure-only and are not transcribed."
+    gene_expression_method: "TaqMan qRT-PCR (Mm00436450_m1)"
+    normalization_reference: "Gapdh (Mm99999915_g1), comparative cycle threshold (ddCT) method"
+    evidence:
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "both inhaled (Fig.  6a-d) and OPA-delivered GSLD qPM 2.5 (Supplemental Fig.  9a-d) induced the expression of mRNA for Cxcl1, Cxcl2, Il6"
+        explanation: "Names Cxcl2 among the mRNAs induced in mouse lung by inhaled and OPA-delivered GSLD qPM2.5."
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Using the 3x exposure paradigm, GSLD qPM 2.5 elicited greater neutrophilia as well as Cxcl2 and Muc5ac mRNA expression than an equivalent dose of CFA qPM 2.5"
+        explanation: "Supports the comparison in the description: Cxcl2 mRNA induction was greater for GSLD qPM2.5 than for an equivalent dose of coal fly ash."
+    has_specified_output:
+      id: "GE:cowley-cxcl2-mouse-lung-output"
+      name: "Cxcl2 mRNA induction in mouse lung"
+    assay_date: "2025-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:cowley-gsld-inhal-3x"
+        name: "GSLD qPM2.5 whole-body inhalation, 3x 12-min exposures in one day"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "36"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+        timing_post_exposure:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cowley-mouse-c57bl6"
+      name: "Wild-type C57Bl/6 mice, 8-10 weeks of age"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      collection_site: "left lung lobe"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:cowley-qpcr-mouse-001"
+        name: "TaqMan qRT-PCR for mouse cytokine and mucin mRNA"
+        detection_method: "TaqMan qRT-PCR"
+        reference_gene: "Gapdh"
+
+  # ---- HBEC3-KT, in vitro ----
+  - id: "GE:cowley-il6-hbec3kt"
+    name: "IL6 mRNA in HBEC3-KT cells treated with GSLD qPM2.5"
+    description: "HBEC3-KT cells treated for 24 h with GSLD qPM2.5 at 0.25 mg/mL (66 ug/cm2) reproduced the pro-inflammatory mRNA induction seen in mouse lung. IL6 mRNA induction was significantly reduced by co-treatment with the metal/calcium chelator EGTA plus the non-selective calcium channel blocker ruthenium red, and by the TRPV1 antagonists LJO-328 and AMG-9810 and the TRPV3 antagonist 007; the TLR4 inhibitor TAK-242 and the iron chelator deferoxamine also reduced IL6 induction. Fold-change values are figure-only and are not transcribed."
+    gene_expression_method: "TaqMan qRT-PCR (Hs00174131_m1)"
+    normalization_reference: "beta-2-microglobulin (Hs00187842_m1), comparative cycle threshold (ddCT) method"
+    evidence:
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Treatment of HBEC3-KT cells for 24  h with GSLD qPM2.5 (0.25  mg/mL; 66  µg/cm 2) replicated the induc"
+        explanation: "Gives the exposure condition (0.25 mg/mL = 66 ug/cm2 for 24 h) and the replication of the in vivo cytokine mRNA induction that this assay records (the sentence is hyphen-wrapped at 'induc-tion' in the cached PDF text)."
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In HBEC3-KT cells, IL6 and IL8 (the human analogue of Cxcl1 and Cxcl2) mRNA induction was attenuated by ethylene glycol-bis(β-aminoethyl ether)-N, N,N′,N’-tetraacetic acid (EGTA) and ruthenium red (RR) co-treatment, and by TRPV1 and TRPV3 antagonists, but less by the Toll-like Receptor-4 (TLR4) inhibitor TAK-242 and deferoxamine."
+        explanation: "States the pharmacology summarised in the description: IL6 mRNA induction in HBEC3-KT cells was attenuated by EGTA + ruthenium red and by TRPV1/TRPV3 antagonists."
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Subsequent experiments confirmed the inhibition of IL6 induction by LJO-328, AMG-9810 (another TRPV1 antagonist), and a combination of LJO-328 and 007"
+        explanation: "Names the specific TRPV1 and TRPV3 antagonists that inhibited IL6 mRNA induction in this assay."
+    has_specified_output:
+      id: "GE:cowley-il6-hbec3kt-output"
+      name: "IL6 mRNA induction in HBEC3-KT cells"
+    assay_date: "2025-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:cowley-gsld-hbec3kt-24h"
+        name: "GSLD qPM2.5 0.25 mg/mL (66 ug/cm2) for 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "0.25"
+          unit:
+            id: "UCUM:mg/mL"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:cowley-hbec3kt-001"
+      name: "HBEC3-KT immortalized human bronchial epithelial cells"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+      substrate_type: plastic
+      donor_info: "HBEC3-KT immortalized human bronchial epithelial cell line (ATCC), grown in Airway Epithelial Basal Medium with Bronchial Epithelial Cell Growth Kit"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:cowley-qpcr-human-001"
+        name: "TaqMan qRT-PCR for human IL6 and IL8 mRNA"
+        detection_method: "TaqMan qRT-PCR"
+        normalization_method: "comparative cycle threshold (ddCT)"
+        reference_gene: "B2M"
+        platform: "Life Technologies QuantStudio 6 Flex"
+
+  - id: "GE:cowley-il8-hbec3kt"
+    name: "IL8 mRNA in HBEC3-KT cells treated with GSLD qPM2.5"
+    description: "IL8 (the human analogue of mouse Cxcl1 and Cxcl2) mRNA was induced in HBEC3-KT cells by 24 h treatment with GSLD qPM2.5 at 0.25 mg/mL (66 ug/cm2). Induction was reduced by EGTA plus ruthenium red and by combined TRPV1 + TRPV3 antagonism, but was not reduced by TAK-242 or deferoxamine, and either TRPV1 or TRPV3 inhibition alone appeared to increase it. Fold-change values are figure-only and are not transcribed."
+    gene_expression_method: "TaqMan qRT-PCR (Hs00174103_m1)"
+    normalization_reference: "beta-2-microglobulin (Hs00187842_m1), comparative cycle threshold (ddCT) method"
+    evidence:
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In HBEC3-KT cells, IL6 and IL8 (the human analogue of Cxcl1 and Cxcl2) mRNA induction was attenuated by ethylene glycol-bis(β-aminoethyl ether)-N, N,N′,N’-tetraacetic acid (EGTA) and ruthenium red (RR) co-treatment, and by TRPV1 and TRPV3 antagonists, but less by the Toll-like Receptor-4 (TLR4) inhibitor TAK-242 and deferoxamine."
+        explanation: "States that IL8 mRNA induction occurred in HBEC3-KT cells and was attenuated by EGTA + ruthenium red and TRPV1/TRPV3 antagonists but less by TAK-242 and deferoxamine."
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "a concentration of 0.25 mg/mL or 66 µg/cm2 was used for HBEC3-KT cells and 0.045 mg/mL or 12  µg/cm 2 for THP-1 cells"
+        explanation: "Gives the GSLD qPM2.5 concentration used for HBEC3-KT cells that this assay's exposure condition records."
+    has_specified_output:
+      id: "GE:cowley-il8-hbec3kt-output"
+      name: "IL8 mRNA induction in HBEC3-KT cells"
+    assay_date: "2025-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:cowley-gsld-hbec3kt-24h"
+        name: "GSLD qPM2.5 0.25 mg/mL (66 ug/cm2) for 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "0.25"
+          unit:
+            id: "UCUM:mg/mL"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:cowley-hbec3kt-001"
+      name: "HBEC3-KT immortalized human bronchial epithelial cells"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+      substrate_type: plastic
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:cowley-qpcr-human-001"
+        name: "TaqMan qRT-PCR for human IL6 and IL8 mRNA"
+        detection_method: "TaqMan qRT-PCR"
+        reference_gene: "B2M"
+
+  # ---- THP-1 macrophage-like cells, in vitro ----
+  - id: "GE:cowley-il6-thp1"
+    name: "IL6 mRNA in differentiated THP-1 cells treated with GSLD qPM2.5"
+    description: "PMA-differentiated (macrophage-like) THP-1 cells treated with GSLD qPM2.5 at 0.045 mg/mL (12 ug/cm2) induced IL6 mRNA. Unlike in HBEC3-KT cells the response was partly TLR4-dependent: the TLR4 inhibitor TAK-242 reduced IL6 induction by ~22% (p=0.076) for GSLD qPM2.5 and ~51% (p=0.044) for Salton Sea dust qPM2.5, versus >95% (p=0.000002) for LPS. TRPV1 inhibition had no effect in THP-1 cells and deferoxamine enhanced responses. TNFa induction was <2-fold vehicle control in all cases. Fold-change values are figure-only and are not transcribed."
+    gene_expression_method: "TaqMan qRT-PCR (Hs00174131_m1)"
+    normalization_reference: "beta-2-microglobulin (Hs00187842_m1), comparative cycle threshold (ddCT) method"
+    evidence:
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Induction of IL6, but not IL8 mRNA by LPS was reduced > 95% by TAK-242 (p = 0.000002), ~ 22% (p = 0.076) for GSLD qPM 2.5, and ~ 51% (p = 0.044) for SSD qPM 2.5"
+        explanation: "Gives the TAK-242 (TLR4 inhibitor) effect sizes and p-values on IL6 mRNA induction in THP-1 cells recorded in the description."
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Pro-inflammatory biomarker mRNA induction was replicated in vitro using HBEC3-KT and differentiated monocyte-derived (macrophage-like) THP-1 cells."
+        explanation: "States that the pro-inflammatory mRNA induction was reproduced in differentiated THP-1 cells, the system this assay uses."
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "a concentration of 0.25 mg/mL or 66 µg/cm2 was used for HBEC3-KT cells and 0.045 mg/mL or 12  µg/cm 2 for THP-1 cells"
+        explanation: "Gives the 0.045 mg/mL (12 ug/cm2) GSLD qPM2.5 concentration used for THP-1 cells that this assay's exposure condition records."
+    has_specified_output:
+      id: "GE:cowley-il6-thp1-output"
+      name: "IL6 mRNA induction in differentiated THP-1 cells"
+    assay_date: "2025-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:cowley-gsld-thp1-24h"
+        name: "GSLD qPM2.5 0.045 mg/mL (12 ug/cm2)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "0.045"
+          unit:
+            id: "UCUM:mg/mL"
+            name: "milligram per milliliter"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:cowley-thp1-001"
+      name: "PMA-differentiated THP-1 macrophage-like cells"
+      cell_type:
+        id: "CL:0000235"
+        name: "macrophage"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+      substrate_type: plastic
+      donor_info: "THP-1 monocytic cell line (ATCC) differentiated for 72 h with phorbol 12-myristate acetate (25 nM)"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:cowley-qpcr-human-001"
+        name: "TaqMan qRT-PCR for human IL6 and IL8 mRNA"
+        detection_method: "TaqMan qRT-PCR"
+        reference_gene: "B2M"
+
+# =============================================================================
+# GOBLET CELL / MUCIN ASSAYS
+# =============================================================================
+
+goblet_cell_assays:
+  - id: "GCM:cowley-muc5ac-mouse-lung"
+    name: "Muc5ac mRNA in mouse lung after GSLD qPM2.5 exposure"
+    description: "Muc5ac mRNA in the left lung lobe was induced by both inhaled and oropharyngeally aspirated GSLD qPM2.5 (Fig. 6d; Supplemental Fig. 9d), and with the 3x paradigm more strongly than by an equivalent dose of coal fly ash qPM2.5 (Supplemental Fig. 10). Fold-change values are figure-only and are not transcribed. No goblet cell counts were reported."
+    evidence:
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Exposure of mice via inhalation and oropharyngeal aspiration caused neutrophilia, increased expression of mRNA for Il6, Cxcl1, Cxcl2, and Muc5ac in the lungs, and increased IL6 and CXCL1 in bronchoalveolar lavage."
+        explanation: "Names Muc5ac among the mRNAs increased in the lungs of mice exposed to GSLD qPM2.5 by inhalation and oropharyngeal aspiration."
+      - reference: "PMID:39819386"
+        reference_title: "Pro-inflammatory effects of inhaled Great Salt Lake dust particles."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Using the 3x exposure paradigm, GSLD qPM 2.5 elicited greater neutrophilia as well as Cxcl2 and Muc5ac mRNA expression than an equivalent dose of CFA qPM 2.5"
+        explanation: "Supports the comparison in the description: Muc5ac mRNA induction was greater for GSLD qPM2.5 than for an equivalent dose of coal fly ash."
+    has_specified_output:
+      id: "GCM:cowley-muc5ac-mouse-lung-output"
+      name: "Muc5ac mRNA induction in mouse lung"
+    assay_date: "2025-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:cowley-gsld-inhal-3x"
+        name: "GSLD qPM2.5 whole-body inhalation, 3x 12-min exposures in one day"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "36"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+        timing_post_exposure:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-mucus-metaplasia"
+      name: "Mucus secretory program activation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cowley-mouse-c57bl6"
+      name: "Wild-type C57Bl/6 mice, 8-10 weeks of age"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      collection_site: "left lung lobe"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:cowley-qpcr-mouse-001"
+        name: "TaqMan qRT-PCR for mouse cytokine and mucin mRNA"
+        detection_method: "TaqMan qRT-PCR"
+        reference_gene: "Gapdh"
