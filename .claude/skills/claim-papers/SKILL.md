@@ -69,7 +69,8 @@ specific paper:
      is what CI checks. A quote read out of a local PDF passes
      `verify-snippets` and fails CI. See claim-paper Step 5.
    - One paper, one PR; add only YOUR paper's kb file, reference cache
-     entries, term cache rows, and stub deletion.
+     entries, term cache rows, verification receipt (abstract-only papers
+     only), and stub deletion.
    - Write scratch files inside your own worktree. The session scratchpad is
      shared between parallel agents, so a fixed name there gets clobbered.
 4. Report back: branch name, PR URL, and the quote-verification summary.
