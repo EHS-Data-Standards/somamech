@@ -1,0 +1,658 @@
+# =============================================================================
+# Altman et al. (2023) - Associations between outdoor air pollutants and
+# non-viral asthma exacerbations and airway inflammatory responses in children
+# and adolescents living in urban areas in the USA
+# =============================================================================
+#
+# Source: Lancet Planet Health 2023; 7: e33-44
+# DOI: 10.1016/S2542-5196(22)00302-3
+#
+# Study design:
+#   - Retrospective secondary analysis of two human cohorts (no in vitro work)
+#   - MUPPITS1: 208 children aged 6-17 with exacerbation-prone asthma in nine
+#     US urban centres, followed 2015-2017 for respiratory illnesses;
+#     168 participants included in this analysis
+#   - ICATA: 419 participants aged 6-20 with persistent allergic asthma in
+#     eight US urban sites, 2006-2009; 189 participants included (validation)
+#   - Exposure: regional US EPA air quality index (AQI) values and individual
+#     pollutant concentrations (PM2.5, PM10, O3, NO2, SO2, CO, Pb) matched to
+#     each participant's core-based statistical area and event date
+#   - Readouts: respiratory event type, spirometry (FEV1% predicted, FEV1/FVC),
+#     and nasal-lavage bulk RNA-seq co-expression modules
+#   - Events classified as viral (V+) or non-viral (V-), with (Ex+) or
+#     without (Ex-) an asthma exacerbation
+#
+# Key findings captured here:
+#   - AQI, and specifically O3, NO2 and PM2.5 concentrations, were raised
+#     around non-viral exacerbations (V-Ex+) relative to the other three
+#     event subgroups
+#   - During V-Ex+ events AQI and O3 were inversely associated with
+#     FEV1% predicted and FEV1/FVC
+#   - PM2.5 concentrations were positively associated with epithelial
+#     transcriptional modules (tissue kallikreins/IL-23-IL-17, keratinisation
+#     and tight junctions, eosinophil activation and mucus hypersecretion,
+#     EGFR signalling, cilia and IL-33 response)
+#   - O3 concentrations were specifically associated with the type-2
+#     inflammation module
+#
+# Caveat recorded in the descriptions below: this is an observational
+# association study. Nothing here establishes that a measured pollutant
+# caused the transcriptional or physiological change.
+#
+# No values were read off figures. Every number below is either narrated in
+# the text or printed in Table 1 / Table 2, and the quoting evidence block
+# names where it came from.
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:36608946"
+  reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+  doi: "10.1016/S2542-5196(22)00302-3"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:altman-epa-aqi-001"
+    name: "US EPA air quality index and pollutant exposure assignment"
+    description: "AQI values and individual pollutant data (PM2.5, PM10, O3, NO2, SO2, CO, Pb) downloaded from the US Environmental Protection Agency for the study years and recruitment cities. For each pollutant, monitors within each core-based statistical area were subset to those in the recruitment census tract, and the maximum concentration was taken for each city census tract and day, then matched to each event by core-based statistical area and date. Module analyses used pollutant values summed over the day of nasal sample collection and the preceding 2 days."
+    equipment_required:
+      - "US EPA pre-generated air quality data files (https://aqs.epa.gov/aqsweb/airdata/download_files.html)"
+
+  - protocol_type: SpirometryProtocol
+    id: "PROTOCOL:altman-spirometry-001"
+    name: "Spirometry and fractional exhaled NO (ATS/ERS)"
+    description: "Spirometry and measurement of fractional exhaled NO (FeNO) collected according to American Thoracic Society and European Respiratory Society guidelines. FEV1% predicted and FEV1/FVC were compared with same-day AQI values or pollutant concentrations using generalised linear mixed-effects models with a random effect for participant; values collected after initiation of systemic corticosteroids were excluded, and the FEV1/FVC model additionally controlled for age and sex."
+    spirometry_standard: "American Thoracic Society / European Respiratory Society standardisation of spirometry"
+
+  - protocol_type: MolecularAssayProtocol
+    id: "PROTOCOL:altman-rnaseq-001"
+    name: "Nasal lavage bulk RNA-sequencing and co-expression module analysis"
+    description: "RNA-sequencing performed on bulk RNA extracted from nasal lavage cell pellets (Gene Expression Omnibus GSE115824). Data summarised into cell-associated modules of coexpressed genes using combined cell association by correlation and weighted gene correlation network analysis, annotated with DAVID and STRING. Module expression was compared with AQI values or pollutant concentrations summed over 3 days using a generalised linear mixed-effects model adjusted for nasal lavage cell percentages and RNA-sequencing library counts, with a random effect for participant. Benjamini-Hochberg false discovery rate < 0.05 was considered significant."
+    detection_method: "bulk RNA-sequencing"
+    normalization_method: "adjusted for cell percentages in the nasal lavage sample and number of counts in the RNA-sequencing library"
+    platform: "Illumina RNA-sequencing (GEO accession GSE115824)"
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS - spirometry during respiratory events (MUPPITS1)
+# =============================================================================
+# Table 1 columns, in printed order, are:
+#   V+Ex+ | V-Ex+ | p value | V+Ex- | V-Ex- | p value
+# so the quoted Table 1 rows below carry all four subgroup medians (IQR).
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:altman-v-minus-ex-plus"
+    name: "Lung function during non-viral asthma exacerbations (V-Ex+)"
+    description: "Spirometry during non-viral exacerbation events (V-Ex+, 14 of 154 assessed events) in the MUPPITS1 cohort. Median FEV1% predicted 71 (IQR 64-80) and median FEV1/FVC 0.62 (IQR 0.60-0.72) (Table 1). Same-day AQI was inversely associated with FEV1% predicted (beta = -0.35, FDR = 0.014) and with FEV1/FVC (beta = -0.0028, FDR = 0.014), and among individual pollutants only O3 was significantly associated with FEV1% predicted (beta = -591, FDR = 0.052) and FEV1/FVC (beta = -6.0, FDR = 0.0084); no significant inverse association was seen in the other three event groups. Observational association only."
+    evidence:
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1% predicted 71 (59 to 83) 71 (64 to 80) 0·94 92 (84 to 102) 90 (83 to 104) 0·84"
+        explanation: "Table 1 row for FEV1% predicted; the second value, 71 (64 to 80), is the V-Ex+ subgroup median recorded as this assay's fev1."
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1/FVC 0·66 (0·60 to 0·79) 0·62 (0·60 to 0·72) 0·74 0·79 (0·70 to 0·84) 0·78 (0·72 to 0·84) 0·64"
+        explanation: "Table 1 row for FEV1/FVC; the second value, 0.62 (0.60 to 0.72), is the V-Ex+ subgroup median recorded as this assay's fev1_fvc_ratio."
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "During V–Ex+ events, AQI values showed a significant inverse association with FEV 1% predicted"
+        explanation: "States the inverse association between same-day air quality index and FEV1% predicted that this assay records for the non-viral exacerbation subgroup."
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Among the individual pollutants, O 3 was significantly associated with FEV 1% predicted (β=–591, FDR=0·052) and FEV1/FVC (β=–6·0, FDR=0·0084) only in the V–Ex+ event subgroup (appendix p 7)."
+        explanation: "Gives the O3-specific associations with FEV1% predicted and FEV1/FVC, and that they were confined to the V-Ex+ subgroup, which is why ozone is the exposure agent on this assay."
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We identified that increased air quality index values, driven predominantly by increased PM2·5 and O3 concentrations, were significantly associated with asthma exacerbations and decreases in pulmonary function that occurred in the absence of a provoking viral infection."
+        explanation: "The paper's summary finding that raised AQI, driven by PM2.5 and O3, was associated with exacerbations and with decreases in pulmonary function in the absence of a virus."
+    has_specified_output:
+      id: "LF:altman-v-minus-ex-plus-output"
+      name: "Spirometry, non-viral exacerbation subgroup"
+      fev1:
+        value: "71"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      fev1_fvc_ratio:
+        value: "0.62"
+        unit:
+          id: "UCUM:1"
+          name: "ratio (dimensionless)"
+    has_exposure_condition:
+      - id: "EXPOSURE:altman-o3-same-day"
+        name: "Regional ozone concentration on the day of spirometry"
+        exposure_agent:
+          id: "CHEBI:25812"
+          name: "ozone"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:altman-muppits1-v-minus-ex-plus"
+      name: "MUPPITS1 participants during non-viral exacerbation events (V-Ex+)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      sex: "98 male and 70 female participants in the included MUPPITS1 cohort"
+      subject_characteristics: "Children aged 6-17 years with exacerbation-prone asthma living in low-income census tracts in nine US cities; at least two exacerbations in the prior year; on inhaled corticosteroid therapy; blood eosinophils >= 150 per mm3; non-smokers. 14 of 154 assessed events were non-viral with exacerbation, contributed by 12 participants."
+      disease_state: "exacerbation-prone asthma, non-viral exacerbation (V-Ex+)"
+      clinical_context: "spirometry during a reported respiratory illness, before initiation of systemic corticosteroids"
+    follows_protocols:
+      - id: "PROTOCOL:altman-spirometry-001"
+        name: "Spirometry and fractional exhaled NO (ATS/ERS)"
+      - id: "PROTOCOL:altman-epa-aqi-001"
+        name: "US EPA air quality index and pollutant exposure assignment"
+
+  - id: "LF:altman-v-plus-ex-plus"
+    name: "Lung function during viral asthma exacerbations (V+Ex+)"
+    description: "Spirometry during viral exacerbation events (V+Ex+, 33 of 154 assessed events) in the MUPPITS1 cohort. Median FEV1% predicted 71 (IQR 59-83) and median FEV1/FVC 0.66 (IQR 0.60-0.79) (Table 1). Airway obstruction in the non-viral exacerbation subgroup was not significantly different from this viral exacerbation subgroup (p = 0.94 for FEV1% predicted). This group is the viral comparator; no significant inverse association between air quality and lung function was found in it."
+    evidence:
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1% predicted 71 (59 to 83) 71 (64 to 80) 0·94 92 (84 to 102) 90 (83 to 104) 0·84"
+        explanation: "Table 1 row for FEV1% predicted; the first value, 71 (59 to 83), is the V+Ex+ subgroup median recorded here."
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1/FVC 0·66 (0·60 to 0·79) 0·62 (0·60 to 0·72) 0·74 0·79 (0·70 to 0·84) 0·78 (0·72 to 0·84) 0·64"
+        explanation: "Table 1 row for FEV1/FVC; the first value, 0.66 (0.60 to 0.79), is the V+Ex+ subgroup median recorded here."
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The V–Ex+ event subgroup had physiological airway obstruction, as measured by FEV1% predicted, that was not significantly different to the V+Ex+ subgroup (p=0·94) and similar FeNO (table 1; p=0·66)."
+        explanation: "States that airway obstruction in the non-viral exacerbation subgroup did not differ significantly from this viral exacerbation subgroup, which is what makes this assay the comparator."
+    has_specified_output:
+      id: "LF:altman-v-plus-ex-plus-output"
+      name: "Spirometry, viral exacerbation subgroup"
+      fev1:
+        value: "71"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      fev1_fvc_ratio:
+        value: "0.66"
+        unit:
+          id: "UCUM:1"
+          name: "ratio (dimensionless)"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:altman-muppits1-v-plus-ex-plus"
+      name: "MUPPITS1 participants during viral exacerbation events (V+Ex+)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "Children aged 6-17 years with exacerbation-prone asthma living in low-income census tracts in nine US cities. 33 of 154 assessed events were viral with exacerbation, contributed by 33 participants."
+      disease_state: "exacerbation-prone asthma, virus-positive exacerbation (V+Ex+)"
+      clinical_context: "spirometry during a reported respiratory illness, before initiation of systemic corticosteroids"
+    follows_protocols:
+      - id: "PROTOCOL:altman-spirometry-001"
+        name: "Spirometry and fractional exhaled NO (ATS/ERS)"
+
+  - id: "LF:altman-v-minus-ex-minus"
+    name: "Lung function during non-viral illness without exacerbation (V-Ex-)"
+    description: "Spirometry during non-viral respiratory events that did not lead to an exacerbation (V-Ex-, 38 of 154 assessed events) in the MUPPITS1 cohort. Median FEV1% predicted 90 (IQR 83-104) and median FEV1/FVC 0.78 (IQR 0.72-0.84) (Table 1). This non-exacerbating group is the within-cohort reference for the exacerbation subgroups above."
+    evidence:
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1% predicted 71 (59 to 83) 71 (64 to 80) 0·94 92 (84 to 102) 90 (83 to 104) 0·84"
+        explanation: "Table 1 row for FEV1% predicted; the last value, 90 (83 to 104), is the V-Ex- subgroup median recorded here."
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1/FVC 0·66 (0·60 to 0·79) 0·62 (0·60 to 0·72) 0·74 0·79 (0·70 to 0·84) 0·78 (0·72 to 0·84) 0·64"
+        explanation: "Table 1 row for FEV1/FVC; the last value, 0.78 (0.72 to 0.84), is the V-Ex- subgroup median recorded here."
+    has_specified_output:
+      id: "LF:altman-v-minus-ex-minus-output"
+      name: "Spirometry, non-viral non-exacerbation subgroup"
+      fev1:
+        value: "90"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      fev1_fvc_ratio:
+        value: "0.78"
+        unit:
+          id: "UCUM:1"
+          name: "ratio (dimensionless)"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:altman-muppits1-v-minus-ex-minus"
+      name: "MUPPITS1 participants during non-viral events without exacerbation (V-Ex-)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "Children aged 6-17 years with exacerbation-prone asthma living in low-income census tracts in nine US cities. 38 of 154 assessed events were non-viral without exacerbation, contributed by 34 participants."
+      disease_state: "exacerbation-prone asthma, non-viral respiratory illness without exacerbation (V-Ex-)"
+      clinical_context: "spirometry during a reported respiratory illness"
+    follows_protocols:
+      - id: "PROTOCOL:altman-spirometry-001"
+        name: "Spirometry and fractional exhaled NO (ATS/ERS)"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS - nasal airway transcriptional modules vs pollutants
+# =============================================================================
+# Table 2 columns, in printed order, are:
+#   module name | cell association | number of genes |
+#   AQI FDR | AQI effect size | PM2.5 FDR | PM2.5 effect size |
+#   O3 FDR | O3 effect size
+# The effect size is the change in module expression (log2) per one unit
+# increase in the pollutant summed over 3 days, so it is recorded here with a
+# dimensionless UCUM unit. Where the paper converts a coefficient into a
+# percentage change, that percentage is recorded instead.
+# =============================================================================
+
+gene_expression_assays:
+  - id: "GE:altman-pm25-kallikrein-module"
+    name: "Tissue kallikreins and IL-23-IL-17 axis module vs PM2.5"
+    description: "Nasal airway expression of the tissue kallikreins and IL-23-IL-17 axis module (143 genes, no cell association) was positively associated with PM2.5 concentrations summed over 3 days (FDR = 0.019, effect size 0.0108 log2 per unit; Table 2). The paper converts the coefficient 0.011 into a 25.7% increase in module expression for a 10 microgram per cubic metre mean increase in PM2.5 over 3 days, which is the value recorded here. This module is one of the three specific to non-viral exacerbations. Association only; the observational design cannot establish that PM2.5 caused the change."
+    gene_expression_method: "bulk RNA-sequencing of nasal lavage cell pellets, summarised into weighted gene co-expression modules"
+    normalization_reference: "nasal lavage cell percentages and RNA-sequencing library counts"
+    evidence:
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "For example, the coefficient for the tissue kallikrein induction and IL­23–IL­17 axis module is 0·011, which indicates a 10 μg/m³ mean increase in PM 2·5 for 3 days equates to a 25·7% increase in module expression (appendix p 8)."
+        explanation: "Gives both the module coefficient and the 25.7% increase per 10 microgram per cubic metre increase in PM2.5 over 3 days that this assay records as its mRNA level."
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Tissue kallikreins and IL-23–IL-17 axis None 143 0·074 0·0023 0·019 0·0108 0·83 0·4875"
+        explanation: "Table 2 row for this module: 143 genes, PM2.5 FDR 0.019 and PM2.5 effect size 0.0108."
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Moreover, individual pollutants were significantly associated with altered gene expression in coordinated inflammatory pathways, including PM2·5 with increased epithelial induction of tissue kallikreins, mucus hypersecretion, and barrier functions and O3 with increased type-2 inflammation."
+        explanation: "The summary statement linking PM2.5 to increased epithelial induction of tissue kallikreins, which is the module measured here."
+    has_specified_output:
+      id: "GE:altman-pm25-kallikrein-module-output"
+      name: "Tissue kallikreins and IL-23-IL-17 module expression change"
+      mrna_level:
+        value: "25.7"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    has_exposure_condition:
+      - id: "EXPOSURE:altman-pm25-10ugm3-3d"
+        name: "10 microgram per cubic metre mean increase in PM2.5 over 3 days"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic metre"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: PopulationSubject
+      id: "soma:altman-muppits1-nasal-population"
+      name: "MUPPITS1 nasal transcriptome population"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cohort_size: 168
+      inclusion_criteria: "MUPPITS1 participants who reported a respiratory illness during follow-up and had nasal lavage RNA-sequencing available. Module analyses used 17 V-Ex+, 38 V+Ex+, 72 V-Ex- and 120 V+Ex- samples."
+      age_range:
+        min_value:
+          value: "6"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+        max_value:
+          value: "17"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:altman-rnaseq-001"
+        name: "Nasal lavage bulk RNA-sequencing and co-expression module analysis"
+        detection_method: "bulk RNA-sequencing"
+      - id: "PROTOCOL:altman-epa-aqi-001"
+        name: "US EPA air quality index and pollutant exposure assignment"
+
+  - id: "GE:altman-pm25-barrier-module"
+    name: "Keratinisation, epithelial development, cell-cell adhesion and tight junctions module vs PM2.5"
+    description: "Nasal airway expression of the keratinisation, epithelial development, cell-cell adhesion and tight junctions module (epithelium-associated, 1041 genes) was positively associated with PM2.5 concentrations summed over 3 days (FDR = 0.0060, effect size 0.0137 log2 per unit increase in PM2.5; Table 2). This is one of the three modules specific to non-viral exacerbations and covers epithelial barrier function genes. Association only."
+    gene_expression_method: "bulk RNA-sequencing of nasal lavage cell pellets, summarised into weighted gene co-expression modules"
+    normalization_reference: "nasal lavage cell percentages and RNA-sequencing library counts"
+    evidence:
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Keratinisation, epithelial development, cell–cell adhesion, and tight junctions Epithelium 1041 0·023 0·0032 0·0060 0·0137 0·44 2·0302"
+        explanation: "Table 2 row for this module: epithelium-associated, 1041 genes, PM2.5 FDR 0.0060 and PM2.5 effect size 0.0137, which is the value recorded as this assay's mRNA level."
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM 2·5 concentrations were positively associated with modules associated with airway epithelial cell numbers and epithelial gene pathways."
+        explanation: "States the direction of the association between PM2.5 and epithelial gene pathway modules such as this one."
+    has_specified_output:
+      id: "GE:altman-pm25-barrier-module-output"
+      name: "Keratinisation and tight junction module expression coefficient"
+      mrna_level:
+        value: "0.0137"
+        unit:
+          id: "UCUM:1"
+          name: "log2 module expression change per one unit increase in PM2.5 over 3 days"
+    has_exposure_condition:
+      - id: "EXPOSURE:altman-pm25-3d"
+        name: "PM2.5 concentration summed over the day of nasal sampling and the preceding 2 days"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: PopulationSubject
+      id: "soma:altman-muppits1-nasal-population"
+      name: "MUPPITS1 nasal transcriptome population"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cohort_size: 168
+      inclusion_criteria: "MUPPITS1 participants who reported a respiratory illness during follow-up and had nasal lavage RNA-sequencing available. Module analyses used 17 V-Ex+, 38 V+Ex+, 72 V-Ex- and 120 V+Ex- samples."
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:altman-rnaseq-001"
+        name: "Nasal lavage bulk RNA-sequencing and co-expression module analysis"
+        detection_method: "bulk RNA-sequencing"
+
+  - id: "GE:altman-pm25-mucus-module"
+    name: "Eosinophil activation and mucus hypersecretion module vs PM2.5"
+    description: "Nasal airway expression of the eosinophil activation and mucus hypersecretion module (eosinophil- and epithelium-associated, 69 genes) was positively associated with PM2.5 concentrations summed over 3 days (FDR = 0.012, effect size 0.0116 log2 per unit increase in PM2.5; Table 2). This is a core exacerbation module upregulated in both viral and non-viral exacerbations. Association only."
+    gene_expression_method: "bulk RNA-sequencing of nasal lavage cell pellets, summarised into weighted gene co-expression modules"
+    normalization_reference: "nasal lavage cell percentages and RNA-sequencing library counts"
+    evidence:
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Eosinophil activation and mucus hypersecretion Eosinophil and epithelium 69 0·0092 0·0037 0·012 0·0116 0·10 4·0189"
+        explanation: "Table 2 row for this module: eosinophil- and epithelium-associated, 69 genes, PM2.5 FDR 0.012 and PM2.5 effect size 0.0116, which is the value recorded here."
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Furthermore, PM2·5 was associated with pathways that are functionally linked to airway remodelling, including TGFβ signalling, SMAD3 signalling, EGFR signalling, mucus hypersecretion, and extracellular matrix production."
+        explanation: "Names mucus hypersecretion among the PM2.5-associated pathways, supporting the key event this assay informs on."
+    has_specified_output:
+      id: "GE:altman-pm25-mucus-module-output"
+      name: "Eosinophil activation and mucus hypersecretion module expression coefficient"
+      mrna_level:
+        value: "0.0116"
+        unit:
+          id: "UCUM:1"
+          name: "log2 module expression change per one unit increase in PM2.5 over 3 days"
+    has_exposure_condition:
+      - id: "EXPOSURE:altman-pm25-3d"
+        name: "PM2.5 concentration summed over the day of nasal sampling and the preceding 2 days"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: PopulationSubject
+      id: "soma:altman-muppits1-nasal-population"
+      name: "MUPPITS1 nasal transcriptome population"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cohort_size: 168
+      inclusion_criteria: "MUPPITS1 participants who reported a respiratory illness during follow-up and had nasal lavage RNA-sequencing available. Module analyses used 17 V-Ex+, 38 V+Ex+, 72 V-Ex- and 120 V+Ex- samples."
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:altman-rnaseq-001"
+        name: "Nasal lavage bulk RNA-sequencing and co-expression module analysis"
+        detection_method: "bulk RNA-sequencing"
+
+  - id: "GE:altman-pm25-egfr-module"
+    name: "EGFR signalling and cell-cell adhesion module vs PM2.5"
+    description: "Nasal airway expression of the EGFR signalling and cell-cell adhesion module (epithelium-associated, 240 genes) was positively associated with PM2.5 concentrations summed over 3 days (FDR = 0.0035, effect size 0.0134 log2 per unit increase in PM2.5; Table 2). EGFR signalling is named in the discussion among the airway remodelling pathways associated with PM2.5. Association only."
+    gene_expression_method: "bulk RNA-sequencing of nasal lavage cell pellets, summarised into weighted gene co-expression modules"
+    normalization_reference: "nasal lavage cell percentages and RNA-sequencing library counts"
+    evidence:
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "EGFR signalling and cell–cell adhesion Epithelium 240 0·0092 0·0035 0·0035 0·0134 0·42 2·8261"
+        explanation: "Table 2 row for this module: epithelium-associated, 240 genes, PM2.5 FDR 0.0035 and PM2.5 effect size 0.0134, which is the value recorded here."
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Furthermore, PM2·5 was associated with pathways that are functionally linked to airway remodelling, including TGFβ signalling, SMAD3 signalling, EGFR signalling, mucus hypersecretion, and extracellular matrix production."
+        explanation: "Names EGFR signalling among the airway remodelling pathways associated with PM2.5, supporting the key event this assay informs on."
+    has_specified_output:
+      id: "GE:altman-pm25-egfr-module-output"
+      name: "EGFR signalling module expression coefficient"
+      mrna_level:
+        value: "0.0134"
+        unit:
+          id: "UCUM:1"
+          name: "log2 module expression change per one unit increase in PM2.5 over 3 days"
+    has_exposure_condition:
+      - id: "EXPOSURE:altman-pm25-3d"
+        name: "PM2.5 concentration summed over the day of nasal sampling and the preceding 2 days"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: PopulationSubject
+      id: "soma:altman-muppits1-nasal-population"
+      name: "MUPPITS1 nasal transcriptome population"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cohort_size: 168
+      inclusion_criteria: "MUPPITS1 participants who reported a respiratory illness during follow-up and had nasal lavage RNA-sequencing available. Module analyses used 17 V-Ex+, 38 V+Ex+, 72 V-Ex- and 120 V+Ex- samples."
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:altman-rnaseq-001"
+        name: "Nasal lavage bulk RNA-sequencing and co-expression module analysis"
+        detection_method: "bulk RNA-sequencing"
+
+  - id: "GE:altman-pm25-cilia-module"
+    name: "Cilia and IL-33 response module vs PM2.5"
+    description: "Nasal airway expression of the cilia and IL-33 response module (409 genes, no cell association) was positively associated with PM2.5 concentrations summed over 3 days (FDR = 0.0087, effect size 0.0143 log2 per unit increase in PM2.5; Table 2). Association only."
+    gene_expression_method: "bulk RNA-sequencing of nasal lavage cell pellets, summarised into weighted gene co-expression modules"
+    normalization_reference: "nasal lavage cell percentages and RNA-sequencing library counts"
+    evidence:
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM 2·5 concentrations were also associated with the epithelial ­cell­associated cilia and IL ­33 response module (FDR=0·0087)."
+        explanation: "States the association between PM2.5 concentrations and the cilia and IL-33 response module, with the FDR recorded in this assay's description."
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Cilia and IL-33 response None 409 0·074 0·0026 0·0087 0·0143 0·65 1·2294"
+        explanation: "Table 2 row for this module: 409 genes, PM2.5 FDR 0.0087 and PM2.5 effect size 0.0143, which is the value recorded here."
+    has_specified_output:
+      id: "GE:altman-pm25-cilia-module-output"
+      name: "Cilia and IL-33 response module expression coefficient"
+      mrna_level:
+        value: "0.0143"
+        unit:
+          id: "UCUM:1"
+          name: "log2 module expression change per one unit increase in PM2.5 over 3 days"
+    has_exposure_condition:
+      - id: "EXPOSURE:altman-pm25-3d"
+        name: "PM2.5 concentration summed over the day of nasal sampling and the preceding 2 days"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: altered
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: PopulationSubject
+      id: "soma:altman-muppits1-nasal-population"
+      name: "MUPPITS1 nasal transcriptome population"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cohort_size: 168
+      inclusion_criteria: "MUPPITS1 participants who reported a respiratory illness during follow-up and had nasal lavage RNA-sequencing available. Module analyses used 17 V-Ex+, 38 V+Ex+, 72 V-Ex- and 120 V+Ex- samples."
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:altman-rnaseq-001"
+        name: "Nasal lavage bulk RNA-sequencing and co-expression module analysis"
+        detection_method: "bulk RNA-sequencing"
+
+  - id: "GE:altman-o3-type2-module"
+    name: "Type-2 inflammation module vs O3"
+    description: "Nasal airway expression of the type-2 inflammation module (eosinophil-associated, 242 genes, containing the canonical type-2 cytokines IL4, IL5 and IL13) was the only module specifically associated with O3 concentrations summed over 3 days (FDR = 0.037, effect size 3.7624; Table 2). The paper converts this to a 47.8% increase in module expression for a mean 0.05 ppm increase in O3 over 3 days, which is the value recorded here. Association only."
+    gene_expression_method: "bulk RNA-sequencing of nasal lavage cell pellets, summarised into weighted gene co-expression modules"
+    normalization_reference: "nasal lavage cell percentages and RNA-sequencing library counts"
+    evidence:
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "By contrast, O 3 concentrations were related specifically to increased expression of the type­2 inflammation module (FDR <0·05) with an effect size of 3·76, which indicates a mean 0·05 ppm increase in O 3 for 3 days equates to a 47·8% increase in module expression (appendix p 8)."
+        explanation: "Gives the O3-specific association with the type-2 inflammation module, the effect size, and the 47.8% increase per 0.05 ppm increase in O3 over 3 days recorded as this assay's mRNA level."
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Type-2 inflammation Eosinophil 242 0·039 0·0020 0·73 0·0012 0·037 3·7624"
+        explanation: "Table 2 row for this module: eosinophil-associated, 242 genes, O3 FDR 0.037 and O3 effect size 3.7624."
+      - reference: "PMID:36608946"
+        reference_title: "Associations between outdoor air pollutants and non-viral asthma exacerbations and airway inflammatory responses in children and adolescents living in urban areas in the USA: a retrospective secondary analysis."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We observed that O 3 is associated with eosinophilic or type­2 inflammation; it was positively associated with expression of a module containing canonical type ­2 cytokines IL4, IL5, and IL13, among numerous other ele­ ments of type ­2 inflammation, and with a concurrent decrease in lung function."
+        explanation: "Confirms the module contents (IL4, IL5, IL13) and that the O3 association came with a concurrent decrease in lung function."
+    has_specified_output:
+      id: "GE:altman-o3-type2-module-output"
+      name: "Type-2 inflammation module expression change"
+      mrna_level:
+        value: "47.8"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    has_exposure_condition:
+      - id: "EXPOSURE:altman-o3-005ppm-3d"
+        name: "0.05 ppm mean increase in O3 over 3 days"
+        exposure_agent:
+          id: "CHEBI:25812"
+          name: "ozone"
+        exposure_concentration:
+          value: "0.05"
+          unit:
+            id: "UO:0000169"
+            name: "parts per million"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: PopulationSubject
+      id: "soma:altman-muppits1-nasal-population"
+      name: "MUPPITS1 nasal transcriptome population"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cohort_size: 168
+      inclusion_criteria: "MUPPITS1 participants who reported a respiratory illness during follow-up and had nasal lavage RNA-sequencing available. Module analyses used 17 V-Ex+, 38 V+Ex+, 72 V-Ex- and 120 V+Ex- samples."
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:altman-rnaseq-001"
+        name: "Nasal lavage bulk RNA-sequencing and co-expression module analysis"
+        detection_method: "bulk RNA-sequencing"
+      - id: "PROTOCOL:altman-epa-aqi-001"
+        name: "US EPA air quality index and pollutant exposure assignment"
