@@ -1,0 +1,15 @@
+{
+  "reference_id": "PMID:35453536",
+  "kb_file": "kb/publications/Container-bamodu2022-lncil7r-lung-function.yaml",
+  "content_type_in_committed_cache": "abstract_only",
+  "verified_with": "just verify-snippets (linkml-reference-validator, committed + local cache)",
+  "verified_date": "2026-09-17",
+  "snippet_sha256": [
+    "0c614bc4145339ee03d23a48f27374d9c569348e11204112c55380406f8ab840",
+    "44bc7840f379826f6069446ad7d3d621b16cc798a84664f0da488713280ac522",
+    "7c03e88e1e293385f2c042a5bf8db96d89ca546b7dc215ef32e62b5bf49a765a",
+    "935494f7bd005587bbe68c2302889e5adf301e2733926e5b81b1002d378ab385",
+    "b4fe679a618b79053c5dacc5ff5525f52947934aa902828e6c6ad558d2a9d1f1",
+    "ddfc8ca5e16c6d4bc95a254959345f7cef19485e27413ead4d840c421bd3dbba"
+  ]
+}
