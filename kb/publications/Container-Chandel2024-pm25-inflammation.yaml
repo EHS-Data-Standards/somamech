@@ -144,7 +144,7 @@ balf_sputum_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       age:
-        value: "5"
+        value: "4-6"
         unit:
           id: "UO:0000034"
           name: "week"
@@ -207,7 +207,7 @@ balf_sputum_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       age:
-        value: "5"
+        value: "4-6"
         unit:
           id: "UO:0000034"
           name: "week"
@@ -270,7 +270,7 @@ balf_sputum_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       age:
-        value: "5"
+        value: "4-6"
         unit:
           id: "UO:0000034"
           name: "week"
@@ -332,7 +332,7 @@ balf_sputum_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       age:
-        value: "5"
+        value: "4-6"
         unit:
           id: "UO:0000034"
           name: "week"
@@ -389,7 +389,7 @@ balf_sputum_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       age:
-        value: "5"
+        value: "4-6"
         unit:
           id: "UO:0000034"
           name: "week"
@@ -449,7 +449,7 @@ balf_sputum_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       age:
-        value: "5"
+        value: "4-6"
         unit:
           id: "UO:0000034"
           name: "week"
@@ -522,7 +522,7 @@ balf_sputum_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       age:
-        value: "5"
+        value: "4-6"
         unit:
           id: "UO:0000034"
           name: "week"
@@ -592,7 +592,7 @@ oxidative_stress_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       age:
-        value: "5"
+        value: "4-6"
         unit:
           id: "UO:0000034"
           name: "week"
@@ -655,7 +655,7 @@ oxidative_stress_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       age:
-        value: "5"
+        value: "4-6"
         unit:
           id: "UO:0000034"
           name: "week"
@@ -693,10 +693,10 @@ lung_function_assays:
       id: "LF:chandel-pm25-14d-output"
       name: "Lung function measurements, 100 ug day 14"
       peak_expiratory_flow:
-        value: "71"
+        value: "0.71"
         unit:
-          id: "UO:0000187"
-          name: "percent"
+          id: "STATO:0000169"
+          name: "fold change"
       lung_resistance:
         value: "2.1"
         unit:
@@ -731,7 +731,7 @@ lung_function_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       age:
-        value: "5"
+        value: "4-6"
         unit:
           id: "UO:0000034"
           name: "week"
@@ -757,10 +757,10 @@ lung_function_assays:
       id: "LF:chandel-pm25-21d-output"
       name: "Lung function measurements, 100 ug day 21"
       peak_expiratory_flow:
-        value: "68"
+        value: "0.68"
         unit:
-          id: "UO:0000187"
-          name: "percent"
+          id: "STATO:0000169"
+          name: "fold change"
       lung_resistance:
         value: "2.6"
         unit:
@@ -795,7 +795,7 @@ lung_function_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       age:
-        value: "5"
+        value: "4-6"
         unit:
           id: "UO:0000034"
           name: "week"
@@ -827,10 +827,10 @@ lung_function_assays:
       id: "LF:chandel-pm25-28d-output"
       name: "Lung function measurements, 100 ug day 28"
       peak_expiratory_flow:
-        value: "61"
+        value: "0.61"
         unit:
-          id: "UO:0000187"
-          name: "percent"
+          id: "STATO:0000169"
+          name: "fold change"
       lung_resistance:
         value: "2.9"
         unit:
@@ -865,7 +865,7 @@ lung_function_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       age:
-        value: "5"
+        value: "4-6"
         unit:
           id: "UO:0000034"
           name: "week"
