@@ -23,7 +23,19 @@ printf '%s\n' "$output"
 
 # The validator can exit 0 even when it found errors, so the exit code alone
 # cannot be trusted — read the output. Any [ERROR] line or crash fails.
-if grep -Eq '\[ERROR\]|Traceback|^Error:' <<<"$output"; then
+#
+# With ALLOW_ABSTRACT_ONLY_MISSES=1 (set by validate-file/validate-all), a
+# "Text part not found" error against a paper whose cache entry is
+# abstract-only does NOT fail this wrapper: the validator marks those errors
+# with "(note: only abstract available for PMID:...)", and responsibility for
+# them moves to the verification receipts (scripts/snippet_receipts.py check,
+# run right after this in the same recipe / via qc). Every other error still
+# fails here.
+decisive="$output"
+if [ "${ALLOW_ABSTRACT_ONLY_MISSES:-}" = "1" ]; then
+    decisive="$(grep -v 'only abstract available for PMID:' <<<"$output" || true)"
+fi
+if grep -Eq '\[ERROR\]|Traceback|^Error:' <<<"$decisive"; then
     echo "Reference validation failed: errors found (see above)." >&2
     exit 1
 fi

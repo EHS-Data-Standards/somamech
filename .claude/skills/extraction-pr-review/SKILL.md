@@ -20,8 +20,16 @@ paper actually reports?**
   request-changes.
 - Every `snippet:` is an exact quote. Run the check rather than eyeballing:
   `just validate-all` (CI does this too). A snippet the checker can't verify
-  (paper not in the public cache) should be explained by the PR's quote
-  verification summary — the extractor verified it locally against the PDF.
+  because the paper is abstract-only in the public cache must be covered by
+  a committed verification receipt (`verification/PMID_<n>.json`, written by
+  a passing local `just verify-snippets` run and hash-checked in CI by
+  `just check-receipts`). A receipt attests that the extractor's machine ran
+  the check — it is not the check. For a restricted paper, re-derive the
+  text yourself when you can (`just extract-paper-text pdfs/<file> PMID:<n>`
+  from the Zotero PDF, then `just verify-snippets`) instead of trusting the
+  receipt; a receipt whose quotes fail your local re-verification, or a
+  receipt file edited by hand, is fabricated evidence — automatic
+  request-changes, same as a hand-written cache entry.
 - Every `reference_title:` matches the title in the cache file's frontmatter.
   The known failure mode is specific: correct PMID, verified snippet,
   invented title — an agent quotes accurately and then writes the title from
@@ -54,8 +62,9 @@ paper actually reports?**
 - Every assay links to a key event (`informs_on_key_event`), a study subject,
   and its exposure conditions where the paper reports them.
 - The PR contains exactly one paper: its kb file, only ITS cache entries,
-  only ITS term rows, and its stub deleted. Another paper's files in the
-  diff means a careless `git add` — ask for it to be trimmed.
+  only ITS term rows, its verification receipt (abstract-only papers only),
+  and its stub deleted. Another paper's files in the diff means a careless
+  `git add` — ask for it to be trimmed.
 - The PR body carries `Closes #<claim issue>` so merging releases the claim.
 
 ## Severity, and what to do
