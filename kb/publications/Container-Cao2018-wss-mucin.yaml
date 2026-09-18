@@ -201,9 +201,19 @@ goblet_cell_assays:
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0007196"
+        name: "tracheobronchial tree"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      primary_cell:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Normal human primary bronchial epithelial cells collected from the tracheobronchial region of the lung (MatTek, Ashland, MA)"
     follows_protocols:
       - protocol_type: MolecularAssayProtocol
         id: "PROTOCOL:cao-mucin-elisa-001"
@@ -254,9 +264,19 @@ goblet_cell_assays:
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0007196"
+        name: "tracheobronchial tree"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      primary_cell:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Normal human primary bronchial epithelial cells collected from the tracheobronchial region of the lung (MatTek, Ashland, MA)"
     follows_protocols:
       - protocol_type: MolecularAssayProtocol
         id: "PROTOCOL:cao-mucin-elisa-001"
@@ -307,9 +327,19 @@ goblet_cell_assays:
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0007196"
+        name: "tracheobronchial tree"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      primary_cell:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Normal human primary bronchial epithelial cells collected from the tracheobronchial region of the lung (MatTek, Ashland, MA)"
     follows_protocols:
       - protocol_type: MolecularAssayProtocol
         id: "PROTOCOL:cao-mucin-elisa-001"
@@ -348,46 +378,21 @@ goblet_cell_assays:
           unit:
             id: "UO:0000032"
             name: "hour"
-    informs_on_key_event:
-      id: "KE:ke-mucin-hypersecretion"
-      name: "Mucin hypersecretion"
-      biological_action: increased
-      level_of_biological_organization: cellular
-    study_subject:
-      subject_type: CellularSystem
-      id: "soma:cao-ali-culture-001"
-      name: "Human bronchial ALI airway tissue culture"
-      cell_type:
-        id: "CL:0002328"
-        name: "bronchial epithelial cell"
-      model_species:
-        id: "NCBITaxon:9606"
-        name: "Homo sapiens"
-    follows_protocols:
-      - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:cao-rtpcr-001"
-        name: "Quantitative real-time RT-PCR for MUC5AC and MUC5B"
-        reference_gene: "18S rRNA (Hs99999901_s1)"
-        normalization_method: "ddCt method, 2^-ddCt fold change"
-      - protocol_type: Protocol
-        id: "PROTOCOL:cao-wss-exposure-001"
-        name: "Cigarette whole smoke solution (WSS) preparation and ALI exposure"
-    evidence:
-      - reference: "PMID:30053496"
-        reference_title: "Cigarette whole smoke solutions disturb mucin homeostasis in a human in vitro airway tissue model."
-        supports: SUPPORT
-        evidence_source: IN_VITRO
-        snippet: "hypersecretion of mucins 5AC and 5B, accompanied by up-regulation of the respective mucin genes."
-        explanation: "States that mucin hypersecretion was accompanied by up-regulation of the MUC5AC and MUC5B genes, which is the gene expression result this assay records."
-
-  # ---- Reversibility of mucin secretion ----
-  - id: "GCM:cao-mucin-secretion-pt14"
-    name: "MUC5AC and MUC5B secretion after a 14-day recovery"
-    description: "MUC5AC and MUC5B secretion re-measured 7 days (PT7) and 14 days (PT14) after the fifth daily treatment with the CI WSSs. At PT7 induction was attenuated but MUC5AC secretion remained significantly increased in the 0.5% and 1.0% groups; by PT14 secretion of both mucins in all treated cultures had fallen back to vehicle-control levels, as had MUC5AC and MUC5B gene expression. n = 5, One-Way ANOVA with Dunnett's test, p < 0.05."
-    has_specified_output:
-      id: "GCM:cao-mucin-secretion-pt14-output"
-      name: "MUC5AC and MUC5B secretion measurements after recovery"
-    has_exposure_condition:
+      - id: "EXPOSURE:cao-ci-r60-4h-single"
+        name: "CI R60 whole smoke solution, single 4-h treatment"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
       - id: "EXPOSURE:cao-ci-wss-5d-pt14"
         name: "CI WSS 0.1-1.0%, 4 h/day for 5 days, followed by a 14-day recovery"
         exposure_agent:
@@ -415,9 +420,99 @@ goblet_cell_assays:
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0007196"
+        name: "tracheobronchial tree"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      primary_cell:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Normal human primary bronchial epithelial cells collected from the tracheobronchial region of the lung (MatTek, Ashland, MA)"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:cao-rtpcr-001"
+        name: "Quantitative real-time RT-PCR for MUC5AC and MUC5B"
+        reference_gene: "18S rRNA (Hs99999901_s1)"
+        normalization_method: "ddCt method, 2^-ddCt fold change"
+      - protocol_type: Protocol
+        id: "PROTOCOL:cao-wss-exposure-001"
+        name: "Cigarette whole smoke solution (WSS) preparation and ALI exposure"
+    evidence:
+      - reference: "PMID:30053496"
+        reference_title: "Cigarette whole smoke solutions disturb mucin homeostasis in a human in vitro airway tissue model."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "hypersecretion of mucins 5AC and 5B, accompanied by up-regulation of the respective mucin genes."
+        explanation: "States that mucin hypersecretion was accompanied by up-regulation of the MUC5AC and MUC5B genes, which is the gene expression result this assay records."
+
+  # ---- Reversibility of mucin secretion ----
+  - id: "GCM:cao-mucin-secretion-pt14"
+    name: "MUC5AC and MUC5B secretion after a 14-day recovery"
+    description: "MUC5AC and MUC5B secretion re-measured 7 days (PT7) and 14 days (PT14) after the fifth daily treatment with the CI WSSs. At PT7 induction was attenuated but MUC5AC secretion remained significantly increased in the 0.5% and 1.0% groups; by PT14 secretion of both mucins in all treated cultures had fallen back to vehicle-control levels, as had MUC5AC and MUC5B gene expression. n = 5, One-Way ANOVA with Dunnett's test, p < 0.05."
+    has_specified_output:
+      id: "GCM:cao-mucin-secretion-pt14-output"
+      name: "MUC5AC and MUC5B secretion measurements after recovery"
+    has_exposure_condition:
+      - id: "EXPOSURE:cao-ci-wss-5d-pt7"
+        name: "CI WSS 0.1-1.0%, 4 h/day for 5 days, followed by a 7-day recovery"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "7"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:cao-ci-wss-5d-pt14"
+        name: "CI WSS 0.1-1.0%, 4 h/day for 5 days, followed by a 14-day recovery"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:cao-ali-culture-001"
+      name: "Human bronchial ALI airway tissue culture"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0007196"
+        name: "tracheobronchial tree"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Normal human primary bronchial epithelial cells collected from the tracheobronchial region of the lung (MatTek, Ashland, MA)"
     follows_protocols:
       - protocol_type: MolecularAssayProtocol
         id: "PROTOCOL:cao-mucin-elisa-001"
@@ -476,6 +571,13 @@ goblet_cell_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      primary_cell:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Normal human primary bronchial epithelial cells collected from the tracheobronchial region of the lung (MatTek, Ashland, MA)"
     follows_protocols:
       - protocol_type: StainingProtocol
         id: "PROTOCOL:cao-pas-001"
@@ -534,9 +636,19 @@ goblet_cell_assays:
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0007196"
+        name: "tracheobronchial tree"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      primary_cell:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Normal human primary bronchial epithelial cells collected from the tracheobronchial region of the lung (MatTek, Ashland, MA)"
     follows_protocols:
       - protocol_type: StainingProtocol
         id: "PROTOCOL:cao-pas-001"
@@ -596,8 +708,13 @@ ciliary_function_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      primary_cell:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
       cell_culture_growth_mode: air_liquid_interface
       substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Normal human primary bronchial epithelial cells collected from the tracheobronchial region of the lung (MatTek, Ashland, MA)"
     follows_protocols:
       - protocol_type: ImagingProtocol
         id: "PROTOCOL:cao-cbf-sava-001"
@@ -652,9 +769,19 @@ ciliary_function_assays:
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0007196"
+        name: "tracheobronchial tree"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      primary_cell:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Normal human primary bronchial epithelial cells collected from the tracheobronchial region of the lung (MatTek, Ashland, MA)"
     follows_protocols:
       - protocol_type: ImagingProtocol
         id: "PROTOCOL:cao-cbf-sava-001"

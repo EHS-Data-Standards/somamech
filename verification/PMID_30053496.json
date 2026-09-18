@@ -1,0 +1,15 @@
+{
+  "reference_id": "PMID:30053496",
+  "kb_file": "kb/publications/Container-Cao2018-wss-mucin.yaml",
+  "content_type_in_committed_cache": "abstract_only",
+  "verified_with": "just verify-snippets (linkml-reference-validator, committed + local cache)",
+  "verified_date": "2026-09-17",
+  "snippet_sha256": [
+    "35975fbbb16807a15f2c689583587dc73fee638dd2d0f6b3c59304aeb3e95ce2",
+    "3704c1a3669c0c8016ea4a3d0c4e2784d1b18254b085be041a0afa7574ae2135",
+    "925bb6f42cb507388edb63ee4848e1e384baa3d1d2fb121d6683aa34a0f76550",
+    "a128e999a06e0ee71421e0af93b82f9bd485bef2907a83918adfceb9f81fcafe",
+    "ac85223ca6130b7d46d99e3c4cdfc8094b4c8f53663c3b64c77beb344dc4cb5e",
+    "c531440ff6f3b182068e9ee13150be76ee50309039ecc6c4623020c09159fdf8"
+  ]
+}
