@@ -1,0 +1,19 @@
+{
+  "reference_id": "PMID:39923567",
+  "kb_file": "kb/publications/Container-cui2025-pm25-aecopd.yaml",
+  "content_type_in_committed_cache": "abstract_only",
+  "verified_with": "just verify-snippets (linkml-reference-validator, committed + local cache)",
+  "verified_date": "2026-09-17",
+  "snippet_sha256": [
+    "33e3f6dc6c853d1442c8c986aab7aa343001db68a7b8d185e2840c3b9f04a334",
+    "3f4e2ebc035f68bd58bfb05ef1dd5a3f6add411ea499e98616bdb37fb96a4cf6",
+    "46581bd4538ce83ece45e67a47d29e5dcd0e62c0467dc27026dc76a334373663",
+    "544a4105924948a9144323e65c587829e4a797539aeb139dc9cd9e838835f3f1",
+    "55cebe57645e46e41e18b867fb734768d5d99ed6e13f1bb3eeedd3299db98a5b",
+    "57eedd5c153596d28818356351fb4f35be81fb5fb21762bb97c3bf1e545033c5",
+    "c0e6693225d2b580873f1aedbf29a48c3375ed876473e6b9890d1ae84b0fa160",
+    "c0fd5a2e69540af9dd6f0d901f5c77416cd6aff86adcbbb4d965fb4952666d48",
+    "ccbf79ebfaa026530297f9b56135b9426daa821184cedce848ae84ec42f03fa8",
+    "d9e341505323d9cb7347c6cb2333567e66b516d9eb5fea7b12cc7744b0114ba3"
+  ]
+}

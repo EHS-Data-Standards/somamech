@@ -1,0 +1,247 @@
+# =============================================================================
+# Cui et al. (2025) - Clinicopathological relationship between PM2.5 exposure
+# and acute exacerbations of chronic obstructive pulmonary disease (AECOPD)
+# =============================================================================
+#
+# Source: Ecotoxicol Environ Saf. 2025;291:117846
+# DOI: 10.1016/j.ecoenv.2025.117846
+# PMID: 39923567
+#
+# Study design:
+#   - Retrospective, single-centre human cohort. 1284 AECOPD hospitalizations
+#     at the Second Hospital of Shanxi Medical University (Taiyuan, Shanxi,
+#     China), 1 January 2018 - 31 December 2022.
+#   - Exposure: monthly mean ambient PM2.5 for Shanxi Province from the
+#     Tracking Air Pollution in China (TAP) dataset, paired by admission month.
+#   - Analysis: one-way ANOVA / Kruskal-Wallis across four seasonal periods
+#     (Nov-Jan, Feb-Apr, May-Jul, Aug-Oct) and Spearman's rank correlation
+#     between monthly PM2.5 and each clinical variable (SPSS 26.0).
+#
+# Key findings:
+#   - Healthcare use rose with PM2.5: admissions r = 0.754, outpatient visits
+#     r = 0.799, emergency visits r = 0.447, ICU transfers r = 0.860.
+#   - Peripheral blood WBC, neutrophil and eosinophil counts and the
+#     neutrophil/eosinophil/lymphocyte/monocyte percentages correlated with
+#     PM2.5; CRP r = 0.773 (P < 0.01) and D-dimer r = 0.611 (P < 0.01).
+#     Lymphocyte and monocyte COUNTS were not significantly correlated.
+#   - FEV1 %, FEV1/FVC and PaO2 fell and PaCO2 rose during high-PM2.5 periods.
+#   - Masson staining: lung collagen area correlated with PM2.5 (r = 0.818,
+#     P < 0.0001; n = 5 biopsies per seasonal group).
+#
+# Extraction notes:
+#   - This is an epidemiological correlation study. Its quantitative results
+#     are Spearman coefficients and seasonal fold-differences; the absolute
+#     spirometry, blood-count and PM2.5 values live only in figure panels and
+#     are never stated in the text. No numeric measurement slot is therefore
+#     populated - the coefficients and p-values are recorded in the assay and
+#     output descriptions, each backed by an exact quote.
+#   - The Masson-trichrome pulmonary fibrosis result (r = 0.818) is NOT
+#     represented as an assay: the SOMA schema has no assay class for
+#     histological collagen quantification. It is summarised here only.
+#   - The peripheral blood panel is recorded with BALFSputumAssay because that
+#     is the schema's in-vivo airway-inflammation assay; the sample is venous
+#     blood (sample_type: blood), not BALF or sputum. See the assay
+#     description.
+# =============================================================================
+
+source_publication:
+  reference: "PMID:39923567"
+  reference_title: "Clinicopathological relationship between PM2.5 exposure and acute exacerbations of chronic obstructive pulmonary disease."
+  doi: "10.1016/j.ecoenv.2025.117846"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:cui-pm25-tap-001"
+    name: "Monthly mean ambient PM2.5 assignment from the TAP dataset"
+    description: "Monthly average ambient PM2.5 concentrations (ug/m3) for Shanxi Province, China, for 1 January 2018 to 31 December 2022, taken from the Tracking Air Pollution in China (TAP, http://tapdata.org.cn) project and paired with the month of each AECOPD hospitalization. TAP integrates ground observations, satellite remote sensing, emission inventories and model simulations."
+
+  - id: "PROTOCOL:cui-pulmonary-function-001"
+    name: "Clinical pulmonary function and arterial blood gas record abstraction"
+    description: "FEV1/FVC, FEV1 % and arterial partial pressures of oxygen (PaO2) and carbon dioxide (PaCO2) were abstracted from the hospital records of AECOPD inpatients diagnosed per the GOLD 2023 criteria. Group differences across the four seasonal periods were tested by one-way ANOVA (normally distributed data) or Kruskal-Wallis (non-normal data); association with monthly PM2.5 was tested by Spearman's rank correlation in SPSS 26.0, with significance set at P < 0.05."
+
+  - id: "PROTOCOL:cui-blood-panel-001"
+    name: "Peripheral blood cell count and inflammatory marker record abstraction"
+    description: "Leukocyte, neutrophil, lymphocyte, monocyte, eosinophil and basophil counts, the percentage distributions of these cell types, and C-reactive protein and D-dimer levels were abstracted from the hospital records of AECOPD inpatients. Association with monthly PM2.5 was tested by Spearman's rank correlation in SPSS 26.0, with significance set at P < 0.05."
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS
+# Adverse Outcome: decreased lung function
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:cui-pm25-aecopd-2018-2022"
+    name: "Pulmonary function and arterial blood gases in AECOPD inpatients across PM2.5 exposure periods"
+    description: "FEV1/FVC, FEV1 %, PaO2 and PaCO2 recorded for 1284 AECOPD hospitalizations (2018-2022) and compared across the four seasonal periods and against monthly mean ambient PM2.5. FEV1 %, FEV1/FVC and PaO2 decreased and PaCO2 increased during high-PM2.5 periods (Fig. 7A-H). The paper reports these results as seasonal comparisons and correlation plots only; no absolute spirometry or blood gas values appear in the text, so no numeric measurement slot is populated here."
+    reference_dataset: "None reported; values are hospital-recorded spirometry and arterial blood gas results, not expressed against an external reference equation"
+    evidence:
+      - reference: "PMID:39923567"
+        reference_title: "Clinicopathological relationship between PM2.5 exposure and acute exacerbations of chronic obstructive pulmonary disease."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "This was evident from decreased PaO2, FEV1 % and FEV1/FVC ratios, and increased PaCO2 in patients during periods of high PM2.5 exposure (Fig. 7A-H)."
+        explanation: "States the direction of every lung function variable this assay records: FEV1 %, FEV1/FVC and PaO2 fell while PaCO2 rose when ambient PM2.5 was high."
+      - reference: "PMID:39923567"
+        reference_title: "Clinicopathological relationship between PM2.5 exposure and acute exacerbations of chronic obstructive pulmonary disease."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Function measures (FEV1/ FVC, FEV1 %) and PaO2 showed inverse correlations."
+        explanation: "The abstract's statement that FEV1/FVC, FEV1 % and PaO2 correlate inversely with PM2.5, supporting the decreased-lung-function key event. The quote starts at 'Function' because the PDF line-breaks 'Pulmonary' across the hyphen."
+      - reference: "PMID:39923567"
+        reference_title: "Clinicopathological relationship between PM2.5 exposure and acute exacerbations of chronic obstructive pulmonary disease."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "A cohort of 1284 patients with AECOPD was identified from the Department of Respiratory and Critical Care Medicine at the Second Hospital of Shanxi Medical University within the aforementioned timeframe."
+        explanation: "Source of the cohort size (1284), the diagnosis (AECOPD) and the single collection site recorded on this assay's study subject."
+      - reference: "PMID:39923567"
+        reference_title: "Clinicopathological relationship between PM2.5 exposure and acute exacerbations of chronic obstructive pulmonary disease."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The majority were over 60 years old (68.4 %), with significant proportions having histories of smoking (76.5 %) and allergies (45.0 %)."
+        explanation: "Source of the 68.4 % over-60, 76.5 % smoking and 45.0 % allergy proportions recorded in subject_characteristics."
+      - reference: "PMID:39923567"
+        reference_title: "Clinicopathological relationship between PM2.5 exposure and acute exacerbations of chronic obstructive pulmonary disease."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Monthly average concentrations of fine particulate matter (PM2.5, in μg/m³) for Shanxi Province were obtained for the period spanning January 1, 2018, to December 31, 2022."
+        explanation: "Defines the exposure recorded in has_exposure_condition: monthly mean ambient PM2.5 for Shanxi Province over the five years 2018-2022."
+    has_specified_output:
+      id: "LF:cui-pm25-aecopd-2018-2022-output"
+      name: "Direction of change in FEV1/FVC, FEV1 %, PaO2 and PaCO2 with ambient PM2.5"
+      description: "Qualitative result only: FEV1/FVC, FEV1 % and PaO2 fell and PaCO2 rose as monthly mean PM2.5 rose (n = 1284 hospitalizations). The paper states no numeric FEV1, FVC, FEV1/FVC, PaO2 or PaCO2 values, so the named measurement slots are deliberately left empty rather than read off Fig. 7."
+      evidence:
+        - reference: "PMID:39923567"
+          reference_title: "Clinicopathological relationship between PM2.5 exposure and acute exacerbations of chronic obstructive pulmonary disease."
+          supports: SUPPORT
+          evidence_source: HUMAN_CLINICAL
+          snippet: "This was evident from decreased PaO2, FEV1 % and FEV1/FVC ratios, and increased PaCO2 in patients during periods of high PM2.5 exposure (Fig. 7A-H)."
+          explanation: "The only statement of the measured outcome in the text; it gives direction but no magnitude, which is why this output carries no numeric values."
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cui-aecopd-cohort"
+      name: "AECOPD inpatients, Second Hospital of Shanxi Medical University, 2018-2022"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      disease_state: "Acute exacerbation of chronic obstructive pulmonary disease (AECOPD), diagnosed per the GOLD 2023 criteria"
+      subject_characteristics: "1284 AECOPD hospitalizations; 1045 (81.4 %) male and 239 (18.6 %) female; 878 (68.4 %) aged over 60; 982 (76.5 %) with a smoking history; 578 (45.0 %) with an allergy history. Mean age 71.66 +/- 4.87 years for males and 66.73 +/- 3.77 years for females. Exclusions included antibiotic use in the past month, other respiratory disease (tuberculosis, asthma, bronchiectasis, lung cancer), hormone or immunosuppressant use in the past three months, and severe cardiac, hepatic or renal comorbidity."
+      collection_site: "Second Hospital of Shanxi Medical University, Xinghua Ling District, Taiyuan City, Shanxi Province, China"
+      sample_collection_method: "Hospital-recorded pulmonary function testing and arterial blood gas analysis, abstracted retrospectively from the medical record"
+      clinical_context: "Retrospective analysis of AECOPD hospitalizations from 2018 to 2022, paired with monthly mean ambient PM2.5"
+    has_exposure_condition:
+      - id: "EXPOSURE:cui-pm25-ambient-2018-2022"
+        name: "Ambient PM2.5 in Shanxi Province, monthly means, January 2018 to December 2022"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:cui-pulmonary-function-001"
+        name: "Clinical pulmonary function and arterial blood gas record abstraction"
+      - id: "PROTOCOL:cui-pm25-tap-001"
+        name: "Monthly mean ambient PM2.5 assignment from the TAP dataset"
+
+# =============================================================================
+# INFLAMMATORY CELL / MEDIATOR ASSAYS
+# Key Event: airway inflammation
+#
+# NOTE ON ASSAY CLASS: the sample here is peripheral venous blood, not BALF or
+# sputum. BALFSputumAssay is the schema's in-vivo assay for the airway
+# inflammation key event, and sample_type on the subject records the true
+# sample. No blood-differential assay class exists in the schema.
+# =============================================================================
+
+balf_sputum_assays:
+  - id: "BALF:cui-pm25-blood-inflammation-2018-2022"
+    name: "Peripheral blood inflammatory indices in AECOPD inpatients across PM2.5 exposure periods"
+    description: "Peripheral venous blood (NOT BALF or sputum) from 1284 AECOPD hospitalizations (2018-2022). Spearman correlation against monthly mean PM2.5: leukocyte, neutrophil and eosinophil COUNTS and the neutrophil, eosinophil, lymphocyte and monocyte PERCENTAGES were strongly correlated with PM2.5, while lymphocyte and monocyte counts were not significantly correlated. C-reactive protein r = 0.773 (P < 0.01) and D-dimer r = 0.611 (P < 0.01). The paper reports no absolute cell counts, percentages or CRP/D-dimer concentrations in the text, so no numeric measurement slot is populated here."
+    target_cell_type:
+      id: "CL:0000775"
+      name: "neutrophil"
+    evidence:
+      - reference: "PMID:39923567"
+        reference_title: "Clinicopathological relationship between PM2.5 exposure and acute exacerbations of chronic obstructive pulmonary disease."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Spearman’s rank correlation analysis demonstrated that variations in the counts of WBC, NE, and EOS, as well as the percentage changes in NE, ESO, LYM, and mono, were strongly correlated with PM2.5 concentrations (Figs. 4F-H, 4O-R)."
+        explanation: "Names exactly which peripheral blood indices correlated with PM2.5: WBC, neutrophil and eosinophil counts and the neutrophil, eosinophil, lymphocyte and monocyte percentages."
+      - reference: "PMID:39923567"
+        reference_title: "Clinicopathological relationship between PM2.5 exposure and acute exacerbations of chronic obstructive pulmonary disease."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "However, changes in the counts of LYM (Fig. 4I) and mono (Fig. 4J) did not show significant correlation, which may be related to the limited number of participants included in this study."
+        explanation: "The paper's own negative result, recorded in the assay description so the correlation list is not overstated: lymphocyte and monocyte counts did not correlate with PM2.5."
+      - reference: "PMID:39923567"
+        reference_title: "Clinicopathological relationship between PM2.5 exposure and acute exacerbations of chronic obstructive pulmonary disease."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "markers (leukocyte and neutrophil counts, eosinophil percentages, C-reactive protein), D-dimer levels, PaCO2, and pulmonary fibrosis indicators showed positive correlations with PM2.5 levels"
+        explanation: "The abstract's summary of the positively correlated inflammatory markers. The quote starts at 'markers' because the PDF line-breaks 'Inflammatory' across the hyphen."
+      - reference: "PMID:39923567"
+        reference_title: "Clinicopathological relationship between PM2.5 exposure and acute exacerbations of chronic obstructive pulmonary disease."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "A cohort of 1284 patients with AECOPD was identified from the Department of Respiratory and Critical Care Medicine at the Second Hospital of Shanxi Medical University within the aforementioned timeframe."
+        explanation: "Source of the cohort size (1284), the diagnosis (AECOPD) and the single collection site recorded on this assay's study subject."
+    has_specified_output:
+      id: "BALF:cui-pm25-blood-inflammation-2018-2022-output"
+      name: "Direction and strength of association between peripheral blood inflammatory indices and ambient PM2.5"
+      description: "Spearman coefficients only: C-reactive protein r = 0.773 (P < 0.01) and D-dimer r = 0.611 (P < 0.01); leukocyte, neutrophil and eosinophil counts and the neutrophil, eosinophil, lymphocyte and monocyte percentages were strongly correlated with PM2.5, lymphocyte and monocyte counts were not. The paper states no absolute concentrations or cell counts, so neutrophil_percentage, eosinophil_percentage, lymphocyte_percentage and total_cell_count are deliberately left empty rather than read off Fig. 4."
+      evidence:
+        - reference: "PMID:39923567"
+          reference_title: "Clinicopathological relationship between PM2.5 exposure and acute exacerbations of chronic obstructive pulmonary disease."
+          supports: SUPPORT
+          evidence_source: HUMAN_CLINICAL
+          snippet: "C-reactive protein and D-dimer levels in peripheral blood also demonstrated seasonal variability (Fig. 5A-B), and were positively correlated with PM2.5 concentrations"
+          explanation: "Establishes that the CRP and D-dimer measurements are peripheral blood values and that both rose with PM2.5."
+        - reference: "PMID:39923567"
+          reference_title: "Clinicopathological relationship between PM2.5 exposure and acute exacerbations of chronic obstructive pulmonary disease."
+          supports: SUPPORT
+          evidence_source: HUMAN_CLINICAL
+          snippet: "markers in response to air pollution (Fig. 5C-D, r= 0.773, P< 0.01 and r= 0.611, P< 0.01, respectively)."
+          explanation: "The continuation of the same sentence, giving the two Spearman coefficients recorded in this output: CRP r = 0.773 and D-dimer r = 0.611, both P < 0.01. The quote starts at 'markers' because the PDF line-breaks 'inflammatory' across the hyphen."
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cui-aecopd-cohort-blood"
+      name: "AECOPD inpatients, peripheral blood, Second Hospital of Shanxi Medical University, 2018-2022"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      disease_state: "Acute exacerbation of chronic obstructive pulmonary disease (AECOPD), diagnosed per the GOLD 2023 criteria"
+      sample_type: blood
+      subject_characteristics: "1284 AECOPD hospitalizations; 1045 (81.4 %) male and 239 (18.6 %) female; 878 (68.4 %) aged over 60; 982 (76.5 %) with a smoking history; 578 (45.0 %) with an allergy history. Bacterial infection was recorded in 479 (37.3 %) and viral infection in 205 (16.0 %)."
+      collection_site: "Second Hospital of Shanxi Medical University, Xinghua Ling District, Taiyuan City, Shanxi Province, China"
+      sample_collection_method: "Hospital clinical laboratory peripheral blood panel, abstracted retrospectively from the medical record"
+      clinical_context: "Retrospective analysis of AECOPD hospitalizations from 2018 to 2022, paired with monthly mean ambient PM2.5"
+    has_exposure_condition:
+      - id: "EXPOSURE:cui-pm25-ambient-2018-2022"
+        name: "Ambient PM2.5 in Shanxi Province, monthly means, January 2018 to December 2022"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:cui-blood-panel-001"
+        name: "Peripheral blood cell count and inflammatory marker record abstraction"
+      - id: "PROTOCOL:cui-pm25-tap-001"
+        name: "Monthly mean ambient PM2.5 assignment from the TAP dataset"
