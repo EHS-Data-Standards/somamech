@@ -79,8 +79,22 @@ protocols:
       - "beta2AR (Novus Biologicals, NBP261710)"
       - "TRPC6 (Protein Tech, 18236-1-AP)"
       - "phospho-AKT Ser473 (Cell Signaling, 9271)"
-      - "phospho-NFkB p65 Ser536 (Cell Signaling, 3037 for Ser276; 8242 for total p65)"
+      - "phospho-NFkB p65 Ser276 (Cell Signaling, 3037)"
+      - "NFkB p65 total (Cell Signaling, 8242)"
+      - "phospho-NFkB p65 Ser536 (no catalog number stated by the paper)"
       - "beta-actin (Sigma, A5441)"
+
+  - id: "PROTOCOL:caohuy-wb-ferret-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Western blot for CFTR, beta2AR and TRPC6 in ferret lung slice lysates"
+    description: "Ferret tracheobronchial slice tissues homogenized in RIPA buffer with anti-protease/phosphatase inhibitor cocktail using a handheld motor-driven tissue homogenizer and centrifuged at 20,000 rpm for 5 min; 50 ug lysate per sample on 4-12% gradient gels; PVDF transfer; overnight primary antibody at 4 C. The paper specifies a different antibody panel for the ferret blots than for the human cell blots."
+    normalization_method: "beta-actin loading control"
+    lysis_buffer: "RIPA buffer with anti-protease/phosphatase inhibitor cocktail"
+    antibodies_used:
+      - "CFTR (CFF Antibody Distribution program, mAb 660 + mAb 596)"
+      - "beta2AR (Novus Biologicals, NBP261710)"
+      - "TRPC6 (Protein Tech, 18236-1-AP)"
+      - "beta-actin (Cell Signaling, 4970)"
 
   - id: "PROTOCOL:caohuy-elisa-001"
     protocol_type: MolecularAssayProtocol
@@ -126,6 +140,12 @@ cftr_assays:
     description: "cAMP-activated CFTR-dependent short-circuit current (Isc) measured in Ussing chambers after 24 h exposure of differentiated BCi.NS1.1 (dBCi) ALI organoids to B[a]P (0.1, 1.0 and 10 uM). Isc was systematically and significantly reduced as B[a]P concentration rose. The paper reports the result as representative Isc tracings (Fig 2a, 2b), so no numeric Isc value is recorded here."
     stimulation_agent: "10 uM forskolin + 100 uM IBMX"
     evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Fig 2a and Fig 2b showed that CFTR channel function, represented by short circuit currents (Isc), were systematically and significantly reduced by increases in"
+        explanation: "The primary result sentence for this assay: Fig 2a/2b report that cAMP-activated CFTR short-circuit current fell systematically and significantly as the exposure concentration rose. The quote is cut mid-sentence before the 'B[a]P concentrations' phrase because the validator strips bracketed spans from snippets but not from the cached text; the cached PDF also renders the delta of 'delta-Isc' as a Symbol-font glyph, which the snippet reproduces verbatim."
       - reference: "PMID:42079210"
         reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
         supports: SUPPORT
@@ -295,6 +315,7 @@ oxidative_stress_assays:
       subject_type: CellularSystem
       id: "soma:caohuy-16hbe-001"
       name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      description: "16HBE14o- (SCC150, Sigma-Aldrich) human bronchial epithelial cells polarized at ALI for 9-10 days on Snapwell or Transwell inserts."
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
@@ -356,6 +377,7 @@ oxidative_stress_assays:
       subject_type: CellularSystem
       id: "soma:caohuy-16hbe-001"
       name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      description: "16HBE14o- (SCC150, Sigma-Aldrich) human bronchial epithelial cells polarized at ALI for 9-10 days on Snapwell or Transwell inserts."
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
@@ -411,6 +433,7 @@ oxidative_stress_assays:
       subject_type: CellularSystem
       id: "soma:caohuy-16hbe-001"
       name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      description: "16HBE14o- (SCC150, Sigma-Aldrich) human bronchial epithelial cells polarized at ALI for 9-10 days on Snapwell or Transwell inserts."
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
@@ -477,6 +500,7 @@ gene_expression_assays:
       subject_type: CellularSystem
       id: "soma:caohuy-16hbe-001"
       name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      description: "16HBE14o- (SCC150, Sigma-Aldrich) human bronchial epithelial cells polarized at ALI for 9-10 days on Snapwell or Transwell inserts."
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
@@ -534,6 +558,7 @@ gene_expression_assays:
       subject_type: CellularSystem
       id: "soma:caohuy-16hbe-001"
       name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      description: "16HBE14o- (SCC150, Sigma-Aldrich) human bronchial epithelial cells polarized at ALI for 9-10 days on Snapwell or Transwell inserts."
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
@@ -591,6 +616,7 @@ gene_expression_assays:
       subject_type: CellularSystem
       id: "soma:caohuy-16hbe-001"
       name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      description: "16HBE14o- (SCC150, Sigma-Aldrich) human bronchial epithelial cells polarized at ALI for 9-10 days on Snapwell or Transwell inserts."
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
@@ -648,6 +674,7 @@ gene_expression_assays:
       subject_type: CellularSystem
       id: "soma:caohuy-dbci-001"
       name: "Differentiated BCi-NS1.1 (dBCi) human airway organoid at air-liquid interface"
+      description: "hTERT-transformed BCi-NS1.1 human airway basal stem cells (gift of Dr. R.G. Crystal) differentiated on Snapwell or Transwell inserts under ALI conditions for 25-28 days."
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
@@ -705,6 +732,7 @@ gene_expression_assays:
       subject_type: CellularSystem
       id: "soma:caohuy-16hbe-001"
       name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      description: "16HBE14o- (SCC150, Sigma-Aldrich) human bronchial epithelial cells polarized at ALI for 9-10 days on Snapwell or Transwell inserts."
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
@@ -768,6 +796,7 @@ gene_expression_assays:
       subject_type: CellularSystem
       id: "soma:caohuy-16hbe-001"
       name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      description: "16HBE14o- (SCC150, Sigma-Aldrich) human bronchial epithelial cells polarized at ALI for 9-10 days on Snapwell or Transwell inserts."
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
@@ -831,6 +860,21 @@ gene_expression_assays:
           unit:
             id: "UO:0000032"
             name: "hour"
+      - id: "EXPOSURE:caohuy-h2o2-100um-24h"
+        name: "Hydrogen peroxide 100 uM for 24 hours (positive control)"
+        exposure_agent:
+          id: "CHEBI:16240"
+          name: "hydrogen peroxide"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
     informs_on_key_event:
       id: "KE:ke-airway-inflammation"
       name: "Airway inflammation"
@@ -840,6 +884,7 @@ gene_expression_assays:
       subject_type: CellularSystem
       id: "soma:caohuy-16hbe-001"
       name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      description: "16HBE14o- (SCC150, Sigma-Aldrich) human bronchial epithelial cells polarized at ALI for 9-10 days on Snapwell or Transwell inserts."
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
@@ -910,6 +955,7 @@ gene_expression_assays:
       subject_type: CellularSystem
       id: "soma:caohuy-16hbe-001"
       name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      description: "16HBE14o- (SCC150, Sigma-Aldrich) human bronchial epithelial cells polarized at ALI for 9-10 days on Snapwell or Transwell inserts."
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
@@ -992,8 +1038,8 @@ gene_expression_assays:
     follows_protocols:
       - id: "PROTOCOL:caohuy-ferret-slice-001"
         name: "Ex vivo ferret lung tracheobronchial slice culture"
-      - id: "PROTOCOL:caohuy-wb-001"
-        name: "Western blot for CFTR, beta2AR, TRPC6 and NF-kB pathway proteins"
+      - id: "PROTOCOL:caohuy-wb-ferret-001"
+        name: "Western blot for CFTR, beta2AR and TRPC6 in ferret lung slice lysates"
 
   # --- Ex vivo ferret slices: IL-6 secretion (Fig 9b) ---
   - id: "GE:caohuy-ferret-il6-24h"
@@ -1108,6 +1154,7 @@ gene_expression_assays:
       subject_type: CellularSystem
       id: "soma:caohuy-dbci-001"
       name: "Differentiated BCi-NS1.1 (dBCi) human airway organoid at air-liquid interface"
+      description: "hTERT-transformed BCi-NS1.1 human airway basal stem cells (gift of Dr. R.G. Crystal) differentiated on Snapwell or Transwell inserts under ALI conditions for 25-28 days."
       cell_type:
         id: "CL:0002328"
         name: "bronchial epithelial cell"
