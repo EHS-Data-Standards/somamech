@@ -361,7 +361,7 @@ gene_expression_assays:
 
   - id: "GE:altman-pm25-barrier-module"
     name: "Keratinisation, epithelial development, cell-cell adhesion and tight junctions module vs PM2.5"
-    description: "Nasal airway expression of the keratinisation, epithelial development, cell-cell adhesion and tight junctions module (epithelium-associated, 1041 genes) was positively associated with PM2.5 concentrations summed over 3 days (FDR = 0.0060, effect size 0.0137 log2 per unit increase in PM2.5; Table 2). This is one of the three modules specific to non-viral exacerbations and covers epithelial barrier function genes. Association only."
+    description: "Nasal airway expression of the keratinisation, epithelial development, cell-cell adhesion and tight junctions module (epithelium-associated, 1041 genes) was positively associated with PM2.5 concentrations summed over 3 days (FDR = 0.0060, effect size 0.0137 log2 per unit increase in PM2.5; Table 2). This is one of the three modules specific to non-viral exacerbations and covers epithelial barrier function genes. Association only. Direction note: the recorded value is the module-expression coefficient, which is positive (module expression rises with PM2.5); it informs on the decreased-barrier-integrity key event as a transcriptional marker of epithelial injury and remodelling, not as a measurement of barrier integrity itself, so the sign of the expression change is opposite to the barrier-function change the key event names."
     gene_expression_method: "bulk RNA-sequencing of nasal lavage cell pellets, summarised into weighted gene co-expression modules"
     normalization_reference: "nasal lavage cell percentages and RNA-sequencing library counts"
     evidence:
