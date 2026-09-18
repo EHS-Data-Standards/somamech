@@ -59,12 +59,20 @@ specific paper:
    worktree. The claim issue already exists — do not file another; put
    `Closes #<its number>` in the PR body.
 3. Obey the claim-paper rules that matter most in parallel:
-   - **Key Event blocks are copied verbatim from kb/ on origin/main, never
+   - **Key Event blocks are copied verbatim from origin/main, never
      re-authored** — two agents wording the same KE differently is the one
-     collision the ID check cannot auto-merge.
+     collision the ID check cannot auto-merge. Grep `kb/` *and*
+     `tests/data/valid/`: `kb/publications/` starts out empty, and several IDs
+     have more than one wording on main. See claim-paper Step 4 for which
+     variant to pick.
+   - **Quotes must verify against the committed `references_cache/`**, which
+     is what CI checks. A quote read out of a local PDF passes
+     `verify-snippets` and fails CI. See claim-paper Step 5.
    - One paper, one PR; add only YOUR paper's kb file, reference cache
      entries, term cache rows, verification receipt (abstract-only papers
      only), and stub deletion.
+   - Write scratch files inside your own worktree. The session scratchpad is
+     shared between parallel agents, so a fixed name there gets clobbered.
 4. Report back: branch name, PR URL, and the quote-verification summary.
 
 Dispatch all N sub-agents in parallel.
