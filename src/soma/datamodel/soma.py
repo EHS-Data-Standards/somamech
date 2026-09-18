@@ -1,5 +1,5 @@
 # Auto generated from soma.yaml by pythongen.py version: 0.0.1
-# Generation date: 2026-09-14T10:10:54
+# Generation date: 2026-09-17T16:12:37
 # Schema: soma
 #
 # id: https://w3id.org/EHS-Data-Standards/soma
@@ -1386,7 +1386,8 @@ class SpeciesReference(NamedEntity):
 @dataclass(repr=False)
 class ChemicalEntityReference(NamedEntity):
     """
-    A reference to a chemical entity from CHEBI or an exposure concept from ECTO.
+    A reference to a chemical entity from CHEBI, an exposure concept from ECTO, or an environmental material from ENVO
+    (e.g. particulate matter, which is an ENVO concept, not a CHEBI chemical).
     """
     _inherited_slots: ClassVar[list[str]] = []
 
@@ -4124,7 +4125,7 @@ slots.SpeciesReference_id = Slot(uri=AOP_FRAMEWORK.id, name="SpeciesReference_id
 
 slots.ChemicalEntityReference_id = Slot(uri=AOP_FRAMEWORK.id, name="ChemicalEntityReference_id", curie=AOP_FRAMEWORK.curie('id'),
                    model_uri=SOMA.ChemicalEntityReference_id, domain=ChemicalEntityReference, range=Union[str, ChemicalEntityReferenceId],
-                   pattern=re.compile(r'^(CHEBI:\d+|ECTO:\d{7})$'))
+                   pattern=re.compile(r'^(CHEBI:\d+|ECTO:\d{7}|ENVO:\d{8})$'))
 
 slots.AnatomicalEntityReference_id = Slot(uri=AOP_FRAMEWORK.id, name="AnatomicalEntityReference_id", curie=AOP_FRAMEWORK.curie('id'),
                    model_uri=SOMA.AnatomicalEntityReference_id, domain=AnatomicalEntityReference, range=Union[str, AnatomicalEntityReferenceId],
