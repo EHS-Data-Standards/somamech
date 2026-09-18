@@ -14,12 +14,33 @@
 #   design and protocols below come from that full text.
 #   Every `snippet:` below was deliberately chosen to verify against BOTH the
 #   committed abstract cache (what CI checks) and the local full text, so
-#   `just validate-file` and `just verify-snippets` both pass. Where a "..."
-#   appears inside a snippet it elides the word "specificity", which the
-#   PDF's text layer renders with an "fi" ligature; nothing else is elided.
-#   Because of that constraint, values that appear ONLY in the full text
-#   (Table 1 medians, cohort mean FEV1/FVC, the ~0.65 dose-response
-#   threshold) are NOT asserted as data here — they would carry no quote
+#   `just validate-file` and `just verify-snippets` both pass.
+#
+#   ELLIPSES — what each "..." actually elides (this is the complete list;
+#   four ellipses across three snippets, and nothing else in this file uses
+#   one). They exist because the PDF text layer renders "fi" as a single
+#   ligature glyph and breaks words and sentences across lines and pages, so
+#   those characters cannot be quoted verbatim from both sources at once:
+#     1. between "the lnc-IL7R level was" and "correlated with physiological
+#        pulmonary function" — elides ONE word, "significantly" (abstract:
+#        "significantly"; PDF text layer: "signiﬁcantly" with an fi ligature).
+#     2. between "exhibited COPD-based" and "implications (area under the
+#        curve" — elides ONE word, "stratification" (abstract:
+#        "stratification"; PDF: "stratiﬁ-" + line break + "cation").
+#     3. twice in the sensitivity/specificity snippet — each elides ONE word,
+#        "specificity" (PDF: "speciﬁcity").
+#     4. between "GOLD stage (r = −0.59," and "p < 0.001)," — elides NOTHING
+#        in the abstract, where those two fragments are directly adjacent; in
+#        the PDF it elides only the running head and footer of the page break
+#        that falls mid-sentence ("Biomedicines 2022, 10, 786. https://...",
+#        "Biomedicines 2022, 10, 786  2 of 11"). No word of the sentence and
+#        no number is dropped.
+#   No claim, qualifier, number or p-value is elided anywhere in this file.
+#
+#   Because every quote has to verify against the committed abstract as well,
+#   values that appear ONLY in the full text (Table 1 medians, cohort mean
+#   FEV1/FVC, the ROC cutoff points, the bronchodilator-response
+#   sub-analysis) are NOT asserted as data here — they would carry no quote
 #   that CI could verify. Only abstract-stated, quote-backed numbers are
 #   recorded.
 #
@@ -95,8 +116,8 @@ gene_expression_assays:
         reference_title: "lnc-IL7R Expression Reflects Physiological Pulmonary Function and Its Aberration Is a Putative Indicator of COPD."
         supports: SUPPORT
         evidence_source: HUMAN_CLINICAL
-        snippet: "our quantitative analysis of lnc-IL7R expression in our COPD cohort (n = 125) ... implications (area under the curve, AUC = 0.86, p < 0.001)"
-        explanation: "Gives the assay (quantitative analysis of lnc-IL7R expression), the cohort size (n = 125) and the COPD-stratification AUC of 0.86 (p < 0.001) recorded by this assay."
+        snippet: "our quantitative analysis of lnc-IL7R expression in our COPD cohort (n = 125) showed that the lnc-IL7R level was ... correlated with physiological pulmonary function and exhibited COPD-based ... implications (area under the curve, AUC = 0.86, p < 0.001)"
+        explanation: "Gives the assay (quantitative analysis of lnc-IL7R expression), the cohort size (n = 125), the correlation of the lnc-IL7R level with physiological pulmonary function, and the COPD-stratification AUC of 0.86 (p < 0.001) recorded by this assay. The first ellipsis elides only the word 'significantly' and the second only the word 'stratification'; both are rendered with an fi ligature in the PDF text layer, and neither carries any claim or number."
       - reference: "PMID:35453536"
         reference_title: "lnc-IL7R Expression Reflects Physiological Pulmonary Function and Its Aberration Is a Putative Indicator of COPD."
         supports: SUPPORT
@@ -180,8 +201,8 @@ lung_function_assays:
         reference_title: "lnc-IL7R Expression Reflects Physiological Pulmonary Function and Its Aberration Is a Putative Indicator of COPD."
         supports: SUPPORT
         evidence_source: HUMAN_CLINICAL
-        snippet: "GOLD stage (r = −0.59, ... %LAA-950insp (r = −0.30, p = 0.002), total LAA (r = −0.35, p < 0.001), FEV1(%) (r = 0.52, p < 0.001), FVC (%) (r = 0.45, p < 0.001)"
-        explanation: "Gives the correlation coefficients and p-values between lnc-IL7R level and GOLD stage, the two CT emphysema indices, FEV1(%) and FVC(%) that this assay records."
+        snippet: "GOLD stage (r = −0.59, ... p < 0.001), %LAA-950insp (r = −0.30, p = 0.002), total LAA (r = −0.35, p < 0.001), FEV1(%) (r = 0.52, p < 0.001), FVC (%) (r = 0.45, p < 0.001)"
+        explanation: "Gives the correlation coefficients and p-values between lnc-IL7R level and GOLD stage, the two CT emphysema indices, FEV1(%) and FVC(%) that this assay records, GOLD-stage p-value included. The ellipsis elides no text at all in the abstract, where 'GOLD stage (r = −0.59,' and 'p < 0.001),' are adjacent; it is there because a page break splits the sentence in the PDF text layer, and it elides only that page's running head and footer."
       - reference: "PMID:35453536"
         reference_title: "lnc-IL7R Expression Reflects Physiological Pulmonary Function and Its Aberration Is a Putative Indicator of COPD."
         supports: SUPPORT
