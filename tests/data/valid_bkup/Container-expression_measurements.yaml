@@ -412,18 +412,18 @@ protein_expression_measurements:
     quantity_measured:
       value: "2450.0"
       unit:
-        id: UO:0000274
-        name: picogram per milliliter
+        id: "UO:0010070"
+        name: "picogram per milliliter"
     range_low:
       value: "0.0"
       unit:
-        id: UO:0000274
-        name: picogram per milliliter
+        id: "UO:0010070"
+        name: "picogram per milliliter"
     range_high:
       value: "500.0"
       unit:
-        id: UO:0000274
-        name: picogram per milliliter
+        id: "UO:0010070"
+        name: "picogram per milliliter"
     target_protein:
       id: PR:000001562
       name: Interleukin-8
