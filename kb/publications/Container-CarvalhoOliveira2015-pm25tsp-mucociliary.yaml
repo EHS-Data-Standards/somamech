@@ -1,0 +1,355 @@
+# =============================================================================
+# Carvalho-Oliveira et al. (2015) - Chemical composition modulates the adverse
+# effects of particles on the mucociliary epithelium
+# =============================================================================
+#
+# Source: Clinics (Sao Paulo). 2015;70(10):706-713
+# DOI: 10.6061/clinics/2015(10)09
+# PMID: 26598085
+#
+# Study design (ex vivo):
+#   - 38 Rana catesbeiana (American bullfrog) palate preparations
+#   - Four groups, immersed for 120 minutes:
+#       * amphibian Ringer's (AR) solution, negative control (n=10)
+#       * total suspended particles (TSP) 0.1 mg/mL, from the electrostatic
+#         precipitator of a steel-sintering plant (n=9)
+#       * urban PM 2.5 0.1 mg/mL ("PM0.1", n=10)
+#       * urban PM 2.5 3.0 mg/mL ("PM3.0", n=9)
+#   - Mucociliary transport (MCT) and ciliary beat frequency (CBF) measured at
+#     0, 10, 20, 30, 60 and 120 minutes; morphometry of intraepithelial acid,
+#     neutral and total mucus plus epithelial thickness after 120 minutes.
+#
+# Reported effects (no group means are given in the text - all values are
+# plotted in Figures 2-5, so no numeric measurements are recorded here):
+#   - TSP and PM 2.5 3.0 mg/mL decreased MCT (p<0.001), from 30 min onwards
+#   - TSP decreased CBF at all experimental times (p=0.011); PM 2.5 did not
+#   - PM 2.5 (both concentrations) reduced stored intraepithelial acid, neutral
+#     and total mucus (p<0.05 vs control) and epithelial thickness (p=0.01);
+#     TSP behaved like the control group
+#   - Composition (EDXRF): TSP ~64% Fe of analysed element mass and no organic
+#     compounds detected by GC/MS; PM 2.5 predominated in S, Na, Ca, Fe and Si
+#     with Cu, Ni, V, Zn and organics (p-xylene, toluene, ethyl benzene)
+#
+# =============================================================================
+
+source_publication:
+  reference: "PMID:26598085"
+  reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
+  doi: "10.6061/clinics/2015(10)09"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:carvalho-mct-001"
+    name: "Ex situ mucociliary transport on the frog palate"
+    description: "Mucociliary transport measured as the displacement rate of autologous mucus placed on the epithelial surface of the excised frog palate, calculated as the distance travelled (6 mm) divided by the elapsed time (s). At least five measurements per sample and time point, at 20 degrees Celsius, with the palate held in an acrylic chamber at 100% humidity maintained by ultrasonic nebulisation of amphibian Ringer's solution."
+    protocol_type: ImagingProtocol
+    equipment_required:
+      - "Stereoscopic microscope with reticulated eyepiece"
+      - "Acrylic humidity chamber with ultrasonic nebuliser"
+    temperature_control:
+      value: "20"
+      unit:
+        id: "UO:0000027"
+        name: "degree Celsius"
+    humidity_control:
+      value: "100"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+    particle_tracking_method: "Displacement of an autologous mucus sample over a 6 mm reticule distance, in an acrylic chamber humidified by ultrasonic nebulisation of amphibian Ringer's solution"
+
+  - id: "PROTOCOL:carvalho-cbf-001"
+    name: "Stroboscopic videoscopic measurement of ciliary beat frequency"
+    description: "Ciliary beat frequency determined by a modified videoscopic technique: a group of cilia is focused with an optical microscope (10X objective, 10X ocular) coupled to a video camera and monitor, and a stroboscopic lamp flashing from 0 to 30 Hz is placed in front of the ciliary epithelium. The beat frequency is read off as the flash frequency at which the observer can no longer distinguish the ciliary beat."
+    protocol_type: ImagingProtocol
+    equipment_required:
+      - "Optical microscope (10X objective, 10X ocular)"
+      - "Video camera (Sony 3CCD Iris) and monitor (Sony Trinitron)"
+      - "Stroboscopic light (Machine Vision Strobe mod. 5000, 0-30 Hz)"
+
+  - id: "PROTOCOL:carvalho-abpas-001"
+    name: "AB-PAS morphometry of intraepithelial mucus and epithelial thickness"
+    description: "Palate epithelium fragments fixed in 10% buffered formalin, paraffin embedded, cut as 5 micrometre transverse sections and stained with periodic acid-Schiff (PAS, neutral glycoproteins, red) combined with Alcian Blue at pH 2.5 (acid glycoproteins, blue). Volume proportions of intraepithelial acid mucus, neutral mucus and total mucus (acid + neutral) obtained by point counting with a 100-point graticule at 1000x magnification, 1,000 points counted over 10 random fields per slide (coefficient of error below 10%). Epithelial thickness computed as the total number of points hitting the epithelium divided by the corresponding basal membrane length."
+    protocol_type: StainingProtocol
+    staining_type: "Alcian Blue (pH 2.5) combined with periodic acid-Schiff (AB-PAS)"
+    fixation_method: "10% buffered formalin, paraffin embedding, 5 micrometre transverse sections"
+    detection_method: "Point-counting morphometry with a 100-point eyepiece graticule at 1000x magnification"
+    equipment_required:
+      - "Optical microscope with 100-point eyepiece graticule"
+
+# =============================================================================
+# MUCOCILIARY CLEARANCE ASSAYS
+# =============================================================================
+
+mcc_assays:
+  # TSP from a steel-mill electrostatic precipitator
+  - id: "MCC:carvalho-tsp-0.1-120min"
+    name: "Mucociliary transport - frog palate exposed to total suspended particles (0.1 mg/mL)"
+    description: "Ex vivo frog palate immersed in amphibian Ringer's solution containing 0.1 mg/mL of total suspended particles (TSP) collected from the electrostatic precipitator of a steel-sintering plant (n=9). Mucociliary transport decreased relative to the amphibian Ringer's control (p<0.001); the treatment-by-time interaction appeared from the 30-minute time point onward and lasted to 120 minutes (p<0.001). Group means are shown only in Figure 2, so no numeric value is recorded here. Total suspended particles are annotated with the deliberately general term ENVO:01000060 (particulate environmental material) rather than a size-fraction term, because TSP is not a defined aerodynamic size fraction."
+    mucus_composition: "Autologous frog palate mucus, collected from the posterior edge of the palate and stored under mineral oil"
+    has_specified_output:
+      id: "MCC:carvalho-tsp-0.1-120min-output"
+      name: "Mucociliary transport measurements - TSP 0.1 mg/mL"
+      description: "Mucociliary transport rate decreased versus control; values reported graphically only (Figure 2)."
+    has_exposure_condition:
+      - id: "EXPOSURE:carvalho-tsp-0.1mgml-120min"
+        name: "Total suspended particles 0.1 mg/mL in amphibian Ringer's solution for 120 minutes"
+        exposure_agent:
+          id: "ENVO:01000060"
+          name: "particulate environmental material"
+        exposure_concentration:
+          value: "0.1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:carvalho-frog-palate-001"
+      name: "Ex vivo frog palate preparation"
+      description: "Excised palate of a mature Rana catesbeiana frog (approximately 100 g), rested for two days at 4 degrees Celsius and used on the third day; 38 palates were used across the four experimental groups."
+      cell_type:
+        id: "CL:0000067"
+        name: "ciliated epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0005019"
+        name: "mucosa of palate"
+      model_species:
+        id: "NCBITaxon:8400"
+        name: "Aquarana catesbeiana"
+      donor_info: "Mature Rana catesbeiana frogs weighing approximately 100 g, obtained from a vivarium in the city of Mogi das Cruzes; per-group sizes are given in each assay description"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:carvalho-mct-001"
+        name: "Ex situ mucociliary transport on the frog palate"
+    evidence:
+      - reference: "PMID:26598085"
+        reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Exposure to total suspended particles and PM3.0 decreased mucociliary transport."
+        explanation: "States that total suspended particles decreased mucociliary transport in the frog palate preparation, which is the effect this assay records."
+
+  # Urban PM 2.5 at the high concentration
+  - id: "MCC:carvalho-pm25-3.0-120min"
+    name: "Mucociliary transport - frog palate exposed to urban PM 2.5 (3.0 mg/mL)"
+    description: "Ex vivo frog palate immersed in amphibian Ringer's solution containing 3.0 mg/mL of urban PM 2.5 sampled in downtown Sao Paulo (PM3.0 group, n=9). Mucociliary transport decreased relative to the amphibian Ringer's control (p<0.001), with the effect appearing from 30 minutes and persisting to 120 minutes. The lower PM 2.5 concentration (0.1 mg/mL, n=10) behaved like the Ringer's control. Group means are shown only in Figure 2, so no numeric value is recorded here."
+    mucus_composition: "Autologous frog palate mucus, collected from the posterior edge of the palate and stored under mineral oil"
+    has_specified_output:
+      id: "MCC:carvalho-pm25-3.0-120min-output"
+      name: "Mucociliary transport measurements - PM 2.5 3.0 mg/mL"
+      description: "Mucociliary transport rate decreased versus control; values reported graphically only (Figure 2)."
+    has_exposure_condition:
+      - id: "EXPOSURE:carvalho-pm25-3.0mgml-120min"
+        name: "Urban PM 2.5 3.0 mg/mL in amphibian Ringer's solution for 120 minutes"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "3.0"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:carvalho-frog-palate-001"
+      name: "Ex vivo frog palate preparation"
+      description: "Excised palate of a mature Rana catesbeiana frog (approximately 100 g), rested for two days at 4 degrees Celsius and used on the third day; 38 palates were used across the four experimental groups."
+      cell_type:
+        id: "CL:0000067"
+        name: "ciliated epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0005019"
+        name: "mucosa of palate"
+      model_species:
+        id: "NCBITaxon:8400"
+        name: "Aquarana catesbeiana"
+      donor_info: "Mature Rana catesbeiana frogs weighing approximately 100 g, obtained from a vivarium in the city of Mogi das Cruzes; per-group sizes are given in each assay description"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:carvalho-mct-001"
+        name: "Ex situ mucociliary transport on the frog palate"
+    evidence:
+      - reference: "PMID:26598085"
+        reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Exposure to total suspended particles and PM3.0 decreased mucociliary transport."
+        explanation: "Names PM3.0 - the 3.0 mg/mL urban PM 2.5 group - as one of the two exposures that decreased mucociliary transport, which is what this assay records."
+
+# =============================================================================
+# CILIARY FUNCTION ASSAYS
+# =============================================================================
+
+ciliary_function_assays:
+  - id: "CBF:carvalho-tsp-0.1-120min"
+    name: "Ciliary beat frequency - frog palate exposed to total suspended particles (0.1 mg/mL)"
+    description: "Ciliary beat frequency measured by the stroboscopic videoscopic technique at 0, 10, 20, 30, 60 and 120 minutes of immersion. Total suspended particles (0.1 mg/mL, n=9) decreased ciliary beat frequency at all experimental times (p=0.011), whereas neither urban PM 2.5 concentration nor the amphibian Ringer's control changed it. Group means are shown only in Figure 3, so no numeric value is recorded here. Total suspended particles are annotated with the deliberately general term ENVO:01000060 (particulate environmental material) rather than a size-fraction term, because TSP is not a defined aerodynamic size fraction."
+    has_specified_output:
+      id: "CBF:carvalho-tsp-0.1-120min-output"
+      name: "Ciliary beat frequency measurements - TSP 0.1 mg/mL"
+      description: "Ciliary beat frequency decreased versus control at every time point; values reported graphically only (Figure 3)."
+    has_exposure_condition:
+      - id: "EXPOSURE:carvalho-tsp-0.1mgml-120min"
+        name: "Total suspended particles 0.1 mg/mL in amphibian Ringer's solution for 120 minutes"
+        exposure_agent:
+          id: "ENVO:01000060"
+          name: "particulate environmental material"
+        exposure_concentration:
+          value: "0.1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cbf"
+      name: "Decreased ciliary beat frequency"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:carvalho-frog-palate-001"
+      name: "Ex vivo frog palate preparation"
+      description: "Excised palate of a mature Rana catesbeiana frog (approximately 100 g), rested for two days at 4 degrees Celsius and used on the third day; 38 palates were used across the four experimental groups."
+      cell_type:
+        id: "CL:0000067"
+        name: "ciliated epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0005019"
+        name: "mucosa of palate"
+      model_species:
+        id: "NCBITaxon:8400"
+        name: "Aquarana catesbeiana"
+      donor_info: "Mature Rana catesbeiana frogs weighing approximately 100 g, obtained from a vivarium in the city of Mogi das Cruzes; per-group sizes are given in each assay description"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:carvalho-cbf-001"
+        name: "Stroboscopic videoscopic measurement of ciliary beat frequency"
+    evidence:
+      - reference: "PMID:26598085"
+        reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Ciliary beating frequency was diminished by total suspended particles at all times during exposure"
+        explanation: "States that total suspended particles lowered ciliary beat frequency at every measurement time, the decrease this assay records."
+
+# =============================================================================
+# INTRAEPITHELIAL MUCUS MORPHOMETRY
+# =============================================================================
+
+goblet_cell_assays:
+  - id: "GCM:carvalho-pm25-mucus-120min"
+    name: "Intraepithelial mucus stores - frog palate exposed to urban PM 2.5"
+    description: "AB-PAS point-counting morphometry of the frog palate epithelium after 120 minutes of immersion. Urban PM 2.5 (0.1 mg/mL, n=10 and 3.0 mg/mL, n=9), even at the lowest concentration, significantly reduced the volume proportion of stored intraepithelial acid, neutral and total mucus, consistent with mucus-secretory epithelial cells extruding their contents. The two p-values reported for this effect belong to different contrasts: the results text gives p<0.05 for PM 2.5 versus the amphibian Ringer's control, while the Figure 4 legend gives p<0.001 for both PM 2.5 concentrations versus the TSP and Ringer's groups. PM 2.5 also decreased epithelial thickness (p=0.01; the Figure 5 legend attributes this decrease to the higher concentration). Total suspended particles behaved like the amphibian Ringer's control for both endpoints. Volume proportions are shown only in Figures 4 and 5, so no numeric value is recorded here."
+    has_specified_output:
+      id: "GCM:carvalho-pm25-mucus-120min-output"
+      name: "Intraepithelial mucus volume proportions - urban PM 2.5"
+      description: "Volume proportions of intraepithelial acid mucus, neutral mucus and total mucus (acid + neutral), expressed as a percentage of the epithelial area, all decreased after PM 2.5 exposure; values reported graphically only (Figure 4)."
+    has_exposure_condition:
+      - id: "EXPOSURE:carvalho-pm25-0.1mgml-120min"
+        name: "Urban PM 2.5 0.1 mg/mL in amphibian Ringer's solution for 120 minutes"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "0.1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+      - id: "EXPOSURE:carvalho-pm25-3.0mgml-120min"
+        name: "Urban PM 2.5 3.0 mg/mL in amphibian Ringer's solution for 120 minutes"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "3.0"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke-decreased-epithelial-mucus"
+      name: "Decreased stored epithelial mucus"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:carvalho-frog-palate-001"
+      name: "Ex vivo frog palate preparation"
+      description: "Excised palate of a mature Rana catesbeiana frog (approximately 100 g), rested for two days at 4 degrees Celsius and used on the third day; 38 palates were used across the four experimental groups."
+      cell_type:
+        id: "CL:0000067"
+        name: "ciliated epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0005019"
+        name: "mucosa of palate"
+      model_species:
+        id: "NCBITaxon:8400"
+        name: "Aquarana catesbeiana"
+      donor_info: "Mature Rana catesbeiana frogs weighing approximately 100 g, obtained from a vivarium in the city of Mogi das Cruzes; per-group sizes are given in each assay description"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:carvalho-abpas-001"
+        name: "AB-PAS morphometry of intraepithelial mucus and epithelial thickness"
+    evidence:
+      - reference: "PMID:26598085"
+        reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "reduced epithelial mucous and epithelium thickness, while total suspended particles behaved similarly to the control group."
+        explanation: "States that urban PM 2.5 lowered stored epithelial mucus and epithelial thickness while total suspended particles did not, which is the contrast this morphometry assay records."
+
+# =============================================================================
+# KEY EVENTS
+# =============================================================================
+
+key_events:
+  - id: "KE:ke3-impaired-mcc"
+    name: "Impaired mucociliary clearance"
+    biological_action: impaired
+    level_of_biological_organization: tissue
+
+  - id: "KE:ke-decreased-cbf"
+    name: "Decreased ciliary beat frequency"
+    biological_action: decreased
+    level_of_biological_organization: cellular
+
+  - id: "KE:ke-decreased-epithelial-mucus"
+    name: "Decreased stored epithelial mucus"
+    biological_action: decreased
+    level_of_biological_organization: cellular
