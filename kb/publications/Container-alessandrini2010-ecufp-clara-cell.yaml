@@ -108,7 +108,7 @@ balf_sputum_assays:
   # BALF CC16 falls one day after EC-UFP inhalation, with or without sensitization
   - id: "BALF:alessandrini-cc16-ufp-1d"
     name: "BALF CC16 - EC-UFP exposed mice, 1 day"
-    description: "CC16 concentration in cell-free BALF one day after 24 h EC-UFP inhalation in non sensitized (NS/UFP) and sensitized (S/UFP) mice, measured by automated latex immunoassay. Significant decrease versus untreated controls; the decrease was abrogated by NAC treatment (NS/NAC/UFP, S/NAC/UFP), and one week after inhalation BALF CC16 almost reached the control level. Values are reported only in Fig. 2a (upper panel); n = 4-7 per time point."
+    description: "CC16 concentration in cell-free BALF one day after 24 h EC-UFP inhalation in non sensitized (NS/UFP) and sensitized (S/UFP) mice, measured by automated latex immunoassay. Significant decrease versus untreated controls; the decrease was abrogated by NAC treatment (NS/NAC/UFP, S/NAC/UFP), and one week after inhalation BALF CC16 almost reached the control level. The study_subject below records the non sensitized arm (NS/UFP); the sensitized, non challenged arm (S/UFP) received the identical exposure and showed the same decrease. Values are reported only in Fig. 2a (upper panel); n = 4-7 per time point."
     evidence:
       - reference: "PMID:20420656"
         reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
@@ -983,7 +983,7 @@ goblet_cell_assays:
 lung_function_assays:
   - id: "LF:alessandrini-ahr-ufp-ova"
     name: "Airway hyperresponsiveness (PenH) - EC-UFP before OVA challenge"
-    description: "Enhanced pause (PenH) measured by whole body plethysmography 24 h after OVA challenge in unrestrained animals (n = 5-7). PenH rose significantly with increasing methacholine concentrations in sensitized animals exposed to EC-UFP before challenge compared with untreated animals, with a close to significant increase versus sensitized and challenged mice exposed to filtered air; NAC reduced the EC-UFP-dependent increase. Data in additional file 1; no numeric PenH values in the main text."
+    description: "Enhanced pause (PenH) measured by whole body plethysmography 24 h after OVA challenge in unrestrained animals (n = 5-7); the timing_post_exposure of 24 hours below is counted from the allergen challenge, which itself followed the 24 h EC-UFP inhalation. PenH rose significantly with increasing methacholine concentrations in sensitized animals exposed to EC-UFP before challenge compared with untreated animals, with a close to significant increase versus sensitized and challenged mice exposed to filtered air; NAC reduced the EC-UFP-dependent increase. Data in additional file 1; no numeric PenH values in the main text."
     evidence:
       - reference: "PMID:20420656"
         reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
