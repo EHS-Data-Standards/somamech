@@ -1,0 +1,17 @@
+{
+  "reference_id": "PMID:39031246",
+  "kb_file": "kb/publications/Container-Chandel2024-pm25-inflammation.yaml",
+  "content_type_in_committed_cache": "abstract_only",
+  "verified_with": "just verify-snippets (linkml-reference-validator, committed + local cache)",
+  "verified_date": "2026-09-17",
+  "snippet_sha256": [
+    "0f577f120fc15264cadf4ca5143b060936793185db5d6506dd2baa628684b49b",
+    "1b0ad673dc5310b66097439b886abce4a7571b8df327473264b13455b7a2bdb7",
+    "29375e47e2146867307528299753e3deeadcd7bad321e1ccf4c686eb0987b614",
+    "6514029384ece153a2fb5cb9f9960a85670bf735361de87c6f7352c5a9b0c616",
+    "6c2f389c191d6ba2082af7c9197bd6391935f41f6be4aaff447c84186d68f0a4",
+    "bb40c9fe79ac068027531c3e946e16031afb836713f3e3561fa6bbf448576d11",
+    "e80938c9acab54e8a32e0a3852587e18d018c353234ddf5012d1d31b3087a698",
+    "fb90c124c1d1d6fa41ee98fd83c0b2ab28888656229b3c4a2c323d42bcc9ad92"
+  ]
+}

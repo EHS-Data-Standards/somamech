@@ -1,0 +1,886 @@
+# =============================================================================
+# Chandel & Naura (2024) - Dynamics of Inflammatory and Pathological Changes
+# Induced by Single Exposure of Particulate Matter (PM2.5) in Mice
+# =============================================================================
+#
+# Source: Cell Biochem Biophys. 2024;82:3463-3475
+# DOI: 10.1007/s12013-024-01433-3
+#
+# Study design (in vivo only):
+#   - Male BALB/c mice, 4-6 weeks old, 25-30 g, n = 3-6 per group
+#   - Single intratracheal (i.t.) instillation of PM2.5 (NIST SRM 1648a urban
+#     particulate matter) in 50 ul PBS + 0.05% Tween 80 under isoflurane
+#   - Dose-response: 50, 100 or 200 ug; time course with the 100 ug dose
+#   - Euthanasia at 2, 4, 7, 14, 21 days (BALF/lung) and 28 days (histology)
+#
+# Key findings recorded here:
+#   - BALF inflammatory cells rise at 4 days (100/200 ug), peak at day 7,
+#     persist to day 14, and resolve by day 21
+#   - Pro-inflammatory cytokines in BALF peak at day 7 (IL-6, G-CSF, MCP-1)
+#     or day 14 (KC, TNF-alpha, IL-1beta)
+#   - Continuous oxidative stress in lung tissue (raised LPO/MDA; reduced
+#     GSH, GSH:GSSG, SOD and catalase)
+#   - Enhanced mitochondrial ROS in BALF CD11b+ inflammatory cells at day 7
+#   - Progressive decline in lung function to 28 days, with emphysematous
+#     lesions on histology at 28 days
+#
+# Evidence note: only the abstract of this paper is publicly cached
+# (references_cache/PMID_39031246.md is content_type: abstract_only), so every
+# committed snippet is quoted from that abstract. The quantitative values were
+# read from the full text of the publisher PDF (Results, Figs. 1-8) and the
+# figure and statistics are named in each assay description.
+# =============================================================================
+
+source_publication:
+  reference: "PMID:39031246"
+  reference_title: "Dynamics of Inflammatory and Pathological Changes Induced by Single Exposure of Particulate Matter (PM(2.5)) in Mice: Potential Implications in COPD."
+  doi: "10.1007/s12013-024-01433-3"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:chandel-balf-001"
+    name: "BALF collection and inflammatory cell differential"
+    description: "BALF procured from euthanized mice; total inflammatory cells counted with a hemocytometer. For differential analysis, cytoslides were prepared on a cytospin centrifuge and stained with hematoxylin and eosin (H&E); images captured on a Nikon Eclipse Y-TV 55 microscope and analysed with NIS-Elements software."
+    equipment_required:
+      - "Hemocytometer"
+      - "Cytospin centrifuge"
+      - "Nikon Eclipse Y-TV 55 microscope with camera"
+      - "NIS-Elements software"
+
+  - id: "PROTOCOL:chandel-bioplex-001"
+    name: "Bioplex multiplex cytokine immunoassay on BALF supernatant"
+    description: "TNF-alpha, IL-1beta, IL-6, KC, G-CSF, MCP-1, IL-4 and IL-5 measured in 50 ul BALF supernatant with a Bioplex assay kit on the Bioplex immunoassay system (Bio-Rad, Hercules, CA, USA) per the manufacturer's instructions."
+    equipment_required:
+      - "Bio-Rad Bioplex immunoassay system"
+      - "Bioplex mouse cytokine assay kit"
+
+  - id: "PROTOCOL:chandel-oxstress-001"
+    name: "Oxidative stress parameters in lung tissue homogenate"
+    description: "Lung tissue homogenates (10% w/v) prepared in ice-cold PBS (pH 7.4) at 4 C with a Potter/Elvehjem homogenizer; supernatant collected after centrifugation at 8000 rpm for 10 min. Malondialdehyde (MDA) quantified as a measure of lipid peroxidation; reduced glutathione (GSH) by the method of Moron et al.; superoxide dismutase by the method of Kono; catalase by the method of Lueck."
+    equipment_required:
+      - "Potter/Elvehjem homogenizer"
+      - "Refrigerated centrifuge"
+      - "UV-visible spectrophotometer"
+
+  - id: "PROTOCOL:chandel-mitosox-001"
+    name: "Mitochondrial ROS by MitoSOX Red flow cytometry"
+    description: "BALF cells suspended in PBS stained with FITC-conjugated anti-mouse CD11b antibody (BD Biosciences #557396) for 10-15 min at 4 C, washed, then stained with MitoSOX Red (5 uM) for 10 min at 37 C in the dark. Cells analysed on a BD LSR Fortessa Cell Analyser with BD FACSDiva 8.0; the shift in MitoSOX fluorescence (MFI) in the targeted cell population was quantified."
+    equipment_required:
+      - "BD LSR Fortessa Cell Analyser flow cytometer"
+      - "MitoSOX Red (Invitrogen)"
+      - "FITC-conjugated anti-mouse CD11b antibody (BD Biosciences #557396)"
+
+  - id: "PROTOCOL:chandel-pft-001"
+    name: "Pulmonary function test by double chamber plethysmography"
+    description: "Non-invasive pulmonary function testing in conscious mice with a double chamber plethysmograph (SCIREQ, EMKA Technologies; Montreal, Canada). Parameters analysed in a time course manner: peak inspiratory flow (PIF), peak expiratory flow (PEF), tidal volume (TV), breathing rate/frequency (F), minute volume (MV) and specific airway resistance (sRaw)."
+    equipment_required:
+      - "Double chamber plethysmograph (SCIREQ, EMKA Technologies)"
+
+  - id: "PROTOCOL:chandel-histo-001"
+    name: "Lung histology with H&E and mean linear intercept"
+    description: "Lungs fixed in 5% formalin and embedded in paraffin; 5 um sections stained with H&E and examined under a light microscope (100x and 400x) for air space enlargement. Mean linear intercept (MLI) calculated with Fiji (ImageJ) to quantify morphometric changes in alveolar size."
+    equipment_required:
+      - "Microtome"
+      - "Light microscope"
+      - "Fiji (ImageJ) software"
+
+# =============================================================================
+# BALF ASSAYS - inflammatory cells and cytokines (in vivo, mouse BALF)
+# =============================================================================
+
+balf_sputum_assays:
+
+  # --- Dose response at 4 days -------------------------------------------
+  - id: "BALF:chandel-pm25-100ug-4d"
+    name: "BALF inflammatory cells - PM2.5 100 ug, day 4"
+    description: "Total BALF inflammatory cells 4 days after a single intratracheal dose of 100 ug PM2.5: 25-fold higher than control (p < 0.001), Fig. 1a. Differential analysis showed the majority of these cells were neutrophils (Fig. 1b). Mean +/- SD of 5 animals per group."
+    evidence:
+      - reference: "PMID:39031246"
+        reference_title: "Dynamics of Inflammatory and Pathological Changes Induced by Single Exposure of Particulate Matter (PM(2.5)) in Mice: Potential Implications in COPD."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Single intratracheal exposure of PM2.5 at a dose of either 100 or 200 μg induced inflammatory response in lungs at 4 days."
+        explanation: "The abstract states that a single intratracheal PM2.5 dose of 100 or 200 ug induced an inflammatory response in the lungs at 4 days, which is the day-4 BALF inflammatory cell increase this assay records."
+    has_specified_output:
+      id: "BALF:chandel-pm25-100ug-4d-output"
+      name: "BALF total inflammatory cells, 100 ug day 4"
+      total_cell_count:
+        value: "25"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    target_cell_type:
+      id: "CL:0000775"
+      name: "neutrophil"
+    has_exposure_condition:
+      - id: "EXPOSURE:chandel-pm25-100ug-4d"
+        name: "Single intratracheal PM2.5 100 ug, assessed 4 days later"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        timing_post_exposure:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chandel-mouse-pm25-100ug"
+      name: "Male BALB/c mouse, single i.t. PM2.5 100 ug"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "4-6"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male"
+      subject_characteristics: "Male BALB/c mice, 4-6 weeks old, 25-30 g, housed pathogen-free; single intratracheal PM2.5 (NIST SRM 1648a) in 50 ul PBS + 0.05% Tween 80 under 5% isoflurane"
+      sample_type: balf
+      collection_site: "bronchoalveolar lavage fluid"
+      sample_collection_method: "Bronchoalveolar lavage of euthanized mice; total cells counted on a hemocytometer, differential on H&E-stained cytospin slides"
+    follows_protocols:
+      - id: "PROTOCOL:chandel-balf-001"
+        name: "BALF collection and inflammatory cell differential"
+
+  - id: "BALF:chandel-pm25-200ug-4d"
+    name: "BALF inflammatory cells - PM2.5 200 ug, day 4"
+    description: "Total BALF inflammatory cells 4 days after a single intratracheal dose of 200 ug PM2.5: 26-fold higher than control (p < 0.001), Fig. 1a. The 50 ug dose was not effective at any time point, and neither 100 nor 200 ug induced much inflammation at 2 days. Mean +/- SD of 5 animals per group."
+    evidence:
+      - reference: "PMID:39031246"
+        reference_title: "Dynamics of Inflammatory and Pathological Changes Induced by Single Exposure of Particulate Matter (PM(2.5)) in Mice: Potential Implications in COPD."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Single intratracheal exposure of PM2.5 at a dose of either 100 or 200 μg induced inflammatory response in lungs at 4 days."
+        explanation: "The abstract names 200 ug as one of the two single intratracheal doses that induced an inflammatory response in the lungs at 4 days, which is what this assay records."
+    has_specified_output:
+      id: "BALF:chandel-pm25-200ug-4d-output"
+      name: "BALF total inflammatory cells, 200 ug day 4"
+      total_cell_count:
+        value: "26"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    target_cell_type:
+      id: "CL:0000775"
+      name: "neutrophil"
+    has_exposure_condition:
+      - id: "EXPOSURE:chandel-pm25-200ug-4d"
+        name: "Single intratracheal PM2.5 200 ug, assessed 4 days later"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        timing_post_exposure:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chandel-mouse-pm25-200ug"
+      name: "Male BALB/c mouse, single i.t. PM2.5 200 ug"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "4-6"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male"
+      subject_characteristics: "Male BALB/c mice, 4-6 weeks old, 25-30 g; single intratracheal PM2.5 (NIST SRM 1648a) 200 ug in 50 ul PBS + 0.05% Tween 80"
+      sample_type: balf
+      collection_site: "bronchoalveolar lavage fluid"
+    follows_protocols:
+      - id: "PROTOCOL:chandel-balf-001"
+        name: "BALF collection and inflammatory cell differential"
+
+  # --- Time course with the 100 ug dose ----------------------------------
+  - id: "BALF:chandel-pm25-100ug-7d"
+    name: "BALF inflammatory cells - PM2.5 100 ug, day 7 (peak)"
+    description: "Maximum BALF inflammation observed at day 7 after a single 100 ug PM2.5 dose: 45-fold over control (p < 0.001), Fig. 2a. Neutrophils rose 697-fold at 7 days (p < 0.001), Fig. 2b. Mean +/- SD of 6 animals per group."
+    evidence:
+      - reference: "PMID:39031246"
+        reference_title: "Dynamics of Inflammatory and Pathological Changes Induced by Single Exposure of Particulate Matter (PM(2.5)) in Mice: Potential Implications in COPD."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Time course studies showed that inflammation once triggered by PM2.5 is progressive in nature as reflected by data on BALF inflammatory cells at 7/14 days."
+        explanation: "The abstract reports that inflammation triggered by PM2.5 is progressive, as shown by BALF inflammatory cell data at 7/14 days; this assay records the day-7 BALF cell counts behind that statement."
+    has_specified_output:
+      id: "BALF:chandel-pm25-100ug-7d-output"
+      name: "BALF inflammatory cells, 100 ug day 7"
+      total_cell_count:
+        value: "45"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    target_cell_type:
+      id: "CL:0000775"
+      name: "neutrophil"
+    has_exposure_condition:
+      - id: "EXPOSURE:chandel-pm25-100ug-7d"
+        name: "Single intratracheal PM2.5 100 ug, assessed 7 days later"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        timing_post_exposure:
+          value: "7"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chandel-mouse-pm25-100ug"
+      name: "Male BALB/c mouse, single i.t. PM2.5 100 ug"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "4-6"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male"
+      subject_characteristics: "Male BALB/c mice, 4-6 weeks old, 25-30 g; single intratracheal PM2.5 (NIST SRM 1648a) 100 ug"
+      sample_type: balf
+      collection_site: "bronchoalveolar lavage fluid"
+    follows_protocols:
+      - id: "PROTOCOL:chandel-balf-001"
+        name: "BALF collection and inflammatory cell differential"
+
+  - id: "BALF:chandel-pm25-100ug-14d"
+    name: "BALF inflammatory cells - PM2.5 100 ug, day 14"
+    description: "BALF inflammation persisted to day 14 after a single 100 ug PM2.5 dose: 41-fold over control (p < 0.001), Fig. 2a. Neutrophils were 678-fold over control at 14 days (p < 0.001), Fig. 2b. Mean +/- SD of 6 animals per group."
+    evidence:
+      - reference: "PMID:39031246"
+        reference_title: "Dynamics of Inflammatory and Pathological Changes Induced by Single Exposure of Particulate Matter (PM(2.5)) in Mice: Potential Implications in COPD."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Time course studies showed that inflammation once triggered by PM2.5 is progressive in nature as reflected by data on BALF inflammatory cells at 7/14 days."
+        explanation: "The abstract cites BALF inflammatory cell data at 7/14 days as the evidence that PM2.5-triggered inflammation is progressive; this assay records the day-14 half of that time course."
+    has_specified_output:
+      id: "BALF:chandel-pm25-100ug-14d-output"
+      name: "BALF inflammatory cells, 100 ug day 14"
+      total_cell_count:
+        value: "41"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    target_cell_type:
+      id: "CL:0000775"
+      name: "neutrophil"
+    has_exposure_condition:
+      - id: "EXPOSURE:chandel-pm25-100ug-14d"
+        name: "Single intratracheal PM2.5 100 ug, assessed 14 days later"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        timing_post_exposure:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chandel-mouse-pm25-100ug"
+      name: "Male BALB/c mouse, single i.t. PM2.5 100 ug"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "4-6"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male"
+      subject_characteristics: "Male BALB/c mice, 4-6 weeks old, 25-30 g; single intratracheal PM2.5 (NIST SRM 1648a) 100 ug"
+      sample_type: balf
+      collection_site: "bronchoalveolar lavage fluid"
+    follows_protocols:
+      - id: "PROTOCOL:chandel-balf-001"
+        name: "BALF collection and inflammatory cell differential"
+
+  - id: "BALF:chandel-pm25-100ug-21d"
+    name: "BALF inflammatory cells - PM2.5 100 ug, day 21 (resolution)"
+    description: "BALF inflammation resolved completely at day 21 after a single 100 ug PM2.5 dose (Fig. 2a), and neutrophil infiltration into the lungs was likewise resolved at 21 days (Fig. 2b). The paper reports this resolution qualitatively; no fold-change value is given for day 21, so none is recorded here."
+    evidence:
+      - reference: "PMID:39031246"
+        reference_title: "Dynamics of Inflammatory and Pathological Changes Induced by Single Exposure of Particulate Matter (PM(2.5)) in Mice: Potential Implications in COPD."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "However, inflammation declined sharply at 21 days."
+        explanation: "The abstract states that inflammation declined sharply at 21 days, which is the resolution of BALF inflammatory cells this assay records."
+    has_specified_output:
+      id: "BALF:chandel-pm25-100ug-21d-output"
+      name: "BALF inflammatory cells, 100 ug day 21 (resolved; no value reported)"
+    target_cell_type:
+      id: "CL:0000775"
+      name: "neutrophil"
+    has_exposure_condition:
+      - id: "EXPOSURE:chandel-pm25-100ug-21d"
+        name: "Single intratracheal PM2.5 100 ug, assessed 21 days later"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        timing_post_exposure:
+          value: "21"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chandel-mouse-pm25-100ug"
+      name: "Male BALB/c mouse, single i.t. PM2.5 100 ug"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "4-6"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male"
+      subject_characteristics: "Male BALB/c mice, 4-6 weeks old, 25-30 g; single intratracheal PM2.5 (NIST SRM 1648a) 100 ug"
+      sample_type: balf
+      collection_site: "bronchoalveolar lavage fluid"
+    follows_protocols:
+      - id: "PROTOCOL:chandel-balf-001"
+        name: "BALF collection and inflammatory cell differential"
+
+  # --- BALF cytokines ----------------------------------------------------
+  - id: "BALF:chandel-cytokines-7d"
+    name: "BALF pro-inflammatory cytokines - PM2.5 100 ug, day 7"
+    description: "Bioplex measurement of eight cytokines in BALF. IL-6 (108-fold, p < 0.001), G-CSF (98-fold, p < 0.001) and MCP-1 (35-fold, p < 0.001) reached their highest levels at day 7 (Fig. 3b, e, f). IL-4 and IL-5 were unaffected, confirming that PM2.5 does not drive a Th2 response. Mean +/- SD of 4 animals per group."
+    evidence:
+      - reference: "PMID:39031246"
+        reference_title: "Dynamics of Inflammatory and Pathological Changes Induced by Single Exposure of Particulate Matter (PM(2.5)) in Mice: Potential Implications in COPD."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Similarly, various cytokines/chemokines (KC/IL-6/TNF-α/IL-1β/G-CSF/MCP-1) peak at either 7 or 14 days."
+        explanation: "The abstract states that the cytokines/chemokines KC, IL-6, TNF-alpha, IL-1beta, G-CSF and MCP-1 peak at either 7 or 14 days; this assay records the day-7 peak group (IL-6, G-CSF, MCP-1)."
+    has_specified_output:
+      id: "BALF:chandel-cytokines-7d-output"
+      name: "BALF cytokine levels, 100 ug day 7"
+      il6_concentration:
+        value: "108"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    has_exposure_condition:
+      - id: "EXPOSURE:chandel-pm25-100ug-7d"
+        name: "Single intratracheal PM2.5 100 ug, assessed 7 days later"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        timing_post_exposure:
+          value: "7"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chandel-mouse-pm25-100ug"
+      name: "Male BALB/c mouse, single i.t. PM2.5 100 ug"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "4-6"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male"
+      subject_characteristics: "Male BALB/c mice, 4-6 weeks old, 25-30 g; single intratracheal PM2.5 (NIST SRM 1648a) 100 ug"
+      sample_type: balf
+      collection_site: "bronchoalveolar lavage fluid"
+      sample_collection_method: "50 ul of BALF supernatant assayed on the Bioplex immunoassay system"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:chandel-bioplex-001"
+        name: "Bioplex multiplex cytokine immunoassay on BALF supernatant"
+        detection_method: "Bioplex multiplex bead-based immunoassay (Bio-Rad)"
+        platform: "Bio-Rad Bioplex immunoassay system"
+
+  - id: "BALF:chandel-cytokines-14d"
+    name: "BALF pro-inflammatory cytokines - PM2.5 100 ug, day 14"
+    description: "KC (the functional homolog of human IL-8 in mice; 14-fold, p < 0.001), TNF-alpha (4.5-fold, p < 0.001) and IL-1beta (53-fold, p < 0.001) peaked at day 14 (Fig. 3a, c, d), followed by a decline on day 21. Mean +/- SD of 4 animals per group."
+    evidence:
+      - reference: "PMID:39031246"
+        reference_title: "Dynamics of Inflammatory and Pathological Changes Induced by Single Exposure of Particulate Matter (PM(2.5)) in Mice: Potential Implications in COPD."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Similarly, various cytokines/chemokines (KC/IL-6/TNF-α/IL-1β/G-CSF/MCP-1) peak at either 7 or 14 days."
+        explanation: "The abstract states that the cytokines/chemokines KC, IL-6, TNF-alpha, IL-1beta, G-CSF and MCP-1 peak at either 7 or 14 days; this assay records the day-14 peak group (KC, TNF-alpha, IL-1beta)."
+    has_specified_output:
+      id: "BALF:chandel-cytokines-14d-output"
+      name: "BALF cytokine levels, 100 ug day 14"
+      il8_concentration:
+        value: "14"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+      tnf_alpha_concentration:
+        value: "4.5"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+      il1_beta_concentration:
+        value: "53"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    has_exposure_condition:
+      - id: "EXPOSURE:chandel-pm25-100ug-14d"
+        name: "Single intratracheal PM2.5 100 ug, assessed 14 days later"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        timing_post_exposure:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chandel-mouse-pm25-100ug"
+      name: "Male BALB/c mouse, single i.t. PM2.5 100 ug"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "4-6"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male"
+      subject_characteristics: "Male BALB/c mice, 4-6 weeks old, 25-30 g; single intratracheal PM2.5 (NIST SRM 1648a) 100 ug"
+      sample_type: balf
+      collection_site: "bronchoalveolar lavage fluid"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:chandel-bioplex-001"
+        name: "Bioplex multiplex cytokine immunoassay on BALF supernatant"
+        detection_method: "Bioplex multiplex bead-based immunoassay (Bio-Rad)"
+        platform: "Bio-Rad Bioplex immunoassay system"
+
+# =============================================================================
+# OXIDATIVE STRESS ASSAYS - lung tissue redox and mitochondrial ROS
+# =============================================================================
+
+oxidative_stress_assays:
+
+  - id: "OX:chandel-lung-redox-7d"
+    name: "Lung tissue redox status - PM2.5 100 ug, day 7"
+    description: "Lung homogenates assessed 7, 14 and 21 days after a single 100 ug PM2.5 dose (Fig. 5). At 7 days: malondialdehyde (lipid peroxidation) increased 2.4-fold (p < 0.01); reduced glutathione fell 3-fold (p < 0.001); the GSH:GSSG ratio fell 3.4-fold (p < 0.01); superoxide dismutase activity fell 2.2-fold (p < 0.001) and catalase activity fell ~3-fold (p < 0.001), all with respect to control. Mean +/- SD of 4-5 animals per group. Oxidative stress persisted at 21 days despite resolution of inflammation."
+    ros_probe_type: "Not applicable - colorimetric assays of MDA, GSH, SOD and catalase in lung homogenate"
+    evidence:
+      - reference: "PMID:39031246"
+        reference_title: "Dynamics of Inflammatory and Pathological Changes Induced by Single Exposure of Particulate Matter (PM(2.5)) in Mice: Potential Implications in COPD."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Data on LPO/GSH and activities of SOD/Catalase show induction of continuous oxidative stress in lung tissue."
+        explanation: "The abstract states that the LPO/GSH data and SOD/catalase activities show induction of continuous oxidative stress in lung tissue, which is exactly what this assay records."
+    has_specified_output:
+      id: "OX:chandel-lung-redox-7d-output"
+      name: "Lung tissue redox measurements, 100 ug day 7"
+      lipid_peroxidation:
+        value: "2.4"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+      antioxidant_enzyme_activities: "Superoxide dismutase activity reduced 2.2-fold (p < 0.001) and catalase activity reduced ~3-fold (p < 0.001) with respect to control; reduced glutathione lowered 3-fold (p < 0.001) and the GSH:GSSG ratio lowered 3.4-fold (p < 0.01)"
+    has_exposure_condition:
+      - id: "EXPOSURE:chandel-pm25-100ug-7d"
+        name: "Single intratracheal PM2.5 100 ug, assessed 7 days later"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        timing_post_exposure:
+          value: "7"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chandel-mouse-pm25-100ug"
+      name: "Male BALB/c mouse, single i.t. PM2.5 100 ug"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "4-6"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male"
+      subject_characteristics: "Male BALB/c mice, 4-6 weeks old, 25-30 g; single intratracheal PM2.5 (NIST SRM 1648a) 100 ug"
+      sample_type: biopsy
+      collection_site: "lung tissue"
+      sample_collection_method: "10% w/v lung homogenate in ice-cold PBS (pH 7.4), supernatant after 8000 rpm for 10 min"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:chandel-oxstress-001"
+        name: "Oxidative stress parameters in lung tissue homogenate"
+        detection_method: "spectrophotometric assays for MDA, GSH, SOD (Kono) and catalase (Lueck)"
+
+  - id: "OX:chandel-mtros-balf-cd11b-7d"
+    name: "Mitochondrial ROS in BALF CD11b+ cells - PM2.5 100 ug, day 7"
+    description: "mtROS measured with MitoSOX Red in CD11b+ BALF immune cells (representing macrophages and neutrophils) 7 days after a single 100 ug PM2.5 dose. MitoSOX MFI was 6.3-fold higher than in control mice (p < 0.001), Fig. 6a, b. Mean +/- SD of 3-4 animals per group."
+    ros_probe_type: "MitoSOX Red (5 uM), with FITC-conjugated anti-mouse CD11b gating"
+    evidence:
+      - reference: "PMID:39031246"
+        reference_title: "Dynamics of Inflammatory and Pathological Changes Induced by Single Exposure of Particulate Matter (PM(2.5)) in Mice: Potential Implications in COPD."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Next, enhanced mtROS in the CD11b+ inflammatory cells confirms the redox imbalance in neutrophils/macrophages."
+        explanation: "The abstract states that enhanced mtROS in the CD11b+ inflammatory cells confirms redox imbalance in neutrophils/macrophages, which is the measurement this assay records."
+    has_specified_output:
+      id: "OX:chandel-mtros-balf-cd11b-7d-output"
+      name: "MitoSOX MFI in BALF CD11b+ cells, 100 ug day 7"
+      reactive_oxygen_species:
+        value: "6.3"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    has_exposure_condition:
+      - id: "EXPOSURE:chandel-pm25-100ug-7d"
+        name: "Single intratracheal PM2.5 100 ug, assessed 7 days later"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        timing_post_exposure:
+          value: "7"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chandel-mouse-pm25-100ug"
+      name: "Male BALB/c mouse, single i.t. PM2.5 100 ug"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "4-6"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male"
+      subject_characteristics: "Male BALB/c mice, 4-6 weeks old, 25-30 g; single intratracheal PM2.5 (NIST SRM 1648a) 100 ug"
+      sample_type: balf
+      collection_site: "bronchoalveolar lavage fluid, CD11b+ immune cells"
+      sample_collection_method: "BALF cells stained with FITC anti-CD11b then MitoSOX Red, analysed on a BD LSR Fortessa"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:chandel-mitosox-001"
+        name: "Mitochondrial ROS by MitoSOX Red flow cytometry"
+        detection_method: "flow cytometry, MitoSOX median fluorescence intensity"
+        antibodies_used:
+          - "FITC-conjugated anti-mouse CD11b (BD Biosciences #557396)"
+        platform: "BD LSR Fortessa Cell Analyser, BD FACSDiva 8.0"
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS - double chamber plethysmography time course
+# =============================================================================
+
+lung_function_assays:
+
+  - id: "LF:chandel-pm25-14d"
+    name: "Pulmonary function - PM2.5 100 ug, day 14"
+    description: "Double chamber plethysmography in conscious mice 14 days after a single 100 ug PM2.5 dose. PIF and PEF began to decline significantly at day 14 (~70% of control, p < 0.01; ~71% of control, p < 0.05 respectively; Fig. 7a, b), and specific airway resistance (sRaw) was elevated 2.1-fold (p < 0.05; Fig. 7f). Mean +/- SD of 5 animals per group."
+    evidence:
+      - reference: "PMID:39031246"
+        reference_title: "Dynamics of Inflammatory and Pathological Changes Induced by Single Exposure of Particulate Matter (PM(2.5)) in Mice: Potential Implications in COPD."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "A continuous decline in lung function was observed till 28 days."
+        explanation: "The abstract reports a continuous decline in lung function up to 28 days; this assay records the first significant time point of that decline, at day 14."
+    has_specified_output:
+      id: "LF:chandel-pm25-14d-output"
+      name: "Lung function measurements, 100 ug day 14"
+      peak_expiratory_flow:
+        value: "0.71"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+      lung_resistance:
+        value: "2.1"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    has_exposure_condition:
+      - id: "EXPOSURE:chandel-pm25-100ug-14d"
+        name: "Single intratracheal PM2.5 100 ug, assessed 14 days later"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        timing_post_exposure:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chandel-mouse-pm25-100ug"
+      name: "Male BALB/c mouse, single i.t. PM2.5 100 ug"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "4-6"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male"
+      subject_characteristics: "Male BALB/c mice, 4-6 weeks old, 25-30 g, conscious during measurement; single intratracheal PM2.5 (NIST SRM 1648a) 100 ug"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:chandel-pft-001"
+        name: "Pulmonary function test by double chamber plethysmography"
+        plethysmography_method: "double chamber plethysmography (SCIREQ, EMKA Technologies) in conscious mice"
+
+  - id: "LF:chandel-pm25-21d"
+    name: "Pulmonary function - PM2.5 100 ug, day 21"
+    description: "At 21 days after a single 100 ug PM2.5 dose, PIF fell further (~60% of control, p < 0.001) and PEF to ~68% of control (p < 0.05) (Fig. 7a, b); tidal volume fell significantly (~62% of control, p < 0.05; Fig. 7c); breathing rate rose to 131% of control (p < 0.05; Fig. 7d); sRaw rose 2.6-fold (p < 0.01; Fig. 7f). Lung function deteriorated despite resolution of inflammation at this time point. Mean +/- SD of 5 animals per group."
+    evidence:
+      - reference: "PMID:39031246"
+        reference_title: "Dynamics of Inflammatory and Pathological Changes Induced by Single Exposure of Particulate Matter (PM(2.5)) in Mice: Potential Implications in COPD."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "A continuous decline in lung function was observed till 28 days."
+        explanation: "The abstract reports a continuous decline in lung function up to 28 days; this assay records the day-21 point of that time course, where lung function worsened even as inflammation resolved."
+    has_specified_output:
+      id: "LF:chandel-pm25-21d-output"
+      name: "Lung function measurements, 100 ug day 21"
+      peak_expiratory_flow:
+        value: "0.68"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+      lung_resistance:
+        value: "2.6"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    has_exposure_condition:
+      - id: "EXPOSURE:chandel-pm25-100ug-21d"
+        name: "Single intratracheal PM2.5 100 ug, assessed 21 days later"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        timing_post_exposure:
+          value: "21"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chandel-mouse-pm25-100ug"
+      name: "Male BALB/c mouse, single i.t. PM2.5 100 ug"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "4-6"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male"
+      subject_characteristics: "Male BALB/c mice, 4-6 weeks old, 25-30 g, conscious during measurement; single intratracheal PM2.5 (NIST SRM 1648a) 100 ug"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:chandel-pft-001"
+        name: "Pulmonary function test by double chamber plethysmography"
+        plethysmography_method: "double chamber plethysmography (SCIREQ, EMKA Technologies) in conscious mice"
+
+  - id: "LF:chandel-pm25-28d"
+    name: "Pulmonary function and emphysematous change - PM2.5 100 ug, day 28"
+    description: "At 28 days after a single 100 ug PM2.5 dose, PIF was 50% of control (p < 0.001) and PEF ~61% of control (p < 0.05) (Fig. 7a, b); tidal volume was 51% of control (p < 0.01; Fig. 7c); breathing rate ~146% of control (p < 0.01; Fig. 7d); sRaw rose 2.9-fold (p < 0.001; Fig. 7f). Histology of lungs at 28 days showed significant airspace enlargement with a reduced number of alveoli, confirmed by mean linear intercept (Fig. 8a, b). Mean +/- SD of 5 animals per group."
+    evidence:
+      - reference: "PMID:39031246"
+        reference_title: "Dynamics of Inflammatory and Pathological Changes Induced by Single Exposure of Particulate Matter (PM(2.5)) in Mice: Potential Implications in COPD."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "A continuous decline in lung function was observed till 28 days."
+        explanation: "The abstract reports a continuous decline in lung function observed till 28 days, which is the end point this assay records."
+      - reference: "PMID:39031246"
+        reference_title: "Dynamics of Inflammatory and Pathological Changes Induced by Single Exposure of Particulate Matter (PM(2.5)) in Mice: Potential Implications in COPD."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Further, histological analysis of lung tissues at 28 days confirmed the presence of emphysematous lesions"
+        explanation: "The abstract states that histological analysis of lung tissues at 28 days confirmed emphysematous lesions, the structural change accompanying the day-28 lung function decline recorded here."
+    has_specified_output:
+      id: "LF:chandel-pm25-28d-output"
+      name: "Lung function measurements, 100 ug day 28"
+      peak_expiratory_flow:
+        value: "0.61"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+      lung_resistance:
+        value: "2.9"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    has_exposure_condition:
+      - id: "EXPOSURE:chandel-pm25-100ug-28d"
+        name: "Single intratracheal PM2.5 100 ug, assessed 28 days later"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        timing_post_exposure:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chandel-mouse-pm25-100ug"
+      name: "Male BALB/c mouse, single i.t. PM2.5 100 ug"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "4-6"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male"
+      subject_characteristics: "Male BALB/c mice, 4-6 weeks old, 25-30 g, conscious during measurement; single intratracheal PM2.5 (NIST SRM 1648a) 100 ug"
+      sample_type: biopsy
+      collection_site: "lung tissue (histology at 28 days)"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:chandel-pft-001"
+        name: "Pulmonary function test by double chamber plethysmography"
+        plethysmography_method: "double chamber plethysmography (SCIREQ, EMKA Technologies) in conscious mice"
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:chandel-histo-001"
+        name: "Lung histology with H&E and mean linear intercept"
+        staining_type: "hematoxylin and eosin"
+        fixation_method: "5% formalin, paraffin embedded, 5 um sections"
+        detection_method: "light microscopy at 100x and 400x; mean linear intercept in Fiji (ImageJ)"
