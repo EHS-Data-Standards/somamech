@@ -1,0 +1,22 @@
+{
+  "reference_id": "PMID:38809424",
+  "kb_file": "kb/publications/Container-chen2024-pm25-muc5ac.yaml",
+  "content_type_in_committed_cache": "abstract_only",
+  "verified_with": "just verify-snippets (linkml-reference-validator, committed + local cache)",
+  "verified_date": "2026-09-17",
+  "snippet_sha256": [
+    "1fb7f960fbe312eaa5fd042b1244fca7947f453222a86fd5fa03970e80ce8889",
+    "23ee4e5303304ad695ecb986ec020ef591250c06112afa812b523c1a369bbf8e",
+    "2d674092239f13703958828bb0626cff59a57b8e30e569b11fc2fa0be5ee29e1",
+    "348b8ce9d493b3cb16f411bb7452edf73a4478903e572a6face98a6a510597e2",
+    "3d1318689308ea1475ab959f86d297cfaeb1677a9e65d8a5f2e022d8e01c7a37",
+    "4b30a4abf46b933d2dd86085bea877e1850699e8aa44a18d7910bca8158b37a9",
+    "8d621b02cffa31bb93d23505abd6e2382d9e2b37abcc10ae72163dafb268e4e7",
+    "8e1158c91fd93deb0256779f7204c124de47d7cb0fc407255e28db7e25e9c886",
+    "b588a3ddb9eb24a168664466a00f7edec972f56e5367dc88519a066aa6681a0c",
+    "c4ef99f07d46e37dc4bea42ab82030abdecc96126d20b227be5e7ccaf4c2f321",
+    "e82136e12c9172ac49f91337664b173c88aabd964d8bb7b2ef1c2de7de5d27c2",
+    "ee083c343b3289e687888b29f1aa7291567f300afab6686b603c8697626c8918",
+    "fd2c307484d1bace0ee613b8a4399279a90605e41d467c3cdb535c1ed230e702"
+  ]
+}

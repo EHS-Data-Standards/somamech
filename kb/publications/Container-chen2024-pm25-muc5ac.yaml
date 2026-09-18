@@ -1,0 +1,1079 @@
+# =============================================================================
+# Chen et al. (2024) - Effects of PM2.5 on mucus hypersecretion in airway
+# through the miR-133b-5p/EGFR/Claudin1/MUC5AC axis
+# =============================================================================
+#
+# Source: Aging (Albany NY). 2024;16(10):8472-8483
+# DOI: 10.18632/aging.205785
+#
+# Study design:
+#   - In vivo: 60 SPF male Wistar rats (6-8 weeks, 220+/-20 g), six groups of
+#     ten: blank control (saline); PM2.5 model; model + AG1478 (EGFR blocker,
+#     17.5 mg/kg SC twice a week); model + miR-133b-5p agomir (10 nmol, in situ
+#     lung injection 48 h before sacrifice); model + Claudin1 overexpression
+#     empty adenovirus (tracheal instillation); model + Claudin1
+#     overexpression adenovirus
+#   - PM2.5 source: sampled on the roof of Jiangxi Provincial Chest Hospital
+#     (Nanchang, China), March-June 2020; suspension 40 ug/mL, ultrasonic
+#     nebulisation 1 h/day for 4 weeks
+#   - In vitro: 293T cells, dual-luciferase reporter assay for miR-133b-5p
+#     binding to EGFR
+#   - Readouts: serum IL-1 and TNF-alpha (ELISA), lung histopathology (HE,
+#     AB-PAS), p-EGFR / MUC5AC / Claudin1 / p-ERK1/2 / p-JNK / p-p38 (Western
+#     blot and immunohistochemistry), miR-133b-5p (RT-qPCR)
+#
+# Key findings (all directional; the paper reports group means only in
+# figures, so no numeric values are extracted here):
+#   - PM2.5 exposure lowered miR-133b-5p and raised MUC5AC protein in rat lung
+#   - p-EGFR, MUC5AC, p-ERK1/2, p-JNK and p-p38 increased and Claudin1
+#     decreased in the model group vs control
+#   - AG1478, miR-133b-5p agomir and Claudin1 overexpression each reversed
+#     those protein changes and lowered serum IL-1 / TNF-alpha
+#   - Dual-luciferase confirmed miR-133b-5p targets EGFR
+#
+# Curation notes:
+#   - No quantitative group values (means, SDs, fold changes, p-values) appear
+#     in the text of this paper; every quantitative result is shown only in
+#     figures. Per the extraction rules, no numbers have been invented, so the
+#     assay outputs carry directional descriptions and no measurement values.
+#   - The Results paragraph describing the Western blot states the opposite
+#     direction for MUC5AC and p-EGFR ("down-regulated in the model group")
+#     from the abstract, the immunohistochemistry paragraph, the discussion and
+#     the conclusions. The consistent direction (increase in the model group)
+#     is the one recorded here, and the discrepancy is flagged in the WB-based
+#     assay descriptions.
+#   - Serum cytokines are recorded with BALFSputumAssay, the only
+#     inflammation-readout assay class in the schema; the subject sample type
+#     is blood (serum), not BALF or sputum.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:38809424"
+  reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+  doi: "10.18632/aging.205785"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:chen2024-elisa-001"
+    protocol_type: MolecularAssayProtocol
+    name: "ELISA for serum IL-1 and TNF-alpha"
+    description: "Serum ELISA using rat TNF-alpha (MM-0180R1) and rat IL-1 (MM-0046R1) kits. Biotin-labelled antibody 30 min at 37 C, HRP-labelled detection antibody 30 min at 37 C, substrate A+B 15 min at 37 C in the dark, stop solution, OD read at 450 nm."
+    detection_method: "ELISA, absorbance at 450 nm"
+    equipment_required:
+      - "Automatic microplate reader (WD-2102B)"
+      - "Rat TNF-alpha ELISA kit (MM-0180R1)"
+      - "Rat IL-1 ELISA kit (MM-0046R1)"
+
+  - id: "PROTOCOL:chen2024-wb-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Western blot for lung tissue proteins"
+    description: "50 mg lung tissue lysed and ground, centrifuged 12000 r/min for 10 min, BCA protein quantification, 10% SDS-PAGE separation gel with 5% stacking gel, 300 mA transfer to PVDF for 90 min, 3% skim milk block 1 h at room temperature, primary antibody overnight, secondary antibody 2 h, chemiluminescence imaging."
+    detection_method: "chemiluminescence imaging"
+    antibodies_used:
+      - "P-EGFR (AF30314, Affinity)"
+      - "Claudin1 (AF0127, Affinity)"
+      - "MUC5AC (A17325, Abclonal)"
+      - "P-ERK1/2 (AF1015, Affinity)"
+      - "P-JUK (AF3318, Affinity)"
+      - "P-P38 (AF4001, Affinity)"
+      - "Horseradish labeled goat anti-rabbit IgG (H+L) (ZB-2301)"
+    equipment_required:
+      - "SDS-PAGE apparatus"
+      - "PVDF membrane"
+      - "Ultra-high sensitivity chemiluminescence imaging system"
+
+  - id: "PROTOCOL:chen2024-ihc-001"
+    protocol_type: StainingProtocol
+    name: "Immunohistochemistry for lung tissue proteins"
+    description: "Paraffin sections baked 2 h at 65 C, dewaxed in xylene, graded ethanol hydration, citric acid buffer antigen retrieval in a pressure cooker, 3% hydrogen peroxide 10 min to quench endogenous peroxidase, 5% BSA block 30 min at 37 C, primary antibody overnight at 4 C, horseradish-labelled goat anti-rabbit IgG (H+L) 1:150 30 min at 4 C, DAB development 5-10 min, haematoxylin counterstain."
+    staining_type: "immunohistochemistry"
+    detection_method: "DAB chromogen"
+    counterstain: "haematoxylin"
+    antibodies_used:
+      - "Horseradish labeled goat anti-rabbit IgG (H+L) (ZB-2301, 1:150)"
+    equipment_required:
+      - "Microtome (Leica 2235)"
+      - "Microscope (BX43, OLYMPUS)"
+      - "DAB color rendering kit (CW0125, CWBIO)"
+
+  - id: "PROTOCOL:chen2024-qpcr-001"
+    protocol_type: MolecularAssayProtocol
+    name: "RT-qPCR for miR-133b-5p in lung tissue"
+    description: "Lung tissue miRNA extracted with Trizon lysate, purity and concentration checked by UV spectrophotometry, stem-loop first-strand cDNA synthesis, SYBR qPCR in a 20 uL system (95 C 10 min; 40 cycles of 95 C 10 s, 58 C 30 s, 72 C 30 s). U6 or beta-actin used as internal reference."
+    detection_method: "SYBR Green qPCR"
+    reference_gene: "U6"
+    primer_sequences:
+      - "miR-133b-5p F: GCGGCTGGTCAAACGGAA"
+      - "miR-133b-5p R: AGTGCAGGGTCCGAGGTATT"
+      - "U6 F: ATTGGAACGATACAGAGAAGATT"
+      - "U6 R: GGAACGCTTCACGAATTTG"
+    equipment_required:
+      - "Fluorescence cycler (CFX Connect real-time)"
+      - "UV spectrophotometer (NP80, NanoPhotometer)"
+
+  - id: "PROTOCOL:chen2024-he-001"
+    protocol_type: StainingProtocol
+    name: "HE staining of lung tissue"
+    description: "Tissue rinsed, dehydrated through graded ethanol and xylene, paraffin embedded and sectioned, dewaxed and hydrated, haematoxylin 3 min, hydrochloric acid ethanol differentiation 15 s, bluing 15 s, eosin 3 min, dehydrated, cleared and mounted for microscopy."
+    staining_type: "haematoxylin and eosin"
+    equipment_required:
+      - "Microtome (Leica 2235)"
+      - "Microscope (BX43, OLYMPUS)"
+
+  - id: "PROTOCOL:chen2024-abpas-001"
+    protocol_type: StainingProtocol
+    name: "Alcian blue periodic acid Schiff (AB-PAS) staining for airway mucus"
+    description: "Sections dewaxed to water, Alcian blue 13 min, periodic acid oxidation 5 min, Schiff reagent 13 min, running water 10 min, ethanol dehydration, xylene clearing and neutral gum mounting. Mucinous material stains purplish red; classically rounded proximal airways imaged and quantified with Image-Pro Plus 6.0."
+    staining_type: "Alcian blue periodic acid Schiff (AB-PAS)"
+    detection_method: "light microscopy, Image-Pro Plus 6.0 image analysis"
+    equipment_required:
+      - "Light microscope (BX43, OLYMPUS)"
+      - "Image-Pro Plus 6.0"
+
+  - id: "PROTOCOL:chen2024-luciferase-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Dual-luciferase reporter assay for miR-133b-5p binding to EGFR"
+    description: "293T cells seeded at 8x10^4 per well in 12-well plates, transfected at 70% confluence in 5% FBS medium with EGFR wild-type or mutant luciferase reporter vectors plus miRNA mimic or mimic NC and the pRL-SV40 Renilla plasmid. 70 uL lysate per group assayed in black 96-well plates with 100 uL firefly luciferase reagent, then 100 uL Renilla reagent."
+    detection_method: "dual-luciferase reporter assay (firefly / Renilla)"
+    equipment_required:
+      - "Multifunctional microplate analyzer (SuPerMax 3100)"
+      - "Biluciferase Reporter Detection Kit (RG027)"
+      - "Lipofectamine 3000 (L3000015, Invitrogen)"
+
+# =============================================================================
+# EGFR SIGNALING ASSAYS - p-EGFR and MAPK phosphorylation in rat lung tissue
+# =============================================================================
+
+egfr_signaling_assays:
+  # PM2.5 model group - EGFR/MAPK activation
+  - id: "EGFR:chen2024-pegfr-model"
+    name: "p-EGFR and MAPK phosphorylation - PM2.5 model group"
+    description: "Western blot and immunohistochemistry of rat lung tissue after 4 weeks of nebulised PM2.5. p-EGFR, p-ERK1/2, p-JNK and p-p38 were increased relative to the blank control group. The paper reports group differences only in figures, so no numeric values are recorded. Note: the Western blot Results paragraph states the opposite direction for p-EGFR; the abstract, the immunohistochemistry paragraph, the discussion and the conclusions all report the increase recorded here."
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The protein detection results showed that the expression of p-EGFR, MUC5AC, p-ERK1/2, p-JNK and p-p38 proteins was increased and the expression of Claudin1 protein was decreased in the model group compared with the control group."
+        explanation: "States directly that p-EGFR and the three MAPK phosphoproteins rose in the PM2.5 model group relative to control, which is the EGFR activation this assay records."
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "PM2.5 inhibited the expression of miR-133b-5p to activate the EGFR/MAPK signal pathway"
+        explanation: "The authors' conclusion that PM2.5 activates the EGFR/MAPK pathway in rats supports linking this assay to the EGFR activation key event."
+    has_specified_output:
+      id: "EGFR:chen2024-pegfr-model-output"
+      name: "p-EGFR and MAPK phosphoprotein levels - model group"
+      description: "Increased p-EGFR, p-ERK1/2, p-JNK and p-p38 versus control by Western blot and immunohistochemistry. No numeric values are reported in the text; group data appear only in Figures 6 and 7."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2024-pm25-40ug-4wk"
+        name: "PM2.5 suspension 40 ug/mL nebulised 1 h/day for 4 weeks"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "40"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000034"
+            name: "week"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen2024-rat-model"
+      name: "PM2.5-exposed male Wistar rat (model group)"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "SPF male Wistar rats, 6-8 weeks old, 220+/-20 g, ten rats per group; PM2.5 suspension nebulised 1 h/day for 4 weeks"
+      sample_type: biopsy
+      collection_site: "lung tissue"
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-wb-001"
+        name: "Western blot for lung tissue proteins"
+      - id: "PROTOCOL:chen2024-ihc-001"
+        name: "Immunohistochemistry for lung tissue proteins"
+
+  # AG1478 (EGFR blocker) reversal
+  - id: "EGFR:chen2024-pegfr-ag1478"
+    name: "p-EGFR and MAPK phosphorylation - PM2.5 + AG1478"
+    description: "Rats given the EGFR-specific blocker AG1478 (17.5 mg/kg subcutaneously, twice a week) alongside PM2.5. p-EGFR, p-ERK1/2, p-JNK and p-p38 were down-regulated compared with the model group, confirming that the phosphorylation changes are EGFR-dependent. Directional result only; no numeric values are reported in the text."
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In the model + AG1478 treatment group, model + miR-133b-5p agomir treatment group and model + Claudin1 overexpression group, compared with the model group, p-EGFR, MUC5AC, p-ERK1/2, p-JNK, p-p38 protein expression was down-regulated, and Claudin1 protein expression was up-regulated."
+        explanation: "Names the AG1478 group explicitly and reports the down-regulation of p-EGFR and the MAPK phosphoproteins relative to the model group that this assay records."
+    has_specified_output:
+      id: "EGFR:chen2024-pegfr-ag1478-output"
+      name: "p-EGFR and MAPK phosphoprotein levels - AG1478 group"
+      description: "p-EGFR, p-ERK1/2, p-JNK and p-p38 down-regulated versus the PM2.5 model group. No numeric values are reported in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2024-pm25-ag1478"
+        name: "PM2.5 40 ug/mL nebulised for 4 weeks plus AG1478 17.5 mg/kg subcutaneously twice a week"
+        exposure_agent:
+          id: "CHEBI:75404"
+          name: "tyrphostin AG 1478"
+        exposure_concentration:
+          value: "17.5"
+          unit:
+            id: "UO:0000308"
+            name: "milligram per kilogram"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000034"
+            name: "week"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen2024-rat-ag1478"
+      name: "PM2.5-exposed male Wistar rat treated with AG1478"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "SPF male Wistar rats, 6-8 weeks old, 220+/-20 g, ten rats per group; PM2.5 plus subcutaneous AG1478 17.5 mg/kg twice a week"
+      sample_type: biopsy
+      collection_site: "lung tissue"
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-wb-001"
+        name: "Western blot for lung tissue proteins"
+      - id: "PROTOCOL:chen2024-ihc-001"
+        name: "Immunohistochemistry for lung tissue proteins"
+
+  # miR-133b-5p agomir reversal
+  - id: "EGFR:chen2024-pegfr-agomir"
+    name: "p-EGFR and MAPK phosphorylation - PM2.5 + miR-133b-5p agomir"
+    description: "Rats given miR-133b-5p agomir (10 nmol, in situ lung injection 48 h before sacrifice) alongside PM2.5. p-EGFR, p-ERK1/2, p-JNK and p-p38 were down-regulated compared with the model group, placing miR-133b-5p upstream of EGFR activation. Directional result only; no numeric values are reported in the text."
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In the model + AG1478 treatment group, model + miR-133b-5p agomir treatment group and model + Claudin1 overexpression group, compared with the model group, p-EGFR, MUC5AC, p-ERK1/2, p-JNK, p-p38 protein expression was down-regulated, and Claudin1 protein expression was up-regulated."
+        explanation: "Names the miR-133b-5p agomir group explicitly and reports the down-regulation of p-EGFR and the MAPK phosphoproteins relative to the model group that this assay records."
+    has_specified_output:
+      id: "EGFR:chen2024-pegfr-agomir-output"
+      name: "p-EGFR and MAPK phosphoprotein levels - miR-133b-5p agomir group"
+      description: "p-EGFR, p-ERK1/2, p-JNK and p-p38 down-regulated versus the PM2.5 model group. No numeric values are reported in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2024-pm25-agomir"
+        name: "PM2.5 40 ug/mL nebulised for 4 weeks plus miR-133b-5p agomir 10 nmol by in situ lung injection"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000041"
+            name: "nanomole"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000034"
+            name: "week"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen2024-rat-agomir"
+      name: "PM2.5-exposed male Wistar rat treated with miR-133b-5p agomir"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "SPF male Wistar rats, 6-8 weeks old, 220+/-20 g, ten rats per group; PM2.5 plus miR-133b-5p agomir 10 nmol injected in situ into the lung 48 h before sacrifice"
+      sample_type: biopsy
+      collection_site: "lung tissue"
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-wb-001"
+        name: "Western blot for lung tissue proteins"
+      - id: "PROTOCOL:chen2024-ihc-001"
+        name: "Immunohistochemistry for lung tissue proteins"
+
+  # Claudin1 overexpression
+  - id: "EGFR:chen2024-pegfr-claudin1-oe"
+    name: "p-EGFR and MAPK phosphorylation - PM2.5 + Claudin1 overexpression"
+    description: "Rats given Claudin1 overexpression adenovirus by tracheal instillation alongside PM2.5. p-EGFR, p-ERK1/2, p-JNK and p-p38 were down-regulated compared with the model group; the empty-vector group did not differ from the model group. Directional result only; no numeric values are reported in the text."
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In the model + AG1478 treatment group, model + miR-133b-5p agomir treatment group and model + Claudin1 overexpression group, compared with the model group, p-EGFR, MUC5AC, p-ERK1/2, p-JNK, p-p38 protein expression was down-regulated, and Claudin1 protein expression was up-regulated."
+        explanation: "Names the Claudin1 overexpression group explicitly and reports the down-regulation of p-EGFR and the MAPK phosphoproteins relative to the model group that this assay records."
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "There was no significant difference in the expression of the six proteins in the model group and the model + Claudin1 overexpression blank load group."
+        explanation: "Establishes that the adenoviral empty-vector control behaved like the model group, so the changes recorded here are attributable to Claudin1 overexpression itself."
+    has_specified_output:
+      id: "EGFR:chen2024-pegfr-claudin1-oe-output"
+      name: "p-EGFR and MAPK phosphoprotein levels - Claudin1 overexpression group"
+      description: "p-EGFR, p-ERK1/2, p-JNK and p-p38 down-regulated versus the PM2.5 model group. No numeric values are reported in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2024-pm25-claudin1-oe"
+        name: "PM2.5 40 ug/mL nebulised for 4 weeks plus Claudin1 overexpression adenovirus by tracheal instillation"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "40"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000034"
+            name: "week"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen2024-rat-claudin1-oe"
+      name: "PM2.5-exposed male Wistar rat with Claudin1 overexpression"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "SPF male Wistar rats, 6-8 weeks old, 220+/-20 g, ten rats per group; PM2.5 plus tracheal instillation of Claudin1 overexpression adenovirus"
+      sample_type: biopsy
+      collection_site: "lung tissue"
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-wb-001"
+        name: "Western blot for lung tissue proteins"
+      - id: "PROTOCOL:chen2024-ihc-001"
+        name: "Immunohistochemistry for lung tissue proteins"
+
+# =============================================================================
+# GOBLET CELL / MUCIN ASSAYS - MUC5AC protein and airway mucus in rat lung
+# =============================================================================
+
+goblet_cell_assays:
+  # MUC5AC in the PM2.5 model group
+  - id: "GCM:chen2024-muc5ac-model"
+    name: "MUC5AC protein - PM2.5 model group"
+    description: "MUC5AC protein in rat lung tissue by Western blot and immunohistochemistry after 4 weeks of nebulised PM2.5. MUC5AC was increased relative to the blank control group. Directional result only; group data appear in Figures 6 and 7. Note: the Western blot Results paragraph states the opposite direction for MUC5AC; the abstract, the immunohistochemistry paragraph, the discussion and the conclusions all report the increase recorded here."
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "After the rats were exposed to PM2.5, the content of inflammatory factors in serum increased, the inflammatory damage of lung tissues occurred, the expression of miR-133b-5p was down-regulated, and the expression of MUC5AC protein was increased."
+        explanation: "States that MUC5AC protein rose in PM2.5-exposed rats, the mucin hypersecretion this assay records."
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The protein detection results showed that the expression of p-EGFR, MUC5AC, p-ERK1/2, p-JNK and p-p38 proteins was increased and the expression of Claudin1 protein was decreased in the model group compared with the control group."
+        explanation: "Confirms from the protein detection results that MUC5AC was increased in the model group compared with control."
+    has_specified_output:
+      id: "GCM:chen2024-muc5ac-model-output"
+      name: "MUC5AC protein level - model group"
+      description: "MUC5AC protein increased versus control by Western blot and immunohistochemistry. No numeric values are reported in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2024-pm25-40ug-4wk"
+        name: "PM2.5 suspension 40 ug/mL nebulised 1 h/day for 4 weeks"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "40"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000034"
+            name: "week"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen2024-rat-model"
+      name: "PM2.5-exposed male Wistar rat (model group)"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "SPF male Wistar rats, 6-8 weeks old, 220+/-20 g, ten rats per group; PM2.5 suspension nebulised 1 h/day for 4 weeks"
+      sample_type: biopsy
+      collection_site: "lung tissue"
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-wb-001"
+        name: "Western blot for lung tissue proteins"
+      - id: "PROTOCOL:chen2024-ihc-001"
+        name: "Immunohistochemistry for lung tissue proteins"
+
+  # Airway mucus on histology in the model group
+  - id: "GCM:chen2024-mucus-histology-model"
+    name: "Airway and interstitial mucus on histology - PM2.5 model group"
+    description: "Lung histology of the PM2.5 model group. Alveolar structure was destroyed, focal inflammatory cells appeared in the lung stroma and parenchyma, and a large amount of mucus was visible in the lung interstitium, confirming the exposure model. Mucus was assessed on HE and AB-PAS stained sections; the paper reports no quantified mucus area."
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Compared with the control group, the alveolar structure of the model group was destroyed, focal inflammatory cells appeared in the lung stroma and lung parenchyma, a large amount of mucus was visible in the lung interstitium, and the rat PM2.5 exposure model was successful"
+        explanation: "Reports the histological mucus accumulation in PM2.5-exposed rat lung that this assay records."
+    has_specified_output:
+      id: "GCM:chen2024-mucus-histology-model-output"
+      name: "Histological mucus assessment - model group"
+      description: "Large amount of mucus visible in the lung interstitium of the model group; the paper reports no quantified mucus measurement."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2024-pm25-40ug-4wk"
+        name: "PM2.5 suspension 40 ug/mL nebulised 1 h/day for 4 weeks"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "40"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000034"
+            name: "week"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen2024-rat-model"
+      name: "PM2.5-exposed male Wistar rat (model group)"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "SPF male Wistar rats, 6-8 weeks old, 220+/-20 g, ten rats per group; PM2.5 suspension nebulised 1 h/day for 4 weeks"
+      sample_type: biopsy
+      collection_site: "lung tissue"
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-he-001"
+        name: "HE staining of lung tissue"
+      - id: "PROTOCOL:chen2024-abpas-001"
+        name: "Alcian blue periodic acid Schiff (AB-PAS) staining for airway mucus"
+
+  # MUC5AC after EGFR blockade
+  - id: "GCM:chen2024-muc5ac-ag1478"
+    name: "MUC5AC protein - PM2.5 + AG1478"
+    description: "MUC5AC protein in lung tissue of rats treated with the EGFR blocker AG1478 alongside PM2.5. MUC5AC was down-regulated compared with the model group, showing that PM2.5-driven MUC5AC production requires EGFR activation. Directional result only."
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In the model + AG1478 treatment group, model + miR-133b-5p agomir treatment group and model + Claudin1 overexpression group, compared with the model group, p-EGFR, MUC5AC, p-ERK1/2, p-JNK, p-p38 protein expression was down-regulated, and Claudin1 protein expression was up-regulated."
+        explanation: "Reports MUC5AC down-regulation in the AG1478 group relative to the model group, the value this assay records."
+    has_specified_output:
+      id: "GCM:chen2024-muc5ac-ag1478-output"
+      name: "MUC5AC protein level - AG1478 group"
+      description: "MUC5AC protein down-regulated versus the PM2.5 model group. No numeric values are reported in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2024-pm25-ag1478"
+        name: "PM2.5 40 ug/mL nebulised for 4 weeks plus AG1478 17.5 mg/kg subcutaneously twice a week"
+        exposure_agent:
+          id: "CHEBI:75404"
+          name: "tyrphostin AG 1478"
+        exposure_concentration:
+          value: "17.5"
+          unit:
+            id: "UO:0000308"
+            name: "milligram per kilogram"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000034"
+            name: "week"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen2024-rat-ag1478"
+      name: "PM2.5-exposed male Wistar rat treated with AG1478"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "SPF male Wistar rats, 6-8 weeks old, 220+/-20 g, ten rats per group; PM2.5 plus subcutaneous AG1478 17.5 mg/kg twice a week"
+      sample_type: biopsy
+      collection_site: "lung tissue"
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-wb-001"
+        name: "Western blot for lung tissue proteins"
+      - id: "PROTOCOL:chen2024-ihc-001"
+        name: "Immunohistochemistry for lung tissue proteins"
+
+  # MUC5AC after miR-133b-5p restoration
+  - id: "GCM:chen2024-muc5ac-agomir"
+    name: "MUC5AC protein - PM2.5 + miR-133b-5p agomir"
+    description: "MUC5AC protein in lung tissue of rats given miR-133b-5p agomir alongside PM2.5. MUC5AC was down-regulated compared with the model group, placing miR-133b-5p upstream of PM2.5-induced mucin hypersecretion. Directional result only."
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In the model + AG1478 treatment group, model + miR-133b-5p agomir treatment group and model + Claudin1 overexpression group, compared with the model group, p-EGFR, MUC5AC, p-ERK1/2, p-JNK, p-p38 protein expression was down-regulated, and Claudin1 protein expression was up-regulated."
+        explanation: "Reports MUC5AC down-regulation in the miR-133b-5p agomir group relative to the model group, the value this assay records."
+    has_specified_output:
+      id: "GCM:chen2024-muc5ac-agomir-output"
+      name: "MUC5AC protein level - miR-133b-5p agomir group"
+      description: "MUC5AC protein down-regulated versus the PM2.5 model group. No numeric values are reported in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2024-pm25-agomir"
+        name: "PM2.5 40 ug/mL nebulised for 4 weeks plus miR-133b-5p agomir 10 nmol by in situ lung injection"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000041"
+            name: "nanomole"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000034"
+            name: "week"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen2024-rat-agomir"
+      name: "PM2.5-exposed male Wistar rat treated with miR-133b-5p agomir"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "SPF male Wistar rats, 6-8 weeks old, 220+/-20 g, ten rats per group; PM2.5 plus miR-133b-5p agomir 10 nmol injected in situ into the lung 48 h before sacrifice"
+      sample_type: biopsy
+      collection_site: "lung tissue"
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-wb-001"
+        name: "Western blot for lung tissue proteins"
+      - id: "PROTOCOL:chen2024-ihc-001"
+        name: "Immunohistochemistry for lung tissue proteins"
+
+  # MUC5AC after Claudin1 overexpression
+  - id: "GCM:chen2024-muc5ac-claudin1-oe"
+    name: "MUC5AC protein - PM2.5 + Claudin1 overexpression"
+    description: "MUC5AC protein in lung tissue of rats given Claudin1 overexpression adenovirus alongside PM2.5. MUC5AC was down-regulated compared with the model group, so restoring Claudin1 is sufficient to suppress PM2.5-induced MUC5AC. Directional result only."
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In the model + AG1478 treatment group, model + miR-133b-5p agomir treatment group and model + Claudin1 overexpression group, compared with the model group, p-EGFR, MUC5AC, p-ERK1/2, p-JNK, p-p38 protein expression was down-regulated, and Claudin1 protein expression was up-regulated."
+        explanation: "Reports MUC5AC down-regulation in the Claudin1 overexpression group relative to the model group, the value this assay records."
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The overexpression of Claudin1 protein inhibits the secretion of MUC5AC, weakens the airway inflammation and excessive secretion of airway mucus induced by PM2.5 exposure."
+        explanation: "The authors' summary of the Claudin1 overexpression arm, supporting the suppression of MUC5AC recorded here."
+    has_specified_output:
+      id: "GCM:chen2024-muc5ac-claudin1-oe-output"
+      name: "MUC5AC protein level - Claudin1 overexpression group"
+      description: "MUC5AC protein down-regulated versus the PM2.5 model group. No numeric values are reported in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2024-pm25-claudin1-oe"
+        name: "PM2.5 40 ug/mL nebulised for 4 weeks plus Claudin1 overexpression adenovirus by tracheal instillation"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "40"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000034"
+            name: "week"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen2024-rat-claudin1-oe"
+      name: "PM2.5-exposed male Wistar rat with Claudin1 overexpression"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "SPF male Wistar rats, 6-8 weeks old, 220+/-20 g, ten rats per group; PM2.5 plus tracheal instillation of Claudin1 overexpression adenovirus"
+      sample_type: biopsy
+      collection_site: "lung tissue"
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-wb-001"
+        name: "Western blot for lung tissue proteins"
+      - id: "PROTOCOL:chen2024-ihc-001"
+        name: "Immunohistochemistry for lung tissue proteins"
+
+# =============================================================================
+# INFLAMMATION ASSAYS - serum IL-1 and TNF-alpha by ELISA
+# (BALFSputumAssay is the schema's inflammation readout class; the sample here
+#  is serum, recorded as sample_type blood with collection_site "serum")
+# =============================================================================
+
+balf_sputum_assays:
+  - id: "BALF:chen2024-serum-model"
+    name: "Serum IL-1 and TNF-alpha - PM2.5 model group"
+    description: "Serum ELISA for IL-1 and TNF-alpha after 4 weeks of nebulised PM2.5. Both cytokines were significantly higher in the model group than in the blank control group. Concentrations are shown only in Figure 4, so no numeric values are recorded."
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The ELISA test results showed that the expression of IL-1 and TNF-α in the model group was significantly higher than that in the control group"
+        explanation: "States directly that serum IL-1 and TNF-alpha were significantly higher in the PM2.5 model group than in control, the inflammatory increase this assay records."
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "After the rats were exposed to PM2.5, the content of inflammatory factors in serum increased, the inflammatory damage of lung tissues occurred, the expression of miR-133b-5p was down-regulated, and the expression of MUC5AC protein was increased."
+        explanation: "Confirms that serum inflammatory factors rose after PM2.5 exposure alongside the lung inflammatory damage."
+    has_specified_output:
+      id: "BALF:chen2024-serum-model-output"
+      name: "Serum IL-1 and TNF-alpha - model group"
+      description: "IL-1 and TNF-alpha significantly increased versus control. Concentrations appear only in Figure 4; no numeric values are reported in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2024-pm25-40ug-4wk"
+        name: "PM2.5 suspension 40 ug/mL nebulised 1 h/day for 4 weeks"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "40"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000034"
+            name: "week"
+    informs_on_key_event:
+      id: "KE:ke-il1-inflammation"
+      name: "IL-1 inflammatory program activation"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen2024-rat-model-serum"
+      name: "PM2.5-exposed male Wistar rat (model group), serum"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "SPF male Wistar rats, 6-8 weeks old, 220+/-20 g, ten rats per group; PM2.5 suspension nebulised 1 h/day for 4 weeks"
+      sample_type: blood
+      collection_site: "serum"
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-elisa-001"
+        name: "ELISA for serum IL-1 and TNF-alpha"
+
+  - id: "BALF:chen2024-serum-ag1478"
+    name: "Serum IL-1 and TNF-alpha - PM2.5 + AG1478"
+    description: "Serum ELISA for IL-1 and TNF-alpha in rats treated with the EGFR blocker AG1478 alongside PM2.5. Both cytokines were down-regulated compared with the model group. Directional result only."
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "the model +AG1478 treatment group was down-regulated compared with the model group"
+        explanation: "Records the ELISA result for the AG1478 arm: serum IL-1 and TNF-alpha fell relative to the model group."
+    has_specified_output:
+      id: "BALF:chen2024-serum-ag1478-output"
+      name: "Serum IL-1 and TNF-alpha - AG1478 group"
+      description: "IL-1 and TNF-alpha down-regulated versus the PM2.5 model group. No numeric values are reported in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2024-pm25-ag1478"
+        name: "PM2.5 40 ug/mL nebulised for 4 weeks plus AG1478 17.5 mg/kg subcutaneously twice a week"
+        exposure_agent:
+          id: "CHEBI:75404"
+          name: "tyrphostin AG 1478"
+        exposure_concentration:
+          value: "17.5"
+          unit:
+            id: "UO:0000308"
+            name: "milligram per kilogram"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000034"
+            name: "week"
+    informs_on_key_event:
+      id: "KE:ke-il1-inflammation"
+      name: "IL-1 inflammatory program activation"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen2024-rat-ag1478-serum"
+      name: "PM2.5-exposed male Wistar rat treated with AG1478, serum"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "SPF male Wistar rats, 6-8 weeks old, 220+/-20 g, ten rats per group; PM2.5 plus subcutaneous AG1478 17.5 mg/kg twice a week"
+      sample_type: blood
+      collection_site: "serum"
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-elisa-001"
+        name: "ELISA for serum IL-1 and TNF-alpha"
+
+  - id: "BALF:chen2024-serum-agomir"
+    name: "Serum IL-1 and TNF-alpha - PM2.5 + miR-133b-5p agomir"
+    description: "Serum ELISA for IL-1 and TNF-alpha in rats given miR-133b-5p agomir alongside PM2.5. Both cytokines were significantly lower than in the control group, the model group and the Claudin1 empty-vector group. Directional result only."
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "the +miR-133b-5p agomir treatment group was significantly lower than that in the control group, the model group and the model +Claudin1 overexpression blank load group"
+        explanation: "Records the ELISA result for the miR-133b-5p agomir arm relative to control, model and empty-vector groups."
+    has_specified_output:
+      id: "BALF:chen2024-serum-agomir-output"
+      name: "Serum IL-1 and TNF-alpha - miR-133b-5p agomir group"
+      description: "IL-1 and TNF-alpha significantly lower than control, model and Claudin1 empty-vector groups. No numeric values are reported in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2024-pm25-agomir"
+        name: "PM2.5 40 ug/mL nebulised for 4 weeks plus miR-133b-5p agomir 10 nmol by in situ lung injection"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000041"
+            name: "nanomole"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000034"
+            name: "week"
+    informs_on_key_event:
+      id: "KE:ke-il1-inflammation"
+      name: "IL-1 inflammatory program activation"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen2024-rat-agomir-serum"
+      name: "PM2.5-exposed male Wistar rat treated with miR-133b-5p agomir, serum"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "SPF male Wistar rats, 6-8 weeks old, 220+/-20 g, ten rats per group; PM2.5 plus miR-133b-5p agomir 10 nmol injected in situ into the lung 48 h before sacrifice"
+      sample_type: blood
+      collection_site: "serum"
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-elisa-001"
+        name: "ELISA for serum IL-1 and TNF-alpha"
+
+  - id: "BALF:chen2024-serum-claudin1-oe"
+    name: "Serum IL-1 and TNF-alpha - PM2.5 + Claudin1 overexpression"
+    description: "Serum ELISA for IL-1 and TNF-alpha in rats given Claudin1 overexpression adenovirus alongside PM2.5. Both cytokines were down-regulated compared with the model group and with the Claudin1 empty-vector group. Directional result only."
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "the model +Claudin1 overexpression group was down-regulated compared with the model group and the model +Claudin1 overexpression blank load group"
+        explanation: "Records the ELISA result for the Claudin1 overexpression arm relative to the model and empty-vector groups."
+    has_specified_output:
+      id: "BALF:chen2024-serum-claudin1-oe-output"
+      name: "Serum IL-1 and TNF-alpha - Claudin1 overexpression group"
+      description: "IL-1 and TNF-alpha down-regulated versus the model and Claudin1 empty-vector groups. No numeric values are reported in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2024-pm25-claudin1-oe"
+        name: "PM2.5 40 ug/mL nebulised for 4 weeks plus Claudin1 overexpression adenovirus by tracheal instillation"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "40"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000034"
+            name: "week"
+    informs_on_key_event:
+      id: "KE:ke-il1-inflammation"
+      name: "IL-1 inflammatory program activation"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen2024-rat-claudin1-oe-serum"
+      name: "PM2.5-exposed male Wistar rat with Claudin1 overexpression, serum"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "SPF male Wistar rats, 6-8 weeks old, 220+/-20 g, ten rats per group; PM2.5 plus tracheal instillation of Claudin1 overexpression adenovirus"
+      sample_type: blood
+      collection_site: "serum"
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-elisa-001"
+        name: "ELISA for serum IL-1 and TNF-alpha"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS - miR-133b-5p, Claudin1, and miR-133b-5p/EGFR targeting
+# =============================================================================
+
+gene_expression_assays:
+  # miR-133b-5p in PM2.5-exposed rat lung
+  - id: "GE:chen2024-mir133b-model"
+    name: "miR-133b-5p expression - PM2.5 model group (RT-qPCR)"
+    description: "RT-qPCR for miR-133b-5p in rat lung tissue with U6 (or beta-actin) as internal reference. miR-133b-5p was down-regulated after PM2.5 exposure. Directional result only; group data appear in Figure 1."
+    gene_expression_method: "RT-qPCR"
+    normalization_reference: "U6"
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "After the rats were exposed to PM2.5, the content of inflammatory factors in serum increased, the inflammatory damage of lung tissues occurred, the expression of miR-133b-5p was down-regulated, and the expression of MUC5AC protein was increased."
+        explanation: "States that miR-133b-5p expression fell in PM2.5-exposed rats, the down-regulation this assay records."
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "PM2.5 inhibited the expression of miR-133b-5p to activate the EGFR/MAPK signal pathway"
+        explanation: "The conclusion places miR-133b-5p inhibition upstream of EGFR/MAPK activation, supporting this assay's key event assignment."
+    has_specified_output:
+      id: "GE:chen2024-mir133b-model-output"
+      name: "miR-133b-5p level - model group"
+      description: "miR-133b-5p down-regulated after PM2.5 exposure. No numeric values are reported in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2024-pm25-40ug-4wk"
+        name: "PM2.5 suspension 40 ug/mL nebulised 1 h/day for 4 weeks"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "40"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000034"
+            name: "week"
+    informs_on_key_event:
+      id: "KE:mie-mir133b-5p-downregulation"
+      name: "miR-133b-5p downregulation"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen2024-rat-model"
+      name: "PM2.5-exposed male Wistar rat (model group)"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "SPF male Wistar rats, 6-8 weeks old, 220+/-20 g, ten rats per group; PM2.5 suspension nebulised 1 h/day for 4 weeks"
+      sample_type: biopsy
+      collection_site: "lung tissue"
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-qpcr-001"
+        name: "RT-qPCR for miR-133b-5p in lung tissue"
+
+  # Claudin1 protein loss in the model group
+  - id: "GE:chen2024-claudin1-model"
+    name: "Claudin1 protein - PM2.5 model group"
+    description: "Claudin1 protein in rat lung tissue by Western blot and immunohistochemistry. Claudin1 was decreased in the PM2.5 model group compared with control, the tight-junction change the authors place downstream of EGFR activation and upstream of MUC5AC. Directional result only."
+    target_gene: "PR:000005537"
+    gene_expression_method: "Western blot and immunohistochemistry"
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The protein detection results showed that the expression of p-EGFR, MUC5AC, p-ERK1/2, p-JNK and p-p38 proteins was increased and the expression of Claudin1 protein was decreased in the model group compared with the control group."
+        explanation: "States that Claudin1 protein fell in the model group relative to control, the decrease this assay records."
+    has_specified_output:
+      id: "GE:chen2024-claudin1-model-output"
+      name: "Claudin1 protein level - model group"
+      description: "Claudin1 protein decreased versus control. No numeric values are reported in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2024-pm25-40ug-4wk"
+        name: "PM2.5 suspension 40 ug/mL nebulised 1 h/day for 4 weeks"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "40"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000034"
+            name: "week"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen2024-rat-model"
+      name: "PM2.5-exposed male Wistar rat (model group)"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "SPF male Wistar rats, 6-8 weeks old, 220+/-20 g, ten rats per group; PM2.5 suspension nebulised 1 h/day for 4 weeks"
+      sample_type: biopsy
+      collection_site: "lung tissue"
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-wb-001"
+        name: "Western blot for lung tissue proteins"
+      - id: "PROTOCOL:chen2024-ihc-001"
+        name: "Immunohistochemistry for lung tissue proteins"
+
+  # Claudin1 restored by miR-133b-5p agomir
+  - id: "GE:chen2024-claudin1-agomir"
+    name: "Claudin1 protein - PM2.5 + miR-133b-5p agomir"
+    description: "Claudin1 protein in lung tissue of rats given miR-133b-5p agomir alongside PM2.5 (the same up-regulation was seen in the AG1478 and Claudin1 overexpression arms). Claudin1 was up-regulated compared with the model group. Directional result only."
+    target_gene: "PR:000005537"
+    gene_expression_method: "Western blot and immunohistochemistry"
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In the model + AG1478 treatment group, model + miR-133b-5p agomir treatment group and model + Claudin1 overexpression group, compared with the model group, p-EGFR, MUC5AC, p-ERK1/2, p-JNK, p-p38 protein expression was down-regulated, and Claudin1 protein expression was up-regulated."
+        explanation: "Reports Claudin1 up-regulation in the miR-133b-5p agomir group relative to the model group, the value this assay records."
+    has_specified_output:
+      id: "GE:chen2024-claudin1-agomir-output"
+      name: "Claudin1 protein level - miR-133b-5p agomir group"
+      description: "Claudin1 protein up-regulated versus the PM2.5 model group. No numeric values are reported in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2024-pm25-agomir"
+        name: "PM2.5 40 ug/mL nebulised for 4 weeks plus miR-133b-5p agomir 10 nmol by in situ lung injection"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000041"
+            name: "nanomole"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000034"
+            name: "week"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen2024-rat-agomir"
+      name: "PM2.5-exposed male Wistar rat treated with miR-133b-5p agomir"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "SPF male Wistar rats, 6-8 weeks old, 220+/-20 g, ten rats per group; PM2.5 plus miR-133b-5p agomir 10 nmol injected in situ into the lung 48 h before sacrifice"
+      sample_type: biopsy
+      collection_site: "lung tissue"
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-wb-001"
+        name: "Western blot for lung tissue proteins"
+      - id: "PROTOCOL:chen2024-ihc-001"
+        name: "Immunohistochemistry for lung tissue proteins"
+
+  # Dual-luciferase: miR-133b-5p targets EGFR
+  - id: "GE:chen2024-luciferase-egfr"
+    name: "Dual-luciferase reporter - miR-133b-5p targeting of EGFR (293T)"
+    description: "Dual-luciferase reporter assay in transfected 293T cells with wild-type and mutant EGFR reporter vectors plus miR-133b-5p mimic or mimic NC. The fluorescence readings showed that miR-133b-5p binds the EGFR target gene. Ratios are shown only in Figure 2, so no numeric values are recorded."
+    target_gene: "PR:000006933"
+    gene_expression_method: "dual-luciferase reporter assay"
+    normalization_reference: "Renilla (pRL-SV40) luciferase"
+    evidence:
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "miR-133b-5p targeted binding to the target gene EGFR"
+        explanation: "The reported outcome of the dual-luciferase experiment in 293T cells: miR-133b-5p binds the EGFR transcript."
+      - reference: "PMID:38809424"
+        reference_title: "Effects of PM2.5 on mucus hypersecretion in airway through miR-133b-5p/EGFR/Claudin1/MUC5AC axis."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "dual-luciferase results verify that miR-133b-5p can target binding target gene EGFR"
+        explanation: "The discussion restates that the dual-luciferase assay verified miR-133b-5p targeting of EGFR."
+    has_specified_output:
+      id: "GE:chen2024-luciferase-egfr-output"
+      name: "Luciferase reporter activity - EGFR wild-type vs mutant"
+      description: "miR-133b-5p mimic reduced activity of the wild-type but not the mutant EGFR reporter, confirming direct targeting. Values appear only in Figure 2."
+    informs_on_key_event:
+      id: "KE:mie-mir133b-5p-downregulation"
+      name: "miR-133b-5p downregulation"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:chen2024-293t-001"
+      name: "293T cells transfected with EGFR luciferase reporter vectors"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0037372"
+        name: "HEK293T cell"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:chen2024-luciferase-001"
+        name: "Dual-luciferase reporter assay for miR-133b-5p binding to EGFR"
