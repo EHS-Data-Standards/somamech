@@ -1,0 +1,508 @@
+# =============================================================================
+# Curjuric et al. (2012) - Different Genes Interact with Particulate Matter and
+# Tobacco Smoke Exposure in Affecting Lung Function Decline in the General
+# Population
+# =============================================================================
+#
+# Source: PLoS One 2012;7(7):e40175
+# DOI: 10.1371/journal.pone.0040175
+#
+# Study design:
+#   - Human population cohort (SAPALDIA, Switzerland), non-asthmatic adults
+#   - Longitudinal: spirometry in 1991 (baseline) and 2002 (follow-up), 11 years
+#   - Discovery sample: up to 669 adults with genome-wide data (n = 650 with
+#     complete data on all three lung function parameters)
+#   - Replication sample: 3320 SAPALDIA participants without GWAS data
+#   - Exposures: interval PM10 (modelled home outdoor exposure, summed over
+#     follow-up, (ug/m3)*years; IQR 83.4) and packyears smoked (IQR 9.8)
+#   - Outcomes: decline in FEV1, FEV1/FVC and FEF25-75 between 1991 and 2002
+#   - Analysis: SNP x exposure interaction terms for 12679 SNPs in 152
+#     oxidative-stress genes / 14 pathways, gene- and pathway-level p-values
+#     by the adaptive rank truncation product (ARTP) method
+#
+# Key findings extracted here:
+#   - rs2035268 (SNCA) x PM10: 3.8% accelerated FEV1/FVC decline per G-allele
+#   - rs12190800 (PARK2) x PM10: 95.1 ml attenuated FEV1 decline per C-allele
+#   - CRISP2 x PM10 on FEV1/FVC decline significant after Bonferroni correction
+#   - Genotype-specific PM10 effect at rs2035268 (GT/GG vs TT)
+#   - Packyears main effect on FEV1/FVC and FEV1 decline
+#   - Replication of the two strongest SNP interactions was not successful
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:22792237"
+  reference_title: "Different genes interact with particulate matter and tobacco smoke exposure in affecting lung function decline in the general population."
+  doi: "10.1371/journal.pone.0040175"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:curjuric-spirometry-001"
+    protocol_type: SpirometryProtocol
+    name: "SAPALDIA spirometry 1991 and 2002"
+    description: "Spirometry without bronchodilation, identical protocols and devices at baseline (1991) and follow-up (2002). Participants sat upright and performed three to eight forced expiratory maneuvers according to American Thoracic Society quality criteria; at least two acceptable FVC and FEV1 measurements were obtained, and FEF25-75 was recorded."
+    spirometry_standard: "American Thoracic Society quality criteria"
+    equipment_required:
+      - "Sensormedics model 2200 spirometer (Yorba Linda, USA)"
+    quality_control_criteria: "At least two acceptable measurements of forced vital capacity (FVC) and forced expiratory volume in the first second (FEV1)"
+
+  - id: "PROTOCOL:curjuric-artp-001"
+    protocol_type: Protocol
+    name: "SNP-, gene- and pathway-level gene-environment interaction analysis (ARTP)"
+    description: "Multiple linear regression per gene in ProbABEL v0.1.3 with robust sandwich-estimation of standard errors, specifying an additive SNP effect, main effects for packyears smoked and interval PM10 exposure, and an interaction term between the SNP variable and either exposure; adjusted for sex, age and height at follow-up, packyears smoked up to baseline, principal components of population ancestry, and study area. Gene- and pathway-level interaction p-values were derived with a modified adaptive rank truncation product (ARTP) method over 10000 permutations."
+    equipment_required:
+      - "ProbABEL v0.1.3"
+      - "Illumina Human 610quad BeadChip (GABRIEL genotyping)"
+      - "MACH v1.0 imputation against the HapMap v22 CEPH reference panel"
+    quality_control_criteria: "Samples with <97% genotyping success rate, non-European origin, cryptic relatedness or sex-inconsistencies excluded; SNPs excluded for Hardy-Weinberg p<1e-4, call rate <97%, MAF <5% or imputation Rsq <0.5"
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS
+# (human cohort spirometry; each assay records one gene-environment
+#  interaction or main-effect estimate on lung function decline)
+# =============================================================================
+
+lung_function_assays:
+
+  # ---------------------------------------------------------------------------
+  # 1. SNCA rs2035268 x interval PM10 on FEV1/FVC decline (SNP level)
+  # ---------------------------------------------------------------------------
+  - id: "LF:curjuric-snca-pm10-fev1fvc"
+    name: "FEV1/FVC decline, rs2035268 (SNCA) x interval PM10 interaction"
+    description: "SNP-level interaction surviving Bonferroni correction for 12679 SNPs (alpha = 3.9e-6). Each G-allele of rs2035268 in SNCA was associated with a 3.8% (95%-CI 2.2 to 5.4%) higher FEV1/FVC decline per interquartile range of interval PM10 exposure (83.4 ug/m3*years) over 11 years; p interaction = 2.5e-6. Effect allele frequency 0.05 (imputed SNP, chromosome 4q21). Analysis sample n = 650."
+    has_specified_output:
+      id: "LF:curjuric-snca-pm10-fev1fvc-output"
+      name: "FEV1/FVC decline per G-allele per IQR PM10 over 11 years"
+      fev1_fvc_ratio:
+        value: "3.8"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    assay_date: "2002-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:curjuric-pm10-iqr"
+        name: "Interval PM10 exposure, one interquartile range (83.4 ug/m3*years)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "83.4"
+          unit:
+            id: "UCUM:ug/m3.a"
+            name: "microgram per cubic meter times year"
+        exposure_duration:
+          value: "11"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:curjuric-sapaldia-gwas"
+      name: "SAPALDIA non-asthmatic adults with genome-wide data"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "Up to 669 non-asthmatic SAPALDIA participants with genome-wide data passing quality control and complete data on sex, age, height, PM10 and smoking exposure; n = 650 with complete data on all three lung function parameters; European ancestry; aged 18-60 years at baseline (1991)"
+      clinical_context: "Population-based Swiss cohort; spirometry at baseline (1991) and follow-up (2002), 11 years of follow-up"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:curjuric-spirometry-001"
+        name: "SAPALDIA spirometry 1991 and 2002"
+        spirometry_standard: "American Thoracic Society quality criteria"
+      - protocol_type: Protocol
+        id: "PROTOCOL:curjuric-artp-001"
+        name: "SNP-, gene- and pathway-level gene-environment interaction analysis (ARTP)"
+    evidence:
+      - reference: "PMID:22792237"
+        reference_title: "Different genes interact with particulate matter and tobacco smoke exposure in affecting lung function decline in the general population."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "rs2035268 in gene SNCA accelerated FEV(1)/FVC decline by 3.8% (p(interaction) = 2.5×10(-6))"
+        explanation: "States the interaction effect size (3.8% accelerated FEV1/FVC decline) and interaction p-value recorded by this assay."
+      - reference: "PMID:22792237"
+        reference_title: "Different genes interact with particulate matter and tobacco smoke exposure in affecting lung function decline in the general population."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Compared to the baseline TT genotype, each G-allele was associated with a 3.8% (95% confidence interval (95%-CI) 2.2 to 5.4%) higher decline per 83.4 mg/m3*year PM10 exposure (IQR) over 11 years."
+        explanation: "Gives the per-allele effect, its confidence interval, the PM10 interquartile-range exposure contrast (83.4 units) and the 11-year follow-up recorded in the exposure condition."
+
+  # ---------------------------------------------------------------------------
+  # 2. PARK2 rs12190800 x interval PM10 on FEV1 decline (SNP level)
+  # ---------------------------------------------------------------------------
+  - id: "LF:curjuric-park2-pm10-fev1"
+    name: "FEV1 decline, rs12190800 (PARK2) x interval PM10 interaction"
+    description: "SNP-level interaction on FEV1 decline: compared to the TT genotype, each C-allele of rs12190800 in PARK2 (chromosome 6q25.2) entailed an attenuation of 95.1 ml (95%-CI 60.1 to 130.1 ml) in FEV1 decline per interquartile range of interval PM10 exposure over 11 years; p interaction = 9.8e-8 (reported as 9.7e-8 in the abstract). Analysis sample n = 669 for FEV1 decline."
+    has_specified_output:
+      id: "LF:curjuric-park2-pm10-fev1-output"
+      name: "FEV1 decline attenuation per C-allele per IQR PM10 over 11 years"
+      decline_rate:
+        value: "95.1"
+        unit:
+          id: "UO:0000098"
+          name: "milliliter"
+    assay_date: "2002-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:curjuric-pm10-iqr"
+        name: "Interval PM10 exposure, one interquartile range (83.4 ug/m3*years)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "83.4"
+          unit:
+            id: "UCUM:ug/m3.a"
+            name: "microgram per cubic meter times year"
+        exposure_duration:
+          value: "11"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:curjuric-sapaldia-gwas"
+      name: "SAPALDIA non-asthmatic adults with genome-wide data"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "669 non-asthmatic SAPALDIA participants with complete covariate and environmental exposure data for the FEV1 decline model"
+      clinical_context: "Population-based Swiss cohort; spirometry at baseline (1991) and follow-up (2002), 11 years of follow-up"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:curjuric-spirometry-001"
+        name: "SAPALDIA spirometry 1991 and 2002"
+        spirometry_standard: "American Thoracic Society quality criteria"
+      - protocol_type: Protocol
+        id: "PROTOCOL:curjuric-artp-001"
+        name: "SNP-, gene- and pathway-level gene-environment interaction analysis (ARTP)"
+    evidence:
+      - reference: "PMID:22792237"
+        reference_title: "Different genes interact with particulate matter and tobacco smoke exposure in affecting lung function decline in the general population."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "rs12190800 in PARK2 attenuated FEV1 decline by 95.1 ml"
+        explanation: "States the 95.1 ml attenuation of FEV1 decline recorded as this assay's output."
+      - reference: "PMID:22792237"
+        reference_title: "Different genes interact with particulate matter and tobacco smoke exposure in affecting lung function decline in the general population."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "an attenuation of 95.1 ml (95%-CI 60.1 ml to 130.1 ml) in FEV 1 decline per IQR of PM10"
+        explanation: "Gives the confidence interval and states that the effect is expressed per interquartile range of PM10 exposure, as recorded in the exposure condition."
+
+  # ---------------------------------------------------------------------------
+  # 3. CRISP2 x interval PM10 on FEV1/FVC decline (gene level, Bonferroni-significant)
+  # ---------------------------------------------------------------------------
+  - id: "LF:curjuric-crisp2-pm10-fev1fvc"
+    name: "FEV1/FVC decline, CRISP2 x interval PM10 gene-level interaction"
+    description: "Gene-level interaction between cysteine-rich secretory protein 2 (CRISP2, chromosome 6p12.3) and interval PM10 exposure on FEV1/FVC decline, p interaction = 3.0e-4, significant after Bonferroni correction for 152 gene-level tests (alpha = 3.29e-4). The strongest SNP in the gene, rs360563 (C-allele, frequency 0.50), accelerated FEV1/FVC decline by 1.1% per IQR change in PM10 exposure over 11 years."
+    has_specified_output:
+      id: "LF:curjuric-crisp2-pm10-fev1fvc-output"
+      name: "FEV1/FVC decline per C-allele of rs360563 per IQR PM10 over 11 years"
+      fev1_fvc_ratio:
+        value: "1.1"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    assay_date: "2002-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:curjuric-pm10-iqr"
+        name: "Interval PM10 exposure, one interquartile range (83.4 ug/m3*years)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "83.4"
+          unit:
+            id: "UCUM:ug/m3.a"
+            name: "microgram per cubic meter times year"
+        exposure_duration:
+          value: "11"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:curjuric-sapaldia-gwas"
+      name: "SAPALDIA non-asthmatic adults with genome-wide data"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "650 non-asthmatic SAPALDIA participants with complete data on all three lung function parameters"
+      clinical_context: "Population-based Swiss cohort; spirometry at baseline (1991) and follow-up (2002), 11 years of follow-up"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:curjuric-spirometry-001"
+        name: "SAPALDIA spirometry 1991 and 2002"
+        spirometry_standard: "American Thoracic Society quality criteria"
+      - protocol_type: Protocol
+        id: "PROTOCOL:curjuric-artp-001"
+        name: "SNP-, gene- and pathway-level gene-environment interaction analysis (ARTP)"
+    evidence:
+      - reference: "PMID:22792237"
+        reference_title: "Different genes interact with particulate matter and tobacco smoke exposure in affecting lung function decline in the general population."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Gene CRISP2 presented a significant interaction with PM10 (p(interaction) = 3.0×10(-4)) on FEV(1)/FVC decline."
+        explanation: "States the gene-level CRISP2 x PM10 interaction and its p-value on FEV1/FVC decline."
+      - reference: "PMID:22792237"
+        reference_title: "Different genes interact with particulate matter and tobacco smoke exposure in affecting lung function decline in the general population."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The C-allele of SNP rs360563 in gene CRISP2 accelerated FEV1/FVC decline by 1.1% per IQR change in PM10 exposure over 11 years"
+        explanation: "Gives the 1.1% per-allele effect size per IQR of PM10 over 11 years recorded as this assay's output."
+
+  # ---------------------------------------------------------------------------
+  # 4. Genotype-specific PM10 effect at rs2035268 (GT/GG carriers)
+  # ---------------------------------------------------------------------------
+  - id: "LF:curjuric-snca-gtgg-pm10-fev1fvc"
+    name: "FEV1/FVC decline in rs2035268 GT/GG carriers per IQR interval PM10"
+    description: "Genotype-specific estimate of the interval PM10 effect on FEV1/FVC decline. In carriers of genotypes GT and GG of rs2035268, one IQR of PM10 (83.4 ug/m3*years) was associated with a significant acceleration of FEV1/FVC decline by 3.9% (95%-CI -5.9 to -1.8, p = 2.25e-4) over 11 years, versus a small non-significant acceleration of 0.2% (95%-CI -1.7 to 1.4, p = 0.827) in the baseline TT genotype; p for interaction between PM10 and genotype = 7.35e-7. Model n = 650."
+    has_specified_output:
+      id: "LF:curjuric-snca-gtgg-pm10-fev1fvc-output"
+      name: "FEV1/FVC decline in GT/GG carriers per IQR PM10 over 11 years"
+      fev1_fvc_ratio:
+        value: "3.9"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    assay_date: "2002-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:curjuric-pm10-iqr"
+        name: "Interval PM10 exposure, one interquartile range (83.4 ug/m3*years)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "83.4"
+          unit:
+            id: "UCUM:ug/m3.a"
+            name: "microgram per cubic meter times year"
+        exposure_duration:
+          value: "11"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:curjuric-sapaldia-snca-gtgg"
+      name: "SAPALDIA participants carrying rs2035268 genotype GT or GG"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "Minor-allele carriers (GT/GG) of rs2035268 within the 650 non-asthmatic participants with complete lung function data; rs2035268 minor allele frequency 0.05"
+      clinical_context: "Population-based Swiss cohort; genotype-specific exposure variables used to avoid model overspecification in the small genotypic risk stratum"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:curjuric-spirometry-001"
+        name: "SAPALDIA spirometry 1991 and 2002"
+        spirometry_standard: "American Thoracic Society quality criteria"
+    evidence:
+      - reference: "PMID:22792237"
+        reference_title: "Different genes interact with particulate matter and tobacco smoke exposure in affecting lung function decline in the general population."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Within genotypes GT and GG of SNP rs2035268, a change in IQR of PM10 was associated with a signficant acceleration of FEV 1/FVC decline by 3.9%, opposed to a small and non-signficiant acceleration by 0.2% in baseline genotype TT"
+        explanation: "States the 3.9% genotype-specific acceleration of FEV1/FVC decline per IQR PM10 in GT/GG carriers recorded as this assay's output, and the contrasting 0.2% in TT."
+
+  # ---------------------------------------------------------------------------
+  # 5. Packyears effect on FEV1/FVC decline in the rs2035268 TT stratum
+  # ---------------------------------------------------------------------------
+  - id: "LF:curjuric-snca-tt-packyears-fev1fvc"
+    name: "FEV1/FVC decline in rs2035268 TT homozygotes per IQR packyears smoked"
+    description: "Contrast to the PM10 pattern: within the baseline TT genotype of rs2035268, one IQR of packyears smoked (9.8 packyears) was associated with a significant acceleration of FEV1/FVC decline by 1.1% (95%-CI -2.0 to -0.1, p = 0.024) over 11 years, while the GT/GG stratum showed no significant packyears effect (0.7%, p = 0.434); p for interaction between packyears and genotype = 0.909. Model n = 650."
+    has_specified_output:
+      id: "LF:curjuric-snca-tt-packyears-fev1fvc-output"
+      name: "FEV1/FVC decline in TT homozygotes per IQR packyears over 11 years"
+      fev1_fvc_ratio:
+        value: "1.1"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    assay_date: "2002-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:curjuric-packyears-iqr"
+        name: "Packyears smoked during follow-up, one interquartile range (9.8 packyears)"
+        exposure_agent:
+          id: "ECTO:6000029"
+          name: "exposure to tobacco smoking"
+        exposure_concentration:
+          value: "9.8"
+          unit:
+            id: "UCUM:{packyears}"
+            name: "pack-year"
+        exposure_duration:
+          value: "11"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:curjuric-sapaldia-snca-tt"
+      name: "SAPALDIA participants carrying rs2035268 wild-type genotype TT"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "Wild-type (TT) homozygotes of rs2035268 within the 650 non-asthmatic participants with complete lung function data"
+      clinical_context: "Population-based Swiss cohort; packyears smoked between baseline and follow-up examination used as the tobacco smoke exposure contrast to interval PM10"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:curjuric-spirometry-001"
+        name: "SAPALDIA spirometry 1991 and 2002"
+        spirometry_standard: "American Thoracic Society quality criteria"
+    evidence:
+      - reference: "PMID:22792237"
+        reference_title: "Different genes interact with particulate matter and tobacco smoke exposure in affecting lung function decline in the general population."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In contrast, a change in IQR of packyears smoked was associated with a significant acceleration by 1.1% in the baseline TT genotype stratum"
+        explanation: "States the 1.1% acceleration of FEV1/FVC decline per IQR of packyears in the TT stratum recorded as this assay's output."
+
+  # ---------------------------------------------------------------------------
+  # 6. Packyears main effect (models without interaction terms)
+  # ---------------------------------------------------------------------------
+  - id: "LF:curjuric-packyears-main-effect"
+    name: "Main effect of packyears smoked on FEV1/FVC and FEV1 decline"
+    description: "In models including only main effects but no SNP x exposure interaction, an IQR of 9.8 packyears was significantly associated with accelerated decline in FEV1/FVC by 1% and in FEV1 by 50 ml over 11 years; the respective estimates for interval PM10 were non-significant."
+    has_specified_output:
+      id: "LF:curjuric-packyears-main-effect-output"
+      name: "FEV1/FVC and FEV1 decline per IQR packyears over 11 years"
+      fev1_fvc_ratio:
+        value: "1"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      decline_rate:
+        value: "50"
+        unit:
+          id: "UO:0000098"
+          name: "milliliter"
+    assay_date: "2002-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:curjuric-packyears-iqr"
+        name: "Packyears smoked during follow-up, one interquartile range (9.8 packyears)"
+        exposure_agent:
+          id: "ECTO:6000029"
+          name: "exposure to tobacco smoking"
+        exposure_concentration:
+          value: "9.8"
+          unit:
+            id: "UCUM:{packyears}"
+            name: "pack-year"
+        exposure_duration:
+          value: "11"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:curjuric-sapaldia-gwas"
+      name: "SAPALDIA non-asthmatic adults with genome-wide data"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "Non-asthmatic SAPALDIA participants with genome-wide data; n = 669 for FEV1 decline and n = 650 for FEV1/FVC decline"
+      clinical_context: "Population-based Swiss cohort; main-effect models without SNP x exposure interaction terms"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:curjuric-spirometry-001"
+        name: "SAPALDIA spirometry 1991 and 2002"
+        spirometry_standard: "American Thoracic Society quality criteria"
+    evidence:
+      - reference: "PMID:22792237"
+        reference_title: "Different genes interact with particulate matter and tobacco smoke exposure in affecting lung function decline in the general population."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In models including only main effects but no interaction between SNPs and exposure, an IQR of 9.8 packyears was significantly associated with accelerated decline in FEV 1/FVC by 1%, and in FEV 1 by 50 ml (data not shown)."
+        explanation: "States both output values (1% FEV1/FVC decline and 50 ml FEV1 decline per IQR of 9.8 packyears) and the absence of interaction terms in the model."
+
+  # ---------------------------------------------------------------------------
+  # 7. Replication attempt in the non-GWAS SAPALDIA sample (null result)
+  # ---------------------------------------------------------------------------
+  - id: "LF:curjuric-replication-pm10"
+    name: "Replication of PM10 x SNP interactions on lung function decline (n = 3320)"
+    description: "Replication genotyping of rs360563 (CRISP2, MAF 49.8%) and rs12190800 (PARK2, MAF 16%) in 3320 SAPALDIA participants without genome-wide data. Their interaction with interval PM10 exposure on FEV1/FVC and FEV1 decline could not be confirmed (p interaction = 0.63 and 0.50 respectively). Minor allele frequencies matched the discovery sample and both SNPs were in Hardy-Weinberg equilibrium. No effect estimate is reported for the replication sample, so no measurement value is recorded."
+    assay_date: "2002-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:curjuric-pm10-iqr"
+        name: "Interval PM10 exposure, one interquartile range (83.4 ug/m3*years)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "83.4"
+          unit:
+            id: "UCUM:ug/m3.a"
+            name: "microgram per cubic meter times year"
+        exposure_duration:
+          value: "11"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:curjuric-sapaldia-replication"
+      name: "SAPALDIA replication sample without genome-wide data"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "3320 successfully genotyped SAPALDIA participants with complete data for covariates and all three lung function parameters, genotyped for rs360563 and rs12190800 with the iPLEX Gold MassARRAY"
+      clinical_context: "Population-based Swiss cohort; replication sample for the two strongest PM10-interacting SNPs"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:curjuric-spirometry-001"
+        name: "SAPALDIA spirometry 1991 and 2002"
+        spirometry_standard: "American Thoracic Society quality criteria"
+    evidence:
+      - reference: "PMID:22792237"
+        reference_title: "Different genes interact with particulate matter and tobacco smoke exposure in affecting lung function decline in the general population."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Replication genotyping was done for CRISP2 SNP rs360563 (MAF of 49.8%) and rs12190800 in PARK2 (MAF 16%), but their interaction with PM10 exposure on FEV 1/FVC and FEV 1 decline could not be confirmed in the remainder of the SAPALDIA population"
+        explanation: "Documents that this assay is a replication attempt for the two strongest PM10-interacting SNPs and that the interactions were not confirmed."
+      - reference: "PMID:22792237"
+        reference_title: "Different genes interact with particulate matter and tobacco smoke exposure in affecting lung function decline in the general population."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Replications for the strongest SNPs in PARK2 and CRISP2 were not successful."
+        explanation: "The authors' own summary of the null replication recorded by this assay."
