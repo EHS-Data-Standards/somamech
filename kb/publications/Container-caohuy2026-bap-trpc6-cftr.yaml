@@ -1,0 +1,1124 @@
+# =============================================================================
+# Caohuy et al. (2026) - PM2.5 toxin benzo[a]pyrene induces life-limiting
+# inflammation and oxidative stress in the airway by up-regulation of TRPC6
+# and inactivation of beta2AR/CFTR signaling
+# =============================================================================
+#
+# Source: bioRxiv preprint, posted 2026-04-24
+# DOI: 10.64898/2026.04.21.719931
+#
+# Study design (three model systems, all in vitro / ex vivo):
+#   - Differentiated BCi-NS1.1 (dBCi) human airway basal-stem-cell organoids
+#     at air-liquid interface (ALI) for 25-28 days
+#   - Polarized human bronchial 16HBE14o- cells at ALI for 9-10 days
+#   - Ex vivo ferret lung tracheobronchial slice cultures (24 h)
+#
+# Exposures:
+#   - Benzo[a]pyrene (B[a]P) 0.1, 1.0 and 10 uM (6 h apical + 18 h ALI = 24 h)
+#   - PM2.5 (ERM-CZ110, Sigma-Aldrich) 12.5, 25, 50 and 100 ng/mL for 24 h
+#   - H2O2 100 uM as a positive control for oxidative stress
+#
+# Key findings recorded here:
+#   - PM2.5 and B[a]P reduce CFTR chloride channel activity (Ussing chamber)
+#   - PM2.5 and B[a]P reduce beta2AR and CFTR protein, and raise TRPC6 protein
+#   - Loss of beta2AR correlates with loss of CFTR (Pearson r = 0.9948, p = 0.005)
+#     and inversely with TRPC6 gain (Pearson r = -0.9875, p = 0.01)
+#   - PM2.5, B[a]P and H2O2 all significantly increase ROS (CellROX Green)
+#   - PM2.5 raises basolateral IL-6 and IL-8 secretion
+#   - Ex vivo ferret slices reproduce all of the above
+#   - B[a]P dose-dependently lowers five serum-marker microRNAs
+#
+# NOTE ON VALUES: this paper reports its measurements graphically (Western
+# blots, bar charts, Isc tracings) and states significance in the text rather
+# than tabulating numbers. Per the extraction rules, no measurement values are
+# recorded here beyond the two Pearson coefficients the text states explicitly;
+# figure-eyeballed values would be fabrications.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:42079210"
+  reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+  doi: "10.64898/2026.04.21.719931"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:caohuy-ali-culture-001"
+    name: "Air-liquid interface culture of dBCi organoids and polarized 16HBE14o- cells"
+    description: "BCi-NS1.1 basal stem cells and 16HBE14o- cells seeded at 5x10^5 cells/cm2 on 12-mm Snapwell or Transwell inserts and 9x10^5 cells/cm2 on 24-mm Transwell inserts; maintained at air-liquid interface for 25-28 days (dBCi) and 9-10 days (16HBE14o-) at 37 C, 5% CO2. Apical and basolateral sides exposed to DMSO, B[a]P or PM2.5; after 6-hr incubation apical media were removed and exposure continued for a further 18 hr under ALI conditions. DMSO was under 1.0% in all treatments."
+    equipment_required:
+      - "Snapwell and Transwell inserts (12-mm and 24-mm)"
+      - "Humidified tissue culture incubator (37 C, 5% CO2)"
+      - "Pneumacult-ALI media kit (Stemcell)"
+
+  - id: "PROTOCOL:caohuy-ussing-001"
+    protocol_type: Protocol
+    name: "Ussing chamber measurement of cAMP-activated CFTR short-circuit current"
+    description: "Treated Snapwell inserts mounted in Ussing chambers (Physiologic Instruments, Reno, Nevada) with a basolateral-to-apical chloride gradient (NaCl replaced by sodium gluconate). Sodium currents inactivated with 100 uM amiloride, CFTR activated with 10 uM forskolin plus 100 uM IBMX, then inhibited with 10 uM CFTRinh-172. Both compartments gassed with 5% CO2 (pH 7.4) at 37 C."
+    equipment_required:
+      - "Ussing chambers (Physiologic Instruments, Reno, Nevada)"
+      - "Amiloride, forskolin, IBMX, CFTRinh-172 (Sigma-Aldrich)"
+
+  - id: "PROTOCOL:caohuy-wb-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Western blot for CFTR, beta2AR, TRPC6 and NF-kB pathway proteins"
+    description: "RIPA lysis with anti-protease/phosphatase cocktail; 50 ug lysate per sample on 4-12% gradient gels (Invitrogen); PVDF transfer; overnight primary antibody at 4 C; HRP-coupled secondary; chemiluminescent detection on a BioRad ChemiDoc imaging system and quantification with Imagelab software."
+    detection_method: "chemiluminescence (BioRad ChemiDoc)"
+    normalization_method: "beta-actin loading control"
+    lysis_buffer: "RIPA buffer with Halt protease and phosphatase inhibitor cocktail"
+    antibodies_used:
+      - "CFTR (R&D Systems, MAB1660)"
+      - "CFTR (SCBT, sc-376683)"
+      - "beta2AR (Novus Biologicals, NBP261710)"
+      - "TRPC6 (Protein Tech, 18236-1-AP)"
+      - "phospho-AKT Ser473 (Cell Signaling, 9271)"
+      - "phospho-NFkB p65 Ser536 (Cell Signaling, 3037 for Ser276; 8242 for total p65)"
+      - "beta-actin (Sigma, A5441)"
+
+  - id: "PROTOCOL:caohuy-elisa-001"
+    protocol_type: MolecularAssayProtocol
+    name: "DuoSet ELISA for basolateral IL-6, IL-8 and TNF-alpha"
+    description: "Culture media from the basolateral compartments assayed for IL-8, IL-6 and TNF-alpha with the respective DuoSet ELISA kits (R&D Systems) per the manufacturer's instructions. Concentrations calculated from a standard curve and normalized to MTT or total protein values."
+    detection_method: "sandwich ELISA (R&D Systems DuoSet)"
+    normalization_method: "normalized to MTT or total protein concentration"
+
+  - id: "PROTOCOL:caohuy-cellrox-001"
+    protocol_type: MolecularAssayProtocol
+    name: "CellROX Green oxidative stress (ROS) assay"
+    description: "Apical and basolateral sides of polarized 16HBE14o- cells incubated with PM2.5, B[a]P or H2O2 at 37 C. After 6 hr the apical media were replaced with 10 uM CellROX Green in Ca2+/Mg2+-free HBSS and incubated a further 18 hr. Monolayers washed and lysed in 0.1% Triton X-100-PBS; fluorescence read at Ex 483 nm / Em 530 nm on a CLARIOstar microplate reader; background subtracted and values normalized to total protein."
+    detection_method: "CellROX Green fluorescence (Ex 483 nm / Em 530 nm, CLARIOstar)"
+    normalization_method: "normalized to total protein concentration"
+    equipment_required:
+      - "CellROX Green reagent (ThermoFisher)"
+      - "CLARIOstar microplate reader (BMG LABTECH)"
+
+  - id: "PROTOCOL:caohuy-ferret-slice-001"
+    name: "Ex vivo ferret lung tracheobronchial slice culture"
+    description: "Ferret lung parenchyma washed in PBS with penicillin/streptomycin and dissected into 9 cubes per lung (average wet weight 400 mg) containing tracheobronchial tubes. Tissues conditioned 1 hr in Pneumacult-EX Plus Basal media, then cultured 24 hr in the same media containing DMSO, 100 ng/mL PM2.5 or 10 uM B[a]P at 37 C, 5% CO2. Media collected and centrifuged at 400 x g for IL-6 ELISA; tissues homogenized in RIPA buffer for Western blot."
+    equipment_required:
+      - "Pneumacult-EX Plus Basal media kit (Stemcell)"
+      - "Ferret IL-6 ELISA kit (Genorise, PA, USA)"
+      - "Handheld motor-driven tissue homogenizer"
+
+  - id: "PROTOCOL:caohuy-taqman-mir-001"
+    protocol_type: MolecularAssayProtocol
+    name: "TaqMan microRNA quantification in dBCi organoids"
+    description: "Total RNA extracted with mirVana kits (Life Technologies); RNA quality checked on a NanoDrop ND-1000 (A260/A280 between 1.8 and 2.0). MicroRNAs measured with specific TaqMan probes, U6 as endogenous control, relative fold changes by the 2^-ddCT method. Data are three technical replicates, reported as mean +/- SEM."
+    detection_method: "TaqMan qRT-PCR"
+    reference_gene: "U6"
+    normalization_method: "2^-ddCT relative to U6"
+
+# =============================================================================
+# CFTR FUNCTION ASSAYS - Ussing chamber short-circuit current
+# =============================================================================
+
+cftr_assays:
+  # B[a]P dose series in differentiated BCi-NS1.1 organoids (Fig 2a, 2b)
+  - id: "CFTR:caohuy-bap-dbci-24h"
+    name: "CFTR short-circuit current - B[a]P in differentiated BCi-NS1.1 organoids"
+    description: "cAMP-activated CFTR-dependent short-circuit current (Isc) measured in Ussing chambers after 24 h exposure of differentiated BCi.NS1.1 (dBCi) ALI organoids to B[a]P (0.1, 1.0 and 10 uM). Isc was systematically and significantly reduced as B[a]P concentration rose. The paper reports the result as representative Isc tracings (Fig 2a, 2b), so no numeric Isc value is recorded here."
+    stimulation_agent: "10 uM forskolin + 100 uM IBMX"
+    evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "2AR results in loss of CFTR channel function and coordinated loss of both 2AR and CFTR proteins."
+        explanation: "The authors' summary of the Fig 2 Ussing chamber and Western blot series: 24 h of B[a]P exposure causes loss of CFTR channel function, which is what this assay records."
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "CFTR channel activity was detected by first inactivating sodium currents with 100 µM amiloride; then activating CFTR chloride channels with 10 µM forskolin and 100 µM IBMX; then specifically inactivating CFTR channels with 10 µM CFTRinh-172."
+        explanation: "Methods sentence establishing that the recorded current is the CFTR-specific, forskolin/IBMX-activated component measured in the Ussing chamber."
+    has_specified_output:
+      id: "CFTR:caohuy-bap-dbci-24h-output"
+      name: "CFTR-dependent Isc after B[a]P exposure"
+      description: "Reported as representative Isc tracings with significant, dose-dependent reduction versus DMSO control (one-way ANOVA with Tukey post-hoc, p < 0.01, three independent experiments). No numeric value is stated in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:caohuy-bap-10um-24h"
+        name: "Benzo[a]pyrene 10 uM for 24 hours (6 h apical + 18 h ALI)"
+        exposure_agent:
+          id: "CHEBI:29865"
+          name: "benzo[a]pyrene"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cftr"
+      name: "Decreased CFTR function"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:caohuy-dbci-001"
+      name: "Differentiated BCi-NS1.1 (dBCi) human airway organoid at air-liquid interface"
+      description: "hTERT-transformed BCi-NS1.1 human airway basal stem cells (gift of Dr. R.G. Crystal) differentiated on Snapwell or Transwell inserts under ALI conditions for 25-28 days."
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+    follows_protocols:
+      - id: "PROTOCOL:caohuy-ussing-001"
+        name: "Ussing chamber measurement of cAMP-activated CFTR short-circuit current"
+      - id: "PROTOCOL:caohuy-ali-culture-001"
+        name: "Air-liquid interface culture of dBCi organoids and polarized 16HBE14o- cells"
+
+  # PM2.5 in polarized 16HBE14o- cells (Supplemental Fig S2)
+  - id: "CFTR:caohuy-pm25-16hbe-24h"
+    name: "CFTR chloride channel activity - PM2.5 in polarized 16HBE14o- cells"
+    description: "cAMP-dependent CFTR chloride channel activity measured in Ussing chambers in polarized 16HBE14o- cells exposed to PM2.5 (ERM-CZ110) for 24 h. PM2.5 significantly reduced cAMP-dependent CFTR chloride channel activity (Supplemental Fig S2). Reported graphically; no numeric Isc value is stated."
+    stimulation_agent: "10 uM forskolin + 100 uM IBMX"
+    evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "PM2.5 was also found to significantly reduce cAMP- dependent CFTR chloride channel activity (see Supplemental Fig S2)."
+        explanation: "States directly that PM2.5 exposure significantly reduced cAMP-dependent CFTR chloride channel activity, the measurement this assay records."
+    has_specified_output:
+      id: "CFTR:caohuy-pm25-16hbe-24h-output"
+      name: "CFTR-dependent Isc after PM2.5 exposure"
+      description: "Significant reduction versus DMSO control reported in Supplemental Fig S2; no numeric value stated in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:caohuy-pm25-100ng-24h"
+        name: "PM2.5 (ERM-CZ110) 100 ng/mL for 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cftr"
+      name: "Decreased CFTR function"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:caohuy-16hbe-001"
+      name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      description: "16HBE14o- (SCC150, Sigma-Aldrich) human bronchial epithelial cells polarized at ALI for 9-10 days on Snapwell or Transwell inserts."
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+    follows_protocols:
+      - id: "PROTOCOL:caohuy-ussing-001"
+        name: "Ussing chamber measurement of cAMP-activated CFTR short-circuit current"
+      - id: "PROTOCOL:caohuy-ali-culture-001"
+        name: "Air-liquid interface culture of dBCi organoids and polarized 16HBE14o- cells"
+
+# =============================================================================
+# OXIDATIVE STRESS ASSAYS - CellROX Green ROS (Fig 7a)
+# =============================================================================
+
+oxidative_stress_assays:
+  - id: "OXS:caohuy-pm25-16hbe-24h"
+    name: "ROS production - PM2.5 in polarized 16HBE14o- cells"
+    description: "ROS measured with CellROX Green in polarized 16HBE14o- cells after 24 h exposure to PM2.5 at 50 and 100 ng/mL. Both doses significantly increased ROS generation versus DMSO control (one-way ANOVA with Tukey post-hoc; n = 4). Reported as a bar chart, so no numeric fluorescence value is recorded."
+    ros_probe_type: "CellROX Green"
+    evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Fig 7a showed that 50 and 100 ng/ml of PM2.5"
+        explanation: "Names the two PM2.5 doses whose ROS generation is reported in Fig 7a, the measurement this assay records."
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "ROS production significantly elevated by all three analytes"
+        explanation: "The Figure 7 legend states that ROS production was significantly elevated by all three analytes tested (PM2.5, B[a]P and H2O2), including PM2.5."
+    has_specified_output:
+      id: "OXS:caohuy-pm25-16hbe-24h-output"
+      name: "CellROX Green ROS signal after PM2.5"
+      description: "Significant elevation of ROS relative to DMSO control at 50 and 100 ng/mL PM2.5; the paper reports the effect graphically without stating a numeric value."
+    has_exposure_condition:
+      - id: "EXPOSURE:caohuy-pm25-100ng-24h"
+        name: "PM2.5 (ERM-CZ110) 100 ng/mL for 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:caohuy-16hbe-001"
+      name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+    follows_protocols:
+      - id: "PROTOCOL:caohuy-cellrox-001"
+        name: "CellROX Green oxidative stress (ROS) assay"
+
+  - id: "OXS:caohuy-bap-16hbe-24h"
+    name: "ROS production - benzo[a]pyrene in polarized 16HBE14o- cells"
+    description: "ROS measured with CellROX Green in polarized 16HBE14o- cells after 24 h exposure to 10 uM B[a]P. B[a]P was one of the three analytes that significantly elevated ROS production in Fig 7a. Reported graphically; no numeric value stated."
+    ros_probe_type: "CellROX Green"
+    evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "ROS production significantly elevated by all three analytes"
+        explanation: "The Figure 7 legend states that all three analytes tested - PM2.5, B[a]P and H2O2 - significantly elevated ROS production, which is the effect this assay records for B[a]P."
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "After 6 hr incubation, treated media from the apical sides only were removed and replaced with HBSS buffer containing 10 µM CellROX Green, followed by further incubation for 18 hrs."
+        explanation: "Figure 7 legend describing the CellROX Green protocol used to generate the ROS measurement recorded here."
+    has_specified_output:
+      id: "OXS:caohuy-bap-16hbe-24h-output"
+      name: "CellROX Green ROS signal after benzo[a]pyrene"
+      description: "Significant elevation of ROS relative to DMSO control at 10 uM B[a]P; reported graphically without a numeric value."
+    has_exposure_condition:
+      - id: "EXPOSURE:caohuy-bap-10um-24h"
+        name: "Benzo[a]pyrene 10 uM for 24 hours (6 h apical + 18 h ALI)"
+        exposure_agent:
+          id: "CHEBI:29865"
+          name: "benzo[a]pyrene"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:caohuy-16hbe-001"
+      name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+    follows_protocols:
+      - id: "PROTOCOL:caohuy-cellrox-001"
+        name: "CellROX Green oxidative stress (ROS) assay"
+
+  - id: "OXS:caohuy-h2o2-16hbe-24h"
+    name: "ROS production - hydrogen peroxide positive control in 16HBE14o- cells"
+    description: "100 uM H2O2 used as the positive control for oxidative stress in polarized 16HBE14o- cells; it was one of the three analytes that significantly elevated ROS in Fig 7a. Reported graphically; no numeric value stated."
+    ros_probe_type: "CellROX Green"
+    evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "ROS production significantly elevated by all three analytes"
+        explanation: "The Figure 7 legend reports that all three analytes, including the H2O2 positive control, significantly elevated ROS production."
+    has_specified_output:
+      id: "OXS:caohuy-h2o2-16hbe-24h-output"
+      name: "CellROX Green ROS signal after hydrogen peroxide"
+      description: "Significant ROS elevation by the H2O2 positive control; reported graphically without a numeric value."
+    has_exposure_condition:
+      - id: "EXPOSURE:caohuy-h2o2-100um-24h"
+        name: "Hydrogen peroxide 100 uM for 24 hours (positive control)"
+        exposure_agent:
+          id: "CHEBI:16240"
+          name: "hydrogen peroxide"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:caohuy-16hbe-001"
+      name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+    follows_protocols:
+      - id: "PROTOCOL:caohuy-cellrox-001"
+        name: "CellROX Green oxidative stress (ROS) assay"
+
+# =============================================================================
+# GENE / PROTEIN EXPRESSION ASSAYS
+# =============================================================================
+
+gene_expression_assays:
+  # --- CFTR protein, PM2.5 dose series, 16HBE14o- (Fig 3c) ---
+  - id: "GE:caohuy-cftr-pm25-16hbe-24h"
+    name: "CFTR protein - PM2.5 dose series in polarized 16HBE14o- cells (Western blot)"
+    description: "Total CFTR protein by Western blot in polarized 16HBE14o- cells treated for 24 h with PM2.5 at 12.5, 25, 50 and 100 ng/mL. CFTR expression declined progressively as PM2.5 concentration rose (Fig 3c). Representative blots only; no densitometric value is stated in the text."
+    target_gene: "PR:000003411"
+    gene_expression_method: "Western blot"
+    normalization_reference: "beta-actin"
+    evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Finally, Fig 3c showed that as PM2.5 concentration rose, expression of both CFTR and 2AR progressively declined"
+        explanation: "States that CFTR protein expression declined progressively with rising PM2.5 concentration, the decrease this assay records. (The cached PDF text renders 'β2AR' with a Symbol-font beta glyph, which the snippet reproduces verbatim.)"
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Cells were treated with various concentrations of PM2.5 for 24 hr."
+        explanation: "Figure 3 legend confirming the 24 h PM2.5 exposure used for this Western blot."
+    has_specified_output:
+      id: "GE:caohuy-cftr-pm25-16hbe-24h-output"
+      name: "CFTR protein level after PM2.5"
+      description: "Progressive, dose-dependent decline in CFTR protein relative to DMSO control (representative Western blot, Fig 3c; n = 4). No numeric value stated in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:caohuy-pm25-100ng-24h"
+        name: "PM2.5 (ERM-CZ110) 100 ng/mL for 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cftr"
+      name: "Decreased CFTR function"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:caohuy-16hbe-001"
+      name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+    follows_protocols:
+      - id: "PROTOCOL:caohuy-wb-001"
+        name: "Western blot for CFTR, beta2AR, TRPC6 and NF-kB pathway proteins"
+
+  # --- beta2AR protein, PM2.5 dose series, 16HBE14o- (Fig 3c) ---
+  - id: "GE:caohuy-b2ar-pm25-16hbe-24h"
+    name: "beta2-adrenergic receptor protein - PM2.5 dose series in 16HBE14o- cells (Western blot)"
+    description: "Total beta2AR protein by Western blot in polarized 16HBE14o- cells treated for 24 h with PM2.5 (12.5-100 ng/mL). beta2AR declined progressively with rising PM2.5, in parallel with CFTR (Fig 3c). Representative blots only; no densitometric value stated."
+    gene_expression_method: "Western blot"
+    normalization_reference: "beta-actin"
+    evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Finally, Fig 3c showed that as PM2.5 concentration rose, expression of both CFTR and 2AR progressively declined"
+        explanation: "States that beta2AR (rendered with a Symbol-font beta glyph in the cached PDF text) declined progressively with rising PM2.5 concentration, the decrease this assay records."
+    has_specified_output:
+      id: "GE:caohuy-b2ar-pm25-16hbe-24h-output"
+      name: "beta2AR protein level after PM2.5"
+      description: "Progressive, dose-dependent decline in beta2AR protein relative to DMSO control (representative Western blot, Fig 3c). No numeric value stated in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:caohuy-pm25-100ng-24h"
+        name: "PM2.5 (ERM-CZ110) 100 ng/mL for 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-decreased-b2ar"
+      name: "Decreased beta2-adrenergic receptor expression"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:caohuy-16hbe-001"
+      name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+    follows_protocols:
+      - id: "PROTOCOL:caohuy-wb-001"
+        name: "Western blot for CFTR, beta2AR, TRPC6 and NF-kB pathway proteins"
+
+  # --- TRPC6 protein, PM2.5 dose series, 16HBE14o- (Fig 3c) ---
+  - id: "GE:caohuy-trpc6-pm25-16hbe-24h"
+    name: "TRPC6 protein - PM2.5 dose series in polarized 16HBE14o- cells (Western blot)"
+    description: "TRPC6 calcium channel protein by Western blot in polarized 16HBE14o- cells treated for 24 h with PM2.5. TRPC6 rose progressively with PM2.5 dose, opposite in direction to the CFTR and beta2AR decline (Fig 3c). Representative blots only; no densitometric value stated."
+    gene_expression_method: "Western blot"
+    normalization_reference: "beta-actin"
+    evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Finally, we noted a progressive PM2.5-dependent increase in the calcium channel protein TRPC6"
+        explanation: "States the progressive PM2.5-dependent increase in TRPC6 protein that this assay records."
+    has_specified_output:
+      id: "GE:caohuy-trpc6-pm25-16hbe-24h-output"
+      name: "TRPC6 protein level after PM2.5"
+      description: "Progressive, dose-dependent increase in TRPC6 protein relative to DMSO control (representative Western blot, Fig 3c). No numeric value stated in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:caohuy-pm25-100ng-24h"
+        name: "PM2.5 (ERM-CZ110) 100 ng/mL for 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-increased-trpc6"
+      name: "Increased TRPC6 expression"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:caohuy-16hbe-001"
+      name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+    follows_protocols:
+      - id: "PROTOCOL:caohuy-wb-001"
+        name: "Western blot for CFTR, beta2AR, TRPC6 and NF-kB pathway proteins"
+
+  # --- beta2AR vs CFTR correlation under B[a]P, dBCi (Fig 2e) ---
+  - id: "GE:caohuy-b2ar-cftr-correlation-bap-dbci"
+    name: "beta2AR and CFTR protein co-decline under B[a]P - Pearson correlation (dBCi)"
+    description: "Densitometry of beta2AR and CFTR Western blots across the B[a]P dose series in differentiated BCi.NS1.1 organoids. The two protein changes were positively correlated with a Pearson correlation coefficient r = 0.9948 (p = 0.005), indicating coordinated loss of beta2AR and CFTR."
+    gene_expression_method: "Western blot densitometry with Pearson correlation"
+    normalization_reference: "beta-actin"
+    evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Finally, Fig 2e showed that there was a significant positive correlation between changes in 2AR and CFTR with a Pearson Correlation Coefficient (r) of 0.9948 (p= 0.005)."
+        explanation: "States the Pearson correlation coefficient and p-value recorded as this assay's output."
+    has_specified_output:
+      id: "GE:caohuy-b2ar-cftr-correlation-bap-dbci-output"
+      name: "Pearson correlation between beta2AR and CFTR protein changes"
+      description: "Pearson correlation coefficient r = 0.9948, p = 0.005 (three independent experiments)."
+    has_exposure_condition:
+      - id: "EXPOSURE:caohuy-bap-10um-24h"
+        name: "Benzo[a]pyrene 10 uM for 24 hours (6 h apical + 18 h ALI)"
+        exposure_agent:
+          id: "CHEBI:29865"
+          name: "benzo[a]pyrene"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-decreased-b2ar"
+      name: "Decreased beta2-adrenergic receptor expression"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:caohuy-dbci-001"
+      name: "Differentiated BCi-NS1.1 (dBCi) human airway organoid at air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+    follows_protocols:
+      - id: "PROTOCOL:caohuy-wb-001"
+        name: "Western blot for CFTR, beta2AR, TRPC6 and NF-kB pathway proteins"
+
+  # --- beta2AR vs TRPC6 correlation under B[a]P, 16HBE14o- (Fig 6e) ---
+  - id: "GE:caohuy-b2ar-trpc6-correlation-bap-16hbe"
+    name: "beta2AR loss versus TRPC6 gain under B[a]P - Pearson correlation (16HBE14o-)"
+    description: "Densitometry of beta2AR and TRPC6 Western blots across the B[a]P dose series in 16HBE14o- cells. Loss of beta2AR was inversely correlated with the rise in TRPC6, Pearson r = -0.9875 (p = 0.01)."
+    gene_expression_method: "Western blot densitometry with Pearson correlation"
+    normalization_reference: "beta-actin"
+    evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Fig 6e showed that when comparing loss of 2AR to increase in TRPC6, the Pearson’s r was -0.9875 (p = 0.01)."
+        explanation: "States the Pearson correlation coefficient and p-value recorded as this assay's output."
+    has_specified_output:
+      id: "GE:caohuy-b2ar-trpc6-correlation-bap-16hbe-output"
+      name: "Pearson correlation between beta2AR and TRPC6 protein changes"
+      description: "Pearson correlation coefficient r = -0.9875, p = 0.01 (three independent experiments)."
+    has_exposure_condition:
+      - id: "EXPOSURE:caohuy-bap-10um-24h"
+        name: "Benzo[a]pyrene 10 uM for 24 hours (6 h apical + 18 h ALI)"
+        exposure_agent:
+          id: "CHEBI:29865"
+          name: "benzo[a]pyrene"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-increased-trpc6"
+      name: "Increased TRPC6 expression"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:caohuy-16hbe-001"
+      name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+    follows_protocols:
+      - id: "PROTOCOL:caohuy-wb-001"
+        name: "Western blot for CFTR, beta2AR, TRPC6 and NF-kB pathway proteins"
+
+  # --- IL-6 / IL-8 secretion, PM2.5, 16HBE14o- (Fig 3b) ---
+  - id: "GE:caohuy-il6-il8-pm25-16hbe-24h"
+    name: "Basolateral IL-6 and IL-8 secretion - PM2.5 in polarized 16HBE14o- cells (ELISA)"
+    description: "IL-6 and IL-8 measured by DuoSet ELISA in basolateral media of polarized 16HBE14o- cells after 24 h PM2.5 exposure (12.5-100 ng/mL). Both cytokines rose as PM2.5 concentration rose (Fig 3b; mean +/- SD, n = 4; one-way ANOVA with Tukey post-hoc). Values reported graphically; no cytokine concentration is stated in the text."
+    gene_expression_method: "ELISA"
+    normalization_reference: "MTT or total protein concentration"
+    evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Fig 3b showed that as the concentrations of PM2.5 rose, expressions of IL6 and IL8 in the liquid subphase also rose."
+        explanation: "States the dose-dependent rise in secreted IL-6 and IL-8 that this ELISA assay records."
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Culture media from the basolateral compartments were collected and used to assay for IL-8, IL6 and TNF α using respective DuoSet® ELISA kits, and performed according to the manufacturer's instructions."
+        explanation: "Methods sentence establishing that the cytokines were measured in basolateral media by DuoSet ELISA."
+    has_specified_output:
+      id: "GE:caohuy-il6-il8-pm25-16hbe-24h-output"
+      name: "Secreted IL-6 and IL-8 after PM2.5"
+      description: "Dose-dependent increase in basolateral IL-6 and IL-8 versus DMSO control; reported graphically without numeric concentrations."
+    has_exposure_condition:
+      - id: "EXPOSURE:caohuy-pm25-100ng-24h"
+        name: "PM2.5 (ERM-CZ110) 100 ng/mL for 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:caohuy-16hbe-001"
+      name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+    follows_protocols:
+      - id: "PROTOCOL:caohuy-elisa-001"
+        name: "DuoSet ELISA for basolateral IL-6, IL-8 and TNF-alpha"
+
+  # --- IL-6 / IL-8 tracking ROS, 16HBE14o- (Fig 7b) ---
+  - id: "GE:caohuy-il6-il8-ros-16hbe-24h"
+    name: "IL-6 and IL-8 release alongside ROS induction (Fig 7b)"
+    description: "IL-6 and IL-8 measured in the same 16HBE14o- cultures used for the CellROX ROS assay (PM2.5 50 and 100 ng/mL, 10 uM B[a]P, 100 uM H2O2). Both cytokines were significantly elevated in the same pattern as the ROS increases, linking oxidative stress to cytokine release."
+    gene_expression_method: "ELISA"
+    normalization_reference: "MTT or total protein concentration"
+    evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Fig 7b showed that IL-6 and IL-8 were significantly elevated in the same manner as increases in ROS."
+        explanation: "States the significant elevation of IL-6 and IL-8 in parallel with ROS that this assay records."
+    has_specified_output:
+      id: "GE:caohuy-il6-il8-ros-16hbe-24h-output"
+      name: "Secreted IL-6 and IL-8 in the ROS experiment"
+      description: "Significant elevation of IL-6 and IL-8 versus DMSO control, tracking the ROS increases; reported graphically without numeric concentrations."
+    has_exposure_condition:
+      - id: "EXPOSURE:caohuy-pm25-100ng-24h"
+        name: "PM2.5 (ERM-CZ110) 100 ng/mL for 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:caohuy-bap-10um-24h"
+        name: "Benzo[a]pyrene 10 uM for 24 hours (6 h apical + 18 h ALI)"
+        exposure_agent:
+          id: "CHEBI:29865"
+          name: "benzo[a]pyrene"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:caohuy-16hbe-001"
+      name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+    follows_protocols:
+      - id: "PROTOCOL:caohuy-elisa-001"
+        name: "DuoSet ELISA for basolateral IL-6, IL-8 and TNF-alpha"
+
+  # --- CFTR loss under PM2.5/B[a]P/H2O2 in the ROS experiment (Fig 7c) ---
+  - id: "GE:caohuy-cftr-ros-16hbe-24h"
+    name: "CFTR protein loss in the ROS experiment (Fig 7c)"
+    description: "CFTR Western blot on lysates from the 16HBE14o- cultures used for the ROS assay. CFTR expression was significantly reduced by exposure to PM2.5 and B[a]P, and also by the H2O2 positive control, consistent with redox repression of the CFTR locus. Representative blots; no numeric value stated."
+    target_gene: "PR:000003411"
+    gene_expression_method: "Western blot"
+    normalization_reference: "beta-actin"
+    evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Fig 7c showed that CFTR expression was significantly reduced by exposures"
+        explanation: "States the significant reduction of CFTR expression in the ROS experiment that this assay records."
+    has_specified_output:
+      id: "GE:caohuy-cftr-ros-16hbe-24h-output"
+      name: "CFTR protein level in the ROS experiment"
+      description: "Significant reduction of CFTR protein versus DMSO control under PM2.5, B[a]P and the H2O2 positive control; reported graphically without a numeric value."
+    has_exposure_condition:
+      - id: "EXPOSURE:caohuy-h2o2-100um-24h"
+        name: "Hydrogen peroxide 100 uM for 24 hours (positive control)"
+        exposure_agent:
+          id: "CHEBI:16240"
+          name: "hydrogen peroxide"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:caohuy-pm25-100ng-24h"
+        name: "PM2.5 (ERM-CZ110) 100 ng/mL for 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cftr"
+      name: "Decreased CFTR function"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:caohuy-16hbe-001"
+      name: "Polarized human bronchial 16HBE14o- monolayer at air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+    follows_protocols:
+      - id: "PROTOCOL:caohuy-wb-001"
+        name: "Western blot for CFTR, beta2AR, TRPC6 and NF-kB pathway proteins"
+
+  # --- Ex vivo ferret slices: CFTR / beta2AR down, TRPC6 up (Fig 9c) ---
+  - id: "GE:caohuy-ferret-cftr-b2ar-trpc6-24h"
+    name: "CFTR, beta2AR and TRPC6 protein in ex vivo ferret tracheobronchial slices (Western blot)"
+    description: "Western blot of ferret lung tracheobronchial slice cultures exposed for 24 h to 10 uM B[a]P or 100 ng/mL PM2.5. Both beta2AR and CFTR were reduced while TRPC6 was elevated, reproducing the human cell findings in an ex vivo tissue. Representative blots; no numeric value stated."
+    gene_expression_method: "Western blot"
+    normalization_reference: "beta-actin"
+    evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Fig 9c showed that both 2AR and CFTR were reduced, while TRPC6 expression was elevated."
+        explanation: "States the direction of change for all three proteins in the ferret slice cultures that this assay records. (The cached PDF text renders 'β2AR' with a Symbol-font beta glyph, which the snippet reproduces verbatim.)"
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Treated tissues were washed with PBS and homogenized in RIPA buffer supplemented with anti -protease/phosphatase inhibitor cocktail using a handheld motor driven tissue homogenizer, followed by centrifugation at 20,000 rpm for 5 min."
+        explanation: "Methods sentence describing preparation of the ferret slice lysates used for these Western blots."
+    has_specified_output:
+      id: "GE:caohuy-ferret-cftr-b2ar-trpc6-24h-output"
+      name: "CFTR, beta2AR and TRPC6 protein in ferret slices"
+      description: "Reduced CFTR and beta2AR and elevated TRPC6 relative to DMSO control (representative Western blot, Fig 9c). No numeric value stated in the text."
+    has_exposure_condition:
+      - id: "EXPOSURE:caohuy-ferret-pm25-100ng-24h"
+        name: "PM2.5 (ERM-CZ110) 100 ng/mL for 24 hours, ferret lung slice culture"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:caohuy-ferret-bap-10um-24h"
+        name: "Benzo[a]pyrene 10 uM for 24 hours, ferret lung slice culture"
+        exposure_agent:
+          id: "CHEBI:29865"
+          name: "benzo[a]pyrene"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-increased-trpc6"
+      name: "Increased TRPC6 expression"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: ModelSystem
+      id: "soma:caohuy-ferret-slice-001"
+      name: "Ex vivo ferret lung tracheobronchial slice culture"
+      description: "Lung parenchyma from two ferrets dissected into nine cubes per lung (average wet weight 400 mg) containing tracheobronchial tubes and cultured 24 h in Pneumacult-EX Plus Basal media."
+      model_species:
+        id: "NCBITaxon:9669"
+        name: "Mustela putorius furo"
+    follows_protocols:
+      - id: "PROTOCOL:caohuy-ferret-slice-001"
+        name: "Ex vivo ferret lung tracheobronchial slice culture"
+      - id: "PROTOCOL:caohuy-wb-001"
+        name: "Western blot for CFTR, beta2AR, TRPC6 and NF-kB pathway proteins"
+
+  # --- Ex vivo ferret slices: IL-6 secretion (Fig 9b) ---
+  - id: "GE:caohuy-ferret-il6-24h"
+    name: "IL-6 secretion by ex vivo ferret tracheobronchial slices (ELISA)"
+    description: "IL-6 in the culture medium of ferret lung tracheobronchial slices after 24 h exposure to 10 uM B[a]P or 100 ng/mL PM2.5, measured with a ferret IL-6 ELISA kit (Genorise). Both exposures produced significant and similar elevations in IL-6 (mean of 6 independent sections, one-way ANOVA with Tukey post-hoc, p < 0.05). Reported graphically; no concentration is stated."
+    gene_expression_method: "ELISA"
+    evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "or 100 ng/ml PM2.5 resulted in significant and similar elevations in IL-6."
+        explanation: "Tail of the Fig 9b sentence stating that exposure to either benzo[a]pyrene or 100 ng/mL PM2.5 significantly elevated IL-6 in the ferret slice cultures, the increase this assay records."
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "After incubation, culture medium samples were collected, centrifuged at 400 × g, 4 oC for 5 min to remove cellular material, and analyzed by Ferret IL -6 ELISA kit."
+        explanation: "Methods sentence establishing that IL-6 was measured in the slice-culture medium with a ferret-specific ELISA kit."
+    has_specified_output:
+      id: "GE:caohuy-ferret-il6-24h-output"
+      name: "Secreted IL-6 from ferret slice cultures"
+      description: "Significant and similar elevation of IL-6 by both B[a]P and PM2.5 versus DMSO control (n = 6 sections, p < 0.05); reported graphically without a numeric concentration."
+    has_exposure_condition:
+      - id: "EXPOSURE:caohuy-ferret-pm25-100ng-24h"
+        name: "PM2.5 (ERM-CZ110) 100 ng/mL for 24 hours, ferret lung slice culture"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:caohuy-ferret-bap-10um-24h"
+        name: "Benzo[a]pyrene 10 uM for 24 hours, ferret lung slice culture"
+        exposure_agent:
+          id: "CHEBI:29865"
+          name: "benzo[a]pyrene"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: ModelSystem
+      id: "soma:caohuy-ferret-slice-001"
+      name: "Ex vivo ferret lung tracheobronchial slice culture"
+      model_species:
+        id: "NCBITaxon:9669"
+        name: "Mustela putorius furo"
+    follows_protocols:
+      - id: "PROTOCOL:caohuy-ferret-slice-001"
+        name: "Ex vivo ferret lung tracheobronchial slice culture"
+      - id: "PROTOCOL:caohuy-elisa-001"
+        name: "DuoSet ELISA for basolateral IL-6, IL-8 and TNF-alpha"
+
+  # --- microRNA panel in dBCi organoids (Fig 8) ---
+  - id: "GE:caohuy-mirna-bap-dbci-24h"
+    name: "Five burn-pit-marker microRNAs - benzo[a]pyrene in dBCi organoids (TaqMan)"
+    description: "miR-126a-3p, miR-30b-5p, miR-103a-3p, miR-26a-5p and miR-766-3p measured by TaqMan assay in differentiated BCi.NS1.1 organoids after 24 h B[a]P exposure. All five - the same microRNAs previously found reduced in sera of service members exposed to burn-pit PM2.5 - were reduced dose-dependently. U6 endogenous control; relative fold changes reported graphically (p < 0.05), with no numeric fold change stated in the text."
+    gene_expression_method: "TaqMan qRT-PCR"
+    normalization_reference: "U6"
+    evidence:
+      - reference: "PMID:42079210"
+        reference_title: "PM2.5 toxin benzo[a]pyrene induces life-limiting inflammation and oxidative stress in the airway by up-regulation of TRPC6 and inactivation of β2AR/CFTR signaling."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "A dose dependent reduction in the miR levels was observed compared to control cells (green bar). U6 was used as endogenous control."
+        explanation: "Figure 8 legend stating the dose-dependent reduction in microRNA levels and the U6 normalization used for this assay."
+    has_specified_output:
+      id: "GE:caohuy-mirna-bap-dbci-24h-output"
+      name: "Relative microRNA levels after benzo[a]pyrene"
+      description: "Significant dose-dependent reduction of all five microRNAs relative to DMSO control (p < 0.05, three technical replicates, mean +/- SEM). Reported graphically without numeric fold changes."
+    has_exposure_condition:
+      - id: "EXPOSURE:caohuy-bap-10um-24h"
+        name: "Benzo[a]pyrene 10 uM for 24 hours (6 h apical + 18 h ALI)"
+        exposure_agent:
+          id: "CHEBI:29865"
+          name: "benzo[a]pyrene"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-altered-mirna-expression"
+      name: "Altered microRNA expression"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:caohuy-dbci-001"
+      name: "Differentiated BCi-NS1.1 (dBCi) human airway organoid at air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+    follows_protocols:
+      - id: "PROTOCOL:caohuy-taqman-mir-001"
+        name: "TaqMan microRNA quantification in dBCi organoids"
