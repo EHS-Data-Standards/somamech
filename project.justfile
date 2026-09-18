@@ -47,12 +47,16 @@ extract-paper-text pdf pmid:
 validate-file file:
     uv run linkml-validate --schema {{soma_schema}} --target-class Container {{file}}
     {{term_validator_wrapper}} validate-data {{file}} -s {{soma_schema}} -t Container --labels -c {{oak_conf}}
-    {{ref_validator_wrapper}} validate data {{file}} --schema {{soma_schema}} --target-class Container --config {{ref_conf}} --cache-dir {{refs_cache}} --no-full-text
+    ALLOW_ABSTRACT_ONLY_MISSES=1 {{ref_validator_wrapper}} validate data {{file}} --schema {{soma_schema}} --target-class Container --config {{ref_conf}} --cache-dir {{refs_cache}} --no-full-text
+    uv run python scripts/snippet_receipts.py check {{file}}
 
 # Verify the evidence quotes in one kb file, including quotes from paywalled
 # papers whose text only exists in the local cache. Builds a temporary merged
 # cache (committed + local) and runs the quote checker against it. Prints the
-# report to paste into the PR description.
+# report to paste into the PR description. When the file quotes a paper whose
+# committed cache entry is abstract-only, a passing run also writes a
+# verification receipt (verification/PMID_<n>.json) — commit it with the PR
+# so CI can hold the quotes to it (see check-receipts).
 [group('QC')]
 verify-snippets file:
     #!/usr/bin/env bash
@@ -63,6 +67,23 @@ verify-snippets file:
     [ -d {{refs_cache_local}} ] && cp {{refs_cache_local}}/*.md "$merged"/ 2>/dev/null || true
     echo "Quote verification for {{file}} (committed + local cache):"
     {{ref_validator_wrapper}} validate data {{file}} --schema {{soma_schema}} --target-class Container --config {{ref_conf}} --cache-dir "$merged" --no-full-text
+    uv run python scripts/snippet_receipts.py write {{file}}
+
+# Check that every quote CI cannot verify (its paper is abstract-only in the
+# committed cache) is covered by a committed verification receipt written by
+# a passing local verify-snippets run. A receipt hash-binds the receipt to
+# the exact snippet text, so a quote edited after verification fails here.
+[group('QC')]
+check-receipts:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    shopt -s nullglob
+    files=({{kb_pubs_dir}}/*.yaml)
+    if [ ${#files[@]} -eq 0 ]; then
+        echo "No kb files in {{kb_pubs_dir}} yet — nothing to check."
+        exit 0
+    fi
+    uv run python scripts/snippet_receipts.py check "${files[@]}"
 
 # Validate every kb file (schema + terms + quotes), batched.
 [group('QC')]
@@ -78,7 +99,7 @@ validate-all:
     echo "Validating ${#files[@]} kb files..."
     uv run linkml-validate --schema {{soma_schema}} --target-class Container "${files[@]}"
     {{term_validator_wrapper}} validate-data "${files[@]}" -s {{soma_schema}} -t Container --labels -c {{oak_conf}}
-    {{ref_validator_wrapper}} validate data "${files[@]}" --schema {{soma_schema}} --target-class Container --config {{ref_conf}} --cache-dir {{refs_cache}} --no-full-text
+    ALLOW_ABSTRACT_ONLY_MISSES=1 {{ref_validator_wrapper}} validate data "${files[@]}" --schema {{soma_schema}} --target-class Container --config {{ref_conf}} --cache-dir {{refs_cache}} --no-full-text
     echo "All kb files validated."
 
 # Check that no YAML file repeats a key (a silent way merges break files).
@@ -101,12 +122,29 @@ check-stubs:
     uv run linkml-validate -s {{stub_schema}} -C PublicationStub "${files[@]}"
     uv run python scripts/build_stubs.py --check-only
 
+# Check the cross-paper ID rules over kb/publications: KeyEvent IDs are
+# shared vocabulary (identical content merges; divergent content fails);
+# every other ID must be unique to one paper.
+[group('QC')]
+check-entity-ids:
+    uv run python scripts/build_workbook.py --check-only
+
 # Run every automatic check. This is what CI runs on every PR, over the whole
 # repository (checking only changed files lets two individually-green PRs
 # break each other when both merge).
 [group('QC')]
-qc: check-duplicate-keys check-stubs validate-all pipeline-test
+qc: check-duplicate-keys check-stubs check-entity-ids validate-all check-receipts pipeline-test
     @echo "All QC checks passed!"
+
+# ============ Derived products ============
+
+# Build the ONE pooled workbook from every per-paper YAML in kb/publications.
+# The YAML files are the source of truth; this workbook is a generated
+# product — never hand-edit it, never commit it in a curation PR (exports/
+# is gitignored; CI publishes the current workbook from main).
+[group('exports')]
+generate-workbook out="exports/soma_extractions.xlsx":
+    uv run python scripts/build_workbook.py --output "{{out}}"
 
 # ============ Paper queue ============
 

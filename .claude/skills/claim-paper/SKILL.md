@@ -103,6 +103,45 @@ The pdf-to-yaml skill describes the required `source_publication:` header and
 the `evidence:` block every assay must carry — an exact quote from the paper
 beside every extracted measurement.
 
+**Key Events are shared vocabulary — reuse, never re-author.** Different
+papers informing the same key event must carry byte-identical KeyEvent
+blocks: the pooled workbook merges identical blocks and REJECTS the same
+`KE:` ID with different wording (`just check-entity-ids`). So before writing
+any `informs_on_key_event:` block:
+
+```bash
+git grep -h -A6 '"KE:ke-decreased-cftr"' origin/main -- kb/ tests/data/valid/ | head -12
+```
+
+Search `tests/data/valid/` as well as `kb/` — `kb/publications/` starts out
+holding only a README, so a `kb/`-only grep silently returns nothing and
+leads you to re-author a block that already exists. The canonical wording for
+the founding vocabulary lives in the test fixtures.
+
+- If the ID exists anywhere on main, copy that block **verbatim** — same name,
+  same description, same fields. Do not improve the wording; a wording fix is
+  its own PR touching every file that uses the block.
+- Mint a new `KE:` ID only when no existing key event fits, and keep its
+  content minimal so it is easy for the next paper to reuse.
+- **The fixtures are not internally consistent, so a grep can hand you two
+  answers.** 5 of the 22 KE IDs on main carry more than one wording, including
+  two that disagree inside a single file:
+
+  | ID | variants |
+  |---|---|
+  | `KE:ao-decreased-lung-function` | "Decreased lung function"/`decreased` vs "Increased airway hyperresponsiveness"/`increased` |
+  | `KE:ke-airway-inflammation` | "Airway inflammation" vs "Th2 airway inflammation" |
+  | `KE:ke-altered-ciliogenesis` | same name, `altered` vs `decreased` |
+  | `KE:ke-goblet-hyperplasia` | "Goblet cell hyperplasia" vs "…and mucin hypersecretion" |
+  | `KE:ke2-goblet-hyperplasia` | "Goblet cell hyperplasia" vs "…and mucin hypersecretion" |
+
+  When a grep returns more than one block, pick the variant whose name matches
+  its ID (`KE:ao-decreased-lung-function` → "Decreased lung function"), prefer
+  the majority wording, and ignore `tests/data/quote_mismatch/` — that fixture
+  is deliberately corrupt. Say in the PR body which variant you chose. These
+  live in fixtures, so `check-entity-ids` does not see the conflict today; it
+  fires the moment two `kb/publications/` files disagree.
+
 ## Step 5 — Verify
 
 ```bash
@@ -112,10 +151,42 @@ just verify-snippets kb/publications/<file>.yaml  # quotes incl. local PDF text
 
 Save `verify-snippets` output — its summary goes in the PR description.
 
+**Both must pass, and they check against different caches.** `validate-file`
+(and `validate-all`, which is what CI's `just qc` runs) resolves quotes against
+the committed `references_cache/` only. `verify-snippets` merges committed +
+`references_cache_local/`, with the local PDF text *overwriting* the committed
+file of the same name. So:
+
+- A quote taken from the PDF body but absent from the committed cache passes
+  `verify-snippets` and **fails CI**.
+- A quote from an abstract whose PDF text layer mangles it — fi/fl ligatures
+  (`significant` → `signiﬁcant`), injected spaces, hyphenated line wraps —
+  passes `validate-file` and **fails `verify-snippets`**.
+
+When the committed cache is `abstract_only`, quote the abstract and choose
+spans that are verbatim in both copies; a sentence fragment that verifies
+beats a whole sentence that does not. Full text read from a local PDF is still
+worth having — it belongs in `description:` fields, which are not quote-checked,
+and it tells you what is worth recording. Say in the PR body which claims rest
+on quotes and which on locally-read full text.
+
+When the paper's committed cache entry is abstract-only, a passing
+`verify-snippets` run also writes `verification/PMID_<number>.json` — a
+receipt hashing every locally-verified quote. Commit it with the PR: CI
+cannot see the full text, so `just check-receipts` holds those quotes to the
+receipt instead (a quote added or edited after verification fails CI). If
+`verify-snippets` says the full text is missing from the local cache, go
+back to Step 3's `extract-paper-text` — never write a receipt file by hand.
+
 If a quote fails: re-read the source and copy the exact passage, choose a
 different passage, or drop the claim. Never reword a quote just to pass the
 check, and never report a validation command as passing unless it finished
 and you read its output.
+
+The reference validator's `Total checks: N` line counts *issues found*, not
+checks performed, so `Total checks: 0` is what a clean file prints. It does
+catch real mismatches, but do not read the counter as evidence that anything
+was verified.
 
 Term lookups may add rows to `cache/` — commit those too (they are what makes
 CI re-runs offline).
@@ -127,10 +198,11 @@ The PR contains exactly one paper's worth of changes:
 - `kb/publications/Container-<...>.yaml` (new)
 - `references_cache/PMID_*.md` — only the papers THIS file cites
 - `cache/**/terms.csv` rows — only the terms THIS file introduced
+- `verification/PMID_*.json` — only if this paper is abstract-only (Step 5)
 - the paper's stub deleted from `stubs/`
 
 ```bash
-git add kb/publications/<file>.yaml references_cache/PMID_<number>.md cache/
+git add kb/publications/<file>.yaml references_cache/PMID_<number>.md cache/ verification/
 git rm stubs/<stub-file>.yaml
 git commit -m "extract: <Author Year> (PMID:<number>) — <one-line gist>"
 git push -u origin extract/<firstauthor><year>

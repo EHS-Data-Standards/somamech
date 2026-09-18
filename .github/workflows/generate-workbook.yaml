@@ -1,0 +1,71 @@
+# Publish the pooled extraction workbook — the generated product built from
+# every per-paper YAML in kb/publications/. Runs after each merge to main
+# (never on PRs, so extraction diffs stay readable) and on demand.
+#
+# The current workbook is available two ways:
+#   * the "workbook-latest" release on this repo (stable download URL)
+#   * this workflow run's uploaded artifact
+---
+name: Generate pooled workbook
+
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches: [main]
+    paths:
+      - "kb/publications/**"
+      - "src/soma/schema/**"
+      - "scripts/build_workbook.py"
+      - "scripts/yaml_to_excel.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write  # to update the rolling release
+
+jobs:
+  workbook:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          python-version: "3.12"
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Install project
+        run: uv sync --dev
+
+      - name: Build pooled workbook
+        run: uv run python scripts/build_workbook.py --output exports/soma_extractions.xlsx
+
+      - name: Upload as workflow artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: soma-extractions-workbook
+          path: exports/soma_extractions.xlsx
+
+      - name: Publish to the rolling release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ ! -f exports/soma_extractions.xlsx ]; then
+            echo "No workbook produced (kb/publications is empty) — nothing to publish."
+            exit 0
+          fi
+          if ! gh release view workbook-latest --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release create workbook-latest \
+              --repo "$GITHUB_REPOSITORY" \
+              --title "Pooled extraction workbook (latest)" \
+              --notes "Always-current pooled workbook, rebuilt from kb/publications/ on every merge to main. The YAML files are the source of truth; do not hand-edit this file." \
+              --latest=false
+          fi
+          gh release upload workbook-latest exports/soma_extractions.xlsx \
+            --repo "$GITHUB_REPOSITORY" --clobber
+          echo "Published: https://github.com/$GITHUB_REPOSITORY/releases/tag/workbook-latest"
