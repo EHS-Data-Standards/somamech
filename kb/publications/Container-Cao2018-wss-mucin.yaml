@@ -1,0 +1,668 @@
+# =============================================================================
+# Cao et al. (2018) - Cigarette whole smoke solutions disturb mucin homeostasis
+# in a human in vitro airway tissue model
+# =============================================================================
+#
+# Source: Toxicology 409: 119-128
+# PMID: 30053496 | DOI: 10.1016/j.tox.2018.07.015
+#
+# Study design (from the paper's Materials and Methods):
+#   - In vitro: human air-liquid-interface (ALI) airway tissue model built from
+#     normal human primary bronchial epithelial cells collected from the
+#     tracheobronchial region (MatTek), differentiated 4 weeks on 24-well PET
+#     Transwell inserts in PneumaCult-ALI Maintenance Medium
+#   - Test articles: cigarette whole smoke solutions (WSSs) in DMSO, prepared by
+#     machine smoking 60 Marlboro Red (CI R60) or 60 Marlboro Silver (CI S60)
+#     cigarettes with the Canadian Intense (CI) protocol (55-mL puff volume,
+#     30-s puff interval, 2.0-s puff duration, 100% filter vent blocking)
+#   - Exposure: 100 uL of 0.1%, 0.25%, 0.5% or 1.0% WSS applied apically
+#     4 h/day for up to 5 consecutive days; DMSO adjusted to 1.0% in all groups;
+#     1.0% DMSO vehicle control
+#   - Readouts: MUC5AC/MUC5B ELISA on apical washes (T1, T3, T5, PT7, PT14),
+#     MUC5AC/MUC5B qRT-PCR (4 h, T1, PT14; 18S rRNA reference, ddCt),
+#     PAS staining for goblet cell density (T5, PT14), cilia beating frequency
+#     by Sisson-Ammons Video Analysis (T1, T5, PT7)
+#   - Statistics: One-Way ANOVA with Dunnett's test vs the DMSO vehicle control;
+#     two-tailed t-test for CI S60 vs CI R60; p < 0.05 significant
+#
+# Evidence note: the publicly cached record for this PMID is the abstract, so
+# every evidence snippet below is quoted from the abstract and is machine
+# verifiable. Design details in the comments and descriptions come from the
+# full text of the PDF, read locally.
+# =============================================================================
+
+source_publication:
+  reference: "PMID:30053496"
+  reference_title: "Cigarette whole smoke solutions disturb mucin homeostasis in a human in vitro airway tissue model."
+  doi: "10.1016/j.tox.2018.07.015"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:cao-wss-exposure-001"
+    protocol_type: Protocol
+    name: "Cigarette whole smoke solution (WSS) preparation and ALI exposure"
+    description: "Mainstream smoke from 60 Marlboro Red (R60) or 60 Marlboro Silver (S60) cigarettes, machine smoked with the Canadian Intense protocol (55-mL puff volume, 30-s puff interval, 2.0-s puff duration, 100% blocking of filter ventilation), bubbled through three perfluoroalkoxy impingers each holding 30 mL DMSO and pooled to 100 mL of WSS. Stock WSSs diluted in PBS to 0.1%, 0.25%, 0.5% and 1.0% immediately before use, with DMSO adjusted to 1.0% in every treatment group. Cultures received 100 uL of diluted WSS or 1.0% DMSO apically for 4 h per day on up to 5 consecutive days, then were washed with PBS and refed basolaterally."
+    equipment_required:
+      - "Perfluoroalkoxy impingers"
+      - "24-well PET Transwell culture inserts (Corning)"
+
+  - id: "PROTOCOL:cao-mucin-elisa-001"
+    protocol_type: MolecularAssayProtocol
+    name: "MUC5AC and MUC5B ELISA on apical washes"
+    description: "Mucus collected by washing the apical culture surface twice with 100 uL PBS; DTT added to 0.025 mM; vortexed and centrifuged at 600 x g for 10 min. 25 uL supernatant plus equal volume 50 mM carbonate/bicarbonate (pH 9.5) dried overnight in a MaxiSorp 96-well plate, blocked with 10 mg/mL BSA, probed with anti-MUC5AC (45M1) or anti-MUC5B antibody, detected with HRP-conjugated goat anti-mouse secondary and TMB substrate, absorbance read at 450 nm."
+    detection_method: "Colorimetric ELISA, absorbance at 450 nm (BioTek Synergy H4)"
+    antibodies_used:
+      - "anti-MUC5AC (45M1), Thermo Scientific"
+      - "anti-MUC5B, Thermo Scientific"
+      - "HRP-conjugated goat anti-mouse IgG (Santa Cruz Biotechnology)"
+
+  - id: "PROTOCOL:cao-rtpcr-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Quantitative real-time RT-PCR for MUC5AC and MUC5B"
+    description: "Total RNA extracted with the RNeasy Mini Kit; cDNA synthesised from RNA with integrity number >= 9.5. TaqMan Gene Expression Assays for MUC5AC (Hs00873651_mH), MUC5B (Hs00861595_m1) and 18S rRNA (Hs99999901_s1) run on a ViiA 7 RT-PCR system: 95 C for 10 min, then 40 cycles of 95 C for 15 s and 60 C for 1 min. Fold change calculated by the ddCt method against 18S rRNA and the vehicle control."
+    detection_method: "TaqMan quantitative RT-PCR (ViiA 7 system)"
+    reference_gene: "18S rRNA (Hs99999901_s1)"
+    normalization_method: "ddCt method, 2^-ddCt fold change"
+
+  - id: "PROTOCOL:cao-pas-001"
+    protocol_type: StainingProtocol
+    name: "Periodic acid-Schiff (PAS) staining for goblet cells"
+    description: "Cultures fixed in 10% neutral buffered formalin, paraffin embedded and sectioned at 4-5 um. Rehydrated sections oxidised in 0.5% periodic acid for 5 min, incubated with Schiff's reagent for 15 min, counter-stained with hematoxylin, dehydrated and cover-slipped. PAS-stained mucus-producing goblet cells with typical goblet cell morphology were counted over a 5-mm tissue section and goblet cell density expressed as the percentage of goblet cells to the total number of cells counted."
+    staining_type: "periodic acid-Schiff (PAS) histochemistry"
+    fixation_method: "10% neutral buffered formalin"
+    counterstain: "hematoxylin"
+    detection_method: "Light microscopy cell counting over a 5-mm tissue section"
+
+  - id: "PROTOCOL:cao-cbf-sava-001"
+    protocol_type: ImagingProtocol
+    name: "Cilia beating frequency by Sisson-Ammons Video Analysis (SAVA)"
+    description: "Cultures equilibrated on a 30 C heated stage for 15 min before measurement. Four random fields with at least 1000 motile points selected per culture; CBF determined by whole field analysis. Five cultures used per treatment condition."
+    equipment_required:
+      - "Sisson-Ammons Video Analysis (SAVA) system"
+      - "30 C heated microscope stage"
+    temperature_control:
+      value: "30"
+      unit:
+        id: "UO:0000027"
+        name: "degree Celsius"
+
+# =============================================================================
+# GOBLET CELL / MUCIN ASSAYS
+# Mucin secretion (ELISA), mucin gene expression (qRT-PCR), goblet cell density
+# =============================================================================
+
+goblet_cell_assays:
+
+  # ---- MUC5AC secretion, CI S60 (Marlboro Silver) ----
+  - id: "GCM:cao-muc5ac-secretion-cis60"
+    name: "MUC5AC secretion ELISA - CI S60 WSS, 1 to 5 daily treatments"
+    description: "MUC5AC secreted into apical washes of human ALI airway cultures, measured 24 h after one (T1), three (T3) or five (T5) daily 4-h treatments with CI S60 whole smoke solution at 0.1-1.0%. Secretion rose in a concentration-related manner and increased with repeated treatment; the paper reports lowest effective concentrations of 0.25% at T1, 0.1% at T3 and 0.1% at T5, with induction appearing to saturate after five consecutive treatments. One-Way ANOVA with Dunnett's test vs the 1.0% DMSO vehicle control, n = 5, p < 0.05."
+    has_specified_output:
+      id: "GCM:cao-muc5ac-secretion-cis60-output"
+      name: "MUC5AC secretion measurements - CI S60"
+    has_exposure_condition:
+      - id: "EXPOSURE:cao-ci-s60-4h-5d"
+        name: "CI S60 whole smoke solution 0.1-1.0%, 4 h/day for up to 5 days"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:cao-ali-culture-001"
+      name: "Human bronchial ALI airway tissue culture"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0007196"
+        name: "tracheobronchial tree"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Normal human primary bronchial epithelial cells collected from the tracheobronchial region of the lung (MatTek, Ashland, MA)"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:cao-mucin-elisa-001"
+        name: "MUC5AC and MUC5B ELISA on apical washes"
+        detection_method: "Colorimetric ELISA, absorbance at 450 nm"
+      - protocol_type: Protocol
+        id: "PROTOCOL:cao-wss-exposure-001"
+        name: "Cigarette whole smoke solution (WSS) preparation and ALI exposure"
+    evidence:
+      - reference: "PMID:30053496"
+        reference_title: "Cigarette whole smoke solutions disturb mucin homeostasis in a human in vitro airway tissue model."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "hypersecretion of mucins 5AC and 5B, accompanied by up-regulation of the respective mucin genes."
+        explanation: "States that the whole smoke solutions induced concentration- and time-related hypersecretion of MUC5AC, which is what this ELISA assay records for CI S60."
+      - reference: "PMID:30053496"
+        reference_title: "Cigarette whole smoke solutions disturb mucin homeostasis in a human in vitro airway tissue model."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "to a whole smoke solution (WSS) prepared by machine smoking Marlboro Red or Marlboro Silver cigarettes using the Canadian Intense (CI) protocol."
+        explanation: "Identifies the exposure agent recorded on this assay: a whole smoke solution from Marlboro Silver cigarettes machine smoked under the Canadian Intense protocol."
+
+  # ---- MUC5AC secretion, CI R60 (Marlboro Red) ----
+  - id: "GCM:cao-muc5ac-secretion-cir60"
+    name: "MUC5AC secretion ELISA - CI R60 WSS, 1 to 5 daily treatments"
+    description: "MUC5AC secreted into apical washes of human ALI airway cultures, measured 24 h after one (T1), three (T3) or five (T5) daily 4-h treatments with CI R60 whole smoke solution at 0.1-1.0%. The paper reports lowest effective concentrations of 0.5% at T1, 0.25% at T3 and 0.1% at T5; CI S60 was slightly more potent than CI R60 at 0.1% after three exposures, with no difference between the two solutions at T1 or T5. One-Way ANOVA with Dunnett's test vs the 1.0% DMSO vehicle control, n = 5, p < 0.05."
+    has_specified_output:
+      id: "GCM:cao-muc5ac-secretion-cir60-output"
+      name: "MUC5AC secretion measurements - CI R60"
+    has_exposure_condition:
+      - id: "EXPOSURE:cao-ci-r60-4h-5d"
+        name: "CI R60 whole smoke solution 0.1-1.0%, 4 h/day for up to 5 days"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:cao-ali-culture-001"
+      name: "Human bronchial ALI airway tissue culture"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:cao-mucin-elisa-001"
+        name: "MUC5AC and MUC5B ELISA on apical washes"
+      - protocol_type: Protocol
+        id: "PROTOCOL:cao-wss-exposure-001"
+        name: "Cigarette whole smoke solution (WSS) preparation and ALI exposure"
+    evidence:
+      - reference: "PMID:30053496"
+        reference_title: "Cigarette whole smoke solutions disturb mucin homeostasis in a human in vitro airway tissue model."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "hypersecretion of mucins 5AC and 5B, accompanied by up-regulation of the respective mucin genes."
+        explanation: "Both whole smoke solutions, including the Marlboro Red (CI R60) preparation recorded here, induced concentration- and time-related MUC5AC hypersecretion."
+
+  # ---- MUC5B secretion, CI S60 ----
+  - id: "GCM:cao-muc5b-secretion-cis60"
+    name: "MUC5B secretion ELISA - CI S60 WSS, 1 to 5 daily treatments"
+    description: "MUC5B secreted into apical washes of human ALI airway cultures, measured 24 h after one (T1), three (T3) or five (T5) daily 4-h treatments with CI S60 whole smoke solution at 0.1-1.0%. The paper reports lowest effective concentrations of 0.5% at T1, 0.25% at T3 and 0.25% at T5, with CI S60 more potent than CI R60 at 0.25% and 0.5% after three exposures. One-Way ANOVA with Dunnett's test vs the 1.0% DMSO vehicle control, n = 5, p < 0.05."
+    has_specified_output:
+      id: "GCM:cao-muc5b-secretion-cis60-output"
+      name: "MUC5B secretion measurements - CI S60"
+    has_exposure_condition:
+      - id: "EXPOSURE:cao-ci-s60-4h-5d"
+        name: "CI S60 whole smoke solution 0.1-1.0%, 4 h/day for up to 5 days"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:cao-ali-culture-001"
+      name: "Human bronchial ALI airway tissue culture"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:cao-mucin-elisa-001"
+        name: "MUC5AC and MUC5B ELISA on apical washes"
+      - protocol_type: Protocol
+        id: "PROTOCOL:cao-wss-exposure-001"
+        name: "Cigarette whole smoke solution (WSS) preparation and ALI exposure"
+    evidence:
+      - reference: "PMID:30053496"
+        reference_title: "Cigarette whole smoke solutions disturb mucin homeostasis in a human in vitro airway tissue model."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "hypersecretion of mucins 5AC and 5B, accompanied by up-regulation of the respective mucin genes."
+        explanation: "States the concentration- and time-related hypersecretion of MUC5B that this ELISA assay records for CI S60."
+
+  # ---- MUC5B secretion, CI R60 ----
+  - id: "GCM:cao-muc5b-secretion-cir60"
+    name: "MUC5B secretion ELISA - CI R60 WSS, 1 to 5 daily treatments"
+    description: "MUC5B secreted into apical washes of human ALI airway cultures, measured 24 h after one (T1), three (T3) or five (T5) daily 4-h treatments with CI R60 whole smoke solution at 0.1-1.0%. The paper reports lowest effective concentrations of 0.5% at T1, 0.5% at T3 and 0.25% at T5, with no significant difference between the two whole smoke solutions at T1 or T5. One-Way ANOVA with Dunnett's test vs the 1.0% DMSO vehicle control, n = 5, p < 0.05."
+    has_specified_output:
+      id: "GCM:cao-muc5b-secretion-cir60-output"
+      name: "MUC5B secretion measurements - CI R60"
+    has_exposure_condition:
+      - id: "EXPOSURE:cao-ci-r60-4h-5d"
+        name: "CI R60 whole smoke solution 0.1-1.0%, 4 h/day for up to 5 days"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:cao-ali-culture-001"
+      name: "Human bronchial ALI airway tissue culture"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:cao-mucin-elisa-001"
+        name: "MUC5AC and MUC5B ELISA on apical washes"
+      - protocol_type: Protocol
+        id: "PROTOCOL:cao-wss-exposure-001"
+        name: "Cigarette whole smoke solution (WSS) preparation and ALI exposure"
+    evidence:
+      - reference: "PMID:30053496"
+        reference_title: "Cigarette whole smoke solutions disturb mucin homeostasis in a human in vitro airway tissue model."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "hypersecretion of mucins 5AC and 5B, accompanied by up-regulation of the respective mucin genes."
+        explanation: "Both whole smoke solutions, including the Marlboro Red (CI R60) preparation recorded here, induced concentration- and time-related MUC5B hypersecretion."
+
+  # ---- Mucin gene expression, qRT-PCR ----
+  - id: "GCM:cao-mucin-mrna-rtpcr"
+    name: "MUC5AC and MUC5B gene expression (qRT-PCR) - CI WSSs"
+    description: "MUC5AC and MUC5B mRNA in human ALI airway cultures by TaqMan qRT-PCR, normalised to 18S rRNA by the ddCt method, measured immediately after the first 4-h treatment (4 h), 24 h after the first treatment (T1) and 14 days after the fifth treatment (PT14). The paper reports approximately 2-fold increases in MUC5AC and MUC5B expression immediately after a 4-h treatment with 1.0% CI S60, further increased at T1; a single exposure to either concentration of CI R60 significantly up-regulated both genes at T1. Expression had returned to baseline 14 days after the last treatment. n = 4, One-Way ANOVA with Dunnett's test vs the DMSO vehicle control, p < 0.05."
+    has_specified_output:
+      id: "GCM:cao-mucin-mrna-rtpcr-output"
+      name: "MUC5AC and MUC5B mRNA measurements"
+    has_exposure_condition:
+      - id: "EXPOSURE:cao-ci-s60-1pct-4h"
+        name: "CI S60 whole smoke solution 1.0%, single 4-h treatment"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "1.0"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:cao-ali-culture-001"
+      name: "Human bronchial ALI airway tissue culture"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:cao-rtpcr-001"
+        name: "Quantitative real-time RT-PCR for MUC5AC and MUC5B"
+        reference_gene: "18S rRNA (Hs99999901_s1)"
+        normalization_method: "ddCt method, 2^-ddCt fold change"
+      - protocol_type: Protocol
+        id: "PROTOCOL:cao-wss-exposure-001"
+        name: "Cigarette whole smoke solution (WSS) preparation and ALI exposure"
+    evidence:
+      - reference: "PMID:30053496"
+        reference_title: "Cigarette whole smoke solutions disturb mucin homeostasis in a human in vitro airway tissue model."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "hypersecretion of mucins 5AC and 5B, accompanied by up-regulation of the respective mucin genes."
+        explanation: "States that mucin hypersecretion was accompanied by up-regulation of the MUC5AC and MUC5B genes, which is the gene expression result this assay records."
+
+  # ---- Reversibility of mucin secretion ----
+  - id: "GCM:cao-mucin-secretion-pt14"
+    name: "MUC5AC and MUC5B secretion after a 14-day recovery"
+    description: "MUC5AC and MUC5B secretion re-measured 7 days (PT7) and 14 days (PT14) after the fifth daily treatment with the CI WSSs. At PT7 induction was attenuated but MUC5AC secretion remained significantly increased in the 0.5% and 1.0% groups; by PT14 secretion of both mucins in all treated cultures had fallen back to vehicle-control levels, as had MUC5AC and MUC5B gene expression. n = 5, One-Way ANOVA with Dunnett's test, p < 0.05."
+    has_specified_output:
+      id: "GCM:cao-mucin-secretion-pt14-output"
+      name: "MUC5AC and MUC5B secretion measurements after recovery"
+    has_exposure_condition:
+      - id: "EXPOSURE:cao-ci-wss-5d-pt14"
+        name: "CI WSS 0.1-1.0%, 4 h/day for 5 days, followed by a 14-day recovery"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:cao-ali-culture-001"
+      name: "Human bronchial ALI airway tissue culture"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:cao-mucin-elisa-001"
+        name: "MUC5AC and MUC5B ELISA on apical washes"
+    evidence:
+      - reference: "PMID:30053496"
+        reference_title: "Cigarette whole smoke solutions disturb mucin homeostasis in a human in vitro airway tissue model."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Mucin secretion returned to baseline levels following a 14-day recovery period."
+        explanation: "Directly states the reversibility of mucin hypersecretion that this assay records at the PT14 timepoint."
+
+  # ---- Goblet cell density and size after five treatments ----
+  - id: "GCM:cao-goblet-density-t5"
+    name: "Goblet cell density and size (PAS) - 24 h after five daily CI WSS treatments"
+    description: "PAS-stained goblet cells counted over a 5-mm tissue section 24 h after five daily 4-h treatments (T5), with density expressed as the percentage of goblet cells to the total cells counted. Five daily treatments with 1.0% CI S60 and 1.0% CI R60 markedly increased goblet cell density while decreasing goblet cell size; the increase in density did not differ significantly between the two whole smoke solutions. The paper describes the response as goblet cell hyperplasia without hypertrophy. n = 5, One-Way ANOVA with Dunnett's test vs the DMSO vehicle control, p < 0.05."
+    has_specified_output:
+      id: "GCM:cao-goblet-density-t5-output"
+      name: "Goblet cell density and size measurements at T5"
+    has_exposure_condition:
+      - id: "EXPOSURE:cao-ci-wss-1pct-5d"
+        name: "CI WSS 1.0%, 4 h/day for 5 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "1.0"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia and mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:cao-ali-culture-001"
+      name: "Human bronchial ALI airway tissue culture"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0007196"
+        name: "tracheobronchial tree"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:cao-pas-001"
+        name: "Periodic acid-Schiff (PAS) staining for goblet cells"
+        staining_type: "periodic acid-Schiff (PAS) histochemistry"
+        counterstain: "hematoxylin"
+      - protocol_type: Protocol
+        id: "PROTOCOL:cao-wss-exposure-001"
+        name: "Cigarette whole smoke solution (WSS) preparation and ALI exposure"
+    evidence:
+      - reference: "PMID:30053496"
+        reference_title: "Cigarette whole smoke solutions disturb mucin homeostasis in a human in vitro airway tissue model."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Mucin-secreting goblet cells exhibited increased cell density and decreased size after 5 daily treatments then recovered to their normal size, but with decreased cell density, 14 days after the last treatment."
+        explanation: "States the increased goblet cell density and decreased goblet cell size after five daily treatments that this PAS assay records at T5."
+      - reference: "PMID:30053496"
+        reference_title: "Cigarette whole smoke solutions disturb mucin homeostasis in a human in vitro airway tissue model."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "we assessed changes in mucin secretion and the density and size of goblet cells"
+        explanation: "Confirms goblet cell density and size were the endpoints assessed in this in vitro human ALI airway tissue model."
+
+  # ---- Goblet cell density after a 14-day recovery ----
+  - id: "GCM:cao-goblet-density-pt14"
+    name: "Goblet cell density and size (PAS) - 14 days after the fifth treatment"
+    description: "PAS-stained goblet cells counted 14 days after the fifth daily treatment (PT14). Goblet cell morphology no longer differed from the DMSO-treated cultures, but goblet cell density in all CI WSS-treated groups was significantly lower than in the vehicle control, which the authors interpret as possible over-compensation during tissue recovery. n = 5, p < 0.05."
+    has_specified_output:
+      id: "GCM:cao-goblet-density-pt14-output"
+      name: "Goblet cell density measurements at PT14"
+    has_exposure_condition:
+      - id: "EXPOSURE:cao-ci-wss-5d-pt14"
+        name: "CI WSS 0.1-1.0%, 4 h/day for 5 days, followed by a 14-day recovery"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia and mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:cao-ali-culture-001"
+      name: "Human bronchial ALI airway tissue culture"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:cao-pas-001"
+        name: "Periodic acid-Schiff (PAS) staining for goblet cells"
+        staining_type: "periodic acid-Schiff (PAS) histochemistry"
+    evidence:
+      - reference: "PMID:30053496"
+        reference_title: "Cigarette whole smoke solutions disturb mucin homeostasis in a human in vitro airway tissue model."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Mucin-secreting goblet cells exhibited increased cell density and decreased size after 5 daily treatments then recovered to their normal size, but with decreased cell density, 14 days after the last treatment."
+        explanation: "States the return to normal goblet cell size with decreased goblet cell density 14 days after the last treatment, which is what this PT14 assay records."
+
+# =============================================================================
+# CILIARY FUNCTION ASSAYS - cilia beating frequency (CBF)
+# =============================================================================
+
+ciliary_function_assays:
+
+  - id: "CBF:cao-ci-wss-t5"
+    name: "Cilia beating frequency - 24 h after five daily CI WSS treatments"
+    description: "CBF of human ALI airway cultures measured by Sisson-Ammons Video Analysis whole field analysis (four random fields with at least 1000 motile points per culture) 24 h after five daily 4-h treatments with CI S60 or CI R60 whole smoke solution. A single treatment did not alter CBF; five treatments produced significant increases in CBF in all treatment groups, with no significant difference between the two whole smoke solutions at comparable concentrations. The authors interpret the increase as an adaptive response to remove the excess mucus induced by treatment. n = 5, p < 0.05 vs the concurrent DMSO vehicle control."
+    has_specified_output:
+      id: "CBF:cao-ci-wss-t5-output"
+      name: "CBF measurements at T5"
+    has_exposure_condition:
+      - id: "EXPOSURE:cao-ci-wss-5d"
+        name: "CI WSS 0.1-1.0%, 4 h/day for 5 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-increased-cbf"
+      name: "Increased ciliary beat frequency"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:cao-ali-culture-001"
+      name: "Human bronchial ALI airway tissue culture"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0007196"
+        name: "tracheobronchial tree"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:cao-cbf-sava-001"
+        name: "Cilia beating frequency by Sisson-Ammons Video Analysis (SAVA)"
+        temperature_control:
+          value: "30"
+          unit:
+            id: "UO:0000027"
+            name: "degree Celsius"
+      - protocol_type: Protocol
+        id: "PROTOCOL:cao-wss-exposure-001"
+        name: "Cigarette whole smoke solution (WSS) preparation and ALI exposure"
+    evidence:
+      - reference: "PMID:30053496"
+        reference_title: "Cigarette whole smoke solutions disturb mucin homeostasis in a human in vitro airway tissue model."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The beating frequency of ciliated cells, which plays a key role in mucociliary clearance, was increased by 5 daily treatments with the CI WSSs then reverted to baseline levels following a 7-day recovery."
+        explanation: "States the significant increase in cilia beating frequency after five daily CI WSS treatments that this assay records."
+
+  - id: "CBF:cao-ci-wss-pt7"
+    name: "Cilia beating frequency - 7 days after the fifth CI WSS treatment"
+    description: "CBF re-measured 7 days after the fifth daily treatment (PT7). CBF in all treatment groups had returned to the level of the concurrent DMSO-treated vehicle control, showing that the CI WSS-induced increase in ciliary beating is reversible. n = 5, p < 0.05."
+    has_specified_output:
+      id: "CBF:cao-ci-wss-pt7-output"
+      name: "CBF measurements at PT7"
+    has_exposure_condition:
+      - id: "EXPOSURE:cao-ci-wss-5d-pt7"
+        name: "CI WSS 0.1-1.0%, 4 h/day for 5 days, followed by a 7-day recovery"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "7"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-increased-cbf"
+      name: "Increased ciliary beat frequency"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:cao-ali-culture-001"
+      name: "Human bronchial ALI airway tissue culture"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:cao-cbf-sava-001"
+        name: "Cilia beating frequency by Sisson-Ammons Video Analysis (SAVA)"
+    evidence:
+      - reference: "PMID:30053496"
+        reference_title: "Cigarette whole smoke solutions disturb mucin homeostasis in a human in vitro airway tissue model."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The beating frequency of ciliated cells, which plays a key role in mucociliary clearance, was increased by 5 daily treatments with the CI WSSs then reverted to baseline levels following a 7-day recovery."
+        explanation: "States that the increased cilia beating frequency reverted to baseline after a 7-day recovery, which is what this PT7 assay records."
