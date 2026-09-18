@@ -63,7 +63,8 @@ specific paper:
      re-authored** — two agents wording the same KE differently is the one
      collision the ID check cannot auto-merge.
    - One paper, one PR; add only YOUR paper's kb file, reference cache
-     entries, term cache rows, and stub deletion.
+     entries, term cache rows, verification receipt (abstract-only papers
+     only), and stub deletion.
 4. Report back: branch name, PR URL, and the quote-verification summary.
 
 Dispatch all N sub-agents in parallel.
