@@ -128,6 +128,14 @@ just verify-snippets kb/publications/<file>.yaml  # quotes incl. local PDF text
 
 Save `verify-snippets` output — its summary goes in the PR description.
 
+When the paper's committed cache entry is abstract-only, a passing
+`verify-snippets` run also writes `verification/PMID_<number>.json` — a
+receipt hashing every locally-verified quote. Commit it with the PR: CI
+cannot see the full text, so `just check-receipts` holds those quotes to the
+receipt instead (a quote added or edited after verification fails CI). If
+`verify-snippets` says the full text is missing from the local cache, go
+back to Step 3's `extract-paper-text` — never write a receipt file by hand.
+
 If a quote fails: re-read the source and copy the exact passage, choose a
 different passage, or drop the claim. Never reword a quote just to pass the
 check, and never report a validation command as passing unless it finished
@@ -143,10 +151,11 @@ The PR contains exactly one paper's worth of changes:
 - `kb/publications/Container-<...>.yaml` (new)
 - `references_cache/PMID_*.md` — only the papers THIS file cites
 - `cache/**/terms.csv` rows — only the terms THIS file introduced
+- `verification/PMID_*.json` — only if this paper is abstract-only (Step 5)
 - the paper's stub deleted from `stubs/`
 
 ```bash
-git add kb/publications/<file>.yaml references_cache/PMID_<number>.md cache/
+git add kb/publications/<file>.yaml references_cache/PMID_<number>.md cache/ verification/
 git rm stubs/<stub-file>.yaml
 git commit -m "extract: <Author Year> (PMID:<number>) — <one-line gist>"
 git push -u origin extract/<firstauthor><year>
