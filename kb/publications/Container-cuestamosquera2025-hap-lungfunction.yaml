@@ -1,0 +1,419 @@
+# =============================================================================
+# Cuesta-Mosquera et al. (2025) - Improved cookstoves enhance household air
+# quality and respiratory health in rural Rwanda
+# =============================================================================
+#
+# Source: Sci Rep. 2025;15:26065 (PMID:40681630)
+# DOI: 10.1038/s41598-025-09863-6
+#
+# Study design:
+#   - Randomized controlled trial, rural Rwanda (Musanze and Gatsibo districts)
+#   - 1001 adults at baseline (2019): 380 received a Save80 improved cookstove
+#     (ICS, intervention), 621 continued traditional three-stone-fire cooking
+#   - Follow-up health assessment three years later (2022): questionnaire from
+#     907 participants, acceptable spirometry from 848 (520 traditional,
+#     328 ICS)
+#   - Spirometry (FVC, FEV1, FEV1/FVC, PEF) per ERS/ATS guidelines with a
+#     Vyntus SPIRO PC-Spirometer
+#   - Household air pollution (HAP) measured in 2022 in a subgroup (n = 45
+#     households for online BC/BrC/PM exposure, n = 21 households for filter
+#     OC/EC/TC/PAH), each household measured while cooking traditionally and
+#     then with the ICS
+#
+# Key findings captured here:
+#   - Cross-sectional at follow-up: FVC higher in ICS users (2.82 L vs 2.74 L,
+#     P = 0.044); FEV1, PEF and FEV1/FVC not significantly different
+#   - Longitudinal: three-year FVC change -0.02 L (ICS) vs -0.16 L
+#     (traditional), P < 0.001
+#   - Exposure: PM0.3-2.5 167 vs 38 ug m-3 hour-1; BC 60 vs 30 ug m-3 h-1;
+#     BrC 163 vs 35 ug m-3 h-1; cooking time reduced 34%
+#   - Symptoms (questionnaire, not modelled as an assay here): coughing -11%
+#     and mucus production -9% in ICS users vs traditional cooks
+#
+# =============================================================================
+
+source_publication:
+  reference: "PMID:40681630"
+  reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+  doi: "10.1038/s41598-025-09863-6"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:cuesta-spirometry-001"
+    name: "ERS/ATS spirometry in a rural field setting"
+    description: "Spirometry performed following European Respiratory Society and American Thoracic Society guidelines, measuring FVC, FEV1 and PEF. Repeated until at least three flow-volume curves met the ERS/GOLD criteria. Airway obstruction defined as FEV1/FVC < 70%. Volume calibration with a calibration pump every morning, afternoon and after significant weather changes."
+    equipment_required:
+      - "Vyntus SPIRO PC-Spirometer (VYAIRE)"
+      - "Mouthpiece with integrated bacterial filter"
+      - "Nose clip"
+      - "Calibration pump"
+      - "Portable weather station (Technoline WS 6765)"
+
+  - id: "PROTOCOL:cuesta-hap-001"
+    name: "Household air pollution measurement during cooking"
+    description: "Indoor measurements at each household in three stages: 10-15 min before the cooking fire started, during cooking, and 10-15 min after the fire was turned off. Instruments carried in portable backpacks placed 2-3 m from the cooking fire or stove. Total exposure calculated as the time integral of the measured concentration over the cooking period."
+    equipment_required:
+      - "microAeth MA200 (Aethlabs) light absorption photometer"
+      - "Optical particle size spectrometer model 3330 (TSI Inc)"
+      - "Portable pump model Gilian 12 (Sensidyne) with 37 mm quartz-fiber filters"
+      - "Sunset Laboratory dual carbonaceous analyzer (OC/EC)"
+      - "Curie-point pyrolyzer (JPS-350, JAI) coupled to GC-MS (Agilent 6890N/5973)"
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS
+# =============================================================================
+
+lung_function_assays:
+
+  # ---- Cross-sectional comparison at the three-year follow-up ----
+
+  - id: "LF:cuesta-ics-followup"
+    name: "Spirometry in Save80 improved cookstove users at three-year follow-up"
+    description: "Follow-up (2022) spirometry of participants who used the Save80 improved cookstove for three years (n = 328 with acceptable lung function data). Median FVC 2.82 L (higher than traditional cooks, Wilcoxon P-value = 0.044), median FEV1 2.30 L (P-value = 0.179), median PEF 4.46 L (P-value = 0.936), median FEV1/FVC 84% (P-value = 0.288)."
+    reference_dataset: "Within-study comparison against the traditional-cooking control group"
+    assay_date: "2022-01-01"
+    has_specified_output:
+      id: "LF:cuesta-ics-followup-output"
+      name: "Lung function of ICS users at follow-up"
+      fvc:
+        value: "2.82"
+        unit:
+          id: "UO:0000099"
+          name: "liter"
+      fev1:
+        value: "2.30"
+        unit:
+          id: "UO:0000099"
+          name: "liter"
+      peak_expiratory_flow:
+        value: "4.46"
+        unit:
+          id: "UO:0000099"
+          name: "liter"
+      fev1_fvc_ratio:
+        value: "84"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    evidence:
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "After three years, the lung function of the ICS users showed a higher forced vital capacity (FVC) than that of traditional cooks"
+        explanation: "States the cross-sectional FVC advantage of the improved-cookstove group recorded in this assay."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "median = 2.82 L for ICS users vs. 2.74 L for traditional cooks, Wilcoxon test, P-value = 0.044"
+        explanation: "Gives the median FVC value of 2.82 L recorded for the ICS group and its P-value."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "and PEF (median = 4.46 L for ICS users vs. 4.46 L for traditional cooks, P-value = 0.936)"
+        explanation: "Gives the median PEF value of 4.46 L recorded for the ICS group."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In terms of PM0.3−2.5, the mean exposure during traditional cooking was 167 ± 207 µg m −3 hour−1, significantly higher than the mean exposure of 38 ± 41 µg m −3 hour−1 measured during the improved stove use (P-value < 0.001)."
+        explanation: "Gives the mean PM0.3-2.5 exposure of 38 ug m-3 hour-1 recorded in this assay's improved-cookstove exposure condition."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "During traditional cooking, BC exposure was 60 ± 49 µg m−3 h−1 and decreased to 30 ± 20 µg m−3 h−1 during the improved stove use."
+        explanation: "Gives the mean BC exposure of 30 ug m-3 h-1 named in this assay's improved-cookstove exposure condition."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Regarding the organic-light-absorbing carbon (BrC), the mean hourly exposure was 163 ± 120 and 35 ± 23 µg m−3 h−1 for traditional cooking and the ICS, respectively."
+        explanation: "Gives the mean BrC exposure of 35 ug m-3 h-1 named in this assay's improved-cookstove exposure condition."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Using the ICS Save80 reduced the average cooking time by 34%"
+        explanation: "Reports the 34% reduction in cooking time with the improved cookstove that underlies the lower measured exposures."
+    has_exposure_condition:
+      - id: "EXPOSURE:cuesta-ics-3y"
+        name: "Three years of cooking with the Save80 improved cookstove (mean PM0.3-2.5 exposure 38 ug m-3 hour-1, BC 30 ug m-3 h-1, BrC 35 ug m-3 h-1)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "38"
+          unit:
+            id: "UCUM:ug/m3/h"
+            name: "microgram per cubic meter per hour"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cuesta-ics-followup"
+      name: "Save80 improved cookstove users at three-year follow-up"
+      description: "Adults from the Musanze and Gatsibo districts of Rwanda randomized to receive a Save80 improved cookstove in 2019 and reassessed in 2022."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "Rwandan adults, 328 with acceptable follow-up spirometry in this group. Study population mostly women (86%), 97% nonsmokers, wood the primary cooking fuel (95%). Eligibility: at least 18 years old, responsible for cooking in their homes, no chronic respiratory diseases and no improved cookstove at home at enrolment."
+      clinical_context: "Second (2022) health assessment of a randomized controlled trial, intervention arm"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:cuesta-spirometry-001"
+        name: "ERS/ATS spirometry in a rural field setting"
+        spirometry_standard: "ERS/ATS"
+
+  - id: "LF:cuesta-traditional-followup"
+    name: "Spirometry in traditional cooks at three-year follow-up"
+    description: "Follow-up (2022) spirometry of participants who continued cooking with traditional methods (n = 520 with acceptable lung function data). Median FVC 2.74 L, median FEV1 2.35 L, median PEF 4.46 L, median FEV1/FVC 85%. Control group for the improved-cookstove comparison."
+    reference_dataset: "Within-study comparison against the Save80 improved cookstove group"
+    assay_date: "2022-01-01"
+    has_specified_output:
+      id: "LF:cuesta-traditional-followup-output"
+      name: "Lung function of traditional cooks at follow-up"
+      fvc:
+        value: "2.74"
+        unit:
+          id: "UO:0000099"
+          name: "liter"
+      fev1:
+        value: "2.35"
+        unit:
+          id: "UO:0000099"
+          name: "liter"
+      peak_expiratory_flow:
+        value: "4.46"
+        unit:
+          id: "UO:0000099"
+          name: "liter"
+      fev1_fvc_ratio:
+        value: "85"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    evidence:
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "median = 2.82 L for ICS users vs. 2.74 L for traditional cooks, Wilcoxon test, P-value = 0.044"
+        explanation: "Gives the median FVC of 2.74 L for the traditional-cooking control group recorded here."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "and PEF (median = 4.46 L for ICS users vs. 4.46 L for traditional cooks, P-value = 0.936)"
+        explanation: "Gives the median PEF of 4.46 L for the traditional-cooking group recorded here."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "statistically significantly different from that of traditional cooks (median = 85%, P-value = 0.288)"
+        explanation: "Gives the median FEV1/FVC of 85% for the traditional-cooking group and shows the group difference was not significant."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In terms of PM0.3−2.5, the mean exposure during traditional cooking was 167 ± 207 µg m −3 hour−1, significantly higher than the mean exposure of 38 ± 41 µg m −3 hour−1 measured during the improved stove use (P-value < 0.001)."
+        explanation: "Gives the mean PM0.3-2.5 exposure of 167 ug m-3 hour-1 recorded in this assay's traditional-cooking exposure condition."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "During traditional cooking, BC exposure was 60 ± 49 µg m−3 h−1 and decreased to 30 ± 20 µg m−3 h−1 during the improved stove use."
+        explanation: "Gives the mean BC exposure of 60 ug m-3 h-1 named in this assay's traditional-cooking exposure condition."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Regarding the organic-light-absorbing carbon (BrC), the mean hourly exposure was 163 ± 120 and 35 ± 23 µg m−3 h−1 for traditional cooking and the ICS, respectively."
+        explanation: "Gives the mean BrC exposure of 163 ug m-3 h-1 named in this assay's traditional-cooking exposure condition."
+    has_exposure_condition:
+      - id: "EXPOSURE:cuesta-traditional-3y"
+        name: "Three years of cooking with traditional three-stone-fire methods (mean PM0.3-2.5 exposure 167 ug m-3 hour-1, BC 60 ug m-3 h-1, BrC 163 ug m-3 h-1)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "167"
+          unit:
+            id: "UCUM:ug/m3/h"
+            name: "microgram per cubic meter per hour"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cuesta-traditional-followup"
+      name: "Traditional three-stone-fire cooks at three-year follow-up"
+      description: "Adults from the Musanze and Gatsibo districts of Rwanda randomized to the control arm, who continued cooking with traditional methods between 2019 and 2022 and received the stove at the end of the study."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "Rwandan adults, 520 with acceptable follow-up spirometry in this group. Eligibility: at least 18 years old, responsible for cooking in their homes, no chronic respiratory diseases and no improved cookstove at home at enrolment."
+      clinical_context: "Second (2022) health assessment of a randomized controlled trial, control arm"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:cuesta-spirometry-001"
+        name: "ERS/ATS spirometry in a rural field setting"
+        spirometry_standard: "ERS/ATS"
+
+  # ---- Longitudinal FVC change between the 2019 and 2022 assessments ----
+
+  - id: "LF:cuesta-ics-fvc-change"
+    name: "Three-year FVC change in Save80 improved cookstove users"
+    description: "Longitudinal comparison of FVC between the first (2019) and follow-up (2022) assessments within the intervention group. Mean delta-FVC = -0.02 L (-20 mL) over three years. The value in decline_rate is the total three-year change reported by the authors, not an annualized rate."
+    assay_date: "2022-01-01"
+    has_specified_output:
+      id: "LF:cuesta-ics-fvc-change-output"
+      name: "Three-year FVC change in ICS users"
+      decline_rate:
+        value: "-20"
+        unit:
+          id: "UCUM:mL"
+          name: "milliliter"
+    evidence:
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "This declination was found to be lower than the one observed in our study for participants using traditional methods (∆FVC = −160 mL) but larger than average deltas calculated by ICS users (∆FVC = −20 mL)."
+        explanation: "Gives the mean three-year FVC change of -20 mL for the improved-cookstove group recorded in this assay."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "A comparison of lung function decline over time showed that the ICS users had lower deterioration of FVC over three years."
+        explanation: "States that the three-year FVC deterioration was smaller in the improved-cookstove group."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In terms of PM0.3−2.5, the mean exposure during traditional cooking was 167 ± 207 µg m −3 hour−1, significantly higher than the mean exposure of 38 ± 41 µg m −3 hour−1 measured during the improved stove use (P-value < 0.001)."
+        explanation: "Gives the mean PM0.3-2.5 exposure of 38 ug m-3 hour-1 recorded in this assay's improved-cookstove exposure condition."
+    has_exposure_condition:
+      - id: "EXPOSURE:cuesta-ics-3y"
+        name: "Three years of cooking with the Save80 improved cookstove"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "38"
+          unit:
+            id: "UCUM:ug/m3/h"
+            name: "microgram per cubic meter per hour"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cuesta-ics-longitudinal"
+      name: "Save80 improved cookstove users followed from 2019 to 2022"
+      description: "Intervention-arm participants with paired spirometry at the 2019 baseline and the 2022 follow-up."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "380 participants received the improved cookstove at baseline in 2019 and used it over three years. Eligibility: at least 18 years old, responsible for cooking in their homes, no chronic respiratory diseases and no improved cookstove at home at enrolment."
+      clinical_context: "Paired 2019-to-2022 lung function comparison, intervention arm"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:cuesta-spirometry-001"
+        name: "ERS/ATS spirometry in a rural field setting"
+        spirometry_standard: "ERS/ATS"
+
+  - id: "LF:cuesta-traditional-fvc-change"
+    name: "Three-year FVC change in traditional cooks"
+    description: "Longitudinal comparison of FVC between the first (2019) and follow-up (2022) assessments within the control group. Mean delta-FVC = -0.16 L (-160 mL) over three years, a significantly larger decline than in the intervention group (P-value < 0.001). The value in decline_rate is the total three-year change reported by the authors, not an annualized rate."
+    assay_date: "2022-01-01"
+    has_specified_output:
+      id: "LF:cuesta-traditional-fvc-change-output"
+      name: "Three-year FVC change in traditional cooks"
+      decline_rate:
+        value: "-160"
+        unit:
+          id: "UCUM:mL"
+          name: "milliliter"
+    evidence:
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "This declination was found to be lower than the one observed in our study for participants using traditional methods (∆FVC = −160 mL) but larger than average deltas calculated by ICS users (∆FVC = −20 mL)."
+        explanation: "Gives the mean three-year FVC change of -160 mL for the traditional-cooking group recorded in this assay."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The differences in ∆FVC between both groups of participants were statistically significantly different (∆FVCSave80 vs. ∆FVCTraditional, P-value < 0.001), favoring the intervention group."
+        explanation: "States that the between-group difference in three-year FVC change was statistically significant and favored the improved-cookstove group."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In terms of PM0.3−2.5, the mean exposure during traditional cooking was 167 ± 207 µg m −3 hour−1, significantly higher than the mean exposure of 38 ± 41 µg m −3 hour−1 measured during the improved stove use (P-value < 0.001)."
+        explanation: "Gives the mean PM0.3-2.5 exposure of 167 ug m-3 hour-1 recorded in this assay's traditional-cooking exposure condition."
+    has_exposure_condition:
+      - id: "EXPOSURE:cuesta-traditional-3y"
+        name: "Three years of cooking with traditional three-stone-fire methods"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "167"
+          unit:
+            id: "UCUM:ug/m3/h"
+            name: "microgram per cubic meter per hour"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cuesta-traditional-longitudinal"
+      name: "Traditional three-stone-fire cooks followed from 2019 to 2022"
+      description: "Control-arm participants with paired spirometry at the 2019 baseline and the 2022 follow-up."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "621 participants continued to cook with traditional methods over the three-year study period. Eligibility: at least 18 years old, responsible for cooking in their homes, no chronic respiratory diseases and no improved cookstove at home at enrolment."
+      clinical_context: "Paired 2019-to-2022 lung function comparison, control arm"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:cuesta-spirometry-001"
+        name: "ERS/ATS spirometry in a rural field setting"
+        spirometry_standard: "ERS/ATS"
