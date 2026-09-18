@@ -64,7 +64,28 @@ verify-snippets file:
     merged=$(mktemp -d)
     trap 'rm -rf "$merged"' EXIT
     [ -d {{refs_cache}} ] && cp {{refs_cache}}/*.md "$merged"/ 2>/dev/null || true
-    [ -d {{refs_cache_local}} ] && cp {{refs_cache_local}}/*.md "$merged"/ 2>/dev/null || true
+    # Merge, don't replace. When a paper is in BOTH caches the local PDF
+    # extraction is APPENDED to the committed entry instead of overwriting it,
+    # so the fetcher-written abstract stays visible to the quote checker.
+    # Overwriting discarded the authoritative text: pypdf renders ligatures as
+    # single codepoints and sprays spurious spaces around them and around
+    # subscripts ("in <fl>ammation", "con <fi>rms", "PM 2.5"), so a quote that
+    # is verbatim in the cached abstract could fail this check purely because
+    # of a PDF artifact — and a failing check writes no receipt at all. The
+    # append only ever adds more real text from the same paper, so it cannot
+    # make a wrong quote pass.
+    if [ -d {{refs_cache_local}} ]; then
+        for local_file in {{refs_cache_local}}/*.md; do
+            [ -e "$local_file" ] || continue
+            base=$(basename "$local_file")
+            if [ -f "$merged/$base" ]; then
+                printf '\n\n## Full text (local PDF extraction)\n\n' >> "$merged/$base"
+                awk 'seen >= 2 { print } /^---[[:space:]]*$/ { seen++ }' "$local_file" >> "$merged/$base"
+            else
+                cp "$local_file" "$merged"/
+            fi
+        done
+    fi
     echo "Quote verification for {{file}} (committed + local cache):"
     {{ref_validator_wrapper}} validate data {{file}} --schema {{soma_schema}} --target-class Container --config {{ref_conf}} --cache-dir "$merged" --no-full-text
     uv run python scripts/snippet_receipts.py write {{file}}

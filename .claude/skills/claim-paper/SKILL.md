@@ -153,22 +153,28 @@ Save `verify-snippets` output — its summary goes in the PR description.
 
 **Both must pass, and they check against different caches.** `validate-file`
 (and `validate-all`, which is what CI's `just qc` runs) resolves quotes against
-the committed `references_cache/` only. `verify-snippets` merges committed +
-`references_cache_local/`, with the local PDF text *overwriting* the committed
-file of the same name. So:
+the committed `references_cache/` only. `verify-snippets` checks against both:
+when a paper also has an entry in `references_cache_local/`, that local PDF
+text is *appended* to the committed entry under a `## Full text (local PDF
+extraction)` heading, so the checker sees the committed text and the PDF text
+together. So:
 
 - A quote taken from the PDF body but absent from the committed cache passes
-  `verify-snippets` and **fails CI**.
-- A quote from an abstract whose PDF text layer mangles it — fi/fl ligatures
-  (`significant` → `signiﬁcant`), injected spaces, hyphenated line wraps —
-  passes `validate-file` and **fails `verify-snippets`**.
+  `verify-snippets` and **fails CI** unless a committed receipt covers it (see
+  below).
+- A quote that is verbatim in the committed text keeps verifying even when the
+  PDF text layer mangles that same sentence — fi/fl ligatures (`significant` →
+  `signiﬁcant`), injected spaces, hyphenated line wraps. The committed copy is
+  still in the merged cache to match against, so a PDF artifact alone cannot
+  fail a quote you took from the abstract.
 
-When the committed cache is `abstract_only`, quote the abstract and choose
-spans that are verbatim in both copies; a sentence fragment that verifies
-beats a whole sentence that does not. Full text read from a local PDF is still
-worth having — it belongs in `description:` fields, which are not quote-checked,
-and it tells you what is worth recording. Say in the PR body which claims rest
-on quotes and which on locally-read full text.
+When the committed cache is `abstract_only`, quote the abstract: that is the
+copy CI resolves against, so a span that is verbatim *there* is the one that
+survives. A sentence fragment that verifies beats a whole sentence that does
+not. Full text read from a local PDF is still worth having — it belongs in
+`description:` fields, which are not quote-checked, and it tells you what is
+worth recording. Say in the PR body which claims rest on quotes and which on
+locally-read full text.
 
 When the paper's committed cache entry is abstract-only, a passing
 `verify-snippets` run also writes `verification/PMID_<number>.json` — a
