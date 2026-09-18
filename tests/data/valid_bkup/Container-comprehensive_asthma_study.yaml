@@ -161,18 +161,18 @@ biomarker_measurements:
     quantity_measured:
       value: "185.0"
       unit:
-        id: UO:0000274
-        name: picogram per milligram creatinine
+        id: "UCUM:pg/mg{creatinine}"
+        name: "picogram per milligram creatinine"
     range_low:
       value: "50.0"
       unit:
-        id: UO:0000274
-        name: picogram per milligram creatinine
+        id: "UCUM:pg/mg{creatinine}"
+        name: "picogram per milligram creatinine"
     range_high:
       value: "150.0"
       unit:
-        id: UO:0000274
-        name: picogram per milligram creatinine
+        id: "UCUM:pg/mg{creatinine}"
+        name: "picogram per milligram creatinine"
     biomarker_type: Oxidative stress
     measured_entity:
       id: CHEBI:27894
@@ -220,18 +220,18 @@ biomarker_measurements:
     quantity_measured:
       value: "1850.0"
       unit:
-        id: UO:0000274
-        name: picogram per milliliter
+        id: "UO:0010070"
+        name: "picogram per milliliter"
     range_low:
       value: "200.0"
       unit:
-        id: UO:0000274
-        name: picogram per milliliter
+        id: "UO:0010070"
+        name: "picogram per milliliter"
     range_high:
       value: "1200.0"
       unit:
-        id: UO:0000274
-        name: picogram per milliliter
+        id: "UO:0010070"
+        name: "picogram per milliliter"
     biomarker_type: Pro-inflammatory cytokine
     measured_entity:
       id: PR:000001562
@@ -250,18 +250,18 @@ biomarker_measurements:
     quantity_measured:
       value: "342.0"
       unit:
-        id: UO:0000274
-        name: picogram per milligram creatinine
+        id: "UCUM:pg/mg{creatinine}"
+        name: "picogram per milligram creatinine"
     range_low:
       value: "50.0"
       unit:
-        id: UO:0000274
-        name: picogram per milligram creatinine
+        id: "UCUM:pg/mg{creatinine}"
+        name: "picogram per milligram creatinine"
     range_high:
       value: "150.0"
       unit:
-        id: UO:0000274
-        name: picogram per milligram creatinine
+        id: "UCUM:pg/mg{creatinine}"
+        name: "picogram per milligram creatinine"
     biomarker_type: Oxidative stress
     measured_entity:
       id: CHEBI:27894
