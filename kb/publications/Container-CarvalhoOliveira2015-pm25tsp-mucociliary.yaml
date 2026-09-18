@@ -88,7 +88,7 @@ mcc_assays:
   # TSP from a steel-mill electrostatic precipitator
   - id: "MCC:carvalho-tsp-0.1-120min"
     name: "Mucociliary transport - frog palate exposed to total suspended particles (0.1 mg/mL)"
-    description: "Ex vivo frog palate immersed in amphibian Ringer's solution containing 0.1 mg/mL of total suspended particles (TSP) collected from the electrostatic precipitator of a steel-sintering plant (n=9). Mucociliary transport decreased relative to the amphibian Ringer's control (p<0.001); the treatment-by-time interaction began after 10 min of exposure (time 30) and lasted to 120 minutes (p<0.001). Group means are shown only in Figure 2, so no numeric value is recorded here."
+    description: "Ex vivo frog palate immersed in amphibian Ringer's solution containing 0.1 mg/mL of total suspended particles (TSP) collected from the electrostatic precipitator of a steel-sintering plant (n=9). Mucociliary transport decreased relative to the amphibian Ringer's control (p<0.001); the treatment-by-time interaction appeared from the 30-minute time point onward and lasted to 120 minutes (p<0.001). Group means are shown only in Figure 2, so no numeric value is recorded here. Total suspended particles are annotated with the deliberately general term ENVO:01000060 (particulate environmental material) rather than a size-fraction term, because TSP is not a defined aerodynamic size fraction."
     mucus_composition: "Autologous frog palate mucus, collected from the posterior edge of the palate and stored under mineral oil"
     has_specified_output:
       id: "MCC:carvalho-tsp-0.1-120min-output"
@@ -129,7 +129,7 @@ mcc_assays:
       model_species:
         id: "NCBITaxon:8400"
         name: "Aquarana catesbeiana"
-      donor_info: "Mature Rana catesbeiana frogs weighing approximately 100 g, obtained from a vivarium in Mogi das Cruzes; n=9 palates in the TSP group"
+      donor_info: "Mature Rana catesbeiana frogs weighing approximately 100 g, obtained from a vivarium in the city of Mogi das Cruzes; per-group sizes are given in each assay description"
     follows_protocols:
       - protocol_type: ImagingProtocol
         id: "PROTOCOL:carvalho-mct-001"
@@ -176,6 +176,7 @@ mcc_assays:
       subject_type: CellularSystem
       id: "soma:carvalho-frog-palate-001"
       name: "Ex vivo frog palate preparation"
+      description: "Excised palate of a mature Rana catesbeiana frog (approximately 100 g), rested for two days at 4 degrees Celsius and used on the third day; 38 palates were used across the four experimental groups."
       cell_type:
         id: "CL:0000067"
         name: "ciliated epithelial cell"
@@ -185,7 +186,7 @@ mcc_assays:
       model_species:
         id: "NCBITaxon:8400"
         name: "Aquarana catesbeiana"
-      donor_info: "Mature Rana catesbeiana frogs weighing approximately 100 g; n=9 palates in the PM3.0 group"
+      donor_info: "Mature Rana catesbeiana frogs weighing approximately 100 g, obtained from a vivarium in the city of Mogi das Cruzes; per-group sizes are given in each assay description"
     follows_protocols:
       - protocol_type: ImagingProtocol
         id: "PROTOCOL:carvalho-mct-001"
@@ -205,7 +206,7 @@ mcc_assays:
 ciliary_function_assays:
   - id: "CBF:carvalho-tsp-0.1-120min"
     name: "Ciliary beat frequency - frog palate exposed to total suspended particles (0.1 mg/mL)"
-    description: "Ciliary beat frequency measured by the stroboscopic videoscopic technique at 0, 10, 20, 30, 60 and 120 minutes of immersion. Total suspended particles (0.1 mg/mL, n=9) decreased ciliary beat frequency at all experimental times (p=0.011), whereas neither urban PM 2.5 concentration nor the amphibian Ringer's control changed it. Group means are shown only in Figure 3, so no numeric value is recorded here."
+    description: "Ciliary beat frequency measured by the stroboscopic videoscopic technique at 0, 10, 20, 30, 60 and 120 minutes of immersion. Total suspended particles (0.1 mg/mL, n=9) decreased ciliary beat frequency at all experimental times (p=0.011), whereas neither urban PM 2.5 concentration nor the amphibian Ringer's control changed it. Group means are shown only in Figure 3, so no numeric value is recorded here. Total suspended particles are annotated with the deliberately general term ENVO:01000060 (particulate environmental material) rather than a size-fraction term, because TSP is not a defined aerodynamic size fraction."
     has_specified_output:
       id: "CBF:carvalho-tsp-0.1-120min-output"
       name: "Ciliary beat frequency measurements - TSP 0.1 mg/mL"
@@ -235,6 +236,7 @@ ciliary_function_assays:
       subject_type: CellularSystem
       id: "soma:carvalho-frog-palate-001"
       name: "Ex vivo frog palate preparation"
+      description: "Excised palate of a mature Rana catesbeiana frog (approximately 100 g), rested for two days at 4 degrees Celsius and used on the third day; 38 palates were used across the four experimental groups."
       cell_type:
         id: "CL:0000067"
         name: "ciliated epithelial cell"
@@ -244,7 +246,7 @@ ciliary_function_assays:
       model_species:
         id: "NCBITaxon:8400"
         name: "Aquarana catesbeiana"
-      donor_info: "Mature Rana catesbeiana frogs weighing approximately 100 g; n=9 palates in the TSP group"
+      donor_info: "Mature Rana catesbeiana frogs weighing approximately 100 g, obtained from a vivarium in the city of Mogi das Cruzes; per-group sizes are given in each assay description"
     follows_protocols:
       - protocol_type: ImagingProtocol
         id: "PROTOCOL:carvalho-cbf-001"
@@ -264,7 +266,7 @@ ciliary_function_assays:
 goblet_cell_assays:
   - id: "GCM:carvalho-pm25-mucus-120min"
     name: "Intraepithelial mucus stores - frog palate exposed to urban PM 2.5"
-    description: "AB-PAS point-counting morphometry of the frog palate epithelium after 120 minutes of immersion. Urban PM 2.5, even at the lowest concentration (0.1 mg/mL, n=10), significantly reduced the volume proportion of stored intraepithelial acid, neutral and total mucus compared with the control (p<0.05; Figure 4 legend reports p<0.001 versus the TSP and Ringer's groups), consistent with mucus-secretory epithelial cells extruding their contents. PM 2.5 also decreased epithelial thickness (p=0.01, Figure 5). Total suspended particles behaved like the amphibian Ringer's control for both endpoints. Volume proportions are shown only in Figures 4 and 5, so no numeric value is recorded here."
+    description: "AB-PAS point-counting morphometry of the frog palate epithelium after 120 minutes of immersion. Urban PM 2.5 (0.1 mg/mL, n=10 and 3.0 mg/mL, n=9), even at the lowest concentration, significantly reduced the volume proportion of stored intraepithelial acid, neutral and total mucus, consistent with mucus-secretory epithelial cells extruding their contents. The two p-values reported for this effect belong to different contrasts: the results text gives p<0.05 for PM 2.5 versus the amphibian Ringer's control, while the Figure 4 legend gives p<0.001 for both PM 2.5 concentrations versus the TSP and Ringer's groups. PM 2.5 also decreased epithelial thickness (p=0.01; the Figure 5 legend attributes this decrease to the higher concentration). Total suspended particles behaved like the amphibian Ringer's control for both endpoints. Volume proportions are shown only in Figures 4 and 5, so no numeric value is recorded here."
     has_specified_output:
       id: "GCM:carvalho-pm25-mucus-120min-output"
       name: "Intraepithelial mucus volume proportions - urban PM 2.5"
@@ -309,6 +311,7 @@ goblet_cell_assays:
       subject_type: CellularSystem
       id: "soma:carvalho-frog-palate-001"
       name: "Ex vivo frog palate preparation"
+      description: "Excised palate of a mature Rana catesbeiana frog (approximately 100 g), rested for two days at 4 degrees Celsius and used on the third day; 38 palates were used across the four experimental groups."
       cell_type:
         id: "CL:0000067"
         name: "ciliated epithelial cell"
@@ -318,7 +321,7 @@ goblet_cell_assays:
       model_species:
         id: "NCBITaxon:8400"
         name: "Aquarana catesbeiana"
-      donor_info: "Mature Rana catesbeiana frogs weighing approximately 100 g; n=10 palates in the PM0.1 group and n=9 in the PM3.0 group"
+      donor_info: "Mature Rana catesbeiana frogs weighing approximately 100 g, obtained from a vivarium in the city of Mogi das Cruzes; per-group sizes are given in each assay description"
     follows_protocols:
       - protocol_type: StainingProtocol
         id: "PROTOCOL:carvalho-abpas-001"
