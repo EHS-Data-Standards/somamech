@@ -1,0 +1,535 @@
+# =============================================================================
+# Decrue et al. (2022) - Increased Impact of Air Pollution on Lung Function in
+# Preterm versus Term Infants: The BILD Study
+# =============================================================================
+#
+# Source: Am J Respir Crit Care Med. 2022;205(1):99-107 (PMID:34587471)
+# DOI: 10.1164/rccm.202102-0272OC
+#
+# Study design:
+#   - Prospective unselected birth cohort (BILD, Basel-Bern Infant Lung
+#     Development), Switzerland, recruitment 1999-2017
+#   - 771 infants in the main analysis: 517 term and 254 preterm, the preterm
+#     group split into extremely (<28 wk GA, n = 65), very early (29-31 wk GA,
+#     n = 90) and moderate to late (32-36 wk GA, n = 99) preterm infants
+#   - Individual prenatal exposure to PM10 and NO2 estimated with time-space
+#     hybrid land-use regression models; the second trimester of pregnancy was
+#     the a priori main exposure window
+#   - Tidal breathing flow volume loops (minute ventilation VE, VT, tPTEF/tE)
+#     and fractional exhaled nitric oxide (FeNO) measured at 44 weeks
+#     postconceptional age with an Exhalyzer D per ERS/ATS guidelines
+#   - Multilevel mixed-effects linear regression adjusted for sex, weight,
+#     season and postconceptional age at measurement, gestational age at
+#     birth, maternal smoking, maternal asthma, days of supplementary oxygen
+#     and days of mechanical ventilation; FeNO models additionally adjusted
+#     for VE. Benjamini-Hochberg adjustment reported alongside raw P values.
+#
+# Key findings captured here:
+#   - Minute ventilation (VE, a measure of ventilatory need) rose with
+#     second-trimester PM10 in every group, most steeply in moderate to late
+#     preterm infants: +75.3 ml/min (term), +88.6 (all preterm), +184.9
+#     (moderate to late preterm) per 10 ug/m3 PM10
+#   - Prematurity x PM10 interaction for VE: P = 0.040, padj = 0.09
+#   - FeNO rose with second-trimester PM10 in preterm infants (+2.8 ppb) and
+#     moderate to late preterm infants (+3.4 ppb) but not in term infants;
+#     the prematurity x PM10 interaction for FeNO stayed significant after
+#     multiple-comparison adjustment (P = 0.006, padj = 0.036)
+#   - No associations of second-trimester NO2 with lung function or FeNO
+#
+# Curation notes:
+#   - The schema's LungFunctionOutput has no slot for minute ventilation or
+#     tidal volume, so the VE effect estimates are recorded in the assay
+#     descriptions and carried by exact quotes rather than in a typed
+#     measurement slot. FeNO does have a slot and is used for the PM10-FeNO
+#     effect estimates (ppb per 10 ug/m3 PM10), the way Cuesta-Mosquera 2025
+#     records a three-year FVC change in decline_rate.
+#   - Increasing VE is reported by the authors as *impaired* lung function
+#     (increased ventilatory need), so these assays inform on the adverse
+#     outcome "Decreased lung function".
+#   - exposure_concentration holds each group's mean second-trimester PM10
+#     (Table 3), not the 10 ug/m3 contrast used for the effect estimates;
+#     the contrast is stated in the exposure name and assay description.
+#
+# =============================================================================
+
+source_publication:
+  reference: "PMID:34587471"
+  reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+  doi: "10.1164/rccm.202102-0272OC"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:decrue-tbfvl-001"
+    name: "Tidal breathing flow volume loop measurement at 44 weeks postconceptional age"
+    description: "Pulmonary function testing performed at 44 weeks' postconceptional age with an Exhalyzer D (EcoMedics) following European Respiratory Society/American Thoracic Society guidelines. Minute ventilation (VE = respiratory rate x VT) was recorded, and the ratio of time to peak tidal expiratory flow to expiratory time (tPTEF/tE) was used to describe tidal breathing flow volume loop shape. Measurements passing ERS/ATS quality control were retained (775 of 890 infants)."
+    equipment_required:
+      - "Exhalyzer D (EcoMedics)"
+    quality_control_criteria: "Lung function measurements had to pass quality control according to ERS/ATS guidelines; outliers in the moderate to late preterm group with severe asphyxia were excluded."
+    protocol_type: SpirometryProtocol
+    spirometry_standard: "ERS/ATS"
+
+  - id: "PROTOCOL:decrue-feno-001"
+    name: "Fractional exhaled nitric oxide measurement in infants"
+    description: "FeNO measured alongside tidal breathing lung function at 44 weeks' postconceptional age as a marker of airway inflammatory response and oxidative stress. FeNO values were missing for 71 children (26 term, 45 preterm infants). Regression models for FeNO were additionally adjusted for minute ventilation."
+    protocol_type: Protocol
+
+  - id: "PROTOCOL:decrue-airpollution-001"
+    name: "Individual air pollution exposure modelling for the BILD cohort"
+    description: "Individual mean exposure to NO2 and PM10 estimated with time-space hybrid models. Background air pollution was measured at the Payerne monitoring station; the NO2 model integrated land use, population density, traffic, dispersion models, meteorological data and Payerne air quality with 28,849 biweekly and monthly passive sampler measurements collected over more than 10 years at 146 locations for external validation. Mean exposure for the second trimester of pregnancy was the a priori main exposure window; first trimester, third trimester and postnatal windows were used for sensitivity analysis."
+    protocol_type: Protocol
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS
+# =============================================================================
+#
+# Two outcomes per gestational-age group:
+#   - ventilatory need (minute ventilation VE)  -> Decreased lung function
+#   - fractional exhaled nitric oxide (FeNO)    -> Airway inflammation
+#
+# =============================================================================
+
+lung_function_assays:
+
+  # ---------------------------------------------------------------------------
+  # Ventilatory need (minute ventilation) versus second-trimester PM10
+  # ---------------------------------------------------------------------------
+
+  - id: "LF:decrue-term-pm10-ventilation"
+    name: "Minute ventilation versus second-trimester PM10 in term infants"
+    description: "Association of second-trimester PM10 exposure with minute ventilation (VE) at 44 weeks' postconceptional age in 517 term infants. VE increased by 75.3 ml/min (95% CI 19.7 to 130.8) per 10 ug/m3 increase in PM10 (P = 0.008, Benjamini-Hochberg adjusted P = 0.074). Increasing VE reflects increased ventilatory need and is interpreted by the authors as impaired lung function. Second-trimester NO2 showed no association in this group (-2.5 ml/min, 95% CI -43.8 to 38.9, P = 0.907). No structured slot exists for minute ventilation, so the effect estimate is recorded here and in the evidence quotes."
+    reference_dataset: "Within-study comparison against the preterm and moderate to late preterm strata of the same cohort"
+    has_specified_output:
+      id: "LF:decrue-term-pm10-ventilation-output"
+      name: "Minute ventilation response to second-trimester PM10 in term infants"
+    evidence:
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Within the term group, _VE increased by 75.3 (19.7– 130.8) ml/min"
+        explanation: "Gives the 75.3 ml/min minute-ventilation coefficient and its 95% confidence interval for term infants recorded in this assay."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "75.3 19.7 to 130.8 0.008 0.074 88.6 18.6 to 158.7 0.013 0.090 184.9 79.1 to 290.7 0.001 0.139"
+        explanation: "Table 4 row for VE and second-trimester PM10: the first four numbers are the term-group coefficient, 95% CI, P value (0.008) and adjusted P value (0.074) recorded in this assay."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "_VE has been shown to be a parameter of ventilatory need (33), with preterm infants and infants with wheeze increasing their VT and lowering their respiratory rate to maintain or elevate_VE."
+        explanation: "Establishes that the minute ventilation measured here is a marker of ventilatory need, which is why a rise is treated as impaired lung function."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM10 second trimester 19.9 (6.1 – 44.7) 19.9 (7.5 – 37.7) 20.0 (6.1 – 44.7) 18.5 (6.3 – 38.3)"
+        explanation: "Table 3 row giving the mean (range) second-trimester PM10 for the overall, term (19.9 ug/m3), preterm and moderate to late preterm groups; the term value is this assay's exposure concentration."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The relatively low air pollution levels were potentially the reason why no associations of prenatal NO2 exposure with infant lung function was seen in the current study"
+        explanation: "Supports the null second-trimester NO2 finding noted in this assay's description."
+    has_exposure_condition:
+      - id: "EXPOSURE:decrue-pm10-t2-term"
+        name: "Modelled maternal second-trimester PM10 exposure, term infants (mean 19.9 ug/m3; effect estimates are per 10 ug/m3 increase)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "19.9"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:decrue-term"
+      name: "Term-born infants of the BILD cohort at 44 weeks postconceptional age"
+      description: "Unselected neonates born at 37 weeks' gestational age or later, recruited in Bern (since 1999) and Basel (since 2012), Switzerland, and tested at 44 weeks' postconceptional age."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "517 term infants (67% of the 771 analysed), mean gestational age at birth 39.8 wk, 52% male, mean postconceptional age at lung function measurement 44.8 wk, 6% with maternal smoking during pregnancy, 13% with maternal asthma, no oxygen supplementation or mechanical ventilation."
+      clinical_context: "Prospective unselected birth cohort, term reference group"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:decrue-tbfvl-001"
+        name: "Tidal breathing flow volume loop measurement at 44 weeks postconceptional age"
+        spirometry_standard: "ERS/ATS"
+      - protocol_type: Protocol
+        id: "PROTOCOL:decrue-airpollution-001"
+        name: "Individual air pollution exposure modelling for the BILD cohort"
+
+  - id: "LF:decrue-preterm-pm10-ventilation"
+    name: "Minute ventilation versus second-trimester PM10 in preterm infants"
+    description: "Association of second-trimester PM10 exposure with minute ventilation (VE) at 44 weeks' postconceptional age in all 254 preterm infants (gestational age at birth below 37 weeks). VE increased by 88.6 ml/min (95% CI 18.6 to 158.7) per 10 ug/m3 increase in PM10 (P = 0.013, adjusted P = 0.090). Second-trimester NO2 showed no association (-12.7 ml/min, 95% CI -71.5 to 46.0, P = 0.671). No structured slot exists for minute ventilation, so the effect estimate is recorded here and in the evidence quotes."
+    reference_dataset: "Within-study comparison against the term stratum of the same cohort"
+    has_specified_output:
+      id: "LF:decrue-preterm-pm10-ventilation-output"
+      name: "Minute ventilation response to second-trimester PM10 in preterm infants"
+    evidence:
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "whereas _VE increased by 88.6 (18.6– 158.7) ml/min in all preterm infants"
+        explanation: "Gives the 88.6 ml/min minute-ventilation coefficient and its 95% confidence interval for all preterm infants recorded in this assay."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "75.3 19.7 to 130.8 0.008 0.074 88.6 18.6 to 158.7 0.013 0.090 184.9 79.1 to 290.7 0.001 0.139"
+        explanation: "Table 4 row for VE and second-trimester PM10: the middle four numbers are the preterm-group coefficient, 95% CI, P value (0.013) and adjusted P value (0.090) recorded in this assay."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We showed signiﬁcantly impaired lung function values with increasing air pollution exposure during the second trimester of pregnancy in term and preterm infants."
+        explanation: "States the authors' interpretation that the rise in ventilatory need with second-trimester air pollution represents impaired lung function in preterm as well as term infants."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM10 second trimester 19.9 (6.1 – 44.7) 19.9 (7.5 – 37.7) 20.0 (6.1 – 44.7) 18.5 (6.3 – 38.3)"
+        explanation: "Table 3 row giving the mean (range) second-trimester PM10 per group; the preterm value of 20.0 ug/m3 is this assay's exposure concentration."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Of the 771 infants, 517 (67%) were term and 254 (33%) were preterm infants. The preterm population consisted of 65 (26%) extremely, 90 (35%) very early, and 99 (39%) moderate to late preterm infants."
+        explanation: "Gives the 254 preterm infants analysed in this assay and the composition of that group."
+    has_exposure_condition:
+      - id: "EXPOSURE:decrue-pm10-t2-preterm"
+        name: "Modelled maternal second-trimester PM10 exposure, preterm infants (mean 20.0 ug/m3; effect estimates are per 10 ug/m3 increase)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "20.0"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:decrue-preterm"
+      name: "Preterm-born infants of the BILD cohort at 44 weeks postconceptional age"
+      description: "Unselected neonates born before 37 weeks' gestational age, recruited in Bern (since 1999) and Basel (since 2012), Switzerland, and tested at 44 weeks' postconceptional age."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "254 preterm infants (33% of the 771 analysed): 65 extremely (<28 wk GA), 90 very early (29-31 wk GA) and 99 moderate to late (32-36 wk GA) preterm. Mean gestational age at birth 30.6 wk, 57% male, mean 30.9 days of supplementary oxygen and 18.0 days of mechanical ventilation, 10% with maternal smoking during pregnancy."
+      clinical_context: "Prospective unselected birth cohort, preterm stratum"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:decrue-tbfvl-001"
+        name: "Tidal breathing flow volume loop measurement at 44 weeks postconceptional age"
+        spirometry_standard: "ERS/ATS"
+      - protocol_type: Protocol
+        id: "PROTOCOL:decrue-airpollution-001"
+        name: "Individual air pollution exposure modelling for the BILD cohort"
+
+  - id: "LF:decrue-modlate-preterm-pm10-ventilation"
+    name: "Minute ventilation versus second-trimester PM10 in moderate to late preterm infants"
+    description: "Association of second-trimester PM10 exposure with minute ventilation (VE) at 44 weeks' postconceptional age in the 99 moderate to late preterm infants (32-36 weeks gestational age). VE increased by 184.9 ml/min (95% CI 79.1 to 290.7) per 10 ug/m3 increase in PM10 (P = 0.001, adjusted P = 0.139 across 176 exploratory tests). This is the steepest association in the study. The prematurity x PM10 interaction for VE between this group and term infants was significant before multiple-comparison adjustment (P = 0.040, padj = 0.09). No association was seen in the extremely (<28 wk GA) or very early (29-31 wk GA) preterm subgroups. No structured slot exists for minute ventilation, so the effect estimate is recorded here and in the evidence quotes."
+    reference_dataset: "Within-study comparison against the term stratum of the same cohort"
+    has_specified_output:
+      id: "LF:decrue-modlate-preterm-pm10-ventilation-output"
+      name: "Minute ventilation response to second-trimester PM10 in moderate to late preterm infants"
+    evidence:
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "and by 184.9 (79.1– 290.7) ml/min within the moderate to late preterm infants (Figure 2)."
+        explanation: "Gives the 184.9 ml/min minute-ventilation coefficient and its 95% confidence interval for moderate to late preterm infants recorded in this assay."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "75.3 19.7 to 130.8 0.008 0.074 88.6 18.6 to 158.7 0.013 0.090 184.9 79.1 to 290.7 0.001 0.139"
+        explanation: "Table 4 row for VE and second-trimester PM10: the last four numbers are the moderate to late preterm coefficient, 95% CI, P value (0.001) and adjusted P value (0.139) recorded in this assay."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Interactions of prematurity and PM10 during the second trimester of pregnancy for_VE within the term and moderate to late preterm infants were signiﬁcant (P = 0.040, padj= 0.09)."
+        explanation: "Gives the prematurity x PM10 interaction P value of 0.040 (padj = 0.09) for minute ventilation quoted in this assay's description."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "However, no association of air pollutants on lung function was seen in the subgroup of extremely (,28 wk GA) and very early (29– 31 wk GA) preterm infants"
+        explanation: "Supports the statement that the extremely and very early preterm subgroups showed no association, so the effect was confined to the moderate to late preterm stratum recorded here."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM10 second trimester 19.9 (6.1 – 44.7) 19.9 (7.5 – 37.7) 20.0 (6.1 – 44.7) 18.5 (6.3 – 38.3)"
+        explanation: "Table 3 row giving the mean (range) second-trimester PM10 per group; the moderate to late preterm value of 18.5 ug/m3 is this assay's exposure concentration."
+    has_exposure_condition:
+      - id: "EXPOSURE:decrue-pm10-t2-modlate-preterm"
+        name: "Modelled maternal second-trimester PM10 exposure, moderate to late preterm infants (mean 18.5 ug/m3; effect estimates are per 10 ug/m3 increase)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "18.5"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:decrue-modlate-preterm"
+      name: "Moderate to late preterm infants (32-36 weeks gestational age) of the BILD cohort"
+      description: "The epidemiologically largest preterm stratum of the BILD cohort, born between 32 and 36 weeks' gestational age and tested at 44 weeks' postconceptional age."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "99 moderate to late preterm infants (39% of the preterm group), mean gestational age at birth 33.9 wk, 57% male, mean postconceptional age at measurement 44.5 wk, mean 2.6 days of supplementary oxygen and 1.5 days of mechanical ventilation."
+      clinical_context: "Prospective unselected birth cohort, moderate to late preterm stratum"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:decrue-tbfvl-001"
+        name: "Tidal breathing flow volume loop measurement at 44 weeks postconceptional age"
+        spirometry_standard: "ERS/ATS"
+      - protocol_type: Protocol
+        id: "PROTOCOL:decrue-airpollution-001"
+        name: "Individual air pollution exposure modelling for the BILD cohort"
+
+  # ---------------------------------------------------------------------------
+  # Fractional exhaled nitric oxide versus second-trimester PM10
+  # ---------------------------------------------------------------------------
+
+  - id: "LF:decrue-term-pm10-feno"
+    name: "Exhaled nitric oxide versus second-trimester PM10 in term infants"
+    description: "Association of second-trimester PM10 exposure with fractional exhaled nitric oxide (FeNO), a marker of airway inflammatory and oxidative stress response, at 44 weeks' postconceptional age in term infants. No clear association was found in this group (P = 0.601, adjusted P = 0.679), in contrast to the preterm strata. The point estimate is negative and its confidence interval spans zero; no value is recorded in the feno slot because the paper reports no association here. FeNO models were additionally adjusted for minute ventilation."
+    reference_dataset: "Within-study comparison against the preterm and moderate to late preterm strata of the same cohort"
+    has_specified_output:
+      id: "LF:decrue-term-pm10-feno-output"
+      name: "Absence of a FeNO response to second-trimester PM10 in term infants"
+    evidence:
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "However, in term infants, no clear associations between prenatal exposure to air pollution and FENO were found."
+        explanation: "States directly that term infants showed no clear FeNO association, which is what this assay records."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Furthermore, FENO was measured as a marker for airway inﬂammatory response and oxidative stress (18)."
+        explanation: "Establishes that FeNO is measured here as a marker of airway inflammatory response, the key event this assay informs on."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Analyses for F ENO were additionally adjusted for _VE (ml/min)."
+        explanation: "Documents the extra adjustment for minute ventilation applied to the FeNO models described in this assay."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM10 second trimester 19.9 (6.1 – 44.7) 19.9 (7.5 – 37.7) 20.0 (6.1 – 44.7) 18.5 (6.3 – 38.3)"
+        explanation: "Table 3 row giving the mean (range) second-trimester PM10 per group; the term value of 19.9 ug/m3 is this assay's exposure concentration."
+    has_exposure_condition:
+      - id: "EXPOSURE:decrue-pm10-t2-term"
+        name: "Modelled maternal second-trimester PM10 exposure, term infants (mean 19.9 ug/m3; effect estimates are per 10 ug/m3 increase)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "19.9"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:decrue-term"
+      name: "Term-born infants of the BILD cohort at 44 weeks postconceptional age"
+      description: "Unselected neonates born at 37 weeks' gestational age or later, recruited in Bern (since 1999) and Basel (since 2012), Switzerland, and tested at 44 weeks' postconceptional age."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "517 term infants, of whom 26 had no FeNO measurement. Mean gestational age at birth 39.8 wk, 52% male, mean FeNO 13.7 ppb at 44 weeks postconceptional age."
+      clinical_context: "Prospective unselected birth cohort, term reference group"
+    follows_protocols:
+      - protocol_type: Protocol
+        id: "PROTOCOL:decrue-feno-001"
+        name: "Fractional exhaled nitric oxide measurement in infants"
+      - protocol_type: Protocol
+        id: "PROTOCOL:decrue-airpollution-001"
+        name: "Individual air pollution exposure modelling for the BILD cohort"
+
+  - id: "LF:decrue-preterm-pm10-feno"
+    name: "Exhaled nitric oxide versus second-trimester PM10 in preterm infants"
+    description: "Association of second-trimester PM10 exposure with fractional exhaled nitric oxide at 44 weeks' postconceptional age in preterm infants. FeNO increased significantly by 2.8 ppb (95% CI 0.8 to 4.8) per 10 ug/m3 increase in PM10 (P = 0.005, adjusted P = 0.063). The value in the feno slot is this effect estimate, not an absolute FeNO level; the observed group mean FeNO was 15.0 ppb. Second-trimester NO2 gave 1.5 ppb (95% CI -0.2 to 3.1, P = 0.075)."
+    reference_dataset: "Within-study comparison against the term stratum of the same cohort"
+    has_specified_output:
+      id: "LF:decrue-preterm-pm10-feno-output"
+      name: "FeNO response to second-trimester PM10 in preterm infants"
+      feno:
+        value: "2.8"
+        unit:
+          id: "UO:0000170"
+          name: "parts per billion"
+    evidence:
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FENO increased signiﬁcantly by 2.8 (0.8 to 4.8) ppb in the preterm group and by 3.4 (20.1 to 6.8) ppb per 10-μg/m3 increase in PM10 in the moderate to late preterm infants during the second trimester."
+        explanation: "Gives the 2.8 ppb FeNO effect estimate and its 95% confidence interval for the preterm group recorded in this assay's feno slot."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "2.8 0.8 to 4.8 0.005 0.063 3.4 20.1 to 6.8 0.056 0.229"
+        explanation: "Table 4 row for FeNO and second-trimester PM10: the first four numbers are the preterm coefficient, 95% CI, P value (0.005) and adjusted P value (0.063) recorded in this assay."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Furthermore, FENO was measured as a marker for airway inﬂammatory response and oxidative stress (18)."
+        explanation: "Establishes that the FeNO rise recorded here is read as an airway inflammatory and oxidative stress response, the key event this assay informs on."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM10 second trimester 19.9 (6.1 – 44.7) 19.9 (7.5 – 37.7) 20.0 (6.1 – 44.7) 18.5 (6.3 – 38.3)"
+        explanation: "Table 3 row giving the mean (range) second-trimester PM10 per group; the preterm value of 20.0 ug/m3 is this assay's exposure concentration."
+    has_exposure_condition:
+      - id: "EXPOSURE:decrue-pm10-t2-preterm"
+        name: "Modelled maternal second-trimester PM10 exposure, preterm infants (mean 20.0 ug/m3; effect estimates are per 10 ug/m3 increase)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "20.0"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:decrue-preterm"
+      name: "Preterm-born infants of the BILD cohort at 44 weeks postconceptional age"
+      description: "Unselected neonates born before 37 weeks' gestational age, recruited in Bern (since 1999) and Basel (since 2012), Switzerland, and tested at 44 weeks' postconceptional age."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "254 preterm infants, of whom 45 had no FeNO measurement. Mean gestational age at birth 30.6 wk, mean FeNO 15.0 ppb at 44 weeks postconceptional age. Preterm infants are described by the authors as having an impaired capacity to deal with oxidative stress shortly after birth."
+      clinical_context: "Prospective unselected birth cohort, preterm stratum"
+    follows_protocols:
+      - protocol_type: Protocol
+        id: "PROTOCOL:decrue-feno-001"
+        name: "Fractional exhaled nitric oxide measurement in infants"
+      - protocol_type: Protocol
+        id: "PROTOCOL:decrue-airpollution-001"
+        name: "Individual air pollution exposure modelling for the BILD cohort"
+
+  - id: "LF:decrue-modlate-preterm-pm10-feno"
+    name: "Exhaled nitric oxide versus second-trimester PM10 in moderate to late preterm infants"
+    description: "Association of second-trimester PM10 exposure with fractional exhaled nitric oxide at 44 weeks' postconceptional age in the 99 moderate to late preterm infants (32-36 weeks gestational age). FeNO increased by 3.4 ppb (95% CI -0.1 to 6.8) per 10 ug/m3 increase in PM10 (P = 0.056, adjusted P = 0.229). The prematurity x PM10 interaction for FeNO between this group and term infants was significant and stayed significant after Benjamini-Hochberg adjustment for the six main-hypothesis tests (P = 0.006, padj = 0.036) - the only main finding that survived adjustment. The value in the feno slot is this effect estimate, not an absolute FeNO level; the observed group mean FeNO was 17.6 ppb."
+    reference_dataset: "Within-study comparison against the term stratum of the same cohort"
+    has_specified_output:
+      id: "LF:decrue-modlate-preterm-pm10-feno-output"
+      name: "FeNO response to second-trimester PM10 in moderate to late preterm infants"
+      feno:
+        value: "3.4"
+        unit:
+          id: "UO:0000170"
+          name: "parts per billion"
+    evidence:
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FENO increased signiﬁcantly by 2.8 (0.8 to 4.8) ppb in the preterm group and by 3.4 (20.1 to 6.8) ppb per 10-μg/m3 increase in PM10 in the moderate to late preterm infants during the second trimester."
+        explanation: "Gives the 3.4 ppb FeNO effect estimate for the moderate to late preterm group recorded in this assay's feno slot. The PDF text renders the lower confidence bound -0.1 as '20.1'; the published abstract gives it as -0.1."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "2.8 0.8 to 4.8 0.005 0.063 3.4 20.1 to 6.8 0.056 0.229"
+        explanation: "Table 4 row for FeNO and second-trimester PM10: the last four numbers are the moderate to late preterm coefficient, 95% CI, P value (0.056) and adjusted P value (0.229) recorded in this assay."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "infants, and the interaction with prematurity was significant (pprematurity 3 PM10 interaction = 0.006, padj = 0.036)."
+        explanation: "Gives the prematurity x PM10 interaction P values for FeNO (0.006, adjusted 0.036) quoted in this assay's description."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Theseﬁndings reﬂect a different inﬂammatory context or oxidative stress response to pollutants in preterm"
+        explanation: "States the authors' interpretation that the divergent FeNO response reflects a different inflammatory or oxidative stress context in preterm infants, linking this assay to the airway inflammation key event."
+      - reference: "PMID:34587471"
+        reference_title: "Increased Impact of Air Pollution on Lung Function in Preterm versus Term Infants: The BILD Study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM10 second trimester 19.9 (6.1 – 44.7) 19.9 (7.5 – 37.7) 20.0 (6.1 – 44.7) 18.5 (6.3 – 38.3)"
+        explanation: "Table 3 row giving the mean (range) second-trimester PM10 per group; the moderate to late preterm value of 18.5 ug/m3 is this assay's exposure concentration."
+    has_exposure_condition:
+      - id: "EXPOSURE:decrue-pm10-t2-modlate-preterm"
+        name: "Modelled maternal second-trimester PM10 exposure, moderate to late preterm infants (mean 18.5 ug/m3; effect estimates are per 10 ug/m3 increase)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "18.5"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:decrue-modlate-preterm"
+      name: "Moderate to late preterm infants (32-36 weeks gestational age) of the BILD cohort"
+      description: "The epidemiologically largest preterm stratum of the BILD cohort, born between 32 and 36 weeks' gestational age and tested at 44 weeks' postconceptional age."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "99 moderate to late preterm infants, mean gestational age at birth 33.9 wk, mean FeNO 17.6 ppb at 44 weeks postconceptional age - the highest of the four strata."
+      clinical_context: "Prospective unselected birth cohort, moderate to late preterm stratum"
+    follows_protocols:
+      - protocol_type: Protocol
+        id: "PROTOCOL:decrue-feno-001"
+        name: "Fractional exhaled nitric oxide measurement in infants"
+      - protocol_type: Protocol
+        id: "PROTOCOL:decrue-airpollution-001"
+        name: "Individual air pollution exposure modelling for the BILD cohort"
