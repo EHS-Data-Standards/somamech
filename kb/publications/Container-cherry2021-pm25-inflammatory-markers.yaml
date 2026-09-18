@@ -1,0 +1,771 @@
+# =============================================================================
+# Cherry et al. (2021) - Are Inflammatory Markers an Indicator of Exposure or
+# Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a
+# Cohort in Alberta, Canada
+# =============================================================================
+#
+# Source: Ann Work Expo Health. 2021;65(6):635-648
+# DOI: 10.1093/annweh/wxaa142
+# PMID: 33620067
+#
+# Study design:
+#   - Human occupational cohort (in vivo): non-smoking first responders
+#     deployed to the May 2016 Fort McMurray wildfire, Alberta, Canada
+#   - Service A (near Edmonton, short deployments from day 2): blood + spirometry
+#     in May 2016 (early, median 15.5 days from fire start) and again in
+#     August/September 2016 (late, median 107 days); N = 68 paired, 84 late
+#   - Service B (Fort McMurray, long repeated deployments): late samples only,
+#     median 122 days from fire start; N = 76
+#   - Exposure: estimated cumulative PM2.5 from wildfire smoke (log scale),
+#     self-rated physical stressors, time since last deployment
+#   - Plasma assayed for 42 inflammatory markers (cytokines, chemokines,
+#     growth factors) by bead-based Luminex multiplex array (pg/ml)
+#   - Principal component scores (C1E/C2E early, C1L/C2L late) reduced the
+#     42 markers to two components per time point
+#   - Respiratory outcomes: spirometry (FEV1/FVC) at each blood draw, visual
+#     analogue symptom scores, ECRHS questionnaire ~30 months later, and
+#     clinical assessment (methacholine challenge, chest CT) in 2019-2020
+#
+# Key findings recorded here:
+#   - Marker concentrations fell from early to late samples for all but 3 of
+#     the 42 markers, significantly for 25
+#   - C2L (late second component) rose with cumulative PM2.5 exposure
+#     (beta = 0.19, 95% CI 0.09-0.30) and dehydration, and fell with time
+#     since the last fire
+#   - C2E related to a lower FEV1/FVC (beta = -1.63, 95% CI -3.11 to -0.14,
+#     P = 0.032)
+#   - Group mean FEV1/FVC did not differ between time points or services, but
+#     was lower after the fire than in pre-fire records (N = 29-34 per group)
+#
+# Notes on schema mapping:
+#   - Plasma inflammatory-marker measurements are recorded under
+#     balf_sputum_assays, the schema's in vivo inflammatory-mediator assay
+#     class; study_subject.sample_type is "blood" to record that the matrix
+#     was plasma rather than BALF or sputum.
+#   - The paper reports the 42 individual marker concentrations only in
+#     Appendix 5 tables (not in the article text), so no per-cytokine
+#     concentrations are extracted here; component scores, marker counts and
+#     the one marker mean stated in the text are recorded instead.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:33620067"
+  reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+  doi: "10.1093/annweh/wxaa142"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:cherry-luminex-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Multiplex bead-based assay of 42 plasma inflammatory markers"
+    description: "Blood drawn by a phlebotomist during a normal shift, spun down for 15 min at 200 g, plasma pipetted into three 0.5 ml aliquots and stored at -80C before transfer on dry ice to the analytic laboratory. The array estimated the concentration (pg/ml) of 42 cytokines, chemokines and growth factors. Samples below the detection limit were replaced by beta substitution; the mean of the two aliquots was used and log-transformed."
+    detection_method: "bead-based Luminex multiplex array"
+    platform: "Luminex 100 system (Luminex, Austin, TX, USA), run by Eve Technologies Corp. (Calgary, Alberta, Canada)"
+    equipment_required:
+      - "Refrigerated centrifuge"
+      - "-80C freezer"
+      - "Luminex 100 system"
+
+  - id: "PROTOCOL:cherry-spirometry-001"
+    protocol_type: SpirometryProtocol
+    name: "Spirometry following ATS/ERS guidelines"
+    description: "Lung function assessed in a mobile clinical laboratory parked adjacent to the blood draw location, by a study physician, using a minimum of three and a maximum of eight manoeuvres. FEV1, FVC and their ratio recorded at the time of each blood draw."
+    spirometry_standard: "ATS/ERS"
+    equipment_required:
+      - "Spirometer in mobile clinical laboratory"
+
+  - id: "PROTOCOL:cherry-exposure-estimation-001"
+    protocol_type: Protocol
+    name: "Estimation of cumulative PM2.5 exposure and physical stressors"
+    description: "Cumulative PM2.5 exposure estimated by combining firefighter-reported dates, hours and locations of firefighting with Alberta Environment particulate estimates from monitoring stations and satellite imagery; the key (first) rotation was weighted for task and for respiratory protective equipment. Physical stressors (dehydration, heat stress, noise, exhaustion, musculoskeletal strain) were self-rated on 0-100 visual analogue scales."
+
+# =============================================================================
+# PLASMA INFLAMMATORY MARKER ASSAYS
+# (recorded under the schema's in vivo inflammatory-mediator assay class)
+# =============================================================================
+
+balf_sputum_assays:
+  # ---------------------------------------------------------------------------
+  # Early (May 2016) plasma samples, Service A
+  # ---------------------------------------------------------------------------
+  - id: "BALF:cherry-plasma-early-serviceA"
+    name: "Plasma inflammatory markers - Service A early sample (May 2016)"
+    description: "Plasma from 68 non-smoking Service A first responders, drawn 14-18 days (median 15.5 days) from the start of the Fort McMurray fire. Forty-two cytokines, chemokines and growth factors measured by multiplex array. Four principal components were extracted from the 42 log-transformed markers, accounting for 48.7, 11.6, 5.5 and 3.9% of the variance; the first two (C1E, C2E) were retained."
+    evidence:
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The first blood samples were drawn 14-18 days (median 15.5 days) from the start of the fire and the second 106-137 days (median 107 days) from the start"
+        explanation: "Fixes the timing of the early Service A plasma sample recorded by this assay."
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The array estimated the concentration (pg/ml) of 42 cytokines, chemokines, and growth factors"
+        explanation: "States what the multiplex array measured in each plasma sample."
+    has_specified_output:
+      id: "BALF:cherry-plasma-early-serviceA-output"
+      name: "Early plasma inflammatory marker profile (Service A)"
+      description: "42 marker concentrations (pg/ml), log-transformed and reduced to principal components. The first four components accounted for 48.7, 11.6, 5.5 and 3.9% of the variance; individual marker concentrations are reported only in Appendix 5 of the paper and are not extracted here."
+      evidence:
+        - reference: "PMID:33620067"
+          reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+          supports: SUPPORT
+          evidence_source: HUMAN_CLINICAL
+          snippet: "from the 42 baseline marker concentrations, ... 48.7, 11.6, 5.5, and 3.9% of the variance"
+          explanation: "Gives the share of variance taken by each of the first four components extracted from the 42 early marker concentrations (the source sentence is broken by a hyphenated line break, so the quote is given in two parts)."
+    informs_on_key_event:
+      id: "KE:ke-systemic-inflammation"
+      name: "Systemic inflammation"
+      biological_action: increased
+      level_of_biological_organization: organism
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cherry-serviceA-paired"
+      name: "Service A non-smoking first responders with paired blood samples"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "37.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      subject_characteristics: "68 non-smoking first responders from fire Service A (stationed near Edmonton) who gave blood on two occasions. Service A group means: age 37.6 years (SD 9.3), BMI 28.8 (SD 3.7), 97.6% male (n = 82 of 84). Age given here is the Service A group mean, not an individual age. Current smokers were excluded from the analysis."
+      sample_type: blood
+      collection_site: "fire service premises, Alberta, Canada"
+      sample_collection_method: "venous blood draw by phlebotomist; plasma separated by refrigerated centrifugation and stored at -80C"
+      clinical_context: "Occupational cohort followed after deployment to the May 2016 Fort McMurray wildfire"
+    has_exposure_condition:
+      - id: "EXPOSURE:cherry-pm25-serviceA-early"
+        name: "Wildfire smoke PM2.5, Service A deployment; log total estimated cumulative exposure mean 9.96 (SD 1.22), sampled a median of 15.5 days from the start of the fire"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        timing_post_exposure:
+          value: "15.5"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    follows_protocols:
+      - id: "PROTOCOL:cherry-luminex-001"
+        name: "Multiplex bead-based assay of 42 plasma inflammatory markers"
+      - id: "PROTOCOL:cherry-exposure-estimation-001"
+        name: "Estimation of cumulative PM2.5 exposure and physical stressors"
+
+  # ---------------------------------------------------------------------------
+  # Late (August/September 2016) plasma samples, Service A - paired comparison
+  # ---------------------------------------------------------------------------
+  - id: "BALF:cherry-plasma-late-serviceA"
+    name: "Plasma inflammatory markers - Service A late sample (August/September 2016)"
+    description: "Second plasma sample from the same 68 Service A first responders, drawn 106-137 days (median 107 days) from the start of the fire, a median of 92 days after the first sample. Marker concentrations fell from early to late for all but 3 of the 42 markers, significantly (P < 0.05) for 25; none was significantly lower at baseline."
+    evidence:
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In the 68 with two samples, marker concentrations decreased from early to late samples for all but 3 of the 42 markers, significantly so (P < 0.05) for 25."
+        explanation: "States the early-to-late decrease in marker concentrations, with the number of markers reaching significance, that this assay records."
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Twenty-five of the 42 markers were significantly higher at baseline than three months after the start of the fire: none was significantly lower"
+        explanation: "Confirms the direction of the change: 25 of 42 markers higher at baseline, none significantly lower."
+    has_specified_output:
+      id: "BALF:cherry-plasma-late-serviceA-output"
+      name: "Late plasma inflammatory marker profile (Service A)"
+      description: "39 of 42 markers lower than in the early sample; 25 of 42 significantly lower (P < 0.05). Individual marker concentrations are reported only in Appendix 5 of the paper and are not extracted here."
+    informs_on_key_event:
+      id: "KE:ke-systemic-inflammation"
+      name: "Systemic inflammation"
+      biological_action: increased
+      level_of_biological_organization: organism
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cherry-serviceA-paired"
+      name: "Service A non-smoking first responders with paired blood samples"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "37.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      subject_characteristics: "The same 68 non-smoking Service A first responders sampled in May 2016. Service A group means: age 37.6 years (SD 9.3), BMI 28.8 (SD 3.7), 97.6% male (n = 82 of 84). Age given here is the Service A group mean, not an individual age."
+      sample_type: blood
+      collection_site: "fire service premises, Alberta, Canada"
+      sample_collection_method: "venous blood draw by phlebotomist; plasma separated by refrigerated centrifugation and stored at -80C"
+      clinical_context: "Second blood draw 14-18 weeks after the start of the Fort McMurray wildfire"
+    has_exposure_condition:
+      - id: "EXPOSURE:cherry-pm25-serviceA-late"
+        name: "Wildfire smoke PM2.5, Service A deployment; log total estimated cumulative exposure mean 9.88 (SD 1.26) for all late Service A samples, sampled a median of 107 days from the start of the fire"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        timing_post_exposure:
+          value: "107"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    follows_protocols:
+      - id: "PROTOCOL:cherry-luminex-001"
+        name: "Multiplex bead-based assay of 42 plasma inflammatory markers"
+
+  # ---------------------------------------------------------------------------
+  # Late plasma samples, Service B (Fort McMurray)
+  # ---------------------------------------------------------------------------
+  - id: "BALF:cherry-plasma-late-serviceB"
+    name: "Plasma inflammatory markers - Service B late sample (August/September 2016)"
+    description: "Single plasma sample from 76 non-smoking Service B firefighters (the Fort McMurray service, deployed from the start of the fire with long repeated deployments), drawn 121-151 days (median 122 days) from the start of the fire. Marker concentrations were significantly higher at Service B than Service A for 11 of the markers and lower for 2; Service B also scored significantly higher on the second late principal component (C2L: Service A mean -0.37, SD 1.16; Service B mean 0.41, SD 0.55; P < 0.001)."
+    evidence:
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "At fire Service B, blood samples were collected only once, with 76 non-smoking firefighters giving samples from 121 to 151 days (median 122 days) from the start of the fire."
+        explanation: "Gives the Service B sample size and the timing of the single blood draw recorded by this assay."
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "marker concentrations were significantly higher at Service B on 11 of the markers and lower on just 2"
+        explanation: "Supports the between-service difference in marker concentrations recorded in this assay's description."
+    has_specified_output:
+      id: "BALF:cherry-plasma-late-serviceB-output"
+      name: "Late plasma inflammatory marker profile (Service B)"
+      description: "11 of 42 markers significantly higher than at Service A, 2 lower. Mean second late component score (C2L) 0.41 (SD 0.55) versus -0.37 (SD 1.16) at Service A, P < 0.001. Individual marker concentrations are reported only in Appendix 5 of the paper."
+      evidence:
+        - reference: "PMID:33620067"
+          reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+          supports: SUPPORT
+          evidence_source: HUMAN_CLINICAL
+          snippet: "Service B had significantly higher scores (P < 0.001) on C2L (Service A: mean = -0.37, SD = 1.16; Service B: mean = 0.41, SD = 0.55)"
+          explanation: "Gives the C2L component means and SDs by service, and the P value, recorded in this output."
+    informs_on_key_event:
+      id: "KE:ke-systemic-inflammation"
+      name: "Systemic inflammation"
+      biological_action: increased
+      level_of_biological_organization: organism
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cherry-serviceB"
+      name: "Service B non-smoking firefighters (Fort McMurray)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "32.9"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      subject_characteristics: "76 non-smoking firefighters from fire Service B, the service located in Fort McMurray, deployed from the start of the fire with long, arduous and repeated deployments. Service B group means: age 32.9 years (SD 9.0), BMI 28.6 (SD 3.9), 86.8% male (n = 66 of 76). Age given here is the Service B group mean, not an individual age."
+      sample_type: blood
+      collection_site: "fire service premises, Fort McMurray, Alberta, Canada"
+      sample_collection_method: "venous blood draw by phlebotomist; plasma separated by refrigerated centrifugation and stored at -80C"
+      clinical_context: "Single blood draw 16-20 weeks after the start of the Fort McMurray wildfire"
+    has_exposure_condition:
+      - id: "EXPOSURE:cherry-pm25-serviceB-late"
+        name: "Wildfire smoke PM2.5, Service B deployment; log total estimated cumulative exposure mean 12.23 (SD 0.47), sampled a median of 122 days from the start of the fire"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        timing_post_exposure:
+          value: "122"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    follows_protocols:
+      - id: "PROTOCOL:cherry-luminex-001"
+        name: "Multiplex bead-based assay of 42 plasma inflammatory markers"
+      - id: "PROTOCOL:cherry-exposure-estimation-001"
+        name: "Estimation of cumulative PM2.5 exposure and physical stressors"
+
+  # ---------------------------------------------------------------------------
+  # C2L component score vs cumulative PM2.5 exposure (both services, late)
+  # ---------------------------------------------------------------------------
+  - id: "BALF:cherry-plasma-c2l-exposure"
+    name: "Second late principal component (C2L) of plasma markers versus cumulative PM2.5 exposure"
+    description: "Principal component analysis of the 42 markers in the 160 late samples from both services. C1L accounted for 43.7% and C2L for 11.6% of the variance. C2L carried high positive weights (>0.5) for GROalpha, PDGF-AA, PDGF-BB, sCD40L, IP-10, MCP-1, IL-18 and TNF-alpha. C2L correlated with log total cumulative PM2.5 exposure (R = 0.38, P < 0.001) and with dehydration rating (R = 0.32, P < 0.001), and decreased with days since last deployment (R = -0.24, P = 0.003) and days since last fire (R = -0.21, P = 0.008). In a multilevel regression clustered within fire service (N = 159), cumulative exposure (beta = 0.19, 95% CI 0.09 to 0.30), dehydration (beta = 0.65, 95% CI 0.04 to 1.27) and weeks since last fire (beta = -0.04, 95% CI -0.06 to -0.01) were all related to C2L; C1L was unrelated to exposure."
+    evidence:
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "C2L scores were higher with higher exposure on all the exposure indices and lower with time since ending a deployment to the Fort McMurray or any other fire."
+        explanation: "States the direction of the C2L relation this assay records: higher with every exposure index, lower with time since the last deployment."
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "cumulative exposure (β = 0.19, 95% CI 0.09-0.30), dehydration (β = 0.65, 95% CI 0.04-1.27) and time since last deployed to a fire (β = -0.04, 95% CI -0.06 to -0.01) were all related to the C2L score."
+        explanation: "Gives the regression coefficients and confidence intervals for cumulative exposure, dehydration and time since last fire recorded in this assay's description."
+    has_specified_output:
+      id: "BALF:cherry-plasma-c2l-exposure-output"
+      name: "C2L component score and its exposure associations"
+      description: "C2L accounted for 11.6% of the variance in the 160 late samples (C1L 43.7%). Pearson correlations of C2L with exposure indices: log total exposure R = 0.38 (P < 0.001), log highest day exposure R = 0.20 (P = 0.010), days since last deployment R = -0.24 (P = 0.003), days since last fire R = -0.21 (P = 0.008), dehydration R = 0.32 (P < 0.001), heat stress R = 0.28 (P < 0.001), noise R = 0.20 (P = 0.011), exhaustion R = 0.33 (P < 0.001), musculoskeletal strain R = 0.28 (P < 0.001); N = 160."
+      evidence:
+        - reference: "PMID:33620067"
+          reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+          supports: SUPPORT
+          evidence_source: HUMAN_CLINICAL
+          snippet: "Log total exposure -0.32 0.008 0.03 0.791 -0.00 0.992 0.38 <0.001"
+          explanation: "Table 6 row giving the Pearson correlations of each component with log total exposure, including the C2L value of 0.38 (P < 0.001) recorded here."
+    informs_on_key_event:
+      id: "KE:ke-systemic-inflammation"
+      name: "Systemic inflammation"
+      biological_action: increased
+      level_of_biological_organization: organism
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cherry-both-services-late"
+      name: "Non-smoking firefighters from both services with late blood samples"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "35.4"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      subject_characteristics: "160 non-smoking firefighters from Service A (n = 84) and Service B (n = 76) who gave a blood sample in August/September 2016. Combined group means: age 35.4 years (SD 9.4), BMI 28.7 (SD 3.8), 92.5% male (n = 148). Age given here is the group mean, not an individual age. Regression analyses used N = 159."
+      sample_type: blood
+      collection_site: "fire service premises, Alberta, Canada"
+      sample_collection_method: "venous blood draw by phlebotomist; plasma separated by refrigerated centrifugation and stored at -80C"
+      clinical_context: "Late (14-20 week) blood draw after deployment to the Fort McMurray wildfire"
+    has_exposure_condition:
+      - id: "EXPOSURE:cherry-pm25-cumulative-late"
+        name: "Estimated cumulative wildfire smoke PM2.5 exposure over the Fort McMurray deployment (log scale; Service A mean 9.88, SD 1.26; Service B mean 12.23, SD 0.47; P < 0.001)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    follows_protocols:
+      - id: "PROTOCOL:cherry-luminex-001"
+        name: "Multiplex bead-based assay of 42 plasma inflammatory markers"
+      - id: "PROTOCOL:cherry-exposure-estimation-001"
+        name: "Estimation of cumulative PM2.5 exposure and physical stressors"
+
+  # ---------------------------------------------------------------------------
+  # GM-CSF and bronchial wall thickening (clinical assessment subgroup)
+  # ---------------------------------------------------------------------------
+  - id: "BALF:cherry-plasma-gmcsf-clinical"
+    name: "Plasma GM-CSF and MDC versus clinical respiratory findings"
+    description: "Follow-up of the two markers (GM-CSF and MDC) reported as related to declining lung function in New York City firefighters after the World Trade Center disaster. GM-CSF was unrelated to the respiratory health outcomes considered; the only difference approaching significance was with bronchial wall thickening on chest CT, where mean log GM-CSF was 3.54 ng/ml in those with thickening (N = 5) and 1.50 ng/ml in those without (N = 17), P = 0.082. MDC concentrations were negatively correlated with visual analogue symptoms at the time of the blood draw and unrelated to FEV1/FVC."
+    evidence:
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "mean log GM-CSF in those with thickening (N = 5) was 3.54 ng/ml and those without"
+        explanation: "Gives the mean log GM-CSF concentration in firefighters with bronchial wall thickening and the size of that subgroup."
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "GM-CSF was unrelated to any of the respiratory health outcomes considered in Tables 8 and 9"
+        explanation: "Records the negative finding: the marker reported in World Trade Center firefighters did not relate to respiratory health in this cohort."
+    has_specified_output:
+      id: "BALF:cherry-plasma-gmcsf-clinical-output"
+      name: "GM-CSF concentrations by bronchial wall thickening status"
+      description: "Mean log GM-CSF 3.54 ng/ml with bronchial wall thickening (N = 5) versus 1.50 ng/ml without (N = 17), P = 0.082. The schema has no named GM-CSF slot, so these values are recorded in the description and in the quoted evidence."
+    informs_on_key_event:
+      id: "KE:ke-systemic-inflammation"
+      name: "Systemic inflammation"
+      biological_action: increased
+      level_of_biological_organization: organism
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cherry-clinical-subset"
+      name: "Firefighters undergoing clinical respiratory assessment (2019-2020)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "22 firefighters from the two services (8 from Service A, 14 from Service B) who underwent at least one clinical respiratory assessment in the winter of 2019-2020. Tobacco smokers and those meeting criteria for chronic asthma or COPD before the fire were excluded from these assessments."
+      sample_type: blood
+      collection_site: "fire service premises and clinical assessment centre, Alberta, Canada"
+      clinical_context: "Stratified sample invited for pulmonary function tests, methacholine challenge and high-resolution chest CT in 2019-2020"
+    has_exposure_condition:
+      - id: "EXPOSURE:cherry-pm25-cumulative-late"
+        name: "Estimated cumulative wildfire smoke PM2.5 exposure over the Fort McMurray deployment (log scale; Service A mean 9.88, SD 1.26; Service B mean 12.23, SD 0.47; P < 0.001)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    follows_protocols:
+      - id: "PROTOCOL:cherry-luminex-001"
+        name: "Multiplex bead-based assay of 42 plasma inflammatory markers"
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS (spirometry at each blood draw)
+# =============================================================================
+
+lung_function_assays:
+  # ---------------------------------------------------------------------------
+  # Service A, May 2016
+  # ---------------------------------------------------------------------------
+  - id: "LF:cherry-serviceA-may"
+    name: "Spirometry FEV1/FVC - Service A, May 2016"
+    description: "FEV1/FVC measured at the time of the early blood draw in 68 non-smoking Service A first responders, 14-18 days (median 15.5 days) from the start of the fire (the paper also describes this draw as 15-19 days from the start when discussing FEV1/FVC). Group mean 76.88% (SD 6.20). A higher second early component score (C2E) was associated with a lower FEV1/FVC after adjustment for age, sex and particulate exposure (beta = -1.63, 95% CI -3.11 to -0.14, P = 0.032)."
+    evidence:
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1/FVC 76.88 6.20 77.41 5.97 0.231 77.45 6.23 76.76 6.77 0.508"
+        explanation: "Table 5 spirometry row: Service A May mean FEV1/FVC 76.88 (SD 6.20), the value recorded by this assay."
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "those with higher C2E scores had lower values on FEV1/ ... FVC, having adjusted for age, sex, and particulate ex ... posure (β = -1.63, -3.11 to -0.14, P = 0.032)"
+        explanation: "Gives the regression of FEV1/FVC on the early second component score reported in this assay's description; the quote is in three parts because the source text breaks FEV1/FVC and 'exposure' across line breaks."
+    has_specified_output:
+      id: "LF:cherry-serviceA-may-output"
+      name: "FEV1/FVC, Service A May 2016"
+      fev1_fvc_ratio:
+        value: "76.88"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cherry-serviceA-paired"
+      name: "Service A non-smoking first responders with paired blood samples"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "37.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      subject_characteristics: "68 non-smoking Service A first responders, N = 68 for this spirometry. Service A group means: age 37.6 years (SD 9.3), BMI 28.8 (SD 3.7), 97.6% male. Age given here is the Service A group mean, not an individual age."
+      sample_type: blood
+      clinical_context: "Spirometry at the time of the early blood draw, 14-18 days (median 15.5 days) from the start of the fire"
+    has_exposure_condition:
+      - id: "EXPOSURE:cherry-pm25-serviceA-early"
+        name: "Wildfire smoke PM2.5, Service A deployment; log total estimated cumulative exposure mean 9.96 (SD 1.22), sampled a median of 15.5 days from the start of the fire"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        timing_post_exposure:
+          value: "15.5"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    follows_protocols:
+      - id: "PROTOCOL:cherry-spirometry-001"
+        name: "Spirometry following ATS/ERS guidelines"
+
+  # ---------------------------------------------------------------------------
+  # Service A, August/September 2016 (paired subgroup, N = 68)
+  # ---------------------------------------------------------------------------
+  - id: "LF:cherry-serviceA-augsep-paired"
+    name: "Spirometry FEV1/FVC - Service A, August/September 2016 (paired subgroup)"
+    description: "FEV1/FVC in the same 68 Service A first responders at the late blood draw. Group mean 77.41% (SD 5.97); the change from May was not significant (P = 0.231)."
+    evidence:
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1/FVC 76.88 6.20 77.41 5.97 0.231 77.45 6.23 76.76 6.77 0.508"
+        explanation: "Table 5 spirometry row: Service A August/September mean FEV1/FVC 77.41 (SD 5.97), P = 0.231 versus May."
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV 1/FVC did not show important differences between time points at Service A or between services in August/September"
+        explanation: "States the negative finding this assay records: no important change in group mean FEV1/FVC between the two time points."
+    has_specified_output:
+      id: "LF:cherry-serviceA-augsep-paired-output"
+      name: "FEV1/FVC, Service A August/September 2016 (paired subgroup)"
+      fev1_fvc_ratio:
+        value: "77.41"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cherry-serviceA-paired"
+      name: "Service A non-smoking first responders with paired blood samples"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "37.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      subject_characteristics: "The same 68 non-smoking Service A first responders measured in May 2016. Age given here is the Service A group mean (37.6 years, SD 9.3), not an individual age."
+      sample_type: blood
+      clinical_context: "Spirometry at the time of the late blood draw, 14-18 weeks after the start of the fire"
+    has_exposure_condition:
+      - id: "EXPOSURE:cherry-pm25-serviceA-late"
+        name: "Wildfire smoke PM2.5, Service A deployment; log total estimated cumulative exposure mean 9.88 (SD 1.26) for all late Service A samples, sampled a median of 107 days from the start of the fire"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        timing_post_exposure:
+          value: "107"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    follows_protocols:
+      - id: "PROTOCOL:cherry-spirometry-001"
+        name: "Spirometry following ATS/ERS guidelines"
+
+  # ---------------------------------------------------------------------------
+  # Service A, August/September 2016 (all late samples, N = 84)
+  # ---------------------------------------------------------------------------
+  - id: "LF:cherry-serviceA-augsep-all"
+    name: "Spirometry FEV1/FVC - Service A, August/September 2016 (all)"
+    description: "FEV1/FVC in all 84 non-smoking Service A firefighters seen in August/September 2016. Group mean 77.45% (SD 6.23)."
+    evidence:
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1/FVC 76.88 6.20 77.41 5.97 0.231 77.45 6.23 76.76 6.77 0.508"
+        explanation: "Table 5 spirometry row: all Service A August/September mean FEV1/FVC 77.45 (SD 6.23)."
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "bringing the total number of late samples from fire Service A to 84"
+        explanation: "States that the late Service A group totals 84 firefighters, the sample size recorded by this assay."
+    has_specified_output:
+      id: "LF:cherry-serviceA-augsep-all-output"
+      name: "FEV1/FVC, all Service A August/September 2016"
+      fev1_fvc_ratio:
+        value: "77.45"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cherry-serviceA-all-late"
+      name: "All Service A non-smoking firefighters with a late blood sample"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "37.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      subject_characteristics: "84 non-smoking Service A firefighters seen in August/September 2016 (the 68 with paired samples plus 16 seen only at the later visit). Service A group means: age 37.6 years (SD 9.3), BMI 28.8 (SD 3.7), 97.6% male (n = 82). Age given here is the group mean, not an individual age. Spirometry N = 84."
+      sample_type: blood
+      clinical_context: "Spirometry at the late blood draw, 14-18 weeks after the start of the fire"
+    has_exposure_condition:
+      - id: "EXPOSURE:cherry-pm25-serviceA-late"
+        name: "Wildfire smoke PM2.5, Service A deployment; log total estimated cumulative exposure mean 9.88 (SD 1.26) for all late Service A samples, sampled a median of 107 days from the start of the fire"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        timing_post_exposure:
+          value: "107"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    follows_protocols:
+      - id: "PROTOCOL:cherry-spirometry-001"
+        name: "Spirometry following ATS/ERS guidelines"
+
+  # ---------------------------------------------------------------------------
+  # Service B, August/September 2016
+  # ---------------------------------------------------------------------------
+  - id: "LF:cherry-serviceB-augsep"
+    name: "Spirometry FEV1/FVC - Service B, August/September 2016"
+    description: "FEV1/FVC in 75 non-smoking Service B firefighters. Group mean 76.76% (SD 6.77); the difference from Service A was not significant (P = 0.508; P = 0.237 after adjustment for age), despite Service B's higher estimated PM2.5 exposure and worse respiratory symptoms."
+    evidence:
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1/FVC 76.88 6.20 77.41 5.97 0.231 77.45 6.23 76.76 6.77 0.508"
+        explanation: "Table 5 spirometry row: Service B August/September mean FEV1/FVC 76.76 (SD 6.77), P = 0.508 versus Service A."
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The absence of any relationship between estimated PM 2.5 exposure and FEV 1/FVC in firefighters from these two services should also be noted."
+        explanation: "The authors' own statement that estimated PM2.5 exposure was not related to FEV1/FVC in these two services."
+    has_specified_output:
+      id: "LF:cherry-serviceB-augsep-output"
+      name: "FEV1/FVC, Service B August/September 2016"
+      fev1_fvc_ratio:
+        value: "76.76"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cherry-serviceB"
+      name: "Service B non-smoking firefighters (Fort McMurray)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "32.9"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      subject_characteristics: "Non-smoking Service B firefighters; spirometry N = 75 of the 76 who gave blood. Service B group means: age 32.9 years (SD 9.0), BMI 28.6 (SD 3.9), 86.8% male. Age given here is the group mean, not an individual age."
+      sample_type: blood
+      clinical_context: "Spirometry at the single blood draw, 16-20 weeks after the start of the fire"
+    has_exposure_condition:
+      - id: "EXPOSURE:cherry-pm25-serviceB-late"
+        name: "Wildfire smoke PM2.5, Service B deployment; log total estimated cumulative exposure mean 12.23 (SD 0.47), sampled a median of 122 days from the start of the fire"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        timing_post_exposure:
+          value: "122"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    follows_protocols:
+      - id: "PROTOCOL:cherry-spirometry-001"
+        name: "Spirometry following ATS/ERS guidelines"
+
+  # ---------------------------------------------------------------------------
+  # Pre-fire spirometry records (subgroup with employer records)
+  # ---------------------------------------------------------------------------
+  - id: "LF:cherry-serviceA-prefire"
+    name: "Spirometry FEV1/FVC - pre-fire employer records, Service A subgroup"
+    description: "Most recent spirometry carried out before the fire by the health company running periodic assessments, available for 29 of the Service A firefighters with paired samples (40.5% of Service A overall). Mean FEV1/FVC 81.79% (SD 4.58). The paper notes that these pre-fire tests used different equipment and operators from the research team's measurements, so the comparison is not definitive."
+    evidence:
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Prior 81.79 4.58 81.79 4.58"
+        explanation: "Table 5 'Spirometry (with prior record)' row: pre-fire mean FEV1/FVC 81.79 (SD 4.58) in the Service A subgroup, the value recorded here."
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "However, it appeared that, where FEV 1/FVC results were available from before the fire, the ratio was lower post-fire."
+        explanation: "States the pre-fire to post-fire fall in FEV1/FVC that this assay, together with the post-fire assays, records."
+    has_specified_output:
+      id: "LF:cherry-serviceA-prefire-output"
+      name: "Pre-fire FEV1/FVC, Service A subgroup with prior records"
+      fev1_fvc_ratio:
+        value: "81.79"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cherry-serviceA-prior-record"
+      name: "Service A firefighters with a pre-fire spirometry record"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "37.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      subject_characteristics: "29 Service A firefighters (of the 68 with paired samples) for whom pre-fire spirometry was obtained from the employer's health company; pre-fire results were available for 40.5% of Service A and 40.8% of Service B. Age given here is the Service A group mean (37.6 years, SD 9.3), not an individual age."
+      sample_collection_method: "employer periodic health assessment spirometry, different equipment and operators from the research team"
+      clinical_context: "Baseline lung function recorded before the May 2016 Fort McMurray fire"
+    follows_protocols:
+      - id: "PROTOCOL:cherry-spirometry-001"
+        name: "Spirometry following ATS/ERS guidelines"
+
+  # ---------------------------------------------------------------------------
+  # Post-fire spirometry in the same subgroup with pre-fire records
+  # ---------------------------------------------------------------------------
+  - id: "LF:cherry-serviceA-postfire-prior-record"
+    name: "Spirometry FEV1/FVC - post-fire, Service A subgroup with pre-fire records"
+    description: "FEV1/FVC in May 2016 in the 29 Service A firefighters who also had a pre-fire record: mean 77.50% (SD 6.64), against 81.79% (SD 4.58) before the fire (P < 0.001). At the August/September draw the same subgroup averaged 78.91% (SD 5.11)."
+    evidence:
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Post 77.50 6.64 78.91 5.11 0.083 78.49 5.14 77.73 7.55 0.634"
+        explanation: "Table 5 'Spirometry (with prior record)' post-fire row: Service A May mean 77.50 (SD 6.64) and August/September mean 78.91 (SD 5.11), the values recorded here."
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "While it is interesting that the observed mean FEV1/FVC after the fire was lower than in the earlier spirometry reports, it would be unsafe to assert that this was due to exposures during the fire."
+        explanation: "The authors' caution that the lower post-fire mean FEV1/FVC recorded here cannot safely be attributed to exposures during the fire."
+    has_specified_output:
+      id: "LF:cherry-serviceA-postfire-prior-record-output"
+      name: "Post-fire FEV1/FVC, Service A subgroup with pre-fire records"
+      fev1_fvc_ratio:
+        value: "77.50"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cherry-serviceA-prior-record"
+      name: "Service A firefighters with a pre-fire spirometry record"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "37.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      subject_characteristics: "The same 29 Service A firefighters with a pre-fire spirometry record, measured by the research team in May 2016. Age given here is the Service A group mean (37.6 years, SD 9.3), not an individual age."
+      sample_type: blood
+      clinical_context: "Spirometry by the research team at the early blood draw, 14-18 days (median 15.5 days) from the start of the fire"
+    has_exposure_condition:
+      - id: "EXPOSURE:cherry-pm25-serviceA-early"
+        name: "Wildfire smoke PM2.5, Service A deployment; log total estimated cumulative exposure mean 9.96 (SD 1.22), sampled a median of 15.5 days from the start of the fire"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        timing_post_exposure:
+          value: "15.5"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    follows_protocols:
+      - id: "PROTOCOL:cherry-spirometry-001"
+        name: "Spirometry following ATS/ERS guidelines"
