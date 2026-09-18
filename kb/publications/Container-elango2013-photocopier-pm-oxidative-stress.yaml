@@ -1,0 +1,1081 @@
+# =============================================================================
+# Elango et al. (2013) - Chronic exposure to emissions from photocopiers in
+# copy shops causes oxidative stress and systematic inflammation among
+# photocopier operators in India
+# =============================================================================
+#
+# Source: Environ Health. 2013;12:78
+# DOI: 10.1186/1476-069X-12-78
+# PMID: 24025094
+#
+# Study design:
+#   - Cross-sectional human occupational study (in vivo), Coimbatore, south
+#     India, January 2011 - February 2012
+#   - Indoor air quality monitored in five photocopy centers over 8-hour
+#     working days (PM10, PM2.5, CO, NO2, O3, SO2, Pb, As, Ni, NH3, benzene,
+#     benzo(a)pyrene)
+#   - 81 photocopier operators (64 male, 17 female) with at least five years
+#     employment in a xerographic unit, versus 43 unexposed healthy controls
+#     (31 male, 12 female) from the same geographical area
+#   - Spirometry (Vitalograph Alpha 6000, ATS guidelines, ERS 1993 predicted
+#     equations); results as % predicted
+#   - Serum: thiobarbituric acid reactive substances (TBARS, lipid
+#     peroxidation) and total ferric reducing antioxidant capacity (FRAC);
+#     total protein, albumin, globulin
+#   - EDTA / lithium heparin plasma by commercial ELISA: LTB4, 8-isoprostane,
+#     CRP, IL-8, ICAM-1, CC-16, ECP
+#   - Group comparisons by Mann Whitney test; correlations by Spearman rank
+#
+# Key findings recorded here:
+#   - PM10 (mean 376.4 ug/m3) and PM2.5 (mean 168.2 ug/m3) in the copy shops
+#     were 2-3 fold above the Indian NAAQS limits; all other measured
+#     pollutants were within limits
+#   - Serum TBARS significantly higher in operators (2.7 vs 1.4 uM,
+#     P < 0.001) and FRAC significantly lower (1.0 vs 1.5 mM, P = 0.010):
+#     increased oxidative stress
+#   - Plasma IL-8, LTB4, ICAM-1 and ECP significantly higher in operators:
+#     systemic inflammation. Serum albumin lower and globulin higher.
+#   - 8-isoprostane, CRP and CC-16 did NOT differ significantly between the
+#     groups (recorded here as negative findings)
+#   - Lung function (% predicted FVC, FEV1, FEV1/FVC, PEF, FEF25-75) and the
+#     prevalence of restrictive/obstructive disease did NOT differ between
+#     operators and controls
+#
+# Curation notes:
+#   - Figure 2 reports the spirometry indices only as box plots, so no
+#     numeric lung function values are extracted; the lung function assay
+#     records the reported absence of a difference and the Table 6 disease
+#     prevalence counts.
+#   - The paper is internally inconsistent about the FRAC P value: the
+#     Results text says "p = 0.001" while Table 8 gives 0.010. The Table 8
+#     value is recorded, and both quotes are attached.
+#   - Plasma cytokine/mediator assays are recorded under the schema's in vivo
+#     inflammatory-mediator assay class (balf_sputum_assays), following the
+#     Cherry 2021 extraction; the samples are plasma, not BALF or sputum.
+#
+# =============================================================================
+
+source_publication:
+  reference: "PMID:24025094"
+  reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+  doi: "10.1186/1476-069X-12-78"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:elango-air-monitoring-001"
+    protocol_type: Protocol
+    name: "Indoor air quality monitoring in photocopy centers"
+    description: "Indoor air quality monitored in five photocopy centers in Coimbatore as per Indian Standard guidelines (IS 5182), with sampling equipment positioned directly opposite the photocopier(s). Measurements made on working days over 8 hours by an ISO 2001 certified commercial laboratory. PM2.5 sampled gravimetrically at 1.5 L/minute for 8 hours and PM10 gravimetrically at 1000 L/minute for 8 hours; CO, NO2, O3, SO2, Pb, As, Ni, NH3, benzene and benzo(a)pyrene by the methods listed in Table 1."
+    equipment_required:
+      - "Gravimetric particulate samplers (PM2.5 and PM10)"
+      - "Gas sampling trains for CO, NO2, O3, SO2 and NH3"
+      - "Atomic absorption spectroscopy for Pb, As and Ni"
+      - "Gas chromatograph with flame ionisation detector for benzene and benzo(a)pyrene"
+
+  - id: "PROTOCOL:elango-spirometry-001"
+    protocol_type: SpirometryProtocol
+    name: "Spirometry following American Thoracic Society guidelines"
+    description: "Pulmonary function assessed with a Vitalograph Alpha 6000 (UK) at the photocopier centers where the subjects worked, between 10.00 a.m. and 2.00 p.m. on a working day in a single visit. Parameters taken from the flow-volume curve were FVC, FEV1, FEV1/FVC, peak expiratory flow and FEF25-75, expressed as percentages of predicted values using the European Respiratory Society 1993 equations."
+    spirometry_standard: "American Thoracic Society"
+    equipment_required:
+      - "Vitalograph Alpha 6000 spirometer"
+
+  - id: "PROTOCOL:elango-serum-oxidative-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Serum lipid peroxidation (TBARS) and total ferric reducing antioxidant capacity"
+    description: "Peripheral venous blood collected at the workplace; serum separated, aliquoted into labelled cryo vials and stored at -80 C. Lipid peroxidation (thiobarbituric acid reactive substances) and total antioxidant capacity (ferric reducing antioxidant capacity) measured in serum by the published colorimetric methods cited as references 37 and 38."
+    detection_method: "colorimetric assay of serum"
+    equipment_required:
+      - "Refrigerated centrifuge"
+      - "-80 C freezer"
+      - "Spectrophotometer"
+
+  - id: "PROTOCOL:elango-elisa-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Commercial ELISA panel for plasma inflammatory and oxidative markers"
+    description: "Markers assessed in EDTA plasma by commercial ELISA kits: LTB4, 8-isoprostane, CRP and glutathione peroxidase (Cayman Chemical, USA); IL-8 (Koma Biotech, Korea); ICAM-1, CC-16 and ECP (USCN Life Sciences, China). Myeloperoxidase was assayed in lithium heparin plasma (Enzo Life Sciences, Switzerland). Intra-assay coefficients of variation ranged from 1.4% to 4.0% and inter-assay coefficients of variation from 2.4% to 4.4%."
+    detection_method: "enzyme linked immunosorbent assay (ELISA)"
+    platform: "Cayman Chemical, Koma Biotech, USCN Life Sciences and Enzo Life Sciences commercial ELISA kits"
+    quality_control_criteria: "Intra-assay CV 1.4-4.0%; inter-assay CV 2.4-4.4%"
+    equipment_required:
+      - "Microplate reader"
+
+# =============================================================================
+# OXIDATIVE STRESS ASSAYS
+# =============================================================================
+
+oxidative_stress_assays:
+  # ---------------------------------------------------------------------------
+  # Serum TBARS - lipid peroxidation
+  # ---------------------------------------------------------------------------
+  - id: "OXSTRESS:elango-tbars-serum"
+    name: "Serum thiobarbituric acid reactive substances (TBARS) in photocopier operators"
+    description: "Serum lipid peroxidation measured as TBARS in 81 photocopier operators and 43 unexposed controls. Median (interquartile range) 2.7 (2.1-3.5) uM in operators versus 1.4 (1.0-1.9) uM in controls, P < 0.001 (Mann Whitney). Among non smokers only, 2.8 (2.1-3.4) uM in operators versus 1.4 (0.8-1.7) uM in controls, P < 0.001, so the difference is not explained by smoking."
+    evidence:
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "TBARS (μM) 1.4 (1.0 – 1.9) 2.7 (2.1 – 3.5) <0.001 1.4 (0.8 – 1.7) 2.8 (2.1 – 3.4) <0.001"
+        explanation: "Table 8 row giving the control and photocopier-operator TBARS medians and interquartile ranges with the P value, for the whole cohort and for non smokers, as recorded by this assay."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Serum thiobarbituric acid reactive substances (TBARS) concentration was significantly higher (p < 0.001) among"
+        explanation: "The Results text stating that serum TBARS was significantly higher among the photocopier operators."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "p values for Mann Whitney test."
+        explanation: "Table 8 footnote identifying the statistical test behind the P values recorded for every marker in this file."
+    has_specified_output:
+      id: "OXSTRESS:elango-tbars-serum-output"
+      name: "Serum TBARS concentration in photocopier operators"
+      description: "Median serum TBARS in photocopier operators, 2.7 uM (interquartile range 2.1-3.5; n = 81), against 1.4 uM (1.0-1.9; n = 43) in controls, P < 0.001."
+      lipid_peroxidation:
+        value: "2.7"
+        unit:
+          id: "UO:0000064"
+          name: "micromolar"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:elango-photocopier-operators"
+      name: "Photocopier operators in Coimbatore copy shops"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "32.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      sex: "64 male and 17 female"
+      subject_characteristics: "81 photocopier operators (64 male, 17 female) aged 20-60 years with at least five years employment in a xerographic unit, group mean age 32.6 years (SD 7.1) and mean BMI 24.9 (SD 6.2); 30 (37%) current smokers, mean 2.9 pack years. Subjects with known cardiovascular disease, asthma, diabetes mellitus, hypertension, hyperthyroidism or epilepsy were excluded and none were on regular medication. The age recorded here is the group mean, not an individual age."
+      sample_type: blood
+      collection_site: "photocopier centers in Coimbatore, Tamilnadu, India"
+      sample_collection_method: "peripheral venous blood draw at the workplace between 10.00 a.m. and 2.00 p.m.; serum and plasma separated, aliquoted into labelled cryo vials and stored at -80 C"
+      clinical_context: "Cross-sectional occupational study of chronic exposure to photocopier emissions"
+    has_exposure_condition:
+      - id: "EXPOSURE:elango-photocopier-pm10"
+        name: "Occupational photocopier emissions, indoor PM10 mean 376.4 ug/m3 (SD 63.8) against an Indian NAAQS reference level of 100 ug/m3, for a minimum of five years"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "376.4"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:elango-photocopier-pm25"
+        name: "Occupational photocopier emissions, indoor PM2.5 mean 168.2 ug/m3 (SD 34.6) against an Indian NAAQS reference level of 60 ug/m3, for a minimum of five years"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "168.2"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:elango-serum-oxidative-001"
+        name: "Serum lipid peroxidation (TBARS) and total ferric reducing antioxidant capacity"
+      - id: "PROTOCOL:elango-air-monitoring-001"
+        name: "Indoor air quality monitoring in photocopy centers"
+
+  # ---------------------------------------------------------------------------
+  # Serum FRAC - total antioxidant capacity
+  # ---------------------------------------------------------------------------
+  - id: "OXSTRESS:elango-frac-serum"
+    name: "Serum total ferric reducing antioxidant capacity (FRAC) in photocopier operators"
+    description: "Total antioxidant capacity of serum measured as ferric reducing antioxidant capacity. Median 1.0 (0.8-1.4) mM in the 81 photocopier operators versus 1.5 (0.8-1.9) mM in the 43 controls, P = 0.010 by Table 8; among non smokers 1.0 (0.7-1.4) versus 1.6 (0.8-2.0) mM, P = 0.008. The Results text quotes this comparison as p = 0.001, which disagrees with the 0.010 printed in Table 8; the Table 8 value is recorded here and both passages are quoted below."
+    evidence:
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FRAC (mM) 1.5 (0.8 – 1.9) 1.0 (0.8 – 1.4) 0.010 1.6 (0.8 – 2.0) 1.0 (0.7 – 1.4) 0.008"
+        explanation: "Table 8 row giving the control and operator FRAC medians and interquartile ranges with the P values recorded by this assay (whole cohort 0.010, non smokers 0.008)."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Serum total ferric reducing antioxidant capacity was found to be significantly lower (p = 0.001) among operators in photocopier centers when compared to healthy controls."
+        explanation: "The Results text stating the direction of the FRAC difference; note it quotes p = 0.001 where Table 8 prints 0.010, the discrepancy noted in this assay's description."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In harmony with the above results, total serum ferric reducing antioxidant capacity was significantly reduced among the photocopier operators when compared to the healthy control group suggesting increased oxidative stress."
+        explanation: "The authors' interpretation that the reduced antioxidant capacity indicates increased oxidative stress, the key event this assay informs on."
+    has_specified_output:
+      id: "OXSTRESS:elango-frac-serum-output"
+      name: "Serum total antioxidant capacity in photocopier operators"
+      description: "Median serum FRAC in photocopier operators, 1.0 mM (interquartile range 0.8-1.4; n = 81), against 1.5 mM (0.8-1.9; n = 43) in controls, P = 0.010."
+      total_antioxidant_capacity:
+        value: "1.0"
+        unit:
+          id: "UO:0000063"
+          name: "millimolar"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:elango-photocopier-operators"
+      name: "Photocopier operators in Coimbatore copy shops"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "32.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      sex: "64 male and 17 female"
+      subject_characteristics: "81 photocopier operators (64 male, 17 female) aged 20-60 years with at least five years employment in a xerographic unit, group mean age 32.6 years (SD 7.1) and mean BMI 24.9 (SD 6.2). The age recorded here is the group mean, not an individual age."
+      sample_type: blood
+      collection_site: "photocopier centers in Coimbatore, Tamilnadu, India"
+      sample_collection_method: "peripheral venous blood draw at the workplace; serum separated and stored at -80 C"
+      clinical_context: "Cross-sectional occupational study of chronic exposure to photocopier emissions"
+    has_exposure_condition:
+      - id: "EXPOSURE:elango-photocopier-pm10"
+        name: "Occupational photocopier emissions, indoor PM10 mean 376.4 ug/m3 (SD 63.8) against an Indian NAAQS reference level of 100 ug/m3, for a minimum of five years"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "376.4"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:elango-serum-oxidative-001"
+        name: "Serum lipid peroxidation (TBARS) and total ferric reducing antioxidant capacity"
+
+  # ---------------------------------------------------------------------------
+  # Plasma 8-isoprostane - negative finding
+  # ---------------------------------------------------------------------------
+  - id: "OXSTRESS:elango-8isoprostane-plasma"
+    name: "Plasma 8-isoprostane in photocopier operators (no significant difference)"
+    description: "Plasma 8-isoprostane measured by ELISA. Median 46.4 (31.7-65.4) pg/mL in the 81 photocopier operators versus 41.7 (23.6-52.8) pg/mL in the 43 controls, P = 0.146; among non smokers 45.5 (24.6-67.5) versus 35.4 (20.5-51.5) pg/mL, P = 0.159. A negative finding: unlike TBARS, this lipid peroxidation marker did not separate the groups. The authors suggest TBARS may be the more sensitive biomarker."
+    evidence:
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "8-Isoprostane (pg/mL) 41.7 (23.6 – 52.8) 46.4 (31.7 – 65.4) 0.146 35.4 (20.5 – 51.5) 45.5 (24.6 – 67.5) 0.159"
+        explanation: "Table 8 row giving the control and operator 8-isoprostane medians, interquartile ranges and P values recorded by this assay."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: REFUTE
+        evidence_source: HUMAN_CLINICAL
+        snippet: "However, levels of 8-Isoprostane did not show significant differences between the two groups."
+        explanation: "States the negative finding this assay records: 8-isoprostane did not differ between exposed operators and controls, so this marker does not support increased oxidative stress in this cohort."
+    has_specified_output:
+      id: "OXSTRESS:elango-8isoprostane-plasma-output"
+      name: "Plasma 8-isoprostane concentration in photocopier operators"
+      description: "Median plasma 8-isoprostane in photocopier operators, 46.4 pg/mL (interquartile range 31.7-65.4; n = 81), against 41.7 pg/mL (23.6-52.8; n = 43) in controls, P = 0.146 (not significant)."
+      eight_isoprostane_level:
+        value: "46.4"
+        unit:
+          id: "UO:0010070"
+          name: "picogram per milliliter"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:elango-photocopier-operators"
+      name: "Photocopier operators in Coimbatore copy shops"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "32.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      sex: "64 male and 17 female"
+      subject_characteristics: "81 photocopier operators (64 male, 17 female) with at least five years employment in a xerographic unit, group mean age 32.6 years (SD 7.1). The age recorded here is the group mean, not an individual age."
+      sample_type: blood
+      collection_site: "photocopier centers in Coimbatore, Tamilnadu, India"
+      sample_collection_method: "peripheral venous blood draw at the workplace; EDTA plasma separated and stored at -80 C"
+      clinical_context: "Cross-sectional occupational study of chronic exposure to photocopier emissions"
+    has_exposure_condition:
+      - id: "EXPOSURE:elango-photocopier-pm25"
+        name: "Occupational photocopier emissions, indoor PM2.5 mean 168.2 ug/m3 (SD 34.6) against an Indian NAAQS reference level of 60 ug/m3, for a minimum of five years"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "168.2"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:elango-elisa-001"
+        name: "Commercial ELISA panel for plasma inflammatory and oxidative markers"
+
+# =============================================================================
+# PLASMA INFLAMMATORY MEDIATOR ASSAYS
+# (recorded under the schema's in vivo inflammatory-mediator assay class;
+#  the samples are plasma and serum, not BALF or sputum)
+# =============================================================================
+
+balf_sputum_assays:
+  # ---------------------------------------------------------------------------
+  # Plasma IL-8
+  # ---------------------------------------------------------------------------
+  - id: "BALF:elango-il8-plasma"
+    name: "Plasma interleukin 8 in photocopier operators"
+    description: "Plasma IL-8 measured by ELISA. Median 18.1 (17.1-20.7) pg/mL in the 81 photocopier operators versus 17.4 (10.6-18.6) pg/mL in the 43 controls, P = 0.001; among non smokers 18.2 (16.7-21.1) versus 16.4 (8.6-17.8) pg/mL, P = 0.002."
+    evidence:
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "IL-8 (pg/mL) 17.4 (10.6 – 18.6) 18.1 (17.1 – 20.7) 0.001 16.4 (8.6 – 17.8) 18.2 (16.7- 21.1) 0.002"
+        explanation: "Table 8 row giving the control and operator plasma IL-8 medians, interquartile ranges and P values recorded by this assay."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Thus, in the present study, high plasma IL-8 levels signify inflammation among"
+        explanation: "The authors' reading of the raised plasma IL-8 as a sign of inflammation in the photocopier operators, the key event this assay informs on."
+    has_specified_output:
+      id: "BALF:elango-il8-plasma-output"
+      name: "Plasma IL-8 concentration in photocopier operators"
+      description: "Median plasma IL-8 in photocopier operators, 18.1 pg/mL (interquartile range 17.1-20.7; n = 81), against 17.4 pg/mL (10.6-18.6; n = 43) in controls, P = 0.001."
+      il8_concentration:
+        value: "18.1"
+        unit:
+          id: "UO:0010070"
+          name: "picogram per milliliter"
+    informs_on_key_event:
+      id: "KE:ke-systemic-inflammation"
+      name: "Systemic inflammation"
+      biological_action: increased
+      level_of_biological_organization: organism
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:elango-photocopier-operators"
+      name: "Photocopier operators in Coimbatore copy shops"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "32.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      sex: "64 male and 17 female"
+      subject_characteristics: "81 photocopier operators (64 male, 17 female) with at least five years employment in a xerographic unit, group mean age 32.6 years (SD 7.1), compared with 43 unexposed healthy controls (31 male, 12 female) of mean age 31.7 years (SD 7.4) from the same geographical area. The age recorded here is the operator group mean, not an individual age."
+      sample_type: blood
+      collection_site: "photocopier centers in Coimbatore, Tamilnadu, India"
+      sample_collection_method: "peripheral venous blood draw at the workplace; EDTA plasma separated and stored at -80 C"
+      clinical_context: "Cross-sectional occupational study of chronic exposure to photocopier emissions"
+    has_exposure_condition:
+      - id: "EXPOSURE:elango-photocopier-pm25"
+        name: "Occupational photocopier emissions, indoor PM2.5 mean 168.2 ug/m3 (SD 34.6) against an Indian NAAQS reference level of 60 ug/m3, for a minimum of five years"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "168.2"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:elango-elisa-001"
+        name: "Commercial ELISA panel for plasma inflammatory and oxidative markers"
+
+  # ---------------------------------------------------------------------------
+  # Plasma leukotriene B4
+  # ---------------------------------------------------------------------------
+  - id: "BALF:elango-ltb4-plasma"
+    name: "Plasma leukotriene B4 in photocopier operators"
+    description: "Plasma LTB4 measured by ELISA. Median 81.9 (22.3-159.1) ng/mL in the 81 photocopier operators versus 13.0 (7.6-40.1) ng/mL in the 43 controls, P < 0.001 - the largest fold difference of any marker in the study; among non smokers 78 (12-169) versus 9.2 (6.5-15.9) ng/mL, P < 0.001. The schema has no named leukotriene slot, so the values are recorded in this description and in the quoted evidence."
+    evidence:
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "LTB4 (ng/mL) 13.0 (7.6 – 40.1) 81.9 (22.3 – 159.1) <0.001 9.2 (6.5 – 15.9) 78 (12 – 169) <0.001"
+        explanation: "Table 8 row giving the control and operator plasma LTB4 medians, interquartile ranges and P values recorded by this assay."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "exposed subjects in the present study is suggestive of inflammation."
+        explanation: "The authors' reading of the rise in leukotriene B4 in the photocopier exposed subjects as evidence of inflammation."
+    has_specified_output:
+      id: "BALF:elango-ltb4-plasma-output"
+      name: "Plasma leukotriene B4 concentration in photocopier operators"
+      description: "Median plasma LTB4 in photocopier operators, 81.9 ng/mL (interquartile range 22.3-159.1; n = 81), against 13.0 ng/mL (7.6-40.1; n = 43) in controls, P < 0.001."
+    informs_on_key_event:
+      id: "KE:ke-systemic-inflammation"
+      name: "Systemic inflammation"
+      biological_action: increased
+      level_of_biological_organization: organism
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:elango-photocopier-operators"
+      name: "Photocopier operators in Coimbatore copy shops"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "32.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      sex: "64 male and 17 female"
+      subject_characteristics: "81 photocopier operators (64 male, 17 female) with at least five years employment in a xerographic unit, group mean age 32.6 years (SD 7.1). The age recorded here is the group mean, not an individual age."
+      sample_type: blood
+      collection_site: "photocopier centers in Coimbatore, Tamilnadu, India"
+      sample_collection_method: "peripheral venous blood draw at the workplace; EDTA plasma separated and stored at -80 C"
+      clinical_context: "Cross-sectional occupational study of chronic exposure to photocopier emissions"
+    has_exposure_condition:
+      - id: "EXPOSURE:elango-photocopier-pm25"
+        name: "Occupational photocopier emissions, indoor PM2.5 mean 168.2 ug/m3 (SD 34.6) against an Indian NAAQS reference level of 60 ug/m3, for a minimum of five years"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "168.2"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:elango-elisa-001"
+        name: "Commercial ELISA panel for plasma inflammatory and oxidative markers"
+
+  # ---------------------------------------------------------------------------
+  # Plasma ICAM-1
+  # ---------------------------------------------------------------------------
+  - id: "BALF:elango-icam1-plasma"
+    name: "Plasma intercellular adhesion molecule 1 (ICAM-1) in photocopier operators"
+    description: "Plasma soluble ICAM-1 measured by ELISA. Median 187 (104-266) ng/mL in the 81 photocopier operators versus 113 (97-165) ng/mL in the 43 controls, P = 0.015. In the non-smoker subgroup the difference did not reach significance: 135 (101-239) versus 113 (99-165) ng/mL, P = 0.356. The schema has no named adhesion-molecule slot, so the values are recorded in this description and in the quoted evidence."
+    evidence:
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "ICAM-1 (ng/mL) 113 (97 – 165) 187 (104 – 266) 0.015 113 (99 – 165) 135 (101 – 239) 0.356"
+        explanation: "Table 8 row giving the control and operator plasma ICAM-1 medians and interquartile ranges, with P = 0.015 overall and P = 0.356 in the non-smoker subgroup, as recorded by this assay."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The significant increase in plasma ICAM-1 of photocopier operators may be related to systemic inflammation caused by exposure to"
+        explanation: "The authors attribute the raised plasma ICAM-1 to systemic inflammation from photocopier emissions, the key event this assay informs on."
+    has_specified_output:
+      id: "BALF:elango-icam1-plasma-output"
+      name: "Plasma ICAM-1 concentration in photocopier operators"
+      description: "Median plasma ICAM-1 in photocopier operators, 187 ng/mL (interquartile range 104-266; n = 81), against 113 ng/mL (97-165; n = 43) in controls, P = 0.015."
+    informs_on_key_event:
+      id: "KE:ke-systemic-inflammation"
+      name: "Systemic inflammation"
+      biological_action: increased
+      level_of_biological_organization: organism
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:elango-photocopier-operators"
+      name: "Photocopier operators in Coimbatore copy shops"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "32.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      sex: "64 male and 17 female"
+      subject_characteristics: "81 photocopier operators (64 male, 17 female) with at least five years employment in a xerographic unit, group mean age 32.6 years (SD 7.1). The age recorded here is the group mean, not an individual age."
+      sample_type: blood
+      collection_site: "photocopier centers in Coimbatore, Tamilnadu, India"
+      sample_collection_method: "peripheral venous blood draw at the workplace; EDTA plasma separated and stored at -80 C"
+      clinical_context: "Cross-sectional occupational study of chronic exposure to photocopier emissions"
+    has_exposure_condition:
+      - id: "EXPOSURE:elango-photocopier-pm25"
+        name: "Occupational photocopier emissions, indoor PM2.5 mean 168.2 ug/m3 (SD 34.6) against an Indian NAAQS reference level of 60 ug/m3, for a minimum of five years"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "168.2"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:elango-elisa-001"
+        name: "Commercial ELISA panel for plasma inflammatory and oxidative markers"
+
+  # ---------------------------------------------------------------------------
+  # Plasma ECP
+  # ---------------------------------------------------------------------------
+  - id: "BALF:elango-ecp-plasma"
+    name: "Plasma eosinophilic cationic protein (ECP) in photocopier operators"
+    description: "Plasma ECP, a granule protein released by activated eosinophils, measured by ELISA. Median 213 (118-307) ng/mL in the 81 photocopier operators versus 135 (80-207) ng/mL in the 43 controls, P = 0.009; among non smokers 215 (147-327) versus 128 (80-207) ng/mL, P = 0.015. The schema has no named eosinophil-granule-protein slot, so the values are recorded in this description and in the quoted evidence."
+    evidence:
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "ECP (ng/mL) 135 (80 – 207) 213 (118 – 307) 0.009 128 (80 – 207) 215 (147 – 327) 0.015"
+        explanation: "Table 8 row giving the control and operator plasma ECP medians, interquartile ranges and P values recorded by this assay."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In the present study, elevation of plasma ICAM-1 and LTB4 observed in the photocopier exposed subjects, might have contributed to the elevated levels of plasma ECP in the subjects."
+        explanation: "The authors link the elevated plasma ECP to the other raised inflammatory mediators in the same subjects, supporting the systemic inflammation key event."
+    has_specified_output:
+      id: "BALF:elango-ecp-plasma-output"
+      name: "Plasma ECP concentration in photocopier operators"
+      description: "Median plasma ECP in photocopier operators, 213 ng/mL (interquartile range 118-307; n = 81), against 135 ng/mL (80-207; n = 43) in controls, P = 0.009."
+    informs_on_key_event:
+      id: "KE:ke-systemic-inflammation"
+      name: "Systemic inflammation"
+      biological_action: increased
+      level_of_biological_organization: organism
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:elango-photocopier-operators"
+      name: "Photocopier operators in Coimbatore copy shops"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "32.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      sex: "64 male and 17 female"
+      subject_characteristics: "81 photocopier operators (64 male, 17 female) with at least five years employment in a xerographic unit, group mean age 32.6 years (SD 7.1). The age recorded here is the group mean, not an individual age."
+      sample_type: blood
+      collection_site: "photocopier centers in Coimbatore, Tamilnadu, India"
+      sample_collection_method: "peripheral venous blood draw at the workplace; EDTA plasma separated and stored at -80 C"
+      clinical_context: "Cross-sectional occupational study of chronic exposure to photocopier emissions"
+    has_exposure_condition:
+      - id: "EXPOSURE:elango-photocopier-pm25"
+        name: "Occupational photocopier emissions, indoor PM2.5 mean 168.2 ug/m3 (SD 34.6) against an Indian NAAQS reference level of 60 ug/m3, for a minimum of five years"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "168.2"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:elango-elisa-001"
+        name: "Commercial ELISA panel for plasma inflammatory and oxidative markers"
+
+  # ---------------------------------------------------------------------------
+  # Plasma CRP - negative finding
+  # ---------------------------------------------------------------------------
+  - id: "BALF:elango-crp-plasma"
+    name: "Plasma C reactive protein in photocopier operators (no significant difference)"
+    description: "Plasma CRP measured by ELISA. Median 0.9 (0.4-1.8) ug/mL in the 81 photocopier operators versus 1.4 (0.6-2.6) ug/mL in the 43 controls, P = 0.083; among non smokers 1.0 (0.4-2.0) versus 1.7 (1.0-2.8) ug/mL, P = 0.051. A negative finding: CRP was, if anything, numerically lower in the exposed group. The authors tie the absence of a CRP rise to the absence of lung function impairment in the same cohort. The schema has no named CRP slot, so the values are recorded in this description and in the quoted evidence."
+    evidence:
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "CRP (μg/mL) 1.4 (0.6 – 2.6) 0.9 (0.4 – 1.8) 0.083 1.7 (1.0 – 2.8) 1.0 (0.4 – 2.0) 0.051"
+        explanation: "Table 8 row giving the control and operator plasma CRP medians, interquartile ranges and P values recorded by this assay."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: REFUTE
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The lack of elevation in CRP was in accordance with the lack of lung function impairment."
+        explanation: "States the negative finding this assay records: CRP was not elevated in the exposed operators, so this marker does not support the systemic inflammation key event in this cohort."
+    has_specified_output:
+      id: "BALF:elango-crp-plasma-output"
+      name: "Plasma CRP concentration in photocopier operators"
+      description: "Median plasma CRP in photocopier operators, 0.9 ug/mL (interquartile range 0.4-1.8; n = 81), against 1.4 ug/mL (0.6-2.6; n = 43) in controls, P = 0.083 (not significant)."
+    informs_on_key_event:
+      id: "KE:ke-systemic-inflammation"
+      name: "Systemic inflammation"
+      biological_action: increased
+      level_of_biological_organization: organism
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:elango-photocopier-operators"
+      name: "Photocopier operators in Coimbatore copy shops"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "32.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      sex: "64 male and 17 female"
+      subject_characteristics: "81 photocopier operators (64 male, 17 female) with at least five years employment in a xerographic unit, group mean age 32.6 years (SD 7.1). The age recorded here is the group mean, not an individual age."
+      sample_type: blood
+      collection_site: "photocopier centers in Coimbatore, Tamilnadu, India"
+      sample_collection_method: "peripheral venous blood draw at the workplace; EDTA plasma separated and stored at -80 C"
+      clinical_context: "Cross-sectional occupational study of chronic exposure to photocopier emissions"
+    has_exposure_condition:
+      - id: "EXPOSURE:elango-photocopier-pm25"
+        name: "Occupational photocopier emissions, indoor PM2.5 mean 168.2 ug/m3 (SD 34.6) against an Indian NAAQS reference level of 60 ug/m3, for a minimum of five years"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "168.2"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:elango-elisa-001"
+        name: "Commercial ELISA panel for plasma inflammatory and oxidative markers"
+
+  # ---------------------------------------------------------------------------
+  # Serum protein fractions
+  # ---------------------------------------------------------------------------
+  - id: "BALF:elango-serum-proteins"
+    name: "Serum total protein, albumin and globulin in photocopier operators"
+    description: "Serum protein fractions. Total protein did not differ significantly (72.4 [66.1-75.3] g/L in the 81 operators versus 68.9 [63.0-76.3] g/L in the 43 controls, P = 0.167), but albumin was significantly lower in operators (37.1 [33.1-40.9] versus 39.6 [36.7-44.9] g/L, P = 0.011) and globulin significantly higher (34.0 [28.6-39.4] versus 27.1 [20.4-35.8] g/L, P = 0.015), giving an albumin:globulin ratio of 1.1 in operators against 1.5 in controls. The authors read this as inflammation with a systemic immune response."
+    evidence:
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Total protein (g/L) 68.9 (63.0 – 76.3) 72.4 (66.1 – 75.3) 0.167 68 (60.1 – 73.0) 72 (67.7 – 74.8) 0.048"
+        explanation: "Table 8 row giving the control and operator serum total protein medians, interquartile ranges and P values recorded by this assay."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Albumin (g/L) 39.6 (36.7 – 44.9) 37.1 (33.1 – 40.9) 0.011 38.8 (34.6 – 42.3) 36.5 (32.9 – 41.0) 0.228"
+        explanation: "Table 8 row giving the control and operator serum albumin medians, interquartile ranges and P values recorded in this assay's description."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Globulin (g/L) 27.1 (20.4 – 35.8) 34.0 (28.6 – 39.4) 0.015 27.9 (20.4 – 35.5) 34.0 (29.0 – 39.3) 0.042"
+        explanation: "Table 8 row giving the control and operator serum globulin medians, interquartile ranges and P values recorded in this assay's description."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "However, albumin: globulin ratio was found to be significantly altered in the photocopier operators (1.1) when compared to controls (1.5)."
+        explanation: "Gives the albumin:globulin ratios for both groups recorded in this assay's description."
+    has_specified_output:
+      id: "BALF:elango-serum-proteins-output"
+      name: "Serum protein fractions in photocopier operators"
+      description: "Median serum total protein in photocopier operators, 72.4 g/L (interquartile range 66.1-75.3; n = 81), against 68.9 g/L (63.0-76.3; n = 43) in controls, P = 0.167. Albumin 37.1 versus 39.6 g/L (P = 0.011) and globulin 34.0 versus 27.1 g/L (P = 0.015); albumin:globulin ratio 1.1 versus 1.5."
+      total_protein_concentration:
+        value: "72.4"
+        unit:
+          id: "UO:0000175"
+          name: "gram per liter"
+    informs_on_key_event:
+      id: "KE:ke-systemic-inflammation"
+      name: "Systemic inflammation"
+      biological_action: increased
+      level_of_biological_organization: organism
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:elango-photocopier-operators"
+      name: "Photocopier operators in Coimbatore copy shops"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "32.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      sex: "64 male and 17 female"
+      subject_characteristics: "81 photocopier operators (64 male, 17 female) with at least five years employment in a xerographic unit, group mean age 32.6 years (SD 7.1). The age recorded here is the group mean, not an individual age."
+      sample_type: blood
+      collection_site: "photocopier centers in Coimbatore, Tamilnadu, India"
+      sample_collection_method: "peripheral venous blood draw at the workplace; serum separated and stored at -80 C"
+      clinical_context: "Cross-sectional occupational study of chronic exposure to photocopier emissions"
+    has_exposure_condition:
+      - id: "EXPOSURE:elango-photocopier-pm10"
+        name: "Occupational photocopier emissions, indoor PM10 mean 376.4 ug/m3 (SD 63.8) against an Indian NAAQS reference level of 100 ug/m3, for a minimum of five years"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "376.4"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:elango-serum-oxidative-001"
+        name: "Serum lipid peroxidation (TBARS) and total ferric reducing antioxidant capacity"
+
+  # ---------------------------------------------------------------------------
+  # Plasma CC-16 - epithelial barrier marker, negative finding
+  # ---------------------------------------------------------------------------
+  - id: "BALF:elango-cc16-plasma"
+    name: "Plasma Clara cell protein 16 (CC-16) in photocopier operators (no significant difference)"
+    description: "Plasma CC-16, which rises in serum when lung epithelial permeability is disturbed by inhaled pollutants, measured by ELISA. Median 7.8 (3.3-33.8) ng/mL in the 81 photocopier operators versus 7.3 (2.7-28.3) ng/mL in the 43 controls, P = 0.705; among non smokers 7.1 (2.9-32.3) versus 7.8 (2.7-36.1) ng/mL, P = 0.908. A negative finding that the authors themselves call surprising: the epithelial barrier appears unperturbed despite the particulate exposure. CC-16 did correlate positively with % predicted FVC across the whole study population (r = 0.195, p = 0.04). The schema has no named CC-16 slot, so the values are recorded in this description and in the quoted evidence."
+    evidence:
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "CC-16 (ng/mL) 7.3 (2.7 – 28.3) 7.8 (3.3 – 33.8) 0.705 7.8 (2.7 – 36.1) 7.1 (2.9 – 32.3) 0.908"
+        explanation: "Table 8 row giving the control and operator plasma CC-16 medians, interquartile ranges and P values recorded by this assay."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: REFUTE
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In the present study, neither significant increase nor significant decrease was observed in the plasma levels of CC-16 of photocopier operators indicating insignificant effects of the PM on the lung epithelium which is surprising."
+        explanation: "States the negative finding this assay records: no change in plasma CC-16, which the authors read as no detectable effect of the particulate exposure on the lung epithelium, so this marker does not support the altered epithelial barrier key event in this cohort."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Plasma CC-16 was found to have positive association with % predicted FVC (r = 0.195, p = 0.04)."
+        explanation: "Gives the CC-16 correlation with lung function recorded in this assay's description."
+    has_specified_output:
+      id: "BALF:elango-cc16-plasma-output"
+      name: "Plasma CC-16 concentration in photocopier operators"
+      description: "Median plasma CC-16 in photocopier operators, 7.8 ng/mL (interquartile range 3.3-33.8; n = 81), against 7.3 ng/mL (2.7-28.3; n = 43) in controls, P = 0.705 (not significant)."
+    informs_on_key_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:elango-photocopier-operators"
+      name: "Photocopier operators in Coimbatore copy shops"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "32.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      sex: "64 male and 17 female"
+      subject_characteristics: "81 photocopier operators (64 male, 17 female) with at least five years employment in a xerographic unit, group mean age 32.6 years (SD 7.1). The age recorded here is the group mean, not an individual age."
+      sample_type: blood
+      collection_site: "photocopier centers in Coimbatore, Tamilnadu, India"
+      sample_collection_method: "peripheral venous blood draw at the workplace; EDTA plasma separated and stored at -80 C"
+      clinical_context: "Cross-sectional occupational study of chronic exposure to photocopier emissions"
+    has_exposure_condition:
+      - id: "EXPOSURE:elango-photocopier-pm25"
+        name: "Occupational photocopier emissions, indoor PM2.5 mean 168.2 ug/m3 (SD 34.6) against an Indian NAAQS reference level of 60 ug/m3, for a minimum of five years"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "168.2"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:elango-elisa-001"
+        name: "Commercial ELISA panel for plasma inflammatory and oxidative markers"
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS
+# =============================================================================
+
+lung_function_assays:
+  # ---------------------------------------------------------------------------
+  # Spirometry - negative finding
+  # ---------------------------------------------------------------------------
+  - id: "LUNGFUNC:elango-spirometry"
+    name: "Spirometry in photocopier operators versus unexposed controls (no significant difference)"
+    description: "Spirometry in 81 photocopier operators and 43 controls. No significant difference between the groups in % predicted FVC, FEV1, FEV1/FVC, peak expiratory flow or FEF25-75, and none in the subgroup analysis restricted to non smokers. Figure 2 shows these indices only as box plots, so no numeric spirometry values are extracted here. This is the central negative finding of the paper: chronic photocopier emission exposure raised oxidative stress and inflammatory markers without measurably reducing lung function."
+    evidence:
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: REFUTE
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Lung function parameters did not show any significant differences between the photocopier operators and healthy control groups."
+        explanation: "States the negative spirometry finding this assay records, so the assay does not support the decreased lung function adverse outcome in this cohort."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: REFUTE
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Sub group analysis among non smokers did not reveal any significant difference between the two groups."
+        explanation: "Confirms that the null spirometry result holds in the non-smoker subgroup, so it is not masked by the higher smoking prevalence among operators."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: REFUTE
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Lung function was similar in the photocopier operators and control subjects."
+        explanation: "The abstract's statement of the same negative finding."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Pulmonary function was assessed by spirometry in 81 photocopier operators (64 male and 17 female) and 43 healthy control (31 male and 12 female) subjects."
+        explanation: "Gives the group sizes and sex composition recorded on this assay's study subject."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Long term exposure to emissions from photocopiers was not associated with decreased lung function, but resulted in high oxidative stress and systemic inflammation leading to high risk of cardiovascular diseases."
+        explanation: "The authors' overall conclusion, which separates the null lung function result from the positive oxidative stress and systemic inflammation results recorded elsewhere in this file."
+    has_specified_output:
+      id: "LUNGFUNC:elango-spirometry-output"
+      name: "Spirometry indices in photocopier operators and controls"
+      description: "No significant difference between photocopier operators (n = 81) and controls (n = 43) in % predicted FVC, FEV1, FEV1/FVC, peak expiratory flow or FEF25-75. Figure 2 reports these indices only as box plots (median, quartiles, whiskers), so no numeric values are extracted."
+    reference_dataset: "European Respiratory Society 1993 predicted equations"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:elango-photocopier-operators"
+      name: "Photocopier operators in Coimbatore copy shops"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "32.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      sex: "64 male and 17 female"
+      subject_characteristics: "81 photocopier operators (64 male, 17 female) aged 20-60 years with at least five years employment in a xerographic unit, group mean age 32.6 years (SD 7.1) and mean BMI 24.9 (SD 6.2); 30 (37%) current smokers, mean 2.9 pack years. Compared with 43 unexposed healthy controls (31 male, 12 female), mean age 31.7 years (SD 7.4), mean BMI 24.2 (SD 4.0), 8 (19%) current smokers, drawn from the same geographical area. All subjects used liquefied petroleum gas for cooking, removing biomass smoke as a confounder. The age recorded here is the operator group mean, not an individual age."
+      sample_type: blood
+      collection_site: "photocopier centers in Coimbatore, Tamilnadu, India"
+      sample_collection_method: "spirometry performed on site with a Vitalograph Alpha 6000 between 10.00 a.m. and 2.00 p.m. on a working day, in the same single visit as the blood draw"
+      clinical_context: "Cross-sectional occupational study of chronic exposure to photocopier emissions"
+    has_exposure_condition:
+      - id: "EXPOSURE:elango-photocopier-pm10"
+        name: "Occupational photocopier emissions, indoor PM10 mean 376.4 ug/m3 (SD 63.8) against an Indian NAAQS reference level of 100 ug/m3, for a minimum of five years"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "376.4"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:elango-photocopier-pm25"
+        name: "Occupational photocopier emissions, indoor PM2.5 mean 168.2 ug/m3 (SD 34.6) against an Indian NAAQS reference level of 60 ug/m3, for a minimum of five years"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "168.2"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:elango-spirometry-001"
+        name: "Spirometry following American Thoracic Society guidelines"
+      - id: "PROTOCOL:elango-air-monitoring-001"
+        name: "Indoor air quality monitoring in photocopy centers"
+
+  # ---------------------------------------------------------------------------
+  # Prevalence of restrictive and obstructive lung disease
+  # ---------------------------------------------------------------------------
+  - id: "LUNGFUNC:elango-disease-prevalence"
+    name: "Prevalence of restrictive and obstructive lung disease in photocopier operators"
+    description: "Spirometrically defined disease prevalence (Table 6). Restriction in 24 of 81 operators (30%) versus 12 of 43 controls (28%), P = 0.841; obstruction in 8 (10%) versus 4 (9%), P = 0.918; combined restriction and obstruction in 4 (5%) versus 2 (5%), P = 0.967. The high prevalence of restrictive disease in both groups is unexplained and, the authors note, has no local reference data for comparison. No significant difference between operators and controls, in the whole cohort or among non smokers (46 operators, 29 controls)."
+    evidence:
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Restriction 12 (28) 24 (30) 0.841 5 (11) 3 (10) 0.766"
+        explanation: "Table 6 row giving the restriction counts and percentages for controls and operators with the P value recorded by this assay (the last three columns are the non-smoker subgroup)."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Obstruction 4 (9) 8 (10) 0.918 12 (26) 10 (35) 0.305"
+        explanation: "Table 6 row giving the obstruction counts and percentages for controls and operators with the P value recorded by this assay."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: REFUTE
+        evidence_source: HUMAN_CLINICAL
+        snippet: "However, no significant difference was observed between the photocopier operators and control subjects in the prevalence of respiratory diseases."
+        explanation: "States the negative finding this assay records: disease prevalence did not differ between exposed operators and controls, so it does not support the decreased lung function adverse outcome."
+    has_specified_output:
+      id: "LUNGFUNC:elango-disease-prevalence-output"
+      name: "Restrictive and obstructive disease prevalence in photocopier operators"
+      description: "Restriction in 30% of photocopier operators (24 of 81) against 28% of controls (12 of 43), P = 0.841; obstruction 10% versus 9%, P = 0.918; both 5% versus 5%, P = 0.967 (Chi square test). These are disease prevalences rather than spirometry values, so no named measurement slot is used."
+    reference_dataset: "European Respiratory Society 1993 predicted equations"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:elango-photocopier-operators"
+      name: "Photocopier operators in Coimbatore copy shops"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "32.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      sex: "64 male and 17 female"
+      subject_characteristics: "81 photocopier operators (64 male, 17 female) with at least five years employment in a xerographic unit, group mean age 32.6 years (SD 7.1), compared with 43 unexposed healthy controls (31 male, 12 female). The non-smoker subgroup comprised 46 operators and 29 controls. The age recorded here is the operator group mean, not an individual age."
+      sample_type: blood
+      collection_site: "photocopier centers in Coimbatore, Tamilnadu, India"
+      sample_collection_method: "spirometry performed on site with a Vitalograph Alpha 6000"
+      clinical_context: "Cross-sectional occupational study of chronic exposure to photocopier emissions"
+    has_exposure_condition:
+      - id: "EXPOSURE:elango-photocopier-pm10"
+        name: "Occupational photocopier emissions, indoor PM10 mean 376.4 ug/m3 (SD 63.8) against an Indian NAAQS reference level of 100 ug/m3, for a minimum of five years"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "376.4"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:elango-spirometry-001"
+        name: "Spirometry following American Thoracic Society guidelines"
+
+  # ---------------------------------------------------------------------------
+  # CRP and lung function correlation
+  # ---------------------------------------------------------------------------
+  - id: "LUNGFUNC:elango-crp-lungfunction-correlation"
+    name: "Correlation of plasma CRP with lung function across the study population"
+    description: "Spearman rank correlations across the whole study population (81 operators and 43 controls). Plasma CRP correlated negatively with % predicted FVC (r = -0.261, p = 0.005) and with % predicted FEV1 (r = -0.221, p = 0.019); plasma CC-16 correlated positively with % predicted FVC (r = 0.195, p = 0.04). No other inflammatory biomarker was significantly related to lung function. The authors call CRP the best indicator of pulmonary function among the markers assayed."
+    evidence:
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Plasma CRP levels were also found to have a negative correlation with % predicted FVC (r = −0.261, p = 0.005)"
+        explanation: "Gives the CRP versus % predicted FVC correlation coefficient and P value recorded by this assay."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Plasma CC-16 was found to have positive association with % predicted FVC (r = 0.195, p = 0.04)."
+        explanation: "Gives the CC-16 versus % predicted FVC correlation coefficient and P value recorded in this assay's description."
+      - reference: "PMID:24025094"
+        reference_title: "Chronic exposure to emissions from photocopiers in copy shops causes oxidative stress and systematic inflammation among photocopier operators in India."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The lack of elevation in CRP was in accordance with the lack of lung function impairment."
+        explanation: "Links the unchanged CRP to the unchanged lung function, the interpretation recorded in this assay's description."
+    has_specified_output:
+      id: "LUNGFUNC:elango-crp-lungfunction-correlation-output"
+      name: "CRP and CC-16 correlations with spirometry"
+      description: "Plasma CRP versus % predicted FVC r = -0.261 (p = 0.005) and versus % predicted FEV1 r = -0.221 (p = 0.019); plasma CC-16 versus % predicted FVC r = 0.195 (p = 0.04). Spearman rank correlation across all 124 subjects. Correlation coefficients are not concentrations, so they are recorded in the description rather than in a named measurement slot."
+    reference_dataset: "European Respiratory Society 1993 predicted equations"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:elango-all-subjects"
+      name: "All study subjects (photocopier operators and controls combined)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "All 124 study subjects: 81 photocopier operators (64 male, 17 female) and 43 unexposed healthy controls (31 male, 12 female), aged 20-60 years, from the same geographical area in Coimbatore, Tamilnadu, India. Correlations were computed across this combined population, not within either group."
+      sample_type: blood
+      collection_site: "photocopier centers in Coimbatore, Tamilnadu, India"
+      sample_collection_method: "spirometry and venous blood draw in a single visit"
+      clinical_context: "Cross-sectional occupational study of chronic exposure to photocopier emissions"
+    follows_protocols:
+      - id: "PROTOCOL:elango-spirometry-001"
+        name: "Spirometry following American Thoracic Society guidelines"
+      - id: "PROTOCOL:elango-elisa-001"
+        name: "Commercial ELISA panel for plasma inflammatory and oxidative markers"
