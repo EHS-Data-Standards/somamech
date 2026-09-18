@@ -1,0 +1,667 @@
+# =============================================================================
+# Epton et al. (2008) - The effect of ambient air pollution on respiratory
+# health of school children: a panel study
+# =============================================================================
+#
+# Source: Environ Health. 2008;7:16 (PMID:18479529)
+# DOI: 10.1186/1476-069X-7-16
+#
+# Study design:
+#   - Panel study, winter 2004, Christ's College boarding houses, central
+#     Christchurch, New Zealand. Ambient particulate pollution in Christchurch
+#     is dominated by domestic wood burning; PM10 is ~90% PM2.5.
+#   - 93 male boarding students aged 12-18, all healthy non-smokers; 26 (28%)
+#     with doctor-diagnosed asthma.
+#   - Indoor and outdoor PM10/PM2.5/PM1 monitored continuously with a TEOM
+#     Series 1400a, as 10-minute averages and 24-hour (midday-to-midday) means.
+#   - Longitudinal arm: twice-daily FEV1 and PEFR on personal downloadable
+#     Piko-1 spirometers plus symptom diary cards, over end-March to early
+#     September 2004. Lung function expressed as within-student Z-scores.
+#   - Event-study arm: within 24 h of two high-pollution nights (24 June,
+#     21 July 2004) students gave urine (1-hydroxypyrene) and exhaled breath
+#     condensate (pH, hydrogen peroxide). Two low-pollution control days
+#     (autumn control, winter control) served as comparators.
+#
+# Key findings captured here:
+#   - Baseline: no difference in % predicted FEV1 between asthmatic and
+#     non-asthmatic students; FEV1/FVC significantly lower in asthmatics.
+#   - Asthmatic students only: median morning FEV1 lower on moderate/high
+#     pollution days (24-h outdoor PM10 > 20 ug/m3), p = 0.043; and, in
+#     multivariate analysis, afternoon PEFR and morning-to-afternoon FEV1
+#     variability fell with higher maximum outdoor pollution (R2 3.6% for
+#     afternoon PEFR). No effect in non-asthmatic students.
+#   - Whole panel: a univariate correlation of morning FEV1 with the previous
+#     day's 24-h outdoor PM10 (rho -0.201, p = 0.034) did NOT survive
+#     multivariate analysis - no pollution variable was retained.
+#   - EBC hydrogen peroxide (oxidative stress) and EBC pH (airway
+#     inflammation): no effect of pollution, in healthy or asthmatic students.
+#   - Exposure was confirmed biologically: urinary 1-hydroxypyrene was
+#     significantly higher on both high-pollution days than on either control
+#     day (p < 0.0001).
+#
+# Curation notes:
+#   - Urinary 1-hydroxypyrene is a PAH exposure biomarker; no SOMA assay class
+#     covers it, so its values are recorded as evidence supporting the
+#     exposure conditions of the event-study assays rather than as an assay.
+#   - Respiratory symptom (cough, ENT) diary results have no SOMA assay class
+#     either; the cough effect size is quoted as evidence on the asthma
+#     high-pollution-day lung function assay.
+#   - EBC pH and EBC H2O2 values are presented only in Figures 4 and 5, so no
+#     numeric outputs are recorded for those assays - only the authors' stated
+#     (null) findings.
+#
+# =============================================================================
+
+source_publication:
+  reference: "PMID:18479529"
+  reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+  doi: "10.1186/1476-069X-7-16"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:epton-spirometry-001"
+    name: "Twice-daily personal electronic spirometry to ATS standards"
+    description: "All students were issued personal downloadable electronic spirometers (Piko-1) measuring FEV1 and peak expiratory flow rate to American Thoracic Society standards, and were trained in their use. Measurements were taken twice daily, in the early morning and around 6.00 pm, supervised by House Matrons who were trained nurses given training in spirometry. No instructions about withholding reliever medication were given. Data were downloaded at least fortnightly. Longitudinal data were cleaned against an a priori protocol to exclude physiologically impossible points, and each student's FEV1 and PEFR were expressed as a Z-score relative to that student's own mean over the study period."
+    equipment_required:
+      - "Piko-1 downloadable electronic spirometer (Ferraris Respiratory Europe Ltd, Hertford, UK)"
+
+  - id: "PROTOCOL:epton-baseline-spirometry-001"
+    name: "Baseline spirometry and atopy assessment"
+    description: "Prior to the study the health status of the students was assessed by a brief medical history, with baseline spirometry and skin prick testing for atopic status. Baseline FEV1 is reported as percent predicted and FEV1/FVC as a ratio; the paper does not name the predicted-value reference equations used."
+
+  - id: "PROTOCOL:epton-pollution-001"
+    name: "Continuous indoor and outdoor particulate monitoring"
+    description: "Two monitoring sites were established: an indoor second-floor corridor in a naturally ventilated, centrally heated boarding house away from indoor particulate sources, and an outdoor courtyard within the school grounds. Indoor and outdoor PM10, PM2.5 and PM1 were measured continuously with a TEOM Series 1400a Ambient Particulate Monitor and expressed as 10-minute averages and as 24-hour averages from midday to midday. TEOM readings were corrected with an established factor for loss of semi-volatile compounds. Weather data (wind speed, temperature, temperature difference, relative humidity) were collected continuously at the outdoor site as 10-minute averages."
+    equipment_required:
+      - "TEOM Series 1400a Ambient Particulate Monitor"
+
+  - id: "PROTOCOL:epton-ebc-001"
+    name: "Exhaled breath condensate collection with pH and hydrogen peroxide measurement"
+    description: "Exhaled breath condensate was collected with the RTube system using an aluminium cooling tube stored at -20 degrees C for at least 24 hours beforehand. Collection ran for ten minutes per sampling occasion after the mouth was rinsed to reduce saliva contamination, yielding approximately 2 ml of condensate per student. pH was measured immediately on about 30 ul of undegassed condensate with a pre-calibrated Shindengen ISFET pH meter (model KS701). Hydrogen peroxide was measured by fluorometry with 4-hydroxyphenylacetic acid, quantified within four hours against a standard curve; the assay limit of detection was 3.4 nM H2O2."
+    equipment_required:
+      - "RTube exhaled breath condensate collection system (Respiratory Research Inc, Charlottesville, USA) with aluminium cooling tube"
+      - "Shindengen ISFET pH meter, model KS701"
+      - "Hitachi F4500 Fluorescence Spectrophotometer"
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS
+# =============================================================================
+
+lung_function_assays:
+
+  # ---- Baseline spirometry, by asthma status ----
+
+  - id: "LF:epton-baseline-asthma"
+    name: "Baseline spirometry in students with doctor-diagnosed asthma"
+    description: "Pre-study baseline spirometry in the 26 students with doctor-diagnosed asthma. Mean FEV1 97.54% predicted (SE 2.481, n = 26), not significantly different from the non-asthmatic students; mean FEV1/FVC ratio 0.803 (SE 0.013, n = 26), significantly lower than the non-asthmatic group (0.834, p = 0.05)."
+    reference_dataset: "Within-study comparison against the non-asthmatic student group; the predicted-value reference equations behind the % predicted FEV1 are not named in the publication"
+    assay_date: "2004-03-01"
+    has_specified_output:
+      id: "LF:epton-baseline-asthma-output"
+      name: "Baseline lung function of the asthma group"
+      fev1:
+        value: "97.54"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      fev1_fvc_ratio:
+        value: "0.803"
+        unit:
+          id: "UO:0000186"
+          name: "dimensionless unit"
+    evidence:
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "There was no significant difference in % predicted FEV 1 between asthmatics and non-asthmatics (97.54% ± 2.481 (mean ± 1 s.e.) n = 26, vs 95.49% ± 1.635 n = 57)"
+        explanation: "Gives the asthma group's mean % predicted FEV1 of 97.54% with its standard error and n = 26 recorded in this assay."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1/FVC ratio was significantly lower in the asthmatic students (FEV1/FVC ratio asthma group 0.803 ± 0.013 n = 26 vs normal group 0.834 ± 0.009 n = 57, p = 0.05)"
+        explanation: "Gives the asthma group's mean FEV1/FVC ratio of 0.803 with its standard error, n = 26 and the between-group p-value recorded in this assay."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Twenty-six (28%) of the students had a doctor diagnosis of asthma."
+        explanation: "Establishes that the asthma subgroup measured by this assay comprised 26 of the 93 students."
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:epton-asthma"
+      name: "Boarding students with doctor-diagnosed asthma"
+      description: "The 26 of 93 male boarding students at Christ's College, Christchurch, with a previous doctor diagnosis of asthma ever."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      sex: "male"
+      disease_state: "doctor-diagnosed asthma"
+      subject_characteristics: "Male secondary school boarders aged 12-18 years, all healthy non-smokers with no other significant medical conditions. 26 students (28% of the panel) had doctor-diagnosed asthma; 17 used short-acting beta agonists as required and 8 took regular inhaled corticosteroids. Regular oral corticosteroid use was an exclusion criterion and asthma management was not altered by the investigators."
+      clinical_context: "Baseline spirometry at study entry, before the winter monitoring period"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:epton-baseline-spirometry-001"
+        name: "Baseline spirometry and atopy assessment"
+        spirometry_standard: "ATS"
+
+  - id: "LF:epton-baseline-nonasthma"
+    name: "Baseline spirometry in students without asthma"
+    description: "Pre-study baseline spirometry in the 57 students without asthma who provided baseline data. Mean FEV1 95.49% predicted (SE 1.635, n = 57); mean FEV1/FVC ratio 0.834 (SE 0.009, n = 57). Comparison group for the asthma subgroup."
+    reference_dataset: "Within-study comparison against the asthma subgroup; the predicted-value reference equations behind the % predicted FEV1 are not named in the publication"
+    assay_date: "2004-03-01"
+    has_specified_output:
+      id: "LF:epton-baseline-nonasthma-output"
+      name: "Baseline lung function of the non-asthmatic group"
+      fev1:
+        value: "95.49"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      fev1_fvc_ratio:
+        value: "0.834"
+        unit:
+          id: "UO:0000186"
+          name: "dimensionless unit"
+    evidence:
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "There was no significant difference in % predicted FEV 1 between asthmatics and non-asthmatics (97.54% ± 2.481 (mean ± 1 s.e.) n = 26, vs 95.49% ± 1.635 n = 57)"
+        explanation: "Gives the non-asthmatic group's mean % predicted FEV1 of 95.49% with its standard error and n = 57 recorded in this assay."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1/FVC ratio was significantly lower in the asthmatic students (FEV1/FVC ratio asthma group 0.803 ± 0.013 n = 26 vs normal group 0.834 ± 0.009 n = 57, p = 0.05)"
+        explanation: "Gives the non-asthmatic group's mean FEV1/FVC ratio of 0.834 with its standard error and n = 57 recorded in this assay."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "spirometry and skin prick testing for atopic status were also undertaken."
+        explanation: "Confirms that baseline spirometry was performed at study entry, which is what this assay records."
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:epton-nonasthma"
+      name: "Boarding students without asthma"
+      description: "The male boarding students at Christ's College, Christchurch, with no doctor diagnosis of asthma; 57 provided baseline spirometry."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      sex: "male"
+      disease_state: "no asthma diagnosis"
+      subject_characteristics: "Male secondary school boarders aged 12-18 years, all healthy non-smokers with no significant medical conditions; smokers were asked not to volunteer and non-smoking status was confirmed by school staff. n = 57 at baseline spirometry."
+      clinical_context: "Baseline spirometry at study entry, before the winter monitoring period"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:epton-baseline-spirometry-001"
+        name: "Baseline spirometry and atopy assessment"
+        spirometry_standard: "ATS"
+
+  # ---- Longitudinal lung function vs pollution ----
+
+  - id: "LF:epton-asthma-morning-fev1-highpollution"
+    name: "Morning FEV1 on moderate/high pollution days in asthmatic students"
+    description: "Comparison of each asthmatic student's median morning FEV1 between moderate/high pollution days (24-hour average outdoor PM10 above 20 ug/m3) and low pollution days, by Mann-Whitney U test. Students with asthma had lower readings on high pollution days (p = 0.043). The paper reports the significance but not the group medians, so no numeric output is recorded. Restricting the analysis to moderate/high pollution days alone showed no significant correlation between lung function and pollution level."
+    assay_date: "2004-07-01"
+    evidence:
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "students with asthma demonstrated lower readings on high pollution days (p = 0.043)"
+        explanation: "States the finding and p-value this assay records: lower morning FEV1 in asthmatic students on moderate/high pollution days."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "moderate/high (24 hour average> 20 μm/m3 outdoor) pollution days and low pollution days."
+        explanation: "Defines the moderate/high pollution day threshold of a 24-hour average outdoor level above 20 ug/m3 used as this assay's exposure condition. (The paper writes the unit as 'μm/m3'; the 24-hour PM10 averages it reports elsewhere are in μg/m3.)"
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Peak levels of air pollution were associated with small but statistically significant effects on lung function in the asthmatic students, but not healthy students."
+        explanation: "The authors' summary of the asthma-restricted lung function effect that this assay records."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The effect size however was small, with a change in PM10 of 50 μg/m3 being associated with a 1.5% increase in proportions of children reporting cough (equivalent to one extra report of cough on high pollution days in this cohort)."
+        explanation: "Quantifies the parallel symptom effect on high pollution days, establishing the small magnitude of respiratory response at this exposure level."
+    has_exposure_condition:
+      - id: "EXPOSURE:epton-pm10-moderate-high-day"
+        name: "Moderate/high pollution day, defined as a 24-hour average outdoor PM10 above 20 ug/m3 (wood-smoke-dominated ambient particulate)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "20"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:epton-asthma-longitudinal"
+      name: "Asthmatic boarding students under twice-daily lung function monitoring"
+      description: "The asthma subgroup of the panel, followed with twice-daily spirometry and diary cards from end-March to early September 2004."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      sex: "male"
+      disease_state: "doctor-diagnosed asthma"
+      subject_characteristics: "26 male boarders aged 12-18 with doctor-diagnosed asthma, all non-smokers. Reliever use was low, documented on 3.26% of diary card days, and did not differ between low and moderate/high pollution days (Mann-Whitney U, p = 0.488); daily reliever use was carried as a covariate in the regression models."
+      clinical_context: "Longitudinal panel monitoring during the 2004 Christchurch winter"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:epton-spirometry-001"
+        name: "Twice-daily personal electronic spirometry to ATS standards"
+        spirometry_standard: "ATS"
+
+  - id: "LF:epton-nonasthma-morning-fev1-highpollution"
+    name: "Morning FEV1 on moderate/high pollution days in non-asthmatic students"
+    description: "The same moderate/high versus low pollution day comparison of median morning FEV1, restricted to students without asthma. No effect was seen. This assay records a negative result: ambient wood-smoke particulate pollution did not measurably reduce lung function in the healthy students."
+    assay_date: "2004-07-01"
+    evidence:
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: REFUTE
+        evidence_source: HUMAN_CLINICAL
+        snippet: "No effect was seen in non-asthmatic students."
+        explanation: "Records the negative finding this assay captures: no lung function effect of moderate/high pollution days in the non-asthmatic students."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: REFUTE
+        evidence_source: HUMAN_CLINICAL
+        snippet: "There is no significant effect of ambient wood-smoke particulate air pollution on lung function of healthy school-aged students, but a small effect on respiratory symptoms."
+        explanation: "The authors' own conclusion that lung function in the healthy students was not affected, which is the negative result this assay records."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "moderate/high (24 hour average> 20 μm/m3 outdoor) pollution days and low pollution days."
+        explanation: "Defines the moderate/high pollution day threshold used as this assay's exposure condition."
+    has_exposure_condition:
+      - id: "EXPOSURE:epton-pm10-moderate-high-day"
+        name: "Moderate/high pollution day, defined as a 24-hour average outdoor PM10 above 20 ug/m3 (wood-smoke-dominated ambient particulate)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "20"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:epton-nonasthma-longitudinal"
+      name: "Non-asthmatic boarding students under twice-daily lung function monitoring"
+      description: "The students without asthma in the panel, followed with twice-daily spirometry and diary cards from end-March to early September 2004."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      sex: "male"
+      disease_state: "no asthma diagnosis"
+      subject_characteristics: "Male boarders aged 12-18 with no doctor diagnosis of asthma, all healthy non-smokers with no significant medical conditions, living and studying in the same smoke-free, centrally catered environment."
+      clinical_context: "Longitudinal panel monitoring during the 2004 Christchurch winter"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:epton-spirometry-001"
+        name: "Twice-daily personal electronic spirometry to ATS standards"
+        spirometry_standard: "ATS"
+
+  - id: "LF:epton-asthma-peak-pollution-multivariate"
+    name: "Multivariate association of peak outdoor PM10 with FEV1 variability and afternoon PEFR in asthmatic students"
+    description: "Mixed-model linear regression over six dependent lung function variables (FEV1 and PEF, morning and afternoon, and daily variation in both), with air pollution measures lagged out to seven days and daily reliever use as a covariate, run separately in the asthmatic students. Small but statistically significant associations were found between maximum outdoor air pollution levels and both FEV1 variability and night-time PEFR: with higher maximum outdoor pollution, morning-to-afternoon FEV1 variability dropped and afternoon PEFR dropped. Effect size was small, R2 of 3.6% for afternoon PEFR. Because the effects tracked 10-minute peak rather than 24-hour average pollution, the authors read them as a half-day to one-day lag effect. Reliever use was retained only in the model for daily PEF variability. No numeric lung function values are given for these model terms, so no output is recorded."
+    assay_date: "2004-07-01"
+    evidence:
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "When asthmatics were studied separately, small but statistically significant associations between maximum outdoor air pollution levels and variability in FEV 1, and night time PEFR were noted."
+        explanation: "States the statistically significant multivariate associations in the asthma subgroup that this assay records."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1 variability between morning and afternoon dropped, and afternoon PEFR dropped. Effect size was small, in the case of afternoon PEFR having an R2 of 3.6%."
+        explanation: "Gives the direction of both effects and the R2 of 3.6% for afternoon PEFR recorded in this assay."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Peak outdoor PM 10 levels for a 10-minute period reached 105 μg/m3 and 257 μg/m3 respectively."
+        explanation: "Gives the peak 10-minute outdoor PM10 levels of 105 and 257 ug/m3 that define this assay's peak-pollution exposure condition."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: REFUTE
+        evidence_source: HUMAN_CLINICAL
+        snippet: "There was no significant correlation between peak PM 10 levels and lung function in either asthmatics or non-asthmatics."
+        explanation: "Records the countervailing univariate result: in bivariate analysis peak PM10 was not correlated with lung function in either subgroup, so the multivariate associations this assay records are the only peak-pollution effects detected."
+    has_exposure_condition:
+      - id: "EXPOSURE:epton-pm10-peak-outdoor"
+        name: "Maximum 10-minute outdoor PM10 level; the two high-pollution event nights reached peaks of 105 and 257 ug/m3"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "257"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:epton-asthma-longitudinal"
+      name: "Asthmatic boarding students under twice-daily lung function monitoring"
+      description: "The asthma subgroup of the panel, followed with twice-daily spirometry and diary cards from end-March to early September 2004."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      sex: "male"
+      disease_state: "doctor-diagnosed asthma"
+      subject_characteristics: "26 male boarders aged 12-18 with doctor-diagnosed asthma, all non-smokers. Reliever use was low, documented on 3.26% of diary card days, and did not differ between low and moderate/high pollution days (Mann-Whitney U, p = 0.488); daily reliever use was carried as a covariate in the regression models."
+      clinical_context: "Longitudinal panel monitoring during the 2004 Christchurch winter"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:epton-spirometry-001"
+        name: "Twice-daily personal electronic spirometry to ATS standards"
+        spirometry_standard: "ATS"
+
+  - id: "LF:epton-wholepanel-pollution-multivariate"
+    name: "Whole-panel association of 24-hour average outdoor PM10 with FEV1 and PEFR"
+    description: "Longitudinal analysis over the whole 93-student panel. FEV1 was available for a median of 129.5 time points per student (range 4-189) and PEFR for a median of 128 time points (range 2-186); both were expressed as within-student Z-scores. Univariate (Spearman) analysis found a significant negative correlation between morning FEV1 and the previous day's 24-hour average outdoor pollution (rho -0.201, p = 0.034). This did not survive adjustment: in the mixed-model linear regression across six lung function variables with pollution lagged out to seven days, no pollution variable was retained, only minor temperature effects. This assay therefore records a null whole-panel result."
+    assay_date: "2004-07-01"
+    evidence:
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "outdoor air pollution levels the previous day (Spearman's rho -0.201, p = 0.034)."
+        explanation: "Gives the univariate Spearman correlation of -0.201 (p = 0.034) between morning FEV1 and the previous day's 24-hour average outdoor pollution recorded in this assay."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: REFUTE
+        evidence_source: HUMAN_CLINICAL
+        snippet: "and lagging air pollution measures out to seven days, no pollution variable was retained in a regression model, with only minor temperature effects being retained."
+        explanation: "Records the negative multivariate finding this assay captures: no pollution variable survived adjustment in the whole panel."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1 data was available for a median of 129.5 time points per student (Range 4–189)."
+        explanation: "Gives the FEV1 sampling density underlying this assay's longitudinal analysis."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PEFR data was available for a median of 128 time points (Range 2–186)."
+        explanation: "Gives the PEFR sampling density underlying this assay's longitudinal analysis."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM10 level recorded at the school on those dates was 43 μg/m3 and 72 μg/m3 respectively."
+        explanation: "Gives the 24-hour average outdoor PM10 levels of 43 and 72 ug/m3 measured on the two high-pollution days, which define this assay's exposure condition."
+    has_exposure_condition:
+      - id: "EXPOSURE:epton-pm10-24h-outdoor"
+        name: "24-hour average outdoor PM10 at the school during the winter 2004 study period; the two high-pollution event days reached 43 and 72 ug/m3"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "72"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:epton-panel"
+      name: "Full panel of 93 boarding students"
+      description: "All 93 male students who took part in the panel study, from a potential boarding house population of 240."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      sex: "male"
+      subject_characteristics: "93 male secondary school boarders aged 12-18 years (mean age 14 years 5 months, range 12 years 9 months to 17 years 6 months), all healthy non-smokers; 26 (28%) with doctor-diagnosed asthma. 89 identified as New Zealand European and 4 as Asian; none identified as Maori. All lived and studied in the same smoke-free, centrally catered environment."
+      clinical_context: "Longitudinal panel monitoring during the 2004 Christchurch winter"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:epton-spirometry-001"
+        name: "Twice-daily personal electronic spirometry to ATS standards"
+        spirometry_standard: "ATS"
+
+# =============================================================================
+# OXIDATIVE STRESS ASSAYS (exhaled breath condensate hydrogen peroxide)
+# =============================================================================
+
+oxidative_stress_assays:
+
+  - id: "OX:epton-ebc-h2o2-event-study"
+    name: "Exhaled breath condensate hydrogen peroxide after high-pollution nights"
+    description: "Fluorometric measurement of hydrogen peroxide in exhaled breath condensate collected within 24 hours of the two high-pollution nights (24 June and 21 July 2004) and on two low-pollution control days (autumn control and winter control). Detectable H2O2 was present in most samples, but there was no difference in measured H2O2 between any of the sampling days, control or high pollution, and no difference in the proportion of samples with detectable H2O2. There was no independent effect of asthma. H2O2 did not correlate with EBC pH or with urinary 1-hydroxypyrene. Values are presented only in Figure 5, so no numeric output is recorded. Assay limit of detection 3.4 nM H2O2. This assay records a negative result for pollution-induced oxidative stress."
+    ros_probe_type: "4-hydroxyphenylacetic acid fluorometric assay for hydrogen peroxide"
+    assay_date: "2004-07-22"
+    evidence:
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: REFUTE
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Detectable hydrogen peroxide was present in most samples. There was no difference in measured H 2O2 between any of the sampling days, either control or high pollution."
+        explanation: "Records the negative finding this assay captures: EBC hydrogen peroxide did not rise on high-pollution days despite being detectable in most samples."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: REFUTE
+        evidence_source: HUMAN_CLINICAL
+        snippet: "No significant effect of pollution could be seen either on airway inflammation and oxidative stress either in healthy students or students with asthma."
+        explanation: "The authors' summary of the null oxidative stress result that this assay records, in both healthy and asthmatic students."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: REFUTE
+        evidence_source: HUMAN_CLINICAL
+        snippet: "There was no independent effect of asthma in comparison with healthy subjects."
+        explanation: "Records that the null H2O2 result held in the asthmatic students as well as the healthy ones."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The limit of detection of the assay used for these experiments was 3.4 nM H2O2."
+        explanation: "Gives the assay limit of detection of 3.4 nM H2O2 recorded in this assay's description."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Urine 1-OHP levels were significantly higher on the high pollution days compared to both low pollution control days."
+        explanation: "Confirms biologically that this assay's exposure condition was real: the same students' urinary PAH metabolite rose on the high-pollution days."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Pollution day 1 0.043 (0.030–0.073, n = 79) μmol OHP/mol creatinine;"
+        explanation: "Gives the median urinary 1-hydroxypyrene on the first high-pollution day, quantifying this assay's exposure condition."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Autumn control 0.0195 (0.009–0.036, n = 88) μmol OHP/mol creatinine;"
+        explanation: "Gives the median urinary 1-hydroxypyrene on the autumn control day, the low-pollution comparator for this assay."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM10 level recorded at the school on those dates was 43 μg/m3 and 72 μg/m3 respectively."
+        explanation: "Gives the 24-hour average outdoor PM10 of 43 and 72 ug/m3 on the two high-pollution event days that define this assay's exposure condition."
+    has_exposure_condition:
+      - id: "EXPOSURE:epton-pm10-event-night"
+        name: "High-pollution night (24 June or 21 July 2004): 24-hour average outdoor PM10 of 43 and 72 ug/m3, with 10-minute peaks of 105 and 257 ug/m3"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "72"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        timing_post_exposure:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:epton-event-study"
+      name: "Boarding students assessed after high-pollution nights"
+      description: "Participating students assessed within 24 hours of each of the two high-pollution nights, and on two low-pollution control days, with urine and exhaled breath condensate collection."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      sex: "male"
+      sample_type: exhaled_breath_condensate
+      subject_characteristics: "Male secondary school boarders aged 12-18 years, all healthy non-smokers; 26 of the 93 with doctor-diagnosed asthma. Students were excused evening study activities and assessed by the investigating team the day after a high-pollution night, as notified by Environment Canterbury."
+      clinical_context: "Event study within 24 hours of a high-pollution night, compared with autumn and winter low-pollution control days"
+    follows_protocols:
+      - id: "PROTOCOL:epton-ebc-001"
+        name: "Exhaled breath condensate collection with pH and hydrogen peroxide measurement"
+
+# =============================================================================
+# AIRWAY INFLAMMATION ASSAYS (exhaled breath condensate pH)
+# =============================================================================
+
+balf_sputum_assays:
+
+  - id: "BALF:epton-ebc-ph-event-study"
+    name: "Exhaled breath condensate pH after high-pollution nights"
+    description: "EBC pH measured immediately on undegassed condensate with an ISFET pH meter, on the two high-pollution event days and the two low-pollution control days. Airway acidification in EBC is used here as a non-invasive marker of airway inflammation. There was a broad range of pH readings on all sampling days. pH differences between the autumn and winter controls reached statistical significance, and pH on the first high pollution day was significantly higher - not lower - than on the second study day and the winter control day, but not the autumn control day; the pattern therefore does not track pollution. There was no independent effect in students with asthma. EBC pH did not correlate with EBC hydrogen peroxide or with urinary 1-hydroxypyrene. Values are presented only in Figure 4, so no numeric output is recorded. This assay records a negative result for pollution-induced airway inflammation. Note: the sample here is exhaled breath condensate, not BALF or sputum; BALFSputumAssay is the SOMA class that carries the airway inflammation key event."
+    assay_date: "2004-07-22"
+    evidence:
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: REFUTE
+        evidence_source: HUMAN_CLINICAL
+        snippet: "No demonstrable effect of pollution on EBC pH or H 2O2 was demonstrated in this study, either in healthy children, or children with asthma."
+        explanation: "Records the negative finding this assay captures: EBC pH showed no demonstrable effect of pollution in either subgroup."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "There was a broad range of pH readings on all sampling days."
+        explanation: "Describes the spread of EBC pH readings this assay records, which the authors invoke to explain the absence of a detectable pollution effect."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "pH differences between autumn and winter controls reached statistical significance, and pH at the first high pollution day was significantly higher than the second study day, and the winter control day, but not the autumn control day."
+        explanation: "Gives the exact pattern of statistically significant EBC pH differences between sampling days recorded in this assay."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: REFUTE
+        evidence_source: HUMAN_CLINICAL
+        snippet: "was no independent effect in students with asthma in comparison with healthy students."
+        explanation: "Records that the EBC pH result did not differ between asthmatic and healthy students."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "30 μl of EBC to a pre-calibrated Shindengen ISFET pH meter (model KS701)."
+        explanation: "Gives the measurement method and sample volume behind this assay's pH readings."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Pollution day 2 0.042 (0.022–0.064, n = 73);"
+        explanation: "Gives the median urinary 1-hydroxypyrene on the second high-pollution day, quantifying this assay's exposure condition."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Winter control 0.025 (0.013–0.038, n = 77) μmol OHP/mol"
+        explanation: "Gives the median urinary 1-hydroxypyrene on the winter control day, the low-pollution comparator for this assay."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "p < 0.0001 for all comparisons of high"
+        explanation: "Gives the p-value for the urinary 1-hydroxypyrene contrast between high-pollution and control days, confirming this assay's exposure condition was real."
+      - reference: "PMID:18479529"
+        reference_title: "The effect of ambient air pollution on respiratory health of school children: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Peak outdoor PM 10 levels for a 10-minute period reached 105 μg/m3 and 257 μg/m3 respectively."
+        explanation: "Gives the 10-minute peak outdoor PM10 levels reached on the two high-pollution event nights that define this assay's exposure condition."
+    has_exposure_condition:
+      - id: "EXPOSURE:epton-pm10-event-night"
+        name: "High-pollution night (24 June or 21 July 2004): 24-hour average outdoor PM10 of 43 and 72 ug/m3, with 10-minute peaks of 105 and 257 ug/m3"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "72"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        timing_post_exposure:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:epton-event-study"
+      name: "Boarding students assessed after high-pollution nights"
+      description: "Participating students assessed within 24 hours of each of the two high-pollution nights, and on two low-pollution control days, with urine and exhaled breath condensate collection."
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      sex: "male"
+      sample_type: exhaled_breath_condensate
+      subject_characteristics: "Male secondary school boarders aged 12-18 years, all healthy non-smokers; 26 of the 93 with doctor-diagnosed asthma. Students were excused evening study activities and assessed by the investigating team the day after a high-pollution night, as notified by Environment Canterbury."
+      clinical_context: "Event study within 24 hours of a high-pollution night, compared with autumn and winter low-pollution control days"
+    follows_protocols:
+      - id: "PROTOCOL:epton-ebc-001"
+        name: "Exhaled breath condensate collection with pH and hydrogen peroxide measurement"
