@@ -1,0 +1,210 @@
+# =============================================================================
+# Chen et al. (2022) - Fine Particulate Matter and Lung Function among
+# Burning-Exposed Deepwater Horizon Oil Spill Workers
+# =============================================================================
+#
+# Source: Environ Health Perspect. 2022;130(2):027001
+# DOI: 10.1289/EHP8930   PMID: 35103485
+#
+# Study design (human occupational cohort, GuLF Study):
+#   - 2,316 Deepwater Horizon oil spill response and cleanup (OSRC) workers who
+#     worked on the water at least 1 d between 15 May and 15 July 2010, the
+#     primary period in which controlled burning/flaring occurred
+#   - Prebronchodilator spirometry at a home visit 1-3 y after the spill
+#     (May 2011 - May 2013), ATS/ERS 2005 acceptability criteria
+#   - Exposure: PM2.5 from flaring and in situ burning of oil/gas only,
+#     modelled with AERMOD (Gaussian plume dispersion) and assigned to workers
+#     through a job-exposure matrix built from work histories
+#   - Referent group = workers not involved in or near the burning
+#   - Outcome contrasts reported here are adjusted mean differences (beta) from
+#     multivariable linear regression, high cumulative daily maximum PM2.5
+#     exposure category vs. referent, fully adjusted model
+#
+# Key findings (abstract):
+#   - Significant exposure-response trends: cumulative daily maximum PM2.5 vs
+#     FEV1 (p-trend=0.04) and vs FEV1/FVC (p-trend=0.01)
+#   - High vs referent: FEV1 -166.8 mL (95% CI: -337.3, 3.7);
+#     FEV1/FVC -1.7% (95% CI: -3.6, 0.2)
+#   - FVC reduction was not significant: -120.9 mL (95% CI: -319.4, 77.6;
+#     p-trend=0.36)
+#
+# Note on evidence quotes: the publicly cached record for this PMID is the
+# abstract (the publisher blocked full-text retrieval), so every snippet below
+# is copied verbatim from that abstract and is an exact substring of
+# references_cache/PMID_35103485.md. Because that cache entry is abstract-only,
+# the quotes are additionally covered by verification/PMID_35103485.json, the
+# receipt written by `just verify-snippets` after the quote checker passed
+# against the full text in the local, gitignored references_cache_local/.
+#
+# Anything in this file that comes from the full text rather than the cached
+# abstract is method prose or study context, never a quoted result, and is
+# labelled as full-text-derived where it states a number (see
+# subject_characteristics). Full-text-only *results* are not recorded at all.
+# =============================================================================
+
+source_publication:
+  reference: "PMID:35103485"
+  reference_title: "Fine Particulate Matter and Lung Function among Burning-Exposed Deepwater Horizon Oil Spill Workers."
+  doi: "10.1289/EHP8930"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:chen-spirometry-001"
+    name: "Prebronchodilator spirometry at GuLF Study home visit"
+    description: "Trained certified medical assistants conducted prebronchodilator spirometry at the home visit using a portable ultrasonic transient time-based spirometer. Participants performed the test seated with a disposable nose clip and repeated it until a minimum of three acceptable maneuvers or a total of eight maneuvers was achieved. Only workers with at least three acceptable FEV1 and FVC maneuvers were analysed."
+    protocol_type: SpirometryProtocol
+    spirometry_standard: "ATS/ERS 2005"
+    equipment_required:
+      - "Easy on-PC ultrasonic transient time-based spirometer (NDD Medical Technologies)"
+    quality_control_criteria: "At least three maneuvers meeting the 2005 American Thoracic Society/European Respiratory Society acceptability criteria, or approved by a spirometry expert over-reader."
+
+  - id: "PROTOCOL:chen-pm25-jem-001"
+    name: "AERMOD dispersion modelling and job-exposure matrix for burning-related PM2.5"
+    description: "PM2.5 air concentrations from flaring and in situ burning of oil/gas were modelled hourly with the AERMOD Gaussian air dispersion model for geospatial receptors across the Gulf for every burn day between 15 May and 15 July 2010, using emission estimates and meteorological data. Industrial hygienists defined exposure groups by work location relative to the wellhead (hot zone, source, offshore, near shore) and assigned each group an average daily maximum exposure estimate; cumulative daily maximum exposure was the average daily maximum multiplied by the number of exposed days. Individual workers were matched to exposure groups via a job-exposure matrix built from enrollment work histories."
+    protocol_type: Protocol
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS
+# Adjusted mean differences vs the referent group (workers not involved in or
+# near the burning), high cumulative daily maximum PM2.5 exposure category.
+# =============================================================================
+
+lung_function_assays:
+
+  # --- FEV1 -------------------------------------------------------------
+  - id: "LF:chen-pm25-cumulative-fev1"
+    name: "FEV1 difference, high cumulative daily maximum PM2.5 vs referent"
+    description: "Adjusted mean difference in FEV1 for workers in the high cumulative daily maximum PM2.5 exposure category compared with the referent group of workers not involved in or near the burning: -166.8 mL (95% CI: -337.3, 3.7). A significant inverse exposure-response trend was observed across cumulative daily maximum exposure categories (p-trend=0.04). Analytical sample n=2,316."
+    evidence:
+      - reference: "PMID:35103485"
+        reference_title: "Fine Particulate Matter and Lung Function among Burning-Exposed Deepwater Horizon Oil Spill Workers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In comparison with the referent group (workers not involved in or near the burning), those with higher cumulative exposures had lower FEV1"
+        explanation: "The abstract reports the contrast this assay records: workers in the higher cumulative daily maximum PM2.5 exposure category had lower FEV1 than the unexposed referent group. The -166.8 mL point estimate recorded in has_specified_output is given in the same abstract sentence, inside a bracketed span the quote checker treats as literal text; it is left out of the quote so the snippet also verifies against the text re-derived from the PDF (see the note at the top of this file)."
+    has_specified_output:
+      id: "LF:chen-pm25-cumulative-fev1-output"
+      name: "FEV1 adjusted mean difference (high cumulative exposure vs referent)"
+      fev1:
+        value: "-166.8"
+        unit:
+          id: "UO:0000098"
+          name: "milliliter"
+    has_exposure_condition:
+      - id: "EXPOSURE:chen-pm25-cumulative-high"
+        name: "High cumulative daily maximum PM2.5 from controlled burning/flaring of oil and gas"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen-dwh-water-workers"
+      name: "Deepwater Horizon oil spill water workers (GuLF Study)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "2,316 adult oil spill response and cleanup workers who worked on the water during the Deepwater Horizon disaster and completed acceptable spirometry at a GuLF Study home visit (n=2,316 is the only sample figure in the cached abstract). Not in the cached abstract, read from the full-text PDF: the 2,316 split into 518 burning-exposed workers and 1,798 referent workers."
+      clinical_context: "Prebronchodilator spirometry at a home visit 1-3 y after the 2010 Deepwater Horizon disaster."
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:chen-spirometry-001"
+        name: "Prebronchodilator spirometry at GuLF Study home visit"
+        spirometry_standard: "ATS/ERS 2005"
+
+  # --- FEV1/FVC ---------------------------------------------------------
+  - id: "LF:chen-pm25-cumulative-fev1fvc"
+    name: "FEV1/FVC difference, high cumulative daily maximum PM2.5 vs referent"
+    description: "Adjusted mean difference in the FEV1/FVC ratio for workers in the high cumulative daily maximum PM2.5 exposure category compared with the referent group: -1.7 percentage points (95% CI: -3.6, 0.2), with a significant inverse exposure-response trend (p-trend=0.01). Analytical sample n=2,316."
+    evidence:
+      - reference: "PMID:35103485"
+        reference_title: "Fine Particulate Matter and Lung Function among Burning-Exposed Deepwater Horizon Oil Spill Workers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "and FEV1/FVC (-1.7, 95% CI: -3.6, 0.2)."
+        explanation: "The abstract gives the adjusted mean difference and confidence interval for FEV1/FVC in the high cumulative exposure category versus the referent group, which are the values recorded here."
+    has_specified_output:
+      id: "LF:chen-pm25-cumulative-fev1fvc-output"
+      name: "FEV1/FVC adjusted mean difference (high cumulative exposure vs referent)"
+      fev1_fvc_ratio:
+        value: "-1.7"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    has_exposure_condition:
+      - id: "EXPOSURE:chen-pm25-cumulative-high"
+        name: "High cumulative daily maximum PM2.5 from controlled burning/flaring of oil and gas"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen-dwh-water-workers"
+      name: "Deepwater Horizon oil spill water workers (GuLF Study)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "2,316 adult oil spill response and cleanup workers who worked on the water during the Deepwater Horizon disaster and completed acceptable spirometry at a GuLF Study home visit (n=2,316 is the only sample figure in the cached abstract). Not in the cached abstract, read from the full-text PDF: the 2,316 split into 518 burning-exposed workers and 1,798 referent workers."
+      clinical_context: "Prebronchodilator spirometry at a home visit 1-3 y after the 2010 Deepwater Horizon disaster."
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:chen-spirometry-001"
+        name: "Prebronchodilator spirometry at GuLF Study home visit"
+        spirometry_standard: "ATS/ERS 2005"
+
+  # --- FVC --------------------------------------------------------------
+  - id: "LF:chen-pm25-cumulative-fvc"
+    name: "FVC difference, high cumulative daily maximum PM2.5 vs referent"
+    description: "Adjusted mean difference in FVC for workers in the high cumulative daily maximum PM2.5 exposure category compared with the referent group: -120.9 mL (95% CI: -319.4, 77.6). The reduction was not statistically significant and the exposure-response trend test was null (p-trend=0.36). Analytical sample n=2,316."
+    evidence:
+      - reference: "PMID:35103485"
+        reference_title: "Fine Particulate Matter and Lung Function among Burning-Exposed Deepwater Horizon Oil Spill Workers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We also saw nonsignificant reductions in FVC (high vs. referent: -120.9, 95% CI: -319.4, 77.6; p-trend=0.36)."
+        explanation: "The abstract reports this FVC contrast as a nonsignificant reduction: the quote carries the authors' own qualifier along with the adjusted mean difference, confidence interval (which crosses zero) and the null trend p-value recorded here. It supports the null result this assay records, not an established FVC decrement."
+    has_specified_output:
+      id: "LF:chen-pm25-cumulative-fvc-output"
+      name: "FVC adjusted mean difference (high cumulative exposure vs referent)"
+      fvc:
+        value: "-120.9"
+        unit:
+          id: "UO:0000098"
+          name: "milliliter"
+    has_exposure_condition:
+      - id: "EXPOSURE:chen-pm25-cumulative-high"
+        name: "High cumulative daily maximum PM2.5 from controlled burning/flaring of oil and gas"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen-dwh-water-workers"
+      name: "Deepwater Horizon oil spill water workers (GuLF Study)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "2,316 adult oil spill response and cleanup workers who worked on the water during the Deepwater Horizon disaster and completed acceptable spirometry at a GuLF Study home visit (n=2,316 is the only sample figure in the cached abstract). Not in the cached abstract, read from the full-text PDF: the 2,316 split into 518 burning-exposed workers and 1,798 referent workers."
+      clinical_context: "Prebronchodilator spirometry at a home visit 1-3 y after the 2010 Deepwater Horizon disaster."
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:chen-spirometry-001"
+        name: "Prebronchodilator spirometry at GuLF Study home visit"
+        spirometry_standard: "ATS/ERS 2005"

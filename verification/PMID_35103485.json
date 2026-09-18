@@ -1,0 +1,12 @@
+{
+  "reference_id": "PMID:35103485",
+  "kb_file": "kb/publications/Container-Chen2022-pm25-lung-function.yaml",
+  "content_type_in_committed_cache": "abstract_only",
+  "verified_with": "just verify-snippets (linkml-reference-validator, committed + local cache)",
+  "verified_date": "2026-09-17",
+  "snippet_sha256": [
+    "aee8d9f356487ee30bb59ea24b03851c85c9a8b00f09c5b9b0c0af53d7874eda",
+    "b549ba6f0f22c26905ea36bf7a1d19180958d915b39f8c4de707923583824239",
+    "b9402af78003c76b48a2fd155b1877ec925f1b1c7dad4ccad58ac50b20dd434b"
+  ]
+}

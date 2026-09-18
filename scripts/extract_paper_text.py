@@ -9,6 +9,30 @@ paywalled full text never reaches the public repository.
 Run ``just fetch-reference PMID:<n>`` first: the paper's real title is copied
 from the committed cache entry so title checks agree between the two caches.
 
+Text fidelity
+-------------
+A quote is checked as a literal substring of this file, so an extraction
+artifact reads exactly like a wrong quote. Two are worth knowing about:
+
+* **Ligatures.** Publisher PDFs set "fi"/"fl" as single glyphs (U+FB01,
+  U+FB02...). Extractors hand those straight back, so "significant" arrives as
+  "signiﬁcant" and no honest quote containing that word can ever match. The
+  mapping back to ASCII is lossless and unambiguous, so this script always
+  applies it.
+* **Spurious mid-word spaces.** pypdf breaks a word at a font change, turning
+  "significant" into "signi ﬁcant". There is no safe way to repair that after
+  the fact — the same pattern appears legitimately in "and ﬂaring" — so this
+  script prefers poppler's ``pdftotext``, which does not introduce the break,
+  and falls back to pypdf only when poppler is not installed. The frontmatter
+  records which extractor ran.
+
+What is *not* repaired: the maths font's rendering of decimal points as
+colons ("-166:8") and of subscripts ("PM2:5"), and en dashes in compounds
+("exposure-response"). Those are judgement calls, not encoding artifacts, and
+rewriting them here to make a quote match would defeat the point of the check.
+A quote that trips over one of them should be narrowed to a span that does
+not, never reworded.
+
 Usage:
     python scripts/extract_paper_text.py path/to/paper.pdf PMID:12345678
 """
@@ -16,12 +40,58 @@ from __future__ import annotations
 
 import argparse
 import re
+import shutil
+import subprocess
 import sys
 from pathlib import Path
 
 from pypdf import PdfReader
 
 ROOT = Path(__file__).resolve().parents[1]
+
+# Typographic ligatures -> the ASCII letters they stand for. Lossless: these
+# code points have no meaning beyond "these letters, set as one glyph".
+LIGATURES = {
+    "\ufb00": "ff",
+    "\ufb01": "fi",
+    "\ufb02": "fl",
+    "\ufb03": "ffi",
+    "\ufb04": "ffl",
+    "\ufb05": "st",
+    "\ufb06": "st",
+}
+
+
+def expand_ligatures(text: str) -> str:
+    """Replace ligature glyphs with their letters (see module docstring)."""
+    for glyph, letters in LIGATURES.items():
+        text = text.replace(glyph, letters)
+    return text
+
+
+def extract_with_pdftotext(pdf_path: Path) -> str | None:
+    """Text via poppler's pdftotext, or None if it is unavailable or fails."""
+    exe = shutil.which("pdftotext")
+    if not exe:
+        return None
+    try:
+        proc = subprocess.run(
+            [exe, "-q", str(pdf_path), "-"],
+            capture_output=True,
+            timeout=300,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if proc.returncode != 0:
+        return None
+    return proc.stdout.decode("utf-8", errors="replace").strip() or None
+
+
+def extract_with_pypdf(pdf_path: Path) -> tuple[str, int]:
+    """Text via pypdf, plus the page count."""
+    reader = PdfReader(str(pdf_path))
+    pages = [(page.extract_text() or "") for page in reader.pages]
+    return "\n\n".join(pages).strip(), len(pages)
 
 
 def cached_title(pmid: str) -> str:
@@ -50,12 +120,22 @@ def main() -> int:
         print(f"ERROR: no such file: {pdf_path}", file=sys.stderr)
         return 1
 
-    reader = PdfReader(str(pdf_path))
-    pages = [(page.extract_text() or "") for page in reader.pages]
-    text = "\n\n".join(pages).strip()
+    text = extract_with_pdftotext(pdf_path)
+    extractor = "pdftotext (poppler)"
+    if text is None:
+        text, _ = extract_with_pypdf(pdf_path)
+        extractor = "pypdf"
+        print(
+            "NOTE: poppler's pdftotext is not available, falling back to pypdf. "
+            "pypdf splits words at font changes ('signi ficant'), so some "
+            "otherwise-exact quotes may not verify. Install poppler for a "
+            "faithful extraction.",
+            file=sys.stderr,
+        )
     if not text:
         print("ERROR: no text could be extracted (scanned/image-only PDF?)", file=sys.stderr)
         return 1
+    text = expand_ligatures(text)
 
     title = args.title or cached_title(args.pmid)
     if not title:
@@ -76,12 +156,16 @@ def main() -> int:
         f"{title_line}\n"
         "content_type: full_text_pdf_local\n"
         f"source_file: {pdf_path.name}\n"
+        f"extracted_with: {extractor}, ligatures expanded\n"
         "---\n\n"
         f"# {title or args.pmid}\n\n"
         "## Content\n\n"
         f"{text}\n"
     )
-    print(f"Wrote {out_file.relative_to(ROOT)} ({len(text):,} characters, {len(pages)} pages)")
+    print(
+        f"Wrote {out_file.relative_to(ROOT)} ({len(text):,} characters, "
+        f"extracted with {extractor}, ligatures expanded)"
+    )
     return 0
 
 
