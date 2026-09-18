@@ -41,6 +41,11 @@ gh pr list --state open --search "PMID:<number>" --json number,title,url
 The `|| true` matters: `git grep` exits nonzero when it finds nothing, which
 is the good case here.
 
+This grep is deliberately `kb/`-only, unlike the Key Event lookup in Step 4.
+It asks "has this paper already been extracted", and the test fixtures must
+not answer that — widening it to `tests/` would report fixture papers as
+already done.
+
 ## Step 2 — Claim it
 
 Open a GitHub issue that tells everyone this paper is taken:
@@ -109,9 +114,25 @@ blocks: the pooled workbook merges identical blocks and REJECTS the same
 `KE:` ID with different wording (`just check-entity-ids`). So before writing
 any `informs_on_key_event:` block:
 
+First count the variants, so a disagreement is visible rather than hidden
+below the fold:
+
 ```bash
-git grep -h -A6 '"KE:ke-decreased-cftr"' origin/main -- kb/ tests/data/valid/ | head -12
+git grep -h -A3 '"KE:ke-decreased-cftr"' origin/main -- kb/ tests/data/valid/ \
+  | grep -E 'name:|biological_action:' | paste - - | sort | uniq -c | sort -rn
 ```
+
+That prints one line per distinct wording with its count — which is exactly
+what the "prefer the majority" rule below needs:
+
+```
+  10       name: "Goblet cell hyperplasia"                          biological_action: increased
+   2       name: "Goblet cell hyperplasia and mucin hypersecretion"  biological_action: increased
+```
+
+Then read the full block you chose (`-A6`) to copy it verbatim. Do not pipe
+the full-block form through `head` — with `-A6` a dozen lines is under two
+blocks, so a contested ID looks unanimous and you never reach the tie-break.
 
 Search `tests/data/valid/` as well as `kb/` — `kb/publications/` starts out
 holding only a README, so a `kb/`-only grep silently returns nothing and
@@ -138,7 +159,13 @@ the founding vocabulary lives in the test fixtures.
   When a grep returns more than one block, pick the variant whose name matches
   its ID (`KE:ao-decreased-lung-function` → "Decreased lung function"), prefer
   the majority wording, and ignore `tests/data/quote_mismatch/` — that fixture
-  is deliberately corrupt. Say in the PR body which variant you chose. These
+  is deliberately corrupt.
+
+  When the names tie, apply the same majority rule to `biological_action`.
+  `KE:ke-altered-ciliogenesis` is the case in point: both variants are named
+  "Altered ciliogenesis" and differ only in the action, so the name test
+  cannot decide it. **Use `biological_action: decreased`** — it is the
+  majority (5 blocks to 1), even though the ID says "altered". Say in the PR body which variant you chose. These
   live in fixtures, so `check-entity-ids` does not see the conflict today; it
   fires the moment two `kb/publications/` files disagree.
 
@@ -155,20 +182,27 @@ Save `verify-snippets` output — its summary goes in the PR description.
 (and `validate-all`, which is what CI's `just qc` runs) resolves quotes against
 the committed `references_cache/` only. `verify-snippets` merges committed +
 `references_cache_local/`, with the local PDF text *overwriting* the committed
-file of the same name. So:
+file of the same name.
 
-- A quote taken from the PDF body but absent from the committed cache passes
-  `verify-snippets` and **fails CI**.
-- A quote from an abstract whose PDF text layer mangles it — fi/fl ligatures
-  (`significant` → `signiﬁcant`), injected spaces, hyphenated line wraps —
-  passes `validate-file` and **fails `verify-snippets`**.
+Those two caches disagree in both directions, and the consequences differ:
 
-When the committed cache is `abstract_only`, quote the abstract and choose
-spans that are verbatim in both copies; a sentence fragment that verifies
-beats a whole sentence that does not. Full text read from a local PDF is still
-worth having — it belongs in `description:` fields, which are not quote-checked,
-and it tells you what is worth recording. Say in the PR body which claims rest
-on quotes and which on locally-read full text.
+- **A quote from the PDF body that the committed cache does not contain.** When
+  the paper is abstract-only, `validate-file` does not fail on it: the recipes
+  set `ALLOW_ABSTRACT_ONLY_MISSES=1`, which tells the wrapper to ignore misses
+  flagged `only abstract available for PMID:...` and hand responsibility to the
+  receipt instead. Such a quote is legitimate *only* if the receipt covers it.
+  Against a paper that is NOT abstract-only, the same miss is a hard failure.
+- **A quote from the abstract that the PDF text layer mangles** — fi/fl
+  ligatures (`significant` → `signiﬁcant`), injected spaces, hyphenated line
+  wraps. This passes `validate-file` and **fails `verify-snippets`**, and that
+  failure is worse than it looks: the recipe runs the validator before writing
+  the receipt under `set -euo pipefail`, so a mangled local copy means **no
+  receipt is written at all**, and `check-receipts` then reds the PR.
+
+Prefer quote spans that are verbatim in *both* copies — a sentence fragment that
+verifies beats a whole sentence that does not. Full text read from a local PDF
+is also what `description:` fields are for; they are not quote-checked. Say in
+the PR body which claims rest on quotes and which on locally-read full text.
 
 When the paper's committed cache entry is abstract-only, a passing
 `verify-snippets` run also writes `verification/PMID_<number>.json` — a
