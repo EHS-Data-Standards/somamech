@@ -1,0 +1,1253 @@
+# =============================================================================
+# Amara et al. (2007) - Diesel exhaust particles induce matrix
+# metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4
+# redox-dependent mechanism
+# =============================================================================
+#
+# Source: Am J Physiol Lung Cell Mol Physiol 293: L170-L181, 2007
+# DOI: 10.1152/ajplung.00445.2006
+#
+# Study design:
+#   - In vitro: A549 human alveolar epithelial cell line (type II pneumocyte
+#     model) and NCI-H292 human lung epithelial cell line, submerged culture
+#     in Ham's F-12 + 10% FCS, stimulated in serum-free medium
+#   - Particles: diesel particulate matter SRM 2975 (NIST) dispersed in 0.04%
+#     dipalmitoyl lecithin, 5-10 ug/cm2 (10 ug/cm2 = 50 ug/ml), 6 or 24 h;
+#     carbon black particles (95 nm, FR103) 10 ug/cm2 as carbonaceous-core
+#     control; cigarette smoke condensate (2R4F Kentucky cigarettes) 10 ug/ml
+#   - Vehicle control: 0.04% dipalmitoyl lecithin + DMSO (10 ug/ml)
+#   - In vivo: male C57BL6 mice, 50 ug DEP in 100 ul sterile saline
+#     intratracheally, lungs harvested 24 h after instillation
+#
+# Key findings (all values below are the paper's own; figure panels were not
+# eyeballed for numbers):
+#   - DEPs increased MMP-1 mRNA (6 and 24 h, dose-dependent, P<0.05, n=5),
+#     protein and activity (24 h) in A549 cells
+#   - MMP-2, TIMP-1, TIMP-2 and TGF-beta mRNA were unchanged
+#   - Cigarette smoke condensate alone had no effect and did not potentiate DEP
+#   - DEPs increased intracellular ROS at 1 h; N-acetylcysteine (1 mM)
+#     reversed both the ROS rise and the MMP-1 mRNA induction
+#   - DEPs increased NOX4 mRNA and protein but not NOX1 mRNA
+#   - NOX4 siRNA reduced NOX4 mRNA by 76.8 +/- 2.45% and abolished the DEP
+#     effect on ROS, MMP-1 mRNA, ERK 1/2 and JNK phosphorylation
+#   - ERK 1/2 phosphorylation peaked at 30 min with DEP (5.51 +/- 0.34 vs.
+#     0.81 +/- 0.12 increase for CSC; P<0.05)
+#   - NCI-H292: DEP increased MMP-1 and NOX4 mRNA at 6 h (P<0.05, n=4)
+#   - Mice: NOX4-positive alveolar epithelial cells 1.20 +/- 0.50% (saline)
+#     vs 30.81 +/- 1.89% (DEP); MMP-1-positive 2.34 +/- 0.89% vs
+#     23.21 +/- 1.45% (P<0.05)
+#
+# Evidence note: the paper is not open access, so references_cache/ holds only
+# the abstract. Every snippet below is an exact quote from that abstract and
+# verifies against both the committed cache and the locally extracted PDF
+# text. Quantitative values in descriptions and outputs come from the full
+# text (RESULTS/DISCUSSION and Figs. 2-10), checked locally against the PDF.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:17449795"
+  reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+  doi: "10.1152/ajplung.00445.2006"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:amara-qpcr-001"
+    name: "Real-time RT-PCR for MMP, TIMP, NOX and TGF-beta mRNA"
+    description: "Quantitative real-time RT-PCR on an ABI 7700 (Applied Biosystems) for NOX1, NOX4, MMP-1, MMP-2, TIMP-1, TIMP-2 and TGF-beta. mRNA expression normalized to ubiquitin, which the authors had previously verified to be unchanged across the experimental conditions."
+    equipment_required:
+      - "PCR ABI 7700 apparatus (Applied Biosystems)"
+
+  - id: "PROTOCOL:amara-wb-001"
+    name: "Western blot for MMP-1 and MAP kinase phosphorylation"
+    description: "Western blot with a monoclonal anti-human MMP-1 antibody (1:400, R&D Systems). Housekeeping protein beta-actin detected with a monoclonal anti-beta-actin antibody; results expressed as the ratio of MMP-1 to beta-actin. The same approach was used for phospho-ERK 1/2, phospho-p38 and phospho-JNK time courses."
+    equipment_required:
+      - "SDS-PAGE and immunoblotting apparatus"
+
+  - id: "PROTOCOL:amara-zymo-001"
+    name: "Casein zymography for MMP-1 activity"
+    description: "Cell culture supernatants separated under nonreducing conditions on 12% polyacrylamide gels containing 1 mg/ml casein. Gels loaded with 20 ul sample plus 10 ul loading buffer, processed under Laemmli conditions. MMP-1 activity assessed by incubation of the gels in 45% acetic acid and 10% methanol."
+    equipment_required:
+      - "12% polyacrylamide casein gels"
+
+  - id: "PROTOCOL:amara-dcf-001"
+    name: "Intracellular ROS measurement by H2DCFH-DA oxidation"
+    description: "Cells cultured in 96-well plates. H2DCFH-DA (final concentration in DMSO 10 uM) added 1 h before addition of the particles. Fluorescence measured at 480-555 nm on a multiwell fluorescence plate reader (Fluorostar BMG) 1 h after addition of the stimuli. Results expressed in fluorescent arbitrary units."
+    equipment_required:
+      - "Fluorostar BMG multiwell fluorescence plate reader"
+      - "2',7'-dichlorodihydrofluorescein diacetate (H2DCFH-DA)"
+
+  - id: "PROTOCOL:amara-sirna-001"
+    name: "NOX4 small interfering RNA transfection"
+    description: "A549 cells plated at 5x10^5 cells per well on six-well plates and transfected with 0.8 ug of siRNA duplex using Lipofectamine for 4 h in medium devoid of serum and antibiotics. NOX4 siRNA target 5'-AAACCGGCAGGAGUUUACCCAG-3'; scrambled control 5'-AACCAGCAAGGUGUAUCGCCAC-3'. Gene silencing monitored after 24 h; the procedure did not affect cell viability."
+    equipment_required:
+      - "Lipofectamine transfection reagent"
+      - "NOX4 siRNA (Xeragon-Qiagen)"
+
+  - id: "PROTOCOL:amara-ihc-001"
+    name: "Immunohistochemistry for NOX4 and MMP-1"
+    description: "In A549 cells, a rabbit polyclonal anti-NOX4 antibody at 1:200. In mouse lung, four 6-um cryostat sections fixed in acetone and incubated with monoclonal anti-MMP-1 (GenWay Biotech) at 1:400 and rabbit polyclonal anti-NOX4 at 1:300. Positive cells revealed with the Vectastain ABC-alkaline phosphatase kit and fast red substrate. Quantification by counting positive cells in at least 10 optical fields per slide, scored blind by three investigators."
+    equipment_required:
+      - "Cryostat"
+      - "Vectastain ABC-alkaline phosphatase kit (Vector Laboratories)"
+      - "Fast red substrate"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS - MMP-1 and TIMPs in A549 cells
+# =============================================================================
+
+gene_expression_assays:
+  # ---- MMP-1 mRNA, A549, DEP 6 h ----
+  - id: "GE:amara-mmp1-mrna-dep-6h"
+    name: "MMP-1 mRNA - A549, DEP 6 h"
+    description: "Real-time RT-PCR showed that 6-h exposure of A549 cells to DEPs induced a significant and dose-dependent increase in MMP-1 mRNA expression compared with the vehicle control (P<0.05, n=5). MMP-1 mRNA expressed as the ratio to ubiquitin mRNA. Carbon black particles and cigarette smoke condensate elicited no effect."
+    target_gene: "PR:P03956"
+    gene_expression_method: "real-time RT-PCR"
+    normalization_reference: "ubiquitin"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "A noncytotoxic concentration of DEPs induced an increase in MMP-1 mRNA and protein expression and activity in A549 cells without modifying the expression of the MMP inhibitors TIMP-1 and -2."
+        explanation: "The abstract states the central in vitro finding recorded by this assay: a noncytotoxic DEP concentration increased MMP-1 mRNA in A549 cells."
+    has_specified_output:
+      id: "GE:amara-mmp1-mrna-dep-6h-output"
+      name: "MMP-1 mRNA level at 6 h (ratio to ubiquitin)"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-dep-10ug-6h"
+        name: "Diesel exhaust particles (SRM 2975) 10 ug/cm2 for 6 hours"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "6"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-mmp1-induction"
+      name: "Increased MMP-1 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:amara-a549-001"
+      name: "A549 human alveolar epithelial cell line, submerged culture"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+      confluence_level:
+        value: "80-90"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      culture_media:
+        id: "soma:amara-media-001"
+        name: "Ham's F-12 with 10% FCS"
+        base_medium: "Ham's F-12 with 4 mM L-glutamine"
+        supplements:
+          - id: "soma:amara-supp-fcs"
+            name: "Fetal calf serum"
+            supplement_type: growth_factor
+            concentration:
+              value: "10"
+              unit:
+                id: "UO:0000187"
+                name: "percent"
+    follows_protocols:
+      - id: "PROTOCOL:amara-qpcr-001"
+        name: "Real-time RT-PCR for MMP, TIMP, NOX and TGF-beta mRNA"
+
+  # ---- MMP-1 mRNA, A549, DEP 24 h ----
+  - id: "GE:amara-mmp1-mrna-dep-24h"
+    name: "MMP-1 mRNA - A549, DEP 24 h"
+    description: "24-h exposure of A549 cells to DEPs also induced a significant, dose-dependent increase in MMP-1 mRNA versus the vehicle control (P<0.05, n=5), expressed as the ratio to ubiquitin mRNA."
+    target_gene: "PR:P03956"
+    gene_expression_method: "real-time RT-PCR"
+    normalization_reference: "ubiquitin"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "A noncytotoxic concentration of DEPs induced an increase in MMP-1 mRNA and protein expression and activity in A549 cells without modifying the expression of the MMP inhibitors TIMP-1 and -2."
+        explanation: "The abstract states that a noncytotoxic DEP concentration increased MMP-1 mRNA in A549 cells; the full text reports this at both 6 and 24 h."
+    has_specified_output:
+      id: "GE:amara-mmp1-mrna-dep-24h-output"
+      name: "MMP-1 mRNA level at 24 h (ratio to ubiquitin)"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-dep-10ug-24h"
+        name: "Diesel exhaust particles (SRM 2975) 10 ug/cm2 for 24 hours"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-mmp1-induction"
+      name: "Increased MMP-1 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:amara-a549-001"
+      name: "A549 human alveolar epithelial cell line, submerged culture"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:amara-qpcr-001"
+        name: "Real-time RT-PCR for MMP, TIMP, NOX and TGF-beta mRNA"
+
+  # ---- MMP-1 protein and activity, A549, DEP 24 h ----
+  - id: "GE:amara-mmp1-protein-dep-24h"
+    name: "MMP-1 protein and activity - A549, DEP 24 h"
+    description: "MMP-1 protein expression (Western blot, ratio to beta-actin, 4 experiments) and MMP-1 activity (casein zymography, 4 experiments) were induced after 24-h incubation of A549 cells with DEPs (P<0.05 vs. control). The DISCUSSION reports that the increase in MMP-1 expression and activity in DEP-incubated cells was 4-5 times greater than under control conditions."
+    target_gene: "PR:P03956"
+    gene_expression_method: "Western blot and casein zymography"
+    normalization_reference: "beta-actin"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "A noncytotoxic concentration of DEPs induced an increase in MMP-1 mRNA and protein expression and activity in A549 cells without modifying the expression of the MMP inhibitors TIMP-1 and -2."
+        explanation: "The abstract states that DEPs increased MMP-1 protein expression and activity in A549 cells, which is what this Western blot / zymography assay records."
+    has_specified_output:
+      id: "GE:amara-mmp1-protein-dep-24h-output"
+      name: "MMP-1 protein and activity at 24 h (increased vs control; DISCUSSION reports 4-5x greater)"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-dep-10ug-24h"
+        name: "Diesel exhaust particles (SRM 2975) 10 ug/cm2 for 24 hours"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-mmp1-induction"
+      name: "Increased MMP-1 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:amara-a549-001"
+      name: "A549 human alveolar epithelial cell line, submerged culture"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:amara-wb-001"
+        name: "Western blot for MMP-1 and MAP kinase phosphorylation"
+      - id: "PROTOCOL:amara-zymo-001"
+        name: "Casein zymography for MMP-1 activity"
+
+  # ---- MMP-1 mRNA, A549, DEP + cigarette smoke condensate ----
+  - id: "GE:amara-mmp1-mrna-dep-csc-6h"
+    name: "MMP-1 mRNA - A549, DEP + cigarette smoke condensate 6 h"
+    description: "Treatment of A549 cells with DEPs combined with a noncytotoxic concentration of cigarette smoke condensate (10 ug/ml) increased MMP-1 mRNA to a similar extent as DEPs alone, i.e. no potentiation. CSC alone elicited no effect on MMP-1 mRNA. CSC concentrations above 10 ug/ml were cytotoxic (increased LDH release), so 10 ug/ml was used."
+    target_gene: "PR:P03956"
+    gene_expression_method: "real-time RT-PCR"
+    normalization_reference: "ubiquitin"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "This effect was not potentiated when cells were coexposed to noncytotoxic concentrations of cigarette smoke"
+        explanation: "The abstract states that coexposure to noncytotoxic cigarette smoke condensate did not potentiate the DEP effect on MMP-1, which is what this co-exposure assay records."
+    has_specified_output:
+      id: "GE:amara-mmp1-mrna-dep-csc-6h-output"
+      name: "MMP-1 mRNA level with DEP + CSC at 6 h (ratio to ubiquitin)"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-dep-10ug-6h"
+        name: "Diesel exhaust particles (SRM 2975) 10 ug/cm2 for 6 hours"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "6"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:amara-csc-10ug-6h"
+        name: "Cigarette smoke condensate (2R4F) 10 ug/ml for 6 hours"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "6"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-mmp1-induction"
+      name: "Increased MMP-1 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:amara-a549-001"
+      name: "A549 human alveolar epithelial cell line, submerged culture"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:amara-qpcr-001"
+        name: "Real-time RT-PCR for MMP, TIMP, NOX and TGF-beta mRNA"
+
+  # ---- TIMP-1 mRNA unchanged ----
+  - id: "GE:amara-timp1-mrna-dep"
+    name: "TIMP-1 mRNA - A549, DEP (unchanged)"
+    description: "mRNA expression of the MMP inhibitor TIMP-1 was not changed under the different experimental conditions, including DEP exposure. Measured by real-time RT-PCR as the ratio to ubiquitin mRNA."
+    target_gene: "PR:P01033"
+    gene_expression_method: "real-time RT-PCR"
+    normalization_reference: "ubiquitin"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "A noncytotoxic concentration of DEPs induced an increase in MMP-1 mRNA and protein expression and activity in A549 cells without modifying the expression of the MMP inhibitors TIMP-1 and -2."
+        explanation: "The abstract states explicitly that DEPs did not modify the expression of TIMP-1, the negative result this assay records."
+    has_specified_output:
+      id: "GE:amara-timp1-mrna-dep-output"
+      name: "TIMP-1 mRNA level (ratio to ubiquitin), unchanged vs control"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-dep-10ug-24h"
+        name: "Diesel exhaust particles (SRM 2975) 10 ug/cm2 for 24 hours"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-mmp1-induction"
+      name: "Increased MMP-1 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:amara-a549-001"
+      name: "A549 human alveolar epithelial cell line, submerged culture"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:amara-qpcr-001"
+        name: "Real-time RT-PCR for MMP, TIMP, NOX and TGF-beta mRNA"
+
+  # ---- TIMP-2 mRNA unchanged ----
+  - id: "GE:amara-timp2-mrna-dep"
+    name: "TIMP-2 mRNA - A549, DEP (unchanged)"
+    description: "mRNA expression of the MMP inhibitor TIMP-2 was not changed under the different experimental conditions, including DEP exposure. MMP-2 and the profibrogenic cytokine TGF-beta were likewise unchanged. Measured by real-time RT-PCR as the ratio to ubiquitin mRNA."
+    target_gene: "PR:P16035"
+    gene_expression_method: "real-time RT-PCR"
+    normalization_reference: "ubiquitin"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "A noncytotoxic concentration of DEPs induced an increase in MMP-1 mRNA and protein expression and activity in A549 cells without modifying the expression of the MMP inhibitors TIMP-1 and -2."
+        explanation: "The abstract states explicitly that DEPs did not modify the expression of TIMP-2, the negative result this assay records."
+    has_specified_output:
+      id: "GE:amara-timp2-mrna-dep-output"
+      name: "TIMP-2 mRNA level (ratio to ubiquitin), unchanged vs control"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-dep-10ug-24h"
+        name: "Diesel exhaust particles (SRM 2975) 10 ug/cm2 for 24 hours"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-mmp1-induction"
+      name: "Increased MMP-1 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:amara-a549-001"
+      name: "A549 human alveolar epithelial cell line, submerged culture"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:amara-qpcr-001"
+        name: "Real-time RT-PCR for MMP, TIMP, NOX and TGF-beta mRNA"
+
+  # ---- NOX4 mRNA up ----
+  - id: "GE:amara-nox4-mrna-dep"
+    name: "NOX4 mRNA - A549, DEP"
+    description: "A549 cells express both NOX1 and NOX4 at baseline. DEPs increased NOX4 mRNA expression (ratio to ubiquitin mRNA; P<0.05 vs. control, n=4). Carbon black particles and cigarette smoke condensate had no effect on NOX4 mRNA."
+    target_gene: "PR:Q9NPH5"
+    gene_expression_method: "real-time RT-PCR"
+    normalization_reference: "ubiquitin"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "DEP-induced MMP-1 was associated with increased ERK 1/2 phosphorylation and upregulation of expression and activity of the NADPH oxidase analog NOX4."
+        explanation: "The abstract states that DEP exposure upregulated NOX4 expression, the measurement this assay records."
+    has_specified_output:
+      id: "GE:amara-nox4-mrna-dep-output"
+      name: "NOX4 mRNA level (ratio to ubiquitin)"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-dep-10ug-24h"
+        name: "Diesel exhaust particles (SRM 2975) 10 ug/cm2 for 24 hours"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-nox4-induction"
+      name: "Increased NOX4 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:amara-a549-001"
+      name: "A549 human alveolar epithelial cell line, submerged culture"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:amara-qpcr-001"
+        name: "Real-time RT-PCR for MMP, TIMP, NOX and TGF-beta mRNA"
+
+  # ---- NOX4 protein up (A549, IHC) ----
+  - id: "GE:amara-nox4-protein-dep-24h"
+    name: "NOX4 protein - A549, DEP 24 h (immunocytochemistry)"
+    description: "NOX4 protein expression revealed by immunochemistry with a rabbit polyclonal anti-NOX4 antibody (1:200) in control A549 cells and cells incubated for 24 h with 10 ug/cm2 DEPs. DEPs increased NOX4 protein. No staining was observed when the anti-NOX4 antibody was replaced by normal rabbit serum."
+    target_gene: "PR:Q9NPH5"
+    gene_expression_method: "immunocytochemistry"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "DEP-induced MMP-1 was associated with increased ERK 1/2 phosphorylation and upregulation of expression and activity of the NADPH oxidase analog NOX4."
+        explanation: "The abstract states that DEPs upregulated NOX4 expression; this assay records the protein-level part of that observation."
+    has_specified_output:
+      id: "GE:amara-nox4-protein-dep-24h-output"
+      name: "NOX4 protein staining at 24 h"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-dep-10ug-24h"
+        name: "Diesel exhaust particles (SRM 2975) 10 ug/cm2 for 24 hours"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-nox4-induction"
+      name: "Increased NOX4 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:amara-a549-001"
+      name: "A549 human alveolar epithelial cell line, submerged culture"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:amara-ihc-001"
+        name: "Immunohistochemistry for NOX4 and MMP-1"
+
+  # ---- NOX1 mRNA unchanged ----
+  - id: "GE:amara-nox1-mrna-dep"
+    name: "NOX1 mRNA - A549, DEP (unchanged)"
+    description: "DEPs did not modify NOX1 mRNA expression in A549 cells (ratio to ubiquitin mRNA, n=4), in contrast to the increase in NOX4. NOX4 siRNA likewise did not modify NOX1 mRNA expression."
+    target_gene: "PR:Q9Y5S8"
+    gene_expression_method: "real-time RT-PCR"
+    normalization_reference: "ubiquitin"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "DEP-induced MMP-1 was associated with increased ERK 1/2 phosphorylation and upregulation of expression and activity of the NADPH oxidase analog NOX4."
+        explanation: "The abstract names NOX4 specifically as the NADPH oxidase analog upregulated by DEPs; this assay records the NOX1 comparison that establishes that specificity."
+    has_specified_output:
+      id: "GE:amara-nox1-mrna-dep-output"
+      name: "NOX1 mRNA level (ratio to ubiquitin), unchanged vs control"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-dep-10ug-24h"
+        name: "Diesel exhaust particles (SRM 2975) 10 ug/cm2 for 24 hours"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-nox4-induction"
+      name: "Increased NOX4 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:amara-a549-001"
+      name: "A549 human alveolar epithelial cell line, submerged culture"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:amara-qpcr-001"
+        name: "Real-time RT-PCR for MMP, TIMP, NOX and TGF-beta mRNA"
+
+  # ---- NOX4 siRNA knockdown ----
+  - id: "GE:amara-nox4-mrna-sirna"
+    name: "NOX4 mRNA - A549, NOX4 siRNA knockdown"
+    description: "Cell transfection with a NOX4 siRNA reduced NOX4 mRNA level by 76.8 +/- 2.45% and NOX4 protein expression at 24 h (P<0.05 vs. control, n=4). No such effect was observed with Lipofectamine alone or scrambled siRNA, and the NOX4 siRNA did not modify NOX1 mRNA expression."
+    target_gene: "PR:Q9NPH5"
+    gene_expression_method: "real-time RT-PCR"
+    normalization_reference: "ubiquitin"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Cell transfection with a NOX4 small interfering RNA prevented these phenomena, showing the critical role of a NOX4 ERK 1/2 pathway in DEP-induced MMP-1 expression and activity."
+        explanation: "The abstract describes the NOX4 siRNA transfection whose knockdown efficiency this assay records."
+    has_specified_output:
+      id: "GE:amara-nox4-mrna-sirna-output"
+      name: "NOX4 mRNA after NOX4 siRNA (76.8 +/- 2.45% reduction)"
+    assay_date: "2007-01-01"
+    informs_on_key_event:
+      id: "KE:ke-nox4-induction"
+      name: "Increased NOX4 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:amara-a549-sirna-001"
+      name: "A549 cells transfected with NOX4 siRNA"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:amara-sirna-001"
+        name: "NOX4 small interfering RNA transfection"
+      - id: "PROTOCOL:amara-qpcr-001"
+        name: "Real-time RT-PCR for MMP, TIMP, NOX and TGF-beta mRNA"
+
+  # ---- MMP-1 mRNA after NOX4 siRNA + DEP ----
+  - id: "GE:amara-mmp1-mrna-nox4sirna-dep"
+    name: "MMP-1 mRNA - A549, NOX4 siRNA + DEP 6 h"
+    description: "Transfection with NOX4 siRNA abolished the effect of DEPs on MMP-1 mRNA expression (6-h DEP incubation; P<0.05 vs. control, n=5), whereas treatment with scrambled siRNA had no effect. Diphenylene iodonium (10 uM, 1 h preincubation), an inhibitor of flavoprotein-dependent oxidases including NOX, likewise prevented the DEP-induced increase in MMP-1 mRNA."
+    target_gene: "PR:P03956"
+    gene_expression_method: "real-time RT-PCR"
+    normalization_reference: "ubiquitin"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Cell transfection with a NOX4 small interfering RNA prevented these phenomena, showing the critical role of a NOX4 ERK 1/2 pathway in DEP-induced MMP-1 expression and activity."
+        explanation: "The abstract states that NOX4 siRNA prevented the DEP-induced MMP-1 expression, which is the result this assay records."
+    has_specified_output:
+      id: "GE:amara-mmp1-mrna-nox4sirna-dep-output"
+      name: "MMP-1 mRNA with NOX4 siRNA + DEP (induction abolished)"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-dep-10ug-6h"
+        name: "Diesel exhaust particles (SRM 2975) 10 ug/cm2 for 6 hours"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "6"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-mmp1-induction"
+      name: "Increased MMP-1 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:amara-a549-sirna-001"
+      name: "A549 cells transfected with NOX4 siRNA"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:amara-sirna-001"
+        name: "NOX4 small interfering RNA transfection"
+      - id: "PROTOCOL:amara-qpcr-001"
+        name: "Real-time RT-PCR for MMP, TIMP, NOX and TGF-beta mRNA"
+
+  # ---- NCI-H292 MMP-1 ----
+  - id: "GE:amara-mmp1-mrna-h292-dep-6h"
+    name: "MMP-1 mRNA - NCI-H292, DEP 6 h"
+    description: "Incubation of NCI-H292 cells with DEPs at 10 ug/cm2 induced a significant increase in MMP-1 mRNA expression at 6 h (ratio to ubiquitin mRNA; P<0.05 vs. control, n=4). DEPs and carbon black particles at 10 ug/cm2 did not increase LDH activity in the media at 6 or 24 h in this cell line."
+    target_gene: "PR:P03956"
+    gene_expression_method: "real-time RT-PCR"
+    normalization_reference: "ubiquitin"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Similar results to those observed in A549 cells were obtained in another human lung epithelial cell line, NCI-H292."
+        explanation: "The abstract states that the A549 findings (MMP-1 induction by DEPs) were reproduced in NCI-H292 cells, which is what this assay records."
+    has_specified_output:
+      id: "GE:amara-mmp1-mrna-h292-dep-6h-output"
+      name: "MMP-1 mRNA in NCI-H292 at 6 h (ratio to ubiquitin)"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-dep-10ug-6h"
+        name: "Diesel exhaust particles (SRM 2975) 10 ug/cm2 for 6 hours"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "6"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-mmp1-induction"
+      name: "Increased MMP-1 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:amara-h292-001"
+      name: "NCI-H292 human lung epithelial cell line, submerged culture"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0008080"
+        name: "NCI-H292 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:amara-qpcr-001"
+        name: "Real-time RT-PCR for MMP, TIMP, NOX and TGF-beta mRNA"
+
+  # ---- NCI-H292 NOX4 ----
+  - id: "GE:amara-nox4-mrna-h292-dep-6h"
+    name: "NOX4 mRNA - NCI-H292, DEP 6 h"
+    description: "DEPs at 10 ug/cm2 induced a significant increase in NOX4 mRNA expression in NCI-H292 cells at 6 h (ratio to ubiquitin mRNA; P<0.05 vs. control, n=4). No change in NOX1 expression was observed."
+    target_gene: "PR:Q9NPH5"
+    gene_expression_method: "real-time RT-PCR"
+    normalization_reference: "ubiquitin"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Similar results to those observed in A549 cells were obtained in another human lung epithelial cell line, NCI-H292."
+        explanation: "The abstract states that the A549 findings (including NOX4 upregulation) were reproduced in NCI-H292 cells, which is what this assay records."
+    has_specified_output:
+      id: "GE:amara-nox4-mrna-h292-dep-6h-output"
+      name: "NOX4 mRNA in NCI-H292 at 6 h (ratio to ubiquitin)"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-dep-10ug-6h"
+        name: "Diesel exhaust particles (SRM 2975) 10 ug/cm2 for 6 hours"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "6"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-nox4-induction"
+      name: "Increased NOX4 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:amara-h292-001"
+      name: "NCI-H292 human lung epithelial cell line, submerged culture"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0008080"
+        name: "NCI-H292 cell"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:amara-qpcr-001"
+        name: "Real-time RT-PCR for MMP, TIMP, NOX and TGF-beta mRNA"
+
+  # ---- In vivo: MMP-1 positive alveolar epithelial cells, saline control ----
+  - id: "GE:amara-mmp1-ihc-mouse-control"
+    name: "MMP-1-positive alveolar epithelial cells - mouse, saline control"
+    description: "Immunohistochemistry of mouse lung 24 h after intratracheal instillation of 100 ul sterile saline solution. MMP-1-positive cells were 2.34 +/- 0.89% of cells per optical field. At least 10 fields per slide were counted by three investigators blinded to the experimental groups."
+    gene_expression_method: "immunohistochemistry"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "showing the induction of NOX4 and MMP-1 protein expression in alveolar epithelial cells."
+        explanation: "The abstract reports the mouse experiment in which MMP-1 protein expression was scored in alveolar epithelial cells; this record holds the saline-control arm of that comparison."
+    has_specified_output:
+      id: "GE:amara-mmp1-ihc-mouse-control-output"
+      name: "MMP-1-positive alveolar epithelial cells, saline control (% of cells per optical field)"
+      percentage_positive_cells:
+        value: "2.34"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    assay_date: "2007-01-01"
+    informs_on_key_event:
+      id: "KE:ke-mmp1-induction"
+      name: "Increased MMP-1 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:amara-mouse-saline"
+      name: "Saline-instilled male C57BL6 mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      subject_characteristics: "C57BL6 strain, intratracheal instillation of 100 ul sterile saline solution"
+      sample_type: biopsy
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:amara-ihc-001"
+        name: "Immunohistochemistry for NOX4 and MMP-1"
+
+  # ---- In vivo: MMP-1 positive alveolar epithelial cells, DEP ----
+  - id: "GE:amara-mmp1-ihc-mouse-dep"
+    name: "MMP-1-positive alveolar epithelial cells - mouse, DEP"
+    description: "Immunohistochemistry of mouse lung 24 h after intratracheal instillation of 50 ug DEPs suspended in 100 ul sterile saline. MMP-1-positive cells rose to 23.21 +/- 1.45% of cells per optical field versus 2.34 +/- 0.89% in saline controls (P<0.05). No staining was seen when the anti-MMP-1 antibody was replaced by a control isotype antibody."
+    gene_expression_method: "immunohistochemistry"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "showing the induction of NOX4 and MMP-1 protein expression in alveolar epithelial cells."
+        explanation: "The abstract states that DEP instillation induced MMP-1 protein expression in alveolar epithelial cells of mice, the measurement this assay records."
+    has_specified_output:
+      id: "GE:amara-mmp1-ihc-mouse-dep-output"
+      name: "MMP-1-positive alveolar epithelial cells, DEP-instilled (% of cells per optical field)"
+      percentage_positive_cells:
+        value: "23.21"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-mouse-dep-50ug-24h"
+        name: "Diesel exhaust particles 50 ug intratracheally, 24 hours before harvest"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "50"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-mmp1-induction"
+      name: "Increased MMP-1 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:amara-mouse-dep"
+      name: "DEP-instilled male C57BL6 mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      subject_characteristics: "C57BL6 strain, 50 ug DEPs in 100 ul sterile saline instilled intratracheally, lungs harvested 24 h later"
+      sample_type: biopsy
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:amara-ihc-001"
+        name: "Immunohistochemistry for NOX4 and MMP-1"
+
+  # ---- In vivo: NOX4 positive alveolar epithelial cells, saline control ----
+  - id: "GE:amara-nox4-ihc-mouse-control"
+    name: "NOX4-positive alveolar epithelial cells - mouse, saline control"
+    description: "Immunohistochemistry of mouse lung 24 h after intratracheal instillation of 100 ul sterile saline solution. NOX4-positive cells were 1.20 +/- 0.50% of cells per optical field."
+    gene_expression_method: "immunohistochemistry"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "showing the induction of NOX4 and MMP-1 protein expression in alveolar epithelial cells."
+        explanation: "The abstract reports the mouse experiment in which NOX4 protein expression was scored in alveolar epithelial cells; this record holds the saline-control arm of that comparison."
+    has_specified_output:
+      id: "GE:amara-nox4-ihc-mouse-control-output"
+      name: "NOX4-positive alveolar epithelial cells, saline control (% of cells per optical field)"
+      percentage_positive_cells:
+        value: "1.20"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    assay_date: "2007-01-01"
+    informs_on_key_event:
+      id: "KE:ke-nox4-induction"
+      name: "Increased NOX4 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:amara-mouse-saline"
+      name: "Saline-instilled male C57BL6 mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      subject_characteristics: "C57BL6 strain, intratracheal instillation of 100 ul sterile saline solution"
+      sample_type: biopsy
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:amara-ihc-001"
+        name: "Immunohistochemistry for NOX4 and MMP-1"
+
+  # ---- In vivo: NOX4 positive alveolar epithelial cells, DEP ----
+  - id: "GE:amara-nox4-ihc-mouse-dep"
+    name: "NOX4-positive alveolar epithelial cells - mouse, DEP"
+    description: "Immunohistochemistry of mouse lung 24 h after intratracheal instillation of 50 ug DEPs in 100 ul sterile saline. NOX4-positive cells rose to 30.81 +/- 1.89% of cells per optical field versus 1.20 +/- 0.50% in saline controls (P<0.05). No staining was seen when the anti-NOX4 antibody was replaced by normal rabbit serum."
+    gene_expression_method: "immunohistochemistry"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "showing the induction of NOX4 and MMP-1 protein expression in alveolar epithelial cells."
+        explanation: "The abstract states that DEP instillation induced NOX4 protein expression in alveolar epithelial cells of mice, the measurement this assay records."
+    has_specified_output:
+      id: "GE:amara-nox4-ihc-mouse-dep-output"
+      name: "NOX4-positive alveolar epithelial cells, DEP-instilled (% of cells per optical field)"
+      percentage_positive_cells:
+        value: "30.81"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-mouse-dep-50ug-24h"
+        name: "Diesel exhaust particles 50 ug intratracheally, 24 hours before harvest"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "50"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-nox4-induction"
+      name: "Increased NOX4 expression and activity"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:amara-mouse-dep"
+      name: "DEP-instilled male C57BL6 mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      subject_characteristics: "C57BL6 strain, 50 ug DEPs in 100 ul sterile saline instilled intratracheally, lungs harvested 24 h later"
+      sample_type: biopsy
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:amara-ihc-001"
+        name: "Immunohistochemistry for NOX4 and MMP-1"
+
+# =============================================================================
+# MAP KINASE SIGNALING - ERK 1/2 phosphorylation
+# Recorded with the EGFRSignalingAssay class because that class carries the
+# erk_phosphorylation slot. NOTE: EGFR itself was not measured in this study;
+# only the downstream ERK 1/2 readout below was.
+# =============================================================================
+
+egfr_signaling_assays:
+  - id: "EGFR:amara-erk-dep-30min"
+    name: "ERK 1/2 phosphorylation - A549, DEP 30 min"
+    description: "Western blot time course of ERK 1/2 phosphorylation in A549 cells. With DEP treatment, phosphorylation of ERK 1/2 began at 10 min but was delayed, peaking at 30 min, and was still elevated at 40 min. The degree of increase at 30 min was higher with DEPs than with cigarette smoke condensate compared with the control condition (5.51 +/- 0.34 vs. 0.81 +/- 0.12 increase, respectively; P<0.05, 4 experiments). Carbon black particles did not increase ERK 1/2 phosphorylation. The ERK-pathway inhibitor PD-98059 (50 uM) reduced the DEP-mediated increase in MMP-1, whereas the p38 inhibitor SB-203580 and the JNK inhibitor SP-600125 did not. NOX4 siRNA prevented the DEP-induced ERK 1/2 phosphorylation. EGFR was not measured in this study."
+    normalization_reference: "total ERK 1/2"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "DEP-induced MMP-1 was associated with increased ERK 1/2 phosphorylation and upregulation of expression and activity of the NADPH oxidase analog NOX4."
+        explanation: "The abstract states that DEP-induced MMP-1 was associated with increased ERK 1/2 phosphorylation, the measurement this assay records."
+    has_specified_output:
+      id: "EGFR:amara-erk-dep-30min-output"
+      name: "Phospho-ERK 1/2 at 30 min (densitometric increase 5.51 +/- 0.34 vs 0.81 +/- 0.12 for CSC; arbitrary ratio, not a fold value)"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-dep-10ug-30min"
+        name: "Diesel exhaust particles (SRM 2975) 10 ug/cm2 for 30 minutes"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "30"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    informs_on_key_event:
+      id: "KE:ke-erk-activation"
+      name: "Increased ERK 1/2 phosphorylation"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:amara-a549-001"
+      name: "A549 human alveolar epithelial cell line, submerged culture"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:amara-wb-001"
+        name: "Western blot for MMP-1 and MAP kinase phosphorylation"
+
+# =============================================================================
+# OXIDATIVE STRESS ASSAYS - intracellular ROS production
+# =============================================================================
+
+oxidative_stress_assays:
+  - id: "OX:amara-ros-dep-1h"
+    name: "Intracellular ROS - A549, DEP 1 h"
+    description: "Intracellular ROS production quantified by H2DCFH-DA oxidation 1 h after particle addition. Compared with the control condition, incubation for 1 h with DEPs alone or in combination with cigarette smoke condensate gave a significant and similar increase in fluorescence (P<0.05, n=5). Carbon black particles or cigarette smoke condensate alone did not increase fluorescence intensity. Pretreatment for 1 h with N-acetylcysteine (1 mM) reversed both the increased ROS production and the MMP-1 mRNA induction by DEPs. Results are in fluorescent arbitrary units, so no fold value is recorded."
+    ros_probe_type: "H2DCFH-DA"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "DEP-induced MMP-1 was associated with increased ERK 1/2 phosphorylation and upregulation of expression and activity of the NADPH oxidase analog NOX4."
+        explanation: "The oxidase activity the abstract reports as upregulated is the DEP-induced ROS production measured here by H2DCFH-DA oxidation."
+    has_specified_output:
+      id: "OX:amara-ros-dep-1h-output"
+      name: "H2DCFH-DA fluorescence at 1 h (arbitrary units, increased vs control)"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-dep-10ug-1h"
+        name: "Diesel exhaust particles (SRM 2975) 10 ug/cm2 for 1 hour"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:amara-a549-001"
+      name: "A549 human alveolar epithelial cell line, submerged culture"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:amara-dcf-001"
+        name: "Intracellular ROS measurement by H2DCFH-DA oxidation"
+
+  - id: "OX:amara-ros-nox4sirna-dep-1h"
+    name: "Intracellular ROS - A549, NOX4 siRNA + DEP 1 h"
+    description: "Transfection with NOX4 siRNA abolished the effect of DEPs on ROS production measured 1 h after incubation, as did diphenylene iodonium; scrambled siRNA had no effect (P<0.05 vs. control, n=5). The authors conclude that activation of this NADPH oxidase was responsible for immediate ROS generation after DEP incubation."
+    ros_probe_type: "H2DCFH-DA"
+    evidence:
+      - reference: "PMID:17449795"
+        reference_title: "Diesel exhaust particles induce matrix metalloprotease-1 in human lung epithelial cells via a NADP(H) oxidase/NOX4 redox-dependent mechanism."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Cell transfection with a NOX4 small interfering RNA prevented these phenomena, showing the critical role of a NOX4 ERK 1/2 pathway in DEP-induced MMP-1 expression and activity."
+        explanation: "The abstract states that NOX4 siRNA prevented the DEP-induced phenomena, which for this assay is the DEP-induced rise in intracellular ROS."
+    has_specified_output:
+      id: "OX:amara-ros-nox4sirna-dep-1h-output"
+      name: "H2DCFH-DA fluorescence at 1 h with NOX4 siRNA (DEP effect abolished)"
+    assay_date: "2007-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:amara-dep-10ug-1h"
+        name: "Diesel exhaust particles (SRM 2975) 10 ug/cm2 for 1 hour"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:amara-a549-sirna-001"
+      name: "A549 cells transfected with NOX4 siRNA"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:amara-sirna-001"
+        name: "NOX4 small interfering RNA transfection"
+      - id: "PROTOCOL:amara-dcf-001"
+        name: "Intracellular ROS measurement by H2DCFH-DA oxidation"

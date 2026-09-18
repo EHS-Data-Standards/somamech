@@ -1,0 +1,15 @@
+{
+  "reference_id": "PMID:17449795",
+  "kb_file": "kb/publications/Container-Amara2007-claude-dep-mmp1.yaml",
+  "content_type_in_committed_cache": "abstract_only",
+  "verified_with": "just verify-snippets (linkml-reference-validator, committed + local cache)",
+  "verified_date": "2026-09-17",
+  "snippet_sha256": [
+    "164fccb04abde0b594c0d7722ffd4ed73c5c1e498dd6c15b165a88403e20bcd1",
+    "19428eb24bf89d41b94e4757588b8497d9325910913b761c0f4bf32019d10c39",
+    "9255267cd13ad64386ebc9d7dc405b5291894de348a800e3abbbbff6159e6d35",
+    "a01bb8f0b7c1a3617099919e8215cd4c64b87cd738aec785de0ed8708f0a12f3",
+    "b4c62722fae1303532e35b02eb680f4f48ecd0f4e4c9df4a488f9070c3979bd6",
+    "f728f90fe3e3389eac6cfc7c037f5663dd29d1578b3b75787d5d3dc70581ad2b"
+  ]
+}
