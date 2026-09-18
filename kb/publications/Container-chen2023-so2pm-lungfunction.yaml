@@ -1,0 +1,483 @@
+# =============================================================================
+# Chen et al. (2023) - The impact of the synergistic effect of SO2 and
+# PM2.5/PM10 on obstructive lung disease in subtropical Taiwan
+# =============================================================================
+#
+# Source: Front Public Health. 2023;11:1229820
+# DOI: 10.3389/fpubh.2023.1229820
+#
+# Study Design:
+#   - Cross-sectional human epidemiological study
+#   - 2,635 participants from the Taiwan Biobank (TWB), aged 30-70 years
+#   - Exposure assessment from the Taiwan Air Quality Monitoring Database
+#     (TAQMD, 74 stations); annual average pollutant levels at the station
+#     nearest each participant's residential address for the year before survey
+#   - Obstructive lung disease defined as FEV1/FVC < 70% (ATS/ERS guidelines)
+#   - Groups: obstructive impairment (n=733, 27.8%) vs normal spirometry
+#     (n=1,902, 72.2%)
+#
+# Key findings:
+#   - Higher temperature, higher relative humidity, and lower rainfall were
+#     risk factors for obstructive lung disease
+#   - SO2 positively correlated with PM10 (r=0.53) and PM2.5 (r=0.52)
+#   - SO2 modified the relative risk of obstructive impairment for PM10
+#     (beta=0.01, p=0.0052) and PM2.5 (beta=0.01, p=0.0155)
+#   - Adjusted ORs for obstructive impairment: SO2 1.25 (model 1) / 1.28
+#     (model 2); PM10 0.99; PM2.5 0.97
+#   - Bivariate thin-plate smoothing splines (SO2 vs PM10, SO2 vs PM2.5)
+#     significantly associated with obstructive impairment (p < 0.0001),
+#     supporting a synergistic effect of SO2 and PM2.5/PM10
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:37809009"
+  reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+  doi: "10.3389/fpubh.2023.1229820"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - protocol_type: SpirometryProtocol
+    id: "PROTOCOL:chen-spirometry-001"
+    name: "Taiwan Biobank spirometry"
+    description: "Spirometry performed by technicians using MicroLab spirometers and Spida 5 software (Micro Medical Ltd., Rochester, Kent, UK). Pulmonary function parameters recorded in the Taiwan Biobank: FEV1, FVC, FEV1/FVC% ratio, FVC-predicted value, and FEV1-predicted value. Obstructive lung disease defined as FEV1/FVC < 70% according to American Thoracic Society and European Respiratory Society guidelines."
+    spirometry_standard: "ATS/ERS"
+    equipment_required:
+      - "MicroLab spirometer (Micro Medical Ltd., Rochester, Kent, UK)"
+      - "Spida 5 software"
+
+  - id: "PROTOCOL:chen-airmonitoring-001"
+    name: "TAQMD residential air pollutant exposure assessment"
+    description: "Exposure assigned from 74 Taiwan Air Quality Monitoring Database (TAQMD) stations. Google geocoding located each residential address; the nearest air quality monitoring station was identified; annual average concentrations of PM2.5, PM10, CO, NO, NO2, NOx, SO2, and O3 were calculated for the year leading up to the survey date. PM2.5 and PM10 detected by beta-ray attenuation method; SO2 detected by ultraviolet fluorescence method."
+    equipment_required:
+      - "Taiwan Air Quality Monitoring Database (74 stations)"
+      - "Beta-ray attenuation PM monitor"
+      - "Ultraviolet fluorescence SO2 monitor"
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS (spirometry, human epidemiology)
+# =============================================================================
+
+lung_function_assays:
+
+  # ---------------------------------------------------------------------------
+  # Full cohort (n=2,635) - spirometry plus regression/GAM synergy analysis
+  # ---------------------------------------------------------------------------
+  - id: "LF:chen-cohort-2023"
+    name: "Spirometry and SO2/PM synergy analysis - full TWB cohort"
+    description: "Spirometry in the full cross-sectional cohort (n=2,635; mean age 49.80 +/- 10.53 years). Mean FEV1 percent predicted 84.89 (SD 22.35). Multinomial logistic regression: adjusted OR for obstructive impairment per unit SO2 1.25 (95% CI 1.14-1.36, p<0.001) in model 1 and 1.28 (95% CI 1.17-1.39, p<0.001) in model 2; PM10 OR 0.99 (95% CI 0.98-0.99, p<0.001); PM2.5 OR 0.97 (95% CI 0.96-0.98, p<0.001); temperature OR 1.24 (model 1) and 1.31 (model 2); relative humidity OR 1.05 (model 1) and 1.04 (model 2); rainfall OR 0.08 in both models. SO2 modified the relationship of PM10 (beta=0.01, p=0.0052; per SD beta=0.11) and PM2.5 (beta=0.01, p=0.0155; per SD beta=0.09) with the relative risk of obstructive impairment. Bivariate thin-plate smoothing splines (SO2 vs PM10, SO2 vs PM2.5) were significantly associated with obstructive impairment (p<0.0001), indicating a synergistic effect."
+    has_specified_output:
+      id: "LF:chen-cohort-2023-output"
+      name: "Full cohort spirometry results"
+      description: "Mean (SD) FEV1 percent predicted for the total cohort: 84.89 (22.35). Values from Table 1 column 'Total' (n=2,635)."
+      fev1:
+        value: "84.89"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      evidence:
+        - reference: "PMID:37809009"
+          reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+          supports: SUPPORT
+          evidence_source: HUMAN_CLINICAL
+          snippet: "FEV10_PRED, mean (SD) 84.89 (22.35) 58.42 (18.31) 95.09 (13.73) <0.0001"
+          explanation: "Table 1 row for FEV1 percent predicted, mean (SD): total cohort 84.89 (22.35), obstructive impairment group 58.42 (18.31), normal spirometry group 95.09 (13.73)."
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen-twb-cohort"
+      name: "Taiwan Biobank cross-sectional cohort"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "49.80"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      subject_characteristics: "n=2,635 Taiwan Biobank volunteers aged 30-70 years without history of cancer; 1,225 (46.5%) men and 1,410 (53.5%) women; mean age 49.80 (SD 10.53) years; 61.2% from southern Taiwan"
+      clinical_context: "Cross-sectional spirometry with residential annual-average air pollutant exposure assessment"
+    has_exposure_condition:
+      - id: "EXPOSURE:chen-so2-cohort"
+        name: "Ambient SO2, annual average, full cohort"
+        exposure_agent:
+          id: "CHEBI:18422"
+          name: "sulfur dioxide"
+        exposure_concentration:
+          value: "3.63"
+          unit:
+            id: "UO:0000170"
+            name: "parts per billion"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:chen-pm10-cohort"
+        name: "Ambient PM10, annual average, full cohort"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "68.12"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:chen-pm25-cohort"
+        name: "Ambient PM2.5, annual average, full cohort"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "37.72"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:chen-spirometry-001"
+        name: "Taiwan Biobank spirometry"
+      - id: "PROTOCOL:chen-airmonitoring-001"
+        name: "TAQMD residential air pollutant exposure assessment"
+    evidence:
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The mean age of the 2,635 enrolled participants was 49.80 ± 10.53 years."
+        explanation: "Establishes the cohort size (n=2,635) and mean age used for this assay's study subject."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In Table 1, we present the average air pollution levels based on a total of 2,635 observations, indicating the following values: PM10: 68.12 μg/m3, PM 2.5: 37.72 μg/m3, SO 2: 3.63 ppb, CO: 0.44 ppm, NO: 4.09 ppb, NO2: 14.86 ppb, NOx: 18.93 ppb."
+        explanation: "Gives the cohort-wide average exposure levels recorded in this assay's exposure conditions: PM10 68.12 ug/m3, PM2.5 37.72 ug/m3, SO2 3.63 ppb."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The results showed that SO2 modified the relationship of both PM10 (β = 0.01, p = 0.0052) and PM2.5 (β = 0.01, p = 0.0155) with the relative risk of obstructive impairment (Table 3)."
+        explanation: "Reports the interaction (effect modification) of SO2 with PM10 and PM2.5 on obstructive impairment risk recorded in this assay's description."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Analysis of per standard deviation (per SD) increase also showed that SO 2 modified the relationship of both PM10 (β = 0.11, p = 0.0052) and PM2.5 (β = 0.09, p = 0.0155)."
+        explanation: "Per-SD interaction estimates for SO2 with PM10 and PM2.5 recorded in this assay's description."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Model 1 showed that the independent predictive factors were temperature (OR = 1.24; 95% CI = 1.09–1.41; p = 0.0009), relative humidity (OR = 1.05; 95% CI = 1.01–1.10; p = 0.0160), rainfall (OR = 0.08; 95% CI = 0.01–0.68; p = 0.0202), PM10 (OR = 0.99; 95% CI = 0.98–0.99; p < 0.001), and SO2 (OR = 1.25; 95% CI = 1.14–1.36; p < 0.001)."
+        explanation: "Model 1 adjusted odds ratios for obstructive impairment recorded in this assay's description."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Model 2 showed that the independent predictive factors were temperature (OR = 1.31; 95% CI = 1.15–1.49; p < 0.001), relative humidity (OR = 1.04; 95% CI = 1.00–1.09; p = 0.0372), rainfall (OR = 0.08; 95% CI = 0.01–0.67; p = 0.0197), PM2.5 (OR = 0.97; 95% CI = 0.96–0.98; p < 0.001), and SO2 (OR = 1.28; 95% CI = 1.17–1.39; p < 0.001)."
+        explanation: "Model 2 adjusted odds ratios for obstructive impairment recorded in this assay's description."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We also found that the bivariate thin-plate smoothing spline in models 1 and 2 were significantly associated with obstructive impairment (p < 0.0001) (Table 4)."
+        explanation: "GAM bivariate spline result supporting the synergistic effect of SO2 with PM10/PM2.5 on obstructive impairment."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Furthermore, we identified interactions and synergistic effects among SO2 and PM2.5/PM10."
+        explanation: "States the paper's central synergy conclusion captured by this assay."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We found that SO2 was positively correlated with PM10 and PM2.5, with correlation coefficients of 0.53 (p < 0.0001) and 0.52 (p < 0.0001), respectively (Table 2)."
+        explanation: "Correlation between co-exposures (SO2 with PM10/PM2.5) noted in this assay's description context."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Regarding meteorological factors, higher temperature, higher relative humidity, and lower rainfall were risk factors for obstructive lung disease."
+        explanation: "Meteorological risk factors recorded in this assay's description."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Lastly, we selected data from the air quality monitoring station recorded during the year leading up to the survey date and calculated the average values of air pollutants including PM2.5, PM10, CO, NO, NO2, NOx, SO2, and O3 for the chosen year (21)."
+        explanation: "Supports the one-year annual-average exposure duration recorded in this assay's exposure conditions."
+
+  # ---------------------------------------------------------------------------
+  # Obstructive impairment group (n=733, FEV1/FVC < 70%)
+  # ---------------------------------------------------------------------------
+  - id: "LF:chen-obstructive-2023"
+    name: "Spirometry - obstructive impairment group"
+    description: "Spirometry in the obstructive impairment group (FEV1/FVC < 70%; n=733, 27.8% of the cohort). Mean FEV1 percent predicted 58.42 (SD 18.31). Group exposures (median (IQR)): SO2 3.70 (1.39) ppb, PM10 65.72 (17.51) ug/m3, PM2.5 35.88 (10.74) ug/m3 - a higher SO2 level and lower PM2.5/PM10 levels than the normal spirometry group."
+    has_specified_output:
+      id: "LF:chen-obstructive-2023-output"
+      name: "Obstructive impairment group spirometry results"
+      description: "Mean (SD) FEV1 percent predicted 58.42 (18.31) in the obstructive impairment group (Table 1). FEV1 percent predicted distribution: >=80%: 80 (10.9%); 50-80%: 408 (55.7%); 30-50%: 200 (27.3%); <30%: 45 (6.1%)."
+      fev1:
+        value: "58.42"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      evidence:
+        - reference: "PMID:37809009"
+          reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+          supports: SUPPORT
+          evidence_source: HUMAN_CLINICAL
+          snippet: "FEV10_PRED, mean (SD) 84.89 (22.35) 58.42 (18.31) 95.09 (13.73) <0.0001"
+          explanation: "Table 1 row for FEV1 percent predicted: the obstructive impairment group mean (SD) is 58.42 (18.31)."
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen-obstructive-group"
+      name: "Obstructive impairment group (FEV1/FVC < 70%)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "50.56"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      subject_characteristics: "n=733 (27.8% of cohort); 322 (43.9%) male, 411 (56.1%) female; mean age 50.56 (SD 10.68) years"
+      disease_state: "Obstructive lung disease (asthma, COPD, bronchiectasis) defined as FEV1/FVC < 70%"
+      clinical_context: "Cross-sectional spirometry, chronic lung disease (obstructive impairment) group"
+    has_exposure_condition:
+      - id: "EXPOSURE:chen-so2-obstructive"
+        name: "Ambient SO2, annual average, obstructive impairment group"
+        exposure_agent:
+          id: "CHEBI:18422"
+          name: "sulfur dioxide"
+        exposure_concentration:
+          value: "3.70"
+          unit:
+            id: "UO:0000170"
+            name: "parts per billion"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:chen-pm10-obstructive"
+        name: "Ambient PM10, annual average, obstructive impairment group"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "65.72"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:chen-pm25-obstructive"
+        name: "Ambient PM2.5, annual average, obstructive impairment group"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "35.88"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:chen-spirometry-001"
+        name: "Taiwan Biobank spirometry"
+      - id: "PROTOCOL:chen-airmonitoring-001"
+        name: "TAQMD residential air pollutant exposure assessment"
+    evidence:
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Obstructive lung diseases including asthma, COPD, and bronchiectasis were defined as patients with FEV1/FVC < 70%, according to the American Thoracic Society and European Respiratory Society guidelines."
+        explanation: "Defines the obstructive impairment group measured by this assay."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Overall, 72.2% (1902/2635) of the participants were classified into the control group, and 27.8% (733/2635) were classified into the chronic lung disease group."
+        explanation: "Gives the group sizes: 733 participants in the obstructive impairment (chronic lung disease) group."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "SO2 (ppb) 3.63 (1.19) 3.70 (1.39) 3.61 (1.09) 0.0809 3.57 (1.15) 0.0265"
+        explanation: "Table 1 row for SO2 (ppb): obstructive impairment group 3.70 (1.39) vs normal spirometry 3.61 (1.09)."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM10 (μg/m3) 68.12 (17.2) 65.72 (17.51) 69.05 (16.99) <0.0001 67.74 (17.69) 0.0113"
+        explanation: "Table 1 row for PM10 (ug/m3): obstructive impairment group 65.72 (17.51) vs normal spirometry 69.05 (16.99)."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM2.5 (μg/m3) 37.72 (10.8) 35.88 (10.74) 38.44 (10.74) <0.0001 37.47 (11.15) 0.0014"
+        explanation: "Table 1 row for PM2.5 (ug/m3): obstructive impairment group 35.88 (10.74) vs normal spirometry 38.44 (10.74)."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In addition, we found that exposure to SO 2 in the environment increased the impact on patients with obstructive lung disease, whereas PM2.5 and PM10 decreased the impact (Table 1)."
+        explanation: "Reports the direction of group-level exposure differences: higher SO2 but lower PM2.5/PM10 in the obstructive lung disease group."
+
+  # ---------------------------------------------------------------------------
+  # Normal spirometry group (n=1,902)
+  # ---------------------------------------------------------------------------
+  - id: "LF:chen-normal-2023"
+    name: "Spirometry - normal spirometry (control) group"
+    description: "Spirometry in the normal spirometry control group (n=1,902, 72.2% of the cohort). Mean FEV1 percent predicted 95.09 (SD 13.73). Group exposures (median (IQR)): SO2 3.61 (1.09) ppb, PM10 69.05 (16.99) ug/m3, PM2.5 38.44 (10.74) ug/m3."
+    has_specified_output:
+      id: "LF:chen-normal-2023-output"
+      name: "Normal spirometry group results"
+      description: "Mean (SD) FEV1 percent predicted 95.09 (13.73) in the normal spirometry group (Table 1)."
+      fev1:
+        value: "95.09"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      evidence:
+        - reference: "PMID:37809009"
+          reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+          supports: SUPPORT
+          evidence_source: HUMAN_CLINICAL
+          snippet: "FEV10_PRED, mean (SD) 84.89 (22.35) 58.42 (18.31) 95.09 (13.73) <0.0001"
+          explanation: "Table 1 row for FEV1 percent predicted: the normal spirometry group mean (SD) is 95.09 (13.73)."
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen-normal-group"
+      name: "Normal spirometry (control) group"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "49.51"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      subject_characteristics: "n=1,902 (72.2% of cohort); 903 (47.5%) male, 999 (52.5%) female; mean age 49.51 (SD 10.46) years"
+      clinical_context: "Cross-sectional spirometry, normal spirometry control group"
+    has_exposure_condition:
+      - id: "EXPOSURE:chen-so2-normal"
+        name: "Ambient SO2, annual average, normal spirometry group"
+        exposure_agent:
+          id: "CHEBI:18422"
+          name: "sulfur dioxide"
+        exposure_concentration:
+          value: "3.61"
+          unit:
+            id: "UO:0000170"
+            name: "parts per billion"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:chen-pm10-normal"
+        name: "Ambient PM10, annual average, normal spirometry group"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "69.05"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:chen-pm25-normal"
+        name: "Ambient PM2.5, annual average, normal spirometry group"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "38.44"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    follows_protocols:
+      - id: "PROTOCOL:chen-spirometry-001"
+        name: "Taiwan Biobank spirometry"
+      - id: "PROTOCOL:chen-airmonitoring-001"
+        name: "TAQMD residential air pollutant exposure assessment"
+    evidence:
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Overall, 72.2% (1902/2635) of the participants were classified into the control group, and 27.8% (733/2635) were classified into the chronic lung disease group."
+        explanation: "Gives the group sizes: 1,902 participants in the normal spirometry control group."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "SO2 (ppb) 3.63 (1.19) 3.70 (1.39) 3.61 (1.09) 0.0809 3.57 (1.15) 0.0265"
+        explanation: "Table 1 row for SO2 (ppb): normal spirometry group 3.61 (1.09)."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM10 (μg/m3) 68.12 (17.2) 65.72 (17.51) 69.05 (16.99) <0.0001 67.74 (17.69) 0.0113"
+        explanation: "Table 1 row for PM10 (ug/m3): normal spirometry group 69.05 (16.99)."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM2.5 (μg/m3) 37.72 (10.8) 35.88 (10.74) 38.44 (10.74) <0.0001 37.47 (11.15) 0.0014"
+        explanation: "Table 1 row for PM2.5 (ug/m3): normal spirometry group 38.44 (10.74)."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Technicians used MicroLab spirometers and Spida 5 software (Micro Medical Ltd., Rochester, Kent, UK) (22) to perform spirometry measurements."
+        explanation: "Documents the spirometry equipment and software used for the lung function measurements."
