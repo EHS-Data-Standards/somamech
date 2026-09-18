@@ -1,0 +1,2651 @@
+# =============================================================================
+# Czekala et al. (2021) - Multi-endpoint analysis of human 3D airway epithelium
+# following repeated exposure to whole electronic vapor product aerosol or
+# cigarette smoke
+# =============================================================================
+#
+# Source: Curr Res Toxicol (2021); PMID:34345855
+# DOI: 10.1016/j.crtox.2021.02.004
+#
+# Study design:
+#   - In vitro only: MucilAir (Epithelix) 3D organotypic human airway
+#     epithelium at the air-liquid interface, single donor batch MD072001
+#     (pathology-free, non-smoker, 41-year-old male Caucasian)
+#   - Repeated whole-aerosol / whole-smoke exposure 3 times per week for
+#     28 days at 30, 60 or 90 puffs per exposure; inserts in triplicate
+#   - Test articles: myblu electronic vapor product (EVP) aerosol, undiluted
+#     (ISO 20768:2018 vaping regime) and 3R4F Kentucky reference cigarette
+#     smoke diluted 1:17 with filtered humidified air (ISO 20778:2018)
+#   - Air control: 90 puffs of humidified filtered air
+#   - Positive controls: IL-13 (10 ng/ml, six alternate days) for goblet cell
+#     hyperplasia; procaterol hydrochloride (10 uM) for increased CBF
+#   - Endpoints: LDH cytotoxicity, pro-inflammatory mediators (TNF-alpha,
+#     MMP-1/3/9, IL-1beta, IL-6, IL-8) by MSD multiplex, cilia beat frequency
+#     (CBF) and cilia active area (CAA), TEER barrier integrity, and
+#     immunohistochemistry (alcian blue + H&E, MUC5AC, FOX-J1)
+#
+# Key findings:
+#   - Undiluted myblu aerosol at all three puff doses did not significantly
+#     change pro-inflammatory mediators, CBF, TEER or cytotoxicity vs air
+#   - Diluted 3R4F smoke significantly reduced CBF and CAA at all three doses
+#   - 60 and 90 puffs of 3R4F raised TNF-alpha, MMPs and interleukins, dropped
+#     TEER, and (at 90 puffs) destroyed the tissue from T19 onwards
+#   - FOX-J1-positive (ciliated) cells: air 53%; myblu 53/55/51%;
+#     3R4F 30 puffs 50%, 60 puffs 6.9%, 90 puffs not quantifiable
+#   - Neither product induced goblet cell hyperplasia; the IL-13 positive
+#     control did
+#
+# Curation notes (judgement calls a reviewer should check):
+#   - Anatomical origin: the paper does not state the airway region of donor
+#     batch MD072001; it says MucilAir is made from nasal, tracheal OR
+#     bronchial cells, and the Limitations paragraph states "the model tested
+#     is mainly composed of bronchial epithelial cells". Bronchial epithelial
+#     cell / bronchus is recorded on that basis.
+#   - exposure_agent is nicotine (CHEBI:18723) for both products, following
+#     the Haswell 2017 precedent: nicotine is the only delivered constituent
+#     this study quantified. The recorded exposure_concentration is the
+#     nicotine deposited into PBS in a blank well over a 30-puff dose
+#     (dosimetry), not a concentration applied to the tissue. Only the
+#     30-puff values appear in the text (3R4F 3.09 ug/ml, myblu 22.84 ug/ml),
+#     so the 60- and 90-puff exposures carry no concentration.
+#   - Most endpoints are reported as fold change vs air control in figures
+#     only. Fold changes named in the text are kept in assay descriptions
+#     rather than forced into unit-bearing measurement slots (a fold change
+#     is not Hz, not a percentage). Only true percentages (FOX-J1, MUC5AC
+#     and alcian blue percent-specific-staining, LDH percent cytotoxicity)
+#     are recorded as QuantityValues.
+#   - Alcian blue percent specific staining is recorded in
+#     mucin_protein_concentration (a comparative, not absolute, mucin
+#     measure); there is no dedicated histochemical-mucin slot.
+#   - LDH cytotoxicity and nicotine dosimetry carry no informs_on_key_event:
+#     no existing key event fits general cytotoxicity, and no new key event
+#     was minted for it.
+#   - Key events, all reused from existing extractions, none newly minted:
+#     CBF -> KE:ke-decreased-cbf; FOX-J1 -> KE:ke-altered-ciliogenesis;
+#     MUC5AC and alcian blue -> KE:ke-mucin-hypersecretion; IL-13 positive
+#     control -> KE:ke-mucus-metaplasia; TNF-alpha and MMPs ->
+#     KE:ke-airway-inflammation; IL-1beta/IL-6/IL-8 -> KE:ke-il1-inflammation;
+#     TEER -> KE:ke-epithelial-barrier.
+#     Cilia active area (CAA) is mapped to KE:ke3-impaired-mcc (Impaired
+#     mucociliary clearance): CAA is the fraction of the epithelial surface
+#     carrying actively beating cilia, i.e. the tissue-level ciliary capacity
+#     that drives clearance. This study did not measure mucociliary transport
+#     directly, so a reviewer should confirm this mapping rather than a
+#     separate ciliary-function key event.
+#   - Assay dates are not recorded: the paper reports study days (T0-T28)
+#     relative to the first exposure, never calendar dates.
+#   - Oxidative stress was NOT measured in this study. The authors infer it
+#     ("we did see evidence of oxidative stress with the elevation of MMPs
+#     and cytokines"), so no OxidativeStressAssay and no link to
+#     KE:mie-oxidative-stress is recorded here.
+#   - In vitro secreted-mediator readouts use GeneExpressionAssay (the
+#     in-vitro-capable generic assay class); BALFSputumAssay is in vivo only.
+#     TEER and LDH likewise use GeneExpressionAssay, following the Haswell
+#     2017 precedent for TEER.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:34345855"
+  reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+  doi: "10.1016/j.crtox.2021.02.004"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:czekala-exposure-001"
+    name: "Repeated whole smoke / whole EVP aerosol exposure at the air-liquid interface"
+    description: "Fresh whole smoke or aerosol generated with a bespoke 5-port Smoke Aerosol Exposure In Vitro System (SAEIVS, Burghart Tabaktechnik). 3R4F smoke generated under ISO 20778:2018 (55 ml puff, 2 s duration, 30 s interval, bell profile, ventilation blocked) and diluted 1:17 with filtered humidified air; myblu aerosol generated under ISO 20768:2018 (55 ml puff, 3 s duration, 30 s interval, square profile) and delivered undiluted. Tissues exposed 3 times per week for 28 days to 30, 60 or 90 puffs, or to filtered humidified air; inserts tested in triplicate; 2-day (or weekend) incubation between exposures. Delivery confirmed by quantifying nicotine trapped in PBS in a blank well of the 24-well plate by HPLC-MS/MS (AB Sciex API 6500 Q-Trap with Agilent 1290 Infinity HPLC, electrospray ionisation, multiple reaction monitoring, external calibration 2.5-100 ng/ml)."
+    equipment_required:
+      - "Smoke Aerosol Exposure In Vitro System (SAEIVS, Burghart Tabaktechnik)"
+      - "3R4F Kentucky Reference Cigarette (University of Kentucky)"
+      - "myblu EVP, 1.6% [w/w] nicotine, tobacco flavour (Fontem Ventures)"
+      - "MucilAir culture inserts (Epithelix Sarl)"
+      - "AB Sciex API 6500 (Q-Trap) with Agilent 1290 Infinity HPLC"
+
+  - id: "PROTOCOL:czekala-ldh-001"
+    protocol_type: MolecularAssayProtocol
+    name: "LDH release cytotoxicity assay"
+    description: "Basal culture medium collected before every exposure. Lactate dehydrogenase quantified with the CytoTox 96 assay (Promega G1780) per manufacturer instructions; absorbance read at 490 nm on a Sunrise plate reader (TECAN). Percent cytotoxicity calculated as experimental LDH release to basal culture medium divided by total LDH release to basal medium after lysis of the human organotypic lung model, times 100."
+    detection_method: "colorimetric LDH activity, absorbance at 490 nm"
+    platform: "Sunrise Reader (TECAN), 96-well"
+    equipment_required:
+      - "CytoTox 96 assay (Promega, G1780)"
+      - "Sunrise Reader (TECAN)"
+
+  - id: "PROTOCOL:czekala-msd-001"
+    protocol_type: MolecularAssayProtocol
+    name: "MSD multiplex immunoassay for secreted pro-inflammatory mediators"
+    description: "TNF-alpha, MMP-1, MMP-3, MMP-9, IL-1beta, IL-6 and IL-8 secreted into the basal medium measured in sub-samples collected from each well prior to each exposure and stored at -80 C until thawed once. Quantified with the MSD Multi-Spot Assay System MESO Scale QuickPlex on custom plates per manufacturer instructions. Analysis in R 3.5.1; t-test with Benjamini-Hochberg false discovery rate correction, adjusted p-value threshold 5%."
+    detection_method: "MSD electrochemiluminescence multiplex immunoassay"
+    normalization_method: "normalized mean fold change over the air control treatment"
+    platform: "MSD MESO Scale QuickPlex (custom plates)"
+    equipment_required:
+      - "MSD Multi-Spot Assay System MESO Scale QuickPlex"
+
+  - id: "PROTOCOL:czekala-cbf-001"
+    protocol_type: ImagingProtocol
+    name: "Cilia beat frequency and cilia active area measurement"
+    description: "Cilia activity measured prior to exposure. Tissues acclimated 20 min before and during measurement at 37 C in an ibidi Heating System for multi-well plates. CBF and CAA recorded on an Olympus IX53P1F inverted microscope at 4x and analysed with Sisson-Ammons Video Analysis software; each captured image divided into 2 blocks analysed by the same routine; 1024 frames per video at 200 frames per second; pixel intensities of a region of interest extracted over time and fast Fourier transformed, with Gaussian noise reduction. Procaterol hydrochloride (10 uM, Sigma-Aldrich) basolateral served as positive control for increased CBF."
+    imaging_frame_rate:
+      value: "200"
+      unit:
+        id: "UO:0000106"
+        name: "hertz"
+    temperature_control:
+      value: "37"
+      unit:
+        id: "UO:0000027"
+        name: "degree Celsius"
+    equipment_required:
+      - "Olympus IX53P1F inverted microscope"
+      - "Sisson-Ammons Video Analysis software"
+      - "ibidi Heating System for MWP"
+
+  - id: "PROTOCOL:czekala-teer-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Transepithelial electrical resistance (TEER) measurement"
+    description: "Barrier integrity and tight junctions assessed with an EVOM2 Epithelial Volt/Ohm Meter and ENDOHM-6 electrode (World Precision Instruments). Tissue surface rinsed with PBS to remove the mucus layer; background readings of DPBS containing Ca2+ and Mg2+ subtracted from each resistance value; corrected values multiplied by the 0.33 cm2 insert surface area and averaged per treatment group. Tissues classed as having intact barrier function at 2000 ohms/cm or greater per the manufacturer's guidance; results expressed as fold change versus matched air controls."
+    detection_method: "EVOM2 Epithelial Volt/Ohm Meter with ENDOHM-6 electrode"
+    equipment_required:
+      - "EVOM2 Epithelial Volt/Ohm Meter (World Precision Instruments)"
+      - "ENDOHM-6 electrode"
+
+  - id: "PROTOCOL:czekala-ihc-001"
+    protocol_type: StainingProtocol
+    name: "Histology and immunohistochemistry for mucin, MUC5AC and FOX-J1"
+    description: "One tissue per treatment group harvested at T28 (T19 for the IL-13 group), fixed in 10% neutral buffered formalin for 30 min, cut into half discs, dehydrated in 70% ethanol and paraffin-embedded on a PELORIS Rapid Tissue Processor (Leica Biosystem); 3 um sections. Sections rehydrated, incubated in alcian blue 40 min at room temperature, washed 3 times in PBS and counter-stained with haematoxylin and eosin 15 min. MUC5AC (Thermofisher MA5-12178, 1/800, 1 h) and FOX-J1 (Novus BIO NBP1-87928, 2 ug/mL, 1 h) staining performed on a Benchmark robot (Ventana-Roche) with the Ultraview DAB kit; CC1 buffer (Tris/EDTA pH 8.4) antigen retrieval at 95 C for 30 min before primary antibody. Slides imaged on an Olympus VS120 Virtual Slide microscope and quantified with Image Pro Plus 6.2 (Media Cybernetics); results shown as percentage of specific staining."
+    staining_type: "alcian blue with haematoxylin and eosin counterstain; DAB immunohistochemistry"
+    detection_method: "Ultraview DAB (Ventana-Roche), Image Pro Plus 6.2 quantification"
+    fixation_method: "10% neutral buffered formalin, 30 min"
+    counterstain: "haematoxylin and eosin"
+    antibodies_used:
+      - "anti-MUC5AC (Thermofisher MA5-12178, 1/800)"
+      - "anti-FOX-J1 (Novus BIO NBP1-87928, 2 ug/mL)"
+    equipment_required:
+      - "PELORIS Rapid Tissue Processor (Leica Biosystem)"
+      - "Benchmark robot (Ventana-Roche)"
+      - "Olympus VS120 Virtual Slide microscope"
+      - "Image Pro Plus 6.2 (Media Cybernetics)"
+
+# =============================================================================
+# CILIARY FUNCTION ASSAYS - CBF and CAA over 28 days of repeated exposure
+# =============================================================================
+
+ciliary_function_assays:
+  # --- CBF, 3R4F cigarette smoke ---
+  - id: "CBF:czekala-3r4f-30puff"
+    name: "Cilia beat frequency - 3R4F smoke, 30 puffs, 28 days"
+    description: "CBF measured over 28 days of repeated exposure to 30 puffs of 1:17 diluted 3R4F smoke, the sub-cytotoxic dose. Significant inhibition from T6 (p <= 0.01) and a larger decrease after T20 (p <= 0.0001), ending at a 0.57-fold change relative to air control at T28. Fold-change time courses are figure-only (Fig. 8A) and are not transcribed."
+    analysis_software: "Sisson-Ammons Video Analysis"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "At sub-cytotoxic exposures (30 puffs) significant inhibition of CBF was observed from T6 (p ≤ 0.01), followed by a larger decrease in CBF after T20 (p ≤ 0.0001) resulting in a decrease of 0.57-fold relative to the air control at the end of the experiment at T28."
+        explanation: "Gives the direction, significance and end-of-study fold change for CBF at the 30-puff 3R4F dose recorded by this assay."
+    has_specified_output:
+      id: "CBF:czekala-3r4f-30puff-output"
+      name: "CBF fold change - 3R4F 30 puffs"
+      description: "0.57-fold relative to the air control at T28; significant from T6 (p <= 0.01). Reported only as fold change versus air control, so no absolute beat frequency is recorded."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-30puff"
+        name: "3R4F smoke, 1:17 dilution, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "3.09"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cbf"
+      name: "Decreased ciliary beat frequency"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      cell_culture_growth_mode: air_liquid_interface
+      donor_info: "Batch No. MD072001; pathology-free, non-smoker, 41-year-old male Caucasian donor"
+      substrate_type: transwell_insert
+      culture_conditions:
+        id: "soma:czekala-culture-conditions-001"
+        name: "MucilAir standard culture conditions - 37 C, 5% CO2, 7-day acclimatisation before the first exposure"
+        cell_culture_growth_mode: air_liquid_interface
+        substrate_type: transwell_insert
+        donor_count: 1
+        replicates_per_donor: 3
+        culture_media:
+          id: "soma:czekala-culture-medium-001"
+          name: "Epithelix MucilAir culture medium supplemented with 1% Amphotericin B (2.5 ug/ml final concentration)"
+          manufacturer: "Epithelix Sarl"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:czekala-cbf-001"
+        name: "Cilia beat frequency and cilia active area measurement"
+        imaging_frame_rate:
+          value: "200"
+          unit:
+            id: "UO:0000106"
+            name: "hertz"
+
+  - id: "CBF:czekala-3r4f-60puff"
+    name: "Cilia beat frequency - 3R4F smoke, 60 puffs, 28 days"
+    description: "CBF over 28 days of repeated exposure to 60 puffs of 1:17 diluted 3R4F smoke. Significant reduction at T3 (p <= 0.005), steep decline at T13 (p <= 0.0001) and complete loss of beating cilia after T22."
+    analysis_software: "Sisson-Ammons Video Analysis"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The 60 puffs dose caused a significant reduction in CBF at T3 (p ≤ 0.005), a steep decline at T13 (p ≤ 0.0001), followed by the complete loss of beating cilia after T22."
+        explanation: "States the timing, significance and eventual complete loss of ciliary beating at the 60-puff 3R4F dose recorded by this assay."
+    has_specified_output:
+      id: "CBF:czekala-3r4f-60puff-output"
+      name: "CBF fold change - 3R4F 60 puffs"
+      description: "Significant reduction from T3; complete loss of beating cilia after T22. No absolute beat frequency is reported."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-60puff"
+        name: "3R4F smoke, 1:17 dilution, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cbf"
+      name: "Decreased ciliary beat frequency"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:czekala-cbf-001"
+        name: "Cilia beat frequency and cilia active area measurement"
+
+  - id: "CBF:czekala-3r4f-90puff"
+    name: "Cilia beat frequency - 3R4F smoke, 90 puffs, 28 days"
+    description: "CBF over repeated exposure to 90 puffs of 1:17 diluted 3R4F smoke. Drastic decline at T6 (p <= 0.0001) with complete loss of the CBF signal by T9. CBF from T23-T28 was excluded from analysis at this dose because of high cytotoxicity."
+    analysis_software: "Sisson-Ammons Video Analysis"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Repeated exposure to 90 puffs of 3R4F smoke caused a drastic decline in the CBF at T6 (p ≤ 0.0001), with a complete loss of CBF signal by T9."
+        explanation: "Gives the timing and magnitude of CBF loss at the 90-puff 3R4F dose recorded by this assay."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Due to significantly high levels of cytotoxicity, the CBF and CAA measured on T23-T28 for 90 puffs of 3R4F smoke was excluded from analysis (see Fig. 8)."
+        explanation: "Supports the recorded caveat that the late time points at this dose were excluded from the ciliary analysis."
+    has_specified_output:
+      id: "CBF:czekala-3r4f-90puff-output"
+      name: "CBF fold change - 3R4F 90 puffs"
+      description: "Complete loss of CBF signal by T9; T23-T28 excluded for cytotoxicity. No absolute beat frequency is reported."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-90puff"
+        name: "3R4F smoke, 1:17 dilution, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cbf"
+      name: "Decreased ciliary beat frequency"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:czekala-cbf-001"
+        name: "Cilia beat frequency and cilia active area measurement"
+
+  # --- CBF, myblu EVP aerosol (undiluted) ---
+  - id: "CBF:czekala-myblu-all-doses"
+    name: "Cilia beat frequency - myblu EVP aerosol, 30/60/90 puffs, 28 days"
+    description: "CBF over 28 days of repeated exposure to undiluted myblu aerosol at 30, 60 and 90 puffs per exposure. CBF was not significantly altered overall. A 0.95-fold change at T2 for 30 puffs reached significance (p <= 0.05) but the same fold change at T6 did not, which the authors attribute to variability within the air controls."
+    analysis_software: "Sisson-Ammons Video Analysis"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Overall, CBF was not significantly altered after repeated exposure to myblu aerosol over the course of the study (Fig. 8C)."
+        explanation: "States the overall null result for CBF under repeated myblu aerosol exposure that this assay records."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The CBF fold change for 30 puffs of myblu aerosol at T2 (0.95) was deemed statistically significant different (p ≤ 0.05) versus air control."
+        explanation: "Supplies the single isolated significant fold change recorded in this assay's description."
+    has_specified_output:
+      id: "CBF:czekala-myblu-all-doses-output"
+      name: "CBF fold change - myblu aerosol"
+      description: "0.95-fold at T2 for 30 puffs (p <= 0.05); no significant overall alteration across the 28 days at any dose."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-myblu-30puff"
+        name: "myblu EVP aerosol, undiluted, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "22.84"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-myblu-60puff"
+        name: "myblu EVP aerosol, undiluted, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-myblu-90puff"
+        name: "myblu EVP aerosol, undiluted, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cbf"
+      name: "Decreased ciliary beat frequency"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:czekala-cbf-001"
+        name: "Cilia beat frequency and cilia active area measurement"
+
+  # --- CAA, 3R4F cigarette smoke ---
+  - id: "CAA:czekala-3r4f-30puff"
+    name: "Cilia active area - 3R4F smoke, 30 puffs, 28 days"
+    description: "Cilia active area over 28 days of repeated exposure to 30 puffs of 1:17 diluted 3R4F smoke. A single exposure followed by 2 days recovery did not reduce CAA (0.89-fold at both T0 and T2); two further exposures dropped the fold change to 0.48 at T6 (45% reduction, p <= 0.0001), and by T20 the fold change was close to 0."
+    analysis_software: "Sisson-Ammons Video Analysis"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Measurements taken at T2 showed a single exposure to 30 puffs of cigarette smoke, followed by 2 days recovery did not reduce CAA. Both measurements at T0 and T2 showed a fold change of 0.89 vs air control. A further two exposures caused the fold change to drop to 0.48 at T6 (45% reduction, p ≤ 0.0001). By T20, the fold change was close to 0."
+        explanation: "Supplies every fold change, the percent reduction and the significance level recorded for CAA at the 30-puff 3R4F dose."
+    has_specified_output:
+      id: "CAA:czekala-3r4f-30puff-output"
+      name: "CAA fold change - 3R4F 30 puffs"
+      description: "0.89-fold at T0 and T2, 0.48-fold at T6 (45% reduction, p <= 0.0001), close to 0 by T20. Reported as fold change versus air control only."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-30puff"
+        name: "3R4F smoke, 1:17 dilution, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "3.09"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:czekala-cbf-001"
+        name: "Cilia beat frequency and cilia active area measurement"
+
+  - id: "CAA:czekala-3r4f-60-90puff"
+    name: "Cilia active area - 3R4F smoke, 60 and 90 puffs, T2"
+    description: "Cilia active area after a single exposure to 60 or 90 puffs of 1:17 diluted 3R4F smoke: CAA declined by 50% and 100% respectively at T2 (p <= 0.0001). Repeated 3R4F exposure produced a steep, statistically significant decrease in CAA overall, indicating severe damage to the cilia."
+    analysis_software: "Sisson-Ammons Video Analysis"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "A single exposure to 60 and 90 puffs of cigarette smoke caused CAA to decline by 50% and 100% at T2 respectively (p ≤ 0.0001)."
+        explanation: "Gives the percent decline in CAA and significance level at T2 for the 60- and 90-puff 3R4F doses recorded here."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The repeated exposure to 3R4F cigarette smoke resulted in a steep, statistically significant decrease in CAA (Fig. 8B), indicating severe damage to the cilia."
+        explanation: "Supports the overall direction and the authors' interpretation of severe ciliary damage recorded in this assay's description."
+    has_specified_output:
+      id: "CAA:czekala-3r4f-60-90puff-output"
+      name: "CAA decline - 3R4F 60 and 90 puffs at T2"
+      description: "50% decline at 60 puffs and 100% decline at 90 puffs at T2 (p <= 0.0001)."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-60puff"
+        name: "3R4F smoke, 1:17 dilution, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-3r4f-90puff"
+        name: "3R4F smoke, 1:17 dilution, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:czekala-cbf-001"
+        name: "Cilia beat frequency and cilia active area measurement"
+
+  # --- CAA, myblu EVP aerosol ---
+  - id: "CAA:czekala-myblu-all-doses"
+    name: "Cilia active area - myblu EVP aerosol, 30/60/90 puffs, 28 days"
+    description: "Cilia active area over 28 days of repeated exposure to undiluted myblu aerosol. CAA initially decreased, with a significant decline at T6 at all three doses (30 puffs p <= 0.05; 60 puffs p <= 0.01; 90 puffs p <= 0.005). After T6 the 30- and 60-puff doses reverted to air control baseline; the 90-puff dose dropped again from T16, reaching a 0.72-fold change at T28 (p <= 0.05)."
+    analysis_software: "Sisson-Ammons Video Analysis"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Exposure to myblu aerosol caused CAA measurements to initially decrease. At T6, the decline was statistically significantly different verses air control (30 puffs: p ≤ 0.05; 60 puffs: p ≤ 0.01; 90 puffs: p ≤ 0.005). After T6, CAA measurements reverted to similar values as air control baseline for 30 and 60 puffs dose until the end of the study. The 90 puffs dose followed a similar trend until T16 where the CAA fold change begins to drop, at the last evaluation point T28 a fold change of 0.72 (p ≤ 0.05)."
+        explanation: "Supplies every dose-specific p-value, the recovery of the 30- and 60-puff doses and the 0.72-fold change at T28 recorded here."
+    has_specified_output:
+      id: "CAA:czekala-myblu-all-doses-output"
+      name: "CAA fold change - myblu aerosol"
+      description: "Significant decline at T6 at all doses; recovery to baseline for 30 and 60 puffs; 0.72-fold at T28 for 90 puffs (p <= 0.05)."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-myblu-30puff"
+        name: "myblu EVP aerosol, undiluted, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "22.84"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-myblu-60puff"
+        name: "myblu EVP aerosol, undiluted, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-myblu-90puff"
+        name: "myblu EVP aerosol, undiluted, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:czekala-cbf-001"
+        name: "Cilia beat frequency and cilia active area measurement"
+
+# =============================================================================
+# FOXJ1 EXPRESSION ASSAYS - FOX-J1 immunohistochemistry at T28
+# =============================================================================
+
+foxj_assays:
+  - id: "FOXJ:czekala-air-control"
+    name: "FOX-J1 positive cells - air control, T28"
+    description: "FOX-J1 immunohistochemistry of MucilAir after 28 days of repeated exposure to 90 puffs of humidified filtered air. 53% of cells in air-control tissues were ciliated (FOX-J1 stains the nucleus of ciliated cells)."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "FOX-J1 stains the nucleus of ciliated cells, 53% of the cells in air-controlled tissues were ciliated; tissues exposed to myblu aerosols contained very similar percentages of ciliated cells (30 puffs: 53%; 60 puffs: 55%; 90 puffs: 51%)."
+        explanation: "Gives the 53% FOX-J1-positive fraction in the air control tissues recorded by this assay."
+    has_specified_output:
+      id: "FOXJ:czekala-air-control-output"
+      name: "FOX-J1 positive cell percentage - air control"
+      foxj1_positive_cell_percentage:
+        value: "53"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      donor_info: "Batch No. MD072001; pathology-free, non-smoker, 41-year-old male Caucasian donor"
+      substrate_type: transwell_insert
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "FOX-J1 immunohistochemistry"
+        staining_type: "DAB immunohistochemistry"
+        antibodies_used:
+          - "anti-FOX-J1 (Novus BIO NBP1-87928, 2 ug/mL)"
+        fixation_method: "10% neutral buffered formalin, 30 min"
+        detection_method: "Ultraview DAB (Ventana-Roche), Image Pro Plus 6.2 quantification"
+
+  - id: "FOXJ:czekala-myblu-30puff"
+    name: "FOX-J1 positive cells - myblu aerosol 30 puffs, T28"
+    description: "FOX-J1 immunohistochemistry after 28 days of repeated exposure to 30 puffs of undiluted myblu aerosol: 53% ciliated cells, very similar to the 53% air control."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "FOX-J1 stains the nucleus of ciliated cells, 53% of the cells in air-controlled tissues were ciliated; tissues exposed to myblu aerosols contained very similar percentages of ciliated cells (30 puffs: 53%; 60 puffs: 55%; 90 puffs: 51%)."
+        explanation: "Gives the 53% FOX-J1-positive fraction after 30 puffs of myblu aerosol recorded by this assay."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The percentage of cells expressing FOX-J1 was not reduced in any of the three treatment groups compared to air controls."
+        explanation: "States that FOX-J1 was not reduced at any myblu dose, the null direction recorded by this assay."
+    has_specified_output:
+      id: "FOXJ:czekala-myblu-30puff-output"
+      name: "FOX-J1 positive cell percentage - myblu 30 puffs"
+      foxj1_positive_cell_percentage:
+        value: "53"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-myblu-30puff"
+        name: "myblu EVP aerosol, undiluted, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "22.84"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: altered
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "FOX-J1 immunohistochemistry"
+        staining_type: "DAB immunohistochemistry"
+        antibodies_used:
+          - "anti-FOX-J1 (Novus BIO NBP1-87928, 2 ug/mL)"
+
+  - id: "FOXJ:czekala-myblu-60puff"
+    name: "FOX-J1 positive cells - myblu aerosol 60 puffs, T28"
+    description: "FOX-J1 immunohistochemistry after 28 days of repeated exposure to 60 puffs of undiluted myblu aerosol: 55% ciliated cells, very similar to the 53% air control."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "FOX-J1 stains the nucleus of ciliated cells, 53% of the cells in air-controlled tissues were ciliated; tissues exposed to myblu aerosols contained very similar percentages of ciliated cells (30 puffs: 53%; 60 puffs: 55%; 90 puffs: 51%)."
+        explanation: "Gives the 55% FOX-J1-positive fraction after 60 puffs of myblu aerosol recorded by this assay."
+    has_specified_output:
+      id: "FOXJ:czekala-myblu-60puff-output"
+      name: "FOX-J1 positive cell percentage - myblu 60 puffs"
+      foxj1_positive_cell_percentage:
+        value: "55"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-myblu-60puff"
+        name: "myblu EVP aerosol, undiluted, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: altered
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "FOX-J1 immunohistochemistry"
+        staining_type: "DAB immunohistochemistry"
+        antibodies_used:
+          - "anti-FOX-J1 (Novus BIO NBP1-87928, 2 ug/mL)"
+
+  - id: "FOXJ:czekala-myblu-90puff"
+    name: "FOX-J1 positive cells - myblu aerosol 90 puffs, T28"
+    description: "FOX-J1 immunohistochemistry after 28 days of repeated exposure to 90 puffs of undiluted myblu aerosol: 51% ciliated cells, very similar to the 53% air control."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "FOX-J1 stains the nucleus of ciliated cells, 53% of the cells in air-controlled tissues were ciliated; tissues exposed to myblu aerosols contained very similar percentages of ciliated cells (30 puffs: 53%; 60 puffs: 55%; 90 puffs: 51%)."
+        explanation: "Gives the 51% FOX-J1-positive fraction after 90 puffs of myblu aerosol recorded by this assay."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "An abundant number of ciliated cells were present after exposure to different puff quantities of myblu aerosols."
+        explanation: "Supports the preserved ciliated-cell population after myblu aerosol exposure recorded by this assay."
+    has_specified_output:
+      id: "FOXJ:czekala-myblu-90puff-output"
+      name: "FOX-J1 positive cell percentage - myblu 90 puffs"
+      foxj1_positive_cell_percentage:
+        value: "51"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-myblu-90puff"
+        name: "myblu EVP aerosol, undiluted, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: altered
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "FOX-J1 immunohistochemistry"
+        staining_type: "DAB immunohistochemistry"
+        antibodies_used:
+          - "anti-FOX-J1 (Novus BIO NBP1-87928, 2 ug/mL)"
+
+  - id: "FOXJ:czekala-3r4f-30puff"
+    name: "FOX-J1 positive cells - 3R4F smoke 30 puffs, T28"
+    description: "FOX-J1 immunohistochemistry after 28 days of repeated exposure to 30 puffs of 1:17 diluted 3R4F smoke: 50% of cells were ciliated, part of a dose-dependent decrease across the 3R4F groups."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "After 28 days of repeated exposure to 30 puffs of 3R4F smoke, 50% of cells were ciliated."
+        explanation: "Gives the 50% FOX-J1-positive fraction after 30 puffs of 3R4F smoke recorded by this assay."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "A dose dependent decrease in the percentage of ciliated cells was observed for the 3R4F smoke exposed group."
+        explanation: "Supports the dose-dependent loss of ciliated cells across the 3R4F groups noted in this assay's description."
+    has_specified_output:
+      id: "FOXJ:czekala-3r4f-30puff-output"
+      name: "FOX-J1 positive cell percentage - 3R4F 30 puffs"
+      foxj1_positive_cell_percentage:
+        value: "50"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-30puff"
+        name: "3R4F smoke, 1:17 dilution, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "3.09"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: altered
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "FOX-J1 immunohistochemistry"
+        staining_type: "DAB immunohistochemistry"
+        antibodies_used:
+          - "anti-FOX-J1 (Novus BIO NBP1-87928, 2 ug/mL)"
+
+  - id: "FOXJ:czekala-3r4f-60puff"
+    name: "FOX-J1 positive cells - 3R4F smoke 60 puffs, T28"
+    description: "FOX-J1 immunohistochemistry after 28 days of repeated exposure to 60 puffs of 1:17 diluted 3R4F smoke: a dramatic decrease in FOX-J1 staining to 6.9%, consistent with no visible cilia on the alcian blue / H&E sections at this dose."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Exposure to 60 puffs showed a dramatic decrease in FOX-J1 staining (6.9%), and quantification was unable to be performed in the tissues exposed to 90 puffs, as they were severely damaged, with only a few basal cells remaining."
+        explanation: "Gives the 6.9% FOX-J1 staining at the 60-puff 3R4F dose recorded by this assay."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "As shown in Fig. 7.1, where the tissues were stained with alcian blue and H&E, no visible cilia were observed on the tissue surfaces exposed to 60 and 90 puffs of 3R4F smoke."
+        explanation: "Corroborates the loss of ciliated cells at 60 puffs of 3R4F from the histology, as noted in this assay's description."
+    has_specified_output:
+      id: "FOXJ:czekala-3r4f-60puff-output"
+      name: "FOX-J1 positive cell percentage - 3R4F 60 puffs"
+      foxj1_positive_cell_percentage:
+        value: "6.9"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-60puff"
+        name: "3R4F smoke, 1:17 dilution, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: altered
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "FOX-J1 immunohistochemistry"
+        staining_type: "DAB immunohistochemistry"
+        antibodies_used:
+          - "anti-FOX-J1 (Novus BIO NBP1-87928, 2 ug/mL)"
+
+  - id: "FOXJ:czekala-3r4f-90puff"
+    name: "FOX-J1 staining not quantifiable - 3R4F smoke 90 puffs, T28"
+    description: "FOX-J1 immunohistochemistry could not be quantified after 28 days of repeated exposure to 90 puffs of 1:17 diluted 3R4F smoke: the tissues were severely damaged with only a few basal cells remaining. No percentage is recorded."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Exposure to 60 puffs showed a dramatic decrease in FOX-J1 staining (6.9%), and quantification was unable to be performed in the tissues exposed to 90 puffs, as they were severely damaged, with only a few basal cells remaining."
+        explanation: "States that FOX-J1 could not be quantified at the 90-puff 3R4F dose because of severe tissue damage, which is why this assay records no value."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "For the 90 puffs dose of 3R4F cigarette smoke, severe tissue loss was observed towards the end of the experiment due to high cytotoxicity, and it was not possible to obtain any FOX-J1 staining."
+        explanation: "Repeats in the Discussion that no FOX-J1 staining could be obtained at this dose, supporting the missing measurement."
+    has_specified_output:
+      id: "FOXJ:czekala-3r4f-90puff-output"
+      name: "FOX-J1 staining - 3R4F 90 puffs (not quantifiable)"
+      description: "Quantification could not be performed; tissues severely damaged with only a few basal cells remaining."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-90puff"
+        name: "3R4F smoke, 1:17 dilution, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: altered
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "FOX-J1 immunohistochemistry"
+        staining_type: "DAB immunohistochemistry"
+        antibodies_used:
+          - "anti-FOX-J1 (Novus BIO NBP1-87928, 2 ug/mL)"
+
+# =============================================================================
+# GOBLET CELL ASSAYS - MUC5AC and alcian blue quantitative histology at T28
+# =============================================================================
+
+goblet_cell_assays:
+  - id: "GCM:czekala-muc5ac-air"
+    name: "MUC5AC specific staining - air control, T28"
+    description: "MUC5AC immunohistochemistry of MucilAir after 28 days of repeated exposure to humidified filtered air: 0.36% specific staining."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Compared with air (0.36%), exposure to myblu aerosol caused a small increase in MUC5AC secretion as the puff dose increased (30 puffs: 0.46%; 60 puffs: 0.51%; 90 puffs: 0.66%)."
+        explanation: "Gives the 0.36% air-control MUC5AC staining recorded by this assay."
+    has_specified_output:
+      id: "GCM:czekala-muc5ac-air-output"
+      name: "MUC5AC specific staining - air control"
+      muc5ac_protein_expression:
+        value: "0.36"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      donor_info: "Batch No. MD072001; pathology-free, non-smoker, 41-year-old male Caucasian donor"
+      substrate_type: transwell_insert
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "MUC5AC immunohistochemistry"
+        staining_type: "DAB immunohistochemistry"
+        antibodies_used:
+          - "anti-MUC5AC (Thermofisher MA5-12178, 1/800)"
+        detection_method: "Ultraview DAB (Ventana-Roche), Image Pro Plus 6.2 quantification"
+
+  - id: "GCM:czekala-muc5ac-myblu-30puff"
+    name: "MUC5AC specific staining - myblu aerosol 30 puffs, T28"
+    description: "MUC5AC immunohistochemistry after 28 days of repeated exposure to 30 puffs of undiluted myblu aerosol: 0.46% specific staining, a small increase over the 0.36% air control."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Compared with air (0.36%), exposure to myblu aerosol caused a small increase in MUC5AC secretion as the puff dose increased (30 puffs: 0.46%; 60 puffs: 0.51%; 90 puffs: 0.66%)."
+        explanation: "Gives the 0.46% MUC5AC staining after 30 puffs of myblu aerosol recorded by this assay."
+    has_specified_output:
+      id: "GCM:czekala-muc5ac-myblu-30puff-output"
+      name: "MUC5AC specific staining - myblu 30 puffs"
+      muc5ac_protein_expression:
+        value: "0.46"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-myblu-30puff"
+        name: "myblu EVP aerosol, undiluted, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "22.84"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "MUC5AC immunohistochemistry"
+        staining_type: "DAB immunohistochemistry"
+        antibodies_used:
+          - "anti-MUC5AC (Thermofisher MA5-12178, 1/800)"
+
+  - id: "GCM:czekala-muc5ac-myblu-60puff"
+    name: "MUC5AC specific staining - myblu aerosol 60 puffs, T28"
+    description: "MUC5AC immunohistochemistry after 28 days of repeated exposure to 60 puffs of undiluted myblu aerosol: 0.51% specific staining, a small increase over the 0.36% air control."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Compared with air (0.36%), exposure to myblu aerosol caused a small increase in MUC5AC secretion as the puff dose increased (30 puffs: 0.46%; 60 puffs: 0.51%; 90 puffs: 0.66%)."
+        explanation: "Gives the 0.51% MUC5AC staining after 60 puffs of myblu aerosol recorded by this assay."
+    has_specified_output:
+      id: "GCM:czekala-muc5ac-myblu-60puff-output"
+      name: "MUC5AC specific staining - myblu 60 puffs"
+      muc5ac_protein_expression:
+        value: "0.51"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-myblu-60puff"
+        name: "myblu EVP aerosol, undiluted, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "MUC5AC immunohistochemistry"
+        staining_type: "DAB immunohistochemistry"
+        antibodies_used:
+          - "anti-MUC5AC (Thermofisher MA5-12178, 1/800)"
+
+  - id: "GCM:czekala-muc5ac-myblu-90puff"
+    name: "MUC5AC specific staining - myblu aerosol 90 puffs, T28"
+    description: "MUC5AC immunohistochemistry after 28 days of repeated exposure to 90 puffs of undiluted myblu aerosol: 0.66% specific staining, the largest of the small dose-related increases over the 0.36% air control."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Compared with air (0.36%), exposure to myblu aerosol caused a small increase in MUC5AC secretion as the puff dose increased (30 puffs: 0.46%; 60 puffs: 0.51%; 90 puffs: 0.66%)."
+        explanation: "Gives the 0.66% MUC5AC staining after 90 puffs of myblu aerosol recorded by this assay."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Exposure to myblu aerosol did result in a small increase in MUC5AC secretion as the puff dose increased."
+        explanation: "Confirms in the Discussion that the MUC5AC increase with myblu dose was small, the direction recorded here."
+    has_specified_output:
+      id: "GCM:czekala-muc5ac-myblu-90puff-output"
+      name: "MUC5AC specific staining - myblu 90 puffs"
+      muc5ac_protein_expression:
+        value: "0.66"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-myblu-90puff"
+        name: "myblu EVP aerosol, undiluted, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "MUC5AC immunohistochemistry"
+        staining_type: "DAB immunohistochemistry"
+        antibodies_used:
+          - "anti-MUC5AC (Thermofisher MA5-12178, 1/800)"
+
+  - id: "GCM:czekala-muc5ac-3r4f-30puff"
+    name: "MUC5AC specific staining - 3R4F smoke 30 puffs, T28"
+    description: "MUC5AC immunohistochemistry after 28 days of repeated exposure to 30 puffs of 1:17 diluted 3R4F smoke: a small increase in MUC5AC secretion compared to air. The paper gives no percentage for this group, so no value is recorded."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Exposure to the 30 puffs dose of 3R4F smoke also induced a small increase in MUC5AC secretion compared to air, however at the 60 and 90 puffs doses, the secretion did not increase which was likely caused by the loss of goblet cells and tissue matter, leaving only basal cells as seen in the histology sections for 60 and 90 puffs."
+        explanation: "States the small increase in MUC5AC at the 30-puff 3R4F dose that this assay records, without giving a percentage."
+    has_specified_output:
+      id: "GCM:czekala-muc5ac-3r4f-30puff-output"
+      name: "MUC5AC specific staining - 3R4F 30 puffs"
+      description: "Small increase versus air control; no percentage reported in the text for this group."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-30puff"
+        name: "3R4F smoke, 1:17 dilution, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "3.09"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "MUC5AC immunohistochemistry"
+        staining_type: "DAB immunohistochemistry"
+        antibodies_used:
+          - "anti-MUC5AC (Thermofisher MA5-12178, 1/800)"
+
+  - id: "GCM:czekala-muc5ac-3r4f-60-90puff"
+    name: "MUC5AC specific staining - 3R4F smoke 60 and 90 puffs, T28"
+    description: "MUC5AC immunohistochemistry after 28 days of repeated exposure to 60 or 90 puffs of 1:17 diluted 3R4F smoke: secretion did not increase. The authors attribute this to loss of goblet cells and tissue matter rather than to an absence of a mucin response, leaving only basal cells in the histology."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Exposure to the 30 puffs dose of 3R4F smoke also induced a small increase in MUC5AC secretion compared to air, however at the 60 and 90 puffs doses, the secretion did not increase which was likely caused by the loss of goblet cells and tissue matter, leaving only basal cells as seen in the histology sections for 60 and 90 puffs."
+        explanation: "States both the absence of a MUC5AC increase at 60 and 90 puffs and the authors' tissue-loss explanation recorded here."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In reference to the histology images (Fig. 7) for 60 and 90 puffs of 3R4F smoke, the reduction in MUC5AC production could be due to the loss of tissue infrastructure and functional cells, resulted from high levels of cytotoxicity."
+        explanation: "Repeats the cytotoxicity-driven explanation for the absent MUC5AC response at these doses."
+    has_specified_output:
+      id: "GCM:czekala-muc5ac-3r4f-60-90puff-output"
+      name: "MUC5AC specific staining - 3R4F 60 and 90 puffs"
+      description: "No increase in MUC5AC secretion at either dose; attributed to loss of goblet cells and tissue matter. No percentages reported for these groups."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-60puff"
+        name: "3R4F smoke, 1:17 dilution, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-3r4f-90puff"
+        name: "3R4F smoke, 1:17 dilution, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "MUC5AC immunohistochemistry"
+        staining_type: "DAB immunohistochemistry"
+        antibodies_used:
+          - "anti-MUC5AC (Thermofisher MA5-12178, 1/800)"
+
+  - id: "GCM:czekala-alcianblue-air"
+    name: "Alcian blue specific staining - air control, T28"
+    description: "Non-specific mucin measured as percent specific alcian blue staining after 28 days of repeated exposure to humidified filtered air: 3.7%."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Based upon the alcian blue staining, exposure to humidified air (3.7%) and different doses of myblu aerosols showed relatively similar staining intensities (30 puffs: 3.3%; 60 puffs: 5.1%; 90 puffs: 4.0%)."
+        explanation: "Gives the 3.7% air-control alcian blue staining recorded by this assay."
+    has_specified_output:
+      id: "GCM:czekala-alcianblue-air-output"
+      name: "Alcian blue specific staining - air control"
+      mucin_protein_concentration:
+        value: "3.7"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      description: "Percent specific alcian blue staining (a comparative histochemical measure of non-specific mucin), not an absolute mucin concentration."
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "Alcian blue with haematoxylin and eosin counterstain"
+        staining_type: "alcian blue"
+        counterstain: "haematoxylin and eosin"
+        detection_method: "Image Pro Plus 6.2 quantification of percent specific staining"
+
+  - id: "GCM:czekala-alcianblue-myblu"
+    name: "Alcian blue specific staining - myblu aerosol 30/60/90 puffs, T28"
+    description: "Percent specific alcian blue staining after 28 days of repeated exposure to undiluted myblu aerosol: 3.3% at 30 puffs, 5.1% at 60 puffs and 4.0% at 90 puffs, relatively similar to the 3.7% air control. The 90-puff value is recorded in the measurement slot."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Based upon the alcian blue staining, exposure to humidified air (3.7%) and different doses of myblu aerosols showed relatively similar staining intensities (30 puffs: 3.3%; 60 puffs: 5.1%; 90 puffs: 4.0%)."
+        explanation: "Gives all three myblu alcian blue percentages and the comparison with the air control recorded by this assay."
+    has_specified_output:
+      id: "GCM:czekala-alcianblue-myblu-output"
+      name: "Alcian blue specific staining - myblu aerosol"
+      mucin_protein_concentration:
+        value: "4.0"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      description: "Percent specific alcian blue staining at the 90-puff dose; 30 puffs 3.3% and 60 puffs 5.1% are given in the assay description."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-myblu-90puff"
+        name: "myblu EVP aerosol, undiluted, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "Alcian blue with haematoxylin and eosin counterstain"
+        staining_type: "alcian blue"
+        counterstain: "haematoxylin and eosin"
+
+  - id: "GCM:czekala-alcianblue-3r4f"
+    name: "Alcian blue specific staining - 3R4F smoke, T28"
+    description: "Percent specific alcian blue staining after 28 days of repeated exposure to 1:17 diluted 3R4F smoke was very low. The authors attribute this to severe tissue disruption and loss of secretory cells leaving less tissue material to quantify, not to a genuine fall in mucin production. No percentage is given for these groups."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "However, tissues exposed to 3R4F smoke presented very low alcian blue staining, this may be due to severe tissue disruption, leading to loss of secretory cells and in general there is less tissue material to quantify."
+        explanation: "States both the very low alcian blue staining after 3R4F smoke and the tissue-disruption caveat recorded by this assay."
+    has_specified_output:
+      id: "GCM:czekala-alcianblue-3r4f-output"
+      name: "Alcian blue specific staining - 3R4F smoke"
+      description: "Very low staining; no percentage reported. Confounded by severe tissue disruption and loss of secretory cells."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-30puff"
+        name: "3R4F smoke, 1:17 dilution, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "3.09"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-3r4f-60puff"
+        name: "3R4F smoke, 1:17 dilution, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-3r4f-90puff"
+        name: "3R4F smoke, 1:17 dilution, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "Alcian blue with haematoxylin and eosin counterstain"
+        staining_type: "alcian blue"
+        counterstain: "haematoxylin and eosin"
+
+  - id: "GCM:czekala-il13-positive-control"
+    name: "IL-13 positive control - goblet cell hyperplasia and mucus hypersecretion, T19"
+    description: "Dedicated tissues exposed to IL-13 (10 ng/ml) on six alternate days as a positive control for goblet cell hyperplasia, evaluated at T19. IL-13 thickened the tissue through mucin accumulation and cell proliferation, with elevated non-specific mucin (alcian blue) and MUC5AC. Neither 3R4F smoke nor myblu aerosol triggered goblet cell hyperplasia or mucus hypersecretion by comparison; the authors relate this to the absence of immune cells in the model. IL-13 is not recorded as an exposure_agent because it has no CHEBI/ECTO/ENVO term."
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Repeated addition of IL-13 to the 3D lung model caused the tissue to thicken due to the accumulation of mucin and cell proliferation. Non-specific mucin (stained with alcian blue) and MUC5AC secretion were both elevated as reflected by intensive staining in Fig. 7.1H & 3H."
+        explanation: "States the positive-control response — thickening, mucin accumulation and elevated alcian blue and MUC5AC staining — recorded by this assay."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In comparison to the IL-13 control group, neither 3R4F smoke nor myblu aerosol triggered goblet cell hyperplasia or hypersecretion of mucus in this study; similar results were also reported by Iskikawa et al. (Ishikawa and Ito, 2017)."
+        explanation: "Establishes the contrast between the IL-13 positive control and both test articles that this assay records."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "A dedicated set of three tissues were exposed to interleukin 13 (IL-13) (10 ng/ml) on six alternative days to induce goblet cell hyperplasia (Fig. 1) (Evans et al., 2015)."
+        explanation: "Gives the IL-13 dose, schedule and replicate number recorded in this assay's description."
+    has_specified_output:
+      id: "GCM:czekala-il13-positive-control-output"
+      name: "IL-13 induced mucin and MUC5AC staining"
+      description: "Elevated alcian blue and MUC5AC staining and tissue thickening; reported qualitatively as intensive staining, with no percentages for the IL-13 group."
+    informs_on_key_event:
+      id: "KE:ke-mucus-metaplasia"
+      name: "Mucus secretory program activation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-il13"
+      name: "MucilAir 3D airway epithelium at ALI - IL-13 positive control tissues"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      donor_info: "Batch No. MD072001; pathology-free, non-smoker, 41-year-old male Caucasian donor; dedicated set of three tissues"
+      substrate_type: transwell_insert
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:czekala-ihc-001"
+        name: "Alcian blue and MUC5AC histology"
+        staining_type: "alcian blue and DAB immunohistochemistry"
+        antibodies_used:
+          - "anti-MUC5AC (Thermofisher MA5-12178, 1/800)"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS
+#   Secreted pro-inflammatory mediators (MSD multiplex), TEER barrier
+#   integrity and LDH cytotoxicity. GeneExpressionAssay is the in-vitro
+#   capable generic assay class; BALFSputumAssay is in vivo only.
+# =============================================================================
+
+gene_expression_assays:
+  # --- TNF-alpha ---
+  - id: "GE:czekala-tnfa-3r4f-60-90puff"
+    name: "Secreted TNF-alpha - 3R4F smoke 60 and 90 puffs, 28 days"
+    description: "TNF-alpha secreted into the basal medium, measured by MSD multiplex before each exposure and expressed as fold change over the air control. The 60- and 90-puff 3R4F doses caused a significant increase from T2 that persisted throughout the study (adjusted p < 5%). Time-course fold changes are figure-only (Fig. 5A). Data from T23 onwards were excluded for the 90-puff dose because of cytotoxicity."
+    gene_expression_method: "MSD Multi-Spot electrochemiluminescence multiplex immunoassay"
+    normalization_reference: "normalized mean fold change over the air control treatment"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "By contrast, 60 and 90 puff doses of 3R4F smoke caused a significant increase in TNF-α at T2 and levels continued to be significantly higher than control throughout the study (adjusted p < 5%) (Fig. 5A)."
+        explanation: "States the direction, onset and significance of the TNF-alpha increase at the 60- and 90-puff 3R4F doses recorded here."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Analysis of pro-inflammatory markers from T23-28 were excluded for 90 puffs of 3R4F only."
+        explanation: "Supports the recorded caveat that the late 90-puff time points were excluded from the mediator analysis."
+    has_specified_output:
+      id: "GE:czekala-tnfa-3r4f-60-90puff-output"
+      name: "TNF-alpha fold change - 3R4F 60 and 90 puffs"
+      description: "Significantly higher than air control from T2 onwards (adjusted p < 5%). Fold-change values are figure-only and are not transcribed."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-60puff"
+        name: "3R4F smoke, 1:17 dilution, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-3r4f-90puff"
+        name: "3R4F smoke, 1:17 dilution, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      donor_info: "Batch No. MD072001; pathology-free, non-smoker, 41-year-old male Caucasian donor"
+      substrate_type: transwell_insert
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-msd-001"
+        name: "MSD multiplex immunoassay for secreted pro-inflammatory mediators"
+        detection_method: "MSD electrochemiluminescence multiplex immunoassay"
+        normalization_method: "normalized mean fold change over the air control treatment"
+        platform: "MSD MESO Scale QuickPlex (custom plates)"
+
+  - id: "GE:czekala-tnfa-3r4f-30puff"
+    name: "Secreted TNF-alpha - 3R4F smoke 30 puffs, 28 days"
+    description: "TNF-alpha secreted into the basal medium at the sub-cytotoxic 30-puff 3R4F dose did not increase significantly over the entire 28-day exposure."
+    gene_expression_method: "MSD Multi-Spot electrochemiluminescence multiplex immunoassay"
+    normalization_reference: "normalized mean fold change over the air control treatment"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Exposure to a sub-cytotoxic level of 3R4F smoke (30 puffs/exposure) did not cause the 3D lung tissues to significantly increase secretion of TNF-α throughout the entire 28-day exposure."
+        explanation: "States the null TNF-alpha result at the sub-cytotoxic 30-puff 3R4F dose recorded by this assay."
+    has_specified_output:
+      id: "GE:czekala-tnfa-3r4f-30puff-output"
+      name: "TNF-alpha fold change - 3R4F 30 puffs"
+      description: "No significant increase versus air control across 28 days."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-30puff"
+        name: "3R4F smoke, 1:17 dilution, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "3.09"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-msd-001"
+        name: "MSD multiplex immunoassay for secreted pro-inflammatory mediators"
+        detection_method: "MSD electrochemiluminescence multiplex immunoassay"
+
+  - id: "GE:czekala-tnfa-myblu"
+    name: "Secreted TNF-alpha - myblu EVP aerosol 30/60/90 puffs, 28 days"
+    description: "TNF-alpha secreted into the basal medium was not elevated by repeated exposure to undiluted myblu aerosol at any puff dose; levels were similar to air control with no statistically significant difference across the study. The highest fold change seen was 3-fold at T26 for the 90-puff dose, which was not significant versus air control."
+    gene_expression_method: "MSD Multi-Spot electrochemiluminescence multiplex immunoassay"
+    normalization_reference: "normalized mean fold change over the air control treatment"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Repeated exposure to different puff doses of myblu aerosols did not induce elevated TNF-α secretion from the 3D lung models under the conditions of the test. The levels of TNF-α in the culture medium were of similar levels to air control exposure, with no statistically significant difference throughout the course of the study (Fig. 5E)."
+        explanation: "States the null TNF-alpha result for all myblu doses recorded by this assay."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The highest fold change observed was on T26 for 90 puffs dose (3-fold change compared to air); however, this level of change was not significant when compared to air control."
+        explanation: "Gives the single largest, non-significant TNF-alpha fold change recorded in this assay's description."
+    has_specified_output:
+      id: "GE:czekala-tnfa-myblu-output"
+      name: "TNF-alpha fold change - myblu aerosol"
+      description: "Maximum 3-fold change at T26 for 90 puffs, not significant; no significant difference from air control at any dose."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-myblu-30puff"
+        name: "myblu EVP aerosol, undiluted, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "22.84"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-myblu-60puff"
+        name: "myblu EVP aerosol, undiluted, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-myblu-90puff"
+        name: "myblu EVP aerosol, undiluted, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-msd-001"
+        name: "MSD multiplex immunoassay for secreted pro-inflammatory mediators"
+        detection_method: "MSD electrochemiluminescence multiplex immunoassay"
+
+  # --- Matrix metalloproteinases ---
+  - id: "GE:czekala-mmp-3r4f-60puff"
+    name: "Secreted MMP-1 and MMP-3 - 3R4F smoke 60 puffs, 28 days"
+    description: "MMP-1 and MMP-3 secreted into the basal medium increased significantly at the 60-puff 3R4F dose (adjusted p < 5%). MMP secretion was not significantly elevated at the 30-puff dose."
+    gene_expression_method: "MSD Multi-Spot electrochemiluminescence multiplex immunoassay"
+    normalization_reference: "normalized mean fold change over the air control treatment"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "On the other hand, 60 puffs doses of 3R4F smoke caused significant increases in MMP-3 and MMP-1 secretion (adjusted p < 5%) (Fig. 5C & D)."
+        explanation: "Names the two MMPs significantly raised at the 60-puff 3R4F dose and the significance threshold recorded here."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Exposure to 30 puffs of 3R4F smoke did not significantly elevate the secretion of MMPs throughout the 28 days of exposure."
+        explanation: "Supports the recorded contrast with the sub-cytotoxic 30-puff dose."
+    has_specified_output:
+      id: "GE:czekala-mmp-3r4f-60puff-output"
+      name: "MMP-1 and MMP-3 fold change - 3R4F 60 puffs"
+      description: "Significant increases in MMP-1 and MMP-3 (adjusted p < 5%). Fold-change time courses are figure-only."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-60puff"
+        name: "3R4F smoke, 1:17 dilution, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-msd-001"
+        name: "MSD multiplex immunoassay for secreted pro-inflammatory mediators"
+        detection_method: "MSD electrochemiluminescence multiplex immunoassay"
+
+  - id: "GE:czekala-mmp-3r4f-90puff"
+    name: "Secreted MMP-1, MMP-3 and MMP-9 - 3R4F smoke 90 puffs, 28 days"
+    description: "All three MMPs measured increased significantly at the 90-puff 3R4F dose, although this dose was not sustainable for the duration of the study. MMP-1 showed the largest fold change, peaking at approximately 63-fold; the largest fold changes for MMP-3 and MMP-9 were 26 and 14 respectively."
+    gene_expression_method: "MSD Multi-Spot electrochemiluminescence multiplex immunoassay"
+    normalization_reference: "normalized mean fold change over the air control treatment"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The 90 puffs dose caused all three of the MMPs quantified in this experiment to significantly increase, although the 90-puff dose was not sustainable for the duration of the study. MMP-1 levels showed the largest fold change, peaking at approximately 63-fold. The largest fold change observed for MMP-3 and MMP-9 were 26 and 14 respectively."
+        explanation: "Supplies every peak fold change and the sustainability caveat recorded by this assay."
+    has_specified_output:
+      id: "GE:czekala-mmp-3r4f-90puff-output"
+      name: "MMP fold changes - 3R4F 90 puffs"
+      description: "Peak fold changes over air control: MMP-1 approximately 63, MMP-3 26, MMP-9 14."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-90puff"
+        name: "3R4F smoke, 1:17 dilution, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-msd-001"
+        name: "MSD multiplex immunoassay for secreted pro-inflammatory mediators"
+        detection_method: "MSD electrochemiluminescence multiplex immunoassay"
+
+  - id: "GE:czekala-mmp-myblu"
+    name: "Secreted MMP-1, MMP-3 and MMP-9 - myblu EVP aerosol, 28 days"
+    description: "MMP-1, MMP-3 and MMP-9 secretion was not elevated by repeated exposure to undiluted myblu aerosol at any puff dose; levels were similar to air control with no statistically significant differences and the fold change never exceeded 4-fold over the 28 days."
+    gene_expression_method: "MSD Multi-Spot electrochemiluminescence multiplex immunoassay"
+    normalization_reference: "normalized mean fold change over the air control treatment"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Repeated exposure to different puff doses of myblu aerosols did not induce the 3D lung model to elevate MMPs (MMP-1, 3 & 9) secretion under the experimental conditions. The levels of MMPs in the culture medium were of similar levels to air control, with no statistically significant differences throughout the course of the study (Fig. 5F–H). The fold change never exceeded 4-fold over the 28 days and the level of change was not significant when compared to air control."
+        explanation: "States the null MMP result and the 4-fold ceiling on fold change recorded by this assay."
+    has_specified_output:
+      id: "GE:czekala-mmp-myblu-output"
+      name: "MMP fold changes - myblu aerosol"
+      description: "Fold change never exceeded 4-fold over 28 days; no statistically significant differences from air control."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-myblu-30puff"
+        name: "myblu EVP aerosol, undiluted, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "22.84"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-myblu-60puff"
+        name: "myblu EVP aerosol, undiluted, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-myblu-90puff"
+        name: "myblu EVP aerosol, undiluted, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-msd-001"
+        name: "MSD multiplex immunoassay for secreted pro-inflammatory mediators"
+        detection_method: "MSD electrochemiluminescence multiplex immunoassay"
+
+  # --- Interleukins ---
+  - id: "GE:czekala-interleukins-3r4f-60puff"
+    name: "Secreted IL-1beta and IL-8 - 3R4F smoke 60 puffs, 28 days"
+    description: "The 60-puff 3R4F dose significantly increased IL-1beta (T5-T9 and T21-T28) and IL-8 (T7 and T9 only) at adjusted p < 5%. The sub-cytotoxic 30-puff dose did not significantly elevate interleukin secretion."
+    gene_expression_method: "MSD Multi-Spot electrochemiluminescence multiplex immunoassay"
+    normalization_reference: "normalized mean fold change over the air control treatment"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The 60 puff doses of 3R4F smoke caused a significant increase in IL-1β (T5-T9, T21-T28) and IL-8 (T7 & T9 only) (adjusted p < 5%) (Fig. 6A & C)."
+        explanation: "Gives the interleukins, the significant time windows and the significance threshold recorded by this assay."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Exposure to 30 puffs of 3R4F smoke did not significantly elevate the secretion of interleukins."
+        explanation: "Supports the recorded contrast with the sub-cytotoxic 30-puff dose."
+    has_specified_output:
+      id: "GE:czekala-interleukins-3r4f-60puff-output"
+      name: "IL-1beta and IL-8 fold change - 3R4F 60 puffs"
+      description: "IL-1beta significantly increased at T5-T9 and T21-T28; IL-8 at T7 and T9 only (adjusted p < 5%)."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-60puff"
+        name: "3R4F smoke, 1:17 dilution, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-il1-inflammation"
+      name: "IL-1 inflammatory program activation"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-msd-001"
+        name: "MSD multiplex immunoassay for secreted pro-inflammatory mediators"
+        detection_method: "MSD electrochemiluminescence multiplex immunoassay"
+
+  - id: "GE:czekala-interleukins-3r4f-90puff"
+    name: "Secreted IL-1beta, IL-6 and IL-8 - 3R4F smoke 90 puffs, 28 days"
+    description: "The 90-puff 3R4F dose significantly increased all three interleukins measured. IL-8 showed the largest fold change, followed by IL-1beta, then IL-6 (significant at T2 and T21 only). IL-1beta levels increased significantly throughout the study at this dose."
+    gene_expression_method: "MSD Multi-Spot electrochemiluminescence multiplex immunoassay"
+    normalization_reference: "normalized mean fold change over the air control treatment"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The 90 puffs dose caused all the interleukins quantified in this experiment to significantly increase. IL-8 showed the largest fold change followed by IL-1β, then IL-6 (T2 and T21 only)."
+        explanation: "States that all interleukins rose at the 90-puff 3R4F dose and their rank order, as recorded here."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "IL-1β levels increased significantly throughout the study after exposure to 90 puffs 3R4F, and to a lesser extent after 60-puffs."
+        explanation: "Supports the recorded persistence of the IL-1beta increase at the 90-puff dose."
+    has_specified_output:
+      id: "GE:czekala-interleukins-3r4f-90puff-output"
+      name: "Interleukin fold changes - 3R4F 90 puffs"
+      description: "All interleukins significantly increased; IL-8 largest, then IL-1beta, then IL-6 (T2 and T21 only). Fold-change values are figure-only."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-90puff"
+        name: "3R4F smoke, 1:17 dilution, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-il1-inflammation"
+      name: "IL-1 inflammatory program activation"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-msd-001"
+        name: "MSD multiplex immunoassay for secreted pro-inflammatory mediators"
+        detection_method: "MSD electrochemiluminescence multiplex immunoassay"
+
+  - id: "GE:czekala-interleukins-myblu"
+    name: "Secreted IL-1beta, IL-6 and IL-8 - myblu EVP aerosol, 28 days"
+    description: "Interleukin secretion was not elevated by repeated exposure to undiluted myblu aerosol at any puff dose; levels were similar to air control with no statistically significant differences across the study. Sporadic, non-significant decreases in IL-1beta were recorded."
+    gene_expression_method: "MSD Multi-Spot electrochemiluminescence multiplex immunoassay"
+    normalization_reference: "normalized mean fold change over the air control treatment"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Different puff doses of myblu aerosols did not induce the 3D lung model to elevate secretion of selected interleukins (IL-1β, IL-6, IL-8) under the test conditions. The levels of interleukins in the culture medium were of similar levels to air control, with no statistically significant differences throughout the course of the study (Fig. 6D–F)."
+        explanation: "States the null interleukin result for all myblu doses recorded by this assay."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "By contrast, no significant changes were seen following any dose of myblu aerosol, although sporadic and non-significant decreases in IL-1β levels were recorded throughout the study duration."
+        explanation: "Supports the recorded sporadic, non-significant IL-1beta decreases under myblu aerosol."
+    has_specified_output:
+      id: "GE:czekala-interleukins-myblu-output"
+      name: "Interleukin fold changes - myblu aerosol"
+      description: "No statistically significant changes at any dose; sporadic non-significant IL-1beta decreases."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-myblu-30puff"
+        name: "myblu EVP aerosol, undiluted, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "22.84"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-myblu-60puff"
+        name: "myblu EVP aerosol, undiluted, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-myblu-90puff"
+        name: "myblu EVP aerosol, undiluted, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-il1-inflammation"
+      name: "IL-1 inflammatory program activation"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-msd-001"
+        name: "MSD multiplex immunoassay for secreted pro-inflammatory mediators"
+        detection_method: "MSD electrochemiluminescence multiplex immunoassay"
+
+  - id: "GE:czekala-il6-3r4f-90puff"
+    name: "Secreted IL-6 - 3R4F smoke 90 puffs, 28 days"
+    description: "IL-6 rose significantly at the 90-puff 3R4F dose at T2 and T21 only. At 30 puffs IL-6 was marginally reduced and at 60 puffs marginally increased, neither statistically different from air control."
+    gene_expression_method: "MSD Multi-Spot electrochemiluminescence multiplex immunoassay"
+    normalization_reference: "normalized mean fold change over the air control treatment"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "A significant increase in IL-6 was seen with the 90 puffs of 3R4F at T2 and T21 only. IL-6 was marginally reduced at 30 puffs and marginally increased at 60 puffs 3R4F; however, the levels were not statistically different from the air controls."
+        explanation: "Gives the dose-by-dose IL-6 result, including the two significant time points, recorded by this assay."
+    has_specified_output:
+      id: "GE:czekala-il6-3r4f-90puff-output"
+      name: "IL-6 fold change - 3R4F smoke"
+      description: "Significant increase at 90 puffs at T2 and T21 only; 30- and 60-puff changes not statistically different from air control."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-90puff"
+        name: "3R4F smoke, 1:17 dilution, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-msd-001"
+        name: "MSD multiplex immunoassay for secreted pro-inflammatory mediators"
+        detection_method: "MSD electrochemiluminescence multiplex immunoassay"
+
+  # --- TEER barrier integrity ---
+  - id: "GE:czekala-teer-3r4f-30puff"
+    name: "TEER barrier integrity - 3R4F smoke 30 puffs, 28 days"
+    description: "TEER, expressed as fold change versus matched air controls, showed no significant change at the sub-cytotoxic 30-puff 3R4F dose over the 28-day study."
+    gene_expression_method: "TEER measurement (EVOM2 with ENDOHM-6 electrode)"
+    normalization_reference: "fold change compared to matched air controls"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Tissues exposed to 30 puffs of 3R4F smoke, which is a sub-cytotoxic concentration, did not induce any significant fold change in TEER over the 28-day study."
+        explanation: "States the null TEER result at the 30-puff 3R4F dose recorded by this assay."
+    has_specified_output:
+      id: "GE:czekala-teer-3r4f-30puff-output"
+      name: "TEER fold change - 3R4F 30 puffs"
+      description: "No significant fold change in TEER over 28 days."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-30puff"
+        name: "3R4F smoke, 1:17 dilution, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "3.09"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-teer-001"
+        name: "Transepithelial electrical resistance (TEER) measurement"
+        detection_method: "EVOM2 Epithelial Volt/Ohm Meter with ENDOHM-6 electrode"
+
+  - id: "GE:czekala-teer-3r4f-60puff"
+    name: "TEER barrier integrity - 3R4F smoke 60 puffs, 28 days"
+    description: "TEER dropped significantly at the 60-puff 3R4F dose on T16 (p <= 0.01), but measurements at T23 and T28 had recovered back to air control baseline values."
+    gene_expression_method: "TEER measurement (EVOM2 with ENDOHM-6 electrode)"
+    normalization_reference: "fold change compared to matched air controls"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "A significant drop in TEER values was recorded in tissues exposed to 60 puffs of 3R4F smoke on T16 (p ≤ 0.01) (Fig. 9A). However, measurements taken at T23 and T28 (see Fig. 9) showed that the TEER values had recovered back to air control baseline values."
+        explanation: "Gives both the significant T16 drop and the later recovery recorded by this assay."
+    has_specified_output:
+      id: "GE:czekala-teer-3r4f-60puff-output"
+      name: "TEER fold change - 3R4F 60 puffs"
+      description: "Significant drop at T16 (p <= 0.01), recovered to air control baseline by T23 and T28."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-60puff"
+        name: "3R4F smoke, 1:17 dilution, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-teer-001"
+        name: "Transepithelial electrical resistance (TEER) measurement"
+        detection_method: "EVOM2 Epithelial Volt/Ohm Meter with ENDOHM-6 electrode"
+
+  - id: "GE:czekala-teer-3r4f-90puff"
+    name: "TEER barrier integrity - 3R4F smoke 90 puffs, 28 days"
+    description: "By T23 the 90-puff 3R4F dose caused a drastic decline in TEER compared to air control (p <= 0.0001), reaching a 0.87-fold decrease at that timepoint, which the authors attribute to excessive cytotoxicity (37% cytotoxicity at T23). Histology showed severe tissue disruption with only a few basal cells remaining at T28."
+    gene_expression_method: "TEER measurement (EVOM2 with ENDOHM-6 electrode)"
+    normalization_reference: "fold change compared to matched air controls"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Fig. 9A shows that by T23, 90 puffs per exposure dose of 3R4F smoke caused a drastic decline in TEER compared to air control (p ≤ 0.0001), reaching a 0.87-fold decrease in TEER at this timepoint due to excessive cytotoxicity (Fig. 3). Further cross comparison with histological images showed that the tissue structure was severely disrupted, with only a few basal cells remaining on T28 (Fig. 7.1A)."
+        explanation: "Supplies the fold change, significance level, cytotoxicity attribution and histological corroboration recorded by this assay."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The TEER values were significantly reduced from T23 onwards for 90-puff 3R4F smoke group due to severe cytotoxicity (T23, 37% cytotoxicity)."
+        explanation: "Gives the 37% cytotoxicity figure at T23 that this assay's description cites as the confounder."
+    has_specified_output:
+      id: "GE:czekala-teer-3r4f-90puff-output"
+      name: "TEER fold change - 3R4F 90 puffs"
+      description: "0.87-fold decrease at T23 (p <= 0.0001), confounded by 37% cytotoxicity at the same timepoint."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-90puff"
+        name: "3R4F smoke, 1:17 dilution, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-teer-001"
+        name: "Transepithelial electrical resistance (TEER) measurement"
+        detection_method: "EVOM2 Epithelial Volt/Ohm Meter with ENDOHM-6 electrode"
+
+  - id: "GE:czekala-teer-myblu"
+    name: "TEER barrier integrity - myblu EVP aerosol 30/60/90 puffs, 28 days"
+    description: "Repeated exposure to undiluted myblu aerosol did not disrupt barrier integrity at any dose level; TEER values remained similar to the air control with no statistically significant difference throughout the study, and histology showed intact tissues with no visible damage."
+    gene_expression_method: "TEER measurement (EVOM2 with ENDOHM-6 electrode)"
+    normalization_reference: "fold change compared to matched air controls"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Based upon this, exposure to myblu aerosols at all dose levels did not disrupt the barrier integrity of the 3D lung model. As shown in Fig. 7.1D-F, the tissues were intact, and no visible damage was observed. Throughout the study, the TEER values were similar to the air control, and no statistically significant difference was found (Fig. 9B)."
+        explanation: "States the null TEER result and intact histology for all myblu doses recorded by this assay."
+    has_specified_output:
+      id: "GE:czekala-teer-myblu-output"
+      name: "TEER fold change - myblu aerosol"
+      description: "No statistically significant difference from air control at any dose across 28 days."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-myblu-30puff"
+        name: "myblu EVP aerosol, undiluted, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "22.84"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-myblu-60puff"
+        name: "myblu EVP aerosol, undiluted, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-myblu-90puff"
+        name: "myblu EVP aerosol, undiluted, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-teer-001"
+        name: "Transepithelial electrical resistance (TEER) measurement"
+        detection_method: "EVOM2 Epithelial Volt/Ohm Meter with ENDOHM-6 electrode"
+
+  # --- LDH cytotoxicity (no key event recorded; see curation notes) ---
+  - id: "GE:czekala-ldh-3r4f-30puff"
+    name: "LDH cytotoxicity - 3R4F smoke 30 puffs, 28 days"
+    description: "Percent cytotoxicity from LDH released into the basal medium at the sub-cytotoxic 30-puff 3R4F dose was not significantly different from air controls at any timepoint across the 28 days. No key event is recorded: general cytotoxicity has no matching key event in the shared vocabulary."
+    gene_expression_method: "LDH release cytotoxicity assay (CytoTox 96, absorbance 490 nm)"
+    normalization_reference: "percent cytotoxicity relative to total LDH release after lysis, versus air control"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Exposure to the sub-cytotoxic dose of 30 puffs of 3R4F smoke did not induce a significant difference in percentage cytotoxicity versus air controls."
+        explanation: "States the null cytotoxicity result at the 30-puff 3R4F dose recorded by this assay."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In the current study, the 30 puffs of 3R4F (1:17 dilution) dose group cytotoxicity levels did not differ from the air controls throughout the course of the experiment."
+        explanation: "Repeats in the Discussion that cytotoxicity at this dose did not differ from air controls across the experiment."
+    has_specified_output:
+      id: "GE:czekala-ldh-3r4f-30puff-output"
+      name: "Percent cytotoxicity - 3R4F 30 puffs"
+      description: "No significant difference from air control at any timepoint; no percentage value is given for this group."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-30puff"
+        name: "3R4F smoke, 1:17 dilution, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "3.09"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-ldh-001"
+        name: "LDH release cytotoxicity assay"
+        detection_method: "colorimetric LDH activity, absorbance at 490 nm"
+
+  - id: "GE:czekala-ldh-3r4f-60puff"
+    name: "LDH cytotoxicity - 3R4F smoke 60 puffs, 28 days"
+    description: "Percent cytotoxicity at the 60-puff 3R4F dose became significantly different from air control late in the study: 7% at T26 (p <= 0.05) and 12% at T28 (p <= 0.005). The T28 value is recorded in the measurement slot."
+    gene_expression_method: "LDH release cytotoxicity assay (CytoTox 96, absorbance 490 nm)"
+    normalization_reference: "percent cytotoxicity relative to total LDH release after lysis, versus air control"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "For the 60 puff 3R4F dose, a statistically significant difference in percentage cytotoxicity was observed on T26 (7%; p ≤ 0.05) and T28 (12%; p ≤ 0.005)."
+        explanation: "Gives both percent cytotoxicity values and their significance levels for the 60-puff 3R4F dose recorded here."
+    has_specified_output:
+      id: "GE:czekala-ldh-3r4f-60puff-output"
+      name: "Percent cytotoxicity - 3R4F 60 puffs"
+      percentage_positive_cells:
+        value: "12"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      description: "Percent cytotoxicity at T28 (12%, p <= 0.005); 7% at T26 (p <= 0.05). Recorded as percent cytotoxicity of the tissue, the only percentage slot available on this output class."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-60puff"
+        name: "3R4F smoke, 1:17 dilution, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-ldh-001"
+        name: "LDH release cytotoxicity assay"
+        detection_method: "colorimetric LDH activity, absorbance at 490 nm"
+
+  - id: "GE:czekala-ldh-3r4f-90puff"
+    name: "LDH cytotoxicity - 3R4F smoke 90 puffs, 28 days"
+    description: "Percent cytotoxicity at the 90-puff 3R4F dose became significant earlier, from T14 to T16 (p <= 0.01), with a steep increase from T19 onwards (p <= 0.0001) leading to complete tissue disruption by the end of the study. Cytotoxicity reached 37% at T23."
+    gene_expression_method: "LDH release cytotoxicity assay (CytoTox 96, absorbance 490 nm)"
+    normalization_reference: "percent cytotoxicity relative to total LDH release after lysis, versus air control"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "For the highest 90 puff 3R4F dose a statistically significant difference in the cytotoxicity levels was noted earlier in the assay timeframe, from T14 to 16 (p ≤ 0.01), and from T19 (p ≤ 0.0001) onwards a steep increase in the relative cytotoxicity levels was observed (Fig. 3A)."
+        explanation: "Gives the onset timing and significance of the cytotoxicity increase at the 90-puff 3R4F dose recorded here."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "However, the 90 puffs dose triggered severe cytotoxicity from T19 onwards, leading to a complete tissue disruption towards the end of the study."
+        explanation: "Supports the recorded progression to complete tissue disruption at this dose."
+    has_specified_output:
+      id: "GE:czekala-ldh-3r4f-90puff-output"
+      name: "Percent cytotoxicity - 3R4F 90 puffs"
+      percentage_positive_cells:
+        value: "37"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      description: "Percent cytotoxicity at T23 (37%), the value quoted in the barrier-integrity discussion. Significant from T14-T16 (p <= 0.01) and steeply increasing from T19 (p <= 0.0001)."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-3r4f-90puff"
+        name: "3R4F smoke, 1:17 dilution, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-ldh-001"
+        name: "LDH release cytotoxicity assay"
+        detection_method: "colorimetric LDH activity, absorbance at 490 nm"
+
+  - id: "GE:czekala-ldh-myblu"
+    name: "LDH cytotoxicity - myblu EVP aerosol 30/60/90 puffs, 28 days"
+    description: "Percent cytotoxicity of undiluted myblu aerosol did not exceed 2% at any dose or timepoint and was not significantly different from air control. Even the highest 90-puff dose did not affect tissue viability under the conditions of this repeated-exposure study."
+    gene_expression_method: "LDH release cytotoxicity assay (CytoTox 96, absorbance 490 nm)"
+    normalization_reference: "percent cytotoxicity relative to total LDH release after lysis, versus air control"
+    evidence:
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The maximum percentage cytotoxicity of myblu aerosol did not exceed 2% (Fig. 3B). Compared to air control, the percentage cytotoxicity was not significantly different."
+        explanation: "Gives the 2% ceiling on cytotoxicity and the null comparison with air control recorded by this assay."
+      - reference: "PMID:34345855"
+        reference_title: "Multi-endpoint analysis of human 3D airway epithelium following repeated exposure to whole electronic vapor product aerosol or cigarette smoke."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In contrast, even the highest 90 puff dose of EVP aerosol did not impact the tissue viability in this (sub-acute) repeated exposure study under the conditions of test."
+        explanation: "Supports the recorded conclusion that even the highest myblu dose left tissue viability unaffected."
+    has_specified_output:
+      id: "GE:czekala-ldh-myblu-output"
+      name: "Percent cytotoxicity - myblu aerosol"
+      percentage_positive_cells:
+        value: "2"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+      description: "Maximum percent cytotoxicity across all myblu doses and timepoints; not significantly different from air control."
+    has_exposure_condition:
+      - id: "EXPOSURE:czekala-myblu-30puff"
+        name: "myblu EVP aerosol, undiluted, 30 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_concentration:
+          value: "22.84"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-myblu-60puff"
+        name: "myblu EVP aerosol, undiluted, 60 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:czekala-myblu-90puff"
+        name: "myblu EVP aerosol, undiluted, 90 puffs per exposure, 3 times per week for 28 days"
+        exposure_agent:
+          id: "CHEBI:18723"
+          name: "nicotine"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:czekala-mucilair-001"
+      name: "MucilAir 3D airway epithelium at ALI - donor batch MD072001"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:czekala-ldh-001"
+        name: "LDH release cytotoxicity assay"
+        detection_method: "colorimetric LDH activity, absorbance at 490 nm"
