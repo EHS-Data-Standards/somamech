@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> ## ⚠️ AI-Generated Content Notice
+>
+> **The vast majority of the content in this repository is AI-generated.** Schema files, knowledge-base entries, documentation, and code have been produced by AI agents (e.g., Claude) working under human direction.
+>
+> **A person's name on a commit, pull request, issue, or knowledge-base entry does *not* mean that person authored the content themselves.** It means that person guided an AI agent, which made the change on their behalf. Human contributors direct, review, and approve the work, but the content itself is written by AI.
+
 <p align="center">
   <img src="src/docs/soma-logo.svg" alt="SOMA Logo" width="700">
 </p>
