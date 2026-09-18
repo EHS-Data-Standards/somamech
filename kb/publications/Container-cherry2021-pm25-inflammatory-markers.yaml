@@ -112,6 +112,18 @@ balf_sputum_assays:
         evidence_source: HUMAN_CLINICAL
         snippet: "The array estimated the concentration (pg/ml) of 42 cytokines, chemokines, and growth factors"
         explanation: "States what the multiplex array measured in each plasma sample."
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Log total exposure PM2.5 9.96 1.22 9.96 1.22 9.88 1.26 12.23 0.47 <0.001"
+        explanation: "Table 4 row giving the mean log total estimated PM2.5 exposure for each group and occasion (Service A May 9.96, SD 1.22; all late Service A 9.88, SD 1.26; Service B 12.23, SD 0.47), the values recorded in the exposure conditions of this file."
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Age 37.6 9.3 32.9 9.0 35.4 9.4"
+        explanation: "Table 2 row giving the group mean ages recorded on the study subjects in this file: Service A 37.6 (SD 9.3), Service B 32.9 (SD 9.0), all 35.4 (SD 9.4)."
     has_specified_output:
       id: "BALF:cherry-plasma-early-serviceA-output"
       name: "Early plasma inflammatory marker profile (Service A)"
@@ -140,10 +152,10 @@ balf_sputum_assays:
         unit:
           id: "UO:0000036"
           name: "year"
-      subject_characteristics: "68 non-smoking first responders from fire Service A (stationed near Edmonton) who gave blood on two occasions. Service A group means: age 37.6 years (SD 9.3), BMI 28.8 (SD 3.7), 97.6% male (n = 82 of 84). Age given here is the Service A group mean, not an individual age. Current smokers were excluded from the analysis."
+      subject_characteristics: "68 non-smoking first responders from fire Service A, stationed close to Edmonton and deployed from day 2 of the fire, most with only one short (2-3 day) rotation; they gave blood on two occasions. Service A group means: age 37.6 years (SD 9.3), BMI 28.8 (SD 3.7), 97.6% male (n = 82 of 84 Service A participants). The age recorded here is the Service A group mean, not an individual age. Current smokers were excluded from the analysis."
       sample_type: blood
       collection_site: "fire service premises, Alberta, Canada"
-      sample_collection_method: "venous blood draw by phlebotomist; plasma separated by refrigerated centrifugation and stored at -80C"
+      sample_collection_method: "venous blood draw by phlebotomist; plasma separated by refrigerated centrifugation and stored at -80C; spirometry carried out in an adjacent mobile clinical laboratory"
       clinical_context: "Occupational cohort followed after deployment to the May 2016 Fort McMurray wildfire"
     has_exposure_condition:
       - id: "EXPOSURE:cherry-pm25-serviceA-early"
@@ -202,11 +214,11 @@ balf_sputum_assays:
         unit:
           id: "UO:0000036"
           name: "year"
-      subject_characteristics: "The same 68 non-smoking Service A first responders sampled in May 2016. Service A group means: age 37.6 years (SD 9.3), BMI 28.8 (SD 3.7), 97.6% male (n = 82 of 84). Age given here is the Service A group mean, not an individual age."
+      subject_characteristics: "68 non-smoking first responders from fire Service A, stationed close to Edmonton and deployed from day 2 of the fire, most with only one short (2-3 day) rotation; they gave blood on two occasions. Service A group means: age 37.6 years (SD 9.3), BMI 28.8 (SD 3.7), 97.6% male (n = 82 of 84 Service A participants). The age recorded here is the Service A group mean, not an individual age. Current smokers were excluded from the analysis."
       sample_type: blood
       collection_site: "fire service premises, Alberta, Canada"
-      sample_collection_method: "venous blood draw by phlebotomist; plasma separated by refrigerated centrifugation and stored at -80C"
-      clinical_context: "Second blood draw 14-18 weeks after the start of the Fort McMurray wildfire"
+      sample_collection_method: "venous blood draw by phlebotomist; plasma separated by refrigerated centrifugation and stored at -80C; spirometry carried out in an adjacent mobile clinical laboratory"
+      clinical_context: "Occupational cohort followed after deployment to the May 2016 Fort McMurray wildfire"
     has_exposure_condition:
       - id: "EXPOSURE:cherry-pm25-serviceA-late"
         name: "Wildfire smoke PM2.5, Service A deployment; log total estimated cumulative exposure mean 9.88 (SD 1.26) for all late Service A samples, sampled a median of 107 days from the start of the fire"
@@ -269,11 +281,11 @@ balf_sputum_assays:
         unit:
           id: "UO:0000036"
           name: "year"
-      subject_characteristics: "76 non-smoking firefighters from fire Service B, the service located in Fort McMurray, deployed from the start of the fire with long, arduous and repeated deployments. Service B group means: age 32.9 years (SD 9.0), BMI 28.6 (SD 3.9), 86.8% male (n = 66 of 76). Age given here is the Service B group mean, not an individual age."
+      subject_characteristics: "76 non-smoking firefighters from fire Service B, the service located in Fort McMurray, deployed from the start of the fire with long, arduous and repeated deployments. Service B group means: age 32.9 years (SD 9.0), BMI 28.6 (SD 3.9), 86.8% male (n = 66 of 76). The age recorded here is the Service B group mean, not an individual age. Current smokers were excluded from the analysis."
       sample_type: blood
       collection_site: "fire service premises, Fort McMurray, Alberta, Canada"
-      sample_collection_method: "venous blood draw by phlebotomist; plasma separated by refrigerated centrifugation and stored at -80C"
-      clinical_context: "Single blood draw 16-20 weeks after the start of the Fort McMurray wildfire"
+      sample_collection_method: "venous blood draw by phlebotomist; plasma separated by refrigerated centrifugation and stored at -80C; spirometry carried out in an adjacent mobile clinical laboratory"
+      clinical_context: "Single blood draw and spirometry 16-20 weeks after the start of the Fort McMurray wildfire"
     has_exposure_condition:
       - id: "EXPOSURE:cherry-pm25-serviceB-late"
         name: "Wildfire smoke PM2.5, Service B deployment; log total estimated cumulative exposure mean 12.23 (SD 0.47), sampled a median of 122 days from the start of the fire"
@@ -321,6 +333,18 @@ balf_sputum_assays:
           evidence_source: HUMAN_CLINICAL
           snippet: "Log total exposure -0.32 0.008 0.03 0.791 -0.00 0.992 0.38 <0.001"
           explanation: "Table 6 row giving the Pearson correlations of each component with log total exposure, including the C2L value of 0.38 (P < 0.001) recorded here."
+        - reference: "PMID:33620067"
+          reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+          supports: SUPPORT
+          evidence_source: HUMAN_CLINICAL
+          snippet: "the first component (C1L) accounting for 43.7% of the variance and the second (C2L) 11.6%"
+          explanation: "Gives the share of variance taken by the two components extracted from the 160 late samples, as recorded in this output and the assay description."
+        - reference: "PMID:33620067"
+          reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+          supports: SUPPORT
+          evidence_source: HUMAN_CLINICAL
+          snippet: "high positive weights (>0.5) again seen for GROalpha, PDGF-AA, PDGF-BB, sCD40L, IP-10, MCP-1, IL-18, and here"
+          explanation: "Lists the markers carrying high positive weights on C2L, as recorded in the assay description."
     informs_on_key_event:
       id: "KE:ke-systemic-inflammation"
       name: "Systemic inflammation"
@@ -338,7 +362,7 @@ balf_sputum_assays:
         unit:
           id: "UO:0000036"
           name: "year"
-      subject_characteristics: "160 non-smoking firefighters from Service A (n = 84) and Service B (n = 76) who gave a blood sample in August/September 2016. Combined group means: age 35.4 years (SD 9.4), BMI 28.7 (SD 3.8), 92.5% male (n = 148). Age given here is the group mean, not an individual age. Regression analyses used N = 159."
+      subject_characteristics: "160 non-smoking firefighters from Service A (n = 84) and Service B (n = 76) who gave a blood sample in August/September 2016. Combined group means: age 35.4 years (SD 9.4), BMI 28.7 (SD 3.8), 92.5% male (n = 148). The age recorded here is the group mean, not an individual age."
       sample_type: blood
       collection_site: "fire service premises, Alberta, Canada"
       sample_collection_method: "venous blood draw by phlebotomist; plasma separated by refrigerated centrifugation and stored at -80C"
@@ -366,11 +390,11 @@ balf_sputum_assays:
         reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
         supports: SUPPORT
         evidence_source: HUMAN_CLINICAL
-        snippet: "mean log GM-CSF in those with thickening (N = 5) was 3.54 ng/ml and those without"
-        explanation: "Gives the mean log GM-CSF concentration in firefighters with bronchial wall thickening and the size of that subgroup."
+        snippet: "mean log GM-CSF in those with thickening (N = 5) was 3.54 ng/ml and those without ( N = 17) 1.50 ng/ml ( P = 0.082)"
+        explanation: "Gives both mean log GM-CSF concentrations, both subgroup sizes and the P value recorded by this assay."
       - reference: "PMID:33620067"
         reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
-        supports: SUPPORT
+        supports: REFUTE
         evidence_source: HUMAN_CLINICAL
         snippet: "GM-CSF was unrelated to any of the respiratory health outcomes considered in Tables 8 and 9"
         explanation: "Records the negative finding: the marker reported in World Trade Center firefighters did not relate to respiratory health in this cohort."
@@ -390,9 +414,10 @@ balf_sputum_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
-      subject_characteristics: "22 firefighters from the two services (8 from Service A, 14 from Service B) who underwent at least one clinical respiratory assessment in the winter of 2019-2020. Tobacco smokers and those meeting criteria for chronic asthma or COPD before the fire were excluded from these assessments."
+      subject_characteristics: "22 firefighters from the two services (8 from Service A, 14 from Service B) who underwent at least one clinical respiratory assessment in the winter of 2019-2020. Tobacco smokers and those meeting criteria for chronic asthma or chronic obstructive pulmonary disease before the fire were excluded from these assessments."
       sample_type: blood
       collection_site: "fire service premises and clinical assessment centre, Alberta, Canada"
+      sample_collection_method: "venous blood draw by phlebotomist; plasma separated by refrigerated centrifugation and stored at -80C"
       clinical_context: "Stratified sample invited for pulmonary function tests, methacholine challenge and high-resolution chest CT in 2019-2020"
     has_exposure_condition:
       - id: "EXPOSURE:cherry-pm25-cumulative-late"
@@ -453,9 +478,11 @@ lung_function_assays:
         unit:
           id: "UO:0000036"
           name: "year"
-      subject_characteristics: "68 non-smoking Service A first responders, N = 68 for this spirometry. Service A group means: age 37.6 years (SD 9.3), BMI 28.8 (SD 3.7), 97.6% male. Age given here is the Service A group mean, not an individual age."
+      subject_characteristics: "68 non-smoking first responders from fire Service A, stationed close to Edmonton and deployed from day 2 of the fire, most with only one short (2-3 day) rotation; they gave blood on two occasions. Service A group means: age 37.6 years (SD 9.3), BMI 28.8 (SD 3.7), 97.6% male (n = 82 of 84 Service A participants). The age recorded here is the Service A group mean, not an individual age. Current smokers were excluded from the analysis."
       sample_type: blood
-      clinical_context: "Spirometry at the time of the early blood draw, 14-18 days (median 15.5 days) from the start of the fire"
+      collection_site: "fire service premises, Alberta, Canada"
+      sample_collection_method: "venous blood draw by phlebotomist; plasma separated by refrigerated centrifugation and stored at -80C; spirometry carried out in an adjacent mobile clinical laboratory"
+      clinical_context: "Occupational cohort followed after deployment to the May 2016 Fort McMurray wildfire"
     has_exposure_condition:
       - id: "EXPOSURE:cherry-pm25-serviceA-early"
         name: "Wildfire smoke PM2.5, Service A deployment; log total estimated cumulative exposure mean 9.96 (SD 1.22), sampled a median of 15.5 days from the start of the fire"
@@ -486,7 +513,7 @@ lung_function_assays:
         explanation: "Table 5 spirometry row: Service A August/September mean FEV1/FVC 77.41 (SD 5.97), P = 0.231 versus May."
       - reference: "PMID:33620067"
         reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
-        supports: SUPPORT
+        supports: REFUTE
         evidence_source: HUMAN_CLINICAL
         snippet: "FEV 1/FVC did not show important differences between time points at Service A or between services in August/September"
         explanation: "States the negative finding this assay records: no important change in group mean FEV1/FVC between the two time points."
@@ -515,9 +542,11 @@ lung_function_assays:
         unit:
           id: "UO:0000036"
           name: "year"
-      subject_characteristics: "The same 68 non-smoking Service A first responders measured in May 2016. Age given here is the Service A group mean (37.6 years, SD 9.3), not an individual age."
+      subject_characteristics: "68 non-smoking first responders from fire Service A, stationed close to Edmonton and deployed from day 2 of the fire, most with only one short (2-3 day) rotation; they gave blood on two occasions. Service A group means: age 37.6 years (SD 9.3), BMI 28.8 (SD 3.7), 97.6% male (n = 82 of 84 Service A participants). The age recorded here is the Service A group mean, not an individual age. Current smokers were excluded from the analysis."
       sample_type: blood
-      clinical_context: "Spirometry at the time of the late blood draw, 14-18 weeks after the start of the fire"
+      collection_site: "fire service premises, Alberta, Canada"
+      sample_collection_method: "venous blood draw by phlebotomist; plasma separated by refrigerated centrifugation and stored at -80C; spirometry carried out in an adjacent mobile clinical laboratory"
+      clinical_context: "Occupational cohort followed after deployment to the May 2016 Fort McMurray wildfire"
     has_exposure_condition:
       - id: "EXPOSURE:cherry-pm25-serviceA-late"
         name: "Wildfire smoke PM2.5, Service A deployment; log total estimated cumulative exposure mean 9.88 (SD 1.26) for all late Service A samples, sampled a median of 107 days from the start of the fire"
@@ -577,9 +606,11 @@ lung_function_assays:
         unit:
           id: "UO:0000036"
           name: "year"
-      subject_characteristics: "84 non-smoking Service A firefighters seen in August/September 2016 (the 68 with paired samples plus 16 seen only at the later visit). Service A group means: age 37.6 years (SD 9.3), BMI 28.8 (SD 3.7), 97.6% male (n = 82). Age given here is the group mean, not an individual age. Spirometry N = 84."
+      subject_characteristics: "84 non-smoking Service A firefighters seen in August/September 2016: the 68 with paired samples plus 16 who gave blood only at the later visit. Service A group means: age 37.6 years (SD 9.3), BMI 28.8 (SD 3.7), 97.6% male (n = 82). The age recorded here is the group mean, not an individual age."
       sample_type: blood
-      clinical_context: "Spirometry at the late blood draw, 14-18 weeks after the start of the fire"
+      collection_site: "fire service premises, Alberta, Canada"
+      sample_collection_method: "venous blood draw by phlebotomist; plasma separated by refrigerated centrifugation and stored at -80C; spirometry carried out in an adjacent mobile clinical laboratory"
+      clinical_context: "Late blood draw and spirometry, 106-137 days from the start of the Fort McMurray wildfire"
     has_exposure_condition:
       - id: "EXPOSURE:cherry-pm25-serviceA-late"
         name: "Wildfire smoke PM2.5, Service A deployment; log total estimated cumulative exposure mean 9.88 (SD 1.26) for all late Service A samples, sampled a median of 107 days from the start of the fire"
@@ -610,7 +641,7 @@ lung_function_assays:
         explanation: "Table 5 spirometry row: Service B August/September mean FEV1/FVC 76.76 (SD 6.77), P = 0.508 versus Service A."
       - reference: "PMID:33620067"
         reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
-        supports: SUPPORT
+        supports: REFUTE
         evidence_source: HUMAN_CLINICAL
         snippet: "The absence of any relationship between estimated PM 2.5 exposure and FEV 1/FVC in firefighters from these two services should also be noted."
         explanation: "The authors' own statement that estimated PM2.5 exposure was not related to FEV1/FVC in these two services."
@@ -639,9 +670,11 @@ lung_function_assays:
         unit:
           id: "UO:0000036"
           name: "year"
-      subject_characteristics: "Non-smoking Service B firefighters; spirometry N = 75 of the 76 who gave blood. Service B group means: age 32.9 years (SD 9.0), BMI 28.6 (SD 3.9), 86.8% male. Age given here is the group mean, not an individual age."
+      subject_characteristics: "76 non-smoking firefighters from fire Service B, the service located in Fort McMurray, deployed from the start of the fire with long, arduous and repeated deployments. Service B group means: age 32.9 years (SD 9.0), BMI 28.6 (SD 3.9), 86.8% male (n = 66 of 76). The age recorded here is the Service B group mean, not an individual age. Current smokers were excluded from the analysis."
       sample_type: blood
-      clinical_context: "Spirometry at the single blood draw, 16-20 weeks after the start of the fire"
+      collection_site: "fire service premises, Fort McMurray, Alberta, Canada"
+      sample_collection_method: "venous blood draw by phlebotomist; plasma separated by refrigerated centrifugation and stored at -80C; spirometry carried out in an adjacent mobile clinical laboratory"
+      clinical_context: "Single blood draw and spirometry 16-20 weeks after the start of the Fort McMurray wildfire"
     has_exposure_condition:
       - id: "EXPOSURE:cherry-pm25-serviceB-late"
         name: "Wildfire smoke PM2.5, Service B deployment; log total estimated cumulative exposure mean 12.23 (SD 0.47), sampled a median of 122 days from the start of the fire"
@@ -701,9 +734,9 @@ lung_function_assays:
         unit:
           id: "UO:0000036"
           name: "year"
-      subject_characteristics: "29 Service A firefighters (of the 68 with paired samples) for whom pre-fire spirometry was obtained from the employer's health company; pre-fire results were available for 40.5% of Service A and 40.8% of Service B. Age given here is the Service A group mean (37.6 years, SD 9.3), not an individual age."
-      sample_collection_method: "employer periodic health assessment spirometry, different equipment and operators from the research team"
-      clinical_context: "Baseline lung function recorded before the May 2016 Fort McMurray fire"
+      subject_characteristics: "29 Service A firefighters (of the 68 with paired samples) for whom spirometry carried out before the fire was obtained, with consent, from the employer's health company; pre-fire results were available for 40.5% of Service A (n = 34) and 40.8% of Service B (n = 31). The age recorded here is the Service A group mean (37.6 years, SD 9.3), not an individual age."
+      collection_site: "fire service premises, Alberta, Canada"
+      clinical_context: "Firefighters with both a pre-fire employer spirometry record and research-team spirometry after the fire"
     follows_protocols:
       - id: "PROTOCOL:cherry-spirometry-001"
         name: "Spirometry following ATS/ERS guidelines"
@@ -721,6 +754,18 @@ lung_function_assays:
         evidence_source: HUMAN_CLINICAL
         snippet: "Post 77.50 6.64 78.91 5.11 0.083 78.49 5.14 77.73 7.55 0.634"
         explanation: "Table 5 'Spirometry (with prior record)' post-fire row: Service A May mean 77.50 (SD 6.64) and August/September mean 78.91 (SD 5.11), the values recorded here."
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "P <0.001 <0.001 <0.001 <0.001"
+        explanation: "Table 5 'Spirometry (with prior record)' P value row: the fall from the pre-fire to the post-fire ratio is significant at P < 0.001 in every group."
+      - reference: "PMID:33620067"
+        reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "N 29 29 34 31"
+        explanation: "Table 5 'Spirometry (with prior record)' sample size row: 29 Service A firefighters at each occasion, 34 for all Service A and 31 for Service B."
       - reference: "PMID:33620067"
         reference_title: "Are Inflammatory Markers an Indicator of Exposure or Effect in Firefighters Fighting a Devastating Wildfire? Follow-up of a Cohort in Alberta, Canada."
         supports: SUPPORT
@@ -752,9 +797,9 @@ lung_function_assays:
         unit:
           id: "UO:0000036"
           name: "year"
-      subject_characteristics: "The same 29 Service A firefighters with a pre-fire spirometry record, measured by the research team in May 2016. Age given here is the Service A group mean (37.6 years, SD 9.3), not an individual age."
-      sample_type: blood
-      clinical_context: "Spirometry by the research team at the early blood draw, 14-18 days (median 15.5 days) from the start of the fire"
+      subject_characteristics: "29 Service A firefighters (of the 68 with paired samples) for whom spirometry carried out before the fire was obtained, with consent, from the employer's health company; pre-fire results were available for 40.5% of Service A (n = 34) and 40.8% of Service B (n = 31). The age recorded here is the Service A group mean (37.6 years, SD 9.3), not an individual age."
+      collection_site: "fire service premises, Alberta, Canada"
+      clinical_context: "Firefighters with both a pre-fire employer spirometry record and research-team spirometry after the fire"
     has_exposure_condition:
       - id: "EXPOSURE:cherry-pm25-serviceA-early"
         name: "Wildfire smoke PM2.5, Service A deployment; log total estimated cumulative exposure mean 9.96 (SD 1.22), sampled a median of 15.5 days from the start of the fire"
