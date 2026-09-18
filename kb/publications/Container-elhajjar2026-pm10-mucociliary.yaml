@@ -1,0 +1,1620 @@
+# =============================================================================
+# El Hajjar et al. (2026) - Repeated air-liquid interface exposure of a human
+# tracheobronchial mucociliary pseudo-epithelium to indoor PM10
+# =============================================================================
+#
+# Source: Toxicology 520 (2026) 154369
+# DOI: 10.1016/j.tox.2025.154369
+# PMID: 41389869
+#
+# Study design (in vitro only):
+#   - Primary normal human bronchial epithelial (NHBE) cells from a single
+#     healthy, non-smoking 14-year-old male donor, seeded on Transwell
+#     inserts and differentiated 14 days at the air-liquid interface (ALI)
+#     into a mucociliary pseudo-epithelium (basal, ciliated and
+#     mucin-producing cells).
+#   - Exposure: PM10 fraction of SRM 2585 ("Organic contaminants in house
+#     dust") nebulised apically with a VITROCELL Cloud Max (QCM dosimetry)
+#     at 1 or 6 ug/cm2/day on 4 consecutive days (D0-D3). Controls: an
+#     unexposed "ALI Control" and a nebulised-vehicle "PBS Control"; effects
+#     of PM10 are reported against the PBS Control.
+#   - Read-outs on D4 (16 h after the fourth exposure) and post-exposure on
+#     D8 and D11: TEER, viability, cellular ROS, total mucin, IL-6/IL-8
+#     release. RNA was taken on D4 only.
+#   - Co-exposure: the same apical PM10 nebulisations plus, on the basal
+#     side from D2 to D4, conditioned medium from human monocyte-derived
+#     macrophages (MDMs) that had themselves been repeatedly exposed to the
+#     PM2.5 fraction of SRM 2585 (1 or 10 ug/cm2/day). Low doses were
+#     combined with low doses and high with high. Only gene expression could
+#     be read out after co-exposure, because MDM-derived mediators in the
+#     medium are indistinguishable from epithelial ones.
+#
+# Key findings recorded here:
+#   - Cellular ROS (DCFDA) rose significantly only on D4 at 1 ug/cm2/day and
+#     returned to control level by D8/D11.
+#   - Oxidative-stress PCR array (84 genes, D4): CYBB +2.06-fold, MT3
+#     -3.01-fold, PRDX1 -2.05-fold at 6 ug/cm2/day; GPX3 +2.28-fold was a
+#     nebulisation (PBS vs ALI) effect.
+#   - DNA-damage PCR array (84 genes, D4): HUS1 +2.16-fold and FANCG
+#     -2.05-fold, at 1 ug/cm2/day only.
+#   - TEER dropped significantly at 6 ug/cm2/day on D2, D4 and D8 and had
+#     recovered by D11, with no loss of viability.
+#   - SEM suggested reduced cilia density and/or length at 6 ug/cm2/day.
+#   - Total mucus was not significantly changed (trend up; p=0.057 on D11 at
+#     the high dose) while MUC5AC mRNA fell and MUC5B mRNA fell at 1
+#     ug/cm2/day.
+#   - IL-6 mRNA rose dose-dependently on D4 with delayed IL-6 release on D8
+#     and D11; IL-8 mRNA fell and IL-8 release was unchanged.
+#   - Co-exposure: MUC5AC, IL-6 (low dose) and IL-8 (high dose, dose-
+#     dependent) mRNA all rose; PTGS2 +2.04-fold and SOD2 +2.32-fold at the
+#     high doses, CCL5 -2.07-fold at the low doses.
+#
+# Values shown only in figures (ROS fluorescence, TEER, mucin, cytokine and
+# mucin/cytokine qPCR fold changes) are NOT transcribed: those assays carry
+# the qualitative direction plus an exact quote, and no invented numbers.
+# Numeric fold changes are taken only from Tables 2, 3 and 4.
+#
+# =============================================================================
+
+source_publication:
+  reference: "PMID:41389869"
+  reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+  doi: "10.1016/j.tox.2025.154369"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:elhajjar-ali-culture-001"
+    name: "NHBE differentiation into a mucociliary pseudo-epithelium at the air-liquid interface"
+    description: "NHBE cells (ATCC PCS-300-010) seeded at 30,000 cells per collagen-coated 6.5 mm Transwell insert, grown submerged to confluency for 3 days, then passaged to the air-liquid interface by removing the apical medium. Basal medium: PneumaCult-ALI with 10X supplement, Maintenance supplement 100X and hydrocortisone. ALI cultures were maintained for 14 days to allow differentiation into basal, ciliated and mucin-producing cells. Apical mucus was removed on D0, D4 and D8; basal medium was renewed every two days."
+    equipment_required:
+      - "Transwell inserts, 6.5 mm, 0.4 um pore (Costar)"
+      - "Collagen coating solution (30 ug/mL in 0.02 M acetic acid)"
+      - "PneumaCult-ALI medium (StemCell Technologies)"
+
+  - id: "PROTOCOL:elhajjar-nebulization-001"
+    name: "Apical nebulisation of PM10 aerosols with VITROCELL Cloud Max"
+    description: "PM10 isolated from SRM 2585 by cyclonic separation, suspended at 4 mg/mL in PBS 1:80 with 0.04% Tween 20, antibiotics and Fungizone, sonicated 40 min. 30 uL of suspension nebulised apically on 4 consecutive days. Deposited mass was controlled with a quartz crystal microbalance: the nominal 1 ug/cm2 corresponded to 0.95 +/- 0.17 and the nominal 6 ug/cm2 to 6.08 +/- 1.00 ug/cm2."
+    equipment_required:
+      - "VITROCELL Cloud Max system (VITROCELL Systems, Germany)"
+      - "Quartz Crystal Microbalance (QCM)"
+
+  - id: "PROTOCOL:elhajjar-teer-001"
+    name: "Trans-epithelial electrical resistance measurement"
+    description: "TEER measured on D2, D4, D8 and D11 with an EVOM3 volt-ohm meter and STX2-PLUS electrode pair. Resistance across the pseudo-epithelium minus resistance across the semipermeable membrane alone (Blank), expressed in ohm.cm2. Pseudo-epithelia treated 30 min with 1% Triton X-100 served as positive controls."
+    equipment_required:
+      - "EVOM3 volt-ohm meter (World Precision Instruments)"
+      - "STX2-PLUS electrode pair"
+
+  - id: "PROTOCOL:elhajjar-sem-001"
+    name: "Scanning electron microscopy of ciliated cells"
+    description: "Cultures pre-fixed in 2.5% glutaraldehyde in 0.1 M sodium cacodylate buffer pH 7.2, dehydrated in a 30-100% ethanol gradient, critical-point dried, metal-coated and imaged on a Supra 55 scanning electron microscope at x5000."
+    equipment_required:
+      - "Leica EM CPD030 critical point dryer"
+      - "JFC 1300 metal coater (JEOL)"
+      - "Supra 55 scanning electron microscope (ZEISS)"
+
+  - id: "PROTOCOL:elhajjar-dcfda-001"
+    name: "Cellular ROS measurement with the DCFDA probe"
+    description: "Inserts incubated 35 min with 10 uM DCFDA in PBS on the apical side, washed, lysed 5 min in 90% DMSO/PBS, scraped and centrifuged. Supernatant fluorescence read at 488/530 nm on a Synergy H1 plate reader, blank-subtracted and expressed as a percentage of the matched PBS Control. Pyocyanin (400 uM, 30 min) was the positive control."
+    equipment_required:
+      - "2',7'-dichlorofluorescin diacetate (DCFDA) probe"
+      - "Synergy H1 microplate reader (BioTek)"
+
+  - id: "PROTOCOL:elhajjar-ella-001"
+    name: "Total mucin quantification by enzyme-linked lectin assay (ELLA)"
+    description: "Sandwich ELLA on cell lysates: plates coated with Triticum vulgaris lectin, detection with peroxidase-conjugated Ulex europaeus lectin and TMB, absorbance at 450 nm against a porcine mucin standard curve (10,000-78.1 nM). Mucin was normalised to total protein measured by BCA. LPS (100 ug/mL, 24 h) was the positive control."
+    equipment_required:
+      - "Triticum vulgaris lectin (Merck Sigma)"
+      - "Peroxidase-conjugated Ulex europaeus lectin"
+      - "BCA protein quantification kit"
+
+  - id: "PROTOCOL:elhajjar-elisa-001"
+    name: "IL-6 and IL-8 ELISA on basal culture medium"
+    description: "IL-6 and IL-8 released into the basal medium quantified with ELISA MAX Deluxe Set human kits (BioLegend), absorbance at 450 nm on a Synergy H1 reader against a calibration curve. Basal media were collected on D4, D8 and D11."
+    equipment_required:
+      - "ELISA MAX Deluxe Set human IL-6 and IL-8 kits (BioLegend)"
+      - "Synergy H1 microplate reader (BioTek)"
+
+  - id: "PROTOCOL:elhajjar-qpcr-001"
+    name: "RT-qPCR for mucin and cytokine gene expression"
+    description: "RNA extracted on D4 (RNeasy Mini Kit, DNase digestion), pooled from six biological replicates (6 inserts from 3 independent experiments). cDNA libraries made with the QuantiTect Whole Transcriptome kit, qPCR with QuantiNova SYBR Green on a QuantStudio 5. GAPDH housekeeping gene, ddCt method, fold change against the PBS Control (exposure) or the PBS/M0 Control (co-exposure), 4 technical replicates."
+    equipment_required:
+      - "QuantStudio 5 Real-Time PCR System"
+      - "QuantiNova SYBR Green PCR kit (Qiagen)"
+
+  - id: "PROTOCOL:elhajjar-pcrarray-oxstress-001"
+    name: "RT2 Profiler PCR array, Human Oxidative Stress Pathway (PAHS-065YA)"
+    description: "84-gene pathway-focused array run on cDNA from 0.5 ug of pooled RNA taken on D4, for both the exposure and the co-exposure experiments. Normalised to the mean of ACTB, B2M, GAPDH, HPRT1 and RPLP0; fold change by the ddCt method in QIAGEN GeneGlobe; two independent replicates per sample; unpaired two-tailed Student t-test, p threshold 0.05. Modulation was called at a 2-fold change."
+    equipment_required:
+      - "RT2 Profiler PCR Array PAHS-065YA (Qiagen)"
+      - "QuantStudio 5 Real-Time PCR System"
+
+  - id: "PROTOCOL:elhajjar-pcrarray-dnadamage-001"
+    name: "RT2 Profiler PCR array, Human DNA Damage Signaling Pathway (PAHS-029ZA)"
+    description: "84-gene pathway-focused array run on cDNA from 0.5 ug of pooled RNA taken on D4, for the PM10 exposure experiment only. Same normalisation, analysis and 2-fold calling rule as the oxidative stress array."
+    equipment_required:
+      - "RT2 Profiler PCR Array PAHS-029ZA (Qiagen)"
+      - "QuantStudio 5 Real-Time PCR System"
+
+# =============================================================================
+# OXIDATIVE STRESS ASSAYS
+# =============================================================================
+
+oxidative_stress_assays:
+  - id: "OXS:elhajjar-ros-d4-1ug"
+    name: "Cellular ROS on D4 after 4 daily PM10 nebulisations at 1 ug/cm2/day"
+    description: "DCFDA fluorescence, read as a percentage of the matched PBS Control, increased significantly on D4 only at the lowest dose (1 ug/cm2/day). The effect was transient: by D8 and D11 fluorescence was back to control values. Fluorescence values are figure-only (Fig. 5A) and are not transcribed."
+    ros_probe_type: "DCFDA"
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The mean fluorescence intensity of the DCFH probe, which reflects cellular ROS production, increased significantly only on D4 at the lowest dose tested"
+        explanation: "States the significant D4 increase in cellular ROS at the lowest PM10 dose that this assay records."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "This effect appeared to be ... as fluorescence returned to values comparable to those of the control on D8 and D11."
+        explanation: "Supports the transience recorded in the description: the ROS signal was back to control values on D8 and D11."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Exposures at the lower dose induced at day 4 a significant increase in cellular ROS"
+        explanation: "The abstract's statement of the same result, tying the significant ROS rise to the lower dose on day 4."
+    has_specified_output:
+      id: "OXS:elhajjar-ros-d4-1ug-output"
+      name: "Cellular ROS, D4, PM10 1 ug/cm2/day"
+      description: "Significant increase in DCFDA fluorescence relative to the PBS Control. Only figure-level values are reported, so no numeric value is recorded."
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-pm10-1ug-4d"
+        name: "PM10 fraction of SRM 2585 nebulised at 1 ug/cm2/day on 4 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-001"
+      name: "NHBE mucociliary pseudo-epithelium differentiated 14 days at the air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; used at passage 3"
+    follows_protocols:
+      - id: "PROTOCOL:elhajjar-dcfda-001"
+        name: "Cellular ROS measurement with the DCFDA probe"
+      - id: "PROTOCOL:elhajjar-nebulization-001"
+        name: "Apical nebulisation of PM10 aerosols with VITROCELL Cloud Max"
+
+# =============================================================================
+# CILIARY FUNCTION ASSAYS
+# =============================================================================
+
+ciliary_function_assays:
+  - id: "CIL:elhajjar-sem-cilia-6ug-d4"
+    name: "Cilia density and length by SEM on D4 after PM10 at 6 ug/cm2/day"
+    description: "Scanning electron microscopy of the pseudo-epithelium on D4 showed an apparent reduction in cilia density and/or length at the highest dose compared with the ALI Control (Fig. 3A-C). The authors treat this as a possible, not a measured, alteration: no cilia counts, lengths or beat frequencies were quantified, so no numeric output is recorded. Ciliary beating was otherwise described as active in video recordings that are not shown."
+    airway_region: "tracheobronchial"
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "However, using SEM, an apparent reduction in cilia density and/or length was observed at the highest dose, compared with the ALI Control (Fig. 3A-C)."
+        explanation: "States the SEM observation of reduced cilia density and/or length at the highest PM10 dose that this assay records."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "After repeated exposures at the highest dose, SEM analysis suggested a possible shortening of the cilia and a reduction of their density."
+        explanation: "The discussion's restatement, and the basis for recording this as a suggested rather than quantified change."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "These morphological alterations can potentially impair the ciliary function, compromising the particle's clearance."
+        explanation: "Links the SEM morphology change to potential impairment of ciliary function, the key event this assay informs on."
+    has_specified_output:
+      id: "CIL:elhajjar-sem-cilia-6ug-d4-output"
+      name: "Cilia morphology, D4, PM10 6 ug/cm2/day"
+      description: "Apparent reduction in cilia density and/or length versus the ALI Control. Qualitative SEM observation only; no counts, lengths or beat frequencies were reported."
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-pm10-6ug-4d"
+        name: "PM10 fraction of SRM 2585 nebulised at 6 ug/cm2/day on 4 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "6"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke3-impaired-ciliary"
+      name: "Decreased ciliary function"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-001"
+      name: "NHBE mucociliary pseudo-epithelium differentiated 14 days at the air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; used at passage 3"
+    follows_protocols:
+      - id: "PROTOCOL:elhajjar-sem-001"
+        name: "Scanning electron microscopy of ciliated cells"
+      - id: "PROTOCOL:elhajjar-nebulization-001"
+        name: "Apical nebulisation of PM10 aerosols with VITROCELL Cloud Max"
+
+# =============================================================================
+# GOBLET CELL / MUCIN ASSAYS
+# =============================================================================
+
+goblet_cell_assays:
+  - id: "GCM:elhajjar-total-mucin-pm10"
+    name: "Total mucin production on D4, D8 and D11 after repeated PM10 exposure"
+    description: "Total secreted plus excreted mucin measured by ELLA and normalised to protein. Repeated PM10 exposure did not significantly change global mucus production versus the PBS Control, but a trend toward an increase was seen mainly at 6 ug/cm2/day, reaching p=0.057 on D11. Percentages relative to control are figure-only (Fig. 4A) and are not transcribed. The authors note the increase cannot come from MUC5AC or MUC5B, which were down-regulated, and may involve other gel-forming or membrane-bound mucins that were not measured."
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Repeated exposure to PM10 did not significantly modify global mucus production compared to the PBS Control group (Fig. 4 A)."
+        explanation: "States the primary, non-significant result this assay records for total mucus production."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "However, a trend toward an increase was noted mainly with the higher dose, which reached the limit of the significance on D11 (p= 0.057)."
+        explanation: "Gives the borderline p=0.057 trend on D11 at the higher dose recorded in the description."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The mucus secretion tended to increase whereas expression of MUC5AC and MUC5B was downregulated."
+        explanation: "The abstract's summary of the dissociation between a rising mucus trend and falling MUC5AC/MUC5B expression that this assay's description notes."
+    has_specified_output:
+      id: "GCM:elhajjar-total-mucin-pm10-output"
+      name: "Total mucin, D4/D8/D11, PM10 1 and 6 ug/cm2/day"
+      description: "No significant change versus the PBS Control at any dose or time point; a non-significant upward trend at 6 ug/cm2/day reached p=0.057 on D11. Only figure-level values are reported, so no numeric value is recorded."
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-pm10-6ug-4d"
+        name: "PM10 fraction of SRM 2585 nebulised at 6 ug/cm2/day on 4 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "6"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-mucus-metaplasia"
+      name: "Mucus secretory program activation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-001"
+      name: "NHBE mucociliary pseudo-epithelium differentiated 14 days at the air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; used at passage 3"
+    follows_protocols:
+      - id: "PROTOCOL:elhajjar-ella-001"
+        name: "Total mucin quantification by enzyme-linked lectin assay (ELLA)"
+      - id: "PROTOCOL:elhajjar-nebulization-001"
+        name: "Apical nebulisation of PM10 aerosols with VITROCELL Cloud Max"
+
+  - id: "GCM:elhajjar-muc5ac-muc5b-pm10-d4"
+    name: "MUC5AC and MUC5B mRNA on D4 after repeated PM10 exposure"
+    description: "RT-qPCR on D4, a few hours after the last of four daily nebulisations. MUC5AC expression was significantly decreased versus the PBS Control; MUC5B was down-regulated only at the lowest dose (1 ug/cm2/day). Fold-change values are figure-only (Fig. 4B) and are not transcribed."
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The expression of MUC5AC was found significantly decreased after exposure to PM10, compared to the PBS Control group (Fig. 4B)."
+        explanation: "States the significant fall in MUC5AC mRNA after repeated PM10 exposure that this assay records."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "MUC5B was down-regulated only at the lowest exposure dose of PM10"
+        explanation: "Restricts the MUC5B fall to the lowest dose, as recorded in the description."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "A gene expression analysis of MUC5AC and MUC5B was conducted by RT-qPCR on D4, i.e. few hours after the last exposure."
+        explanation: "Gives the method and the D4 timing recorded for this assay."
+    has_specified_output:
+      id: "GCM:elhajjar-muc5ac-muc5b-pm10-d4-output"
+      name: "MUC5AC and MUC5B mRNA, D4, PM10 exposure"
+      description: "MUC5AC mRNA significantly decreased versus the PBS Control at both doses; MUC5B mRNA decreased at 1 ug/cm2/day only. Only figure-level fold changes are reported, so no numeric values are recorded."
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-pm10-1ug-4d"
+        name: "PM10 fraction of SRM 2585 nebulised at 1 ug/cm2/day on 4 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:elhajjar-pm10-6ug-4d"
+        name: "PM10 fraction of SRM 2585 nebulised at 6 ug/cm2/day on 4 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "6"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-muc5ac-decrease"
+      name: "Decreased MUC5AC expression"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-001"
+      name: "NHBE mucociliary pseudo-epithelium differentiated 14 days at the air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; used at passage 3"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:elhajjar-qpcr-001"
+        name: "RT-qPCR for mucin and cytokine gene expression"
+        detection_method: "SYBR Green RT-qPCR (QuantiNova, QuantStudio 5)"
+        normalization_method: "comparative cycle threshold (ddCt) versus PBS Control"
+        reference_gene: "GAPDH"
+
+  - id: "GCM:elhajjar-muc5ac-muc5b-coexposure-d4"
+    name: "MUC5AC and MUC5B mRNA on D4 after PM10 plus MDM-conditioned medium co-exposure"
+    description: "Co-exposure (apical PM10 on 4 consecutive days plus basal conditioned medium from MDMs pre-exposed to PM2.5, D2-D4) reversed the direction seen with PM10 alone. MUC5AC was significantly overexpressed at the lowest co-exposure doses only (PM10 1 ug/cm2/day with PM2.5 1 ug/cm2/day) versus the PBS/M0 Control, while MUC5B was unchanged. Fold-change values are figure-only (Fig. 6A) and are not transcribed."
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "MUC5AC was significantly overexpressed at the lowest co-exposure doses only"
+        explanation: "States the significant MUC5AC up-regulation restricted to the lowest co-exposure doses that this assay records."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "MUC5B expression remained unchanged on D4 after co-exposure, regardless of the dose tested (Fig. 6A)."
+        explanation: "States that MUC5B mRNA did not change after co-exposure, the second output this assay records."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Whereas they were significantly downregulated after exposure to PM10, expressions of MUC5B and MUC5AC were comparatively increased on D4 following co-exposure."
+        explanation: "States the reversal between PM10 alone and co-exposure that this assay's description records."
+    has_specified_output:
+      id: "GCM:elhajjar-muc5ac-muc5b-coexposure-d4-output"
+      name: "MUC5AC and MUC5B mRNA, D4, co-exposure"
+      description: "MUC5AC mRNA significantly increased at the low co-exposure doses versus the PBS/M0 Control; MUC5B mRNA unchanged at any dose. Only figure-level fold changes are reported, so no numeric values are recorded."
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-coexposure-low"
+        name: "Co-exposure: apical PM10 1 ug/cm2/day on 4 consecutive days plus basal conditioned medium from MDMs exposed to PM2.5 1 ug/cm2/day"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-mucus-metaplasia"
+      name: "Mucus secretory program activation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-coexposure-001"
+      name: "NHBE mucociliary pseudo-epithelium at the air-liquid interface, co-exposed basally to MDM-conditioned medium"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; basal medium replaced from D2 to D4 with RPMI conditioned by human monocyte-derived macrophages repeatedly exposed to the PM2.5 fraction of SRM 2585"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:elhajjar-qpcr-001"
+        name: "RT-qPCR for mucin and cytokine gene expression"
+        detection_method: "SYBR Green RT-qPCR (QuantiNova, QuantStudio 5)"
+        normalization_method: "comparative cycle threshold (ddCt) versus PBS/M0 Control"
+        reference_gene: "GAPDH"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS
+# (inflammation, oxidative-stress and DNA-damage PCR arrays, TEER)
+# =============================================================================
+
+gene_expression_assays:
+  # ---- Barrier integrity (TEER) ----
+  - id: "GE:elhajjar-teer-6ug"
+    name: "TEER after repeated PM10 exposure at 6 ug/cm2/day"
+    description: "TEER of the pseudo-epithelium measured on D2, D4, D8 and D11. All values stayed far above the 200-300 ohm.cm2 minimum considered acceptable, but TEER dropped significantly at 6 ug/cm2/day on D2, D4 and D8 relative to both the PBS Control and the 1 ug/cm2/day dose, and had recovered by D11. The drop was not accompanied by any loss of viability. Individual TEER values are figure-only (Fig. 3D) and are not transcribed."
+    gene_expression_method: "TEER measurement (EVOM3 volt-ohm meter, STX2-PLUS electrodes)"
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "on D2, D4 and D8, TEER significantly dropped for the highest concentration ... compared to PBS Control and to the lowest concentration."
+        explanation: "States the significant TEER fall at the highest dose on D2, D4 and D8 versus both comparators that this assay records."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "No significant changes were found on D11"
+        explanation: "Supports the recovery by D11 recorded in the description."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "These transient reductions in TEER were not associated with any detectable impairment in cell viability."
+        explanation: "Supports the statement that the barrier change was not a cytotoxic effect."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "At the highest dose, a weak and transient decrease in epithelial cohesion was observed, as well as a potential alteration of the cilia."
+        explanation: "The abstract's summary of the same transient loss of epithelial cohesion at the highest dose."
+    has_specified_output:
+      id: "GE:elhajjar-teer-6ug-output"
+      name: "TEER, D2-D11, PM10 6 ug/cm2/day"
+      description: "Significant decrease versus PBS Control on D2, D4 and D8; no significant difference on D11. Values remained above the 200-300 ohm.cm2 functional minimum. Only figure-level values are reported, so no numeric value is recorded."
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-pm10-6ug-4d"
+        name: "PM10 fraction of SRM 2585 nebulised at 6 ug/cm2/day on 4 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "6"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-001"
+      name: "NHBE mucociliary pseudo-epithelium differentiated 14 days at the air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; used at passage 3"
+    follows_protocols:
+      - id: "PROTOCOL:elhajjar-teer-001"
+        name: "Trans-epithelial electrical resistance measurement"
+      - id: "PROTOCOL:elhajjar-nebulization-001"
+        name: "Apical nebulisation of PM10 aerosols with VITROCELL Cloud Max"
+
+  # ---- Oxidative stress PCR array, PM10 alone ----
+  - id: "GE:elhajjar-cybb-pm10-6ug-d4"
+    name: "CYBB mRNA on D4 after PM10 at 6 ug/cm2/day"
+    description: "Human Oxidative Stress Pathway PCR array (84 genes) on D4. CYBB (cytochrome b-245 beta polypeptide) was the one gene of the four modulated genes that rose, increasing 2.06-fold at 6 ug/cm2/day versus the PBS Control (Table 2). The change was dose-dependent and only significant at the highest dose (1.17-fold at 1 ug/cm2/day)."
+    target_gene: "CYBB"
+    gene_expression_method: "RT2 Profiler PCR Array, Human Oxidative Stress Pathway (PAHS-065YA)"
+    normalization_reference: "mean of ACTB, B2M, GAPDH, HPRT1 and RPLP0; ddCt fold change versus PBS Control"
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Hence, CYBB was increased by 2.06-fold"
+        explanation: "Gives the 2.06-fold CYBB increase recorded as this assay's output."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Three genes, namely Cytochrome b-245 beta-polypeptide (CYBB), Metallothionein 3 (MT3) and Peroxiredoxin 1 (PRDX1) showed a dose-dependent variation that became significant only at the highest dose tested."
+        explanation: "Supports the dose-dependence and the restriction of significance to the highest dose recorded in the description."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "On D4, among 84 human genes involved in the oxidative stress response, we identified 4 genes with modulated expression (at least a 2-fold change compared to the Control)."
+        explanation: "Gives the array size, the D4 timing and the 2-fold calling rule recorded for this assay."
+    has_specified_output:
+      id: "GE:elhajjar-cybb-pm10-6ug-d4-output"
+      name: "CYBB mRNA fold change, D4, PM10 6 ug/cm2/day"
+      mrna_level:
+        value: "2.06"
+        unit:
+          id: "UO:0000190"
+          name: "ratio unit"
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-pm10-6ug-4d"
+        name: "PM10 fraction of SRM 2585 nebulised at 6 ug/cm2/day on 4 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "6"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-001"
+      name: "NHBE mucociliary pseudo-epithelium differentiated 14 days at the air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; used at passage 3"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:elhajjar-pcrarray-oxstress-001"
+        name: "RT2 Profiler PCR array, Human Oxidative Stress Pathway (PAHS-065YA)"
+        detection_method: "RT2 Profiler PCR Array (QuantStudio 5)"
+        normalization_method: "ddCt against five housekeeping genes"
+        reference_gene: "ACTB, B2M, GAPDH, HPRT1, RPLP0"
+
+  - id: "GE:elhajjar-mt3-pm10-6ug-d4"
+    name: "MT3 mRNA on D4 after PM10 at 6 ug/cm2/day"
+    description: "Human Oxidative Stress Pathway PCR array (84 genes) on D4. Metallothionein 3 (MT3), a detoxification gene, was down-regulated 3.01-fold at 6 ug/cm2/day versus the PBS Control (Table 2); the variation was dose-dependent and significant only at the highest dose (-1.32-fold at 1 ug/cm2/day). The fold change is recorded as its magnitude; the direction is decreased."
+    target_gene: "MT3"
+    gene_expression_method: "RT2 Profiler PCR Array, Human Oxidative Stress Pathway (PAHS-065YA)"
+    normalization_reference: "mean of ACTB, B2M, GAPDH, HPRT1 and RPLP0; ddCt fold change versus PBS Control"
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In contrast, MT3 and PRDX1 were downregulated by 3.01-fold and 2.05-fold, respectively, at the same dose of exposure."
+        explanation: "Gives the 3.01-fold MT3 down-regulation at 6 ug/cm2/day recorded as this assay's output."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In parallel, a significant repression of the expression of two genes encoding for detoxification systems (MT3 and PRDX1) and an overexpression of CYBB, involved in oxidative mechanisms, were observed."
+        explanation: "Confirms MT3 as a repressed detoxification gene and places it in the pro-oxidant response this assay informs on."
+    has_specified_output:
+      id: "GE:elhajjar-mt3-pm10-6ug-d4-output"
+      name: "MT3 mRNA fold change, D4, PM10 6 ug/cm2/day"
+      mrna_level:
+        value: "3.01"
+        unit:
+          id: "UO:0000190"
+          name: "ratio unit"
+      description: "Magnitude of the fold change; the reported direction is a 3.01-fold down-regulation versus the PBS Control."
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-pm10-6ug-4d"
+        name: "PM10 fraction of SRM 2585 nebulised at 6 ug/cm2/day on 4 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "6"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-001"
+      name: "NHBE mucociliary pseudo-epithelium differentiated 14 days at the air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; used at passage 3"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:elhajjar-pcrarray-oxstress-001"
+        name: "RT2 Profiler PCR array, Human Oxidative Stress Pathway (PAHS-065YA)"
+        detection_method: "RT2 Profiler PCR Array (QuantStudio 5)"
+        normalization_method: "ddCt against five housekeeping genes"
+        reference_gene: "ACTB, B2M, GAPDH, HPRT1, RPLP0"
+
+  - id: "GE:elhajjar-prdx1-pm10-6ug-d4"
+    name: "PRDX1 mRNA on D4 after PM10 at 6 ug/cm2/day"
+    description: "Human Oxidative Stress Pathway PCR array (84 genes) on D4. Peroxiredoxin 1 (PRDX1), a detoxification gene, was down-regulated 2.05-fold at 6 ug/cm2/day versus the PBS Control (Table 2); the variation was dose-dependent and significant only at the highest dose (-1.06-fold at 1 ug/cm2/day). The fold change is recorded as its magnitude; the direction is decreased."
+    target_gene: "PRDX1"
+    gene_expression_method: "RT2 Profiler PCR Array, Human Oxidative Stress Pathway (PAHS-065YA)"
+    normalization_reference: "mean of ACTB, B2M, GAPDH, HPRT1 and RPLP0; ddCt fold change versus PBS Control"
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In contrast, MT3 and PRDX1 were downregulated by 3.01-fold and 2.05-fold, respectively, at the same dose of exposure."
+        explanation: "Gives the 2.05-fold PRDX1 down-regulation at 6 ug/cm2/day recorded as this assay's output."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Although these modulations remained moderate, they contributed to an overall increase of the pro-oxidant response on D4."
+        explanation: "States the authors' reading of these gene changes as an overall pro-oxidant response, the key event this assay informs on."
+    has_specified_output:
+      id: "GE:elhajjar-prdx1-pm10-6ug-d4-output"
+      name: "PRDX1 mRNA fold change, D4, PM10 6 ug/cm2/day"
+      mrna_level:
+        value: "2.05"
+        unit:
+          id: "UO:0000190"
+          name: "ratio unit"
+      description: "Magnitude of the fold change; the reported direction is a 2.05-fold down-regulation versus the PBS Control."
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-pm10-6ug-4d"
+        name: "PM10 fraction of SRM 2585 nebulised at 6 ug/cm2/day on 4 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "6"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-001"
+      name: "NHBE mucociliary pseudo-epithelium differentiated 14 days at the air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; used at passage 3"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:elhajjar-pcrarray-oxstress-001"
+        name: "RT2 Profiler PCR array, Human Oxidative Stress Pathway (PAHS-065YA)"
+        detection_method: "RT2 Profiler PCR Array (QuantStudio 5)"
+        normalization_method: "ddCt against five housekeeping genes"
+        reference_gene: "ACTB, B2M, GAPDH, HPRT1, RPLP0"
+
+  # ---- Oxidative stress PCR array, co-exposure ----
+  - id: "GE:elhajjar-ptgs2-coexposure-d4"
+    name: "PTGS2 (COX-2) mRNA on D4 after high-dose co-exposure"
+    description: "Human Oxidative Stress Pathway PCR array (84 genes) on D4 after co-exposure. PTGS2 rose 2.04-fold versus the PBS/M0 Control, only at the highest co-exposure doses (PM10 6 ug/cm2/day with PM2.5 10 ug/cm2/day) (Table 4). The authors read the COX-2 rise as an inflammatory rather than a redox signal; the genes modulated under co-exposure are distinct from those modulated by PM10 alone."
+    target_gene: "PTGS2"
+    gene_expression_method: "RT2 Profiler PCR Array, Human Oxidative Stress Pathway (PAHS-065YA)"
+    normalization_reference: "mean of ACTB, B2M, GAPDH, HPRT1 and RPLP0; ddCt fold change versus PBS/M0 Control"
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Pro-oxidative response of the mucociliary pseudo-epithelia following co-exposure was characterized by a mild increase in the expression levels of PTGS2 (Prostaglandin-Endoperoxide Synthase 2) and SOD2 (mitochondrial Superoxide dismutase 2) genes, by 2.04- and 2.32-fold respectively, only at the highest doses of co-exposure"
+        explanation: "Gives the 2.04-fold PTGS2 increase at the highest co-exposure doses recorded as this assay's output."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Compared to exposure to PM10 alone, co-exposure induced a limited pro-oxidant response involving the upregulation of only two inflammation-related genes (PTGS2 or COX-2 and SOD2)."
+        explanation: "Supports the description's reading of PTGS2/COX-2 as one of only two genes up-regulated under co-exposure."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Three genes involved in oxidative processes, distinct from those highlighted with PM10 alone, were modulated."
+        explanation: "The abstract's statement that the co-exposure gene set differs from the PM10-alone set, as this assay's description notes."
+    has_specified_output:
+      id: "GE:elhajjar-ptgs2-coexposure-d4-output"
+      name: "PTGS2 mRNA fold change, D4, high-dose co-exposure"
+      mrna_level:
+        value: "2.04"
+        unit:
+          id: "UO:0000190"
+          name: "ratio unit"
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-coexposure-high"
+        name: "Co-exposure: apical PM10 6 ug/cm2/day on 4 consecutive days plus basal conditioned medium from MDMs exposed to PM2.5 10 ug/cm2/day"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "6"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-coexposure-001"
+      name: "NHBE mucociliary pseudo-epithelium at the air-liquid interface, co-exposed basally to MDM-conditioned medium"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; basal medium replaced from D2 to D4 with RPMI conditioned by human monocyte-derived macrophages repeatedly exposed to the PM2.5 fraction of SRM 2585"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:elhajjar-pcrarray-oxstress-001"
+        name: "RT2 Profiler PCR array, Human Oxidative Stress Pathway (PAHS-065YA)"
+        detection_method: "RT2 Profiler PCR Array (QuantStudio 5)"
+        normalization_method: "ddCt against five housekeeping genes"
+        reference_gene: "ACTB, B2M, GAPDH, HPRT1, RPLP0"
+
+  - id: "GE:elhajjar-sod2-coexposure-d4"
+    name: "SOD2 mRNA on D4 after high-dose co-exposure"
+    description: "Human Oxidative Stress Pathway PCR array (84 genes) on D4 after co-exposure. Mitochondrial superoxide dismutase 2 (SOD2) rose 2.32-fold versus the PBS/M0 Control, only at the highest co-exposure doses (PM10 6 ug/cm2/day with PM2.5 10 ug/cm2/day) (Table 4). The authors read the rise in this inducible enzyme as a cellular response to ROS."
+    target_gene: "SOD2"
+    gene_expression_method: "RT2 Profiler PCR Array, Human Oxidative Stress Pathway (PAHS-065YA)"
+    normalization_reference: "mean of ACTB, B2M, GAPDH, HPRT1 and RPLP0; ddCt fold change versus PBS/M0 Control"
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Pro-oxidative response of the mucociliary pseudo-epithelia following co-exposure was characterized by a mild increase in the expression levels of PTGS2 (Prostaglandin-Endoperoxide Synthase 2) and SOD2 (mitochondrial Superoxide dismutase 2) genes, by 2.04- and 2.32-fold respectively, only at the highest doses of co-exposure"
+        explanation: "Gives the 2.32-fold SOD2 increase at the highest co-exposure doses recorded as this assay's output."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "However, the increase in SOD2 expression, an inducible enzyme, possibly reflects a cellular response to ROS, while the increase in COX 2 reflects an inflammatory context."
+        explanation: "States the authors' interpretation of the SOD2 rise as a response to ROS, recorded in the description."
+    has_specified_output:
+      id: "GE:elhajjar-sod2-coexposure-d4-output"
+      name: "SOD2 mRNA fold change, D4, high-dose co-exposure"
+      mrna_level:
+        value: "2.32"
+        unit:
+          id: "UO:0000190"
+          name: "ratio unit"
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-coexposure-high"
+        name: "Co-exposure: apical PM10 6 ug/cm2/day on 4 consecutive days plus basal conditioned medium from MDMs exposed to PM2.5 10 ug/cm2/day"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "6"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-coexposure-001"
+      name: "NHBE mucociliary pseudo-epithelium at the air-liquid interface, co-exposed basally to MDM-conditioned medium"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; basal medium replaced from D2 to D4 with RPMI conditioned by human monocyte-derived macrophages repeatedly exposed to the PM2.5 fraction of SRM 2585"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:elhajjar-pcrarray-oxstress-001"
+        name: "RT2 Profiler PCR array, Human Oxidative Stress Pathway (PAHS-065YA)"
+        detection_method: "RT2 Profiler PCR Array (QuantStudio 5)"
+        normalization_method: "ddCt against five housekeeping genes"
+        reference_gene: "ACTB, B2M, GAPDH, HPRT1, RPLP0"
+
+  - id: "GE:elhajjar-ccl5-coexposure-d4"
+    name: "CCL5 mRNA on D4 after low-dose co-exposure"
+    description: "Human Oxidative Stress Pathway PCR array (84 genes) on D4 after co-exposure. CCL5 (chemokine C-C motif ligand 5) was down-regulated 2.07-fold versus the PBS/M0 Control at the low co-exposure doses (PM10 1 ug/cm2/day with PM2.5 1 ug/cm2/day) and unchanged (1.00-fold) at the high doses (Table 4). The fold change is recorded as its magnitude; the direction is decreased."
+    target_gene: "CCL5"
+    gene_expression_method: "RT2 Profiler PCR Array, Human Oxidative Stress Pathway (PAHS-065YA)"
+    normalization_reference: "mean of ACTB, B2M, GAPDH, HPRT1 and RPLP0; ddCt fold change versus PBS/M0 Control"
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In contrast, the CCL5 gene (Chemokine (C-C motif) ligand 5) was downregulated by 2.07-fold at the low doses"
+        explanation: "Gives the 2.07-fold CCL5 down-regulation at the low co-exposure doses recorded as this assay's output."
+    has_specified_output:
+      id: "GE:elhajjar-ccl5-coexposure-d4-output"
+      name: "CCL5 mRNA fold change, D4, low-dose co-exposure"
+      mrna_level:
+        value: "2.07"
+        unit:
+          id: "UO:0000190"
+          name: "ratio unit"
+      description: "Magnitude of the fold change; the reported direction is a 2.07-fold down-regulation versus the PBS/M0 Control."
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-coexposure-low"
+        name: "Co-exposure: apical PM10 1 ug/cm2/day on 4 consecutive days plus basal conditioned medium from MDMs exposed to PM2.5 1 ug/cm2/day"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-coexposure-001"
+      name: "NHBE mucociliary pseudo-epithelium at the air-liquid interface, co-exposed basally to MDM-conditioned medium"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; basal medium replaced from D2 to D4 with RPMI conditioned by human monocyte-derived macrophages repeatedly exposed to the PM2.5 fraction of SRM 2585"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:elhajjar-pcrarray-oxstress-001"
+        name: "RT2 Profiler PCR array, Human Oxidative Stress Pathway (PAHS-065YA)"
+        detection_method: "RT2 Profiler PCR Array (QuantStudio 5)"
+        normalization_method: "ddCt against five housekeeping genes"
+        reference_gene: "ACTB, B2M, GAPDH, HPRT1, RPLP0"
+
+  # ---- DNA damage PCR array, PM10 alone (no matching key event in the KB) ----
+  - id: "GE:elhajjar-hus1-pm10-1ug-d4"
+    name: "HUS1 mRNA on D4 after PM10 at 1 ug/cm2/day"
+    description: "Human DNA Damage Signaling Pathway PCR array (84 genes) on D4, run for the PM10 exposure only. HUS1 (checkpoint homolog) was up-regulated 2.16-fold at 1 ug/cm2/day versus the PBS Control and 1.79-fold at 6 ug/cm2/day, which did not reach the 2-fold calling threshold (Table 3). The authors read the HUS1 rise as a cellular response to DNA damage. No key event is attached: the shared SOMA key-event vocabulary has no DNA damage response event, and none was minted for this paper."
+    target_gene: "HUS1"
+    gene_expression_method: "RT2 Profiler PCR Array, Human DNA Damage Signaling Pathway (PAHS-029ZA)"
+    normalization_reference: "mean of ACTB, B2M, GAPDH, HPRT1 and RPLP0; ddCt fold change versus PBS Control"
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Thus, expression of HUS1 (HUS1 checkpoint homolog) was up-regulated by 2.16-fold, whereas expression of FANCG (Fanconi anemia, complementation group G) was down-regulated by 2.05-fold (Table 3)."
+        explanation: "Gives the 2.16-fold HUS1 up-regulation recorded as this assay's output."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Only two genes were found mildly regulated"
+        explanation: "Supports the description's statement that only two of the 84 DNA-damage genes were modulated."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The upregulation of HUS1 suggested a cellular response to DNA damage, while the inhibition of FANCG indicated a reduction in repair capabilities."
+        explanation: "States the authors' interpretation of the HUS1 change recorded in the description."
+    has_specified_output:
+      id: "GE:elhajjar-hus1-pm10-1ug-d4-output"
+      name: "HUS1 mRNA fold change, D4, PM10 1 ug/cm2/day"
+      mrna_level:
+        value: "2.16"
+        unit:
+          id: "UO:0000190"
+          name: "ratio unit"
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-pm10-1ug-4d"
+        name: "PM10 fraction of SRM 2585 nebulised at 1 ug/cm2/day on 4 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-001"
+      name: "NHBE mucociliary pseudo-epithelium differentiated 14 days at the air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; used at passage 3"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:elhajjar-pcrarray-dnadamage-001"
+        name: "RT2 Profiler PCR array, Human DNA Damage Signaling Pathway (PAHS-029ZA)"
+        detection_method: "RT2 Profiler PCR Array (QuantStudio 5)"
+        normalization_method: "ddCt against five housekeeping genes"
+        reference_gene: "ACTB, B2M, GAPDH, HPRT1, RPLP0"
+
+  - id: "GE:elhajjar-fancg-pm10-1ug-d4"
+    name: "FANCG mRNA on D4 after PM10 at 1 ug/cm2/day"
+    description: "Human DNA Damage Signaling Pathway PCR array (84 genes) on D4, run for the PM10 exposure only. FANCG (Fanconi anemia complementation group G) was down-regulated 2.05-fold at 1 ug/cm2/day versus the PBS Control and -1.47-fold at 6 ug/cm2/day, below the 2-fold calling threshold (Table 3). The authors read the FANCG fall as reduced repair capability. The fold change is recorded as its magnitude; the direction is decreased. No key event is attached, for the same reason as the HUS1 assay."
+    target_gene: "FANCG"
+    gene_expression_method: "RT2 Profiler PCR Array, Human DNA Damage Signaling Pathway (PAHS-029ZA)"
+    normalization_reference: "mean of ACTB, B2M, GAPDH, HPRT1 and RPLP0; ddCt fold change versus PBS Control"
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Thus, expression of HUS1 (HUS1 checkpoint homolog) was up-regulated by 2.16-fold, whereas expression of FANCG (Fanconi anemia, complementation group G) was down-regulated by 2.05-fold (Table 3)."
+        explanation: "Gives the 2.05-fold FANCG down-regulation recorded as this assay's output."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In our study, only slight changes in the expression of two genes related to DNA damage were detected on D4."
+        explanation: "Supports the description's framing of the genotoxic response as slight and limited to two genes on D4."
+    has_specified_output:
+      id: "GE:elhajjar-fancg-pm10-1ug-d4-output"
+      name: "FANCG mRNA fold change, D4, PM10 1 ug/cm2/day"
+      mrna_level:
+        value: "2.05"
+        unit:
+          id: "UO:0000190"
+          name: "ratio unit"
+      description: "Magnitude of the fold change; the reported direction is a 2.05-fold down-regulation versus the PBS Control."
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-pm10-1ug-4d"
+        name: "PM10 fraction of SRM 2585 nebulised at 1 ug/cm2/day on 4 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-001"
+      name: "NHBE mucociliary pseudo-epithelium differentiated 14 days at the air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; used at passage 3"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:elhajjar-pcrarray-dnadamage-001"
+        name: "RT2 Profiler PCR array, Human DNA Damage Signaling Pathway (PAHS-029ZA)"
+        detection_method: "RT2 Profiler PCR Array (QuantStudio 5)"
+        normalization_method: "ddCt against five housekeeping genes"
+        reference_gene: "ACTB, B2M, GAPDH, HPRT1, RPLP0"
+
+  # ---- Inflammation: IL-6 and IL-8 after PM10 alone ----
+  - id: "GE:elhajjar-il6-mrna-pm10-d4"
+    name: "IL-6 mRNA on D4 after repeated PM10 exposure"
+    description: "RT-qPCR on D4. IL-6 expression rose significantly and dose-dependently versus the PBS Control. The authors describe IL-6 as the main mediator of the inflammatory response in this model, with mRNA up on D4 and protein release delayed to D8 and D11. Fold-change values are figure-only (Fig. 5C) and are not transcribed."
+    target_gene: "IL6"
+    gene_expression_method: "SYBR Green RT-qPCR (QuantiNova, QuantStudio 5)"
+    normalization_reference: "GAPDH; ddCt fold change versus PBS Control"
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "A significant and dose-dependent increase was observed for IL-6 compared to the PBS Control."
+        explanation: "States the significant, dose-dependent IL-6 mRNA increase on D4 that this assay records."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Increased IL-6 mRNA levels were observed on D4, while its secretion/excretion into the basal media occurred later, on D8 and D11."
+        explanation: "Supports the D4 timing of the mRNA rise and its separation from the later protein release."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "As expected, the inflammatory response was mainly mediated by IL-6 in our study."
+        explanation: "Supports the description's statement that IL-6 was the main inflammatory mediator in this model."
+    has_specified_output:
+      id: "GE:elhajjar-il6-mrna-pm10-d4-output"
+      name: "IL-6 mRNA, D4, PM10 exposure"
+      description: "Significant dose-dependent increase versus the PBS Control. Only figure-level fold changes are reported, so no numeric value is recorded."
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-pm10-1ug-4d"
+        name: "PM10 fraction of SRM 2585 nebulised at 1 ug/cm2/day on 4 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:elhajjar-pm10-6ug-4d"
+        name: "PM10 fraction of SRM 2585 nebulised at 6 ug/cm2/day on 4 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "6"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-001"
+      name: "NHBE mucociliary pseudo-epithelium differentiated 14 days at the air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; used at passage 3"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:elhajjar-qpcr-001"
+        name: "RT-qPCR for mucin and cytokine gene expression"
+        detection_method: "SYBR Green RT-qPCR (QuantiNova, QuantStudio 5)"
+        normalization_method: "comparative cycle threshold (ddCt) versus PBS Control"
+        reference_gene: "GAPDH"
+
+  - id: "GE:elhajjar-il6-protein-pm10-6ug"
+    name: "IL-6 released into the basal medium after repeated PM10 exposure at 6 ug/cm2/day"
+    description: "IL-6 quantified by ELISA in the basal medium on D4, D8 and D11. At 6 ug/cm2/day IL-6 was significantly increased on D8 and D11 versus the matched PBS Controls - a delayed release relative to the D4 mRNA rise. Overall IL-6 levels were lower on D11 than on D8. Concentrations are figure-only (Fig. 5B) and are not transcribed."
+    target_gene: "IL6"
+    gene_expression_method: "ELISA on basal culture medium (ELISA MAX Deluxe Set, BioLegend)"
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "resulted in a significant increase in IL-6 levels on D8 and D11 compared to their corresponding PBS Controls."
+        explanation: "States the significant IL-6 increase on D8 and D11 at the high dose that this assay records."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "It could also be stressed that the overall levels of IL-6 were lower on D11 compared to D8."
+        explanation: "Supports the D11-versus-D8 comparison recorded in the description."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "IL-6 expression was strongly ... accompanied by a delayed increased secretion in the basal medium"
+        explanation: "The abstract's statement of the delayed IL-6 secretion into the basal medium that this assay records."
+    has_specified_output:
+      id: "GE:elhajjar-il6-protein-pm10-6ug-output"
+      name: "IL-6 in basal medium, D8 and D11, PM10 6 ug/cm2/day"
+      description: "Significant increase versus the matched PBS Controls on D8 and D11; not significant on D4. Only figure-level concentrations are reported, so no numeric value is recorded."
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-pm10-6ug-4d"
+        name: "PM10 fraction of SRM 2585 nebulised at 6 ug/cm2/day on 4 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "6"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-001"
+      name: "NHBE mucociliary pseudo-epithelium differentiated 14 days at the air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; used at passage 3"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:elhajjar-elisa-001"
+        name: "IL-6 and IL-8 ELISA on basal culture medium"
+        detection_method: "ELISA MAX Deluxe Set human IL-6 kit (BioLegend), absorbance 450 nm"
+
+  - id: "GE:elhajjar-il8-mrna-pm10-d4"
+    name: "IL-8 mRNA on D4 after repeated PM10 exposure"
+    description: "RT-qPCR on D4. Unlike IL-6, IL-8 expression was down-regulated in the exposed groups versus their matched PBS Controls, and IL-8 protein release into the basal medium was unaffected at any time point. Fold-change values are figure-only (Fig. 5C) and are not transcribed. The direction is opposite to the IL-8 up-regulation seen under co-exposure."
+    target_gene: "IL8"
+    gene_expression_method: "SYBR Green RT-qPCR (QuantiNova, QuantStudio 5)"
+    normalization_reference: "GAPDH; ddCt fold change versus PBS Control"
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In contrast, IL-8 expression was down-regulated in the exposed groups compared to the corresponding PBS Controls."
+        explanation: "States the IL-8 mRNA down-regulation on D4 that this assay records."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In contrast, compared to their respective PBS Controls, IL-8 levels were not affected by PM10, regardless of the day of analysis."
+        explanation: "Supports the statement that IL-8 protein release was unchanged, recorded in the description."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "IL-8 expression was up-regulated in a dose-dependent manner in contrast to repeated exposure to PM10, that induced a downregulation."
+        explanation: "Supports the contrast with co-exposure noted in the description."
+    has_specified_output:
+      id: "GE:elhajjar-il8-mrna-pm10-d4-output"
+      name: "IL-8 mRNA, D4, PM10 exposure"
+      description: "Down-regulated versus the PBS Control at both doses. Only figure-level fold changes are reported, so no numeric value is recorded."
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-pm10-1ug-4d"
+        name: "PM10 fraction of SRM 2585 nebulised at 1 ug/cm2/day on 4 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:elhajjar-pm10-6ug-4d"
+        name: "PM10 fraction of SRM 2585 nebulised at 6 ug/cm2/day on 4 consecutive days"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "6"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-001"
+      name: "NHBE mucociliary pseudo-epithelium differentiated 14 days at the air-liquid interface"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; used at passage 3"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:elhajjar-qpcr-001"
+        name: "RT-qPCR for mucin and cytokine gene expression"
+        detection_method: "SYBR Green RT-qPCR (QuantiNova, QuantStudio 5)"
+        normalization_method: "comparative cycle threshold (ddCt) versus PBS Control"
+        reference_gene: "GAPDH"
+
+  # ---- Inflammation: IL-6 and IL-8 after co-exposure ----
+  - id: "GE:elhajjar-il6-mrna-coexposure-d4"
+    name: "IL-6 mRNA on D4 after low-dose co-exposure"
+    description: "RT-qPCR on D4 after co-exposure. IL-6 was significantly overexpressed versus the PBS/M0 Control only at the lowest co-exposure doses; the dose-dependent IL-6 up-regulation seen with PM10 alone was blunted under co-exposure. Fold-change values are figure-only (Fig. 6B) and are not transcribed."
+    target_gene: "IL6"
+    gene_expression_method: "SYBR Green RT-qPCR (QuantiNova, QuantStudio 5)"
+    normalization_reference: "GAPDH; ddCt fold change versus PBS/M0 Control"
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "For IL-6, a significant overexpression was observed only at the lowest doses"
+        explanation: "States the significant IL-6 mRNA overexpression restricted to the lowest co-exposure doses that this assay records."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Finally, IL-6 remained significantly up-regulated only at the lowest doses of PM."
+        explanation: "Confirms in the discussion that IL-6 stayed up only at the lowest doses under co-exposure."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "to the PM10 fraction on the apical side of the mucociliary pseudo-epithelia, associated from D2 to D4, to basal contact to the conditioned media derived from MDMs repeatedly exposed to the PM2.5 fraction of SRM® 2585"
+        explanation: "Describes the co-exposure design recorded as this assay's exposure condition."
+    has_specified_output:
+      id: "GE:elhajjar-il6-mrna-coexposure-d4-output"
+      name: "IL-6 mRNA, D4, low-dose co-exposure"
+      description: "Significant overexpression versus the PBS/M0 Control at the low co-exposure doses only. Only figure-level fold changes are reported, so no numeric value is recorded."
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-coexposure-low"
+        name: "Co-exposure: apical PM10 1 ug/cm2/day on 4 consecutive days plus basal conditioned medium from MDMs exposed to PM2.5 1 ug/cm2/day"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-coexposure-001"
+      name: "NHBE mucociliary pseudo-epithelium at the air-liquid interface, co-exposed basally to MDM-conditioned medium"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; basal medium replaced from D2 to D4 with RPMI conditioned by human monocyte-derived macrophages repeatedly exposed to the PM2.5 fraction of SRM 2585"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:elhajjar-qpcr-001"
+        name: "RT-qPCR for mucin and cytokine gene expression"
+        detection_method: "SYBR Green RT-qPCR (QuantiNova, QuantStudio 5)"
+        normalization_method: "comparative cycle threshold (ddCt) versus PBS/M0 Control"
+        reference_gene: "GAPDH"
+
+  - id: "GE:elhajjar-il8-mrna-coexposure-d4"
+    name: "IL-8 mRNA on D4 after high-dose co-exposure"
+    description: "RT-qPCR on D4 after co-exposure. IL-8 rose dose-dependently, reaching significance at the highest co-exposure doses versus both the PBS/M0 Control and the lower dose - the opposite of the down-regulation seen with PM10 alone. Fold-change values are figure-only (Fig. 6B) and are not transcribed."
+    target_gene: "IL8"
+    gene_expression_method: "SYBR Green RT-qPCR (QuantiNova, QuantStudio 5)"
+    normalization_reference: "GAPDH; ddCt fold change versus PBS/M0 Control"
+    evidence:
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Lastly, a dose-dependent increase in IL-8 expression was noted, reaching significance at the highest doses of co-exposure compared to both the PBS/M0 Control and the lower dose (Fig. 6B)."
+        explanation: "States the dose-dependent IL-8 mRNA increase and the comparators that this assay records."
+      - reference: "PMID:41389869"
+        reference_title: "Biological responses of human tracheobronchial mucociliary pseudo-epithelium repeatedly exposed at the air-liquid interface to PM(10) indoor particles."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "IL-8 expression was up-regulated in a dose-dependent manner in contrast to repeated exposure to PM10, that induced a downregulation."
+        explanation: "Supports the contrast with PM10 alone recorded in the description."
+    has_specified_output:
+      id: "GE:elhajjar-il8-mrna-coexposure-d4-output"
+      name: "IL-8 mRNA, D4, high-dose co-exposure"
+      description: "Dose-dependent increase, significant at the highest co-exposure doses versus the PBS/M0 Control and the lower dose. Only figure-level fold changes are reported, so no numeric value is recorded."
+    assay_date: "2026-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:elhajjar-coexposure-high"
+        name: "Co-exposure: apical PM10 6 ug/cm2/day on 4 consecutive days plus basal conditioned medium from MDMs exposed to PM2.5 10 ug/cm2/day"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "6"
+          unit:
+            id: "UCUM:ug/cm2"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:elhajjar-nhbe-ali-coexposure-001"
+      name: "NHBE mucociliary pseudo-epithelium at the air-liquid interface, co-exposed basally to MDM-conditioned medium"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Primary NHBE cells (ATCC PCS-300-010, lot 70002486) from a healthy, non-smoking 14-year-old Latino-Hispanic male; basal medium replaced from D2 to D4 with RPMI conditioned by human monocyte-derived macrophages repeatedly exposed to the PM2.5 fraction of SRM 2585"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:elhajjar-qpcr-001"
+        name: "RT-qPCR for mucin and cytokine gene expression"
+        detection_method: "SYBR Green RT-qPCR (QuantiNova, QuantStudio 5)"
+        normalization_method: "comparative cycle threshold (ddCt) versus PBS/M0 Control"
+        reference_gene: "GAPDH"
