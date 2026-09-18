@@ -1212,18 +1212,19 @@ class SpeciesReference(NamedEntity):
 
 class ChemicalEntityReference(NamedEntity):
     """
-    A reference to a chemical entity from CHEBI or an exposure concept from ECTO.
+    A reference to a chemical entity from CHEBI, an exposure concept from ECTO, or an environmental material from ENVO (e.g. particulate matter, which is an ENVO concept, not a CHEBI chemical).
     """
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://w3id.org/EHS-Data-Standards/assay_base',
-         'id_prefixes': ['CHEBI', 'ECTO'],
-         'slot_usage': {'id': {'name': 'id', 'pattern': '^(CHEBI:\\d+|ECTO:\\d{7})$'}}})
+         'id_prefixes': ['CHEBI', 'ECTO', 'ENVO'],
+         'slot_usage': {'id': {'name': 'id',
+                               'pattern': '^(CHEBI:\\d+|ECTO:\\d{7}|ENVO:\\d{8})$'}}})
 
     id: str = Field(default=..., description="""A unique identifier for the entity.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NamedThing', 'Unit', 'NamedEntity']} })
     name: Optional[str] = Field(default=None, description="""A human-readable name for the entity.""", json_schema_extra = { "linkml_meta": {'domain_of': ['NamedThing', 'Unit', 'NamedEntity'], 'slot_uri': 'schema:name'} })
 
     @field_validator('id')
     def pattern_id(cls, v):
-        pattern=re.compile(r"^(CHEBI:\d+|ECTO:\d{7})$")
+        pattern=re.compile(r"^(CHEBI:\d+|ECTO:\d{7}|ENVO:\d{8})$")
         if isinstance(v, list):
             for element in v:
                 if isinstance(element, str) and not pattern.match(element):
