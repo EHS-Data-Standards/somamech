@@ -1,0 +1,214 @@
+# =============================================================================
+# Bamodu et al. (2022) - lnc-IL7R Expression Reflects Physiological Pulmonary
+# Function and Its Aberration Is a Putative Indicator of COPD
+# =============================================================================
+#
+# Source: Biomedicines 2022, 10, 786 (Communication)
+# DOI: 10.3390/biomedicines10040786
+#
+# EXTRACTION NOTE — WHERE THE EVIDENCE QUOTES CAN BE CHECKED
+#   The committed public cache (references_cache/PMID_35453536.md) carries
+#   content_type: abstract_only — the fetcher gets HTTP 403 from the
+#   publisher. The full text WAS read for this extraction, from the local
+#   PDF (references_cache_local/PMID_35453536.md, gitignored), and the study
+#   design and protocols below come from that full text.
+#   Every `snippet:` below was deliberately chosen to verify against BOTH the
+#   committed abstract cache (what CI checks) and the local full text, so
+#   `just validate-file` and `just verify-snippets` both pass. Where a "..."
+#   appears inside a snippet it elides the word "specificity", which the
+#   PDF's text layer renders with an "fi" ligature; nothing else is elided.
+#   Because of that constraint, values that appear ONLY in the full text
+#   (Table 1 medians, cohort mean FEV1/FVC, the ~0.65 dose-response
+#   threshold) are NOT asserted as data here — they would carry no quote
+#   that CI could verify. Only abstract-stated, quote-backed numbers are
+#   recorded.
+#
+# Study design (full text, Methods):
+#   - Single-center, prospective, non-randomized study; 125 patients with COPD
+#   - Clinically stable patients (no exacerbation for at least one month),
+#     without significant comorbidities or a history of systemic
+#     corticosteroids, diuretics, cytotoxic agents, or alcohol abuse
+#   - Smoking status: current smokers n = 49, ex-smokers n = 66,
+#     never smokers n = 10
+#   - lnc-IL7R (LOC100506406) measured by RT-qPCR in whole blood
+#   - COPD severity by GOLD guidelines; emphysema by %LAA-950insp on
+#     inspiratory CT; spirometry (FEV1, FVC, FEV1/FVC) with a Sibelmed
+#     Datospir micro C portable spirometer
+#   - Spearman's rank correlation; SPSS Statistics v25
+#   - Approved by the Joint IRB of Taipei Medical University
+#     (N201512054, N201803059, N201902021)
+#
+# Key findings recorded below (all stated in the abstract and quoted):
+#   - lnc-IL7R level correlated with physiological pulmonary function;
+#     COPD stratification AUC = 0.86, p < 0.001
+#   - COPD identified at sensitivity = 0.83, specificity = 0.83; absence of
+#     emphysematous phenotype at sensitivity = 0.48, specificity = 0.89
+#   - Correlations with lnc-IL7R: GOLD stage r = -0.59; %LAA-950insp
+#     r = -0.30 (p = 0.002); total LAA r = -0.35; FEV1(%) r = 0.52;
+#     FVC(%) r = 0.45; post-bronchodilator FEV1/FVC r = 0.41
+#   - Probability of COPD decreased as lnc-IL7R expression increased
+#   - Reduced lnc-IL7R expression is indicative of impaired pulmonary
+#     function and predictive of an exacerbated/aggravated COPD phenotype
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:35453536"
+  reference_title: "lnc-IL7R Expression Reflects Physiological Pulmonary Function and Its Aberration Is a Putative Indicator of COPD."
+  doi: "10.3390/biomedicines10040786"
+
+# =============================================================================
+# PROTOCOLS (from the full-text Methods section)
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:bamodu-rtqpcr-001"
+    name: "RT-qPCR quantification of lnc-IL7R in whole blood"
+    description: "Clinical sample preparation and quantitative reverse transcription PCR (RT-qPCR) for determination of the lnc-IL7R level in the whole blood of participants, performed as described in the authors' earlier work (Wu et al., Biomedicines 2021;9:1833). Blood lnc-IL7R was derived from routine blood workup. No reference gene or normalization method is named in this Communication."
+    equipment_required:
+      - "Quantitative reverse transcription PCR (RT-qPCR) platform"
+
+  - id: "PROTOCOL:bamodu-spirometry-001"
+    name: "Spirometry, bronchodilator response and CT densitometry"
+    description: "Spirometric variables (FEV1, FVC, FEV1/FVC) and computed tomography variables (%LAA-950insp, total LAA) were retrieved for each patient. Oxygen saturation (SvO2, SpO2) was measured with a Sibelmed Datospir micro C portable spirometer (Sibel, S.A.U., Barcelona, Spain). Bronchodilator response was calculated as [(FEV1 post-BD / FEV1 pre-BD) - 1] x 100%, with a change in FEV1 of at least 12% and 400 mL defining a positive response. COPD severity followed the GOLD guidelines; %LAA-950insp (percentage of lung attenuation area below -950 Hounsfield units on inspiratory CT) defined no/mild (<6), moderate (6 to <14) and severe (>=14) emphysema."
+    equipment_required:
+      - "Sibelmed Datospir micro C portable spirometer (Sibel, S.A.U., Barcelona, Spain)"
+      - "Inspiratory computed tomography (for %LAA-950insp and total LAA)"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS - lnc-IL7R (LOC100506406) in the COPD cohort
+# =============================================================================
+
+gene_expression_assays:
+  # lnc-IL7R quantification and COPD stratification performance
+  - id: "GE:bamodu-lncil7r-copd-cohort"
+    name: "lnc-IL7R expression in the COPD cohort (n = 125)"
+    description: "Quantitative analysis of the long noncoding RNA lnc-IL7R (LOC100506406), measured by RT-qPCR in whole blood, in a prospective single-center cohort of 125 patients with COPD. The lnc-IL7R level was significantly correlated with physiological pulmonary function and stratified patients by COPD status with an area under the curve of 0.86 (p < 0.001), identifying patients with COPD at sensitivity = 0.83 and specificity = 0.83 and discriminating those without an emphysematous phenotype at sensitivity = 0.48 and specificity = 0.89. No absolute expression value is reported in the abstract, so none is asserted in the output below."
+    target_gene: "NCBIGene:100506406"
+    gene_expression_method: "quantitative reverse transcription PCR (RT-qPCR) of whole blood"
+    evidence:
+      - reference: "PMID:35453536"
+        reference_title: "lnc-IL7R Expression Reflects Physiological Pulmonary Function and Its Aberration Is a Putative Indicator of COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "our quantitative analysis of lnc-IL7R expression in our COPD cohort (n = 125) ... implications (area under the curve, AUC = 0.86, p < 0.001)"
+        explanation: "Gives the assay (quantitative analysis of lnc-IL7R expression), the cohort size (n = 125) and the COPD-stratification AUC of 0.86 (p < 0.001) recorded by this assay."
+      - reference: "PMID:35453536"
+        reference_title: "lnc-IL7R Expression Reflects Physiological Pulmonary Function and Its Aberration Is a Putative Indicator of COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "patients with COPD (sensitivity = 0.83, ... = 0.83), precisely discriminated those without emphysematous phenotype (sensitivity = 0.48, ... = 0.89)"
+        explanation: "Gives the sensitivity and specificity of the lnc-IL7R level for identifying COPD and for discriminating the non-emphysematous phenotype; each ellipsis elides only the word 'specificity'."
+      - reference: "PMID:35453536"
+        reference_title: "lnc-IL7R Expression Reflects Physiological Pulmonary Function and Its Aberration Is a Putative Indicator of COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The relatively novel uncharacterized human long noncoding RNA lnc-IL7R (otherwise called LOC100506406)"
+        explanation: "Identifies the measured transcript as the human long noncoding RNA lnc-IL7R, also called LOC100506406, which is the target gene recorded on this assay."
+    has_specified_output:
+      id: "GE:bamodu-lncil7r-copd-cohort-output"
+      name: "lnc-IL7R expression measurement in the COPD cohort"
+    informs_on_key_event:
+      id: "KE:ke-decreased-lnc-il7r"
+      name: "Decreased lnc-IL7R expression"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: PopulationSubject
+      id: "soma:bamodu-copd-cohort"
+      name: "COPD cohort (n = 125)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cohort_size: 125
+      inclusion_criteria: "Patients with COPD diagnosed per international recommendations; clinically stable without exacerbation for at least one month; no significant comorbidities and no history of systemic corticosteroids, diuretics, cytotoxic agents or alcohol abuse (>40 g alcohol/day). Current smokers n = 49, ex-smokers n = 66, never smokers n = 10."
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:bamodu-rtqpcr-001"
+        name: "RT-qPCR quantification of lnc-IL7R in whole blood"
+        detection_method: "quantitative reverse transcription PCR (RT-qPCR)"
+
+  # Bioinformatics dose-response: COPD probability against lnc-IL7R expression
+  - id: "GE:bamodu-lncil7r-dose-response"
+    name: "Dose-response of COPD probability against lnc-IL7R expression"
+    description: "Bioinformatics-aided dose-response modelling of the probability of COPD as a function of lnc-IL7R expression, treated as the internal dose metric. The probability of COPD decreased as lnc-IL7R expression increased, which the authors read as an anti-COPD therapeutic potential for lnc-IL7R. The abstract reports the direction of the relationship only; no fitted parameters are asserted here."
+    target_gene: "NCBIGene:100506406"
+    gene_expression_method: "bioinformatics-aided dose-response modelling of RT-qPCR lnc-IL7R levels"
+    evidence:
+      - reference: "PMID:35453536"
+        reference_title: "lnc-IL7R Expression Reflects Physiological Pulmonary Function and Its Aberration Is a Putative Indicator of COPD."
+        supports: SUPPORT
+        evidence_source: COMPUTATIONAL
+        snippet: "plot showed that the probability of COPD decreased as lnc-IL7R expression increased, thus, corroborating our posited anti-COPD therapeutic potential of lnc-IL7R."
+        explanation: "States the modelled inverse relationship between lnc-IL7R expression and the probability of COPD that this assay records."
+    has_specified_output:
+      id: "GE:bamodu-lncil7r-dose-response-output"
+      name: "Modelled COPD probability versus lnc-IL7R expression"
+    informs_on_key_event:
+      id: "KE:ke-decreased-lnc-il7r"
+      name: "Decreased lnc-IL7R expression"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: PopulationSubject
+      id: "soma:bamodu-copd-cohort"
+      name: "COPD cohort (n = 125)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cohort_size: 125
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:bamodu-rtqpcr-001"
+        name: "RT-qPCR quantification of lnc-IL7R in whole blood"
+        detection_method: "quantitative reverse transcription PCR (RT-qPCR)"
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS - spirometry and CT densitometry versus lnc-IL7R level
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:bamodu-copd-cohort-spirometry"
+    name: "Pulmonary function and emphysema indices correlated with lnc-IL7R level"
+    description: "Spirometry (FEV1, FVC, post-bronchodilator FEV1/FVC) and inspiratory-CT emphysema indices (%LAA-950insp, total LAA) in the 125-patient COPD cohort, correlated with blood lnc-IL7R expression by Spearman's rank correlation. Reported correlations with lnc-IL7R: COPD GOLD stage r = -0.59 (p < 0.001); %LAA-950insp r = -0.30 (p = 0.002); total LAA r = -0.35 (p < 0.001); FEV1(%) r = 0.52 (p < 0.001); FVC(%) r = 0.45 (p < 0.001); post-bronchodilator FEV1/FVC r = 0.41 (p < 0.001). Lower lnc-IL7R accompanies worse airflow limitation and greater low-attenuation (emphysematous) area. The abstract reports correlation coefficients, not absolute spirometry values, so no FEV1 or FVC value is asserted in the output below."
+    evidence:
+      - reference: "PMID:35453536"
+        reference_title: "lnc-IL7R Expression Reflects Physiological Pulmonary Function and Its Aberration Is a Putative Indicator of COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "GOLD stage (r = −0.59, ... %LAA-950insp (r = −0.30, p = 0.002), total LAA (r = −0.35, p < 0.001), FEV1(%) (r = 0.52, p < 0.001), FVC (%) (r = 0.45, p < 0.001)"
+        explanation: "Gives the correlation coefficients and p-values between lnc-IL7R level and GOLD stage, the two CT emphysema indices, FEV1(%) and FVC(%) that this assay records."
+      - reference: "PMID:35453536"
+        reference_title: "lnc-IL7R Expression Reflects Physiological Pulmonary Function and Its Aberration Is a Putative Indicator of COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "but is indicative of impaired pulmonary function, pathognomonic of COPD, and predictive of an exacerbated/ aggravated COPD phenotype."
+        explanation: "States that reduced lnc-IL7R expression marks impaired pulmonary function, which is the decreased-lung-function key event this assay informs on."
+    has_specified_output:
+      id: "LF:bamodu-copd-cohort-spirometry-output"
+      name: "Pulmonary function and emphysema measurements in the COPD cohort"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:bamodu-copd-patient"
+      name: "Patient with COPD in the study cohort"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      disease_state: "Chronic obstructive pulmonary disease, staged I-IV by the GOLD guidelines"
+      subject_characteristics: "One of 125 clinically stable patients with COPD in a single-center prospective cohort; current smokers n = 49, ex-smokers n = 66, never smokers n = 10"
+      sample_type: blood
+      sample_collection_method: "Routine blood workup for lnc-IL7R; spirometry and inspiratory CT for pulmonary function and emphysema indices"
+      clinical_context: "Stable-state assessment: spirometry (FEV1, FVC, post-bronchodilator FEV1/FVC) and CT densitometry (%LAA-950insp, total LAA) correlated with blood lnc-IL7R expression"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:bamodu-spirometry-001"
+        name: "Spirometry, bronchodilator response and CT densitometry"
