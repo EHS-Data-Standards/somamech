@@ -1,0 +1,834 @@
+# =============================================================================
+# Easwaran et al. (2021) - Short-term whole body cigarette smoke exposure
+# induces regional differences in cellular response in the mouse larynx
+# =============================================================================
+#
+# Source: Toxicol Rep. 2021;8:920-930
+# DOI: 10.1016/j.toxrep.2021.04.007
+# PMID: 33996505
+#
+# Study design:
+#   - In vivo: male C57BL/6J mice, 8-9 weeks old (n = 56), whole-body
+#     inhalation (inExpose, SCIREQ) of mainstream smoke from 14 3R4F
+#     reference cigarettes, ~2 h/day (126 min), 5 days/week.
+#   - Groups: 1 day CSE, 5 day CSE, 10 day CSE (n = 8 each) and a
+#     reversibility (REV) group exposed 5 days then air-exposed 5 days.
+#     Controls were left in room air.
+#   - Delivered dose 5.6968 mg/kg per cigarette (79.755 mg/kg for the 14
+#     cigarettes given each day); average TPM ~621 mg/m3.
+#   - Endpoints, scored separately in the glottic (vocal fold, VF) and
+#     subglottic regions: BrdU immunohistochemistry (proliferation),
+#     p63 immunofluorescence (basal cells), cleaved caspase-3
+#     immunohistochemistry (apoptosis), H&E (VF epithelial thickness),
+#     Alcian blue / periodic acid-Schiff (subglottic glandular area and
+#     acidic vs neutral mucin composition), and scanning electron
+#     microscopy (VF surface microprojections, subglottic cilia).
+#
+# Key findings recorded here:
+#   - VF: BrdU+ proliferating cells and p63+ basal cells up at day 1 only;
+#     no change in VF epithelial thickness; no cleaved caspase-3 signal at
+#     any time point.
+#   - Subglottis: BrdU+ cells in the submucosal glands up at days 5 and 10
+#     and after 5-day cessation; cleaved caspase-3+ cells up at day 1 only.
+#   - Mucins: acidic (Alcian blue) mucin area down and neutral (PAS) mucin
+#     area up at day 10 only; total subglottic glandular area unchanged at
+#     every time point.
+#   - SEM: significant VF microprojection damage at day 10 with epithelial
+#     sloughing (day 5) and ulceration (day 10); compound cilia in the
+#     respiratory-epithelium-lined subglottis at days 5 and 10 with ciliary
+#     loss and cellular blistering at day 10.
+#
+# EVERY quantitative result in this paper is presented only in figures
+# (Figs. 3-14) - the text reports directions and significance but no group
+# means. No numbers are transcribed here: each assay carries the
+# qualitative direction plus exact quotes, and the output objects record
+# that the values are figure-only rather than inventing them.
+#
+# Curation notes for reviewers:
+#   - Two NEW key events are minted here (see the PR description):
+#     KE:ke-epithelial-proliferation and KE:ke-epithelial-cell-death.
+#     Nothing in the existing shared vocabulary covers epithelial cell
+#     proliferation or apoptosis, which are this paper's primary endpoints.
+#   - KE:ke3-impaired-ciliary ("Decreased ciliary function") is reused from
+#     the existing fixture vocabulary for the SEM cilia observations.
+#   - Both SEM assays are filed under ciliary_function_assays because that
+#     is the schema's epithelial-surface-microscopy assay class (it carries
+#     airway_region and analysis_software); the vocal-fold one describes
+#     microprojections rather than cilia and informs on
+#     KE:ke-epithelial-barrier.
+#
+# =============================================================================
+
+source_publication:
+  reference: "PMID:33996505"
+  reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+  doi: "10.1016/j.toxrep.2021.04.007"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:easwaran-cs-exposure-001"
+    name: "Short-term whole body mainstream cigarette smoke exposure to 3R4F reference cigarettes"
+    description: "Mice were placed in the whole body chamber of the inExpose system and exposed to mainstream smoke from 14 3R4F Kentucky reference cigarettes per day, using the FTC/ISO regimen of 35 mL puffs of 2 s duration followed by 58 s of fresh air at 2 L/min, once a minute, 9 puffs per cigarette; approximately 2 h 6 min per day, 5 days/week."
+    equipment_required:
+      - "inExpose whole body inhalation exposure system (SCIREQ, Montreal)"
+      - "Cigarette smoking robot (CSR) carousel"
+      - "Microdust Pro real-time particulate monitor"
+      - "Flexiware v8.0 software"
+      - "3R4F Kentucky research cigarettes (Center for Tobacco Reference Products)"
+
+  - id: "PROTOCOL:easwaran-brdu-ihc-001"
+    name: "BrdU immunohistochemistry on coronal laryngeal sections"
+    description: "BrdU (100 mg/kg body weight) was given by intraperitoneal injection immediately after the final smoke or air exposure and mice were euthanized 2 h later. Standard immunohistochemistry with DAB substrate produced brown nuclear staining; positive cells were counted at 20x in the vocal folds and, for the subglottis, at 40x within ten high power fields along a fixed 700 um length on each side."
+    equipment_required:
+      - "Aperio ImageScope v.12.3.2.8013 counter tool (Leica Biosystems)"
+      - "BrdU antibody ab142567 (Abcam)"
+      - "3,3'-Diaminobenzidine (DAB) substrate"
+
+  - id: "PROTOCOL:easwaran-p63-if-001"
+    name: "p63 immunofluorescence for vocal fold basal cells"
+    description: "Heat-induced antigen retrieval in citrate buffer, overnight incubation with anti-p63 (1:100, CM 163 A, Biocare Medical), donkey anti-mouse Alexa Fluor 647 secondary (1:500) and Hoechst counterstain; images acquired at 20x on a Zeiss Axioimager and p63 positive basal cells counted in the mid-membranous vocal fold over a fixed 300 um length."
+    equipment_required:
+      - "Zeiss Axioimager microscope"
+      - "Anti-p63 antibody CM 163 A (Biocare Medical)"
+      - "Fiji (ImageJ) counter tool"
+
+  - id: "PROTOCOL:easwaran-cc3-ihc-001"
+    name: "Cleaved caspase-3 immunohistochemistry for apoptosis"
+    description: "Sections were stained with anti-cleaved caspase-3 (1:500, 9664T, Cell Signaling Technology) using the ImmPRESS Excel Amplified HRP Polymer kit and counterstained with Hematoxylin QS. Positive cells were counted at 40x along the entire mid-membranous vocal fold and, in the subglottis, within five randomly selected 100 x 100 um regions per side."
+    equipment_required:
+      - "ImmPRESS Excel Amplified HRP Polymer kit (Vector Laboratories)"
+      - "Anti-cleaved caspase-3 antibody 9664T (Cell Signaling Technology)"
+      - "Zeiss Axioimager microscope"
+
+  - id: "PROTOCOL:easwaran-abpas-001"
+    name: "Alcian blue / periodic acid-Schiff staining with colour deconvolution for subglottic mucin composition"
+    description: "AB/PAS stained subglottic glandular regions were traced with the polygon tool at 10x magnification, with area measurements restricted to glands larger than 100 um2. Stain vectors in the colour deconvolution tool separated Alcian blue stained acidic mucins from PAS stained neutral mucins, and the area stained for each was measured."
+    equipment_required:
+      - "Fiji (derivative of ImageJ; NIH) colour deconvolution tool"
+      - "Alcian blue / periodic acid-Schiff stain"
+
+  - id: "PROTOCOL:easwaran-sem-001"
+    name: "Scanning electron microscopy of the laryngeal mucosa with blinded damage scoring"
+    description: "Larynges were fixed, dehydrated, split longitudinally to reveal the vocal fold surface, critical point dried, mounted and sputter coated with gold/palladium (60:40), then imaged at 5-25kx. Twenty 2 x 2 um images per group were scored by three blinded judges on a four-point scale (0 normal, 1 mild/minimal, 2 moderate, 3 extensive/severe); 50% of images were scored twice for quality control."
+    equipment_required:
+      - "FEI Strata 235 DB DualBeam FIB/SEM"
+      - "Critical point dryer and Au/Pd sputter coater"
+      - "Blinder web-based scoring application (Solibyte Solutions)"
+
+# =============================================================================
+# GENE / PROTEIN EXPRESSION ASSAYS
+# Immunolabelled cell populations (BrdU, p63, cleaved caspase-3) scored by
+# cell counts. All counts are figure-only.
+# =============================================================================
+
+gene_expression_assays:
+
+  # ---------------------------------------------------------------------------
+  # Proliferation - vocal fold (glottis)
+  # ---------------------------------------------------------------------------
+  - id: "GE:easwaran-brdu-vf-day1"
+    name: "BrdU labelled proliferating cells in the vocal fold epithelium after short-term cigarette smoke exposure"
+    description: "BrdU positive proliferating cells in the mid-membranous vocal fold epithelium were significantly elevated after 1 day of cigarette smoke exposure and were back to control levels at 5 days, 10 days and after 5 days of cessation. Cell counts appear only in Fig. 8 and are not transcribed here."
+    gene_expression_method: "BrdU immunohistochemistry with DAB detection; positive nuclei counted at 20x on left and right vocal folds"
+    evidence:
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "BrdU labeled cells were significantly elevated only after 1 day of CSE (Fig. 8B, F) in the vocal folds."
+        explanation: "States the day-1-only increase in BrdU labelled proliferating cells in the vocal folds that this assay records."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Proliferative BrdU labeled cells remained unaltered in the 5 day CSE (Fig. 8C, G), 10 day CSE (Fig. 8E, H) and 5 day REV groups (Fig. 8D, G) in comparison to the controls (Fig. 8A)."
+        explanation: "Supports the null result recorded in the description for the 5 day, 10 day and reversibility groups."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The number of BrdU positive cells were counted in the VF and subglottic region."
+        explanation: "Confirms that BrdU positive cells were counted separately in the vocal fold and subglottic regions, the regional split this file preserves."
+    has_specified_output:
+      id: "GE:easwaran-brdu-vf-day1-output"
+      name: "BrdU positive cell counts in the vocal fold epithelium"
+      description: "Direction only: significantly increased at day 1 versus air-exposed control, unchanged at days 5 and 10 and after cessation. Group means are shown only in Fig. 8 and are therefore not recorded."
+    assay_date: "2021-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:easwaran-cs-1day"
+        name: "Whole body mainstream 3R4F cigarette smoke, ~2 h/day for 1 day (delivered dose 79.755 mg/kg per day, average TPM ~621 mg/m3)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "621"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-proliferation"
+      name: "Increased epithelial cell proliferation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:easwaran-mouse-vf"
+      name: "Male C57BL/6J mice, 8-9 weeks old - vocal fold (glottic) region"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      subject_characteristics: "Male C57BL/6J mice, 8-9 weeks old, purchased from Jackson Laboratories; n = 8 per cigarette smoke exposure group"
+      collection_site: "larynx, glottic region (mid-membranous vocal fold)"
+    follows_protocols:
+      - id: "PROTOCOL:easwaran-cs-exposure-001"
+        name: "Short-term whole body mainstream cigarette smoke exposure to 3R4F reference cigarettes"
+      - id: "PROTOCOL:easwaran-brdu-ihc-001"
+        name: "BrdU immunohistochemistry on coronal laryngeal sections"
+
+  # ---------------------------------------------------------------------------
+  # Proliferation - subglottic submucosal glands
+  # ---------------------------------------------------------------------------
+  - id: "GE:easwaran-brdu-subglottis-day5-10-rev"
+    name: "BrdU labelled proliferating cells in the subglottic submucosal glands after short-term cigarette smoke exposure"
+    description: "In the subglottic submucosal glands the proliferative response appeared later than in the vocal fold: BrdU positive cells were significantly increased at days 5 and 10 of exposure and remained significantly increased in the reversibility group after 5 days of cessation, with no change at day 1. Cell counts appear only in Fig. 9 and are not transcribed here."
+    gene_expression_method: "BrdU immunohistochemistry with DAB detection; positive cells counted at 40x within ten high power fields along a fixed 700 um subglottic length per side"
+    evidence:
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In the subglandular regions, proliferative cells labeled by BrdU had significantly increased after day 5 (Fig. 9C, G) and day 10 of CSE (Fig. 9E, H)."
+        explanation: "States the significant increase in BrdU labelled proliferating cells in the subglandular regions at days 5 and 10 that this assay records."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Mice in the 5 day REV group (Fig. 9D, G) also had a significant increase in BrdU positive cells when compared to the controls (Fig. 9A)."
+        explanation: "Supports the recorded persistence of the increase in the 5 day reversibility group after cigarette smoke cessation."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "CSE increased proliferative cells in the subglottis at days 5, 10 and following cessation in the subglottis."
+        explanation: "The abstract's summary of the same result, naming days 5 and 10 and the post-cessation group."
+    has_specified_output:
+      id: "GE:easwaran-brdu-subglottis-day5-10-rev-output"
+      name: "BrdU positive cell counts in the subglottic submucosal glands"
+      description: "Direction only: significantly increased at days 5 and 10 and after 5 days of cessation, unchanged at day 1. Group means are shown only in Fig. 9 and are therefore not recorded."
+    assay_date: "2021-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:easwaran-cs-5day"
+        name: "Whole body mainstream 3R4F cigarette smoke, ~2 h/day for 5 days (delivered dose 79.755 mg/kg per day, average TPM ~621 mg/m3)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "621"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:easwaran-cs-10day"
+        name: "Whole body mainstream 3R4F cigarette smoke, ~2 h/day for 10 days (delivered dose 79.755 mg/kg per day, average TPM ~621 mg/m3)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "621"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "10"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:easwaran-cs-5day-rev"
+        name: "Whole body mainstream 3R4F cigarette smoke, ~2 h/day for 5 days followed by 5 days of room air (reversibility group)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "621"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+        timing_post_exposure:
+          value: "5"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-proliferation"
+      name: "Increased epithelial cell proliferation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:easwaran-mouse-subglottis"
+      name: "Male C57BL/6J mice, 8-9 weeks old - subglottic region"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      subject_characteristics: "Male C57BL/6J mice, 8-9 weeks old, purchased from Jackson Laboratories; n = 8 per cigarette smoke exposure group"
+      collection_site: "larynx, subglottic region (respiratory epithelium and submucosal glands)"
+    follows_protocols:
+      - id: "PROTOCOL:easwaran-cs-exposure-001"
+        name: "Short-term whole body mainstream cigarette smoke exposure to 3R4F reference cigarettes"
+      - id: "PROTOCOL:easwaran-brdu-ihc-001"
+        name: "BrdU immunohistochemistry on coronal laryngeal sections"
+
+  # ---------------------------------------------------------------------------
+  # Basal cell hyperplasia - vocal fold
+  # ---------------------------------------------------------------------------
+  - id: "GE:easwaran-p63-vf-day1"
+    name: "p63 labelled basal cells in the vocal fold epithelium after short-term cigarette smoke exposure"
+    description: "p63 positive basal cells in the mid-membranous vocal fold were significantly increased after 1 day of cigarette smoke exposure, which the authors interpret as basal cell hyperplasia, and were comparable to controls at 5 days, 10 days and after cessation. Vocal fold epithelial thickness, the morphological indicator of hyperplasia, was unchanged at every time point. Cell counts appear only in Fig. 10 and are not transcribed here."
+    gene_expression_method: "p63 immunofluorescence (anti-p63 1:100, Alexa Fluor 647 secondary); positive basal cells counted at 20x over a fixed 300 um mid-membranous vocal fold length per side"
+    evidence:
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "CS exposed mice showed elevated numbers of p63 positive basal cells at day 1 (Fig. 10B, F) in the vocal folds."
+        explanation: "States the day-1 increase in p63 positive basal cells in the vocal folds that this assay records."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In conjunction with elevated BrdU-labeled proliferative cells, we found significantly increased p63 positive basal cells on day 1, indicating basal cell hyperplasia."
+        explanation: "Supports the description's reading of the concurrent p63 and BrdU increase at day 1 as basal cell hyperplasia."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Evaluation of VF epithelial thickness in the H&E slides revealed that CSE had no significant effect in altering the thickness at all time points and also under reversible conditions (Fig.5A-H)."
+        explanation: "Supports the description's qualification that no change in vocal fold epithelial thickness accompanied the day-1 basal cell increase."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "p63 positive basal cells were counted in the right and left mid-membranous region of the VF across a fixed length of 300 μm using the counter tool in Fiji."
+        explanation: "Gives the counting method and the fixed 300 um mid-membranous vocal fold length recorded as this assay's gene_expression_method."
+    has_specified_output:
+      id: "GE:easwaran-p63-vf-day1-output"
+      name: "p63 positive basal cell counts in the vocal fold epithelium"
+      description: "Direction only: significantly increased at day 1 versus air-exposed control, unchanged at 5 days, 10 days and after cessation. Group means are shown only in Fig. 10 and are therefore not recorded."
+    assay_date: "2021-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:easwaran-cs-1day"
+        name: "Whole body mainstream 3R4F cigarette smoke, ~2 h/day for 1 day (delivered dose 79.755 mg/kg per day, average TPM ~621 mg/m3)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "621"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-proliferation"
+      name: "Increased epithelial cell proliferation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:easwaran-mouse-vf"
+      name: "Male C57BL/6J mice, 8-9 weeks old - vocal fold (glottic) region"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      subject_characteristics: "Male C57BL/6J mice, 8-9 weeks old, purchased from Jackson Laboratories; n = 8 per cigarette smoke exposure group"
+      collection_site: "larynx, glottic region (mid-membranous vocal fold)"
+    follows_protocols:
+      - id: "PROTOCOL:easwaran-cs-exposure-001"
+        name: "Short-term whole body mainstream cigarette smoke exposure to 3R4F reference cigarettes"
+      - id: "PROTOCOL:easwaran-p63-if-001"
+        name: "p63 immunofluorescence for vocal fold basal cells"
+
+  # ---------------------------------------------------------------------------
+  # Apoptosis - subglottis
+  # ---------------------------------------------------------------------------
+  - id: "GE:easwaran-cc3-subglottis-day1"
+    name: "Cleaved caspase-3 positive apoptotic cells in the subglottis after short-term cigarette smoke exposure"
+    description: "Cleaved caspase-3 positive cells were significantly increased in the respiratory-epithelium-lined subglottis at day 1 of cigarette smoke exposure only; the 5 day, 10 day and 5 day reversibility groups showed no significant increase. Cell counts appear only in Fig. 12 and are not transcribed here."
+    gene_expression_method: "Cleaved caspase-3 immunohistochemistry (ImmPRESS Excel amplified HRP polymer, DAB); positive cells counted at 40x in five randomly selected 100 x 100 um subglottic regions per side"
+    evidence:
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "CC3 positive cells were significantly increased in the subglottis, only on day 1 after CSE (Fig. 12B, F)."
+        explanation: "States the day-1-only increase in cleaved caspase-3 positive cells in the subglottis that this assay records."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Cleaved caspase-3 apoptotic activity was absent in VF at all time points and increased at day 1 in the subglottis."
+        explanation: "The abstract's summary of the same regional result: absent in the vocal fold, increased at day 1 in the subglottis."
+    has_specified_output:
+      id: "GE:easwaran-cc3-subglottis-day1-output"
+      name: "Cleaved caspase-3 positive cell counts in the subglottis"
+      description: "Direction only: significantly increased at day 1 versus air-exposed control, no significant increase at 5 days, 10 days or after cessation. Group means are shown only in Fig. 12 and are therefore not recorded."
+    assay_date: "2021-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:easwaran-cs-1day"
+        name: "Whole body mainstream 3R4F cigarette smoke, ~2 h/day for 1 day (delivered dose 79.755 mg/kg per day, average TPM ~621 mg/m3)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "621"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-cell-death"
+      name: "Increased epithelial cell death"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:easwaran-mouse-subglottis"
+      name: "Male C57BL/6J mice, 8-9 weeks old - subglottic region"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      subject_characteristics: "Male C57BL/6J mice, 8-9 weeks old, purchased from Jackson Laboratories; n = 8 per cigarette smoke exposure group"
+      collection_site: "larynx, subglottic region (respiratory epithelium and submucosal glands)"
+    follows_protocols:
+      - id: "PROTOCOL:easwaran-cs-exposure-001"
+        name: "Short-term whole body mainstream cigarette smoke exposure to 3R4F reference cigarettes"
+      - id: "PROTOCOL:easwaran-cc3-ihc-001"
+        name: "Cleaved caspase-3 immunohistochemistry for apoptosis"
+
+  # ---------------------------------------------------------------------------
+  # Apoptosis - vocal fold (negative result)
+  # ---------------------------------------------------------------------------
+  - id: "GE:easwaran-cc3-vf-null"
+    name: "Cleaved caspase-3 apoptotic activity in the vocal fold after short-term cigarette smoke exposure (negative result)"
+    description: "No significant cleaved caspase-3 signal was detected in the vocal fold at any exposure time point or in the reversibility group - the regional counterpart to the day-1 increase seen in the subglottis. Recorded as a negative result; counts appear only in Fig. 11."
+    gene_expression_method: "Cleaved caspase-3 immunohistochemistry (ImmPRESS Excel amplified HRP polymer, DAB); positive cells counted at 40x along the entire mid-membranous vocal fold region"
+    evidence:
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "VF regions did not exhibit any significant CC3 levels in the mice exposed to CS at all time points and also in the mice under reversibility conditions (Fig. 11A-H)."
+        explanation: "States the absence of significant cleaved caspase-3 activity in the vocal fold at all time points, which is what this assay records."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Cleaved caspase-3 apoptotic activity was absent in VF at all time points and increased at day 1 in the subglottis."
+        explanation: "The abstract states the same negative vocal fold result alongside the positive subglottic one."
+    has_specified_output:
+      id: "GE:easwaran-cc3-vf-null-output"
+      name: "Cleaved caspase-3 positive cell counts in the vocal fold epithelium"
+      description: "Direction only: no significant change versus air-exposed control at 1, 5 or 10 days of exposure or after 5 days of cessation. Group means are shown only in Fig. 11 and are therefore not recorded."
+    assay_date: "2021-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:easwaran-cs-1day"
+        name: "Whole body mainstream 3R4F cigarette smoke, ~2 h/day for 1 day (delivered dose 79.755 mg/kg per day, average TPM ~621 mg/m3)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "621"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:easwaran-cs-5day"
+        name: "Whole body mainstream 3R4F cigarette smoke, ~2 h/day for 5 days (delivered dose 79.755 mg/kg per day, average TPM ~621 mg/m3)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "621"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:easwaran-cs-10day"
+        name: "Whole body mainstream 3R4F cigarette smoke, ~2 h/day for 10 days (delivered dose 79.755 mg/kg per day, average TPM ~621 mg/m3)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "621"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "10"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-cell-death"
+      name: "Increased epithelial cell death"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:easwaran-mouse-vf"
+      name: "Male C57BL/6J mice, 8-9 weeks old - vocal fold (glottic) region"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      subject_characteristics: "Male C57BL/6J mice, 8-9 weeks old, purchased from Jackson Laboratories; n = 8 per cigarette smoke exposure group"
+      collection_site: "larynx, glottic region (mid-membranous vocal fold)"
+    follows_protocols:
+      - id: "PROTOCOL:easwaran-cs-exposure-001"
+        name: "Short-term whole body mainstream cigarette smoke exposure to 3R4F reference cigarettes"
+      - id: "PROTOCOL:easwaran-cc3-ihc-001"
+        name: "Cleaved caspase-3 immunohistochemistry for apoptosis"
+
+# =============================================================================
+# GOBLET CELL / MUCIN ASSAYS
+# Subglottic submucosal gland area and acidic vs neutral mucin composition
+# by Alcian blue / periodic acid-Schiff staining.
+# =============================================================================
+
+goblet_cell_assays:
+
+  - id: "GCM:easwaran-mucin-composition-day10"
+    name: "Acidic and neutral mucin composition of the subglottic submucosal glands after short-term cigarette smoke exposure"
+    description: "Mucin composition shifted only at day 10: the percentage area of Alcian blue stained acidic mucins decreased significantly and the percentage area of PAS stained neutral mucins increased significantly. Acidic and neutral mucin levels were unchanged at days 1 and 5 and in the 5 day reversibility group. This is a shift in stored glandular mucin composition rather than a measured increase in secretion. Percentage areas appear only in Fig. 7 and are not transcribed here."
+    evidence:
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Acidic mucins significantly decreased in the CSE group on day 10 (Fig. 7F)."
+        explanation: "States the significant day-10 decrease in acidic mucins recorded by this assay."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Neutral mucin levels were significantly elevated after 10 days of CSE (Fig. 7F)."
+        explanation: "States the significant day-10 increase in neutral mucins recorded by this assay."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Area of AB-positive acidic and PAS-positive neutral mucin levels did not change in the CSE group at days 1 and 5 and the 5 day REV group (Fig. 7D, E)."
+        explanation: "Supports the recorded absence of any change at days 1 and 5 and in the reversibility group."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The digital images of AB/PAS stained slides were utilized to measure the subglottic glandular area and mucus composition by Fiji (derivative of ImageJ; NIH)."
+        explanation: "Gives the AB/PAS image analysis method by which the acidic and neutral mucin areas were measured."
+    has_specified_output:
+      id: "GCM:easwaran-mucin-composition-day10-output"
+      name: "Percentage area of acidic (Alcian blue) and neutral (PAS) mucins in the subglottic glands"
+      description: "Direction only: acidic mucin area decreased and neutral mucin area increased at day 10 (p values reported in Fig. 7 as * p <= 0.05 and **** p <= 0.0001); no change at days 1 or 5 or after cessation. Percentage areas are shown only in Fig. 7 and are therefore not recorded."
+    assay_date: "2021-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:easwaran-cs-10day"
+        name: "Whole body mainstream 3R4F cigarette smoke, ~2 h/day for 10 days (delivered dose 79.755 mg/kg per day, average TPM ~621 mg/m3)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "621"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "10"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:easwaran-mouse-subglottis"
+      name: "Male C57BL/6J mice, 8-9 weeks old - subglottic region"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      subject_characteristics: "Male C57BL/6J mice, 8-9 weeks old, purchased from Jackson Laboratories; n = 8 per cigarette smoke exposure group"
+      collection_site: "larynx, subglottic region (respiratory epithelium and submucosal glands)"
+    follows_protocols:
+      - id: "PROTOCOL:easwaran-cs-exposure-001"
+        name: "Short-term whole body mainstream cigarette smoke exposure to 3R4F reference cigarettes"
+      - id: "PROTOCOL:easwaran-abpas-001"
+        name: "Alcian blue / periodic acid-Schiff staining with colour deconvolution for subglottic mucin composition"
+
+  - id: "GCM:easwaran-glandular-area-null"
+    name: "Total subglottic glandular area after short-term cigarette smoke exposure (negative result)"
+    description: "Total mucus-producing glandular area in the subglottis was not significantly increased at any exposure time point or in the 5 day reversibility group, so the increased submucosal gland cell proliferation seen at days 5 and 10 was not accompanied by gland hypertrophy. Recorded as a negative result; areas appear only in Fig. 6."
+    evidence:
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The subglottic glandular area was not significantly increased in the CS exposed groups at all time points and in the 5 day REV group (Fig. 6A-H)."
+        explanation: "States the absence of a significant increase in subglottic glandular area at all time points, which is what this assay records."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Although in this study, short-term CSE increased cell proliferation in the submucosal glands, submucosal gland hypertrophy was not observed."
+        explanation: "Supports the description's point that increased submucosal gland proliferation occurred without gland hypertrophy."
+    has_specified_output:
+      id: "GCM:easwaran-glandular-area-null-output"
+      name: "Total subglottic glandular area"
+      description: "Direction only: no significant increase versus air-exposed control at 1, 5 or 10 days of exposure or after 5 days of cessation. Areas are shown only in Fig. 6 and are therefore not recorded."
+    assay_date: "2021-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:easwaran-cs-10day"
+        name: "Whole body mainstream 3R4F cigarette smoke, ~2 h/day for 10 days (delivered dose 79.755 mg/kg per day, average TPM ~621 mg/m3)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "621"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "10"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:easwaran-mouse-subglottis"
+      name: "Male C57BL/6J mice, 8-9 weeks old - subglottic region"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      subject_characteristics: "Male C57BL/6J mice, 8-9 weeks old, purchased from Jackson Laboratories; n = 8 per cigarette smoke exposure group"
+      collection_site: "larynx, subglottic region (respiratory epithelium and submucosal glands)"
+    follows_protocols:
+      - id: "PROTOCOL:easwaran-cs-exposure-001"
+        name: "Short-term whole body mainstream cigarette smoke exposure to 3R4F reference cigarettes"
+      - id: "PROTOCOL:easwaran-abpas-001"
+        name: "Alcian blue / periodic acid-Schiff staining with colour deconvolution for subglottic mucin composition"
+
+# =============================================================================
+# SCANNING ELECTRON MICROSCOPY OF THE LARYNGEAL EPITHELIAL SURFACE
+# Filed under ciliary_function_assays, the schema's epithelial-surface
+# microscopy assay class. See the curation note in the header.
+# =============================================================================
+
+ciliary_function_assays:
+
+  - id: "CILIARY:easwaran-sem-subglottic-cilia"
+    name: "SEM of cilia in the respiratory-epithelium-lined subglottis after short-term cigarette smoke exposure"
+    description: "Scanning electron microscopy of the respiratory-epithelium-lined laryngeal regions showed compound cilia after 5 and 10 days of cigarette smoke exposure, both normal and compound cilia in the 5 day reversibility group, and cellular surface blistering with ciliary loss at day 10. The findings are qualitative morphological observations; no beat frequency, cilia length or ciliated cell counts were measured."
+    airway_region: "larynx, subglottis (respiratory epithelium)"
+    evidence:
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The presence of compound cilia was observed in the laryngeal regions lined by RE, after 5 and 10 days after CSE (Fig. 14B, C)."
+        explanation: "States the appearance of compound cilia in the respiratory-epithelium-lined larynx at days 5 and 10 that this assay records."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Cellular surface blistering (rounded) accompanied by the ciliary loss was predominantly seen along this epithelium at day 10 post CSE (Fig. 14C, E)."
+        explanation: "States the day-10 cellular surface blistering with ciliary loss that this assay records."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Examination of the laryngeal subglottic epithelium by SEM showed signs of abnormal cilia including compound and loss of these organelles."
+        explanation: "Summarises the abnormal subglottic cilia - compound cilia and ciliary loss - that this assay records."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "SEM visualizations additionally indicated the presence of deformed cilia at days 5 and 10 after CSE and post-cessation in the respiratory epithelium lined subglottis."
+        explanation: "The abstract's summary of the same observation, including its persistence post-cessation."
+    has_specified_output:
+      id: "CILIARY:easwaran-sem-subglottic-cilia-output"
+      name: "Qualitative SEM appearance of subglottic cilia"
+      description: "Qualitative only: compound cilia at days 5 and 10, normal plus compound cilia after 5 days of cessation, ciliary loss with cellular blistering at day 10. No quantitative ciliary measurement was reported."
+    assay_date: "2021-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:easwaran-cs-5day"
+        name: "Whole body mainstream 3R4F cigarette smoke, ~2 h/day for 5 days (delivered dose 79.755 mg/kg per day, average TPM ~621 mg/m3)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "621"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:easwaran-cs-10day"
+        name: "Whole body mainstream 3R4F cigarette smoke, ~2 h/day for 10 days (delivered dose 79.755 mg/kg per day, average TPM ~621 mg/m3)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "621"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "10"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke3-impaired-ciliary"
+      name: "Decreased ciliary function"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:easwaran-mouse-subglottis"
+      name: "Male C57BL/6J mice, 8-9 weeks old - subglottic region"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      subject_characteristics: "Male C57BL/6J mice, 8-9 weeks old, purchased from Jackson Laboratories; n = 8 per cigarette smoke exposure group"
+      collection_site: "larynx, subglottic region (respiratory epithelium and submucosal glands)"
+    follows_protocols:
+      - id: "PROTOCOL:easwaran-cs-exposure-001"
+        name: "Short-term whole body mainstream cigarette smoke exposure to 3R4F reference cigarettes"
+      - id: "PROTOCOL:easwaran-sem-001"
+        name: "Scanning electron microscopy of the laryngeal mucosa with blinded damage scoring"
+
+  - id: "CILIARY:easwaran-sem-vf-microprojections"
+    name: "SEM of vocal fold epithelial surface microprojections after short-term cigarette smoke exposure"
+    description: "Blinded visual scoring of SEM images of the vocal fold surface showed significant microprojection damage only after 10 days of cigarette smoke exposure, rated moderate to extensive (score 2-3); the 5 day exposure and 5 day reversibility groups were not significantly damaged. Epithelial sloughing/exfoliation was seen at day 5 and ulceration at day 10, which the authors read as early signs of necrosis. The paper describes these microprojections as contributing to epithelial barrier integrity, which is why this assay is mapped to the epithelial barrier key event. Damage scores appear only in Fig. 13."
+    airway_region: "larynx, glottis (vocal fold, stratified squamous epithelium)"
+    analysis_software: "Blinder web-based scoring application (Solibyte Solutions)"
+    evidence:
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Significant damage to the VF microprojections was observed only in the mice in the 10 day CSE group (Fig. 13E, J, K) in comparison to the mice in the control (Fig. 13A, F, K) and 1 day CSE group (Fig. 13B, G, K)."
+        explanation: "States that significant vocal fold microprojection damage occurred only in the 10 day exposure group, which is what this assay records."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Visual examination of the right and left vocal folds indicated that CS causes moderate to extensive (score 2–3) damage to the VF after 10 days of CSE (Fig. 13K)."
+        explanation: "Gives the moderate-to-extensive (score 2-3) severity recorded in this assay's description and output."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Epithelial sloughing/exfoliation and ulceration associated with necrosis were seen in the SEM images of the VF regions after 5 and 10 days of CSE, respectively (Fig. 13C, E)."
+        explanation: "Supports the recorded epithelial sloughing at day 5 and ulceration at day 10 on the vocal fold surface."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "These microprojections are believed to play a role in maintaining epithelial barrier integrity, regulating mucus secretions, and nutrient transport"
+        explanation: "The paper's own statement that microprojections help maintain epithelial barrier integrity, which is the basis for mapping this assay to the epithelial barrier key event."
+      - reference: "PMID:33996505"
+        reference_title: "Short-term whole body cigarette smoke exposure induces regional differences in cellular response in the mouse larynx."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Evaluation of the VF surface by scanning electron microscopy (SEM) revealed significant epithelial microprojection damage at day 10 and early signs of necrosis at days 5 and 10 post-CSE."
+        explanation: "The abstract's summary of the same SEM result: microprojection damage at day 10 and early necrosis at days 5 and 10."
+    has_specified_output:
+      id: "CILIARY:easwaran-sem-vf-microprojections-output"
+      name: "Blinded visual damage score of vocal fold epithelial microprojections"
+      description: "Direction only: significant damage at day 10 versus control and 1 day exposure (p <= 0.05 per Fig. 13), rated moderate to extensive on a 0-3 scale; no significant damage at 5 days or after cessation. Scores are shown only in Fig. 13 and are therefore not recorded."
+    assay_date: "2021-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:easwaran-cs-10day"
+        name: "Whole body mainstream 3R4F cigarette smoke, ~2 h/day for 10 days (delivered dose 79.755 mg/kg per day, average TPM ~621 mg/m3)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "621"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "10"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:easwaran-mouse-vf"
+      name: "Male C57BL/6J mice, 8-9 weeks old - vocal fold (glottic) region"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      subject_characteristics: "Male C57BL/6J mice, 8-9 weeks old, purchased from Jackson Laboratories; n = 8 per cigarette smoke exposure group"
+      collection_site: "larynx, glottic region (mid-membranous vocal fold)"
+    follows_protocols:
+      - id: "PROTOCOL:easwaran-cs-exposure-001"
+        name: "Short-term whole body mainstream cigarette smoke exposure to 3R4F reference cigarettes"
+      - id: "PROTOCOL:easwaran-sem-001"
+        name: "Scanning electron microscopy of the laryngeal mucosa with blinded damage scoring"
