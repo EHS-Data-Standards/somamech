@@ -1,0 +1,371 @@
+# =============================================================================
+# Chen et al. (2025) - The role of PM2.5 exposure in lung cancer: mechanisms,
+# genetic factors, and clinical implications
+# =============================================================================
+#
+# Source: EMBO Mol Med. 2025;17(1):31-40
+# DOI: 10.1038/s44321-024-00175-2   PMID: 39578555
+#
+# Publication type: narrative REVIEW (no new experiments). Every value below
+# is a result the review reports from a cited primary study; the assay
+# descriptions name that primary study, and every snippet is an exact quote
+# from this review (the source of the extraction). The review itself performed
+# no assays, so no protocols are recorded.
+#
+# Scope covered here (mechanistic claims the SOMA schema can hold):
+#   - Oxidative stress / DNA oxidation: 8-oxodG in lymphocyte DNA rises 11%
+#     per 10 ug/m3 of personal PM2.5 (Sorensen et al, 2003)
+#   - ROS release by macrophages after particle uptake
+#   - EGFR activation: persistent EGFR activation in adenocarcinoma cells
+#     carrying L858R/T790M, and activation of wild-type EGFR (Wang et al, 2023)
+#   - EGFR driver-mutation burden in lung cancer in nonsmokers (LCNS):
+#     87% (Chen et al, 2020), 52% mutation-positive and 84% with a nitro-PAH
+#     signature (Devarakonda et al, 2021)
+#   - AhR-dependent transcription of TMPRSS2 and IL-18 (Wang et al, 2023)
+#   - NF-kB-driven IL-6 and TNF-alpha production (Liu et al, 2018) and IL-1beta
+#     release from macrophages (Hill et al, 2023)
+#
+# Epidemiological risk estimates in the review that the assay-centred schema
+# has no class for, recorded here for readers (not as data):
+#   - HR 1.63 per 5 ug/m3 PM2.5, UK Biobank (Huang et al, 2021)
+#   - HR 1.08 per 1 ug/m3 PM2.5, UK Biobank (Hill et al, 2023)
+#   - RR 1.12 for lung cancer mortality per 10 ug/m3 PM2.5; North America
+#     1.16, Asia 1.08, Europe 1.14 (Zhang et al, 2022)
+#   - HR 1.008 per 1 ug/m3 PM2.5, US nationwide cohort (Liu et al, 2023)
+#   - EGFR-mutant lung cancer rates rose 0.63 (P=0.0028, England), 0.71
+#     (P=0.0091, South Korea) and 1.82 (P=4.01x10-6, Taiwan) per 100,000 per
+#     1 ug/m3 PM2.5 (Hill et al, 2023)
+# =============================================================================
+
+source_publication:
+  reference: "PMID:39578555"
+  reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
+  doi: "10.1038/s44321-024-00175-2"
+
+# =============================================================================
+# OXIDATIVE STRESS ASSAYS
+# =============================================================================
+
+oxidative_stress_assays:
+
+  # --- 8-oxodG in lymphocyte DNA vs personal PM2.5 ------------------------
+  - id: "OXSTRESS:chen2025-pm25-8oxodg-lymphocyte"
+    name: "Lymphocyte DNA 8-oxodG per 10 ug/m3 of personal PM2.5"
+    description: "Human biomonitoring result reported by the review from Sorensen et al (2003): personal PM2.5 exposure increased formation of 7-hydro-8-oxo-2'-deoxyguanosine (8-oxodG) in lymphocyte DNA by 11% per 10 ug/m3 rise in PM2.5. The recorded value is that percentage increase per 10 ug/m3 increment, not an absolute 8-oxodG concentration."
+    evidence:
+      - reference: "PMID:39578555"
+        reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "(8-oxodG) in lymphocyte DNA by 11% per 10 μg/m³ rise in PM2.5 (Sorensen et al, 2003)"
+        explanation: "The review states the exact effect size this assay records: an 11% increase in lymphocyte DNA 8-oxodG per 10 ug/m3 rise in personal PM2.5 exposure."
+    has_specified_output:
+      id: "OXSTRESS:chen2025-pm25-8oxodg-lymphocyte-output"
+      name: "8-oxodG increase per 10 ug/m3 personal PM2.5"
+      eight_ohdg_level:
+        value: "11"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2025-pm25-personal-per-10ug"
+        name: "Personal PM2.5 exposure, per 10 ug/m3 increment"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: PopulationSubject
+      id: "SUBJECT:chen2025-personal-pm25-cohort"
+      name: "Human subjects with personal PM2.5 monitoring and lymphocyte 8-oxodG measurement"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+
+  # --- ROS release by macrophages ----------------------------------------
+  - id: "OXSTRESS:chen2025-pm25-ros-macrophage"
+    name: "ROS release by macrophages after PM2.5 component uptake"
+    description: "Qualitative mechanism summarized by the review: toxic heavy metals and organic pollutants (e.g., PAHs) adsorbed on PM2.5 promote release of reactive oxygen species by macrophages once the particles enter the body, and the resulting oxidative stress causes DNA damage and tissue inflammation. No quantitative ROS measurement is reported in the review, so no output value is recorded."
+    evidence:
+      - reference: "PMID:39578555"
+        reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "Upon entry into the body, these toxic substances promote the release of reactive oxygen species (ROS) by macrophages."
+        explanation: "The review names macrophage ROS release as the oxidative-stress step this assay records after uptake of PM2.5-adsorbed toxic substances."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2025-pm25-inhaled"
+        name: "Inhaled PM2.5 carrying adsorbed heavy metals and PAHs"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:chen2025-macrophage-001"
+      name: "Macrophages exposed to PM2.5 and its adsorbed toxic substances (species not stated in the review)"
+      cell_type:
+        id: "CL:0000235"
+        name: "macrophage"
+
+# =============================================================================
+# EGFR SIGNALING ASSAYS
+# =============================================================================
+
+egfr_signaling_assays:
+
+  # --- Persistent EGFR activation in EGFR-mutant adenocarcinoma cells -----
+  - id: "EGFR:chen2025-pm25-persistent-activation-mutant"
+    name: "Persistent EGFR activation after long-term PM2.5 in L858R/T790M adenocarcinoma cells"
+    description: "Mechanism reported by the review from Wang et al (2023): long-term PM2.5 exposure produced persistent EGFR activation, increased cell proliferation and tumor growth in human adenocarcinoma cells harboring the EGFR L858R and T790M mutations, an effect more pronounced than in cells with wild-type EGFR. The review gives no phosphorylation values, so only the qualitative pathway finding is recorded."
+    evidence:
+      - reference: "PMID:39578555"
+        reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Long-term exposure to PM2.5 has been shown to result in persistent EGFR activation, increased cell proliferation, and tumor growth in human adenocarcinoma cells"
+        explanation: "The review states the EGFR activation this assay records and the cell system it was observed in: human adenocarcinoma cells under long-term PM2.5 exposure."
+    has_specified_output:
+      id: "EGFR:chen2025-pm25-persistent-activation-mutant-output"
+      name: "Qualitative EGFR pathway readout in EGFR-mutant adenocarcinoma cells"
+      pathway_biomarkers:
+        - "Persistent EGFR activation after long-term PM2.5 exposure"
+        - "Increased cell proliferation and tumor growth"
+        - "Effect more pronounced in cells harboring EGFR L858R and T790M than in wild-type EGFR cells"
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2025-pm25-long-term"
+        name: "Long-term PM2.5 exposure"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:chen2025-adenocarcinoma-egfr-mutant-001"
+      name: "Human lung adenocarcinoma cells harboring EGFR L858R and T790M mutations"
+      cell_type:
+        id: "CL:0001063"
+        name: "neoplastic cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+
+  # --- EGFR activation in wild-type EGFR lung cancer cells ----------------
+  - id: "EGFR:chen2025-pm25-wildtype-activation"
+    name: "EGFR activation by PM2.5 in lung cancer cells with wild-type EGFR"
+    description: "Mechanism reported by the review from Wang et al (2023): PM2.5 activates EGFR in lung cancer cells, including cells carrying wild-type EGFR; the review also notes that PAHs can induce wild-type EGFR activation via Src kinase triggered by AhR ligand interactions (Vogeley et al, 2022). No quantitative phosphorylation values are given."
+    evidence:
+      - reference: "PMID:39578555"
+        reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "PM2.5 also activates the EGFR in lung cancer cells, including those with wild-type EGFR (Wang et al, 2023)."
+        explanation: "The review states that PM2.5 activates EGFR in lung cancer cells even when EGFR is wild-type, which is the activation this assay records."
+    has_specified_output:
+      id: "EGFR:chen2025-pm25-wildtype-activation-output"
+      name: "Qualitative EGFR pathway readout in wild-type EGFR lung cancer cells"
+      pathway_biomarkers:
+        - "EGFR activation by PM2.5 in lung cancer cells with wild-type EGFR"
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2025-pm25-cell-exposure"
+        name: "PM2.5 exposure of lung cancer cells"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:chen2025-lung-cancer-wt-egfr-001"
+      name: "Lung cancer cells with wild-type EGFR (cell line and species not stated in the review)"
+      cell_type:
+        id: "CL:0001063"
+        name: "neoplastic cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+
+  # --- EGFR driver-mutation burden in lung cancer in nonsmokers -----------
+  - id: "EGFR:chen2025-lcns-egfr-mutation-burden"
+    name: "EGFR driver-mutation burden in lung cancer in nonsmokers (LCNS)"
+    description: "Genomic findings the review reports for lung cancer in nonsmokers, the patient populations in which PM2.5 is proposed to select EGFR-mutant clones: an 87% EGFR mutation detection rate in a Taiwanese LCNS subpopulation (Chen et al, 2020), 52% of LCNS patients EGFR mutation-positive in a diverse ethnic cohort, and 84% of that cohort exhibiting a consistent nitro-PAH mutational signature (Devarakonda et al, 2021). These are patient-level mutation frequencies, recorded as pathway biomarker statements rather than as assay measurements."
+    evidence:
+      - reference: "PMID:39578555"
+        reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "reported an 87% detection rate of EGFR mutations in their LCNS Taiwanese subpopulation."
+        explanation: "The review gives the 87% EGFR mutation detection rate in the Taiwanese LCNS subpopulation recorded in this assay's biomarker list."
+      - reference: "PMID:39578555"
+        reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "52% of LCNS patients were EGFR mutation-positive."
+        explanation: "The review gives the 52% EGFR mutation-positive share of the diverse ethnic LCNS cohort recorded in this assay's biomarker list."
+    has_specified_output:
+      id: "EGFR:chen2025-lcns-egfr-mutation-burden-output"
+      name: "EGFR mutation frequencies reported for LCNS cohorts"
+      pathway_biomarkers:
+        - "87% detection rate of EGFR mutations in a Taiwanese LCNS subpopulation (Chen et al, 2020)"
+        - "52% of LCNS patients EGFR mutation-positive in a diverse ethnic cohort (Devarakonda et al, 2021)"
+        - "84% of LCNS patients in that cohort exhibited a consistent nitro-PAH mutational signature (Devarakonda et al, 2021)"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: PopulationSubject
+      id: "SUBJECT:chen2025-lcns-cohorts"
+      name: "Patients with lung cancer in nonsmokers (LCNS)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      inclusion_criteria: "Lung cancer patients who never smoked or smoked fewer than 100 cigarettes in their lifetimes; a Taiwanese LCNS subpopulation (Chen et al, 2020) and a diverse ethnic LCNS cohort (Devarakonda et al, 2021)."
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS
+# =============================================================================
+
+gene_expression_assays:
+
+  # --- AhR-dependent TMPRSS2 transcription --------------------------------
+  - id: "GENE:chen2025-pm25-ahr-tmprss2"
+    name: "AhR-dependent TMPRSS2 transcription after PM2.5 exposure"
+    description: "Mechanism reported by the review from Wang et al (2023): PM2.5 exposure induces aryl hydrocarbon receptor (AhR)-dependent transcription of transmembrane serine protease 2 (TMPRSS2) in EGFR-mutant cells, promoting cancer progression. The review reports no expression values, so no output measurement is recorded."
+    target_gene: "PR:O15393"
+    evidence:
+      - reference: "PMID:39578555"
+        reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "PM2.5 exposure induces aryl hydrocarbon receptor (AhR)-dependent transcription of transmembrane serine protease 2 (TMPRSS2)"
+        explanation: "The review names the AhR-dependent transcription of TMPRSS2 that this assay records as induced by PM2.5 exposure."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2025-pm25-cell-exposure"
+        name: "PM2.5 exposure of lung cancer cells"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    informs_on_key_event:
+      id: "KE:mie-ahr-activation"
+      name: "AhR pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:chen2025-egfr-mutant-cells-001"
+      name: "EGFR-mutant lung cancer cells (cell line and species not stated in the review)"
+      cell_type:
+        id: "CL:0001063"
+        name: "neoplastic cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+
+  # --- AhR-dependent IL-18 transcription ----------------------------------
+  - id: "GENE:chen2025-pm25-ahr-il18"
+    name: "AhR-dependent IL-18 transcription after PM2.5 exposure"
+    description: "Mechanism reported by the review from Wang et al (2023): PM2.5 exposure induces AhR-dependent transcription of interleukin-18 (IL-18) in EGFR-mutant cells, further promoting cancer progression. No expression values are reported in the review."
+    target_gene: "PR:Q14116"
+    evidence:
+      - reference: "PMID:39578555"
+        reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "and interleukin-18 (IL-18), further promoting cancer progression"
+        explanation: "The review names IL-18 as the second AhR-dependent transcript induced by PM2.5 exposure, which is what this assay records."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2025-pm25-cell-exposure"
+        name: "PM2.5 exposure of lung cancer cells"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    informs_on_key_event:
+      id: "KE:mie-ahr-activation"
+      name: "AhR pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:chen2025-egfr-mutant-cells-001"
+      name: "EGFR-mutant lung cancer cells (cell line and species not stated in the review)"
+      cell_type:
+        id: "CL:0001063"
+        name: "neoplastic cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+
+  # --- NF-kB-driven IL-6 production ---------------------------------------
+  - id: "GENE:chen2025-pm25-nfkb-il6"
+    name: "IL-6 production driven by PM2.5-enhanced NF-kB activity"
+    description: "Mechanism reported by the review from Liu et al (2018): PM2.5 exposure enhances NF-kB activity, which drives production of the pro-inflammatory cytokine interleukin-6 (IL-6). The review names neither the model system nor any expression value for this step, so no study subject and no output measurement are recorded."
+    target_gene: "PR:P05231"
+    evidence:
+      - reference: "PMID:39578555"
+        reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "PM2.5 exposure enhances NF- κB activity, which in turn drives the production of pro-in ﬂammatory cytokines like interleukin-6 (IL-6)"
+        explanation: "The review states that PM2.5-enhanced NF-kB activity drives production of IL-6, the cytokine this assay records."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2025-pm25-cell-exposure"
+        name: "PM2.5 exposure of lung cancer cells"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+
+  # --- IL-1beta release from macrophages ----------------------------------
+  - id: "GENE:chen2025-pm25-il1b-macrophage"
+    name: "IL-1beta release from macrophages after PM2.5 exposure"
+    description: "Mechanism reported by the review from Hill et al (2023): PM2.5 exposure increases IL-1beta release from macrophages, which encourages a progenitor-like state in EGFR-mutant alveolar type II cells, the precursors of lung adenocarcinoma. The review reports no quantitative cytokine values."
+    target_gene: "PR:P01584"
+    evidence:
+      - reference: "PMID:39578555"
+        reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "PM2.5 exposure increases IL-1β release from macrophages, encouraging a progenitor-like state in EGFR-mutant alveolar type II cells, which are precursors to lung adenocarcinoma (Hill et al, 2023)."
+        explanation: "The review states the IL-1beta release from macrophages that this assay records and the downstream effect on EGFR-mutant alveolar type II cells."
+    has_exposure_condition:
+      - id: "EXPOSURE:chen2025-pm25-inhaled"
+        name: "Inhaled PM2.5 carrying adsorbed heavy metals and PAHs"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:chen2025-macrophage-001"
+      name: "Macrophages exposed to PM2.5 and its adsorbed toxic substances (species not stated in the review)"
+      cell_type:
+        id: "CL:0000235"
+        name: "macrophage"
