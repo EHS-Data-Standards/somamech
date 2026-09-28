@@ -33,7 +33,7 @@ jobs:
 
       # https://github.com/astral-sh/setup-uv
       - name: Install uv
-        uses: astral-sh/setup-uv@v8.1.0
+        uses: astral-sh/setup-uv@v10.1.0
         with:
           python-version: 3.13
           enable-cache: true
@@ -74,6 +74,6 @@ jobs:
           cp dist/index.html docs/harmonizer.html
           sed -i 's|"/assets/|"assets/|g' docs/harmonizer.html
           mkdir -p docs/schemas
-          uv run gen-linkml --materialize-patterns --materialize-attributes src/soma/schema/soma.yaml > docs/schemas/soma.json
+          uv run gen-linkml --materialize-patterns --materialize-attributes "$(uv run python -c 'from importlib.resources import files; print(files("soma")/"schema"/"soma.yaml")')" > docs/schemas/soma.json
           cp menu.json docs/
           uv run mkdocs gh-deploy

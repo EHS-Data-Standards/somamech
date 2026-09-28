@@ -48,7 +48,7 @@ The model is built using:
 We welcome contributions from the community. To contribute:
 
 1. Visit the [GitHub repository](https://github.com/EHS-Data-Standards/soma)
-2. Review the existing schema in `src/soma/schema/`
+2. Review the schema in the [soma repository](https://github.com/EHS-Data-Standards/soma) (published as `soma-schema` on PyPI)
 3. Open an issue to discuss proposed changes
 4. Submit a pull request with your contributions
 

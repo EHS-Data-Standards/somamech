@@ -91,8 +91,7 @@ managed project environment.
 * [docs/](docs/) - mkdocs-managed documentation
 * [examples/](examples/) - Examples of using the schema
 * [project/](project/) - project files (auto-generated, do not edit)
-* [src/soma/schema/](src/soma/schema) - LinkML schema (edit this)
-* [src/soma/datamodel/](src/soma/datamodel) - generated Python datamodel
+* Schema and datamodel: the [soma-schema](https://pypi.org/project/soma-schema/) package, maintained in [EHS-Data-Standards/soma](https://github.com/EHS-Data-Standards/soma)
 * [tests/](tests/) - Python tests
 
 ## Developer Tools

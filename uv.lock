@@ -4369,10 +4369,23 @@ wheels = [
 ]
 
 [[package]]
-name = "soma"
-source = { editable = "." }
+name = "soma-schema"
+version = "0.2.3"
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "linkml-runtime" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/63/f7/991014894c35095332aed3c17e0fdddc0a93b2fa2de7728113112eebbb50/soma_schema-0.2.3.tar.gz", hash = "sha256:384c47c843dd08a1c4a9869b5fa0449a6a3d0579f1c77c431aa93a4e1784e855", size = 138792, upload-time = "2026-09-28T23:03:40.816Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/74/62/f9d301aea224fe07e00cc2e13322ae9339f56c6c6ab51376b744dcc4d8b2/soma_schema-0.2.3-py3-none-any.whl", hash = "sha256:23234c02b877e7bad551c1171117690103d3f1a1d61458c93218b095f9fb6544", size = 88063, upload-time = "2026-09-28T23:03:39.58Z" },
+]
+
+[[package]]
+name = "somamech"
+source = { virtual = "." }
+dependencies = [
+    { name = "linkml-runtime" },
+    { name = "soma-schema" },
 ]
 
 [package.dev-dependencies]
@@ -4389,7 +4402,10 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "linkml-runtime", specifier = ">=1.9.4" }]
+requires-dist = [
+    { name = "linkml-runtime", specifier = ">=1.9.4" },
+    { name = "soma-schema", specifier = ">=0.2.3" },
+]
 
 [package.metadata.requires-dev]
 dev = [

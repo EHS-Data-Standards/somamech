@@ -9,7 +9,8 @@
 LINKML_SCHEMA_NAME="soma"
 LINKML_SCHEMA_AUTHOR="Sierra Moxon <smoxon@lbl.gov>"
 LINKML_SCHEMA_DESCRIPTION="This is the project description."
-LINKML_SCHEMA_SOURCE_DIR="src/soma/schema"
+# LINKML_SCHEMA_SOURCE_DIR is unset: the justfile resolves the schema from
+# the installed soma-schema package.
 
 ###### linkml generator variables, used by justfile
 

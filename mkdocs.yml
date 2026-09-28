@@ -38,9 +38,6 @@ plugins:
   #     scripts:
   #       - gen_pages.py  # or any other name or path
 
-watch:
-  - src/soma/schema
-
 nav:
   - Home: index.md
   - Schema: elements/index.md

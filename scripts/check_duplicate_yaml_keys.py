@@ -22,8 +22,8 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 
-# Directories swept by default: curated content, the queue, schema, config.
-DEFAULT_DIRS = ["kb", "stubs", "src/soma/schema", "conf"]
+# Directories swept by default: curated content, the queue, config.
+DEFAULT_DIRS = ["kb", "stubs", "conf"]
 
 
 class DuplicateKeyError(Exception):

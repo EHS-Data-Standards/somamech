@@ -12,8 +12,9 @@ refs_cache := "references_cache"
 # Local-only cache of full text extracted from PDFs on this machine
 # (gitignored; lets the quote check cover paywalled papers locally)
 refs_cache_local := "references_cache_local"
-soma_schema := "src/soma/schema/soma.yaml"
-stub_schema := "src/soma/schema/publication_stub.yaml"
+# Schema files inside the installed soma-schema package (see justfile)
+soma_schema := source_schema_path
+stub_schema := source_schema_dir / "publication_stub.yaml"
 oak_conf := "conf/oak_config.yaml"
 ref_conf := "conf/reference_validator_config.yaml"
 term_validator_wrapper := "scripts/run_term_validator.sh"
@@ -200,8 +201,8 @@ next-unclaimed count="5" claims="tmp/claims.json":
 [group('model development')]
 pipeline-test:
   mkdir -p tmp
-  uv run linkml-validate -s src/soma/schema/soma.yaml tests/data/valid/Container-liu2024-pm25-cftr.yaml
+  uv run linkml-validate -s {{soma_schema}} tests/data/valid/Container-liu2024-pm25-cftr.yaml
   uv run python scripts/yaml_to_excel.py --input tests/data/valid/Container-liu2024-pm25-cftr.yaml --output tmp/Liu2024_pipeline_test.xlsx
-  uv run linkml-validate -s src/soma/schema/soma.yaml tests/data/valid/Container-montgomery2020-pm25-mucociliary.yaml
+  uv run linkml-validate -s {{soma_schema}} tests/data/valid/Container-montgomery2020-pm25-mucociliary.yaml
   uv run python scripts/yaml_to_excel.py --input tests/data/valid/Container-montgomery2020-pm25-mucociliary.yaml --output tmp/Montgomery2020_pipeline_test.xlsx
   @echo "Pipeline test completed. Output in tmp/"
