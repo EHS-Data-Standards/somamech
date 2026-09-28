@@ -180,29 +180,32 @@ Save `verify-snippets` output — its summary goes in the PR description.
 
 **Both must pass, and they check against different caches.** `validate-file`
 (and `validate-all`, which is what CI's `just qc` runs) resolves quotes against
-the committed `references_cache/` only. `verify-snippets` merges committed +
-`references_cache_local/`, with the local PDF text *overwriting* the committed
-file of the same name.
+the committed `references_cache/` only. `verify-snippets` checks against both:
+when a paper also has an entry in `references_cache_local/`, that local PDF
+text is *appended* to the committed entry under a `## Full text (local PDF
+extraction)` heading, so the checker sees the committed text and the PDF text
+together. So:
 
-Those two caches disagree in both directions, and the consequences differ:
+- A quote taken from the PDF body but absent from the committed cache passes
+  `verify-snippets`. When the paper is abstract-only, `validate-file` does not
+  fail on it either: the recipes set `ALLOW_ABSTRACT_ONLY_MISSES=1`, which
+  tells the wrapper to ignore misses flagged `only abstract available for
+  PMID:...` and hand responsibility to the committed receipt instead (see
+  below). Against a paper that is NOT abstract-only, the same miss is a hard
+  CI failure.
+- A quote that is verbatim in the committed text keeps verifying even when the
+  PDF text layer mangles that same sentence — fi/fl ligatures (`significant` →
+  `signiﬁcant`), injected spaces, hyphenated line wraps. The committed copy is
+  still in the merged cache to match against, so a PDF artifact alone cannot
+  fail a quote you took from the abstract.
 
-- **A quote from the PDF body that the committed cache does not contain.** When
-  the paper is abstract-only, `validate-file` does not fail on it: the recipes
-  set `ALLOW_ABSTRACT_ONLY_MISSES=1`, which tells the wrapper to ignore misses
-  flagged `only abstract available for PMID:...` and hand responsibility to the
-  receipt instead. Such a quote is legitimate *only* if the receipt covers it.
-  Against a paper that is NOT abstract-only, the same miss is a hard failure.
-- **A quote from the abstract that the PDF text layer mangles** — fi/fl
-  ligatures (`significant` → `signiﬁcant`), injected spaces, hyphenated line
-  wraps. This passes `validate-file` and **fails `verify-snippets`**, and that
-  failure is worse than it looks: the recipe runs the validator before writing
-  the receipt under `set -euo pipefail`, so a mangled local copy means **no
-  receipt is written at all**, and `check-receipts` then reds the PR.
-
-Prefer quote spans that are verbatim in *both* copies — a sentence fragment that
-verifies beats a whole sentence that does not. Full text read from a local PDF
-is also what `description:` fields are for; they are not quote-checked. Say in
-the PR body which claims rest on quotes and which on locally-read full text.
+When the committed cache is `abstract_only`, quote the abstract: that is the
+copy CI resolves against, so a span that is verbatim *there* is the one that
+survives. A sentence fragment that verifies beats a whole sentence that does
+not. Full text read from a local PDF is still worth having — it belongs in
+`description:` fields, which are not quote-checked, and it tells you what is
+worth recording. Say in the PR body which claims rest on quotes and which on
+locally-read full text.
 
 When the paper's committed cache entry is abstract-only, a passing
 `verify-snippets` run also writes `verification/PMID_<number>.json` — a
