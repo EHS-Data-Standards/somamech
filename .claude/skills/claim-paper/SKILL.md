@@ -118,7 +118,7 @@ First count the variants, so a disagreement is visible rather than hidden
 below the fold:
 
 ```bash
-git grep -h -A3 '"KE:ke-decreased-cftr"' origin/main -- kb/ tests/data/valid/ \
+git grep -h -A3 '"KE:ke2-goblet-hyperplasia"' origin/main -- kb/ tests/data/valid/ \
   | grep -E 'name:|biological_action:' | paste - - | sort | uniq -c | sort -rn
 ```
 
@@ -126,7 +126,7 @@ That prints one line per distinct wording with its count — which is exactly
 what the "prefer the majority" rule below needs:
 
 ```
-  10       name: "Goblet cell hyperplasia"                          biological_action: increased
+  12       name: "Goblet cell hyperplasia"                          biological_action: increased
    2       name: "Goblet cell hyperplasia and mucin hypersecretion"  biological_action: increased
 ```
 
