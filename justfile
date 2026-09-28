@@ -20,7 +20,8 @@ shebang := if os() == 'windows' {
 
 # Environment variables with defaults
 schema_name := env_var_or_default("LINKML_SCHEMA_NAME", "_no_schema_given_")
-source_schema_dir := env_var_or_default("LINKML_SCHEMA_SOURCE_DIR", "")
+# The schema ships inside the installed soma-schema package (import name "soma")
+source_schema_dir := env_var_or_default("LINKML_SCHEMA_SOURCE_DIR", `uv run --no-sync python -c "from importlib.resources import files; print(files('soma')/'schema')" 2>/dev/null || echo "_soma_schema_not_installed_"`)
 config_yaml := if env_var_or_default("LINKML_GENERATORS_CONFIG_YAML", "") != "" {
   "--config-file " + env_var_or_default("LINKML_GENERATORS_CONFIG_YAML", "")
 } else {
@@ -127,17 +128,17 @@ build-dh:
 [group('model development')]
 testdoc: gen-doc build-dh _serve
 
-# Generate the Python data models (dataclasses & pydantic)
+# Schema and datamodel are maintained in https://github.com/EHS-Data-Standards/soma
 gen-python:
-  uv run gen-project -d  {{pymodel}} -I python {{source_schema_path}}
-  uv run gen-pydantic {{gen_pydantic_args}} {{source_schema_path}} > {{pymodel}}/{{schema_name}}_pydantic.py
+  @echo "The schema and datamodel live in the soma repo (soma-schema on PyPI)."
+  @echo "Run 'just gen-python' there, then bump the soma-schema pin here."
+  @exit 1
 
-# Generate project files including Python data model
+# Generate project files (docs-site artifacts) from the installed schema
 [group('model development')]
 gen-project:
   uv run gen-project {{config_yaml}} -d {{dest}} {{source_schema_path}}
-  mv {{dest}}/*.py {{pymodel}}
-  uv run gen-pydantic {{gen_pydantic_args}} {{source_schema_path}} > {{pymodel}}/{{schema_name}}_pydantic.py
+  rm -f {{dest}}/*.py
   uv run gen-java {{gen_java_args}} --output-directory {{dest}}/java/ {{source_schema_path}}
   @if [ ! ${{gen_owl_args}} ]; then \
     mkdir -p {{dest}}/owl && \
@@ -208,7 +209,7 @@ _test-schema:
   uv run gen-project {{config_yaml}} -d tmp {{source_schema_path}}
 
 # Run Python unit tests with pytest
-_test-python: gen-python
+_test-python:
   uv run python -m pytest
 
 # Run example tests

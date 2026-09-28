@@ -100,13 +100,13 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq (KAPA mRNA HyperPrep, NovaSeq 6000)"
     normalization_reference: "DESeq2 median of ratios"
     has_specified_output:
-      id: "GE:montgomery-cyp1a1-mod-output"
-      name: "CYP1A1 moderate OE measurement"
-      mrna_level:
-        value: "6.21"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GE:montgomery-cyp1a1-mod-output"
+        name: "CYP1A1 moderate OE measurement"
+        mrna_level:
+          value: "6.21"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
@@ -163,13 +163,13 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq"
     normalization_reference: "DESeq2 median of ratios"
     has_specified_output:
-      id: "GE:montgomery-cyp1b1-mod-output"
-      name: "CYP1B1 moderate OE measurement"
-      mrna_level:
-        value: "1.59"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GE:montgomery-cyp1b1-mod-output"
+        name: "CYP1B1 moderate OE measurement"
+        mrna_level:
+          value: "1.59"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
@@ -215,13 +215,13 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq"
     normalization_reference: "DESeq2 median of ratios"
     has_specified_output:
-      id: "GE:montgomery-nqo1-mod-output"
-      name: "NQO1 moderate OE measurement"
-      mrna_level:
-        value: "0.17"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GE:montgomery-nqo1-mod-output"
+        name: "NQO1 moderate OE measurement"
+        mrna_level:
+          value: "0.17"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
@@ -267,13 +267,13 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq"
     normalization_reference: "DESeq2 median of ratios"
     has_specified_output:
-      id: "GE:montgomery-aldh3a1-mod-output"
-      name: "ALDH3A1 moderate OE measurement"
-      mrna_level:
-        value: "0.64"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GE:montgomery-aldh3a1-mod-output"
+        name: "ALDH3A1 moderate OE measurement"
+        mrna_level:
+          value: "0.64"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
@@ -321,13 +321,13 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq"
     normalization_reference: "DESeq2 median of ratios"
     has_specified_output:
-      id: "GE:montgomery-il1a-mod-output"
-      name: "IL1A moderate OE measurement"
-      mrna_level:
-        value: "0.91"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GE:montgomery-il1a-mod-output"
+        name: "IL1A moderate OE measurement"
+        mrna_level:
+          value: "0.91"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
@@ -373,13 +373,13 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq"
     normalization_reference: "DESeq2 median of ratios"
     has_specified_output:
-      id: "GE:montgomery-il1b-mod-output"
-      name: "IL1B moderate OE measurement"
-      mrna_level:
-        value: "1.22"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GE:montgomery-il1b-mod-output"
+        name: "IL1B moderate OE measurement"
+        mrna_level:
+          value: "1.22"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
@@ -427,13 +427,13 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq"
     normalization_reference: "DESeq2 median of ratios"
     has_specified_output:
-      id: "GE:montgomery-spdef-mod-output"
-      name: "SPDEF moderate OE RNA-seq measurement"
-      mrna_level:
-        value: "0.66"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GE:montgomery-spdef-mod-output"
+        name: "SPDEF moderate OE RNA-seq measurement"
+        mrna_level:
+          value: "0.66"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
@@ -479,13 +479,13 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq"
     normalization_reference: "DESeq2 median of ratios"
     has_specified_output:
-      id: "GE:montgomery-foxa3-mod-output"
-      name: "FOXA3 moderate OE RNA-seq measurement"
-      mrna_level:
-        value: "0.80"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GE:montgomery-foxa3-mod-output"
+        name: "FOXA3 moderate OE RNA-seq measurement"
+        mrna_level:
+          value: "0.80"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
@@ -531,13 +531,13 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq"
     normalization_reference: "DESeq2 median of ratios"
     has_specified_output:
-      id: "GE:montgomery-muc5ac-mod-output"
-      name: "MUC5AC moderate OE RNA-seq measurement"
-      mrna_level:
-        value: "0.90"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GE:montgomery-muc5ac-mod-output"
+        name: "MUC5AC moderate OE RNA-seq measurement"
+        mrna_level:
+          value: "0.90"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
@@ -583,13 +583,13 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq"
     normalization_reference: "DESeq2 median of ratios"
     has_specified_output:
-      id: "GE:montgomery-muc2-mod-output"
-      name: "MUC2 moderate OE RNA-seq measurement"
-      mrna_level:
-        value: "1.34"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GE:montgomery-muc2-mod-output"
+        name: "MUC2 moderate OE RNA-seq measurement"
+        mrna_level:
+          value: "1.34"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
@@ -637,18 +637,18 @@ gene_expression_assays:
     gene_expression_method: "qRT-PCR and Western blot"
     normalization_reference: "housekeeping gene (qPCR); actin (WB)"
     has_specified_output:
-      id: "GE:montgomery-spdef-chronic-output"
-      name: "SPDEF chronic OE measurement"
-      mrna_level:
-        value: "0.84"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-      protein_level:
-        value: "1.5"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GE:montgomery-spdef-chronic-output"
+        name: "SPDEF chronic OE measurement"
+        mrna_level:
+          value: "0.84"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+        protein_level:
+          value: "1.5"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
@@ -706,13 +706,13 @@ gene_expression_assays:
     gene_expression_method: "qRT-PCR"
     normalization_reference: "housekeeping gene"
     has_specified_output:
-      id: "GE:montgomery-muc5ac-chronic-mrna-output"
-      name: "MUC5AC chronic OE mRNA measurement"
-      mrna_level:
-        value: "1.72"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GE:montgomery-muc5ac-chronic-mrna-output"
+        name: "MUC5AC chronic OE mRNA measurement"
+        mrna_level:
+          value: "1.72"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
@@ -758,13 +758,13 @@ gene_expression_assays:
     gene_expression_method: "qRT-PCR"
     normalization_reference: "housekeeping gene"
     has_specified_output:
-      id: "GE:montgomery-muc5b-chronic-mrna-output"
-      name: "MUC5B chronic OE mRNA measurement"
-      mrna_level:
-        value: "-0.72"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GE:montgomery-muc5b-chronic-mrna-output"
+        name: "MUC5B chronic OE mRNA measurement"
+        mrna_level:
+          value: "-0.72"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
@@ -810,13 +810,13 @@ gene_expression_assays:
     gene_expression_method: "qRT-PCR"
     normalization_reference: "housekeeping gene"
     has_specified_output:
-      id: "GE:montgomery-scgb1a1-chronic-output"
-      name: "SCGB1A1 chronic OE measurement"
-      mrna_level:
-        value: "-1.51"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GE:montgomery-scgb1a1-chronic-output"
+        name: "SCGB1A1 chronic OE measurement"
+        mrna_level:
+          value: "-1.51"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
@@ -866,18 +866,18 @@ goblet_cell_assays:
     name: "MUC5AC protein and secretion - chronic OE"
     description: "Chronic 5-day PM2.5 OE stimulation. MUC5AC+ cells by IF: FC=2.88 (p=3.19e-2), all 4 donors showed increase. MUC5AC secretion by ELISA: FC=2.2 (p=1.54e-2), comparable to IL-13 stimulation (FC=3.87, p=3.85e-2). n=4-5 donors."
     has_specified_output:
-      id: "GCM:montgomery-muc5ac-chronic-output"
-      name: "MUC5AC chronic OE protein measurements"
-      muc5ac_protein_expression:
-        value: "2.88"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-      mucin_secretion_rate:
-        value: "2.2"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GCM:montgomery-muc5ac-chronic-output"
+        name: "MUC5AC chronic OE protein measurements"
+        muc5ac_protein_expression:
+          value: "2.88"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+        mucin_secretion_rate:
+          value: "2.2"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
@@ -935,13 +935,13 @@ goblet_cell_assays:
     name: "MUC5B protein and secretion - chronic OE"
     description: "Chronic 5-day PM2.5 OE stimulation. MUC5B+ cells by IF: FC=0.74 (p=8.84e-2, trending decrease), all 4 donors showed decrease. MUC5B secretion by ELISA: FC=0.81 (p=3.59e-3). Similar to IL-13 effect (FC=0.70, p=5.20e-2). n=4-5 donors."
     has_specified_output:
-      id: "GCM:montgomery-muc5b-chronic-output"
-      name: "MUC5B chronic OE protein measurements"
-      muc5b_protein_expression:
-        value: "0.74"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GCM:montgomery-muc5b-chronic-output"
+        name: "MUC5B chronic OE protein measurements"
+        muc5b_protein_expression:
+          value: "0.74"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
@@ -992,13 +992,13 @@ goblet_cell_assays:
     name: "Mucin-positive cells (AB-PAS) - chronic OE"
     description: "Alcian blue-periodic acid-Schiff staining of chronic OE-stimulated cultures. Average FC=2.01 in mucin-positive cells per field (p=6.52e-2). 3 of 4 donors showed increase. Increased AB-PAS staining with chronic OE. n=4 donors."
     has_specified_output:
-      id: "GCM:montgomery-abpas-chronic-output"
-      name: "AB-PAS chronic OE measurement"
-      goblet_cell_percentage:
-        value: "2.01"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GCM:montgomery-abpas-chronic-output"
+        name: "AB-PAS chronic OE measurement"
+        goblet_cell_percentage:
+          value: "2.01"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
@@ -1043,18 +1043,18 @@ goblet_cell_assays:
     name: "MUC5AC/MUC5B ratio - moderate OE (RNA-seq)"
     description: "Significant increase in MUC5AC/MUC5B ratio at moderate OE (p=3.19e-2), further increased at high OE (p=2.68e-2). MUC5B decreased only at high OE (LFC=-0.79, Padj=1.0e-1). Ratio shift indicates altered mucus viscoelastic properties."
     has_specified_output:
-      id: "GCM:montgomery-ratio-mod-output"
-      name: "MUC5AC/MUC5B ratio moderate OE"
-      muc5ac_mrna_expression:
-        value: "0.90"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-      muc5b_mrna_expression:
-        value: "-0.79"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "GCM:montgomery-ratio-mod-output"
+        name: "MUC5AC/MUC5B ratio moderate OE"
+        muc5ac_mrna_expression:
+          value: "0.90"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+        muc5b_mrna_expression:
+          value: "-0.79"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-high-oe"
@@ -1104,18 +1104,18 @@ foxj_assays:
     name: "FOXJ1 expression - chronic OE"
     description: "FOXJ1 downregulation after chronic 5-day PM2.5 OE. mRNA LFC=-0.36 (p=1.92e-2). FOXJ1+ nuclei decreased 75% vs mock by IF (p=1.20e-2). More pronounced than IL-13 effect (40% decrease, p=1.02e-1). Weaker acetylated alpha-tubulin staining in OE cultures despite cilia appearing structurally normal. n=3 donors."
     has_specified_output:
-      id: "FOXJ:montgomery-chronic-output"
-      name: "FOXJ1 chronic OE measurements"
-      foxj1_mrna_expression:
-        value: "-0.36"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-      foxj1_positive_cell_percentage:
-        value: "25"
-        unit:
-          id: "UO:0000187"
-          name: "percent"
+      - id: "FOXJ:montgomery-chronic-output"
+        name: "FOXJ1 chronic OE measurements"
+        foxj1_mrna_expression:
+          value: "-0.36"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+        foxj1_positive_cell_percentage:
+          value: "25"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
@@ -1179,13 +1179,13 @@ foxj_assays:
     name: "FOXJ1 and ciliogenesis TFs - high OE acute"
     description: "High OE acute dose (4.5 ug/cm2). Ciliated cell markers most significantly enriched among downregulated DEGs (Padj=3.57e-118). Ciliogenesis TFs MCIDAS, MYB, TP73, RFX2, RFX3, FOXJ1 all consistently decreased. Ciliary assembly genes downregulated (p=3.05e-3), ciliary movement genes downregulated (p=4.20e-4). n=5 donors."
     has_specified_output:
-      id: "FOXJ:montgomery-high-acute-output"
-      name: "FOXJ1 high OE acute measurements"
-      foxj1_mrna_expression:
-        value: "-0.36"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
+      - id: "FOXJ:montgomery-high-acute-output"
+        name: "FOXJ1 high OE acute measurements"
+        foxj1_mrna_expression:
+          value: "-0.36"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-high-oe"

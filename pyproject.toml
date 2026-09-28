@@ -3,8 +3,8 @@ requires = ["hatchling", "uv-dynamic-versioning"]
 build-backend = "hatchling.build"
 
 [project]
-name = "soma"
-description = "This is the project description."
+name = "somamech"
+description = "SOMA mechanistic knowledge base: paper-extraction pipeline and curated kb/ built on the soma-schema LinkML schema."
 authors = [
   {name = "Sierra Moxon", email = "smoxon@lbl.gov"},
 ]
@@ -16,7 +16,13 @@ dynamic = ["version"]
 
 dependencies = [
   "linkml-runtime >=1.9.4",
+  # SOMA LinkML schema + generated datamodel (import name: soma)
+  "soma-schema >=0.2.3",
 ]
+
+# Knowledge base and pipeline, not an installable library
+[tool.uv]
+package = false
 
 [dependency-groups]
 dev = [
@@ -36,12 +42,6 @@ dev = [
     # PDF text extraction for the local-only reference cache
     "pypdf>=5.0.0",
 ]
-
-# See https://hatch.pypa.io/latest/config/build/#file-selection for how to
-# explicitly include files other than default into the build distributions.
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/soma"]
 
 [tool.hatch.version]
 source = "uv-dynamic-versioning"
@@ -63,8 +63,6 @@ skip = [
   "pyproject.toml",
   "uv.lock",
   "project/*",
-  "src/soma/datamodel/soma_pydantic.py",
-  "src/soma/datamodel/soma.py",
 ]
 
 # Reminder: words have to be lowercased for the ignore-words-list
@@ -80,6 +78,4 @@ extend-exclude = [
   "uv.lock",
   "pyproject.toml",
   "project/*",
-  "src/soma/datamodel/soma_pydantic.py",
-  "src/soma/datamodel/soma.py",
 ]
