@@ -45,13 +45,13 @@ jobs:
       - name: Generate bot App token (optional)
         id: app-token
         continue-on-error: true
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ secrets.SOMA_AGENT_APP_ID }}
           private-key: ${{ secrets.SOMA_AGENT_PRIVATE_KEY }}
 
       - name: Check out repository
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
