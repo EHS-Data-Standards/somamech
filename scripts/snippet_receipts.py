@@ -86,7 +86,21 @@ def resolves_in_committed_cache(ref: str, snippet: str) -> bool:
     cache_file = REFS_CACHE / f"{ref.replace(':', '_')}.md"
     if not cache_file.is_file():
         return False
-    return _normalize_ws(snippet) in _normalize_ws(cache_file.read_text())
+    content = _normalize_ws(cache_file.read_text())
+    # "..." is the quote checker's elision form, used where the source has a
+    # bracketed span the checker strips from the query but not the content.
+    # Each fragment must appear, in order, for the snippet to count as
+    # resolved — an out-of-order or absent fragment still requires a receipt.
+    pos = 0
+    for fragment in _normalize_ws(snippet).split("..."):
+        fragment = fragment.strip()
+        if not fragment:
+            continue
+        found = content.find(fragment, pos)
+        if found < 0:
+            return False
+        pos = found + len(fragment)
+    return True
 
 
 def abstract_only_snippets(kb_file: Path) -> dict[str, set[str]]:
