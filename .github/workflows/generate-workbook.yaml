@@ -13,7 +13,8 @@ on:  # yamllint disable-line rule:truthy
     branches: [main]
     paths:
       - "kb/publications/**"
-      - "src/soma/schema/**"
+      - "pyproject.toml"
+      - "uv.lock"
       - "scripts/build_workbook.py"
       - "scripts/yaml_to_excel.py"
   workflow_dispatch:

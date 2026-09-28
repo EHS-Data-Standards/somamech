@@ -299,7 +299,7 @@ opencode
 Once in the TUI, you can ask it to run the same underlying commands that the Claude Code skills use:
 
 ```
-> Run: uv run linkml-validate -s src/soma/schema/soma.yaml tests/data/valid/Container-liu2024-pm25-cftr.yaml
+> Run: just validate-file tests/data/valid/Container-liu2024-pm25-cftr.yaml
 > Run: uv run runoak -i sqlite:obo:chebi info CHEBI:74481
 > Run: uv run python scripts/yaml_to_excel.py --input tests/data/valid/Container-liu2024-pm25-cftr.yaml --output src/docs/output.xlsx
 ```
