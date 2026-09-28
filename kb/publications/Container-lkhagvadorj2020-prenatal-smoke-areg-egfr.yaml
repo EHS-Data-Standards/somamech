@@ -1,0 +1,1377 @@
+# =============================================================================
+# Lkhagvadorj et al. (2020) - Prenatal smoke exposure dysregulates lung
+# epithelial cell differentiation in mouse offspring: role for AREG-induced
+# EGFR signaling
+# =============================================================================
+#
+# Source: Am J Physiol Lung Cell Mol Physiol 319: L742-L751, 2020
+# DOI: 10.1152/ajplung.00209.2020
+#
+# Study design (in vivo developmental study + ex vivo organoid validation):
+#   - Species: Mus musculus, C57Bl/6 (Harlan, The Netherlands)
+#   - EXPOSED GENERATION: dams (F0), 8-10 wk old at the start
+#   - EXPOSURE WINDOW: PRENATAL ONLY. Dams were exposed from 7 days BEFORE
+#     mating until the day of euthanization; smoke exposure was constant
+#     during the whole pregnancy. Mothers and offspring were NOT exposed to
+#     cigarette smoke after the offspring was born.
+#   - Smoke: Teague TE-10 system, mainstream smoke of Kentucky 2R4F reference
+#     cigarettes, two 50-min sessions per day with a 3-h interval, 10
+#     cigarettes per session (stepped up 3/5/7/10 over the first four days).
+#     Dosimetry per session: total particulate matter 211 +/- 30 mg/m3,
+#     CO 205 +/- 35 ppm (max 241 ppm). Control dams breathed fresh air.
+#   - Dams: n=3 air-exposed, n=4 smoke-exposed
+#   - OFFSPRING TIMEPOINT: a single timepoint - offspring were euthanized ONE
+#     DAY AFTER BIRTH (1-day-old neonates). n=16 offspring from nonsmoking
+#     mothers, n=24 from smoking mothers. Left lung -> qRT-PCR; right lung ->
+#     formalin/paraffin for IHC and IF.
+#   - ORGANOID ARM (separate, unexposed animals): EpCAM+ lung cells from
+#     pathogen-free 8-12 wk old mice (n=3 male, n=2 female) grown as 3-D
+#     lung organoids in Matrigel with fibroblasts; AREG 10 ng/mL refreshed
+#     every 2 days vs non-treated; assessed 14 days after treatment. The
+#     organoid arm is an AREG-treatment model, NOT a smoke-exposure model.
+#
+# Key findings (neonatal lung, prenatal smoke vs prenatal air):
+#   - Fewer tubulin+ ciliated cells (P<0.001), lower Foxj1 (P=0.03)
+#   - Higher Foxm1 (P=0.014) and Spdef (P<0.001) mRNA
+#   - More pro-SPC+ (P=0.001) and NKX2.1+ (P=0.0005) AECII cells
+#   - PDPN+ (AECI) cell numbers unchanged, but lower Pdpn (P<0.0001) and
+#     Gramd2 (P<0.0001) mRNA
+#   - More AREG-expressing cells (P=0.04), higher Areg mRNA (P=0.0014),
+#     lower Egf mRNA (P=0.0018); Egfr mRNA unchanged
+#   - Club cells (CC10) and Aqp5 mRNA unchanged
+#
+# Key findings (AREG-treated vs non-treated organoids):
+#   - Bronchiolar: fewer tubulin+ ciliated cells (P<0.001), more KRT5+ basal
+#     cells (P=0.02), CC10+ club cells unchanged
+#   - Alveolar: more pro-SPC+ AECII (P=0.03), PDPN+ AECI unchanged
+#
+# QUOTE PROVENANCE: the committed references_cache entry for PMID:32783621 is
+# abstract_only (the publisher copy is paywalled). Every evidence snippet in
+# this file is therefore copied from the ABSTRACT, which is the text CI
+# resolves against. All quantitative detail above and in the description:
+# fields (exposure regimen, dosimetry, n's, p-values, per-sex results) was
+# read from the local PDF full text, which is gitignored and never pushed.
+#
+# NO MEASURED VALUES ARE RECORDED: the paper reports every cell count and
+# mRNA level only as individual data points in figures ("Data are shown as
+# individual values"), with no numeric means or fold changes in the text or
+# any table. Per the extraction rules, no values were digitized or invented.
+# The direction of change and the reported p-value are captured in
+# response_comparisons instead.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:32783621"
+  reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+  doi: "10.1152/ajplung.00209.2020"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:lkhagvadorj-smoke-001"
+    name: "Maternal cigarette smoke exposure (prenatal window)"
+    description: "Mainstream cigarette smoke generated with a TE-10 smoke exposure system (Teague Enterprises, Woodland, CA) using Kentucky 2R4F research-reference filtered cigarettes. Two sessions of 50 min per day with a 3-h interval between exposures; smoke of 10 cigarettes generated per session. Adaptation: 3 cigarettes/session on day 1, 5 on day 2, 7 on day 3, 10 from day 4 onward. Per session this generated total particulate matter of 211 +/- 30 mg/m3 and a CO level of 205 +/- 35 parts per million (max 241 ppm). Dams were exposed from 7 days before mating until the day of euthanization, constant throughout pregnancy; mothers and offspring were not exposed after birth. Simultaneous cycling induced with 1.25 IU pregnant mare's serum gonadotropin and 1.25 IU human chorionic gonadotrophin; mating confirmed by vaginal plug detection. Approved by the IACUC of the University of Groningen (Permit No. 6589a)."
+    equipment_required:
+      - "TE-10 smoke exposure system (Teague Enterprises, Woodland, CA)"
+      - "Kentucky 2R4F research-reference filtered cigarettes (The Tobacco Research Institute, University of Kentucky)"
+
+  - id: "PROTOCOL:lkhagvadorj-ihc-001"
+    name: "Immunohistochemistry on neonatal lung tissue"
+    description: "3 um sections of formalin-fixed, paraffin-embedded right lung. Deparaffinized, antigen retrieval in citrate (pH 6.0) and Tris-HCl (pH 7.4) buffer in a microwave oven for 15 min, then 0.3% H2O2 in PBS for 30 min. Primary antibodies against tubulin (ciliated cells), CC10 (club cells), pro-SPC and NKX2.1 (AECII), PDPN (AECI), Ki67 (proliferation) and amphiregulin. Detection with HRP enzyme and biotinylated secondary antibodies (30 min), colour reaction with 0.05% diaminobenzidine (DAB) and 3-amino-9-ethylcarbazole (AEC). Slides were coded and examiners blinded to groups. Tubulin+ and CC10+ cells counted manually in all airways and corrected per millimetre of airway; pro-SPC+, NKX2.1+, AREG+, PDPN+ and pro-SPC/Ki67+ cells quantified morphometrically and corrected for the total lung tissue area per section."
+    equipment_required:
+      - "Aperio-ImageScope viewing software (Aperio 11.2.0.780, Vista, CA)"
+      - "TissueFAXS imaging system (TissueGnostics, Austria)"
+      - "ImageJ"
+
+  - id: "PROTOCOL:lkhagvadorj-qpcr-001"
+    name: "TaqMan RT-qPCR on neonatal lung tissue"
+    description: "Total RNA isolated from left lung with an RNA isolation TRIzol Kit (Invitrogen); cDNA reverse transcribed with SuperScript-II Reverse Transcriptase (Invitrogen). TaqMan on-demand gene expression assays (Applied Biosystems) for Gapdh (Mm99999915_g1), Foxj1 (Mm01267279_m1), Scgb1a1 (Mm00442046_m1), Foxm1 (Mm00514924_m1), Spdef (Mm00600221_m1), Pdpn (Mm00447558_m1), Aqp5 (Mm00437578_m1), Gramd2 (Mm01174485_m1), Nkx2.1, Egf (Mm00438696_m1), Areg (Mm01354339_m1) and Egfr (Mm01187858_m1). Reactions in triplicate, 10 uL total (2 uL MilliQ water, 5 uL PCR MasterMix (Eurogentec), 0.5 uL assay mix, 2.5 uL cDNA), run on a LightCycler 480 Real-Time PCR System (Roche) and analysed with LightCycler 480 SW 1.5 software using the fit points method. Normalized to Gapdh by 2^-dCp; undetectable Cp values (>40) were interpreted as the maximum Cp value."
+    equipment_required:
+      - "LightCycler 480 Real-Time PCR System (Roche, Basel, Switzerland)"
+      - "TaqMan Gene Expression Assays (Applied Biosystems, Foster City, CA)"
+      - "TRIzol RNA isolation kit (Invitrogen)"
+
+  - id: "PROTOCOL:lkhagvadorj-organoid-001"
+    name: "Three-dimensional mouse lung organoid culture with AREG treatment"
+    description: "EpCAM+ cells isolated from lungs of pathogen-free male (n=3) and female (n=2) mice aged 8-12 wk. Approximately 10,000 EpCAM+ lung cells seeded with an equal number of fibroblasts per insert in 100 uL growth factor-reduced Matrigel diluted 1:1 with DMEM/F12 containing 5% FBS, into transwell inserts for 24 wells. In the treated groups AREG (10 ng/mL; R&D Systems, Minneapolis) was freshly added every 2 days. Cultures maintained at 37C in a humidified incubator with 5% CO2. After 14 days organoids were fixed in acetone diluted 1:1 (vol/vol) with methanol for 15 min at -20C. For bronchial analyses organoids were stabilized in 2% agarose, dehydrated and paraffin-embedded for cross-sectional histology."
+    equipment_required:
+      - "Growth factor-reduced Matrigel"
+      - "Transwell inserts for 24 wells"
+      - "Recombinant AREG (R&D Systems, Minneapolis)"
+
+  - id: "PROTOCOL:lkhagvadorj-if-001"
+    name: "Immunofluorescence on lung organoids"
+    description: "Paraffin-embedded bronchiolar organoids double- or triple-stained with primary antibodies against KRT5 (basal cell), CC10 (club cell) and tubulin (ciliated cell), visualized with fluorescent secondary antibodies and DAPI-containing mounting medium (Abcam). Alveolar organoid cultures washed with PBS, blocked in PBS with 5% (wt/vol) BSA, incubated overnight at 4C with primary antibodies against pro-SPC (AECII) and PDPN (AECI) diluted in PBS with 0.1% BSA and 0.1% Triton, washed 30 min and detected with fluorescent secondary antibodies and DAPI. Slides scanned on the TissueFAXS imaging system; images acquired on a Leica SP8 confocal microscope and a Leica 4000b microscope at x40 magnification. Positive cells counted manually and corrected for the total number of bronchial and alveolar epithelial cells in the organoids."
+    equipment_required:
+      - "Leica SP8 confocal microscope"
+      - "Leica 4000b microscope"
+      - "TissueFAXS imaging system (TissueGnostics, Austria)"
+      - "ImageJ"
+
+# =============================================================================
+# CILIARY FUNCTION ASSAYS - ciliated cell numbers
+# (in vivo neonatal lung, and ex vivo AREG-treated bronchiolar organoids)
+# =============================================================================
+
+ciliary_function_assays:
+  - id: "CIL:lkhagvadorj-ciliated-cells-neonate"
+    name: "Ciliated cell number in neonatal lung - prenatal air vs prenatal smoke"
+    description: "Tubulin-positive (ciliated) cells counted manually in all airways of 1-day-old offspring and corrected per millimetre of airway (IHC, DAB). Prenatally smoke-exposed neonates had lower numbers of ciliated cells than controls (P<0.001), seen in both male and female offspring (P<0.0001). The paper reports these counts only as individual data points in Fig. 1B/1b, with no numeric mean, so no value is recorded here."
+    airway_region: "all airways of the neonatal lung (bronchial/bronchiolar epithelium)"
+    analysis_software: "Aperio-ImageScope 11.2.0.780; TissueFAXS"
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "We found that prenatal smoke exposure reduced the number of ciliated cells and the expression of the cilia-related transcription factor Foxj1"
+        explanation: "The abstract states directly that prenatal smoke exposure reduced the number of ciliated cells, which is the decrease this assay's smoke-exposed output records relative to its air-exposed control output."
+    has_exposure_condition:
+      - id: "EXPOSURE:lkhagvadorj-prenatal-air"
+        name: "Prenatal fresh air - dams exposed to fresh air from 7 days before mating until euthanization; offspring assessed 1 day after birth"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+        name: "Prenatal cigarette smoke - dams exposed 2 x 50 min/day (10 cigarettes per session, 2R4F) from 7 days before mating throughout pregnancy until euthanization; offspring assessed 1 day after birth and never exposed postnatally"
+        exposure_agent:
+          id: "ECTO:0300003"
+          name: "exposure to cigarette smoking via maternal"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "CIL:lkhagvadorj-ciliated-cells-neonate-output-control"
+        name: "Ciliated cell number, offspring of air-exposed dams"
+        experimental_group: control
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-air"
+      - id: "CIL:lkhagvadorj-ciliated-cells-neonate-output-smoke"
+        name: "Ciliated cell number, offspring of smoke-exposed dams"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+    assay_date: "2020-01-01"
+    informs_on_key_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lkhagvadorj-neonate-smoke"
+      name: "One-day-old C57Bl/6 mouse offspring of smoke- or air-exposed dams"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "1"
+        unit:
+          id: "UO:0000033"
+          name: "day"
+      sex: "male and female (analysed separately as well as pooled)"
+      subject_characteristics: "C57Bl/6 neonates euthanized one day after birth. n=16 offspring from nonsmoking mothers (n=3 dams), n=24 from smoking mothers (n=4 dams). Dams were 8-10 wk old at the start of exposure. Offspring themselves were never directly exposed."
+      sample_type: biopsy
+      collection_site: "right lung (formalin-fixed, paraffin-embedded)"
+    follows_protocols:
+      - id: "PROTOCOL:lkhagvadorj-smoke-001"
+        name: "Maternal cigarette smoke exposure (prenatal window)"
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:lkhagvadorj-ihc-001"
+        name: "Immunohistochemistry for tubulin (ciliated cells)"
+        staining_type: "immunohistochemistry"
+        fixation_method: "formalin-fixed, paraffin-embedded; 3 um sections"
+        antibodies_used:
+          - "Mouse anti-acetylated alpha-tubulin, 1:10,000 (Sigma-Aldrich, T7451)"
+          - "Goat anti-rabbit HRP, 1:100 (Dako, P0448)"
+        detection_method: "0.05% diaminobenzidine (DAB)"
+
+  - id: "CIL:lkhagvadorj-ciliated-cells-organoid"
+    name: "Ciliated cell number in bronchiolar lung organoids - non-treated vs AREG"
+    description: "Tubulin-positive cells counted in whole bronchiolar mouse lung organoids after 14 days (triple IF for tubulin, CC10 and KRT5), corrected for the total number of bronchial epithelial cells. AREG-treated organoids had lower numbers of tubulin-positive cells than non-treated organoids (P<0.001, Fig. 5D). This arm uses organoids derived from unexposed adult mice and tests AREG directly, not smoke. Counts are reported only as individual data points, so no value is recorded."
+    airway_region: "bronchiolar organoid epithelium"
+    analysis_software: "ImageJ"
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In bronchial organoids, AREG treatment resulted in fewer ciliated cells and more basal cells when compared with non-treated bronchiolar organoids."
+        explanation: "The abstract states the organoid result this assay records: AREG treatment produced fewer ciliated cells than in non-treated bronchiolar organoids."
+    has_exposure_condition:
+      - id: "EXPOSURE:lkhagvadorj-organoid-untreated"
+        name: "Non-treated mouse lung organoids, 14 days of culture"
+        exposure_duration:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lkhagvadorj-organoid-areg"
+        name: "AREG 10 ng/mL refreshed every 2 days for 14 days in mouse lung organoids"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "CIL:lkhagvadorj-ciliated-cells-organoid-output-control"
+        name: "Tubulin+ cell number, non-treated bronchiolar organoids"
+        experimental_group: control
+        measured_under: "EXPOSURE:lkhagvadorj-organoid-untreated"
+      - id: "CIL:lkhagvadorj-ciliated-cells-organoid-output-areg"
+        name: "Tubulin+ cell number, AREG-treated bronchiolar organoids"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lkhagvadorj-organoid-areg"
+    assay_date: "2020-01-01"
+    informs_on_key_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:lkhagvadorj-bronchiolar-organoid-001"
+      name: "Three-dimensional mouse bronchiolar lung organoid"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      organoid_type: "bronchiolar lung organoid (EpCAM+ lung epithelial cells co-cultured with fibroblasts in Matrigel)"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      matrix_composition: "growth factor-reduced Matrigel diluted 1:1 with DMEM/F12 containing 5% FBS"
+      donor_info: "pathogen-free male (n=3) and female (n=2) mice, 8-12 wk old, not smoke-exposed; ~10,000 EpCAM+ lung cells seeded with an equal number of fibroblasts per insert"
+    follows_protocols:
+      - id: "PROTOCOL:lkhagvadorj-organoid-001"
+        name: "Three-dimensional mouse lung organoid culture with AREG treatment"
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:lkhagvadorj-if-001"
+        name: "Triple immunofluorescence for tubulin, CC10 and KRT5 in bronchiolar organoids"
+        staining_type: "immunofluorescence"
+        fixation_method: "acetone:methanol 1:1 (vol/vol), 15 min at -20C; 2% agarose stabilization, paraffin embedding"
+        antibodies_used:
+          - "Mouse anti-acetylated alpha-tubulin, 1:10,000 (Sigma-Aldrich, T7451)"
+          - "Chicken anti-keratin 5, 1:200 (BioLegend, 905901)"
+          - "Goat anti-club cell (CC10), 1:200 (Santa Cruz, sc-365992)"
+        detection_method: "fluorescent secondary antibodies with DAPI mounting medium (Abcam)"
+
+# =============================================================================
+# FOXJ1 EXPRESSION ASSAY - cilia-related transcription factor
+# =============================================================================
+
+foxj_assays:
+  - id: "FOXJ:lkhagvadorj-foxj1-neonate"
+    name: "Foxj1 mRNA in neonatal lung - prenatal air vs prenatal smoke"
+    description: "Foxj1 mRNA measured by TaqMan RT-qPCR in RNA isolated from the left lung of 1-day-old offspring, normalized to Gapdh (2^-dCp). Lower Foxj1 expression in prenatally smoke-exposed offspring, especially in males (P=0.03 overall; male P=0.04; Fig. 1E/1e). Relative expression is plotted as individual values only, so no numeric level is recorded."
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "prenatal smoke exposure reduced the number of ciliated cells and the expression of the cilia-related transcription factor Foxj1"
+        explanation: "The abstract names the reduced expression of the cilia-related transcription factor Foxj1 as a direct finding, which is what this assay's smoke-exposed output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:lkhagvadorj-prenatal-air"
+        name: "Prenatal fresh air - dams exposed to fresh air from 7 days before mating until euthanization; offspring assessed 1 day after birth"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+        name: "Prenatal cigarette smoke - dams exposed 2 x 50 min/day (10 cigarettes per session, 2R4F) from 7 days before mating throughout pregnancy until euthanization; offspring assessed 1 day after birth and never exposed postnatally"
+        exposure_agent:
+          id: "ECTO:0300003"
+          name: "exposure to cigarette smoking via maternal"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "FOXJ:lkhagvadorj-foxj1-neonate-output-control"
+        name: "Foxj1 mRNA, offspring of air-exposed dams"
+        experimental_group: control
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-air"
+      - id: "FOXJ:lkhagvadorj-foxj1-neonate-output-smoke"
+        name: "Foxj1 mRNA, offspring of smoke-exposed dams"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+    assay_date: "2020-01-01"
+    informs_on_key_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lkhagvadorj-neonate-smoke"
+      name: "One-day-old C57Bl/6 mouse offspring of smoke- or air-exposed dams"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "1"
+        unit:
+          id: "UO:0000033"
+          name: "day"
+      sex: "male and female (analysed separately as well as pooled)"
+      subject_characteristics: "C57Bl/6 neonates euthanized one day after birth; left lung used for qRT-PCR."
+      sample_type: biopsy
+      collection_site: "left lung"
+    follows_protocols:
+      - id: "PROTOCOL:lkhagvadorj-smoke-001"
+        name: "Maternal cigarette smoke exposure (prenatal window)"
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:lkhagvadorj-qpcr-001"
+        name: "TaqMan RT-qPCR for Foxj1"
+        detection_method: "TaqMan real-time quantitative PCR (LightCycler 480)"
+        reference_gene: "Gapdh"
+        normalization_method: "2^-dCp relative to Gapdh, fit points method"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS
+#   - mucus/secretory transcription factors (Spdef, Foxm1)
+#   - AECI markers (Pdpn, Gramd2)
+#   - AECII cell numbers by IHC (pro-SPC, NKX2.1) and in alveolar organoids
+#   - basal cell numbers in bronchiolar organoids (KRT5)
+# =============================================================================
+
+gene_expression_assays:
+  - id: "GE:lkhagvadorj-spdef-neonate"
+    name: "Spdef mRNA in neonatal lung - prenatal air vs prenatal smoke"
+    description: "Spdef mRNA by TaqMan RT-qPCR on left lung RNA, normalized to Gapdh. Higher in prenatally smoke-exposed offspring (P<0.001 overall; male P<0.001; Fig. 1G/1g). SPDEF is the master transcription factor for goblet cell differentiation in the airway epithelium. Individual values only; no numeric level recorded."
+    target_gene: "Spdef"
+    gene_expression_method: "TaqMan RT-qPCR"
+    normalization_reference: "Gapdh"
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "it resulted in higher expression of mucus-related transcription factors Spdef and Foxm1 in the lung"
+        explanation: "The abstract states that prenatal smoke exposure raised expression of the mucus-related transcription factor Spdef in the lung, which is the increase this assay's smoke-exposed output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:lkhagvadorj-prenatal-air"
+        name: "Prenatal fresh air - dams exposed to fresh air from 7 days before mating until euthanization; offspring assessed 1 day after birth"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+        name: "Prenatal cigarette smoke - dams exposed 2 x 50 min/day (10 cigarettes per session, 2R4F) from 7 days before mating throughout pregnancy until euthanization; offspring assessed 1 day after birth and never exposed postnatally"
+        exposure_agent:
+          id: "ECTO:0300003"
+          name: "exposure to cigarette smoking via maternal"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GE:lkhagvadorj-spdef-neonate-output-control"
+        name: "Spdef mRNA, offspring of air-exposed dams"
+        experimental_group: control
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-air"
+      - id: "GE:lkhagvadorj-spdef-neonate-output-smoke"
+        name: "Spdef mRNA, offspring of smoke-exposed dams"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+    assay_date: "2020-01-01"
+    informs_on_key_event:
+      id: "KE:ke-mucus-metaplasia"
+      name: "Mucus secretory program activation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lkhagvadorj-neonate-smoke"
+      name: "One-day-old C57Bl/6 mouse offspring of smoke- or air-exposed dams"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "1"
+        unit:
+          id: "UO:0000033"
+          name: "day"
+      sex: "male and female (analysed separately as well as pooled)"
+      sample_type: biopsy
+      collection_site: "left lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:lkhagvadorj-qpcr-001"
+        name: "TaqMan RT-qPCR for Spdef"
+        detection_method: "TaqMan real-time quantitative PCR (LightCycler 480)"
+        reference_gene: "Gapdh"
+        normalization_method: "2^-dCp relative to Gapdh, fit points method"
+
+  - id: "GE:lkhagvadorj-foxm1-neonate"
+    name: "Foxm1 mRNA in neonatal lung - prenatal air vs prenatal smoke"
+    description: "Foxm1 mRNA by TaqMan RT-qPCR on left lung RNA, normalized to Gapdh. Higher in prenatally smoke-exposed offspring (P=0.014 overall; male P=0.01, female P=0.04; Fig. 1F/1f). FOXM1 promotes SPDEF activity. Individual values only; no numeric level recorded."
+    target_gene: "Foxm1"
+    gene_expression_method: "TaqMan RT-qPCR"
+    normalization_reference: "Gapdh"
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "higher expression of mucus-related transcription factors Spdef and Foxm1 in the lung"
+        explanation: "The abstract names Foxm1 among the mucus-related transcription factors whose expression was higher after prenatal smoke exposure, which is the increase this assay's smoke-exposed output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:lkhagvadorj-prenatal-air"
+        name: "Prenatal fresh air - dams exposed to fresh air from 7 days before mating until euthanization; offspring assessed 1 day after birth"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+        name: "Prenatal cigarette smoke - dams exposed 2 x 50 min/day (10 cigarettes per session, 2R4F) from 7 days before mating throughout pregnancy until euthanization; offspring assessed 1 day after birth and never exposed postnatally"
+        exposure_agent:
+          id: "ECTO:0300003"
+          name: "exposure to cigarette smoking via maternal"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GE:lkhagvadorj-foxm1-neonate-output-control"
+        name: "Foxm1 mRNA, offspring of air-exposed dams"
+        experimental_group: control
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-air"
+      - id: "GE:lkhagvadorj-foxm1-neonate-output-smoke"
+        name: "Foxm1 mRNA, offspring of smoke-exposed dams"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+    assay_date: "2020-01-01"
+    informs_on_key_event:
+      id: "KE:ke-mucus-metaplasia"
+      name: "Mucus secretory program activation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lkhagvadorj-neonate-smoke"
+      name: "One-day-old C57Bl/6 mouse offspring of smoke- or air-exposed dams"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "1"
+        unit:
+          id: "UO:0000033"
+          name: "day"
+      sex: "male and female (analysed separately as well as pooled)"
+      sample_type: biopsy
+      collection_site: "left lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:lkhagvadorj-qpcr-001"
+        name: "TaqMan RT-qPCR for Foxm1"
+        detection_method: "TaqMan real-time quantitative PCR (LightCycler 480)"
+        reference_gene: "Gapdh"
+        normalization_method: "2^-dCp relative to Gapdh, fit points method"
+
+  - id: "GE:lkhagvadorj-pdpn-neonate"
+    name: "Pdpn mRNA in neonatal lung - prenatal air vs prenatal smoke"
+    description: "Pdpn (AECI marker) mRNA by TaqMan RT-qPCR on left lung RNA, normalized to Gapdh. Lower in prenatally smoke-exposed offspring (P<0.0001 overall; male P=0.04, female P=0.006; Fig. 3C/3c). Notably, the number of PDPN-positive AECI cells itself was NOT changed (Fig. 3B/3b), so the deficit is at the transcript level. Individual values only; no numeric level recorded."
+    target_gene: "Pdpn"
+    gene_expression_method: "TaqMan RT-qPCR"
+    normalization_reference: "Gapdh"
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "prenatally smoke-exposed offspring had higher numbers of alveolar epithelial type II cells (AECII) and lower expression of the AECI-related Pdpn and Gramd2 markers"
+        explanation: "The abstract states that expression of the AECI-related Pdpn marker was lower in prenatally smoke-exposed offspring, which is the decrease this assay's smoke-exposed output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:lkhagvadorj-prenatal-air"
+        name: "Prenatal fresh air - dams exposed to fresh air from 7 days before mating until euthanization; offspring assessed 1 day after birth"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+        name: "Prenatal cigarette smoke - dams exposed 2 x 50 min/day (10 cigarettes per session, 2R4F) from 7 days before mating throughout pregnancy until euthanization; offspring assessed 1 day after birth and never exposed postnatally"
+        exposure_agent:
+          id: "ECTO:0300003"
+          name: "exposure to cigarette smoking via maternal"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GE:lkhagvadorj-pdpn-neonate-output-control"
+        name: "Pdpn mRNA, offspring of air-exposed dams"
+        experimental_group: control
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-air"
+      - id: "GE:lkhagvadorj-pdpn-neonate-output-smoke"
+        name: "Pdpn mRNA, offspring of smoke-exposed dams"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+    assay_date: "2020-01-01"
+    informs_on_key_event:
+      id: "KE:ke-impaired-aeci-differentiation"
+      name: "Impaired alveolar epithelial type I cell differentiation"
+      biological_action: impaired
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lkhagvadorj-neonate-smoke"
+      name: "One-day-old C57Bl/6 mouse offspring of smoke- or air-exposed dams"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "1"
+        unit:
+          id: "UO:0000033"
+          name: "day"
+      sex: "male and female (analysed separately as well as pooled)"
+      sample_type: biopsy
+      collection_site: "left lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:lkhagvadorj-qpcr-001"
+        name: "TaqMan RT-qPCR for Pdpn"
+        detection_method: "TaqMan real-time quantitative PCR (LightCycler 480)"
+        reference_gene: "Gapdh"
+        normalization_method: "2^-dCp relative to Gapdh, fit points method"
+
+  - id: "GE:lkhagvadorj-gramd2-neonate"
+    name: "Gramd2 mRNA in neonatal lung - prenatal air vs prenatal smoke"
+    description: "Gramd2 (AECI marker) mRNA by TaqMan RT-qPCR on left lung RNA, normalized to Gapdh. Lower in prenatally smoke-exposed offspring (P<0.0001 overall; both sexes P<0.001; Fig. 3E/3e). Aqp5 mRNA, another alveolar marker measured in the same panel, was not affected. Individual values only; no numeric level recorded."
+    target_gene: "Gramd2"
+    gene_expression_method: "TaqMan RT-qPCR"
+    normalization_reference: "Gapdh"
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "lower expression of the AECI-related Pdpn and Gramd2 markers"
+        explanation: "The abstract names Gramd2 among the AECI-related markers whose expression was lower in prenatally smoke-exposed offspring, which is the decrease this assay's smoke-exposed output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:lkhagvadorj-prenatal-air"
+        name: "Prenatal fresh air - dams exposed to fresh air from 7 days before mating until euthanization; offspring assessed 1 day after birth"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+        name: "Prenatal cigarette smoke - dams exposed 2 x 50 min/day (10 cigarettes per session, 2R4F) from 7 days before mating throughout pregnancy until euthanization; offspring assessed 1 day after birth and never exposed postnatally"
+        exposure_agent:
+          id: "ECTO:0300003"
+          name: "exposure to cigarette smoking via maternal"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GE:lkhagvadorj-gramd2-neonate-output-control"
+        name: "Gramd2 mRNA, offspring of air-exposed dams"
+        experimental_group: control
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-air"
+      - id: "GE:lkhagvadorj-gramd2-neonate-output-smoke"
+        name: "Gramd2 mRNA, offspring of smoke-exposed dams"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+    assay_date: "2020-01-01"
+    informs_on_key_event:
+      id: "KE:ke-impaired-aeci-differentiation"
+      name: "Impaired alveolar epithelial type I cell differentiation"
+      biological_action: impaired
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lkhagvadorj-neonate-smoke"
+      name: "One-day-old C57Bl/6 mouse offspring of smoke- or air-exposed dams"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "1"
+        unit:
+          id: "UO:0000033"
+          name: "day"
+      sex: "male and female (analysed separately as well as pooled)"
+      sample_type: biopsy
+      collection_site: "left lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:lkhagvadorj-qpcr-001"
+        name: "TaqMan RT-qPCR for Gramd2"
+        detection_method: "TaqMan real-time quantitative PCR (LightCycler 480)"
+        reference_gene: "Gapdh"
+        normalization_method: "2^-dCp relative to Gapdh, fit points method"
+
+  - id: "GE:lkhagvadorj-aecii-prospc-neonate"
+    name: "pro-SPC-positive AECII cell number in neonatal lung - prenatal air vs prenatal smoke"
+    description: "pro-SPC-positive (AECII) cells quantified morphometrically by IHC and corrected for the total lung tissue area per section. Higher in prenatally smoke-exposed offspring in both sexes (P=0.001 overall; both sexes P<0.05; Fig. 2B/2b). Double staining with Ki67 showed more proliferating (Ki67/SPC-positive) AECII in smoke-exposed neonates (P=0.045), read from the local full text only. Individual values only; no numeric count recorded."
+    target_gene: "pro-SPC (Sftpc)"
+    gene_expression_method: "immunohistochemistry (morphometric cell counting)"
+    normalization_reference: "total lung tissue area per section"
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "prenatally smoke-exposed offspring had higher numbers of alveolar epithelial type II cells (AECII)"
+        explanation: "The abstract states that prenatally smoke-exposed offspring had higher numbers of AECII, which is the increase this assay's smoke-exposed output records from pro-SPC staining."
+    has_exposure_condition:
+      - id: "EXPOSURE:lkhagvadorj-prenatal-air"
+        name: "Prenatal fresh air - dams exposed to fresh air from 7 days before mating until euthanization; offspring assessed 1 day after birth"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+        name: "Prenatal cigarette smoke - dams exposed 2 x 50 min/day (10 cigarettes per session, 2R4F) from 7 days before mating throughout pregnancy until euthanization; offspring assessed 1 day after birth and never exposed postnatally"
+        exposure_agent:
+          id: "ECTO:0300003"
+          name: "exposure to cigarette smoking via maternal"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GE:lkhagvadorj-aecii-prospc-neonate-output-control"
+        name: "pro-SPC+ AECII number, offspring of air-exposed dams"
+        experimental_group: control
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-air"
+      - id: "GE:lkhagvadorj-aecii-prospc-neonate-output-smoke"
+        name: "pro-SPC+ AECII number, offspring of smoke-exposed dams"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+    assay_date: "2020-01-01"
+    informs_on_key_event:
+      id: "KE:ke-aecii-hyperplasia"
+      name: "Alveolar epithelial type II cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lkhagvadorj-neonate-smoke"
+      name: "One-day-old C57Bl/6 mouse offspring of smoke- or air-exposed dams"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "1"
+        unit:
+          id: "UO:0000033"
+          name: "day"
+      sex: "male and female (analysed separately as well as pooled)"
+      sample_type: biopsy
+      collection_site: "right lung (formalin-fixed, paraffin-embedded)"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:lkhagvadorj-ihc-001"
+        name: "Immunohistochemistry for pro-SPC (AECII)"
+        staining_type: "immunohistochemistry"
+        fixation_method: "formalin-fixed, paraffin-embedded; 3 um sections"
+        antibodies_used:
+          - "Rabbit anti-SP-C, 1:200 (Millipore, AB3786)"
+          - "Goat anti-rabbit HRP, 1:100 (Dako, P0448)"
+        detection_method: "0.05% diaminobenzidine (DAB)"
+
+  - id: "GE:lkhagvadorj-aecii-nkx21-neonate"
+    name: "NKX2.1-positive AECII cell number in neonatal lung - prenatal air vs prenatal smoke"
+    description: "NKX2.1-positive (AECII) cells quantified morphometrically by IHC and corrected for the total lung tissue area per section. Higher in prenatally smoke-exposed offspring (P=0.0005 overall; male P=0.05, female P=0.006; Fig. 2D/2d). This is the second, independent AECII marker supporting the same finding. Individual values only; no numeric count recorded."
+    target_gene: "Nkx2.1"
+    gene_expression_method: "immunohistochemistry (morphometric cell counting)"
+    normalization_reference: "total lung tissue area per section"
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Moreover, prenatally smoke-exposed offspring had higher numbers of alveolar epithelial type II cells (AECII) and lower expression of the AECI-related Pdpn and Gramd2 markers."
+        explanation: "The abstract's statement that prenatally smoke-exposed offspring had higher numbers of AECII is what this assay's smoke-exposed output records using the NKX2.1 marker."
+    has_exposure_condition:
+      - id: "EXPOSURE:lkhagvadorj-prenatal-air"
+        name: "Prenatal fresh air - dams exposed to fresh air from 7 days before mating until euthanization; offspring assessed 1 day after birth"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+        name: "Prenatal cigarette smoke - dams exposed 2 x 50 min/day (10 cigarettes per session, 2R4F) from 7 days before mating throughout pregnancy until euthanization; offspring assessed 1 day after birth and never exposed postnatally"
+        exposure_agent:
+          id: "ECTO:0300003"
+          name: "exposure to cigarette smoking via maternal"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GE:lkhagvadorj-aecii-nkx21-neonate-output-control"
+        name: "NKX2.1+ AECII number, offspring of air-exposed dams"
+        experimental_group: control
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-air"
+      - id: "GE:lkhagvadorj-aecii-nkx21-neonate-output-smoke"
+        name: "NKX2.1+ AECII number, offspring of smoke-exposed dams"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+    assay_date: "2020-01-01"
+    informs_on_key_event:
+      id: "KE:ke-aecii-hyperplasia"
+      name: "Alveolar epithelial type II cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lkhagvadorj-neonate-smoke"
+      name: "One-day-old C57Bl/6 mouse offspring of smoke- or air-exposed dams"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "1"
+        unit:
+          id: "UO:0000033"
+          name: "day"
+      sex: "male and female (analysed separately as well as pooled)"
+      sample_type: biopsy
+      collection_site: "right lung (formalin-fixed, paraffin-embedded)"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:lkhagvadorj-ihc-001"
+        name: "Immunohistochemistry for NKX2.1 (AECII)"
+        staining_type: "immunohistochemistry"
+        fixation_method: "formalin-fixed, paraffin-embedded; 3 um sections"
+        antibodies_used:
+          - "Mouse anti-Nkx2.1, 1:200 (Thermo Scientific, MA5-13961)"
+        detection_method: "0.05% diaminobenzidine (DAB)"
+
+  - id: "GE:lkhagvadorj-aecii-prospc-organoid"
+    name: "pro-SPC-positive AECII cell number in alveolar lung organoids - non-treated vs AREG"
+    description: "pro-SPC-positive (AECII) cells counted manually in alveolar mouse lung organoids after 14 days (double IF with PDPN) and corrected for the total number of alveolar epithelial cells. More pro-SPC-positive cells in AREG-treated than in non-treated alveolar organoids (P=0.03, Fig. 5G); PDPN-positive AECI numbers were unaffected (Fig. 5H). Individual values only; no numeric count recorded."
+    target_gene: "pro-SPC (Sftpc)"
+    gene_expression_method: "immunofluorescence (manual cell counting)"
+    normalization_reference: "total number of alveolar epithelial cells in the organoid"
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In alveolar organoids, AREG treatment led to more AECII cells than non-treated AECII cells."
+        explanation: "The abstract states the organoid result this assay records: AREG treatment increased AECII cell numbers relative to non-treated alveolar organoids."
+    has_exposure_condition:
+      - id: "EXPOSURE:lkhagvadorj-organoid-untreated"
+        name: "Non-treated mouse lung organoids, 14 days of culture"
+        exposure_duration:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lkhagvadorj-organoid-areg"
+        name: "AREG 10 ng/mL refreshed every 2 days for 14 days in mouse lung organoids"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GE:lkhagvadorj-aecii-prospc-organoid-output-control"
+        name: "pro-SPC+ AECII number, non-treated alveolar organoids"
+        experimental_group: control
+        measured_under: "EXPOSURE:lkhagvadorj-organoid-untreated"
+      - id: "GE:lkhagvadorj-aecii-prospc-organoid-output-areg"
+        name: "pro-SPC+ AECII number, AREG-treated alveolar organoids"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lkhagvadorj-organoid-areg"
+    assay_date: "2020-01-01"
+    informs_on_key_event:
+      id: "KE:ke-aecii-hyperplasia"
+      name: "Alveolar epithelial type II cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:lkhagvadorj-alveolar-organoid-001"
+      name: "Three-dimensional mouse alveolar lung organoid"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      organoid_type: "alveolar lung organoid (EpCAM+ lung epithelial cells co-cultured with fibroblasts in Matrigel)"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      matrix_composition: "growth factor-reduced Matrigel diluted 1:1 with DMEM/F12 containing 5% FBS"
+      donor_info: "pathogen-free male (n=3) and female (n=2) mice, 8-12 wk old, not smoke-exposed"
+    follows_protocols:
+      - id: "PROTOCOL:lkhagvadorj-organoid-001"
+        name: "Three-dimensional mouse lung organoid culture with AREG treatment"
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:lkhagvadorj-if-001"
+        name: "Double immunofluorescence for pro-SPC and PDPN in alveolar organoids"
+        staining_type: "immunofluorescence"
+        antibodies_used:
+          - "Rabbit anti-SP-C, 1:200 (Millipore, AB3786)"
+          - "Hamster anti-podoplanin, 1:5,000 (Thermo Scientific, 14-5381-82)"
+        detection_method: "fluorescent secondary antibodies with DAPI mounting medium; Leica SP8 confocal at x40"
+
+  - id: "GE:lkhagvadorj-basal-krt5-organoid"
+    name: "KRT5-positive basal cell number in bronchiolar lung organoids - non-treated vs AREG"
+    description: "KRT5-positive (basal) cells counted in whole bronchiolar mouse lung organoids after 14 days (triple IF with tubulin and CC10) and corrected for the total number of bronchial epithelial cells. Higher numbers of KRT5-positive cells in AREG-treated than in non-treated organoids (P=0.02, Fig. 5C); CC10-positive club cell numbers were unaffected (Fig. 5E). Individual values only; no numeric count recorded."
+    target_gene: "Krt5"
+    gene_expression_method: "immunofluorescence (manual cell counting)"
+    normalization_reference: "total number of bronchial epithelial cells in the organoid"
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "AREG treatment resulted in fewer ciliated cells and more basal cells when compared with non-treated bronchiolar organoids"
+        explanation: "The abstract states that AREG treatment produced more basal cells than non-treated bronchiolar organoids, which is the increase this assay's AREG-treated output records from KRT5 staining."
+    has_exposure_condition:
+      - id: "EXPOSURE:lkhagvadorj-organoid-untreated"
+        name: "Non-treated mouse lung organoids, 14 days of culture"
+        exposure_duration:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lkhagvadorj-organoid-areg"
+        name: "AREG 10 ng/mL refreshed every 2 days for 14 days in mouse lung organoids"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GE:lkhagvadorj-basal-krt5-organoid-output-control"
+        name: "KRT5+ basal cell number, non-treated bronchiolar organoids"
+        experimental_group: control
+        measured_under: "EXPOSURE:lkhagvadorj-organoid-untreated"
+      - id: "GE:lkhagvadorj-basal-krt5-organoid-output-areg"
+        name: "KRT5+ basal cell number, AREG-treated bronchiolar organoids"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lkhagvadorj-organoid-areg"
+    assay_date: "2020-01-01"
+    informs_on_key_event:
+      id: "KE:ke-basal-cell-hyperplasia"
+      name: "Basal cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:lkhagvadorj-bronchiolar-organoid-001"
+      name: "Three-dimensional mouse bronchiolar lung organoid"
+      cell_type:
+        id: "CL:0000646"
+        name: "basal cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      organoid_type: "bronchiolar lung organoid (EpCAM+ lung epithelial cells co-cultured with fibroblasts in Matrigel)"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "pathogen-free male (n=3) and female (n=2) mice, 8-12 wk old, not smoke-exposed"
+    follows_protocols:
+      - id: "PROTOCOL:lkhagvadorj-organoid-001"
+        name: "Three-dimensional mouse lung organoid culture with AREG treatment"
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:lkhagvadorj-if-001"
+        name: "Triple immunofluorescence for tubulin, CC10 and KRT5 in bronchiolar organoids"
+        staining_type: "immunofluorescence"
+        antibodies_used:
+          - "Chicken anti-keratin 5, 1:200 (BioLegend, 905901)"
+        detection_method: "fluorescent secondary antibodies with DAPI mounting medium; Leica SP8 confocal at x40"
+
+# =============================================================================
+# EGFR SIGNALING ASSAYS - AREG and EGF, the two competitive EGFR ligands
+# =============================================================================
+
+egfr_signaling_assays:
+  - id: "EGFR:lkhagvadorj-areg-neonate"
+    name: "AREG expression in neonatal lung - prenatal air vs prenatal smoke"
+    description: "Two readouts of the EGFR ligand amphiregulin in 1-day-old offspring: (1) AREG-expressing cells by IHC, found mainly in the lung parenchyma, higher in prenatally smoke-exposed offspring (P=0.04 overall, most pronounced in females P=0.012; Fig. 4B/4b); (2) Areg mRNA by TaqMan RT-qPCR on left lung RNA, higher in smoke-exposed offspring in both sexes (P=0.0014 overall; both sexes P<0.05; Fig. 4C/4c). Egfr mRNA itself was NOT changed by prenatal smoke exposure (Fig. 4E/4e), so the paper's inference of increased EGFR signalling rests on ligand availability (more AREG, less EGF) rather than on any direct measure of EGFR phosphorylation, which was not assayed. Individual values only; no numeric level recorded."
+    normalization_reference: "Gapdh (mRNA); total lung tissue area per section (AREG+ cells)"
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "This was accompanied by higher expression of Areg and lower expression of Egf in prenatally smoke-exposed offspring."
+        explanation: "The abstract states that Areg expression was higher in prenatally smoke-exposed offspring, which is the increase in EGFR ligand expression this assay's smoke-exposed output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:lkhagvadorj-prenatal-air"
+        name: "Prenatal fresh air - dams exposed to fresh air from 7 days before mating until euthanization; offspring assessed 1 day after birth"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+        name: "Prenatal cigarette smoke - dams exposed 2 x 50 min/day (10 cigarettes per session, 2R4F) from 7 days before mating throughout pregnancy until euthanization; offspring assessed 1 day after birth and never exposed postnatally"
+        exposure_agent:
+          id: "ECTO:0300003"
+          name: "exposure to cigarette smoking via maternal"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "EGFR:lkhagvadorj-areg-neonate-output-control"
+        name: "AREG expression, offspring of air-exposed dams"
+        experimental_group: control
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-air"
+      - id: "EGFR:lkhagvadorj-areg-neonate-output-smoke"
+        name: "AREG expression, offspring of smoke-exposed dams"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+    assay_date: "2020-01-01"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lkhagvadorj-neonate-smoke"
+      name: "One-day-old C57Bl/6 mouse offspring of smoke- or air-exposed dams"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "1"
+        unit:
+          id: "UO:0000033"
+          name: "day"
+      sex: "male and female (analysed separately as well as pooled)"
+      sample_type: biopsy
+      collection_site: "left lung (mRNA) and right lung (IHC)"
+    follows_protocols:
+      - id: "PROTOCOL:lkhagvadorj-smoke-001"
+        name: "Maternal cigarette smoke exposure (prenatal window)"
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:lkhagvadorj-qpcr-001"
+        name: "TaqMan RT-qPCR for Areg and Egfr"
+        detection_method: "TaqMan real-time quantitative PCR (LightCycler 480)"
+        reference_gene: "Gapdh"
+        normalization_method: "2^-dCp relative to Gapdh, fit points method"
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:lkhagvadorj-ihc-001"
+        name: "Immunohistochemistry for amphiregulin"
+        staining_type: "immunohistochemistry"
+        fixation_method: "formalin-fixed, paraffin-embedded; 3 um sections"
+        antibodies_used:
+          - "Rabbit anti-amphiregulin, 1:100 (Boster, A01787)"
+        detection_method: "3-amino-9-ethylcarbazole (AEC)"
+
+  - id: "EGFR:lkhagvadorj-egf-neonate"
+    name: "Egf mRNA in neonatal lung - prenatal air vs prenatal smoke"
+    description: "Egf mRNA by TaqMan RT-qPCR on left lung RNA of 1-day-old offspring, normalized to Gapdh. Lower in prenatally smoke-exposed offspring (P=0.0018 overall; male P=0.02; Fig. 4D/4d). EGF has a higher affinity for EGFR than AREG and is associated with epithelial cell differentiation, so the paper reads lower Egf alongside higher Areg as a shift in which ligand drives EGFR. Individual values only; no numeric level recorded."
+    normalization_reference: "Gapdh"
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "higher expression of Areg and lower expression of Egf in prenatally smoke-exposed offspring"
+        explanation: "The abstract states that Egf expression was lower in prenatally smoke-exposed offspring, which is the decrease in this competing EGFR ligand that the assay's smoke-exposed output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:lkhagvadorj-prenatal-air"
+        name: "Prenatal fresh air - dams exposed to fresh air from 7 days before mating until euthanization; offspring assessed 1 day after birth"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+        name: "Prenatal cigarette smoke - dams exposed 2 x 50 min/day (10 cigarettes per session, 2R4F) from 7 days before mating throughout pregnancy until euthanization; offspring assessed 1 day after birth and never exposed postnatally"
+        exposure_agent:
+          id: "ECTO:0300003"
+          name: "exposure to cigarette smoking via maternal"
+        timing_post_exposure:
+          value: "1"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "EGFR:lkhagvadorj-egf-neonate-output-control"
+        name: "Egf mRNA, offspring of air-exposed dams"
+        experimental_group: control
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-air"
+      - id: "EGFR:lkhagvadorj-egf-neonate-output-smoke"
+        name: "Egf mRNA, offspring of smoke-exposed dams"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
+    assay_date: "2020-01-01"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lkhagvadorj-neonate-smoke"
+      name: "One-day-old C57Bl/6 mouse offspring of smoke- or air-exposed dams"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "1"
+        unit:
+          id: "UO:0000033"
+          name: "day"
+      sex: "male and female (analysed separately as well as pooled)"
+      sample_type: biopsy
+      collection_site: "left lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:lkhagvadorj-qpcr-001"
+        name: "TaqMan RT-qPCR for Egf"
+        detection_method: "TaqMan real-time quantitative PCR (LightCycler 480)"
+        reference_gene: "Gapdh"
+        normalization_method: "2^-dCp relative to Gapdh, fit points method"
+
+# =============================================================================
+# RESPONSE COMPARISONS
+#
+# The paper reports NO numeric means, SDs/SEMs or fold changes for any of
+# these readouts - "Data are shown as individual values" in every figure - so
+# no change_value or change_type is recorded. What the paper does state is the
+# direction of change and an exact p-value from a two-tailed Mann-Whitney U
+# test; those are captured here with derivation: reported_in_paper. The
+# p-values were read from the local PDF full text (Results section), not from
+# the abstract; the abstract states only the directions.
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:lkhagvadorj-ciliated-cells-neonate"
+    name: "Ciliated cell number, prenatal smoke vs prenatal air (neonatal lung)"
+    description: "Paper reports P<0.001 for the pooled comparison (and P<0.0001 in each sex separately) without an exact value; the tabulated p_value 0.001 is therefore the stated upper bound, not an exact figure. No magnitude of change is reported."
+    derived_from_assay: "CIL:lkhagvadorj-ciliated-cells-neonate"
+    compared_measurement: "percentage_ciliated_cells"
+    control_output: "CIL:lkhagvadorj-ciliated-cells-neonate-output-control"
+    treated_output: "CIL:lkhagvadorj-ciliated-cells-neonate-output-smoke"
+    change_direction: decreased
+    p_value: 0.001
+    statistical_test: "two-tailed Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lkhagvadorj-foxj1-neonate"
+    name: "Foxj1 mRNA, prenatal smoke vs prenatal air (neonatal lung)"
+    description: "Paper reports P=0.03 for the pooled comparison (male P=0.04). No magnitude of change is reported."
+    derived_from_assay: "FOXJ:lkhagvadorj-foxj1-neonate"
+    compared_measurement: "foxj1_mrna_expression"
+    control_output: "FOXJ:lkhagvadorj-foxj1-neonate-output-control"
+    treated_output: "FOXJ:lkhagvadorj-foxj1-neonate-output-smoke"
+    change_direction: decreased
+    p_value: 0.03
+    statistical_test: "two-tailed Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lkhagvadorj-spdef-neonate"
+    name: "Spdef mRNA, prenatal smoke vs prenatal air (neonatal lung)"
+    description: "Paper reports P<0.001 without an exact value; the tabulated p_value 0.001 is the stated upper bound. No magnitude of change is reported."
+    derived_from_assay: "GE:lkhagvadorj-spdef-neonate"
+    compared_measurement: "mrna_level"
+    control_output: "GE:lkhagvadorj-spdef-neonate-output-control"
+    treated_output: "GE:lkhagvadorj-spdef-neonate-output-smoke"
+    change_direction: increased
+    p_value: 0.001
+    statistical_test: "two-tailed Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lkhagvadorj-foxm1-neonate"
+    name: "Foxm1 mRNA, prenatal smoke vs prenatal air (neonatal lung)"
+    description: "Paper reports P=0.014 for the pooled comparison (male P=0.01, female P=0.04). No magnitude of change is reported."
+    derived_from_assay: "GE:lkhagvadorj-foxm1-neonate"
+    compared_measurement: "mrna_level"
+    control_output: "GE:lkhagvadorj-foxm1-neonate-output-control"
+    treated_output: "GE:lkhagvadorj-foxm1-neonate-output-smoke"
+    change_direction: increased
+    p_value: 0.014
+    statistical_test: "two-tailed Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lkhagvadorj-pdpn-neonate"
+    name: "Pdpn mRNA, prenatal smoke vs prenatal air (neonatal lung)"
+    description: "Paper reports P<0.0001 without an exact value; the tabulated p_value 0.0001 is the stated upper bound. No magnitude of change is reported. The number of PDPN+ AECI cells was unchanged."
+    derived_from_assay: "GE:lkhagvadorj-pdpn-neonate"
+    compared_measurement: "mrna_level"
+    control_output: "GE:lkhagvadorj-pdpn-neonate-output-control"
+    treated_output: "GE:lkhagvadorj-pdpn-neonate-output-smoke"
+    change_direction: decreased
+    p_value: 0.0001
+    statistical_test: "two-tailed Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lkhagvadorj-gramd2-neonate"
+    name: "Gramd2 mRNA, prenatal smoke vs prenatal air (neonatal lung)"
+    description: "Paper reports P<0.0001 without an exact value; the tabulated p_value 0.0001 is the stated upper bound. No magnitude of change is reported."
+    derived_from_assay: "GE:lkhagvadorj-gramd2-neonate"
+    compared_measurement: "mrna_level"
+    control_output: "GE:lkhagvadorj-gramd2-neonate-output-control"
+    treated_output: "GE:lkhagvadorj-gramd2-neonate-output-smoke"
+    change_direction: decreased
+    p_value: 0.0001
+    statistical_test: "two-tailed Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lkhagvadorj-aecii-prospc-neonate"
+    name: "pro-SPC+ AECII number, prenatal smoke vs prenatal air (neonatal lung)"
+    description: "Paper reports P=0.001 for the pooled comparison (both sexes P<0.05). No magnitude of change is reported."
+    derived_from_assay: "GE:lkhagvadorj-aecii-prospc-neonate"
+    compared_measurement: "percentage_positive_cells"
+    control_output: "GE:lkhagvadorj-aecii-prospc-neonate-output-control"
+    treated_output: "GE:lkhagvadorj-aecii-prospc-neonate-output-smoke"
+    change_direction: increased
+    p_value: 0.001
+    statistical_test: "two-tailed Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lkhagvadorj-aecii-nkx21-neonate"
+    name: "NKX2.1+ AECII number, prenatal smoke vs prenatal air (neonatal lung)"
+    description: "Paper reports P=0.0005 for the pooled comparison (male P=0.05, female P=0.006). No magnitude of change is reported."
+    derived_from_assay: "GE:lkhagvadorj-aecii-nkx21-neonate"
+    compared_measurement: "percentage_positive_cells"
+    control_output: "GE:lkhagvadorj-aecii-nkx21-neonate-output-control"
+    treated_output: "GE:lkhagvadorj-aecii-nkx21-neonate-output-smoke"
+    change_direction: increased
+    p_value: 0.0005
+    statistical_test: "two-tailed Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lkhagvadorj-areg-neonate"
+    name: "Areg mRNA, prenatal smoke vs prenatal air (neonatal lung)"
+    description: "Paper reports P=0.0014 for Areg mRNA in the pooled comparison (both sexes P<0.05); the number of AREG-expressing cells by IHC was higher at P=0.04 (female P=0.012). No magnitude of change is reported."
+    derived_from_assay: "EGFR:lkhagvadorj-areg-neonate"
+    compared_measurement: "egfr_ligand_expression"
+    control_output: "EGFR:lkhagvadorj-areg-neonate-output-control"
+    treated_output: "EGFR:lkhagvadorj-areg-neonate-output-smoke"
+    change_direction: increased
+    p_value: 0.0014
+    statistical_test: "two-tailed Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lkhagvadorj-egf-neonate"
+    name: "Egf mRNA, prenatal smoke vs prenatal air (neonatal lung)"
+    description: "Paper reports P=0.0018 for the pooled comparison (male P=0.02). No magnitude of change is reported."
+    derived_from_assay: "EGFR:lkhagvadorj-egf-neonate"
+    compared_measurement: "egfr_ligand_expression"
+    control_output: "EGFR:lkhagvadorj-egf-neonate-output-control"
+    treated_output: "EGFR:lkhagvadorj-egf-neonate-output-smoke"
+    change_direction: decreased
+    p_value: 0.0018
+    statistical_test: "two-tailed Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lkhagvadorj-ciliated-cells-organoid"
+    name: "Tubulin+ ciliated cell number, AREG vs non-treated (bronchiolar organoids)"
+    description: "Paper reports P<0.001 without an exact value; the tabulated p_value 0.001 is the stated upper bound. No magnitude of change is reported."
+    derived_from_assay: "CIL:lkhagvadorj-ciliated-cells-organoid"
+    compared_measurement: "percentage_ciliated_cells"
+    control_output: "CIL:lkhagvadorj-ciliated-cells-organoid-output-control"
+    treated_output: "CIL:lkhagvadorj-ciliated-cells-organoid-output-areg"
+    change_direction: decreased
+    p_value: 0.001
+    statistical_test: "two-tailed Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lkhagvadorj-basal-krt5-organoid"
+    name: "KRT5+ basal cell number, AREG vs non-treated (bronchiolar organoids)"
+    description: "Paper reports P=0.02. No magnitude of change is reported."
+    derived_from_assay: "GE:lkhagvadorj-basal-krt5-organoid"
+    compared_measurement: "percentage_positive_cells"
+    control_output: "GE:lkhagvadorj-basal-krt5-organoid-output-control"
+    treated_output: "GE:lkhagvadorj-basal-krt5-organoid-output-areg"
+    change_direction: increased
+    p_value: 0.02
+    statistical_test: "two-tailed Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lkhagvadorj-aecii-prospc-organoid"
+    name: "pro-SPC+ AECII number, AREG vs non-treated (alveolar organoids)"
+    description: "Paper reports P=0.03. No magnitude of change is reported."
+    derived_from_assay: "GE:lkhagvadorj-aecii-prospc-organoid"
+    compared_measurement: "percentage_positive_cells"
+    control_output: "GE:lkhagvadorj-aecii-prospc-organoid-output-control"
+    treated_output: "GE:lkhagvadorj-aecii-prospc-organoid-output-areg"
+    change_direction: increased
+    p_value: 0.03
+    statistical_test: "two-tailed Mann-Whitney U test"
+    derivation: reported_in_paper
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS
+#
+# The paper frames AREG-induced EGFR signaling as the upstream event and the
+# epithelial differentiation shifts as its consequences. The causal direction
+# is supported by the organoid arm, where AREG was applied directly and
+# reproduced the ciliated-cell loss, basal-cell gain and AECII gain seen in
+# prenatally smoke-exposed neonates. EGFR phosphorylation itself was never
+# measured and Egfr mRNA was unchanged, and the paper states the link as
+# "may be induced by", so evidence_support is moderate throughout.
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:lkhagvadorj-egfr-to-ciliogenesis"
+    name: "EGFR activation leads to altered ciliogenesis"
+    description: "AREG treatment of bronchiolar lung organoids reduced tubulin-positive ciliated cell numbers, reproducing the ciliated cell loss and Foxj1 downregulation seen in prenatally smoke-exposed neonates that had higher Areg and lower Egf expression."
+    upstream_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In bronchial organoids, AREG treatment resulted in fewer ciliated cells and more basal cells when compared with non-treated bronchiolar organoids."
+        explanation: "Applying the EGFR ligand AREG directly to organoids reduced ciliated cell numbers, which is the upstream-to-downstream link this relationship asserts."
+
+  - id: "KER:lkhagvadorj-egfr-to-basal-hyperplasia"
+    name: "EGFR activation leads to basal cell hyperplasia"
+    description: "AREG treatment of bronchiolar lung organoids increased KRT5-positive basal cell numbers (P=0.02), consistent with published reports that AREG-induced EGFR activation drives airway epithelial differentiation toward basal and mucous cell hyperplasia."
+    upstream_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-basal-cell-hyperplasia"
+      name: "Basal cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "AREG treatment resulted in fewer ciliated cells and more basal cells when compared with non-treated bronchiolar organoids"
+        explanation: "Direct AREG treatment increased basal cell numbers in bronchiolar organoids, which is the upstream-to-downstream link this relationship asserts."
+
+  - id: "KER:lkhagvadorj-egfr-to-aecii-hyperplasia"
+    name: "EGFR activation leads to alveolar epithelial type II cell hyperplasia"
+    description: "AREG treatment of alveolar lung organoids increased pro-SPC-positive AECII numbers (P=0.03), reproducing the higher AECII numbers found in prenatally smoke-exposed neonates."
+    upstream_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-aecii-hyperplasia"
+      name: "Alveolar epithelial type II cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In alveolar organoids, AREG treatment led to more AECII cells than non-treated AECII cells."
+        explanation: "Direct AREG treatment increased AECII numbers in alveolar organoids, which is the upstream-to-downstream link this relationship asserts."
+
+  - id: "KER:lkhagvadorj-egfr-to-mucus-metaplasia"
+    name: "EGFR activation leads to mucus secretory program activation"
+    description: "Prenatally smoke-exposed neonates with higher Areg and lower Egf expression showed higher expression of the mucus-related transcription factors Spdef and Foxm1. The organoid arm did not test the secretory program directly, so this link rests on the neonatal co-occurrence rather than on an AREG intervention."
+    upstream_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-mucus-metaplasia"
+      name: "Mucus secretory program activation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    relationship_type: "indirectly leads to"
+    evidence_support: weak
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Taken together, the observed impaired bronchial and alveolar cell development in prenatally smoke-exposed neonatal offspring may be induced by increased AREG-EGFR signaling."
+        explanation: "The authors' own summary attributes the bronchial differentiation changes, which include the higher Spdef and Foxm1 expression, to increased AREG-EGFR signaling, and its hedged wording is why this relationship is recorded as weak support."
+
+  - id: "KER:lkhagvadorj-egfr-to-impaired-aeci"
+    name: "EGFR activation leads to impaired alveolar epithelial type I cell differentiation"
+    description: "Prenatally smoke-exposed neonates with higher Areg and lower Egf expression showed lower Pdpn and Gramd2 mRNA, although PDPN-positive AECI cell numbers were unchanged and AREG treatment of alveolar organoids did not change PDPN-positive cell numbers either. The link is therefore transcript-level only and untested by intervention."
+    upstream_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-impaired-aeci-differentiation"
+      name: "Impaired alveolar epithelial type I cell differentiation"
+      biological_action: impaired
+      level_of_biological_organization: cellular
+    relationship_type: "indirectly leads to"
+    evidence_support: weak
+    evidence:
+      - reference: "PMID:32783621"
+        reference_title: "Prenatal smoke exposure dysregulates lung epithelial cell differentiation in mouse offspring: role for AREG-induced EGFR signaling."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "the observed impaired bronchial and alveolar cell development in prenatally smoke-exposed neonatal offspring may be induced by increased AREG-EGFR signaling"
+        explanation: "The authors attribute the impaired alveolar cell development, which includes the lower AECI-related Pdpn and Gramd2 expression, to increased AREG-EGFR signaling, and the hedged wording is why this relationship is recorded as weak support."
