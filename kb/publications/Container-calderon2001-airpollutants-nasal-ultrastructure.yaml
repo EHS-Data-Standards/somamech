@@ -1,0 +1,323 @@
+# =============================================================================
+# Calderon-Garcidueñas et al. (2001) - Ultrastructural nasal pathology in
+# children chronically and sequentially exposed to air pollutants
+# =============================================================================
+#
+# Source: Am J Respir Cell Mol Biol (2001)
+# DOI: 10.1165/ajrcmb.24.2.4157
+# PMID: 11159046
+#
+# Study design (as reported in the abstract, which is the only text in the
+# committed reference cache for this paper):
+#   - Human observational study, transmission electron microscopy of nasal
+#     biopsies from clinically healthy children
+#   - Exposed cohort: 15 nasal biopsies from children 4 to 15 yr of age
+#     growing up in Southwest Metropolitan Mexico City (SWMMC), repeatedly
+#     exposed to a complex mixture of air pollutants (ozone, particulate
+#     matter, aldehydes)
+#   - Control cohort: 11 children growing up in Veracruz, exposed to low
+#     pollutant levels
+#
+# Findings recorded here:
+#   - Control children: unremarkable mucociliary epithelium
+#   - SWMMC children: ciliary abnormalities (absent central microtubules,
+#     supernumerary central and peripheral tubules, microtubular
+#     discontinuities, compound cilia); dyskinesia suggested by altered
+#     orientation of central microtubules in adjacent cilia
+#   - SWMMC children: mucociliary defense mechanisms no longer intact
+#
+# NOTE ON MISSING NUMBERS: the paper as cached reports no quantitative
+# measurements - it is a qualitative/descriptive ultrastructural study. Per
+# the extraction rules, no measurement slot is populated with a value the
+# paper does not state. Cohort sizes are recorded on the study subjects, and
+# the qualitative ciliary motion finding is recorded with the enum slot the
+# schema provides for it.
+#
+# =============================================================================
+
+source_publication:
+  reference: "PMID:11159046"
+  reference_title: "Ultrastructural nasal pathology in children chronically and sequentially exposed to air pollutants."
+  doi: "10.1165/ajrcmb.24.2.4157"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:calderon-tem-001"
+    name: "Transmission electron microscopy of nasal biopsy ultrathin sections"
+    description: "Ultrathin sections of nasal biopsies examined by transmission electron microscopy for epithelial cell populations, ciliary axonemal ultrastructure, kinetosomes, intercellular transudate, and deposited particulate matter."
+    equipment_required:
+      - "Transmission electron microscope"
+      - "Ultramicrotome"
+
+  - id: "PROTOCOL:calderon-biopsy-001"
+    name: "Nasal biopsy collection from children"
+    description: "Nasal biopsies obtained from clinically healthy children resident in Southwest Metropolitan Mexico City and from control children resident in Veracruz."
+
+# =============================================================================
+# CILIARY FUNCTION ASSAYS - nasal ciliary ultrastructure by TEM
+# =============================================================================
+
+ciliary_function_assays:
+  # Control cohort - Veracruz children, low pollutant levels
+  - id: "CILIA:calderon-nasal-veracruz"
+    name: "Nasal ciliary ultrastructure - control children (Veracruz)"
+    description: "Transmission electron microscopy of nasal biopsies from 11 children growing up in Veracruz and exposed to low pollutant levels. Ultrathin sections revealed an unremarkable mucociliary epithelium; no ciliary abnormalities are reported for this group. No quantitative values are reported."
+    airway_region: "nasal mucosa"
+    assay_date: "2001-01-01"
+    evidence:
+      - reference: "PMID:11159046"
+        reference_title: "Ultrastructural nasal pathology in children chronically and sequentially exposed to air pollutants."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The results were compared with nasal biopsies from 11 children growing up in Veracruz and exposed to low pollutant levels."
+        explanation: "Names the control cohort and its size (11 children from a low-pollution city) that this assay's control output record describes."
+    has_specified_output:
+      - id: "CILIA:calderon-nasal-veracruz-output-control"
+        name: "Control children ciliary ultrastructure"
+        description: "Unremarkable mucociliary epithelium on ultrathin sections; the paper reports no ciliary axonemal defects in this group and no numeric ciliary measurements."
+        experimental_group: control
+        measured_under: "EXPOSURE:calderon-veracruz-low-pollution"
+        evidence:
+          - reference: "PMID:11159046"
+            reference_title: "Ultrastructural nasal pathology in children chronically and sequentially exposed to air pollutants."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "Ultrathin sections of nasal biopsies revealed an unremarkable mucociliary epithelium in control children, whereas SWMMC children showed an epithelium comprised of variable numbers of basal, ciliated, goblet, and squamous metaplastic as well as intermediate cells."
+            explanation: "States the control finding this output record holds: the mucociliary epithelium of the low-exposure children was ultrastructurally unremarkable."
+    has_exposure_condition:
+      - id: "EXPOSURE:calderon-veracruz-low-pollution"
+        name: "Chronic residential exposure to low ambient pollutant levels (Veracruz)"
+        exposure_agent:
+          id: "ENVO:00002005"
+          name: "air"
+    informs_on_key_event:
+      id: "KE:ke3-impaired-ciliary"
+      name: "Decreased ciliary function"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: PopulationSubject
+      id: "SUBJECT:calderon-veracruz-children"
+      name: "Control children growing up in Veracruz"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cohort_size: 11
+      inclusion_criteria: "Children growing up in Veracruz and exposed to low pollutant levels"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:calderon-tem-001"
+        name: "Transmission electron microscopy of nasal biopsy ultrathin sections"
+
+  # Exposed cohort - SWMMC children, complex air pollutant mixture
+  - id: "CILIA:calderon-nasal-swmmc"
+    name: "Nasal ciliary ultrastructure - SWMMC children"
+    description: "Transmission electron microscopy of 15 nasal biopsies from clinically healthy children 4 to 15 yr of age growing up in Southwest Metropolitan Mexico City. Ciliary abnormalities were common: absent central microtubules, supernumerary central and peripheral tubules, ciliary microtubular discontinuities, and compound cilia. Nascent ciliated cells with migratory kinetosomes were also common. Dyskinesia was suggested by the altered orientation of central microtubules in closely adjacent cilia. The paper reports these findings qualitatively; no counts, frequencies, or beat-frequency values are given."
+    airway_region: "nasal mucosa"
+    assay_date: "2001-01-01"
+    evidence:
+      - reference: "PMID:11159046"
+        reference_title: "Ultrastructural nasal pathology in children chronically and sequentially exposed to air pollutants."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We studied the ultrastructural features of 15 nasal biopsies obtained from clinically healthy children 4 to 15 yr of age, growing up in SWMMC."
+        explanation: "Names the exposed cohort, its size (15 biopsies) and age range (4 to 15 yr) that this assay's study subject records."
+      - reference: "PMID:11159046"
+        reference_title: "Ultrastructural nasal pathology in children chronically and sequentially exposed to air pollutants."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The severe structural alteration of the nasal epithelium together with the prominent acquired ciliary defects are likely the result of chronic airway injury in which ozone, particulate matter, and aldehydes are thought to play a crucial role."
+        explanation: "Attributes the observed ciliary defects to the chronic air pollutant exposure modelled by this assay's exposure condition."
+    has_specified_output:
+      - id: "CILIA:calderon-nasal-swmmc-output-exposed"
+        name: "SWMMC children ciliary ultrastructure"
+        description: "Common ciliary axonemal defects (absent central microtubules, supernumerary central and peripheral tubules, microtubular discontinuities, compound cilia) with dyskinesia suggested by altered central microtubule orientation in closely adjacent cilia. No quantitative values are reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:calderon-swmmc-ambient"
+        ciliary_motion_patterns: dyskinetic
+        evidence:
+          - reference: "PMID:11159046"
+            reference_title: "Ultrastructural nasal pathology in children chronically and sequentially exposed to air pollutants."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "Nascent ciliated cells, as evidenced by the presence of migratory kinetosomes, were common, as were ciliary abnormalities, including absent central microtubules, supernumerary central and peripheral tubules, ciliary microtubular discontinuities, and compound cilia."
+            explanation: "Lists the ciliary axonemal abnormalities this output record describes for the exposed cohort."
+          - reference: "PMID:11159046"
+            reference_title: "Ultrastructural nasal pathology in children chronically and sequentially exposed to air pollutants."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "Dyskinesia associated with these abnormal cilia was suggested by the altered orientation of the central microtubules in closely adjacent cilia."
+            explanation: "Supports the dyskinetic ciliary motion pattern recorded on this output; the paper infers dyskinesia from the ultrastructure rather than measuring beat pattern directly."
+    has_exposure_condition:
+      - id: "EXPOSURE:calderon-swmmc-ambient"
+        name: "Chronic residential exposure to the Southwest Metropolitan Mexico City air pollutant mixture (ozone, particulate matter, aldehydes)"
+        exposure_agent:
+          id: "ENVO:01000676"
+          name: "contaminated air"
+    informs_on_key_event:
+      id: "KE:ke3-impaired-ciliary"
+      name: "Decreased ciliary function"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: PopulationSubject
+      id: "SUBJECT:calderon-swmmc-children"
+      name: "Clinically healthy children growing up in Southwest Metropolitan Mexico City"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cohort_size: 15
+      age_range:
+        min_value:
+          value: "4"
+        max_value:
+          value: "15"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      inclusion_criteria: "Clinically healthy children 4 to 15 yr of age growing up in Southwest Metropolitan Mexico City"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:calderon-tem-001"
+        name: "Transmission electron microscopy of nasal biopsy ultrathin sections"
+
+# =============================================================================
+# MUCOCILIARY CLEARANCE ASSAYS - integrity of nasal mucociliary defense
+# =============================================================================
+
+mcc_assays:
+  # Control cohort - Veracruz children
+  - id: "MCC:calderon-defense-veracruz"
+    name: "Nasal mucociliary defense integrity - control children (Veracruz)"
+    description: "Ultrastructural assessment of the mucociliary epithelium in 11 control children from Veracruz. The mucociliary epithelium was unremarkable; the paper reports no impairment of mucociliary defense in this group and no transport measurements."
+    assay_date: "2001-01-01"
+    evidence:
+      - reference: "PMID:11159046"
+        reference_title: "Ultrastructural nasal pathology in children chronically and sequentially exposed to air pollutants."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The results were compared with nasal biopsies from 11 children growing up in Veracruz and exposed to low pollutant levels."
+        explanation: "Names the control cohort whose intact mucociliary epithelium this assay records."
+    has_specified_output:
+      - id: "MCC:calderon-defense-veracruz-output-control"
+        name: "Control children mucociliary epithelium"
+        description: "Unremarkable mucociliary epithelium. No mucociliary transport rate, directionality, or clearance time is reported."
+        experimental_group: control
+        measured_under: "EXPOSURE:calderon-veracruz-low-pollution"
+        evidence:
+          - reference: "PMID:11159046"
+            reference_title: "Ultrastructural nasal pathology in children chronically and sequentially exposed to air pollutants."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "Ultrathin sections of nasal biopsies revealed an unremarkable mucociliary epithelium in control children, whereas SWMMC children showed an epithelium comprised of variable numbers of basal, ciliated, goblet, and squamous metaplastic as well as intermediate cells."
+            explanation: "States that the low-exposure control children had an unremarkable mucociliary epithelium, the baseline this output record holds."
+    has_exposure_condition:
+      - id: "EXPOSURE:calderon-veracruz-low-pollution"
+        name: "Chronic residential exposure to low ambient pollutant levels (Veracruz)"
+        exposure_agent:
+          id: "ENVO:00002005"
+          name: "air"
+    informs_on_key_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: PopulationSubject
+      id: "SUBJECT:calderon-veracruz-children"
+      name: "Control children growing up in Veracruz"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cohort_size: 11
+      inclusion_criteria: "Children growing up in Veracruz and exposed to low pollutant levels"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:calderon-tem-001"
+        name: "Transmission electron microscopy of nasal biopsy ultrathin sections"
+
+  # Exposed cohort - SWMMC children
+  - id: "MCC:calderon-defense-swmmc"
+    name: "Nasal mucociliary defense integrity - SWMMC children"
+    description: "Ultrastructural assessment of the nasal epithelium in 15 children from Southwest Metropolitan Mexico City. The epithelium was fundamentally disordered and mucociliary defense mechanisms were no longer intact. The paper states this qualitatively; no mucociliary transport rate or clearance time is measured."
+    assay_date: "2001-01-01"
+    evidence:
+      - reference: "PMID:11159046"
+        reference_title: "Ultrastructural nasal pathology in children chronically and sequentially exposed to air pollutants."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Southwest Metropolitan Mexico City (SWMMC) children are repeatedly exposed to a complex mixture of air pollutants, including ozone, particulate matter, and aldehydes."
+        explanation: "Describes the chronic ambient pollutant mixture recorded as this assay's exposure condition."
+    has_specified_output:
+      - id: "MCC:calderon-defense-swmmc-output-exposed"
+        name: "SWMMC children mucociliary defense"
+        description: "Mucociliary defense mechanisms no longer intact in a fundamentally disordered nasal epithelium. No quantitative clearance values are reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:calderon-swmmc-ambient"
+        evidence:
+          - reference: "PMID:11159046"
+            reference_title: "Ultrastructural nasal pathology in children chronically and sequentially exposed to air pollutants."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "The nasal epithelium in SWMMC children is fundamentally disordered, and their mucociliary defense mechanisms are no longer intact."
+            explanation: "States the impairment of mucociliary defense in the exposed cohort that this output record holds."
+    has_exposure_condition:
+      - id: "EXPOSURE:calderon-swmmc-ambient"
+        name: "Chronic residential exposure to the Southwest Metropolitan Mexico City air pollutant mixture (ozone, particulate matter, aldehydes)"
+        exposure_agent:
+          id: "ENVO:01000676"
+          name: "contaminated air"
+    informs_on_key_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: PopulationSubject
+      id: "SUBJECT:calderon-swmmc-children"
+      name: "Clinically healthy children growing up in Southwest Metropolitan Mexico City"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cohort_size: 15
+      age_range:
+        min_value:
+          value: "4"
+        max_value:
+          value: "15"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+      inclusion_criteria: "Clinically healthy children 4 to 15 yr of age growing up in Southwest Metropolitan Mexico City"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:calderon-tem-001"
+        name: "Transmission electron microscopy of nasal biopsy ultrathin sections"
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:calderon-ciliary-to-mcc"
+    name: "Acquired ciliary defects lead to impaired mucociliary clearance"
+    description: "The paper links the prominent acquired ciliary defects and the disordered nasal epithelium of SWMMC children to the loss of intact mucociliary defense. The link is asserted qualitatively from ultrastructure; no clearance measurement quantifies it."
+    upstream_event:
+      id: "KE:ke3-impaired-ciliary"
+      name: "Decreased ciliary function"
+    downstream_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    quantitative_understanding: not_specified
+    evidence:
+      - reference: "PMID:11159046"
+        reference_title: "Ultrastructural nasal pathology in children chronically and sequentially exposed to air pollutants."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The nasal epithelium in SWMMC children is fundamentally disordered, and their mucociliary defense mechanisms are no longer intact."
+        explanation: "Ties the structural disorder of the epithelium, including the acquired ciliary defects, to the loss of mucociliary defense - the upstream-to-downstream link this relationship records."
