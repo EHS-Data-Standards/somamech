@@ -248,7 +248,12 @@ lung_function_assays:
         id: "NCBITaxon:10116"
         name: "Rattus norvegicus"
       age:
-        value: "8"
+        # The paper states a 6-9 week range, not a single age; recorded as
+        # bounds with no value rather than picking a midpoint.
+        variability:
+          variability_type: range
+          lower_bound: "6"
+          upper_bound: "9"
         unit:
           id: "UO:0000034"
           name: "week"
@@ -933,7 +938,8 @@ gene_expression_assays:
   - id: "GE:li-nrf2-ho1-rat-lung"
     name: "Nrf2 and HO-1 protein in rat lung tissue (Western blot)"
     description: "Western blot of the antioxidant-response regulators Nrf2 and HO-1 in lung tissue from the four rat groups. Both were increased in the ECC-BYF group compared with the model group, further validating the antioxidant effect of ECC-BYF. Blots only in Fig. 3c; no densitometric value is reported in the text, so no value is recorded."
-    target_gene: "NCBIGene:4780"
+    # Rat assay, so the rat orthologue Nfe2l2 rather than human NFE2L2.
+    target_gene: "NCBIGene:83619"
     gene_expression_method: "Western blot"
     normalization_reference: "GAPDH"
     evidence:
@@ -1019,7 +1025,8 @@ gene_expression_assays:
   - id: "GE:li-foxo3a-rat-lung"
     name: "FOXO3a, SOD2 and CAT expression in rat lung tissue"
     description: "Both protein (Western blot, Fig. 5c) and mRNA (qPCR, Fig. 5d) expression of FOXO3a, together with its downstream antioxidants SOD2 and CAT, were markedly decreased in lung tissue from the PM2.5-aggravated COPD model group, and were up-regulated by ECC-BYF or NAC administration. Values reported only in figures; none recorded."
-    target_gene: "NCBIGene:2309"
+    # Rat assay, so the rat orthologue Foxo3 rather than human FOXO3.
+    target_gene: "NCBIGene:294515"
     gene_expression_method: "Western blot and quantitative real-time PCR"
     normalization_reference: "GAPDH"
     evidence:
