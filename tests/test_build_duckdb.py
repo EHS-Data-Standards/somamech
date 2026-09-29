@@ -337,3 +337,116 @@ def test_paper_level_parent_pointers_resolve(db):
             f"AND parent_id NOT IN (SELECT source_file FROM paper)"
         ).fetchone()[0]
         assert bad == 0, f"{table} has {bad} dangling paper parents"
+
+
+def test_wide_echo_agrees_with_measurement_everywhere(db):
+    """Generalised across every wide table, not just one slot.
+
+    measurement used to be written on every sighting (last wins) while the wide
+    row merged first-wins, so one build gave two answers for the same number.
+    """
+    import sys as _sys
+
+    _sys.path.insert(0, str(ROOT / "scripts"))
+    from build_duckdb import default_schema
+    from soma_duckdb import load_schema, quantity_slots, table_classes
+
+    sv = load_schema(default_schema())
+    tables = relations(db)
+    mismatches = []
+    for cls in sorted(table_classes(sv)):
+        if cls not in tables:
+            continue
+        cols = columns(db, cls)
+        for slot in quantity_slots(sv, cls):
+            col = f"{slot}_value"
+            if col not in cols:
+                continue
+            n = db.execute(f'''
+                SELECT COUNT(*) FROM measurement m
+                JOIN "{cls}" o
+                  ON o.source_file = m.source_file AND o.id = m.entity_id
+                WHERE m.slot_name = '{slot}'
+                  AND COALESCE(o."{col}", '') <> COALESCE(m.value, '')
+            ''').fetchone()[0]
+            if n:
+                mismatches.append(f"{cls}.{slot}: {n}")
+    assert not mismatches, f"wide echo disagrees with measurement: {mismatches}"
+
+
+def test_near_copies_collapse_and_warn(tmp_path):
+    """Copies differing by one character must merge and warn, not become extra rows.
+
+    A content-hashed surrogate key only collapsed byte-identical copies, so a
+    near-copy silently became another row — and every conflict the real files
+    contain is a near-copy.
+    """
+    import copy
+    import yaml as _yaml
+
+    kb = tmp_path / "kb"
+    kb.mkdir()
+    data = _yaml.safe_load((VALID / "Container-liu2024-pm25-cftr.yaml").read_text())
+    shared = {
+        "id": "KE:near-1",
+        "name": "shared key event",
+        "evidence": [{
+            "reference": "PMID:39113893", "supports": "supports",
+            "snippet": "one quote", "explanation": "original wording",
+        }],
+    }
+    assays = [a for coll in ("cftr_assays", "gene_expression_assays")
+              for a in (data.get(coll) or [])]
+    assert len(assays) >= 3
+    for i, assay in enumerate(assays):
+        ke = copy.deepcopy(shared)
+        # differ by a single character in a nested evidence field
+        ke["evidence"][0]["explanation"] = f"original wording{'.' * i}"
+        assay["informs_on_key_event"] = ke
+    (kb / "near.yaml").write_text(_yaml.safe_dump(data))
+
+    out = tmp_path / "near.duckdb"
+    result = run("--kb-dir", str(kb), "--output", str(out))
+    assert result.returncode == 0, result.stdout + result.stderr
+
+    con = duckdb.connect(str(out), read_only=True)
+    try:
+        n = con.execute(
+            'SELECT COUNT(*) FROM "EvidenceItem" WHERE parent_id = ?', ["KE:near-1"]
+        ).fetchone()[0]
+    finally:
+        con.close()
+    assert n == 1, f"{len(assays)} near-copies produced {n} evidence rows"
+    assert "disagree" in result.stdout + result.stderr
+
+
+def test_one_id_lives_in_one_table(db):
+    """An id used as a base class and a subclass must not yield two rows."""
+    import sys as _sys
+
+    _sys.path.insert(0, str(ROOT / "scripts"))
+    from build_duckdb import default_schema
+    from soma_duckdb import load_schema, table_classes
+
+    sv = load_schema(default_schema())
+    tables = relations(db)
+    holders: dict[tuple, list] = {}
+    for cls in sorted(table_classes(sv)):
+        if cls not in tables or "id" not in columns(db, cls):
+            continue
+        for src, rid in db.execute(
+            f'SELECT source_file, id FROM "{cls}"'
+        ).fetchall():
+            holders.setdefault((src, rid), []).append(cls)
+    shared = {k: v for k, v in holders.items() if len(v) > 1}
+    assert not shared, f"ids present in more than one table: {list(shared.items())[:5]}"
+
+
+def test_surrogate_ids_are_unique_across_classes(db):
+    """One counter serves every surrogate class, so link joins stay unambiguous."""
+    rows = db.execute("""
+        SELECT source_file, id FROM "EvidenceItem"
+        INTERSECT
+        SELECT source_file, id FROM "PublicationReference"
+    """).fetchall()
+    assert not rows, f"surrogate ids collide across classes: {rows[:3]}"

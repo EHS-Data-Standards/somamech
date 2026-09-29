@@ -181,7 +181,9 @@ def columns_for(sv: SchemaView, cls: str) -> list[tuple[str, str]]:
     """
     cols: list[tuple[str, str]] = []
     if not has_natural_key(sv, cls):
-        cols.append(("id", "BIGINT"))
+        # Surrogate ids are strings ("EvidenceItem-3"): one counter serves every
+        # surrogate-keyed class, so ids stay unique across tables.
+        cols.append(("id", "VARCHAR"))
     for s in sv.class_induced_slots(cls):
         rng = s.range
         if s.designates_type:

@@ -30,7 +30,6 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -166,9 +165,22 @@ class Builder:
         self.term_refs: set[tuple] = set()
         self.terms: dict[str, tuple[str, str]] = {}
         self.papers: list[dict] = []
-        self.surrogate: dict[str, int] = defaultdict(int)
+        # One counter across all surrogate-keyed classes. Per-class counters
+        # made PublicationReference '1' and EvidenceItem '1' collide, which the
+        # cross-class id check and the link resolver both read as one row.
+        self.surrogate = 0
         self.surrogate_ids: dict[tuple, int] = {}
-        self.warnings: list[str] = []
+        self.id_class: dict[tuple, str] = {}
+        self.warnings: list[tuple[str, str]] = []
+
+    def warn(self, category: str, message: str):
+        """Record a warning under a category.
+
+        Categorised rather than a flat list: a build with 30 content conflicts
+        would otherwise truncate the one warning saying two files cite the same
+        paper, which is the kind that changes what a curator does next.
+        """
+        self.warnings.append((category, message))
 
     # -- helpers ----------------------------------------------------------
     def _term(self, obj, ref=None):
@@ -199,7 +211,11 @@ class Builder:
         """Flatten a value object and record its long-format measurement row.
 
         Keyed by (source_file, entity, slot) so an entity inlined under several
-        parents contributes its number once rather than once per copy.
+        parents contributes its number once rather than once per copy, and the
+        FIRST sighting wins — matching the row merge and what the conflict
+        warning promises. Writing on every sighting made the long table keep the
+        last copy's number while the wide echo kept the first, so one build
+        answered the same question two different ways.
         """
         if not isinstance(obj, dict):
             return {}
@@ -207,6 +223,16 @@ class Builder:
         unit, unit_label = self._term(
             obj.get("unit"), (ctx, entity_type, entity_id, f"{slot}.unit")
         )
+        base = {
+            **ctx,
+            "entity_type": entity_type,
+            "entity_id": _s(entity_id),
+            "entity_name": entity_name,
+            "slot_name": slot,
+            "unit": unit,
+            "unit_label": unit_label,
+        }
+
         if rng == "QuantityRange":
             mn, mx = obj.get("min_value"), obj.get("max_value")
             if isinstance(mn, dict):
@@ -219,45 +245,40 @@ class Builder:
                 f"{slot}_unit": unit,
                 f"{slot}_unit_label": unit_label,
             }
-            self.measurements[mkey] = {
-                **ctx, "entity_type": entity_type, "entity_id": _s(entity_id),
-                "entity_name": entity_name, "slot_name": slot,
+            self.measurements.setdefault(mkey, {
+                **base,
                 "value": None, "value_num": None, "value_qualifier": None,
                 "min_value": _s(mn), "max_value": _s(mx),
-                "unit": unit, "unit_label": unit_label,
                 "central_tendency": None, "sample_size": None,
                 "variability_type": None, "variability_value": None,
                 "lower_bound": None, "upper_bound": None,
-            }
+            })
             return flat
 
         value = _s(obj.get("value"))
         var = obj.get("variability") or {}
         if not isinstance(var, dict):
             var = {}
+        num, qualifier = _num(value)
         flat = {
             f"{slot}_value": value,
             f"{slot}_unit": unit,
             f"{slot}_unit_label": unit_label,
         }
-        num, qualifier = _num(value)
-        self.measurements[mkey] = {
-            **ctx, "entity_type": entity_type, "entity_id": _s(entity_id),
-            "entity_name": entity_name, "slot_name": slot,
+        self.measurements.setdefault(mkey, {
+            **base,
             "value": value, "value_num": num, "value_qualifier": qualifier,
             "min_value": None, "max_value": None,
-            "unit": unit, "unit_label": unit_label,
             "central_tendency": _s(obj.get("central_tendency")),
             "sample_size": obj.get("sample_size"),
             "variability_type": _s(var.get("variability_type")),
             "variability_value": _s(var.get("value")),
             "lower_bound": _s(var.get("lower_bound")),
             "upper_bound": _s(var.get("upper_bound")),
-        }
+        })
         return flat
-
     # -- main recursion ---------------------------------------------------
-    def visit(self, obj, declared, ctx, parent=None):
+    def visit(self, obj, declared, ctx, parent=None, index=0):
         """Emit a row for `obj` and recurse into its inlined children.
 
         Returns the row's id so the caller can store a foreign key.
@@ -269,22 +290,26 @@ class Builder:
             # designator, so there is no table to put it in. Dropping it would
             # lose the row, its subtree and its edge with no trace.
             slot = parent[2] if parent else "?"
-            self.warnings.append(
+            self.warn(
+                "no-table",
                 f"{ctx['source_file']}: inlined value of '{slot}' resolved to "
                 f"'{cls}', which has no table (declared range '{declared}' is "
-                f"abstract and no type designator was given) — subtree dropped"
+                f"abstract and no type designator was given) — subtree dropped",
             )
             return None
 
         if has_natural_key(sv, cls):
             row_id = obj.get("id")
             if row_id is None:
-                self.warnings.append(f"{ctx['source_file']}: {cls} with no id, skipped")
+                self.warn(
+                    "missing-id", f"{ctx['source_file']}: {cls} with no id, skipped"
+                )
                 return None
         else:
-            row_id = self._surrogate_id(cls, obj, ctx, parent)
+            row_id = self._surrogate_id(cls, ctx, parent, index)
 
         key = (ctx["source_file"], row_id)
+        cls = self._unify_class(cls, key, ctx)
         row = self.rows[cls].get(key)
         first_time = row is None
         if first_time:
@@ -336,46 +361,91 @@ class Builder:
             elif value is not None and row[col] != value:
                 conflicts.append(f"{col}={row[col]!r} vs {value!r}")
         if conflicts:
-            self.warnings.append(
+            self.warn(
+                "content-conflict",
                 f"{ctx['source_file']}: two inlined copies of {cls} '{row_id}' "
                 f"disagree ({'; '.join(conflicts[:3])}"
                 f"{f', +{len(conflicts) - 3} more' if len(conflicts) > 3 else ''}) "
-                f"— kept the first value seen"
+                f"— kept the first value seen",
             )
         return row_id
 
-    def _surrogate_id(self, cls, obj, ctx, parent):
+    def _unify_class(self, cls, key, ctx):
+        """Keep one id in one table, preferring the most specific class.
+
+        The row dedupe is per class, so an id written once as a base class and
+        once as a subclass produced two rows in two tables with no warning —
+        and because link targets resolve to whichever table holds the id, the
+        base-class row, which is often the one carrying the real description,
+        became reachable from nothing.
+        """
+        previous = self.id_class.get(key)
+        if previous is None:
+            self.id_class[key] = cls
+            return cls
+        if previous == cls:
+            return cls
+        sv = self.sv
+        if previous in sv.class_ancestors(cls):
+            winner, loser = cls, previous       # cls is the more specific
+        elif cls in sv.class_ancestors(previous):
+            winner, loser = previous, cls
+        else:
+            winner, loser = previous, cls       # unrelated: first one wins
+        self.warn(
+            "id-used-as-two-classes",
+            f"{ctx['source_file']}: id '{key[1]}' is used as both {previous} "
+            f"and {cls} — kept in {winner}",
+        )
+        if loser != winner and key in self.rows.get(loser, {}):
+            # Move the already-written row into the winning table rather than
+            # leaving an orphan behind in the losing one.
+            stale = self.rows[loser].pop(key)
+            target = self.rows[winner].setdefault(key, stale)
+            if target is not stale:
+                for col, value in stale.items():
+                    if target.get(col) is None:
+                        target[col] = value
+        self.id_class[key] = winner
+        return winner
+
+    def _surrogate_id(self, cls, ctx, parent, index):
         """Stable id for a class with no identifier (EvidenceItem, PublicationReference).
 
-        Keyed on the object's content plus its parent rather than a counter: a
-        counter hands every sighting a fresh id, so the (source_file, id) dedupe
-        can never fire and an entity inlined N times carrying one evidence item
-        yields N identical evidence rows. The same content under the same parent
-        is the same row.
+        Keyed on the position the object occupies — its parent, the slot and the
+        index within that slot — not on its content. A counter gave every
+        sighting a fresh id, so the dedupe could never fire. Keying on content
+        fixed that only for byte-identical copies, which is the wrong bar:
+        every one of the conflicts these files actually contain is a near-copy
+        (a truncated donor_info, a rewritten characteristic, age 52 vs 53), and
+        under a content key those differ, so they would silently become extra
+        rows instead of reaching the conflict warning. Position collapses them
+        and routes their disagreement into that warning.
         """
-        content = json.dumps(obj, sort_keys=True, default=str)
         skey = (
             ctx["source_file"], cls,
             parent[0] if parent else None,
             _s(parent[1]) if parent else None,
             parent[2] if parent else None,
-            content,
+            index,
         )
         existing = self.surrogate_ids.get(skey)
         if existing is not None:
             return existing
-        self.surrogate[cls] += 1
-        self.surrogate_ids[skey] = self.surrogate[cls]
-        return self.surrogate[cls]
+        self.surrogate += 1
+        row_id = f"{cls}-{self.surrogate}"
+        self.surrogate_ids[skey] = row_id
+        return row_id
 
     def _entity_slot(self, vals, s, val, rng, cls, row_id, ctx):
         """Handle a slot whose range is a class that gets its own table."""
         items = val if s.multivalued else [val]
-        for item in items or []:
+        for index, item in enumerate(items or []):
             if isinstance(item, dict):
                 child_declared = rng
                 child_id = self.visit(
-                    item, child_declared, ctx, parent=(cls, row_id, s.name)
+                    item, child_declared, ctx,
+                    parent=(cls, row_id, s.name), index=index,
                 )
                 child_type = concrete_class(self.sv, rng, item)
                 inlined = True
@@ -400,9 +470,10 @@ class Builder:
         ctx = {"paper_id": paper_id, "source_file": path.name}
         clash = [p["source_file"] for p in self.papers if p["paper_id"] == paper_id]
         if clash:
-            self.warnings.append(
+            self.warn(
+                "shared-citation",
                 f"{path.name}: cites {paper_id}, already cited by "
-                f"{', '.join(clash)} — both are kept, keyed by source_file"
+                f"{', '.join(clash)} — both are kept, keyed by source_file",
             )
         self.papers.append({
             "paper_id": paper_id,
@@ -446,9 +517,10 @@ class Builder:
             else:
                 unresolved += 1
         if unresolved:
-            self.warnings.append(
+            self.warn(
+                "unresolved-reference",
                 f"{unresolved} link row(s) reference an id that no entity in the "
-                f"same file declares; target_type left as the declared range"
+                f"same file declares; target_type left as the declared range",
             )
 
 
@@ -768,6 +840,39 @@ def default_schema() -> str:
     return str(pkg_files("soma") / "schema" / "soma.yaml")
 
 
+EXAMPLES_PER_CATEGORY = 3
+
+
+def _report_warnings(warnings, out=None):
+    """Print warnings grouped by category, a few examples from each.
+
+    Grouped rather than truncated as one flat list: a build with thirty content
+    conflicts would otherwise push the single "two files cite the same paper"
+    line off the end, and that is the one that changes what a curator does. Every
+    category is always named with its full count, so nothing hides.
+    """
+    out = out or sys.stderr
+    if not warnings:
+        return
+    groups: dict[str, dict[str, int]] = {}
+    for category, message in warnings:
+        groups.setdefault(category, {})
+        groups[category][message] = groups[category].get(message, 0) + 1
+    print(f"\n{len(warnings)} warning(s) in {len(groups)} category(ies):", file=out)
+    for category in sorted(groups, key=lambda c: -sum(groups[c].values())):
+        messages = groups[category]
+        total = sum(messages.values())
+        print(f"\n  [{category}] {total} warning(s), {len(messages)} distinct:", file=out)
+        for message, n in list(messages.items())[:EXAMPLES_PER_CATEGORY]:
+            print(f"    {message}{f'  (x{n})' if n > 1 else ''}", file=out)
+        if len(messages) > EXAMPLES_PER_CATEGORY:
+            print(
+                f"    ... and {len(messages) - EXAMPLES_PER_CATEGORY} more distinct "
+                f"[{category}] warning(s)",
+                file=out,
+            )
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--kb-dir")
@@ -793,21 +898,7 @@ def main(argv=None):
     print(f"{len(nonempty)} non-empty tables, {sum(nonempty.values())} rows")
     for k, v in sorted(nonempty.items(), key=lambda kv: -kv[1])[:12]:
         print(f"    {k:34} {v:6}")
-    warnings = result["warnings"]
-    if warnings:
-        # Deduplicated and counted: the same conflict is reported once per
-        # sighting, and a truncated list must not make the rest disappear.
-        seen: dict[str, int] = {}
-        for w in warnings:
-            seen[w] = seen.get(w, 0) + 1
-        print(
-            f"\n{len(warnings)} warning(s), {len(seen)} distinct:", file=sys.stderr
-        )
-        for w, n in list(seen.items())[:10]:
-            suffix = f"  (x{n})" if n > 1 else ""
-            print(f"  WARNING: {w}{suffix}", file=sys.stderr)
-        if len(seen) > 10:
-            print(f"  ... and {len(seen) - 10} more distinct warning(s)", file=sys.stderr)
+    _report_warnings(result["warnings"])
 
     if args.tsv_dir:
         written = dump_tsv(out, Path(args.tsv_dir))
