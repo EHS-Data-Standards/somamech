@@ -41,6 +41,54 @@ fetch-reference +identifiers:
 extract-paper-text pdf pmid:
     uv run python scripts/extract_paper_text.py "{{pdf}}" "{{pmid}}" --out-dir {{refs_cache_local}}
 
+# Report whether each paper's FULL TEXT can be fetched into the committed
+# reference cache, or only its abstract can. Fetches anything not yet cached,
+# then reads the cache entry's content_type. Usage:
+#   just check-fulltext PMID:12345678 PMID:23456789
+#
+# This is the triage step /claim-paper runs BEFORE claiming a paper. Full-text
+# papers are extracted first, because every quote in one can be verified by CI
+# against the committed cache. An abstract-only paper is still extractable
+# (local PDF + verification receipt) but goes to the back of the queue.
+#
+# Do not trust the stub's `open_access:` flag for this — it only means the
+# paper has a PubMed Central record, and a PMC record often yields no
+# retrievable full text (every stub in the queue today says true; two of the
+# four papers extracted so far came back abstract-only).
+#
+# Report which papers are fully downloadable; always exits 0 (a report, not a gate).
+[group('curation')]
+check-fulltext +identifiers:
+    #!/usr/bin/env bash
+    set -uo pipefail
+    for identifier in {{identifiers}}; do
+        file="{{refs_cache}}/$(printf '%s' "$identifier" | tr ':/?=' '____').md"
+        ctype=""
+        if [ -f "$file" ]; then
+            ctype=$(awk -F': *' '/^content_type:/{print $2; exit}' "$file")
+            attempted=$(awk -F': *' '/^full_text_attempted:/{print $2; exit}' "$file")
+            # Re-fetch a non-full-text entry that never cleanly tried for full
+            # text: the fetcher re-runs the provider chain in exactly that case,
+            # so a one-off provider outage does not cache as permanent absence.
+            case "$ctype" in
+                full_text_*) ;;
+                *) [ "${attempted:-}" = "true" ] || rm -f "$file" ;;
+            esac
+        fi
+        if [ ! -f "$file" ]; then
+            {{ref_validator_wrapper}} cache reference "$identifier" --cache-dir {{refs_cache}} >/dev/null 2>&1 || true
+            ctype=$(awk -F': *' '/^content_type:/{print $2; exit}' "$file" 2>/dev/null || true)
+        fi
+        if [ ! -f "$file" ]; then
+            printf '  %-20s UNFETCHED      (fetch failed — retry before judging this paper)\n' "$identifier"
+        else
+            case "$ctype" in
+                full_text_*) printf '  %-20s FULL TEXT      (%s)\n' "$identifier" "$ctype" ;;
+                *)           printf '  %-20s ABSTRACT ONLY  (%s)\n' "$identifier" "${ctype:-unknown}" ;;
+            esac
+        fi
+    done
+
 # ============ Validation ============
 
 # Validate one kb file: schema, then ontology terms, then evidence quotes.
