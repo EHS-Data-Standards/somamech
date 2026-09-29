@@ -1,0 +1,640 @@
+# =============================================================================
+# Kania et al. (2014) - Subchronic inhalation of coal dust particulate matter 10
+# induces bronchoalveolar hyperplasia and decreases MUC5AC expression in male
+# Wistar rats
+# =============================================================================
+#
+# Source: Exp Toxicol Pathol. 2014
+# DOI: 10.1016/j.etp.2014.06.001
+#
+# Study design (in vivo):
+#   - Male Wistar rats, whole-animal subchronic inhalation of coal dust PM10
+#   - Doses: 6.25, 12.5 and 25 mg/m3
+#   - Durations: 14 days and 28 days
+#   - EGF in rat lung measured by ELISA
+#   - EGFR and MUC5AC measured by confocal laser scanning microscopy
+#   - Lung histology of bronchoalveolar epithelium and pulmonary parenchyma
+#
+# Key findings:
+#   - 14-d exposure: no significant difference in MUC5AC, EGF or EGFR (p>0.05)
+#   - 28-d exposure: no significant difference in EGF or EGFR (p>0.05), but a
+#     significant difference in MUC5AC (p<0.05); the paper's conclusion states
+#     the direction is a decrease in MUC5AC expression
+#   - Histology at 14 and 28 days: epithelial rearrangement, hyperplastic
+#     (metaplastic) goblet cells, scattered massive inflammatory cells
+#
+# EXTRACTION NOTES - read before adding numbers to this file:
+#   - The committed reference cache for PMID:24975055 is ABSTRACT ONLY. Every
+#     evidence snippet below is quoted verbatim from that abstract.
+#   - The abstract reports NO numeric measurement values, no group sizes and no
+#     exact p-values - only significance thresholds. Per the extraction rules,
+#     measurement slots are therefore omitted rather than guessed, and the
+#     output records carry only their experimental group and exposure link.
+#   - The abstract's group sentence is internally ambiguous: it calls the
+#     14-day arm "control groups exposed to coal dust". It does not describe an
+#     unexposed / filtered-air comparator, so none is modelled here and no
+#     control output record is invented. The response_comparisons below
+#     therefore carry a treated_output but no control_output, and record only
+#     the direction the paper states.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:24975055"
+  reference_title: "Subchronic inhalation of coal dust particulate matter 10 induces bronchoalveolar hyperplasia and decreases MUC5AC expression in male Wistar rats."
+  doi: "10.1016/j.etp.2014.06.001"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:kania-inhalation-001"
+    name: "Subchronic coal dust PM10 inhalation exposure"
+    description: "Subchronic inhalation exposure of male Wistar rats to coal dust particulate matter 10 at 6.25, 12.5 and 25 mg/m3 for 14 or 28 days. The abstract does not report chamber type, daily exposure hours, particle characterisation or group sizes."
+    equipment_required:
+      - "Coal dust PM10 inhalation exposure apparatus"
+
+  - id: "PROTOCOL:kania-elisa-001"
+    name: "ELISA for EGF in rat lung"
+    description: "Epidermal growth factor (EGF) expression in rat lungs measured by enzyme-linked immunosorbent assay. The abstract does not report kit manufacturer, dilutions or standard curve details."
+    equipment_required:
+      - "ELISA plate reader"
+
+  - id: "PROTOCOL:kania-clsm-001"
+    name: "Confocal laser scanning microscopy for EGFR and MUC5AC"
+    description: "EGFR and MUC5AC expression measured by a confocal laser scanning microscope on rat lung tissue. The abstract does not report antibodies, dilutions or the quantification method."
+    equipment_required:
+      - "Confocal laser scanning microscope"
+
+  - id: "PROTOCOL:kania-histology-001"
+    name: "Lung histology of bronchoalveolar epithelium and pulmonary parenchyma"
+    description: "Histological examination of the bronchoalveolar epithelial and pulmonary parenchymal images of rat lung after 14 and 28 days of coal dust exposure. The abstract does not name the stain used or a scoring scheme."
+    equipment_required:
+      - "Light microscope"
+
+# =============================================================================
+# GOBLET CELL / MUCIN ASSAYS - MUC5AC by CLSM, goblet cell histology
+# =============================================================================
+
+goblet_cell_assays:
+
+  # ---------------------------------------------------------------------------
+  # MUC5AC after 14 days - no significant difference
+  # ---------------------------------------------------------------------------
+  - id: "GCM:kania-muc5ac-clsm-14d"
+    name: "MUC5AC expression by CLSM - coal dust PM10, 14 days"
+    description: "MUC5AC expression in male Wistar rat lung measured by confocal laser scanning microscopy after 14 days of coal dust PM10 inhalation at 6.25, 12.5 and 25 mg/m3. The paper reports no significant difference in MUC5AC expression for the 14-day exposure (p>0.05). No measurement values, group sizes or exact p-values are given in the available abstract, so the output records below carry no measurement slots."
+    evidence:
+      - reference: "PMID:24975055"
+        reference_title: "Subchronic inhalation of coal dust particulate matter 10 induces bronchoalveolar hyperplasia and decreases MUC5AC expression in male Wistar rats."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "There was no significant difference in MUC5AC, EGF, and EGFR expressions for 14-d exposure (p>0.05)."
+        explanation: "This sentence is the paper's entire statistical result for MUC5AC at 14 days and is what the null finding recorded on this assay rests on."
+      - reference: "PMID:24975055"
+        reference_title: "Subchronic inhalation of coal dust particulate matter 10 induces bronchoalveolar hyperplasia and decreases MUC5AC expression in male Wistar rats."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "EGFR and MUC5AC were measured by a confocal laser scanning microscope."
+        explanation: "Names the measurement technique this assay records, matching the confocal microscopy protocol it follows."
+    has_exposure_condition:
+      - id: "EXPOSURE:kania-coaldust-6p25mgm3-14d"
+        name: "Coal dust PM10, 6.25 mg/m3, 14 days"
+        exposure_agent:
+          id: "ENVO:02000099"
+          name: "coal dust"
+        exposure_concentration:
+          value: "6.25"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:kania-coaldust-12p5mgm3-14d"
+        name: "Coal dust PM10, 12.5 mg/m3, 14 days"
+        exposure_agent:
+          id: "ENVO:02000099"
+          name: "coal dust"
+        exposure_concentration:
+          value: "12.5"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:kania-coaldust-25mgm3-14d"
+        name: "Coal dust PM10, 25 mg/m3, 14 days"
+        exposure_agent:
+          id: "ENVO:02000099"
+          name: "coal dust"
+        exposure_concentration:
+          value: "25"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GCM:kania-muc5ac-clsm-14d-output-6p25"
+        name: "MUC5AC, 6.25 mg/m3, 14 days"
+        experimental_group: treated
+        measured_under: "EXPOSURE:kania-coaldust-6p25mgm3-14d"
+      - id: "GCM:kania-muc5ac-clsm-14d-output-12p5"
+        name: "MUC5AC, 12.5 mg/m3, 14 days"
+        experimental_group: treated
+        measured_under: "EXPOSURE:kania-coaldust-12p5mgm3-14d"
+      - id: "GCM:kania-muc5ac-clsm-14d-output-25"
+        name: "MUC5AC, 25 mg/m3, 14 days"
+        experimental_group: treated
+        measured_under: "EXPOSURE:kania-coaldust-25mgm3-14d"
+    informs_on_key_event:
+      id: "KE:ke-muc5ac-decrease"
+      name: "Decreased MUC5AC expression"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:kania-wistar-rat-14d"
+      name: "Male Wistar rat, 14-day coal dust exposure"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "Male Wistar rats exposed to coal dust PM10 for 14 days; the abstract reports no age, weight or group size."
+      sample_type: biopsy
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:kania-clsm-001"
+        name: "Confocal laser scanning microscopy for EGFR and MUC5AC"
+      - id: "PROTOCOL:kania-inhalation-001"
+        name: "Subchronic coal dust PM10 inhalation exposure"
+
+  # ---------------------------------------------------------------------------
+  # MUC5AC after 28 days - significant difference, decreased
+  # ---------------------------------------------------------------------------
+  - id: "GCM:kania-muc5ac-clsm-28d"
+    name: "MUC5AC expression by CLSM - coal dust PM10, 28 days"
+    description: "MUC5AC expression in male Wistar rat lung measured by confocal laser scanning microscopy after 28 days of coal dust PM10 inhalation at 6.25, 12.5 and 25 mg/m3. The paper reports a significant difference in MUC5AC expression for the 28-day exposure (p<0.05) and its conclusion states the direction is a decrease. Only the significance threshold is reported - no measurement values, group sizes or exact p-values are given in the available abstract."
+    evidence:
+      - reference: "PMID:24975055"
+        reference_title: "Subchronic inhalation of coal dust particulate matter 10 induces bronchoalveolar hyperplasia and decreases MUC5AC expression in male Wistar rats."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "There was no significant difference in EGF and EGFR expressions for 28-d exposure (p>0.05), but there was a significant difference in MUC5AC expression (p<0.05)."
+        explanation: "States the significant MUC5AC result at 28 days that this assay records, together with the p<0.05 threshold reported for it."
+      - reference: "PMID:24975055"
+        reference_title: "Subchronic inhalation of coal dust particulate matter 10 induces bronchoalveolar hyperplasia and decreases MUC5AC expression in male Wistar rats."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "We concluded that subchronic inhalation of coal dust particulate matter 10 induces bronchoalveolar reactive hyperplasia and rearrangement of epithelial cells which accompanied by decrease expression MUC5AC in male rats."
+        explanation: "The paper's own conclusion gives the direction of the significant MUC5AC change as a decrease, which is why this assay informs on the decreased-MUC5AC key event."
+    has_exposure_condition:
+      - id: "EXPOSURE:kania-coaldust-6p25mgm3-28d"
+        name: "Coal dust PM10, 6.25 mg/m3, 28 days"
+        exposure_agent:
+          id: "ENVO:02000099"
+          name: "coal dust"
+        exposure_concentration:
+          value: "6.25"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:kania-coaldust-12p5mgm3-28d"
+        name: "Coal dust PM10, 12.5 mg/m3, 28 days"
+        exposure_agent:
+          id: "ENVO:02000099"
+          name: "coal dust"
+        exposure_concentration:
+          value: "12.5"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:kania-coaldust-25mgm3-28d"
+        name: "Coal dust PM10, 25 mg/m3, 28 days"
+        exposure_agent:
+          id: "ENVO:02000099"
+          name: "coal dust"
+        exposure_concentration:
+          value: "25"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GCM:kania-muc5ac-clsm-28d-output-6p25"
+        name: "MUC5AC, 6.25 mg/m3, 28 days"
+        experimental_group: treated
+        measured_under: "EXPOSURE:kania-coaldust-6p25mgm3-28d"
+      - id: "GCM:kania-muc5ac-clsm-28d-output-12p5"
+        name: "MUC5AC, 12.5 mg/m3, 28 days"
+        experimental_group: treated
+        measured_under: "EXPOSURE:kania-coaldust-12p5mgm3-28d"
+      - id: "GCM:kania-muc5ac-clsm-28d-output-25"
+        name: "MUC5AC, 25 mg/m3, 28 days"
+        experimental_group: treated
+        measured_under: "EXPOSURE:kania-coaldust-25mgm3-28d"
+    informs_on_key_event:
+      id: "KE:ke-muc5ac-decrease"
+      name: "Decreased MUC5AC expression"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:kania-wistar-rat-28d"
+      name: "Male Wistar rat, 28-day coal dust exposure"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "Male Wistar rats exposed to coal dust PM10 for 28 days; the abstract reports no age, weight or group size."
+      sample_type: biopsy
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:kania-clsm-001"
+        name: "Confocal laser scanning microscopy for EGFR and MUC5AC"
+      - id: "PROTOCOL:kania-inhalation-001"
+        name: "Subchronic coal dust PM10 inhalation exposure"
+
+  # ---------------------------------------------------------------------------
+  # Goblet cell hyperplasia / metaplasia - histology at 14 and 28 days
+  # ---------------------------------------------------------------------------
+  - id: "GCM:kania-goblet-histology"
+    name: "Bronchoalveolar goblet cell hyperplasia by histology - coal dust PM10"
+    description: "Histological examination of the bronchoalveolar epithelium of male Wistar rats exposed to coal dust PM10 for 14 and 28 days. The paper describes epithelial rearrangement, hyperplastic (metaplastic) goblet cells and scattered massive inflammatory cells, and its conclusion calls this bronchoalveolar reactive hyperplasia. The finding is qualitative: no goblet cell counts, percentages or scores are reported in the available abstract."
+    evidence:
+      - reference: "PMID:24975055"
+        reference_title: "Subchronic inhalation of coal dust particulate matter 10 induces bronchoalveolar hyperplasia and decreases MUC5AC expression in male Wistar rats."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The bronchoalveolar epithelial image of the group exposed to coal dust for 14 and 28 days showed a epithelial rearrangement, hyperplastic (metaplastic) goblet cells, and scattered massive inflammatory cells."
+        explanation: "Records the goblet cell hyperplasia observed in coal-dust-exposed rats at both exposure durations, which is the key event this assay informs on."
+      - reference: "PMID:24975055"
+        reference_title: "Subchronic inhalation of coal dust particulate matter 10 induces bronchoalveolar hyperplasia and decreases MUC5AC expression in male Wistar rats."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The pulmonary parenchymal image of the group of exposed to coal dust for 14 and 28 days showed scattered inflammatory cells filling up the pulmonary alveolar networks, leading to an appearance of thickened parenchymal alveoli until emphysema-like structure."
+        explanation: "Describes the accompanying parenchymal inflammation and alveolar thickening recorded in this assay's description, establishing the tissue context of the hyperplastic response."
+    has_exposure_condition:
+      - id: "EXPOSURE:kania-coaldust-25mgm3-14d"
+        name: "Coal dust PM10, 25 mg/m3, 14 days"
+        exposure_agent:
+          id: "ENVO:02000099"
+          name: "coal dust"
+        exposure_concentration:
+          value: "25"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:kania-coaldust-25mgm3-28d"
+        name: "Coal dust PM10, 25 mg/m3, 28 days"
+        exposure_agent:
+          id: "ENVO:02000099"
+          name: "coal dust"
+        exposure_concentration:
+          value: "25"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GCM:kania-goblet-histology-output-14d"
+        name: "Bronchoalveolar epithelial histology, 14 days"
+        experimental_group: treated
+        measured_under: "EXPOSURE:kania-coaldust-25mgm3-14d"
+      - id: "GCM:kania-goblet-histology-output-28d"
+        name: "Bronchoalveolar epithelial histology, 28 days"
+        experimental_group: treated
+        measured_under: "EXPOSURE:kania-coaldust-25mgm3-28d"
+    informs_on_key_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:kania-wistar-rat-histology"
+      name: "Male Wistar rat, coal dust exposure, lung histology"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "Male Wistar rats exposed to coal dust PM10 for 14 or 28 days; the abstract reports no age, weight or group size."
+      sample_type: biopsy
+      collection_site: "bronchoalveolar epithelium and pulmonary parenchyma"
+    follows_protocols:
+      - id: "PROTOCOL:kania-histology-001"
+        name: "Lung histology of bronchoalveolar epithelium and pulmonary parenchyma"
+      - id: "PROTOCOL:kania-inhalation-001"
+        name: "Subchronic coal dust PM10 inhalation exposure"
+
+# =============================================================================
+# EGFR SIGNALING ASSAYS - EGFR by CLSM, EGF ligand by ELISA
+# =============================================================================
+
+egfr_signaling_assays:
+
+  # ---------------------------------------------------------------------------
+  # EGFR and EGF after 14 days - no significant difference
+  # ---------------------------------------------------------------------------
+  - id: "EGFR:kania-egfr-egf-14d"
+    name: "EGFR and EGF expression - coal dust PM10, 14 days"
+    description: "EGFR expression measured by confocal laser scanning microscopy and EGF expression measured by ELISA in male Wistar rat lung after 14 days of coal dust PM10 inhalation at 6.25, 12.5 and 25 mg/m3. The paper reports no significant difference in either EGF or EGFR expression for the 14-day exposure (p>0.05). No measurement values, group sizes or exact p-values are reported in the available abstract."
+    evidence:
+      - reference: "PMID:24975055"
+        reference_title: "Subchronic inhalation of coal dust particulate matter 10 induces bronchoalveolar hyperplasia and decreases MUC5AC expression in male Wistar rats."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "There was no significant difference in MUC5AC, EGF, and EGFR expressions for 14-d exposure (p>0.05)."
+        explanation: "This is the paper's statistical result for EGF and EGFR at 14 days and is the null finding this assay records."
+      - reference: "PMID:24975055"
+        reference_title: "Subchronic inhalation of coal dust particulate matter 10 induces bronchoalveolar hyperplasia and decreases MUC5AC expression in male Wistar rats."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "EGF expressions in rat lungs were measured by ELISA."
+        explanation: "Names the technique used for the EGF ligand measurement this assay records, matching the ELISA protocol it follows."
+    has_exposure_condition:
+      - id: "EXPOSURE:kania-coaldust-6p25mgm3-14d"
+        name: "Coal dust PM10, 6.25 mg/m3, 14 days"
+        exposure_agent:
+          id: "ENVO:02000099"
+          name: "coal dust"
+        exposure_concentration:
+          value: "6.25"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:kania-coaldust-12p5mgm3-14d"
+        name: "Coal dust PM10, 12.5 mg/m3, 14 days"
+        exposure_agent:
+          id: "ENVO:02000099"
+          name: "coal dust"
+        exposure_concentration:
+          value: "12.5"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:kania-coaldust-25mgm3-14d"
+        name: "Coal dust PM10, 25 mg/m3, 14 days"
+        exposure_agent:
+          id: "ENVO:02000099"
+          name: "coal dust"
+        exposure_concentration:
+          value: "25"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "EGFR:kania-egfr-egf-14d-output-6p25"
+        name: "EGFR and EGF, 6.25 mg/m3, 14 days"
+        experimental_group: treated
+        measured_under: "EXPOSURE:kania-coaldust-6p25mgm3-14d"
+      - id: "EGFR:kania-egfr-egf-14d-output-12p5"
+        name: "EGFR and EGF, 12.5 mg/m3, 14 days"
+        experimental_group: treated
+        measured_under: "EXPOSURE:kania-coaldust-12p5mgm3-14d"
+      - id: "EGFR:kania-egfr-egf-14d-output-25"
+        name: "EGFR and EGF, 25 mg/m3, 14 days"
+        experimental_group: treated
+        measured_under: "EXPOSURE:kania-coaldust-25mgm3-14d"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:kania-wistar-rat-14d"
+      name: "Male Wistar rat, 14-day coal dust exposure"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "Male Wistar rats exposed to coal dust PM10 for 14 days; the abstract reports no age, weight or group size."
+      sample_type: biopsy
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:kania-clsm-001"
+        name: "Confocal laser scanning microscopy for EGFR and MUC5AC"
+      - id: "PROTOCOL:kania-elisa-001"
+        name: "ELISA for EGF in rat lung"
+      - id: "PROTOCOL:kania-inhalation-001"
+        name: "Subchronic coal dust PM10 inhalation exposure"
+
+  # ---------------------------------------------------------------------------
+  # EGFR and EGF after 28 days - no significant difference
+  # ---------------------------------------------------------------------------
+  - id: "EGFR:kania-egfr-egf-28d"
+    name: "EGFR and EGF expression - coal dust PM10, 28 days"
+    description: "EGFR expression measured by confocal laser scanning microscopy and EGF expression measured by ELISA in male Wistar rat lung after 28 days of coal dust PM10 inhalation at 6.25, 12.5 and 25 mg/m3. The paper reports no significant difference in either EGF or EGFR expression for the 28-day exposure (p>0.05), in contrast to the significant MUC5AC change at the same timepoint. No measurement values, group sizes or exact p-values are reported in the available abstract."
+    evidence:
+      - reference: "PMID:24975055"
+        reference_title: "Subchronic inhalation of coal dust particulate matter 10 induces bronchoalveolar hyperplasia and decreases MUC5AC expression in male Wistar rats."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "There was no significant difference in EGF and EGFR expressions for 28-d exposure (p>0.05), but there was a significant difference in MUC5AC expression (p<0.05)."
+        explanation: "States the null EGF and EGFR result at 28 days that this assay records, and separates it from the significant MUC5AC change at the same timepoint."
+      - reference: "PMID:24975055"
+        reference_title: "Subchronic inhalation of coal dust particulate matter 10 induces bronchoalveolar hyperplasia and decreases MUC5AC expression in male Wistar rats."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The purpose of the present study was to evaluate the effects of PM10 coal dust on lung histology, MUC5AC expression, epidermal growth factor (EGF) expression, and epidermal growth factor receptor (EGFR) expression."
+        explanation: "Confirms that EGF and EGFR expression were prespecified endpoints of the study rather than incidental observations, which is what this assay's two measured targets represent."
+    has_exposure_condition:
+      - id: "EXPOSURE:kania-coaldust-6p25mgm3-28d"
+        name: "Coal dust PM10, 6.25 mg/m3, 28 days"
+        exposure_agent:
+          id: "ENVO:02000099"
+          name: "coal dust"
+        exposure_concentration:
+          value: "6.25"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:kania-coaldust-12p5mgm3-28d"
+        name: "Coal dust PM10, 12.5 mg/m3, 28 days"
+        exposure_agent:
+          id: "ENVO:02000099"
+          name: "coal dust"
+        exposure_concentration:
+          value: "12.5"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:kania-coaldust-25mgm3-28d"
+        name: "Coal dust PM10, 25 mg/m3, 28 days"
+        exposure_agent:
+          id: "ENVO:02000099"
+          name: "coal dust"
+        exposure_concentration:
+          value: "25"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "EGFR:kania-egfr-egf-28d-output-6p25"
+        name: "EGFR and EGF, 6.25 mg/m3, 28 days"
+        experimental_group: treated
+        measured_under: "EXPOSURE:kania-coaldust-6p25mgm3-28d"
+      - id: "EGFR:kania-egfr-egf-28d-output-12p5"
+        name: "EGFR and EGF, 12.5 mg/m3, 28 days"
+        experimental_group: treated
+        measured_under: "EXPOSURE:kania-coaldust-12p5mgm3-28d"
+      - id: "EGFR:kania-egfr-egf-28d-output-25"
+        name: "EGFR and EGF, 25 mg/m3, 28 days"
+        experimental_group: treated
+        measured_under: "EXPOSURE:kania-coaldust-25mgm3-28d"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:kania-wistar-rat-28d"
+      name: "Male Wistar rat, 28-day coal dust exposure"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: "male"
+      subject_characteristics: "Male Wistar rats exposed to coal dust PM10 for 28 days; the abstract reports no age, weight or group size."
+      sample_type: biopsy
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:kania-clsm-001"
+        name: "Confocal laser scanning microscopy for EGFR and MUC5AC"
+      - id: "PROTOCOL:kania-elisa-001"
+        name: "ELISA for EGF in rat lung"
+      - id: "PROTOCOL:kania-inhalation-001"
+        name: "Subchronic coal dust PM10 inhalation exposure"
+
+# =============================================================================
+# RESPONSE COMPARISONS - direction of change as stated by the paper
+#
+# The abstract reports significance thresholds only (p>0.05 / p<0.05) and no
+# values for any group, so change_value is omitted throughout and p_value is
+# left empty (the slot is a float and cannot hold a threshold). No
+# control_output is referenced because the abstract does not describe an
+# unexposed comparator group - see the extraction notes at the top of the file.
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:kania-muc5ac-14d"
+    name: "MUC5AC expression after 14-day coal dust exposure"
+    description: "Paper reports no significant difference (p>0.05) for MUC5AC at 14 days. No values, exact p-value or comparator group values are given in the available abstract, so only the direction is recorded."
+    derived_from_assay: "GCM:kania-muc5ac-clsm-14d"
+    compared_measurement: "muc5ac_protein_expression"
+    treated_output: "GCM:kania-muc5ac-clsm-14d-output-25"
+    change_direction: no_change
+    derivation: reported_in_paper
+
+  - id: "COMP:kania-muc5ac-28d"
+    name: "MUC5AC expression after 28-day coal dust exposure"
+    description: "Paper reports a significant difference for MUC5AC at 28 days (p<0.05) and its conclusion states the direction is a decrease. No values, exact p-value or comparator group values are given in the available abstract, so change_value is omitted."
+    derived_from_assay: "GCM:kania-muc5ac-clsm-28d"
+    compared_measurement: "muc5ac_protein_expression"
+    treated_output: "GCM:kania-muc5ac-clsm-28d-output-25"
+    change_direction: decreased
+    derivation: reported_in_paper
+
+  - id: "COMP:kania-egfr-14d"
+    name: "EGFR expression after 14-day coal dust exposure"
+    description: "Paper reports no significant difference (p>0.05) for EGFR at 14 days. No values or exact p-value are given in the available abstract."
+    derived_from_assay: "EGFR:kania-egfr-egf-14d"
+    compared_measurement: "total_egfr_protein"
+    treated_output: "EGFR:kania-egfr-egf-14d-output-25"
+    change_direction: no_change
+    derivation: reported_in_paper
+
+  - id: "COMP:kania-egfr-28d"
+    name: "EGFR expression after 28-day coal dust exposure"
+    description: "Paper reports no significant difference (p>0.05) for EGFR at 28 days. No values or exact p-value are given in the available abstract."
+    derived_from_assay: "EGFR:kania-egfr-egf-28d"
+    compared_measurement: "total_egfr_protein"
+    treated_output: "EGFR:kania-egfr-egf-28d-output-25"
+    change_direction: no_change
+    derivation: reported_in_paper
+
+  - id: "COMP:kania-egf-14d"
+    name: "EGF expression after 14-day coal dust exposure"
+    description: "Paper reports no significant difference (p>0.05) for EGF at 14 days. No values or exact p-value are given in the available abstract."
+    derived_from_assay: "EGFR:kania-egfr-egf-14d"
+    compared_measurement: "egfr_ligand_expression"
+    treated_output: "EGFR:kania-egfr-egf-14d-output-25"
+    change_direction: no_change
+    derivation: reported_in_paper
+
+  - id: "COMP:kania-egf-28d"
+    name: "EGF expression after 28-day coal dust exposure"
+    description: "Paper reports no significant difference (p>0.05) for EGF at 28 days. No values or exact p-value are given in the available abstract."
+    derived_from_assay: "EGFR:kania-egfr-egf-28d"
+    compared_measurement: "egfr_ligand_expression"
+    treated_output: "EGFR:kania-egfr-egf-28d-output-25"
+    change_direction: no_change
+    derivation: reported_in_paper
