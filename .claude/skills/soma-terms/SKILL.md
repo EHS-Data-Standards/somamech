@@ -78,7 +78,8 @@ uv run runoak -i sqlite:obo:cl info CL:0000540 -O obo
 
 | Prefix | Ontology | Example |
 |--------|----------|---------|
-| CHEBI | Chemical Entities of Biological Interest | CHEBI:74481 (PM2.5) |
+| CHEBI | Chemical Entities of Biological Interest | CHEBI:28939 (N-acetyl-L-cysteine) |
+| ENVO | Environment Ontology | ENVO:01000415 (fine respirable suspended particulate matter) |
 | CL | Cell Ontology | CL:0002603 (nasal epithelial cell) |
 | UBERON | Uber-anatomy Ontology | UBERON:0001707 (nasal cavity) |
 | NCBITaxon | NCBI Taxonomy | NCBITaxon:9606 (Homo sapiens) |

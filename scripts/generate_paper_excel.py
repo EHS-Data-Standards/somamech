@@ -279,11 +279,11 @@ def create_montgomery_workbook():
     # ── ExposureCondition ──
     _make_sheet(wb, "ExposureCondition", EXPOSURE_CONDITION_HEADERS, [
         ("EXPOSURE:montgomery-mod-oe", "PM2.5 organic extract 0.45 ug/cm2 (moderate dose)",
-         "PM2.5", "CHEBI:74481", "0.45", "ug/cm2 (UO:0000274)", "48", "hour (UO:0000032)"),
+         "PM2.5", "ENVO:01000415", "0.45", "ug/cm2 (UO:0000274)", "48", "hour (UO:0000032)"),
         ("EXPOSURE:montgomery-high-oe", "PM2.5 organic extract 4.5 ug/cm2 (high dose)",
-         "PM2.5", "CHEBI:74481", "4.5", "ug/cm2 (UO:0000274)", "48", "hour (UO:0000032)"),
+         "PM2.5", "ENVO:01000415", "4.5", "ug/cm2 (UO:0000274)", "48", "hour (UO:0000032)"),
         ("EXPOSURE:montgomery-chronic-oe", "PM2.5 organic extract chronic 5-day stimulation (high OE dose)",
-         "PM2.5", "CHEBI:74481", "4.5", "ug/cm2 (UO:0000274)", "120", "hour (UO:0000032)"),
+         "PM2.5", "ENVO:01000415", "4.5", "ug/cm2 (UO:0000274)", "120", "hour (UO:0000032)"),
     ], tab_color="FFC000")
 
     # ── KeyEvent ──
@@ -540,15 +540,15 @@ def create_liu_workbook():
     # ── ExposureCondition ──
     _make_sheet(wb, "ExposureCondition", EXPOSURE_CONDITION_HEADERS, [
         ("EXPOSURE:liu-pm25-100ug-24h", "PM2.5 100 ug/mL for 24 hours",
-         "PM2.5", "CHEBI:74481", "100", "ug/mL (UO:0000064)", "24", "hour (UO:0000032)"),
+         "PM2.5", "ENVO:01000415", "100", "ug/mL (UO:0000064)", "24", "hour (UO:0000032)"),
         ("EXPOSURE:liu-pm25-100ug-48h", "PM2.5 100 ug/mL for 48 hours",
-         "PM2.5", "CHEBI:74481", "100", "ug/mL (UO:0000064)", "48", "hour (UO:0000032)"),
+         "PM2.5", "ENVO:01000415", "100", "ug/mL (UO:0000064)", "48", "hour (UO:0000032)"),
         ("EXPOSURE:liu-mouse-ova-pm25", "OVA sensitization + PM2.5 nasal instillation",
-         "PM2.5", "CHEBI:74481", "100", "ug/mL (UO:0000064)", "7", "day (UO:0000033)"),
+         "PM2.5", "ENVO:01000415", "100", "ug/mL (UO:0000064)", "7", "day (UO:0000033)"),
         ("EXPOSURE:liu-mouse-ova-atp", "OVA sensitization + ATP 50 mg/kg nasal instillation",
          "ATP", "CHEBI:15422", "50", "mg/kg (UO:0000308)", "7", "day (UO:0000033)"),
         ("EXPOSURE:liu-mouse-suramin", "OVA sensitization + Suramin 50 mg/kg nasal instillation",
-         "suramin", "CHEBI:45653", "50", "mg/kg (UO:0000308)", "7", "day (UO:0000033)"),
+         "suramin", "CHEBI:45906", "50", "mg/kg (UO:0000308)", "7", "day (UO:0000033)"),
     ], tab_color="FFC000")
 
     # ── KeyEvent ──
