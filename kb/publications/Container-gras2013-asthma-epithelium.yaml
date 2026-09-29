@@ -18,9 +18,13 @@
 #     epithelium shaping the TH2 paradigm)
 #   - Airway remodeling as a tissue-level key event observed in severe
 #     chronic airway diseases
-#   - Two relationships the review states: mucin hypersecretion is a
-#     hallmark of airway remodeling, and airway remodeling may result from
-#     ongoing disturbance of epithelial signal transduction and renewal
+#   - One relationship the review states: airway remodeling may result from
+#     ongoing disturbance of epithelial signal transduction and renewal.
+#     The review also calls mucin hypersecretion a hallmark of airway
+#     remodeling, but "hallmark of" is an association, not the causal
+#     assertion a key event relationship makes, and the slot's vocabulary
+#     offers no term for it — that quote is recorded on
+#     KE:ke-mucin-hypersecretion instead.
 #
 # No assay collections are populated: a review reports no measurements of
 # its own, and hallucinating numbers is prohibited.
@@ -109,29 +113,6 @@ key_events:
 # =============================================================================
 
 key_event_relationships:
-  - id: "KER:gras-mucin-hypersecretion-remodeling"
-    name: "Mucin hypersecretion is a hallmark of airway remodeling"
-    description: "The review states that in asthma excessive mucus production is a hallmark of airway remodeling: mucin hypersecretion is a defining manifestation of the remodeling process rather than a proven cause, so the relationship is recorded as 'hallmark of'."
-    upstream_event:
-      id: "KE:ke-mucin-hypersecretion"
-      name: "Mucin hypersecretion"
-      biological_action: increased
-      level_of_biological_organization: cellular
-    downstream_event:
-      id: "KE:ke-airway-remodeling"
-      name: "Airway remodeling"
-      biological_action: increased
-      level_of_biological_organization: tissue
-    relationship_type: "hallmark of"
-    evidence_support: not_specified
-    evidence:
-      - reference: "PMID:23880290"
-        reference_title: "Bronchial epithelium as a target for innovative treatments in asthma."
-        supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
-        snippet: "In asthma, excessive mucus production is a hallmark of airway remodeling."
-        explanation: "Direct statement of the association between excessive mucus production and airway remodeling in asthma."
-
   - id: "KER:gras-epithelial-disturbance-remodeling"
     name: "Disturbed epithelial signal transduction and renewal leads to airway remodeling"
     description: "The review proposes that airway remodeling in severe chronic airway diseases may result from ongoing disturbance of signal transduction and epithelial renewal. The paper's hedged wording ('may result from') is recorded as weak evidence support."
