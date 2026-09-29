@@ -502,6 +502,13 @@ class Builder:
         and several of those ranges are abstract (Assay, AssayOutputMeasurement)
         with no table of their own. Looking the target up in the row map after
         the walk gives the concrete class, so link stays joinable.
+
+        Inlined edges are resolved too, not skipped. _entity_slot takes the
+        child's type from the raw object, independently of the class
+        _unify_class settled on for that id, so an id inlined once without its
+        type designator and once with it left the first edge naming a table that
+        no longer held the row. The row map is the only thing that knows where a
+        row actually ended up.
         """
         index: dict[tuple, str] = {}
         for cls, rowmap in self.rows.items():
@@ -509,8 +516,6 @@ class Builder:
                 index[(source_file, _s(row_id))] = cls
         unresolved = 0
         for link in self.links.values():
-            if link["inlined"]:
-                continue
             found = index.get((link["source_file"], link["target_id"]))
             if found:
                 link["target_type"] = found
@@ -880,6 +885,10 @@ def main(argv=None):
     ap.add_argument("--schema", default=None)
     ap.add_argument("--tsv-dir", help="also dump every table/view as TSV here")
     ap.add_argument("--ddl-only", action="store_true", help="print DDL + views, build nothing")
+    ap.add_argument(
+        "--strict", action="store_true",
+        help="exit non-zero if the build produced any warning (for use as a gate)",
+    )
     args = ap.parse_args(argv)
 
     schema_path = args.schema or default_schema()
@@ -903,6 +912,15 @@ def main(argv=None):
     if args.tsv_dir:
         written = dump_tsv(out, Path(args.tsv_dir))
         print(f"Wrote {len(written)} TSV files to {args.tsv_dir}")
+
+    if args.strict and result["warnings"]:
+        categories = sorted({c for c, _ in result["warnings"]})
+        print(
+            f"\n--strict: {len(result['warnings'])} warning(s) in "
+            f"{', '.join(categories)}",
+            file=sys.stderr,
+        )
+        return 1
     return 0
 
 

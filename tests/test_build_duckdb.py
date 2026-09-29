@@ -176,13 +176,35 @@ def test_measurement_has_no_duplicate_rows(db):
 
 
 def test_link_rows_are_joinable_to_a_real_table(db):
-    """No link may point at an abstract class, which has no table."""
+    """Every link's target_type must name a table that actually HOLDS the row.
+
+    Naming a relation is not enough. An id unified onto a subclass leaves any
+    earlier edge pointing at the base-class table, which still exists but no
+    longer holds that row — the original unjoinable-link defect wearing a
+    different hat.
+    """
     rels = relations(db)
-    bad = db.execute(
-        "SELECT DISTINCT target_type FROM link WHERE target_type IS NOT NULL"
-    ).fetchall()
-    unjoinable = [r[0] for r in bad if r[0] not in rels]
+    targets = [
+        r[0] for r in db.execute(
+            "SELECT DISTINCT target_type FROM link WHERE target_type IS NOT NULL"
+        ).fetchall()
+    ]
+    unjoinable = [c for c in targets if c not in rels]
     assert not unjoinable, f"link.target_type not a relation: {unjoinable}"
+
+    dangling = []
+    for target in targets:
+        if "id" not in columns(db, target):
+            continue
+        n = db.execute(
+            "SELECT COUNT(*) FROM link l WHERE l.target_type = ? "
+            'AND NOT EXISTS (SELECT 1 FROM "' + target + '" x '
+            "WHERE x.source_file = l.source_file AND x.id = l.target_id)",
+            [target],
+        ).fetchone()[0]
+        if n:
+            dangling.append(f"{target}: {n}")
+    assert not dangling, f"link targets whose table lacks the row: {dangling}"
 
 
 def test_two_files_citing_one_paper_both_survive(tmp_path):
@@ -330,13 +352,23 @@ def test_paper_level_parent_pointers_resolve(db):
           AND parent_id NOT IN (SELECT source_file FROM paper)
     """).fetchone()[0]
     assert dangling == 0, f"{dangling} paper-level parent pointers dangle"
-    # and the same for the parent_* triple carried on entity rows
-    for table in ("KeyEvent", "Protocol"):
-        bad = db.execute(
-            f'SELECT COUNT(*) FROM "{table}" WHERE parent_type = \'paper\' '
-            f"AND parent_id NOT IN (SELECT source_file FROM paper)"
-        ).fetchone()[0]
+    # and the same for the parent_* triple on entity rows, over every table that
+    # actually has paper-parented rows. Naming two tables by hand left the
+    # assertion vacuous for the ones that happen to have none.
+    exercised = []
+    for table in sorted(relations(db)):
+        cols = columns(db, table)
+        if not {"parent_type", "parent_id", "source_file"} <= cols:
+            continue
+        total, bad = db.execute(
+            'SELECT COUNT(*) FILTER (WHERE parent_type = \'paper\'), '
+            "COUNT(*) FILTER (WHERE parent_type = 'paper' AND parent_id NOT IN "
+            '(SELECT source_file FROM paper)) FROM "' + table + '"'
+        ).fetchone()
         assert bad == 0, f"{table} has {bad} dangling paper parents"
+        if total:
+            exercised.append(table)
+    assert len(exercised) >= 2, f"only {exercised} had paper-parented rows"
 
 
 def test_wide_echo_agrees_with_measurement_everywhere(db):
@@ -450,3 +482,78 @@ def test_surrogate_ids_are_unique_across_classes(db):
         SELECT source_file, id FROM "PublicationReference"
     """).fetchall()
     assert not rows, f"surrogate ids collide across classes: {rows[:3]}"
+
+
+def test_unified_id_leaves_no_edge_pointing_at_the_old_table(tmp_path):
+    """An id inlined with and without its type designator keeps its edges valid.
+
+    _entity_slot takes the child's type from the raw object, independently of the
+    class _unify_class settles on, so the sighting that resolved to the base class
+    left a link row naming a table that no longer held the row. Resolving inlined
+    edges against the row map after the walk is what keeps them honest.
+    """
+    import yaml as _yaml
+
+    kb = tmp_path / "kb"
+    kb.mkdir()
+    data = _yaml.safe_load((VALID / "Container-liu2024-pm25-cftr.yaml").read_text())
+    assays = data.get("cftr_assays") or []
+    assert len(assays) >= 2, "fixture needs two assays"
+    # first sighting: no protocol_type, so it resolves to the base class Protocol
+    assays[0]["follows_protocols"] = [
+        {"id": "PROTOCOL:unify-1", "name": "shared protocol, base sighting"}
+    ]
+    # second sighting: designator present, so it resolves to a subclass
+    assays[1]["follows_protocols"] = [{
+        "id": "PROTOCOL:unify-1",
+        "name": "shared protocol, subclass sighting",
+        "protocol_type": "MolecularAssayProtocol",
+        "primer_sequences": ["FWD: ACGT"],
+    }]
+    (kb / "unify.yaml").write_text(_yaml.safe_dump(data))
+
+    out = tmp_path / "unify.duckdb"
+    result = run("--kb-dir", str(kb), "--output", str(out))
+    assert result.returncode == 0, result.stdout + result.stderr
+
+    con = duckdb.connect(str(out), read_only=True)
+    try:
+        edges = con.execute(
+            "SELECT DISTINCT target_type FROM link WHERE target_id = ?",
+            ["PROTOCOL:unify-1"],
+        ).fetchall()
+        assert edges, "no edges recorded for the shared protocol"
+        for (target,) in edges:
+            held = con.execute(
+                'SELECT COUNT(*) FROM "' + target + '" WHERE id = ?',
+                ["PROTOCOL:unify-1"],
+            ).fetchone()[0]
+            assert held == 1, (
+                f"link says target_type={target} but that table holds "
+                f"{held} rows for the id"
+            )
+    finally:
+        con.close()
+
+
+def test_strict_exits_non_zero_when_the_build_warns(tmp_path):
+    """--strict makes warnings reachable from a gate instead of scrollback."""
+    import yaml as _yaml
+
+    kb = tmp_path / "kb"
+    kb.mkdir()
+    data = _yaml.safe_load((VALID / "Container-liu2024-pm25-cftr.yaml").read_text())
+    assays = data.get("cftr_assays") or []
+    for i, assay in enumerate(assays[:2]):
+        assay["informs_on_key_event"] = {
+            "id": "KE:strict-1", "name": f"COPY-{i + 1}",
+            "level_of_biological_organization": "cellular",
+        }
+    (kb / "strict.yaml").write_text(_yaml.safe_dump(data))
+
+    lenient = run("--kb-dir", str(kb), "--output", str(tmp_path / "a.duckdb"))
+    assert lenient.returncode == 0, "a warning alone must not fail the default build"
+
+    strict = run("--kb-dir", str(kb), "--output", str(tmp_path / "b.duckdb"), "--strict")
+    assert strict.returncode == 1, "--strict should fail a build that warned"
+    assert "--strict" in strict.stdout + strict.stderr

@@ -159,11 +159,8 @@ def table_classes(sv: SchemaView) -> frozenset[str]:
             continue
         if name in QUANTITY_CLASSES or name in TERM_CLASSES:
             continue
-        if not [s for s in sv.class_induced_slots(name) if s.identifier]:
-            # No identifier and not a known value object: still needs a table
-            # (EvidenceItem), keyed by a surrogate.
-            out.append(name)
-            continue
+        # A class with no identifier still needs a table (EvidenceItem,
+        # PublicationReference); it is keyed by a surrogate id instead.
         out.append(name)
     memo["table_classes"] = frozenset(out)
     return memo["table_classes"]
