@@ -1,0 +1,172 @@
+# =============================================================================
+# Fujisawa, Tanaka & Ikegami (2023) - Analysis of motility and mucociliary
+# function of tracheal epithelial cilia
+# =============================================================================
+#
+# Source: Methods Cell Biol. 2023
+# DOI: 10.1016/bs.mcb.2022.12.015
+# PMID: 37164536
+#
+# Cached reference content_type: abstract_only. Everything recorded here comes
+# from the abstract; the chapter body was not available, so only the values and
+# relationships the abstract states verbatim are captured.
+#
+# Study type:
+#   Methods chapter. It presents techniques for analysing (a) the collective
+#   movement of cilia on the luminal surface of the trachea ex vivo, (b)
+#   individually isolated, ATP-reactivated cilia in vitro, and (c) mucociliary
+#   function. No exposure or treatment is applied, so the single ciliary
+#   function record is a baseline/reference measurement with no control-vs-
+#   treated contrast and no response_comparisons section.
+#
+# What the abstract states quantitatively:
+#   - Cilia on the apical surface of multiciliated airway epithelial cells move
+#     at 15-25 Hz (a reported range, recorded as variability bounds rather than
+#     a central value - the abstract gives no mean or median).
+#   - Ciliary strokes are asymmetric, with distinct effective and recovery
+#     strokes, and push mucus along the airway mucosa (coordinated motion).
+#   - Defects in ciliary motility lead to impaired mucociliary function
+#     (recorded as a key event relationship).
+#
+# =============================================================================
+
+source_publication:
+  reference: "PMID:37164536"
+  reference_title: "Analysis of motility and mucociliary function of tracheal epithelial cilia."
+  doi: "10.1016/bs.mcb.2022.12.015"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:fujisawa-tracheal-cilia-imaging-001"
+    protocol_type: ImagingProtocol
+    name: "Imaging-based analysis of tracheal ciliary movement ex vivo"
+    description: >-
+      Method presented in the chapter for analysing the movement of a group of
+      cilia on the luminal surface of the trachea ex vivo. Beyond beat
+      frequency, which the chapter describes as relatively easy to measure, the
+      method covers the amplitude, the velocities of the effective and recovery
+      strokes, and the asymmetric level of the stroke, which the chapter states
+      require specific techniques and tips. Acquisition parameters are not
+      reported in the cached abstract and are therefore not recorded.
+
+  - id: "PROTOCOL:fujisawa-isolated-cilia-atp-001"
+    protocol_type: ImagingProtocol
+    name: "Analysis of individually isolated, ATP-reactivated cilia in vitro"
+    description: >-
+      Method presented in the chapter for analysing the movement of individually
+      isolated cilia reactivated with ATP in vitro, complementing the ex vivo
+      analysis of intact tracheal epithelium.
+
+  - id: "PROTOCOL:fujisawa-mucociliary-function-001"
+    protocol_type: ImagingProtocol
+    name: "Analysis of mucociliary function"
+    description: >-
+      Method presented in the chapter for analysing mucociliary function, the
+      airway-protective mechanism produced by ciliary movement in which mucus
+      flow captures and expels inhaled particles. No transport rates are
+      reported in the cached abstract.
+
+# =============================================================================
+# CILIARY FUNCTION ASSAYS
+# =============================================================================
+
+ciliary_function_assays:
+  - id: "CILIARY:fujisawa-trachea-baseline"
+    name: "Tracheal multiciliated cell ciliary beat frequency and stroke pattern"
+    description: >-
+      Baseline characterisation of tracheal epithelial ciliary movement as
+      reported in this methods chapter. Cilia covering the apical surface of
+      multiciliated cells move at 15-25 Hz; the abstract reports this as a range
+      with no central value, so the range is recorded as variability bounds and
+      the value slot is left empty. Ciliary movement is not a simple reciprocal
+      movement: it has distinct forward and reverse phases, the effective and
+      recovery strokes, and these asymmetric strokes push the mucus covering the
+      airway mucosa. No exposure or treatment was applied.
+    airway_region: "trachea (luminal surface, ex vivo)"
+    has_specified_output:
+      - id: "CILIARY:fujisawa-trachea-baseline-output-baseline"
+        name: "Baseline tracheal ciliary movement measurements"
+        experimental_group: baseline
+        beat_frequency_hz:
+          unit:
+            id: "UO:0000106"
+            name: "hertz"
+          variability:
+            variability_type: range
+            lower_bound: "15"
+            upper_bound: "25"
+            unit:
+              id: "UO:0000106"
+              name: "hertz"
+        ciliary_motion_patterns: coordinated
+    informs_on_key_event:
+      id: "KE:ke3-impaired-ciliary"
+      name: "Decreased ciliary function"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:fujisawa-trachea-001"
+      name: "Tracheal epithelium ex vivo"
+      cell_type:
+        id: "CL:0002145"
+        name: "multiciliated columnar cell of tracheobronchial tree"
+      anatomical_origin:
+        id: "UBERON:0003126"
+        name: "trachea"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:fujisawa-tracheal-cilia-imaging-001"
+        name: "Imaging-based analysis of tracheal ciliary movement ex vivo"
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:fujisawa-isolated-cilia-atp-001"
+        name: "Analysis of individually isolated, ATP-reactivated cilia in vitro"
+    evidence:
+      - reference: "PMID:37164536"
+        reference_title: "Analysis of motility and mucociliary function of tracheal epithelial cilia."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The apical surface of multiciliated cells is covered with cilia that move at 15-25Hz."
+        explanation: "States the 15-25 Hz beat frequency range recorded as the variability bounds of this assay's baseline output."
+      - reference: "PMID:37164536"
+        reference_title: "Analysis of motility and mucociliary function of tracheal epithelial cilia."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Ciliary movement is not a simple reciprocal movement and distinctly has forward and reverse movements called effective and recovery strokes, respectively."
+        explanation: "Describes the asymmetric effective/recovery stroke pattern recorded as the coordinated ciliary motion pattern of this assay's baseline output."
+      - reference: "PMID:37164536"
+        reference_title: "Analysis of motility and mucociliary function of tracheal epithelial cilia."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In this chapter, we present methods for the analysis of ciliary movements of a group of cilia on the luminal surface of the trachea ex vivo and individually isolated and ATP-reactivated cilia in vitro."
+        explanation: "Identifies the tracheal luminal surface ex vivo and isolated ATP-reactivated cilia in vitro as the subject and the two imaging protocols this assay follows."
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:fujisawa-ciliary-motility-to-mcc"
+    name: "Decreased ciliary function leads to impaired mucociliary clearance"
+    upstream_event:
+      id: "KE:ke3-impaired-ciliary"
+      name: "Decreased ciliary function"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    relationship_type: "directly leads to"
+    evidence_support: not_specified
+    evidence:
+      - reference: "PMID:37164536"
+        reference_title: "Analysis of motility and mucociliary function of tracheal epithelial cilia."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Defects in ciliary motility lead to impairment of mucociliary function, resulting in recurrent airway infections such as bronchitis and pneumonia, and consequently, bronchiectasis."
+        explanation: "States the causal link from defective ciliary motility to impaired mucociliary function that this key event relationship records; the chapter is a methods review and reports no quantitative support, so evidence_support is not_specified."
