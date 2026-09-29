@@ -254,3 +254,86 @@ def test_value_qualifier_keeps_inequalities_queryable(db):
     assert _num("not a number") == (None, None)
     # and the column exists on the built table
     assert "value_qualifier" in columns(db, "measurement")
+
+
+def test_surrogate_keyed_children_dedupe_by_content(tmp_path):
+    """An entity inlined N times carrying evidence yields ONE evidence row.
+
+    EvidenceItem has no identifier, so a counter-based surrogate id handed every
+    sighting a fresh key and the dedupe could never fire — the same defect as
+    the measurement double-count, in the table this repo cares about most.
+    """
+    import copy
+    import yaml as _yaml
+
+    kb = tmp_path / "kb"
+    kb.mkdir()
+    data = _yaml.safe_load((VALID / "Container-liu2024-pm25-cftr.yaml").read_text())
+    shared = {
+        "id": "KE:shared-1",
+        "name": "shared key event",
+        "evidence": [{
+            "reference": "PMID:39113893", "supports": "supports",
+            "snippet": "one quote", "explanation": "why",
+        }],
+    }
+    copies = 0
+    for coll in ("cftr_assays", "gene_expression_assays", "goblet_cell_assays"):
+        for assay in data.get(coll, []) or []:
+            assay["informs_on_key_event"] = copy.deepcopy(shared)
+            copies += 1
+    assert copies >= 3, "fixture no longer has enough assays to inline under"
+    (kb / "dup.yaml").write_text(_yaml.safe_dump(data))
+
+    out = tmp_path / "dedupe.duckdb"
+    result = run("--kb-dir", str(kb), "--output", str(out))
+    assert result.returncode == 0, result.stdout + result.stderr
+
+    con = duckdb.connect(str(out), read_only=True)
+    try:
+        n = con.execute(
+            'SELECT COUNT(*) FROM "EvidenceItem" WHERE parent_id = ?', ["KE:shared-1"]
+        ).fetchone()[0]
+        assert n == 1, f"{copies} inlined copies produced {n} evidence rows"
+    finally:
+        con.close()
+
+
+def test_disagreeing_copies_of_one_id_warn(tmp_path):
+    """Two inlined copies of one id with different content must not pick a winner silently."""
+    import yaml as _yaml
+
+    kb = tmp_path / "kb"
+    kb.mkdir()
+    data = _yaml.safe_load((VALID / "Container-liu2024-pm25-cftr.yaml").read_text())
+    assays = data.get("cftr_assays") or []
+    assert len(assays) >= 2, "fixture needs two assays to disagree across"
+    for i, assay in enumerate(assays[:3]):
+        assay["informs_on_key_event"] = {
+            "id": "KE:conflict-1",
+            "name": f"COPY-{i + 1}",
+            "level_of_biological_organization": "cellular",
+        }
+    (kb / "conflict.yaml").write_text(_yaml.safe_dump(data))
+
+    result = run("--kb-dir", str(kb), "--output", str(tmp_path / "c.duckdb"))
+    assert result.returncode == 0, result.stdout + result.stderr
+    combined = result.stdout + result.stderr
+    assert "disagree" in combined and "KE:conflict-1" in combined
+
+
+def test_paper_level_parent_pointers_resolve(db):
+    """Top-level entities must parent on the paper table's actual key."""
+    dangling = db.execute("""
+        SELECT COUNT(*) FROM link
+        WHERE parent_type = 'paper'
+          AND parent_id NOT IN (SELECT source_file FROM paper)
+    """).fetchone()[0]
+    assert dangling == 0, f"{dangling} paper-level parent pointers dangle"
+    # and the same for the parent_* triple carried on entity rows
+    for table in ("KeyEvent", "Protocol"):
+        bad = db.execute(
+            f'SELECT COUNT(*) FROM "{table}" WHERE parent_type = \'paper\' '
+            f"AND parent_id NOT IN (SELECT source_file FROM paper)"
+        ).fetchone()[0]
+        assert bad == 0, f"{table} has {bad} dangling paper parents"

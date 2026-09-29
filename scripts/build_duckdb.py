@@ -30,6 +30,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -166,6 +167,7 @@ class Builder:
         self.terms: dict[str, tuple[str, str]] = {}
         self.papers: list[dict] = []
         self.surrogate: dict[str, int] = defaultdict(int)
+        self.surrogate_ids: dict[tuple, int] = {}
         self.warnings: list[str] = []
 
     # -- helpers ----------------------------------------------------------
@@ -274,15 +276,13 @@ class Builder:
             )
             return None
 
-        natural = has_natural_key(sv, cls)
-        if natural:
+        if has_natural_key(sv, cls):
             row_id = obj.get("id")
             if row_id is None:
                 self.warnings.append(f"{ctx['source_file']}: {cls} with no id, skipped")
                 return None
         else:
-            self.surrogate[cls] += 1
-            row_id = self.surrogate[cls]
+            row_id = self._surrogate_id(cls, obj, ctx, parent)
 
         key = (ctx["source_file"], row_id)
         row = self.rows[cls].get(key)
@@ -292,12 +292,13 @@ class Builder:
             if parent:
                 row["parent_type"], row["parent_id"], row["parent_slot"] = parent
             self.rows[cls][key] = row
-        elif parent and row.get("parent_id") not in (None, parent[1]):
-            # A shared child (a protocol reused by two assays). The row is kept
-            # once; `link` carries every edge. parent_* reflects the first
-            # parent seen, so the edge table is what queries should use.
-            pass
 
+        # Collect this sighting's values first, then merge. An entity inlined
+        # under several parents is walked once per copy: a later copy may carry
+        # fields an earlier stub omitted (merge those in), but if two copies
+        # give the same field different values one of them is a curation error
+        # and picking a winner by walk order would hide it.
+        vals: dict = {}
         name = obj.get("name")
         for s in sv.class_induced_slots(cls):
             val = obj.get(s.name)
@@ -305,31 +306,69 @@ class Builder:
                 continue
             rng = s.range
             if s.designates_type:
-                row[s.name] = _s(val)
+                vals[s.name] = _s(val)
             elif is_entity(sv, rng):
-                self._entity_slot(row, s, val, rng, cls, row_id, ctx)
+                self._entity_slot(vals, s, val, rng, cls, row_id, ctx)
             elif rng in QUANTITY_CLASSES:
-                row.update(
+                vals.update(
                     self._quantity(val, cls, row_id, name, s.name, ctx, rng)
                 )
             elif rng in TERM_CLASSES:
                 ref = (ctx, cls, row_id, s.name)
                 if s.multivalued:
                     pairs = [self._term(v, ref) for v in val or []]
-                    row[s.name] = [p[0] for p in pairs]
-                    row[f"{s.name}_labels"] = [p[1] for p in pairs]
+                    vals[s.name] = [p[0] for p in pairs]
+                    vals[f"{s.name}_labels"] = [p[1] for p in pairs]
                 else:
                     curie, label = self._term(val, ref)
-                    row[s.name] = curie
-                    row[f"{s.name}_label"] = label
+                    vals[s.name] = curie
+                    vals[f"{s.name}_label"] = label
             else:
                 if s.multivalued:
-                    row[s.name] = [_s(v) for v in (val if isinstance(val, list) else [val])]
+                    vals[s.name] = [_s(v) for v in (val if isinstance(val, list) else [val])]
                 else:
-                    row[s.name] = val if not isinstance(val, (dict, list)) else _s(val)
+                    vals[s.name] = val if not isinstance(val, (dict, list)) else _s(val)
+
+        conflicts = []
+        for col, value in vals.items():
+            if row.get(col) is None:
+                row[col] = value
+            elif value is not None and row[col] != value:
+                conflicts.append(f"{col}={row[col]!r} vs {value!r}")
+        if conflicts:
+            self.warnings.append(
+                f"{ctx['source_file']}: two inlined copies of {cls} '{row_id}' "
+                f"disagree ({'; '.join(conflicts[:3])}"
+                f"{f', +{len(conflicts) - 3} more' if len(conflicts) > 3 else ''}) "
+                f"— kept the first value seen"
+            )
         return row_id
 
-    def _entity_slot(self, row, s, val, rng, cls, row_id, ctx):
+    def _surrogate_id(self, cls, obj, ctx, parent):
+        """Stable id for a class with no identifier (EvidenceItem, PublicationReference).
+
+        Keyed on the object's content plus its parent rather than a counter: a
+        counter hands every sighting a fresh id, so the (source_file, id) dedupe
+        can never fire and an entity inlined N times carrying one evidence item
+        yields N identical evidence rows. The same content under the same parent
+        is the same row.
+        """
+        content = json.dumps(obj, sort_keys=True, default=str)
+        skey = (
+            ctx["source_file"], cls,
+            parent[0] if parent else None,
+            _s(parent[1]) if parent else None,
+            parent[2] if parent else None,
+            content,
+        )
+        existing = self.surrogate_ids.get(skey)
+        if existing is not None:
+            return existing
+        self.surrogate[cls] += 1
+        self.surrogate_ids[skey] = self.surrogate[cls]
+        return self.surrogate[cls]
+
+    def _entity_slot(self, vals, s, val, rng, cls, row_id, ctx):
         """Handle a slot whose range is a class that gets its own table."""
         items = val if s.multivalued else [val]
         for item in items or []:
@@ -351,7 +390,7 @@ class Builder:
                 "target_id": _s(child_id), "inlined": inlined,
             }
             if not s.multivalued:
-                row[f"{s.name}_id"] = _s(child_id)
+                vals[f"{s.name}_id"] = _s(child_id)
 
     # -- file entry point -------------------------------------------------
     def add_file(self, path: Path):
@@ -378,7 +417,11 @@ class Builder:
                 continue
             for item in (val if s.multivalued else [val]):
                 if isinstance(item, dict):
-                    self.visit(item, s.range, ctx, parent=(PAPER_TABLE, paper_id, s.name))
+                    self.visit(
+                        item, s.range, ctx,
+                        # paper's key is source_file (see fix 3), not the PMID
+                        parent=(PAPER_TABLE, path.name, s.name),
+                    )
 
 
     def resolve_link_types(self):
@@ -750,8 +793,21 @@ def main(argv=None):
     print(f"{len(nonempty)} non-empty tables, {sum(nonempty.values())} rows")
     for k, v in sorted(nonempty.items(), key=lambda kv: -kv[1])[:12]:
         print(f"    {k:34} {v:6}")
-    for w in result["warnings"][:10]:
-        print(f"  WARNING: {w}", file=sys.stderr)
+    warnings = result["warnings"]
+    if warnings:
+        # Deduplicated and counted: the same conflict is reported once per
+        # sighting, and a truncated list must not make the rest disappear.
+        seen: dict[str, int] = {}
+        for w in warnings:
+            seen[w] = seen.get(w, 0) + 1
+        print(
+            f"\n{len(warnings)} warning(s), {len(seen)} distinct:", file=sys.stderr
+        )
+        for w, n in list(seen.items())[:10]:
+            suffix = f"  (x{n})" if n > 1 else ""
+            print(f"  WARNING: {w}{suffix}", file=sys.stderr)
+        if len(seen) > 10:
+            print(f"  ... and {len(seen) - 10} more distinct warning(s)", file=sys.stderr)
 
     if args.tsv_dir:
         written = dump_tsv(out, Path(args.tsv_dir))
