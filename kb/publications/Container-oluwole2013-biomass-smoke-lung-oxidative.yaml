@@ -183,7 +183,6 @@ lung_function_assays:
             unit:
               id: "UCUM:L/s"
               name: "liter per second"
-    assay_date: "2013-01-01"
     informs_on_key_event:
       id: "KE:ao-decreased-lung-function"
       name: "Decreased lung function"
@@ -286,7 +285,6 @@ lung_function_assays:
             unit:
               id: "UCUM:L/s"
               name: "liter per second"
-    assay_date: "2013-01-01"
     informs_on_key_event:
       id: "KE:ao-decreased-lung-function"
       name: "Decreased lung function"
@@ -380,7 +378,6 @@ oxidative_stress_assays:
             unit:
               id: "UO:0000064"
               name: "micromolar"
-    assay_date: "2013-01-01"
     informs_on_key_event:
       id: "KE:mie-oxidative-stress"
       name: "Increased oxidative stress"
@@ -464,7 +461,6 @@ oxidative_stress_assays:
             unit:
               id: "UO:0000064"
               name: "micromolar"
-    assay_date: "2013-01-01"
     informs_on_key_event:
       id: "KE:mie-oxidative-stress"
       name: "Increased oxidative stress"
@@ -515,6 +511,12 @@ oxidative_stress_assays:
         evidence_source: HUMAN_CLINICAL
         snippet: "In the present study, SOD levels in both mothers and children were below the lower limit of normal range with 42% of mothers and 51% of children falling below this limit (Table 2)."
         explanation: "States the depleted antioxidant enzyme status recorded on this assay, including the 42% of mothers below the lower limit of normal."
+      - reference: "PMID:23777718"
+        reference_title: "Relationship between household air pollution from biomass smoke exposure, and pulmonary dysfunction, oxidant-antioxidant imbalance and systemic inflammation in rural women and children in Nigeria."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Our result also showed generation of oxidative stress as SOD showed positive correlation with CRP in mothers and also appeared to be a strong predictor of lung function in children (Table 3)."
+        explanation: "Supports this assay's description claim that SOD correlated positively with CRP in the mothers, putting that claim on the same quoted footing as the rest of the file."
     has_exposure_condition:
       - id: "EXPOSURE:oluwole-hap-biomass"
         name: "Household air pollution from biomass (firewood) smoke during cooking"
@@ -541,7 +543,6 @@ oxidative_stress_assays:
         experimental_group: treated
         measured_under: "EXPOSURE:oluwole-hap-biomass"
         antioxidant_enzyme_activities: "Superoxide dismutase (SOD) below the lower limit of the normal range; 42% of mothers fell below that limit. Vitamin C and vitamin E were within their normal ranges."
-    assay_date: "2013-01-01"
     informs_on_key_event:
       id: "KE:mie-oxidative-stress"
       name: "Increased oxidative stress"
@@ -620,7 +621,6 @@ oxidative_stress_assays:
         experimental_group: treated
         measured_under: "EXPOSURE:oluwole-hap-biomass"
         antioxidant_enzyme_activities: "Superoxide dismutase (SOD) below the lower limit of the normal range; 51% of children fell below that limit. Vitamin C and vitamin E were within their normal ranges."
-    assay_date: "2013-01-01"
     informs_on_key_event:
       id: "KE:mie-oxidative-stress"
       name: "Increased oxidative stress"
@@ -723,7 +723,6 @@ gene_expression_assays:
             unit:
               id: "UO:0000274"
               name: "microgram per milliliter"
-    assay_date: "2013-01-01"
     informs_on_key_event:
       id: "KE:ke-systemic-inflammation"
       name: "Increased systemic inflammation"
@@ -808,7 +807,6 @@ gene_expression_assays:
             unit:
               id: "UO:0000274"
               name: "microgram per milliliter"
-    assay_date: "2013-01-01"
     informs_on_key_event:
       id: "KE:ke-systemic-inflammation"
       name: "Increased systemic inflammation"
