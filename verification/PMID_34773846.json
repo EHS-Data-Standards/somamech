@@ -1,0 +1,17 @@
+{
+  "reference_id": "PMID:34773846",
+  "kb_file": "kb/publications/Container-li2021-pm25-oxidative-stress.yaml",
+  "content_type_in_committed_cache": "abstract_only",
+  "verified_with": "just verify-snippets (linkml-reference-validator, committed + local cache)",
+  "verified_date": "2026-09-28",
+  "snippet_sha256": [
+    "31c720cf97b584617ac4113406216af3c20f2f688a06f5a4c53790f35dfaf49e",
+    "53547c3aa3f6beaca1594ea4b5682375b7dd18d2a62b9eee297172e7567a572f",
+    "5f6d3eac043b99ab215e1722755e54fc65e28979b6df6457cb7130b202c0736c",
+    "734ae7f6c8a99004cef74b99b8617e6e3a70bf76b6ecbe0d7f7b5c5a81c48abc",
+    "73b4a9b8896f592cfc652d7336907dc409a92978853c9f59f6a44411c82e8473",
+    "a3df3e2003d4ac7c46115f52d79d03731c520d0b286441c9e7b4015857201cd0",
+    "bac2cff3a1dfa4a6fd4f503f23fbaa87ac9ccec4d7f3478390beadf3289f0707",
+    "df590fab54d962bc47ad0fdeec2650f5e4548c40ac44867a2df45ce4f9e6b903"
+  ]
+}
