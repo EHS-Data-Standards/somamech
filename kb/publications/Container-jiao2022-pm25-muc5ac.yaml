@@ -161,6 +161,7 @@ protocols:
     description: "ALI cultures fixed in 50:50 methanol:acetone, permeabilized with 0.3% Triton X-100, blocked with 5% skim milk, incubated overnight at 4C with anti-beta-tubulin IV (1:500, Sigma-Aldrich) and anti-MUC5AC (1:200, Abcam). Secondary antibodies labelled with fluorescein isothiocyanate (1:500, Invitrogen) and rhodamine (1:500, Invitrogen). Nuclei counterstained with 4,6-diamidino-2-phenylindole. Imaged on an Olympus IX81 confocal microscope; positive cells expressed as a percentage of total cells."
     staining_type: "immunofluorescence"
     fixation_method: "50:50 methanol:acetone"
+    detection_method: "confocal microscopy (Olympus IX81)"
     antibodies_used:
       - "anti-beta-tubulin IV (1:500, Sigma-Aldrich)"
       - "fluorescein isothiocyanate-labelled secondary (1:500, Invitrogen)"
@@ -180,6 +181,16 @@ protocols:
     protocol_type: MolecularAssayProtocol
     name: "Western blot for PI3K, AKT and ERK phosphorylation"
     description: "ALI cultures treated with PM2.5 for 30 min harvested in RIPA lysis buffer with protease and phosphatase inhibitors. Equal protein separated by SDS-PAGE, transferred to polyvinylidene fluoride membranes, blocked in 5% BSA, incubated overnight at 4C with anti-p-PI3K (1:1,000), anti-PI3K (1:2,000), anti-p-AKT (1:1,000), anti-AKT (1:2,000), anti-p-ERK (1:1,000), anti-ERK (1:2,000) (Cell Signaling Technology) and anti-GAPDH (1:10,000, Abcam). Electrogenerated chemiluminescence detection; bands analysed in ImageJ."
+    detection_method: "electrogenerated chemiluminescence"
+    normalization_method: "GAPDH loading control"
+    antibodies_used:
+      - "anti-p-PI3K (1:1,000, Cell Signaling Technology)"
+      - "anti-PI3K (1:2,000, Cell Signaling Technology)"
+      - "anti-p-AKT (1:1,000, Cell Signaling Technology)"
+      - "anti-AKT (1:2,000, Cell Signaling Technology)"
+      - "anti-p-ERK (1:1,000, Cell Signaling Technology)"
+      - "anti-ERK (1:2,000, Cell Signaling Technology)"
+      - "anti-GAPDH (1:10,000, Abcam)"
     equipment_required:
       - "SDS-PAGE and polyvinylidene fluoride transfer apparatus"
       - "Electrogenerated chemiluminescence detection system"
@@ -294,14 +305,9 @@ goblet_cell_assays:
     follows_protocols:
       - id: "PROTOCOL:jiao-ali-001"
         name: "Primary HNEC air-liquid interface culture"
-      - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-qpcr-muc5ac"
+      - id: "PROTOCOL:jiao-qpcr-muc5ac"
+        protocol_type: MolecularAssayProtocol
         name: "Real-time PCR for MUC5AC"
-        detection_method: "SYBR Green real-time PCR"
-        reference_gene: "GAPDH"
-        primer_sequences:
-          - "MUC5AC-F: ACCAATGCTCTGTATCCTTCCC"
-          - "MUC5AC-R: GTTTGGGTGGAGTAAGCCACA"
 
   # ---------------------------------------------------------------------------
   # MUC5AC mRNA, CRSwNP-derived HNECs
@@ -394,11 +400,9 @@ goblet_cell_assays:
     follows_protocols:
       - id: "PROTOCOL:jiao-ali-001"
         name: "Primary HNEC air-liquid interface culture"
-      - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-qpcr-muc5ac"
+      - id: "PROTOCOL:jiao-qpcr-muc5ac"
+        protocol_type: MolecularAssayProtocol
         name: "Real-time PCR for MUC5AC"
-        detection_method: "SYBR Green real-time PCR"
-        reference_gene: "GAPDH"
 
   # ---------------------------------------------------------------------------
   # MUC5AC-positive cell percentage, control-subject HNECs (dose response)
@@ -515,19 +519,28 @@ goblet_cell_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
       donor_info: "Control subjects undergoing paranasal sinus surgery for non-inflammatory conditions; middle turbinate or uncinate process mucosa"
+      culture_media:
+        id: "soma:jiao-media-ali"
+        name: "Bronchial epithelial growth medium:DMEM (1:1) with all-trans retinoic acid"
+        base_medium: "Bronchial epithelial growth medium:DMEM (1:1)"
+        supplements:
+          - id: "soma:jiao-supp-atra"
+            name: "All-trans retinoic acid"
+            supplement_type: growth_factor
+            concentration:
+              value: "50"
+              unit:
+                id: "UO:0000065"
+                name: "nanomolar"
     follows_protocols:
-      - protocol_type: StainingProtocol
-        id: "PROTOCOL:jiao-icc-muc5ac"
+      - id: "PROTOCOL:jiao-icc-muc5ac"
+        protocol_type: StainingProtocol
         name: "Immunocytochemical staining for MUC5AC"
-        staining_type: "immunofluorescence"
-        fixation_method: "50:50 methanol:acetone"
-        antibodies_used:
-          - "anti-MUC5AC (1:200, Abcam)"
-          - "rhodamine-labelled secondary (1:500, Invitrogen)"
-        detection_method: "confocal microscopy (Olympus IX81)"
 
   # ---------------------------------------------------------------------------
   # MUC5AC-positive cell percentage, CRSwNP HNECs (dose response)
@@ -644,18 +657,15 @@ goblet_cell_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
       donor_info: "Patients with chronic rhinosinusitis with nasal polyps (EPOS 2012 criteria); nasal polyp tissue. Comorbid allergic rhinitis or asthma excluded"
     follows_protocols:
-      - protocol_type: StainingProtocol
-        id: "PROTOCOL:jiao-icc-muc5ac"
+      - id: "PROTOCOL:jiao-icc-muc5ac"
+        protocol_type: StainingProtocol
         name: "Immunocytochemical staining for MUC5AC"
-        staining_type: "immunofluorescence"
-        fixation_method: "50:50 methanol:acetone"
-        antibodies_used:
-          - "anti-MUC5AC (1:200, Abcam)"
-          - "rhodamine-labelled secondary (1:500, Invitrogen)"
 
   # ---------------------------------------------------------------------------
   # EGFR inhibition arm: AG1478 blocks the PM2.5-induced rise in MUC5AC
@@ -772,17 +782,15 @@ goblet_cell_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
       donor_info: "Patients with chronic rhinosinusitis with nasal polyps (EPOS 2012 criteria); nasal polyp tissue. Comorbid allergic rhinitis or asthma excluded"
     follows_protocols:
-      - protocol_type: StainingProtocol
-        id: "PROTOCOL:jiao-icc-muc5ac"
+      - id: "PROTOCOL:jiao-icc-muc5ac"
+        protocol_type: StainingProtocol
         name: "Immunocytochemical staining for MUC5AC"
-        staining_type: "immunofluorescence"
-        antibodies_used:
-          - "anti-MUC5AC (1:200, Abcam)"
-          - "rhodamine-labelled secondary (1:500, Invitrogen)"
 
 # =============================================================================
 # GENE EXPRESSION ASSAYS - SPDEF and EGFR ligands
@@ -875,17 +883,28 @@ gene_expression_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Control subjects undergoing paranasal sinus surgery for non-inflammatory conditions; middle turbinate or uncinate process mucosa"
+      culture_media:
+        id: "soma:jiao-media-ali"
+        name: "Bronchial epithelial growth medium:DMEM (1:1) with all-trans retinoic acid"
+        base_medium: "Bronchial epithelial growth medium:DMEM (1:1)"
+        supplements:
+          - id: "soma:jiao-supp-atra"
+            name: "All-trans retinoic acid"
+            supplement_type: growth_factor
+            concentration:
+              value: "50"
+              unit:
+                id: "UO:0000065"
+                name: "nanomolar"
     follows_protocols:
-      - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-qpcr-spdef"
+      - id: "PROTOCOL:jiao-qpcr-spdef"
+        protocol_type: MolecularAssayProtocol
         name: "Real-time PCR for SPDEF"
-        detection_method: "SYBR Green real-time PCR"
-        reference_gene: "GAPDH"
-        primer_sequences:
-          - "SPDEF-F: CAGTGCCCGGTCATTGACA"
-          - "SPDEF-R: CAGCCGGTATTGGTGCTCT"
 
   - id: "GE:jiao-spdef-mrna-crswnp-24h"
     name: "SPDEF mRNA - CRSwNP HNECs, PM2.5 24 h"
@@ -970,14 +989,15 @@ gene_expression_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Patients with chronic rhinosinusitis with nasal polyps (EPOS 2012 criteria); nasal polyp tissue. Comorbid allergic rhinitis or asthma excluded"
     follows_protocols:
-      - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-qpcr-spdef"
+      - id: "PROTOCOL:jiao-qpcr-spdef"
+        protocol_type: MolecularAssayProtocol
         name: "Real-time PCR for SPDEF"
-        detection_method: "SYBR Green real-time PCR"
-        reference_gene: "GAPDH"
 
   # ---------------------------------------------------------------------------
   # HB-EGF mRNA (EGFR ligand)
@@ -1065,17 +1085,28 @@ gene_expression_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Control subjects undergoing paranasal sinus surgery for non-inflammatory conditions; middle turbinate or uncinate process mucosa"
+      culture_media:
+        id: "soma:jiao-media-ali"
+        name: "Bronchial epithelial growth medium:DMEM (1:1) with all-trans retinoic acid"
+        base_medium: "Bronchial epithelial growth medium:DMEM (1:1)"
+        supplements:
+          - id: "soma:jiao-supp-atra"
+            name: "All-trans retinoic acid"
+            supplement_type: growth_factor
+            concentration:
+              value: "50"
+              unit:
+                id: "UO:0000065"
+                name: "nanomolar"
     follows_protocols:
-      - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-qpcr-hbegf"
+      - id: "PROTOCOL:jiao-qpcr-hbegf"
+        protocol_type: MolecularAssayProtocol
         name: "Real-time PCR for HB-EGF"
-        detection_method: "SYBR Green real-time PCR"
-        reference_gene: "GAPDH"
-        primer_sequences:
-          - "HB-EGF-F: CCAAACAAGGAGGAGCACGGGA"
-          - "HB-EGF-R: CCCAGCCGATTCCTTGAGCACA"
 
   - id: "GE:jiao-hbegf-mrna-crswnp-24h"
     name: "HB-EGF mRNA - CRSwNP HNECs, PM2.5 24 h"
@@ -1160,14 +1191,15 @@ gene_expression_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Patients with chronic rhinosinusitis with nasal polyps (EPOS 2012 criteria); nasal polyp tissue. Comorbid allergic rhinitis or asthma excluded"
     follows_protocols:
-      - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-qpcr-hbegf"
+      - id: "PROTOCOL:jiao-qpcr-hbegf"
+        protocol_type: MolecularAssayProtocol
         name: "Real-time PCR for HB-EGF"
-        detection_method: "SYBR Green real-time PCR"
-        reference_gene: "GAPDH"
 
   # ---------------------------------------------------------------------------
   # Amphiregulin (AREG) mRNA
@@ -1255,17 +1287,28 @@ gene_expression_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Control subjects undergoing paranasal sinus surgery for non-inflammatory conditions; middle turbinate or uncinate process mucosa"
+      culture_media:
+        id: "soma:jiao-media-ali"
+        name: "Bronchial epithelial growth medium:DMEM (1:1) with all-trans retinoic acid"
+        base_medium: "Bronchial epithelial growth medium:DMEM (1:1)"
+        supplements:
+          - id: "soma:jiao-supp-atra"
+            name: "All-trans retinoic acid"
+            supplement_type: growth_factor
+            concentration:
+              value: "50"
+              unit:
+                id: "UO:0000065"
+                name: "nanomolar"
     follows_protocols:
-      - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-qpcr-areg"
+      - id: "PROTOCOL:jiao-qpcr-areg"
+        protocol_type: MolecularAssayProtocol
         name: "Real-time PCR for AREG"
-        detection_method: "SYBR Green real-time PCR"
-        reference_gene: "GAPDH"
-        primer_sequences:
-          - "AREG-F: ATATCACATTGGAGTCACTGCC"
-          - "AREG-R: GAAAGAGGACCGACTCATCATT"
 
   - id: "GE:jiao-areg-mrna-crswnp-24h"
     name: "Amphiregulin mRNA - CRSwNP HNECs, PM2.5 24 h"
@@ -1350,14 +1393,15 @@ gene_expression_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Patients with chronic rhinosinusitis with nasal polyps (EPOS 2012 criteria); nasal polyp tissue. Comorbid allergic rhinitis or asthma excluded"
     follows_protocols:
-      - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-qpcr-areg"
+      - id: "PROTOCOL:jiao-qpcr-areg"
+        protocol_type: MolecularAssayProtocol
         name: "Real-time PCR for AREG"
-        detection_method: "SYBR Green real-time PCR"
-        reference_gene: "GAPDH"
 
   # ---------------------------------------------------------------------------
   # Epiregulin (EREG) mRNA - increased at mRNA level; protein below ELISA range
@@ -1445,17 +1489,28 @@ gene_expression_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Control subjects undergoing paranasal sinus surgery for non-inflammatory conditions; middle turbinate or uncinate process mucosa"
+      culture_media:
+        id: "soma:jiao-media-ali"
+        name: "Bronchial epithelial growth medium:DMEM (1:1) with all-trans retinoic acid"
+        base_medium: "Bronchial epithelial growth medium:DMEM (1:1)"
+        supplements:
+          - id: "soma:jiao-supp-atra"
+            name: "All-trans retinoic acid"
+            supplement_type: growth_factor
+            concentration:
+              value: "50"
+              unit:
+                id: "UO:0000065"
+                name: "nanomolar"
     follows_protocols:
-      - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-qpcr-ereg"
+      - id: "PROTOCOL:jiao-qpcr-ereg"
+        protocol_type: MolecularAssayProtocol
         name: "Real-time PCR for EREG"
-        detection_method: "SYBR Green real-time PCR"
-        reference_gene: "GAPDH"
-        primer_sequences:
-          - "EREG-F: TGCTCTGCCTGGGTTTCCAT"
-          - "EREG-R: TGAGCCACACGTGGATTGTC"
 
   - id: "GE:jiao-ereg-mrna-crswnp-24h"
     name: "Epiregulin mRNA - CRSwNP HNECs, PM2.5 24 h"
@@ -1540,14 +1595,15 @@ gene_expression_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Patients with chronic rhinosinusitis with nasal polyps (EPOS 2012 criteria); nasal polyp tissue. Comorbid allergic rhinitis or asthma excluded"
     follows_protocols:
-      - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-qpcr-ereg"
+      - id: "PROTOCOL:jiao-qpcr-ereg"
+        protocol_type: MolecularAssayProtocol
         name: "Real-time PCR for EREG"
-        detection_method: "SYBR Green real-time PCR"
-        reference_gene: "GAPDH"
 
   # ---------------------------------------------------------------------------
   # PI3K inhibition arm: LY294002 blocks PM2.5-induced MUC5AC mRNA
@@ -1641,14 +1697,15 @@ gene_expression_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Patients with chronic rhinosinusitis with nasal polyps (EPOS 2012 criteria); nasal polyp tissue. Comorbid allergic rhinitis or asthma excluded"
     follows_protocols:
-      - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-qpcr-muc5ac"
+      - id: "PROTOCOL:jiao-qpcr-muc5ac"
+        protocol_type: MolecularAssayProtocol
         name: "Real-time PCR for MUC5AC"
-        detection_method: "SYBR Green real-time PCR"
-        reference_gene: "GAPDH"
 
 # =============================================================================
 # EGFR SIGNALING ASSAY - PI3K/AKT/ERK phosphorylation (Western blot)
@@ -1728,22 +1785,15 @@ egfr_signaling_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Patients with chronic rhinosinusitis with nasal polyps (EPOS 2012 criteria); nasal polyp tissue. Comorbid allergic rhinitis or asthma excluded"
     follows_protocols:
-      - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-wb-001"
+      - id: "PROTOCOL:jiao-wb-001"
+        protocol_type: MolecularAssayProtocol
         name: "Western blot for PI3K, AKT and ERK phosphorylation"
-        detection_method: "electrogenerated chemiluminescence"
-        antibodies_used:
-          - "anti-p-PI3K (1:1,000, Cell Signaling Technology)"
-          - "anti-PI3K (1:2,000, Cell Signaling Technology)"
-          - "anti-p-AKT (1:1,000, Cell Signaling Technology)"
-          - "anti-AKT (1:2,000, Cell Signaling Technology)"
-          - "anti-p-ERK (1:1,000, Cell Signaling Technology)"
-          - "anti-ERK (1:2,000, Cell Signaling Technology)"
-          - "anti-GAPDH (1:10,000, Abcam)"
-        normalization_method: "GAPDH loading control"
 
 # =============================================================================
 # NULL RESULTS - ciliogenesis was NOT affected by PM2.5
@@ -1831,17 +1881,28 @@ foxj_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Control subjects undergoing paranasal sinus surgery for non-inflammatory conditions; middle turbinate or uncinate process mucosa"
+      culture_media:
+        id: "soma:jiao-media-ali"
+        name: "Bronchial epithelial growth medium:DMEM (1:1) with all-trans retinoic acid"
+        base_medium: "Bronchial epithelial growth medium:DMEM (1:1)"
+        supplements:
+          - id: "soma:jiao-supp-atra"
+            name: "All-trans retinoic acid"
+            supplement_type: growth_factor
+            concentration:
+              value: "50"
+              unit:
+                id: "UO:0000065"
+                name: "nanomolar"
     follows_protocols:
-      - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-qpcr-foxj1"
+      - id: "PROTOCOL:jiao-qpcr-foxj1"
+        protocol_type: MolecularAssayProtocol
         name: "Real-time PCR for FOXJ1"
-        detection_method: "SYBR Green real-time PCR"
-        reference_gene: "GAPDH"
-        primer_sequences:
-          - "FOXJ1-F: GTGGGAGCAACTTCTTCCAGA"
-          - "FOXJ1-R: ATAAGTATGTGGTGCCTGGCT"
 
   - id: "FOXJ:jiao-foxj1-mrna-crswnp-24h"
     name: "FOXJ1 mRNA - CRSwNP HNECs, PM2.5 24 h (no change)"
@@ -1922,17 +1983,15 @@ foxj_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Patients with chronic rhinosinusitis with nasal polyps (EPOS 2012 criteria); nasal polyp tissue. Comorbid allergic rhinitis or asthma excluded"
     follows_protocols:
-      - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-qpcr-foxj1"
+      - id: "PROTOCOL:jiao-qpcr-foxj1"
+        protocol_type: MolecularAssayProtocol
         name: "Real-time PCR for FOXJ1"
-        detection_method: "SYBR Green real-time PCR"
-        reference_gene: "GAPDH"
-        primer_sequences:
-          - "FOXJ1-F: GTGGGAGCAACTTCTTCCAGA"
-          - "FOXJ1-R: ATAAGTATGTGGTGCCTGGCT"
 
 ciliary_function_assays:
   - id: "CILIA:jiao-btubulin-positive-control-24h"
@@ -2016,17 +2075,28 @@ ciliary_function_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Control subjects undergoing paranasal sinus surgery for non-inflammatory conditions; middle turbinate or uncinate process mucosa"
+      culture_media:
+        id: "soma:jiao-media-ali"
+        name: "Bronchial epithelial growth medium:DMEM (1:1) with all-trans retinoic acid"
+        base_medium: "Bronchial epithelial growth medium:DMEM (1:1)"
+        supplements:
+          - id: "soma:jiao-supp-atra"
+            name: "All-trans retinoic acid"
+            supplement_type: growth_factor
+            concentration:
+              value: "50"
+              unit:
+                id: "UO:0000065"
+                name: "nanomolar"
     follows_protocols:
-      - protocol_type: StainingProtocol
-        id: "PROTOCOL:jiao-icc-btub"
+      - id: "PROTOCOL:jiao-icc-btub"
+        protocol_type: StainingProtocol
         name: "Immunocytochemical staining for beta-tubulin IV"
-        staining_type: "immunofluorescence"
-        fixation_method: "50:50 methanol:acetone"
-        antibodies_used:
-          - "anti-beta-tubulin IV (1:500, Sigma-Aldrich)"
-          - "fluorescein isothiocyanate-labelled secondary (1:500, Invitrogen)"
 
   - id: "CILIA:jiao-btubulin-positive-crswnp-24h"
     name: "Ciliated cell coverage (beta-tubulin IV-positive cells) - CRSwNP HNECs, PM2.5 24 h (no change)"
@@ -2109,17 +2179,15 @@ ciliary_function_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Patients with chronic rhinosinusitis with nasal polyps (EPOS 2012 criteria); nasal polyp tissue. Comorbid allergic rhinitis or asthma excluded"
     follows_protocols:
-      - protocol_type: StainingProtocol
-        id: "PROTOCOL:jiao-icc-btub"
+      - id: "PROTOCOL:jiao-icc-btub"
+        protocol_type: StainingProtocol
         name: "Immunocytochemical staining for beta-tubulin IV"
-        staining_type: "immunofluorescence"
-        fixation_method: "50:50 methanol:acetone"
-        antibodies_used:
-          - "anti-beta-tubulin IV (1:500, Sigma-Aldrich)"
-          - "fluorescein isothiocyanate-labelled secondary (1:500, Invitrogen)"
 
 # =============================================================================
 # RESPONSE COMPARISONS - changes vs. medium-only control as stated in the paper
