@@ -106,12 +106,19 @@ just query "SELECT paper_id, measurement, value, unit_label, exposure_agent_labe
             FROM measurement_full WHERE measurement LIKE '%beat%'"
 ```
 
-Alongside the per-class tables, three tables carry what the class-per-table layout
-cannot: `measurement` (long format, with dispersion and sample size), `link` (every
+Alongside the per-class tables, four tables carry what the class-per-table layout
+cannot: `measurement` (long format, one row per number, with dispersion, sample
+size and a `value_qualifier` that preserves a recorded `<0.05`), `link` (every
 entity-to-entity edge, authoritative for many-to-many slots such as
-`follows_protocols`) and `term` (every ontology term referenced, with its label).
-The views `assay` and `assay_output` union the 11 assay and 11 output subclasses so
-a cross-assay question does not need an 11-way `UNION`.
+`follows_protocols`), `term` (every ontology term referenced, with its label) and
+`term_ref` (each place a term is used, which is what `term_usage` counts). The
+views `assay` and `assay_output` union the 11 assay and 11 output subclasses so a
+cross-assay question does not need an 11-way `UNION`.
+
+Rows are keyed on `source_file`, not on the cited PMID: two kb files may
+legitimately cite one paper, and keying on the PMID would either abort the build
+on a primary-key clash or silently merge the two files' entities. `paper_id`
+remains on every row for grouping and display.
 
 The DuckDB schema is derived from the installed `soma-schema` at build time, so a
 version bump regenerates it — inspect it with `just db-schema`. It deliberately

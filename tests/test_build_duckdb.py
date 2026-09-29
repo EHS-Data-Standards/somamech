@@ -17,6 +17,11 @@ import pytest
 ROOT = Path(__file__).parent.parent
 SCRIPT = ROOT / "scripts" / "build_duckdb.py"
 VALID = ROOT / "tests" / "data" / "valid"
+FIXTURES = (
+    "Container-liu2024-pm25-cftr.yaml",
+    "Container-montgomery2020-pm25-mucociliary.yaml",
+    "Container-comprehensive_aop_lung.yaml",
+)
 
 sys.path.insert(0, str(ROOT / "scripts"))
 
@@ -33,11 +38,7 @@ def db(tmp_path_factory):
     tmp = tmp_path_factory.mktemp("duckdb")
     kb = tmp / "kb"
     kb.mkdir()
-    for name in (
-        "Container-liu2024-pm25-cftr.yaml",
-        "Container-montgomery2020-pm25-mucociliary.yaml",
-        "Container-comprehensive_aop_lung.yaml",
-    ):
+    for name in FIXTURES:
         shutil.copy(VALID / name, kb)
     out = tmp / "soma.duckdb"
     result = run("--kb-dir", str(kb), "--output", str(out))
@@ -90,12 +91,12 @@ def test_multivalued_scalars_are_list_columns_not_side_tables(db):
 
 
 def test_every_row_traces_back_to_a_paper(db):
-    papers = {r[0] for r in db.execute("SELECT paper_id FROM paper").fetchall()}
-    assert len(papers) == 3
+    papers = {r[0] for r in db.execute("SELECT source_file FROM paper").fetchall()}
+    assert len(papers) == len(FIXTURES)
     for table in ("KeyEvent", "ExposureCondition", "measurement", "link"):
         orphans = db.execute(
-            f'SELECT COUNT(*) FROM "{table}" WHERE paper_id IS NULL '
-            f'OR paper_id NOT IN (SELECT paper_id FROM paper)'
+            f'SELECT COUNT(*) FROM "{table}" WHERE source_file IS NULL '
+            f'OR source_file NOT IN (SELECT source_file FROM paper)'
         ).fetchone()[0]
         assert orphans == 0, f"{table} has {orphans} rows with no paper"
 
@@ -120,7 +121,7 @@ def test_measurement_is_canonical_and_wide_tables_echo_it(db):
     mismatches = db.execute("""
         SELECT COUNT(*) FROM measurement m
         JOIN "CFTRFunctionOutput" o
-          ON o.paper_id = m.paper_id AND o.id = m.entity_id
+          ON o.source_file = m.source_file AND o.id = m.entity_id
         WHERE m.slot_name = 'cftr_chloride_secretion'
           AND COALESCE(o.cftr_chloride_secretion_value,'') <> COALESCE(m.value,'')
     """).fetchone()[0]
@@ -143,8 +144,113 @@ def test_tsv_dump_is_rectangular_and_flattens_lists(db, tmp_path):
 
     written = dump_tsv(Path(db.execute("PRAGMA database_list").fetchone()[2]), tmp_path)
     assert "measurement_full.tsv" in written
-    text = (tmp_path / "Protocol.tsv").read_text()
-    header = text.splitlines()[0].split("\t")
+    lines = (tmp_path / "Protocol.tsv").read_text().splitlines()
+    header = lines[0].split("\t")
     assert "equipment_required" in header
-    # LIST columns are joined, so no row explodes into a nested structure
-    assert "[" not in text.split("\n")[1] if len(text.split("\n")) > 1 else True
+    # LIST columns are joined with '; ', so no cell holds a nested structure
+    # and every row has exactly as many fields as the header.
+    equip = header.index("equipment_required")
+    assert len(lines) > 1, "no Protocol rows to check"
+    for line in lines[1:]:
+        if line.count('"') % 2:      # skip rows continued by a quoted newline
+            continue
+        assert "[" not in line.split("\t")[equip]
+
+
+# ---------------------------------------------------------------------------
+# Regressions for the review findings on PR #106
+# ---------------------------------------------------------------------------
+
+def test_measurement_has_no_duplicate_rows(db):
+    """An entity inlined under several parents contributes its number once.
+
+    The fixtures inline one exposure condition in full under six assays, which
+    previously produced six identical measurement rows and threw off every
+    aggregate over the table.
+    """
+    total, distinct = db.execute("""
+        SELECT COUNT(*), COUNT(DISTINCT (source_file, entity_type, entity_id, slot_name))
+        FROM measurement
+    """).fetchone()
+    assert total == distinct, f"{total - distinct} duplicate measurement rows"
+
+
+def test_link_rows_are_joinable_to_a_real_table(db):
+    """No link may point at an abstract class, which has no table."""
+    rels = relations(db)
+    bad = db.execute(
+        "SELECT DISTINCT target_type FROM link WHERE target_type IS NOT NULL"
+    ).fetchall()
+    unjoinable = [r[0] for r in bad if r[0] not in rels]
+    assert not unjoinable, f"link.target_type not a relation: {unjoinable}"
+
+
+def test_two_files_citing_one_paper_both_survive(tmp_path):
+    """Identity is the source file, so a shared PMID must not abort the build."""
+    kb = tmp_path / "kb"
+    kb.mkdir()
+    src = VALID / "Container-liu2024-pm25-cftr.yaml"
+    shutil.copy(src, kb / "a.yaml")
+    shutil.copy(src, kb / "b.yaml")
+    out = tmp_path / "dup.duckdb"
+
+    result = run("--kb-dir", str(kb), "--output", str(out))
+    assert result.returncode == 0, result.stdout + result.stderr
+
+    con = duckdb.connect(str(out), read_only=True)
+    try:
+        assert con.execute("SELECT COUNT(*) FROM paper").fetchone()[0] == 2
+        # the two files' entities stay separate rather than merging
+        per_file = con.execute(
+            'SELECT source_file, COUNT(*) FROM "CFTRFunctionAssay" '
+            "GROUP BY source_file ORDER BY source_file"
+        ).fetchall()
+        assert len(per_file) == 2
+        assert per_file[0][1] == per_file[1][1]
+    finally:
+        con.close()
+    assert "already cited by" in result.stdout + result.stderr
+
+
+def test_unresolvable_inlined_child_warns_instead_of_vanishing(tmp_path):
+    """An inlined value of an abstract-ranged slot must not disappear silently."""
+    import yaml as _yaml
+
+    kb = tmp_path / "kb"
+    kb.mkdir()
+    data = _yaml.safe_load((VALID / "Container-liu2024-pm25-cftr.yaml").read_text())
+    # ResponseComparison.control_output is declared AssayOutputMeasurement,
+    # which is abstract; inline a value carrying no type designator.
+    data["response_comparisons"] = [{
+        "id": "RC:test-1",
+        "name": "inlined control output with an abstract declared range",
+        "control_output": {"id": "OUT:inlined-control", "name": "inlined"},
+    }]
+    (kb / "rc.yaml").write_text(_yaml.safe_dump(data))
+
+    result = run("--kb-dir", str(kb), "--output", str(tmp_path / "rc.duckdb"))
+    assert result.returncode == 0, result.stdout + result.stderr
+    combined = result.stdout + result.stderr
+    assert "has no table" in combined and "control_output" in combined
+
+
+def test_term_usage_counts_more_than_units(db):
+    """Every term reference is counted, not only the ones that are units."""
+    unused = db.execute("SELECT COUNT(*) FROM term_usage WHERE n_uses = 0").fetchone()[0]
+    assert unused == 0, f"{unused} terms read as unused"
+    non_unit = db.execute(
+        "SELECT COUNT(DISTINCT term_id) FROM term_ref WHERE slot_name NOT LIKE '%.unit'"
+    ).fetchone()[0]
+    assert non_unit > 0, "no non-unit term references recorded"
+
+
+def test_value_qualifier_keeps_inequalities_queryable(db):
+    """'<0.05' must not silently become 0.05 with the bound discarded."""
+    from build_duckdb import _num
+
+    assert _num("12.3") == (12.3, None)
+    assert _num("<0.05") == (0.05, "<")
+    assert _num("~12") == (12.0, "~")
+    assert _num("not a number") == (None, None)
+    # and the column exists on the built table
+    assert "value_qualifier" in columns(db, "measurement")

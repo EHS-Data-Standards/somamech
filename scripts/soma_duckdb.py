@@ -28,8 +28,6 @@ primary keys, and ontology term references flattened to a curie + label pair
 """
 from __future__ import annotations
 
-from functools import lru_cache
-
 from linkml_runtime import SchemaView
 
 # Value objects with no identifier: flattened inline, never their own table.
@@ -107,22 +105,28 @@ def is_entity(sv: SchemaView, range_name: str | None) -> bool:
     )
 
 
-@lru_cache(maxsize=None)
-def _designator(sv_id: int, cls: str) -> str | None:
-    sv = _SV_REGISTRY[sv_id]
-    for s in sv.class_induced_slots(cls):
-        if s.designates_type:
-            return s.name
-    return None
+def _cache(sv: SchemaView) -> dict:
+    """Per-SchemaView memo store.
 
-
-_SV_REGISTRY: dict[int, SchemaView] = {}
+    Kept on the view itself rather than in a module-level dict keyed by
+    `id(sv)`: a global would either leak every view it ever saw or, once one
+    was released, serve a recycled id's answers for a different schema.
+    """
+    store = getattr(sv, "_soma_duckdb_cache", None)
+    if store is None:
+        store = {}
+        sv._soma_duckdb_cache = store
+    return store
 
 
 def designator_slot(sv: SchemaView, cls: str) -> str | None:
     """The slot whose value names the concrete class, if the schema declares one."""
-    _SV_REGISTRY[id(sv)] = sv
-    return _designator(id(sv), cls)
+    memo = _cache(sv).setdefault("designator", {})
+    if cls not in memo:
+        memo[cls] = next(
+            (s.name for s in sv.class_induced_slots(cls) if s.designates_type), None
+        )
+    return memo[cls]
 
 
 def concrete_class(sv: SchemaView, declared: str, obj: dict) -> str:
@@ -140,8 +144,15 @@ def concrete_class(sv: SchemaView, declared: str, obj: dict) -> str:
     return declared
 
 
-def table_classes(sv: SchemaView) -> list[str]:
-    """Concrete classes that become tables, excluding the root and flattened ones."""
+def table_classes(sv: SchemaView) -> frozenset[str]:
+    """Concrete classes that become tables, excluding the root and flattened ones.
+
+    Memoized: the walker asks this for every node it visits, and computing it
+    sorts all classes and induces slots on each.
+    """
+    memo = _cache(sv)
+    if "table_classes" in memo:
+        return memo["table_classes"]
     out = []
     for name, cls in sv.all_classes().items():
         if cls.abstract or name == ROOT_CLASS:
@@ -154,7 +165,8 @@ def table_classes(sv: SchemaView) -> list[str]:
             out.append(name)
             continue
         out.append(name)
-    return sorted(out)
+    memo["table_classes"] = frozenset(out)
+    return memo["table_classes"]
 
 
 def has_natural_key(sv: SchemaView, cls: str) -> bool:

@@ -73,6 +73,7 @@ CREATE TABLE measurement (
     slot_name     VARCHAR,
     value         VARCHAR,
     value_num     DOUBLE,
+    value_qualifier VARCHAR,
     min_value     VARCHAR,
     max_value     VARCHAR,
     unit          VARCHAR,
@@ -99,9 +100,23 @@ CREATE TABLE term (
     label       VARCHAR,
     prefix      VARCHAR
 );
+-- Every ontology term reference, so term_usage can count all of them rather
+-- than only the ones that happened to be units.
+CREATE TABLE term_ref (
+    paper_id     VARCHAR,
+    source_file  VARCHAR,
+    entity_type  VARCHAR,
+    entity_id    VARCHAR,
+    slot_name    VARCHAR,
+    term_id      VARCHAR
+);
+-- Keyed on source_file, not the cited PMID: two kb files may legitimately cite
+-- one paper (a re-extraction, or a paper split across files), and keying on the
+-- PMID would either abort the build on a primary-key clash or silently merge
+-- the two files' entities into each other. paper_id stays as an attribute.
 CREATE TABLE paper (
-    paper_id        VARCHAR PRIMARY KEY,
-    source_file     VARCHAR,
+    source_file     VARCHAR PRIMARY KEY,
+    paper_id        VARCHAR,
     reference       VARCHAR,
     reference_title VARCHAR,
     doi             VARCHAR
@@ -117,7 +132,7 @@ def emit_ddl(sv) -> str:
         MEASUREMENT_DDL.strip(),
         "",
     ]
-    for cls in table_classes(sv):
+    for cls in sorted(table_classes(sv)):
         cols = list(PROVENANCE_COLUMNS) + list(PARENT_COLUMNS) + columns_for(sv, cls)
         seen, deduped = set(), []
         for name, typ in cols:
@@ -127,7 +142,7 @@ def emit_ddl(sv) -> str:
             deduped.append((name, typ))
         lines = [f'    "{n}" {t}' for n, t in deduped]
         if has_natural_key(sv, cls):
-            lines.append('    PRIMARY KEY ("paper_id", "id")')
+            lines.append('    PRIMARY KEY ("source_file", "id")')
         body = ",\n".join(lines)
         parts.append(f'CREATE TABLE "{cls}" (\n{body}\n);')
     return "\n".join(parts) + "\n"
@@ -141,21 +156,36 @@ class Builder:
     def __init__(self, sv):
         self.sv = sv
         self.rows: dict[str, dict[tuple, dict]] = defaultdict(dict)
-        self.measurements: list[dict] = []
-        self.links: list[dict] = []
+        # measurements and links are keyed, not appended: the same entity is
+        # often inlined in full under several parents (one exposure condition
+        # under six assays in the fixtures), and re-walking it must not emit
+        # its numbers or its edges again.
+        self.measurements: dict[tuple, dict] = {}
+        self.links: dict[tuple, dict] = {}
+        self.term_refs: set[tuple] = set()
         self.terms: dict[str, tuple[str, str]] = {}
         self.papers: list[dict] = []
         self.surrogate: dict[str, int] = defaultdict(int)
         self.warnings: list[str] = []
 
     # -- helpers ----------------------------------------------------------
-    def _term(self, obj):
-        """Record an ontology term reference; return (curie, label)."""
+    def _term(self, obj, ref=None):
+        """Record an ontology term reference; return (curie, label).
+
+        `ref` is (ctx, entity_type, entity_id, slot_name) when the caller knows
+        where the reference sits, which feeds the term_ref table.
+        """
         if obj is None:
             return None, None
+        curie = obj if isinstance(obj, str) else obj.get("id")
+        if curie and ref is not None:
+            ctx, etype, eid, slot = ref
+            self.term_refs.add(
+                (ctx["paper_id"], ctx["source_file"], etype, _s(eid), slot, curie)
+            )
         if isinstance(obj, str):
             return obj, None
-        curie, label = obj.get("id"), obj.get("name")
+        label = obj.get("name")
         if curie:
             prefix = curie.split(":")[0] if ":" in curie else ""
             existing = self.terms.get(curie)
@@ -164,10 +194,17 @@ class Builder:
         return curie, label
 
     def _quantity(self, obj, entity_type, entity_id, entity_name, slot, ctx, rng):
-        """Flatten a value object and append its long-format measurement row."""
+        """Flatten a value object and record its long-format measurement row.
+
+        Keyed by (source_file, entity, slot) so an entity inlined under several
+        parents contributes its number once rather than once per copy.
+        """
         if not isinstance(obj, dict):
             return {}
-        unit, unit_label = self._term(obj.get("unit"))
+        mkey = (ctx["source_file"], entity_type, _s(entity_id), slot)
+        unit, unit_label = self._term(
+            obj.get("unit"), (ctx, entity_type, entity_id, f"{slot}.unit")
+        )
         if rng == "QuantityRange":
             mn, mx = obj.get("min_value"), obj.get("max_value")
             if isinstance(mn, dict):
@@ -180,16 +217,16 @@ class Builder:
                 f"{slot}_unit": unit,
                 f"{slot}_unit_label": unit_label,
             }
-            self.measurements.append({
-                **ctx, "entity_type": entity_type, "entity_id": entity_id,
+            self.measurements[mkey] = {
+                **ctx, "entity_type": entity_type, "entity_id": _s(entity_id),
                 "entity_name": entity_name, "slot_name": slot,
-                "value": None, "value_num": None,
+                "value": None, "value_num": None, "value_qualifier": None,
                 "min_value": _s(mn), "max_value": _s(mx),
                 "unit": unit, "unit_label": unit_label,
                 "central_tendency": None, "sample_size": None,
                 "variability_type": None, "variability_value": None,
                 "lower_bound": None, "upper_bound": None,
-            })
+            }
             return flat
 
         value = _s(obj.get("value"))
@@ -201,10 +238,11 @@ class Builder:
             f"{slot}_unit": unit,
             f"{slot}_unit_label": unit_label,
         }
-        self.measurements.append({
-            **ctx, "entity_type": entity_type, "entity_id": entity_id,
+        num, qualifier = _num(value)
+        self.measurements[mkey] = {
+            **ctx, "entity_type": entity_type, "entity_id": _s(entity_id),
             "entity_name": entity_name, "slot_name": slot,
-            "value": value, "value_num": _num(value),
+            "value": value, "value_num": num, "value_qualifier": qualifier,
             "min_value": None, "max_value": None,
             "unit": unit, "unit_label": unit_label,
             "central_tendency": _s(obj.get("central_tendency")),
@@ -213,7 +251,7 @@ class Builder:
             "variability_value": _s(var.get("value")),
             "lower_bound": _s(var.get("lower_bound")),
             "upper_bound": _s(var.get("upper_bound")),
-        })
+        }
         return flat
 
     # -- main recursion ---------------------------------------------------
@@ -224,7 +262,16 @@ class Builder:
         """
         sv = self.sv
         cls = concrete_class(sv, declared, obj)
-        if cls not in self.rows and cls not in table_classes(sv):
+        if cls not in table_classes(sv):
+            # The declared range is abstract and the object carries no type
+            # designator, so there is no table to put it in. Dropping it would
+            # lose the row, its subtree and its edge with no trace.
+            slot = parent[2] if parent else "?"
+            self.warnings.append(
+                f"{ctx['source_file']}: inlined value of '{slot}' resolved to "
+                f"'{cls}', which has no table (declared range '{declared}' is "
+                f"abstract and no type designator was given) — subtree dropped"
+            )
             return None
 
         natural = has_natural_key(sv, cls)
@@ -237,7 +284,7 @@ class Builder:
             self.surrogate[cls] += 1
             row_id = self.surrogate[cls]
 
-        key = (ctx["paper_id"], row_id)
+        key = (ctx["source_file"], row_id)
         row = self.rows[cls].get(key)
         first_time = row is None
         if first_time:
@@ -262,14 +309,17 @@ class Builder:
             elif is_entity(sv, rng):
                 self._entity_slot(row, s, val, rng, cls, row_id, ctx)
             elif rng in QUANTITY_CLASSES:
-                row.update(self._quantity(val, cls, row_id, name, s.name, ctx, rng))
+                row.update(
+                    self._quantity(val, cls, row_id, name, s.name, ctx, rng)
+                )
             elif rng in TERM_CLASSES:
+                ref = (ctx, cls, row_id, s.name)
                 if s.multivalued:
-                    pairs = [self._term(v) for v in val or []]
+                    pairs = [self._term(v, ref) for v in val or []]
                     row[s.name] = [p[0] for p in pairs]
                     row[f"{s.name}_labels"] = [p[1] for p in pairs]
                 else:
-                    curie, label = self._term(val)
+                    curie, label = self._term(val, ref)
                     row[s.name] = curie
                     row[f"{s.name}_label"] = label
             else:
@@ -294,11 +344,12 @@ class Builder:
                 child_id, child_type, inlined = item, rng, False
             if child_id is None:
                 continue
-            self.links.append({
+            lkey = (ctx["source_file"], cls, _s(row_id), s.name, _s(child_id))
+            self.links[lkey] = {
                 **ctx, "parent_type": cls, "parent_id": _s(row_id),
                 "parent_slot": s.name, "target_type": child_type,
                 "target_id": _s(child_id), "inlined": inlined,
-            })
+            }
             if not s.multivalued:
                 row[f"{s.name}_id"] = _s(child_id)
 
@@ -308,6 +359,12 @@ class Builder:
         src = data.get("source_publication") or {}
         paper_id = src.get("reference") or path.name
         ctx = {"paper_id": paper_id, "source_file": path.name}
+        clash = [p["source_file"] for p in self.papers if p["paper_id"] == paper_id]
+        if clash:
+            self.warnings.append(
+                f"{path.name}: cites {paper_id}, already cited by "
+                f"{', '.join(clash)} — both are kept, keyed by source_file"
+            )
         self.papers.append({
             "paper_id": paper_id,
             "source_file": path.name,
@@ -324,15 +381,57 @@ class Builder:
                     self.visit(item, s.range, ctx, parent=(PAPER_TABLE, paper_id, s.name))
 
 
+    def resolve_link_types(self):
+        """Point every link at the class whose table actually holds the target.
+
+        For a by-id reference the walker only knows the slot's declared range,
+        and several of those ranges are abstract (Assay, AssayOutputMeasurement)
+        with no table of their own. Looking the target up in the row map after
+        the walk gives the concrete class, so link stays joinable.
+        """
+        index: dict[tuple, str] = {}
+        for cls, rowmap in self.rows.items():
+            for (source_file, row_id) in rowmap:
+                index[(source_file, _s(row_id))] = cls
+        unresolved = 0
+        for link in self.links.values():
+            if link["inlined"]:
+                continue
+            found = index.get((link["source_file"], link["target_id"]))
+            if found:
+                link["target_type"] = found
+            else:
+                unresolved += 1
+        if unresolved:
+            self.warnings.append(
+                f"{unresolved} link row(s) reference an id that no entity in the "
+                f"same file declares; target_type left as the declared range"
+            )
+
+
 def _s(v):
     return None if v is None else str(v)
 
 
 def _num(v):
+    """Parse a value into (number, qualifier).
+
+    Values in this schema are strings so a curator can record "<0.05" or "~12".
+    The qualifier is kept rather than discarded: stripping it would make
+    `WHERE value_num < 0.05` silently miss the rows that meant exactly that.
+    """
+    if v is None:
+        return None, None
+    text = str(v).strip()
+    qualifier = None
+    for mark in ("<=", ">=", "<", ">", "~", "≈"):
+        if text.startswith(mark):
+            qualifier, text = mark, text[len(mark):].strip()
+            break
     try:
-        return float(str(v).strip().lstrip("<>~≈").replace(",", ""))
+        return float(text.replace(",", "")), qualifier
     except (TypeError, ValueError):
-        return None
+        return None, qualifier
 
 
 # ---------------------------------------------------------------------------
@@ -396,15 +495,15 @@ SELECT
     m.source_file
 FROM measurement m
 LEFT JOIN assay_output o
-       ON o.paper_id = m.paper_id AND o.id = m.entity_id
+       ON o.source_file = m.source_file AND o.id = m.entity_id
 LEFT JOIN assay a
-       ON a.paper_id = o.paper_id AND a.id = o.assay_id
+       ON a.source_file = o.source_file AND a.id = o.assay_id
 LEFT JOIN "ExposureCondition" e
-       ON e.paper_id = o.paper_id AND e.id = o.measured_under_id
+       ON e.source_file = o.source_file AND e.id = o.measured_under_id
 LEFT JOIN "KeyEvent" ke
-       ON ke.paper_id = a.paper_id AND ke.id = a.informs_on_key_event_id
+       ON ke.source_file = a.source_file AND ke.id = a.informs_on_key_event_id
 LEFT JOIN paper p
-       ON p.paper_id = m.paper_id;
+       ON p.source_file = m.source_file;
 """.strip())
 
     parts.append("""
@@ -426,13 +525,26 @@ FROM "EvidenceItem" ev;
 """.strip())
 
     parts.append("""
--- Which ontology terms the KB actually uses, and how often.
+-- Which ontology terms the KB actually uses, and how often. Counts every
+-- reference recorded in term_ref -- units, cell types, species, chemicals and
+-- anatomical entities alike -- so a term with no uses really is unused.
 CREATE VIEW term_usage AS
-SELECT t.id, t.label, t.prefix, u.n_uses, u.n_papers
+SELECT
+    t.id,
+    t.label,
+    t.prefix,
+    COALESCE(u.n_uses, 0)   AS n_uses,
+    COALESCE(u.n_papers, 0) AS n_papers,
+    u.slots
 FROM term t
 LEFT JOIN (
-    SELECT unit AS id, COUNT(*) AS n_uses, COUNT(DISTINCT paper_id) AS n_papers
-    FROM measurement WHERE unit IS NOT NULL GROUP BY unit
+    SELECT
+        term_id                            AS id,
+        COUNT(*)                           AS n_uses,
+        COUNT(DISTINCT source_file)         AS n_papers,
+        STRING_AGG(DISTINCT slot_name, ', ') AS slots
+    FROM term_ref
+    GROUP BY term_id
 ) u ON u.id = t.id;
 """.strip())
 
@@ -442,7 +554,7 @@ LEFT JOIN (
 def _subclasses(sv, parent: str) -> list[str]:
     """Concrete descendants of an abstract parent class, in schema order."""
     return [
-        c for c in table_classes(sv)
+        c for c in sorted(table_classes(sv))
         if parent in sv.class_ancestors(c) and c != parent
     ]
 
@@ -488,6 +600,14 @@ def _insert(con, table, rows):
     if not rows:
         return 0
     cols = [r[0] for r in con.execute(f'DESCRIBE "{table}"').fetchall()]
+    # A row key with no matching column would otherwise be shed in silence,
+    # which is how schema drift turns into quietly missing data.
+    extra = {k for r in rows for k in r} - set(cols)
+    if extra:
+        raise SystemExit(
+            f'{table}: row keys with no column: {sorted(extra)}. '
+            f"The schema mapping and the DDL have drifted apart."
+        )
     placeholders = ", ".join("?" for _ in cols)
     payload = [tuple(r.get(c) for c in cols) for r in rows]
     con.executemany(
@@ -509,6 +629,7 @@ def build(kb_dir: Path, out: Path, schema_path: str) -> dict:
     b = Builder(sv)
     for f in files:
         b.add_file(f)
+    b.resolve_link_types()
 
     out.parent.mkdir(parents=True, exist_ok=True)
     out.unlink(missing_ok=True)
@@ -521,11 +642,21 @@ def build(kb_dir: Path, out: Path, schema_path: str) -> dict:
         n = _insert(con, cls, list(rowmap.values()))
         if n:
             counts[cls] = n
-    counts["measurement"] = _insert(con, "measurement", b.measurements)
-    counts["link"] = _insert(con, "link", b.links)
+    counts["measurement"] = _insert(con, "measurement", list(b.measurements.values()))
+    counts["link"] = _insert(con, "link", list(b.links.values()))
     counts["term"] = _insert(
         con, "term",
         [{"id": k, "label": v[0], "prefix": v[1]} for k, v in sorted(b.terms.items())],
+    )
+    counts["term_ref"] = _insert(
+        con, "term_ref",
+        [
+            {
+                "paper_id": p_, "source_file": sf, "entity_type": et,
+                "entity_id": eid, "slot_name": slot, "term_id": tid,
+            }
+            for (p_, sf, et, eid, slot, tid) in sorted(b.term_refs)
+        ],
     )
     _execute_script(con, emit_views(sv))
     con.close()
