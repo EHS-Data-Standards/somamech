@@ -70,17 +70,58 @@ def collect_snippets(data: object, out: dict[str, set[str]]) -> None:
             collect_snippets(item, out)
 
 
+def _normalize_ws(text: str) -> str:
+    return " ".join(text.split())
+
+
+def resolves_in_committed_cache(ref: str, snippet: str) -> bool:
+    """True if the snippet is verbatim (modulo whitespace) in the committed cache.
+
+    Such a snippet is verified by CI's own reference validator against the
+    committed cache entry, so it needs no receipt. Whitespace is collapsed on
+    both sides because the cache may hard-wrap text; any stricter mismatch
+    fails closed — the snippet is then simply treated as CI-invisible and a
+    receipt is required for it.
+    """
+    cache_file = REFS_CACHE / f"{ref.replace(':', '_')}.md"
+    if not cache_file.is_file():
+        return False
+    content = _normalize_ws(cache_file.read_text())
+    # "..." is the quote checker's elision form, used where the source has a
+    # bracketed span the checker strips from the query but not the content.
+    # Each fragment must appear, in order, for the snippet to count as
+    # resolved — an out-of-order or absent fragment still requires a receipt.
+    pos = 0
+    for fragment in _normalize_ws(snippet).split("..."):
+        fragment = fragment.strip()
+        if not fragment:
+            continue
+        found = content.find(fragment, pos)
+        if found < 0:
+            return False
+        pos = found + len(fragment)
+    return True
+
+
 def abstract_only_snippets(kb_file: Path) -> dict[str, set[str]]:
-    """Snippets in this kb file whose committed cache entry is abstract-only."""
+    """Snippets in this kb file that CI cannot verify on its own.
+
+    A snippet needs a receipt when its committed cache entry is abstract-only
+    AND the snippet does not itself resolve in that committed entry — those
+    are the quotes only a local full-text check can vouch for.
+    """
     with kb_file.open() as f:
         data = yaml.safe_load(f)
     per_ref: dict[str, set[str]] = {}
     collect_snippets(data, per_ref)
-    return {
-        ref: snippets
-        for ref, snippets in per_ref.items()
-        if (cache_content_type(ref) or "").startswith("abstract")
-    }
+    out: dict[str, set[str]] = {}
+    for ref, snippets in per_ref.items():
+        if not (cache_content_type(ref) or "").startswith("abstract"):
+            continue
+        invisible = {s for s in snippets if not resolves_in_committed_cache(ref, s)}
+        if invisible:
+            out[ref] = invisible
+    return out
 
 
 def receipt_path(pmid: str) -> Path:
