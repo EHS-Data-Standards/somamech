@@ -729,6 +729,21 @@ gene_expression_assays:
           unit:
             id: "UO:0000033"
             name: "day"
+      - id: "EXPOSURE:schamberger-cse-2.5pct-28d"
+        name: "2.5% CSE basolateral, 28 days of ALI differentiation"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "2.5"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
       - id: "EXPOSURE:schamberger-cse-5pct-28d"
         name: "5% CSE basolateral, 28 days of ALI differentiation"
         exposure_agent:
@@ -759,6 +774,22 @@ gene_expression_assays:
           until day 28" — an approximate prose value with no stated spread.
         experimental_group: control
         measured_under: "EXPOSURE:schamberger-nt-28d"
+        percentage_positive_cells:
+          value: "10"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 3
+      - id: "GENEXPR:schamberger-cc10-positive-cells-d28-output-cse-2.5"
+        name: "Clara cell percentage at day 28, 2.5% CSE (no effect)"
+        description: >-
+          Stated no-effect arm: the gradual drop to about 10% by day 28 was
+          seen "under control culture conditions as well as when 2.5% CSE was
+          included in the culture medium", so 2.5% CSE behaved like control.
+          Approximate prose value with no stated spread.
+        experimental_group: treated
+        measured_under: "EXPOSURE:schamberger-cse-2.5pct-28d"
         percentage_positive_cells:
           value: "10"
           unit:
@@ -841,6 +872,18 @@ gene_expression_assays:
         evidence_source: IN_VITRO
         snippet: "Independent of CSE exposure, the fraction of CC10-positive Clara cells reached a peak of about 20% at day 14"
         explanation: "Gives the day 14 peak recorded as the baseline output record, and states that it is independent of CSE exposure."
+      - reference: "PMID:25641363"
+        reference_title: "Cigarette smoke alters primary human bronchial epithelial cell differentiation at the air-liquid interface."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "After that a gradual drop to about 10% at day 28 was observed under control culture conditions as well as when 2.5% CSE was included in the culture medium."
+        explanation: "Supplies the 2.5% CSE arm as a stated no-effect result: that condition tracked the control down to about 10% Clara cells by day 28."
+      - reference: "PMID:25641363"
+        reference_title: "Cigarette smoke alters primary human bronchial epithelial cell differentiation at the air-liquid interface."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "In the presence of 5% CSE, Clara cell numbers did not decline between day 14 and day 28."
+        explanation: "The mechanism behind the higher day 28 Clara cell fraction under 5% CSE: the normal post-peak decline failed to occur, so club cell numbers were held up rather than lost."
 
   # --- CC10 protein: intracellular down, secreted up -----------------------
   - id: "GENEXPR:schamberger-cc10-protein-28d"
@@ -963,7 +1006,7 @@ gene_expression_assays:
       paper reports the densitometry graphically only, so no values are
       recorded. The retained basal cell marker expression is the authors'
       evidence that basal cell differentiation is impaired by CSE.
-    target_gene: "KRT14 and KRT5"
+    target_gene: "KRT14"
     gene_expression_method: "Western blot with densitometric quantification"
     normalization_reference: "GAPDH"
     has_exposure_condition:
@@ -1165,6 +1208,139 @@ gene_expression_assays:
         snippet: "Finally, we also tested involucrin ( IVL) expression over time (Figure 4d), a marker for squamous metaplasia"
         explanation: "Identifies IVL as the squamous metaplasia marker, which is why this assay informs on the squamous metaplasia key event."
 
+  # --- Overall differentiated cell fraction --------------------------------
+  - id: "GENEXPR:schamberger-differentiated-cells-d28"
+    name: "Total marker-positive (differentiated) cell percentage at day 28 under chronic CSE"
+    description: >-
+      The fraction of cells carrying any of the three differentiation markers
+      (acTUB, CC10, MUC5AC) at day 28, quantified from the same
+      immunofluorescence images. On average 73.6% of cells were differentiated
+      in control conditions, dropping to 57.9% under 2.5% CSE and 63.9% under
+      5% CSE — an overall reduction in differentiated cells, which the authors
+      read together with the raised basal cell markers as impaired basal cell
+      differentiation. The paper itself cautions that these percentages must
+      be viewed with caution, because MUC5AC/CC10 double-positive cells exist
+      and are therefore counted under more than one marker; no spread or
+      p-value is given for them.
+    target_gene: "acTUB, CC10 and MUC5AC (combined differentiation markers)"
+    gene_expression_method: "indirect immunofluorescence with cell-fraction quantification"
+    has_exposure_condition:
+      - id: "EXPOSURE:schamberger-nt-28d"
+        name: "Non-treated control (no CSE), 28 days of ALI differentiation"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:schamberger-cse-2.5pct-28d"
+        name: "2.5% CSE basolateral, 28 days of ALI differentiation"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "2.5"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:schamberger-cse-5pct-28d"
+        name: "5% CSE basolateral, 28 days of ALI differentiation"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "5"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+        exposure_duration:
+          value: "28"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GENEXPR:schamberger-differentiated-cells-d28-output-control"
+        name: "Differentiated cell percentage at day 28, non-treated control"
+        experimental_group: control
+        measured_under: "EXPOSURE:schamberger-nt-28d"
+        percentage_positive_cells:
+          value: "73.6"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 3
+      - id: "GENEXPR:schamberger-differentiated-cells-d28-output-cse-2.5"
+        name: "Differentiated cell percentage at day 28, 2.5% CSE"
+        experimental_group: treated
+        measured_under: "EXPOSURE:schamberger-cse-2.5pct-28d"
+        percentage_positive_cells:
+          value: "57.9"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 3
+      - id: "GENEXPR:schamberger-differentiated-cells-d28-output-cse-5"
+        name: "Differentiated cell percentage at day 28, 5% CSE"
+        experimental_group: treated
+        measured_under: "EXPOSURE:schamberger-cse-5pct-28d"
+        percentage_positive_cells:
+          value: "63.9"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 3
+    informs_on_key_event:
+      id: "KE:ke-squamous-metaplasia"
+      name: "Squamous metaplasia"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:schamberger-phbec-ali-001"
+      name: "Primary human bronchial epithelial cells differentiated at the air-liquid interface"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:schamberger-if-quantification-001"
+        name: "Indirect immunofluorescence staining and cell-fraction quantification on transwell membranes"
+    evidence:
+      - reference: "PMID:25641363"
+        reference_title: "Cigarette smoke alters primary human bronchial epithelial cell differentiation at the air-liquid interface."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "On average, 73.6% differentiated cells were quantified in control condi- tions at day 28, whereas this number dropped to 57.9% or 63.9% in 2.5% or 5% CSE-exposed cells, respectively."
+        explanation: "Gives all three differentiated-cell percentages recorded on the output records. (\"control condi- tions\" is how the PDF text layer renders the hyphenated line break in \"conditions\" and is quoted verbatim.)"
+      - reference: "PMID:25641363"
+        reference_title: "Cigarette smoke alters primary human bronchial epithelial cell differentiation at the air-liquid interface."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "We found an overall reduction in differentiated cells when pHBEC cultures were chronically exposed to CSE."
+        explanation: "The discussion states the direction of the effect this assay records and ties it to the impaired basal cell differentiation that the squamous metaplasia key event covers."
+      - reference: "PMID:25641363"
+        reference_title: "Cigarette smoke alters primary human bronchial epithelial cell differentiation at the air-liquid interface."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "need to be viewed with caution since double positive cells for MUC5AC and CC10 exist"
+        explanation: "The authors' own caveat on these percentages, recorded in the assay description: double-positive cells are counted under more than one marker."
+
 # =============================================================================
 # GOBLET CELL ASSAYS
 # =============================================================================
@@ -1359,10 +1535,10 @@ goblet_cell_assays:
     evidence:
       - reference: "PMID:25641363"
         reference_title: "Cigarette smoke alters primary human bronchial epithelial cell differentiation at the air-liquid interface."
-        supports: REFUTE
+        supports: NO_EVIDENCE
         evidence_source: IN_VITRO
         snippet: "In the presence of CSE, MUC5AC and MUC5B transcript levels were largely unchanged."
-        explanation: "Mucin transcript levels did not rise under CSE, so this evidence points against a transcriptionally driven mucin hypersecretion key event rather than for it."
+        explanation: "Mucin TRANSCRIPT levels were unchanged, but the paper never measured mucin secretion, so this null result does not bear on the mucin hypersecretion key event in either direction; it is recorded as NO_EVIDENCE rather than REFUTE so downstream pooling does not read it as a vote against the key event."
       - reference: "PMID:25641363"
         reference_title: "Cigarette smoke alters primary human bronchial epithelial cell differentiation at the air-liquid interface."
         supports: SUPPORT
