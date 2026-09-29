@@ -50,7 +50,8 @@
 #   - Serum SOD below the lower limit of normal in 42% of mothers, 51% of
 #     children (the paper gives no mean SOD value in text, so the finding is
 #     recorded in the string slot antioxidant_enzyme_activities, with no
-#     invented numeric value)
+#     invented numeric value). Recorded as two assays, one per group, so that
+#     which group a record describes is machine-readable via study_subject.
 #   - Serum CRP above the normal range in mothers and children
 #
 # =============================================================================
@@ -110,7 +111,7 @@ protocols:
 lung_function_assays:
   - id: "LF:oluwole-mothers-spirometry"
     name: "Spirometry - biomass-exposed rural mothers vs ATS-predicted normal"
-    description: "FEV1 in 59 non-smoking rural Nigerian mothers cooking with biomass fuel was significantly lower than the ATS-predicted mean (1.94 +/- 0.51 vs 2.79 +/- 0.36 L/s, p<0.05). FEV1/FVC was also measured and used in the correlation and regression analyses, but Table 1 is not reproduced in the cached full text, so no FEV1/FVC value is recorded here. The comparator record is an external predicted-value reference, not a sampled unexposed household: the authors list the absence of clean-fuel control households as a study limitation."
+    description: "FEV1 in 59 non-smoking rural Nigerian mothers cooking with biomass fuel was significantly lower than the ATS-predicted mean (1.94 +/- 0.51 vs 2.79 +/- 0.36 L/s, p<0.05). FEV1/FVC was also measured and used in the correlation and regression analyses, but Table 1 is not reproduced in the cached full text, so no FEV1/FVC value is recorded here. The comparator record is an external predicted-value reference, not a sampled unexposed household: the authors list the absence of clean-fuel control households as a study limitation. Unit note: the paper prints FEV1 in L/s; FEV1 is a volume, so this is very likely a typo for L in the source, but the unit is recorded as printed (UCUM:L/s) rather than silently normalised."
     reference_dataset: "ATS-recommended predicted normal values"
     evidence:
       - reference: "PMID:23777718"
@@ -219,7 +220,7 @@ lung_function_assays:
 
   - id: "LF:oluwole-children-spirometry"
     name: "Spirometry - biomass-exposed rural children vs ATS-predicted normal"
-    description: "FEV1 in the 59 children of the exposed mothers was significantly lower than the ATS-predicted mean (1.76 +/- 0.54 vs 2.57 +/- 0.66 L/s, p<0.05). The lower age limit of 7 years was set to ensure children could perform spirometry. As with the mothers, the comparator is an external predicted-value reference; the study sampled no clean-fuel control households."
+    description: "FEV1 in the 59 children of the exposed mothers was significantly lower than the ATS-predicted mean (1.76 +/- 0.54 vs 2.57 +/- 0.66 L/s, p<0.05). The lower age limit of 7 years was set to ensure children could perform spirometry. As with the mothers, the comparator is an external predicted-value reference; the study sampled no clean-fuel control households. Unit note: the paper prints FEV1 in L/s; FEV1 is a volume, so this is very likely a typo for L in the source, but the unit is recorded as printed (UCUM:L/s) rather than silently normalised."
     reference_dataset: "ATS-recommended predicted normal values"
     evidence:
       - reference: "PMID:23777718"
@@ -498,16 +499,22 @@ oxidative_stress_assays:
         name: "Serum malondialdehyde by thiobarbituric acid colorimetry"
         detection_method: "colorimetry (MDA-thiobarbituric acid reaction)"
 
-  - id: "OX:oluwole-sod-antioxidant-status"
-    name: "Serum superoxide dismutase status - biomass-exposed mothers and children"
-    description: "Serum SOD activity assayed by epinephrine autoxidation inhibition. SOD in both mothers and children was below the lower limit of the normal range, with 42% of mothers and 51% of children falling below that limit. The paper reports these proportions in the text but gives the mean SOD activity only in Table 2, which is not reproduced in the cached full text, so no numeric superoxide_dismutase_activity value is recorded here and the finding is carried in the antioxidant_enzyme_activities string slot. Vitamin C and vitamin E, measured in the same samples, were within their normal ranges. In the regression analysis SOD was a strong predictor of impaired lung function in children (-5.96 +/- 3.05, p=0.05)."
+  # SOD is split into a mothers' and a children's assay, each keyed to its own
+  # study_subject, so that which group a record describes is machine-readable
+  # rather than only stated in prose — matching the MDA and CRP pairs above.
+  # The paper gives mean SOD activity only in Table 2, which is not reproduced
+  # in the cached full text, so no numeric superoxide_dismutase_activity value
+  # is recorded; the finding lives in the antioxidant_enzyme_activities string.
+  - id: "OX:oluwole-sod-mothers"
+    name: "Serum superoxide dismutase status - biomass-exposed rural mothers"
+    description: "Serum SOD activity assayed by epinephrine autoxidation inhibition. SOD in the exposed mothers was below the lower limit of the normal range, with 42% of mothers falling below that limit. The paper reports this proportion in the text but gives the mean SOD activity only in Table 2, which is not reproduced in the cached full text, so no numeric superoxide_dismutase_activity value is recorded here. Vitamin C and vitamin E, measured in the same samples, were within their normal ranges. SOD showed a positive correlation with CRP in mothers."
     evidence:
       - reference: "PMID:23777718"
         reference_title: "Relationship between household air pollution from biomass smoke exposure, and pulmonary dysfunction, oxidant-antioxidant imbalance and systemic inflammation in rural women and children in Nigeria."
         supports: SUPPORT
         evidence_source: HUMAN_CLINICAL
         snippet: "In the present study, SOD levels in both mothers and children were below the lower limit of normal range with 42% of mothers and 51% of children falling below this limit (Table 2)."
-        explanation: "States the depleted antioxidant enzyme status recorded in both output records of this assay, including the proportion of mothers and of children below the lower limit of normal."
+        explanation: "States the depleted antioxidant enzyme status recorded on this assay, including the 42% of mothers below the lower limit of normal."
     has_exposure_condition:
       - id: "EXPOSURE:oluwole-hap-biomass"
         name: "Household air pollution from biomass (firewood) smoke during cooking"
@@ -529,16 +536,11 @@ oxidative_stress_assays:
               id: "UCUM:ug/m3"
               name: "microgram per cubic meter"
     has_specified_output:
-      - id: "OX:oluwole-sod-antioxidant-status-output-mothers"
+      - id: "OX:oluwole-sod-mothers-output-exposed"
         name: "Serum SOD status in biomass-exposed mothers"
         experimental_group: treated
         measured_under: "EXPOSURE:oluwole-hap-biomass"
-        antioxidant_enzyme_activities: "Superoxide dismutase (SOD) below the lower limit of the normal range; 42% of mothers fell below that limit. Vitamin C and vitamin E were within their normal ranges. No mean SOD value is given in the cached text (Table 2 only)."
-      - id: "OX:oluwole-sod-antioxidant-status-output-children"
-        name: "Serum SOD status in biomass-exposed children"
-        experimental_group: treated
-        measured_under: "EXPOSURE:oluwole-hap-biomass"
-        antioxidant_enzyme_activities: "Superoxide dismutase (SOD) below the lower limit of the normal range; 51% of children fell below that limit. Vitamin C and vitamin E were within their normal ranges. No mean SOD value is given in the cached text (Table 2 only)."
+        antioxidant_enzyme_activities: "Superoxide dismutase (SOD) below the lower limit of the normal range; 42% of mothers fell below that limit. Vitamin C and vitamin E were within their normal ranges."
     assay_date: "2013-01-01"
     informs_on_key_event:
       id: "KE:mie-oxidative-stress"
@@ -547,14 +549,106 @@ oxidative_stress_assays:
       level_of_biological_organization: molecular
     study_subject:
       subject_type: InVivoSubject
-      id: "SUBJECT:oluwole-mother-child-pairs"
-      name: "Biomass-exposed rural Nigerian mother-child pairs (blood-draw subset)"
+      id: "SUBJECT:oluwole-mothers"
+      name: "Rural Nigerian mothers cooking with biomass fuel"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      age:
+        value: "43.0"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: mean
+        sample_size: 59
+        variability:
+          variability_type: standard_deviation
+          value: "11.7"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      sex: "female"
       sample_type: blood
       sample_collection_method: "Venous blood in 10 ml Vacutainer EDTA tubes; serum frozen and stored at -80 C until analysis"
-      subject_characteristics: "55 of the 59 mother-child pairs that consented to blood draw; mothers aged 20-60 years, children 7-17 years, from households cooking with biomass fuel almost exclusively"
+      subject_characteristics: "Non-smoking women aged 20-60 years from biomass-fuel households; 55 of 59 pairs consented to blood draw"
+      clinical_context: "Cross-sectional pilot study; serum oxidant/antioxidant panel analysed at the Institute for Advanced Medical Research and Training laboratory, University College Hospital, Ibadan"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:oluwole-sod-001"
+        name: "Serum superoxide dismutase by epinephrine autoxidation inhibition"
+        detection_method: "epinephrine autoxidation inhibition assay"
+
+  - id: "OX:oluwole-sod-children"
+    name: "Serum superoxide dismutase status - biomass-exposed rural children"
+    description: "Serum SOD activity assayed by epinephrine autoxidation inhibition. SOD in the exposed children was below the lower limit of the normal range, with 51% of children falling below that limit. As for the mothers, the mean SOD activity appears only in Table 2, which is not in the cached full text, so no numeric superoxide_dismutase_activity value is recorded here. Vitamin C and vitamin E were within their normal ranges. In the regression analysis SOD was a strong predictor of impaired lung function in children (-5.96 +/- 3.05, p=0.05)."
+    evidence:
+      - reference: "PMID:23777718"
+        reference_title: "Relationship between household air pollution from biomass smoke exposure, and pulmonary dysfunction, oxidant-antioxidant imbalance and systemic inflammation in rural women and children in Nigeria."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In the present study, SOD levels in both mothers and children were below the lower limit of normal range with 42% of mothers and 51% of children falling below this limit (Table 2)."
+        explanation: "States the depleted antioxidant enzyme status recorded on this assay, including the 51% of children below the lower limit of normal."
+      - reference: "PMID:23777718"
+        reference_title: "Relationship between household air pollution from biomass smoke exposure, and pulmonary dysfunction, oxidant-antioxidant imbalance and systemic inflammation in rural women and children in Nigeria."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Regression analysis indicates that serum CRP and SOD concentration levels were strong predictors of impaired lung function in mothers and children, respectively."
+        explanation: "Supports the regression result noted in this assay's description: SOD was the predictor of impaired lung function in the children, CRP in the mothers."
+    has_exposure_condition:
+      - id: "EXPOSURE:oluwole-hap-biomass"
+        name: "Household air pollution from biomass (firewood) smoke during cooking"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1575.1"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          sample_size: 59
+          variability:
+            variability_type: interquartile_range
+            lower_bound: "943.6"
+            upper_bound: "2847.0"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+    has_specified_output:
+      - id: "OX:oluwole-sod-children-output-exposed"
+        name: "Serum SOD status in biomass-exposed children"
+        experimental_group: treated
+        measured_under: "EXPOSURE:oluwole-hap-biomass"
+        antioxidant_enzyme_activities: "Superoxide dismutase (SOD) below the lower limit of the normal range; 51% of children fell below that limit. Vitamin C and vitamin E were within their normal ranges."
+    assay_date: "2013-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:oluwole-children"
+      name: "Children of the biomass-exposed rural Nigerian mothers"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "13.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: mean
+        sample_size: 59
+        variability:
+          variability_type: standard_deviation
+          value: "3.2"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      sample_type: blood
+      sample_collection_method: "Venous blood in 10 ml Vacutainer EDTA tubes; serum frozen and stored at -80 C until analysis"
+      subject_characteristics: "Children aged 7-17 years from the same biomass-fuel households; 55 of 59 pairs consented to blood draw"
       clinical_context: "Cross-sectional pilot study; serum oxidant/antioxidant panel analysed at the Institute for Advanced Medical Research and Training laboratory, University College Hospital, Ibadan"
     follows_protocols:
       - protocol_type: MolecularAssayProtocol
@@ -583,8 +677,14 @@ gene_expression_assays:
         reference_title: "Relationship between household air pollution from biomass smoke exposure, and pulmonary dysfunction, oxidant-antioxidant imbalance and systemic inflammation in rural women and children in Nigeria."
         supports: SUPPORT
         evidence_source: HUMAN_CLINICAL
-        snippet: "Additionally, mean serum CRP concentrations in mothers (3.79±1.89 µg/ml)"
-        explanation: "States the mean and standard deviation of serum CRP recorded as this assay's protein_level output for the exposed mothers."
+        snippet: "Additionally, mean serum CRP concentrations in mothers (3.79±1.89 µg/ml) and children (3.56±1.54 µg/ml) were higher than normal range (1-3 µg/ml, p=0.39 and p<0.05, respectively)."
+        explanation: "States the mean and standard deviation of serum CRP recorded as this assay's protein_level output for the exposed mothers. Quoted whole so that 'respectively' keeps its referents: the p=0.39 belongs to the mothers and the p<0.05 to the children, so the mothers' elevation above the normal range was NOT statistically significant."
+      - reference: "PMID:23777718"
+        reference_title: "Relationship between household air pollution from biomass smoke exposure, and pulmonary dysfunction, oxidant-antioxidant imbalance and systemic inflammation in rural women and children in Nigeria."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Nearly all mothers and children in our study showed evidence of inflammation, as indicated by elevated CRP levels."
+        explanation: "Attaches the authors' own reading of the CRP results to this assay, so that the link to the systemic-inflammation key event is not carried by the mothers' non-significant p=0.39 alone."
     has_exposure_condition:
       - id: "EXPOSURE:oluwole-hap-biomass"
         name: "Household air pollution from biomass (firewood) smoke during cooking"
@@ -668,8 +768,8 @@ gene_expression_assays:
         reference_title: "Relationship between household air pollution from biomass smoke exposure, and pulmonary dysfunction, oxidant-antioxidant imbalance and systemic inflammation in rural women and children in Nigeria."
         supports: SUPPORT
         evidence_source: HUMAN_CLINICAL
-        snippet: "children (3.56±1.54 µg/ml) were higher than normal range (1-3 µg/ml, p=0.39 and p<0.05, respectively)."
-        explanation: "States the mean, standard deviation and normal-range comparison for serum CRP recorded as this assay's protein_level output for the exposed children."
+        snippet: "Additionally, mean serum CRP concentrations in mothers (3.79±1.89 µg/ml) and children (3.56±1.54 µg/ml) were higher than normal range (1-3 µg/ml, p=0.39 and p<0.05, respectively)."
+        explanation: "States the mean, standard deviation and normal-range comparison for serum CRP recorded as this assay's protein_level output for the exposed children. Quoted whole so that 'respectively' keeps its referents: the children's p-value is the p<0.05, so the children's elevation above the normal range was the statistically significant one."
     has_exposure_condition:
       - id: "EXPOSURE:oluwole-hap-biomass"
         name: "Household air pollution from biomass (firewood) smoke during cooking"
@@ -822,7 +922,7 @@ key_event_relationships:
 
   - id: "KER:oluwole-oxidative-stress-to-systemic-inflammation"
     name: "Increased oxidative stress is associated with increased systemic inflammation"
-    description: "Serum MDA correlated positively with serum CRP in children (r=0.3, p<0.05) but not in mothers (r=0.1, p=0.64). The association is therefore present in only one of the two groups studied, and the authors note that nutritional deficiency or unrecognised lung infection could also account for the elevated CRP and MDA."
+    description: "Serum MDA correlated positively with serum CRP in children (r=0.3, p<0.05) but not in mothers (r=0.1, p=0.64). The association is therefore present in only one of the two groups studied, and the authors note that nutritional deficiency or unrecognised lung infection could also account for the elevated CRP and MDA. Note also the asymmetry on the downstream side: the children's CRP elevation above the normal range was significant (p<0.05) while the mothers' was not (p=0.39), so the systemic-inflammation key event is better supported in the children than in the mothers."
     upstream_event:
       id: "KE:mie-oxidative-stress"
       name: "Increased oxidative stress"
