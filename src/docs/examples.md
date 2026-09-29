@@ -656,8 +656,8 @@ egfr_signaling_assays:
       - id: "EXPOSURE:cse-4h"
         name: "Cigarette smoke extract 5% for 4 hours"
         exposure_agent:
-          id: "CHEBI:39188"
-          name: "cigarette smoke extract"
+          id: "ENVO:01000838"
+          name: "smoke"
         exposure_concentration:
           value: "5"
           unit:
