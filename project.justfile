@@ -266,11 +266,14 @@ pipeline-test:
 
 # Build exports/soma.duckdb from every kb/publications/ YAML file. The YAML is
 # the source of truth; this database is a generated product — never committed.
-# Falls back to tests/data/valid while kb/publications/ is still empty.
+# Falls back to tests/data/valid only if kb/publications/ has no YAML files.
 # Layout: one table per LinkML class (value objects flattened into named
-# columns), plus measurement (one row per number), link (entity edges) and
-# term (ontology terms used); then the analysis views assay, assay_output,
-# measurement_full, evidence, term_usage.
+# columns), plus measurement (one row per number), link (entity edges),
+# term_ref (each use of an ontology term) and term (the terms themselves);
+# then the analysis views assay, assay_output, measurement_full, evidence and
+# term_usage. Pass --strict via scripts/build_duckdb.py to make the build fail
+# on any warning; the recipe does not, because the current kb/ files raise
+# content conflicts that need fixing in the YAML first.
 [group('exports')]
 build-db out="exports/soma.duckdb" kb_dir="":
     #!/usr/bin/env bash
