@@ -169,6 +169,26 @@ the founding vocabulary lives in the test fixtures.
   live in fixtures, so `check-entity-ids` does not see the conflict today; it
   fires the moment two `kb/publications/` files disagree.
 
+**Narrative reviews: `evidence_source: OTHER`.** `EvidenceSourceEnum` is "the
+kind of study the cited publication reports", and a narrative review (mini
+review, perspective, commentary) reports no study of its own. So every
+`evidence:` item quoting such a paper gets `evidence_source: OTHER`, even when
+the sentence it quotes summarizes human, animal or cell work. Do not use
+`HUMAN_CLINICAL`: it claims a patient or cohort study the review never ran,
+and it would pool the review's statements with real clinical evidence.
+Do not copy the source type of the studies the review cites either. That
+classifies *their* design, and the review's own sentence usually mixes
+several. `kb/publications/Container-liu2012-shs-mcc.yaml` is the reference
+case. It has no assays, only key event relationships, and all of them
+are `OTHER`.
+
+This is a per-paper decision, so one file never mixes `OTHER` with a study
+type for its own quotes. It covers only papers with no primary data. A methods
+chapter that presents its own experimental technique (`fujisawa2023`), or a
+research paper with a background sentence in its introduction, is classified
+by the study it reports. Say in the PR body that the paper is a review and
+that you used `OTHER` for that reason.
+
 ## Step 5 — Verify
 
 ```bash
