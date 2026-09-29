@@ -17,6 +17,17 @@ INVALID_EXAMPLE_FILES = sorted(
 )
 
 
+def test_valid_fixtures_do_not_use_astrocyte_cl_term_for_nasal_epithelium():
+    """Regression test for CL:0002603 misuse in nasal-epithelium fixtures."""
+    wrong_term = "CL:0002603"
+    offenders = [
+        Path(filepath).name
+        for filepath in VALID_EXAMPLE_FILES
+        if wrong_term in Path(filepath).read_text(encoding="utf-8")
+    ]
+    assert offenders == []
+
+
 @pytest.mark.parametrize("filepath", VALID_EXAMPLE_FILES)
 def test_valid_data_files(filepath):
     """Test loading of all valid data files.

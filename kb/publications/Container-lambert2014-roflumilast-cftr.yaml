@@ -1,0 +1,381 @@
+# =============================================================================
+# Lambert et al. (2014) - Cystic fibrosis transmembrane conductance regulator
+# activation by roflumilast contributes to therapeutic benefit in chronic
+# bronchitis
+# =============================================================================
+#
+# Source: Am J Respir Cell Mol Biol (2014)
+# DOI: 10.1165/rcmb.2013-0228OC
+#
+# NOTE ON SCOPE: the committed reference cache for PMID:24106801 is
+# abstract-only (content_type: abstract_only) and no PDF of the full text was
+# available to this extraction. Every value and every evidence snippet below
+# therefore comes from the abstract; no figure-derived or full-text-only value
+# has been recorded.
+#
+# Study design (as stated in the abstract):
+#   - In vitro: primary human bronchial epithelial (HBE) cells, Calu-3 and T84
+#     monolayers exposed to whole cigarette smoke (WCS) or air, with or
+#     without roflumilast
+#   - CFTR-dependent ion transport measured in modified Ussing chambers
+#   - Airway surface liquid (ASL) depth measured by confocal microscopy
+#   - Ex vivo: intestinal fluid secretion of ligated murine intestine
+#
+# Key findings recorded here:
+#   - Roflumilast activates CFTR-dependent anion transport in normal HBE cells
+#     (EC50 2.9 nM)
+#   - Roflumilast partially restores CFTR activity in WCS-exposed HBE cells
+#     (5.3 vs. 1.2 microampere/cm2 for the WCS control; P < 0.05)
+#   - Roflumilast improves the depleted ASL depth of WCS-exposed HBE monolayers
+#     (9.0 vs. 5.6 micrometer for the WCS control; P < 0.05), reaching 79% of
+#     the air control
+#   - CFTR activation by roflumilast induces CFTR-dependent fluid secretion in
+#     ligated murine intestine
+#
+# The abstract reports the +/- terms without saying whether they are SD or SEM,
+# so no variability block is recorded; the reported spreads are kept verbatim in
+# the description fields instead. Likewise the abstract reports only the
+# significance threshold (P < 0.05), not an exact p-value, so p_value is not
+# populated.
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:24106801"
+  reference_title: "Cystic fibrosis transmembrane conductance regulator activation by roflumilast contributes to therapeutic benefit in chronic bronchitis."
+  doi: "10.1165/rcmb.2013-0228OC"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:lambert-ussing-001"
+    name: "Modified Ussing chamber measurement of CFTR-dependent ion transport"
+    description: "CFTR-dependent ion transport of airway and intestinal epithelial monolayers measured in modified Ussing chambers. Short-circuit current reported in microamperes per square centimetre."
+    equipment_required:
+      - "Modified Ussing chamber"
+
+  - id: "PROTOCOL:lambert-confocal-asl-001"
+    protocol_type: ImagingProtocol
+    name: "Confocal microscopy measurement of airway surface liquid depth"
+    description: "Airway surface liquid depth of HBE monolayers determined by confocal microscopy."
+    equipment_required:
+      - "Confocal microscope"
+
+  - id: "PROTOCOL:lambert-wcs-exposure-001"
+    name: "Whole cigarette smoke exposure of epithelial monolayers"
+    description: "Primary HBE, Calu-3 and T84 monolayers exposed to whole cigarette smoke (WCS) or to air, with or without roflumilast treatment."
+
+  - id: "PROTOCOL:lambert-ligated-intestine-001"
+    name: "Ex vivo ligated murine intestinal segment fluid secretion"
+    description: "Intestinal fluid secretion of ligated murine intestine monitored ex vivo; readouts are the wet:dry ratio and the diameter of the ligated segments."
+
+# =============================================================================
+# CFTR FUNCTION ASSAYS - Ussing chamber
+# =============================================================================
+
+cftr_assays:
+  # ---------------------------------------------------------------------------
+  # Roflumilast activation of CFTR-dependent anion transport in normal HBE.
+  # The abstract reports a potency (EC50 = 2.9 nM), not a current value, so the
+  # concentration is carried on the exposure condition and no output record is
+  # asserted - there is no measured value in the abstract to record.
+  # ---------------------------------------------------------------------------
+  - id: "CFTR:lambert-hbe-roflumilast-potency"
+    name: "CFTR-dependent anion transport - roflumilast potency in normal HBE cells"
+    description: "Roflumilast activated CFTR-dependent anion transport in normal (non-smoke-exposed) primary HBE cells with a half maximal effective concentration of 2.9 nM, measured in modified Ussing chambers. The abstract reports the EC50 only; no short-circuit current value is given for this experiment."
+    stimulation_agent: "roflumilast"
+    evidence:
+      - reference: "PMID:24106801"
+        reference_title: "Cystic fibrosis transmembrane conductance regulator activation by roflumilast contributes to therapeutic benefit in chronic bronchitis."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Roflumilast activated CFTR-dependent anion transport in normal HBE cells with a half maximal effective concentration of 2.9 nM."
+        explanation: "The abstract states the potency of roflumilast as an activator of CFTR-dependent anion transport in normal HBE cells, which is the EC50 this assay records on its exposure condition."
+    has_exposure_condition:
+      - id: "EXPOSURE:lambert-roflumilast-ec50-hbe"
+        name: "Roflumilast at its half maximal effective concentration (2.9 nM)"
+        exposure_agent:
+          id: "CHEBI:47657"
+          name: "roflumilast"
+        exposure_concentration:
+          value: "2.9"
+          unit:
+            id: "UO:0000065"
+            name: "nanomolar"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cftr"
+      name: "Decreased CFTR function"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:lambert-hbe-001"
+      name: "Primary human bronchial epithelial (HBE) monolayers"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      primary_cell:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - id: "PROTOCOL:lambert-ussing-001"
+        name: "Modified Ussing chamber measurement of CFTR-dependent ion transport"
+
+  # ---------------------------------------------------------------------------
+  # Partial restoration of CFTR activity by roflumilast in WCS-exposed HBE.
+  # Both output records come from WCS-exposed cells: the "[control]" arm named
+  # in the abstract is the WCS-exposed, untreated arm.
+  # ---------------------------------------------------------------------------
+  - id: "CFTR:lambert-hbe-wcs-roflumilast"
+    name: "CFTR activity - WCS-exposed HBE cells with and without roflumilast"
+    description: "Roflumilast partially restored CFTR activity in WCS-exposed primary HBE cells: 5.3 +/- 1.1 microampere/cm2 with roflumilast vs. 1.2 +/- 0.2 microampere/cm2 in the WCS-exposed control, P < 0.05. The abstract does not state whether the +/- terms are SD or SEM, nor the sample size, so neither is recorded. Roflumilast was additive with ivacaftor, a specific CFTR potentiator approved for the treatment of CF; the abstract gives no value for the combination."
+    stimulation_agent: "roflumilast"
+    evidence:
+      - reference: "PMID:24106801"
+        reference_title: "Cystic fibrosis transmembrane conductance regulator activation by roflumilast contributes to therapeutic benefit in chronic bronchitis."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Roflumilast partially restored CFTR activity in WCS-exposed HBE cells (5.3 ± 1.1 μA/cm(2) vs. 1.2 ± 0.2 μA/cm(2) ... P < 0.05) and was additive with ivacaftor, a specific CFTR potentiator approved for the treatment of CF."
+        explanation: "The abstract gives both short-circuit current values recorded by this assay - the WCS-exposed control and the roflumilast-treated arm - together with the significance of the difference. The elision marks the abstract's own '[control]' label, which the quote checker strips from bracketed spans."
+      - reference: "PMID:24106801"
+        reference_title: "Cystic fibrosis transmembrane conductance regulator activation by roflumilast contributes to therapeutic benefit in chronic bronchitis."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Primary human bronchial epithelial (HBE) cells, Calu-3, and T84 monolayers were exposed to whole cigarette smoke (WCS) or air with or without roflumilast treatment."
+        explanation: "The abstract describes the model system and exposure design behind this assay: HBE monolayers exposed to whole cigarette smoke or air, with or without roflumilast."
+    has_exposure_condition:
+      - id: "EXPOSURE:lambert-wcs-hbe"
+        name: "Whole cigarette smoke (WCS), no roflumilast (control arm)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+      - id: "EXPOSURE:lambert-wcs-roflumilast-hbe"
+        name: "Whole cigarette smoke (WCS) with roflumilast treatment"
+        exposure_agent:
+          id: "CHEBI:47657"
+          name: "roflumilast"
+    has_specified_output:
+      - id: "CFTR:lambert-hbe-wcs-roflumilast-output-control"
+        name: "CFTR activity in WCS-exposed HBE cells (control arm)"
+        experimental_group: control
+        measured_under: "EXPOSURE:lambert-wcs-hbe"
+        cftr_chloride_secretion:
+          value: "1.2"
+          unit:
+            id: "UCUM:uA/cm2"
+            name: "microampere per square centimeter"
+          central_tendency: mean
+      - id: "CFTR:lambert-hbe-wcs-roflumilast-output-roflumilast"
+        name: "CFTR activity in WCS-exposed HBE cells treated with roflumilast"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lambert-wcs-roflumilast-hbe"
+        cftr_chloride_secretion:
+          value: "5.3"
+          unit:
+            id: "UCUM:uA/cm2"
+            name: "microampere per square centimeter"
+          central_tendency: mean
+    informs_on_key_event:
+      id: "KE:ke-decreased-cftr"
+      name: "Decreased CFTR function"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:lambert-hbe-001"
+      name: "Primary human bronchial epithelial (HBE) monolayers"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      primary_cell:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - id: "PROTOCOL:lambert-ussing-001"
+        name: "Modified Ussing chamber measurement of CFTR-dependent ion transport"
+      - id: "PROTOCOL:lambert-wcs-exposure-001"
+        name: "Whole cigarette smoke exposure of epithelial monolayers"
+
+  # ---------------------------------------------------------------------------
+  # Ex vivo murine intestine: CFTR-dependent fluid secretion. The abstract
+  # reports direction only (increased wet:dry ratio and segment diameter), with
+  # no numbers, so no output record is asserted.
+  # ---------------------------------------------------------------------------
+  - id: "CFTR:lambert-murine-intestine-roflumilast"
+    name: "CFTR-dependent fluid secretion - ligated murine intestine, ex vivo"
+    description: "CFTR activation by roflumilast induced CFTR-dependent fluid secretion in ligated murine intestinal segments monitored ex vivo, increasing the wet:dry ratio and the segment diameter. The abstract reports the direction of both changes but no numeric values, so no measurement is recorded. This is the observation the authors link to the noninfectious diarrhea seen with roflumilast."
+    stimulation_agent: "roflumilast"
+    evidence:
+      - reference: "PMID:24106801"
+        reference_title: "Cystic fibrosis transmembrane conductance regulator activation by roflumilast contributes to therapeutic benefit in chronic bronchitis."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "CFTR activation by roflumilast also induced CFTR-dependent fluid secretion in murine intestine, increasing the wet:dry ratio and the diameter of ligated murine segments."
+        explanation: "The abstract states the ex vivo murine intestinal result this assay records: roflumilast-driven CFTR activation induced CFTR-dependent fluid secretion, raising the wet:dry ratio and the diameter of the ligated segments."
+    has_exposure_condition:
+      - id: "EXPOSURE:lambert-roflumilast-murine-intestine"
+        name: "Roflumilast applied to ligated murine intestinal segments ex vivo"
+        exposure_agent:
+          id: "CHEBI:47657"
+          name: "roflumilast"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cftr"
+      name: "Decreased CFTR function"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lambert-mouse-intestine"
+      name: "Mouse, ligated intestinal segment"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sample_type: biopsy
+      collection_site: "small intestine"
+      subject_characteristics: "Ligated murine intestinal segments monitored ex vivo; the abstract does not state strain, sex, or age."
+    follows_protocols:
+      - id: "PROTOCOL:lambert-ligated-intestine-001"
+        name: "Ex vivo ligated murine intestinal segment fluid secretion"
+
+# =============================================================================
+# AIRWAY SURFACE LIQUID ASSAYS - confocal microscopy
+# =============================================================================
+
+asl_assays:
+  - id: "ASL:lambert-hbe-wcs-roflumilast"
+    name: "ASL depth - WCS-exposed HBE monolayers with and without roflumilast"
+    description: "Roflumilast improved the depleted ASL depth of HBE monolayers exposed to WCS: 9.0 +/- 3.1 micrometer with roflumilast vs. 5.6 +/- 2.0 micrometer in the WCS-exposed control, P < 0.05, which the authors report as 79% of the depth observed in air controls. The abstract does not state whether the +/- terms are SD or SEM, nor the sample size, nor the absolute air-control depth, so none of those is recorded."
+    evidence:
+      - reference: "PMID:24106801"
+        reference_title: "Cystic fibrosis transmembrane conductance regulator activation by roflumilast contributes to therapeutic benefit in chronic bronchitis."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Roflumilast improved the depleted ASL depth of HBE monolayers exposed to WCS (9.0 ± 3.1 μm vs. 5.6 ± 2.0 μm ... P < 0.05), achieving 79% of that observed in air controls."
+        explanation: "The abstract gives both ASL depth values recorded by this assay - the WCS-exposed control and the roflumilast-treated arm - and states that the treated depth reaches 79% of the air control. The elision marks the abstract's own '[control]' label, which the quote checker strips from bracketed spans."
+    has_exposure_condition:
+      - id: "EXPOSURE:lambert-wcs-hbe"
+        name: "Whole cigarette smoke (WCS), no roflumilast (control arm)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+      - id: "EXPOSURE:lambert-wcs-roflumilast-hbe"
+        name: "Whole cigarette smoke (WCS) with roflumilast treatment"
+        exposure_agent:
+          id: "CHEBI:47657"
+          name: "roflumilast"
+    has_specified_output:
+      - id: "ASL:lambert-hbe-wcs-roflumilast-output-control"
+        name: "ASL depth in WCS-exposed HBE monolayers (control arm)"
+        experimental_group: control
+        measured_under: "EXPOSURE:lambert-wcs-hbe"
+        asl_height_um:
+          value: "5.6"
+          unit:
+            id: "UO:0000017"
+            name: "micrometer"
+          central_tendency: mean
+      - id: "ASL:lambert-hbe-wcs-roflumilast-output-roflumilast"
+        name: "ASL depth in WCS-exposed HBE monolayers treated with roflumilast"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lambert-wcs-roflumilast-hbe"
+        asl_height_um:
+          value: "9.0"
+          unit:
+            id: "UO:0000017"
+            name: "micrometer"
+          central_tendency: mean
+    informs_on_key_event:
+      id: "KE:ke-decreased-asl"
+      name: "Decreased ASL height"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:lambert-hbe-001"
+      name: "Primary human bronchial epithelial (HBE) monolayers"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      primary_cell:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+    follows_protocols:
+      - id: "PROTOCOL:lambert-confocal-asl-001"
+        name: "Confocal microscopy measurement of airway surface liquid depth"
+      - id: "PROTOCOL:lambert-wcs-exposure-001"
+        name: "Whole cigarette smoke exposure of epithelial monolayers"
+
+# =============================================================================
+# RESPONSE COMPARISONS
+#
+# The abstract states both arms' values and the significance threshold
+# (P < 0.05) but never a delta, a percent change, or a fold change for these
+# two comparisons, so change_value is deliberately left empty: computing one
+# here would be a derived number the paper does not report. p_value is also
+# left empty because "P < 0.05" is a threshold, not a reported p-value.
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:lambert-cftr-isc-wcs-roflumilast"
+    name: "CFTR activity in WCS-exposed HBE cells, roflumilast vs. untreated control"
+    description: "Roflumilast partially restored CFTR activity in WCS-exposed HBE cells (5.3 vs. 1.2 microampere/cm2). The paper reports the significance threshold P < 0.05 rather than an exact p-value, and states no delta, percent change, or fold change, so change_value is not recorded."
+    derived_from_assay: "CFTR:lambert-hbe-wcs-roflumilast"
+    compared_measurement: "cftr_chloride_secretion"
+    control_output: "CFTR:lambert-hbe-wcs-roflumilast-output-control"
+    treated_output: "CFTR:lambert-hbe-wcs-roflumilast-output-roflumilast"
+    change_direction: increased
+    derivation: reported_in_paper
+
+  - id: "COMP:lambert-asl-depth-wcs-roflumilast"
+    name: "ASL depth in WCS-exposed HBE monolayers, roflumilast vs. untreated control"
+    description: "Roflumilast improved the depleted ASL depth of WCS-exposed HBE monolayers (9.0 vs. 5.6 micrometer), reaching 79% of the air control. The paper reports the significance threshold P < 0.05 rather than an exact p-value, and states no delta, percent change, or fold change between these two arms, so change_value is not recorded."
+    derived_from_assay: "ASL:lambert-hbe-wcs-roflumilast"
+    compared_measurement: "asl_height_um"
+    control_output: "ASL:lambert-hbe-wcs-roflumilast-output-control"
+    treated_output: "ASL:lambert-hbe-wcs-roflumilast-output-roflumilast"
+    change_direction: increased
+    derivation: reported_in_paper
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS - stated by the paper
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:lambert-cftr-to-asl"
+    name: "CFTR function leads to airway surface liquid depth"
+    description: "Lambert 2014 concludes that roflumilast activates CFTR-mediated anion transport via a cyclic AMP-dependent pathway and thereby partially reverses the deleterious effects of whole cigarette smoke, resulting in augmented ASL depth - i.e. CFTR function determines ASL depth in this model."
+    upstream_event:
+      id: "KE:ke-decreased-cftr"
+      name: "Decreased CFTR function"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-decreased-asl"
+      name: "Decreased ASL height"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
