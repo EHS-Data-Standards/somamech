@@ -1,0 +1,412 @@
+# =============================================================================
+# Liu & Di 2012 (PMID:22973232) — "Effects of second hand smoke on airway
+# secretion and mucociliary clearance." Front Physiol 3:342.
+#
+# This paper is a MINI REVIEW ARTICLE. It reports no primary measurements of
+# its own: every number in it is either a structural/anatomical constant it
+# compiles (cilia per cell, PCL height) or a result it attributes to another
+# publication. So this file deliberately contains NO assays and NO
+# QuantityValues — inventing an assay for a review would attribute other
+# papers' numbers to this one.
+#
+# What the review does contribute is AOP topology: it states, in its own
+# voice, which key events follow from which along the second-hand-smoke ->
+# airway secretion -> mucociliary clearance axis. Those statements are
+# recorded below as key_event_relationships, each carrying an exact quote
+# from the paper.
+#
+# Every KeyEvent block below is copied byte-for-byte from the wording already
+# on main (shared vocabulary — never re-authored here).
+# =============================================================================
+
+source_publication:
+  reference: "PMID:22973232"
+  reference_title: "Effects of second hand smoke on airway secretion and mucociliary clearance."
+  doi: "10.3389/fphys.2012.00342"
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS — the AOP topology this review asserts
+# =============================================================================
+
+key_event_relationships:
+
+  # --- Secretory arm -------------------------------------------------------
+
+  - id: "KER:liu2012-goblet-to-mcc"
+    name: "Goblet cell hyperplasia leads to impaired mucociliary clearance"
+    description: >-
+      The review's central claim: active and passive cigarette smoke exposure
+      produces hyperplasia of goblet cells and submucosal glands, which raises
+      the secretory capacity of the airway and thereby impairs mucociliary
+      clearance. Stated for COPD arising from both active smoking and
+      second-hand smoke.
+    upstream_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:22973232"
+        reference_title: "Effects of second hand smoke on airway secretion and mucociliary clearance."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "Active and passive CS-induced chronic obstructive pulmonary disease (COPD) is frequently associated with hyperplasia of goblet cells and submucosal glands (SMGs), thus increasing the secretory capacity of the airways that impairs MCC."
+        explanation: >-
+          The review states the hyperplasia-to-impaired-MCC link directly, and
+          attributes it to both active and passive (second-hand) smoke.
+
+  - id: "KER:liu2012-goblet-to-mucin"
+    name: "Goblet cell hyperplasia leads to mucin hypersecretion"
+    description: >-
+      Goblet cell metaplasia and hyperplasia is described as the major airway
+      remodeling change in COPD, and the review states that it results in
+      airway mucus hypersecretion.
+    upstream_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:22973232"
+        reference_title: "Effects of second hand smoke on airway secretion and mucociliary clearance."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "One major characteristics of airway remodeling in COPD is airway goblet cells metaplasia and hyperplasia, which results in airway mucus hypersecretion."
+        explanation: >-
+          The review names goblet cell metaplasia/hyperplasia as the cause of
+          airway mucus hypersecretion in COPD.
+
+  - id: "KER:liu2012-egfr-to-mucin"
+    name: "EGFR activation leads to mucin hypersecretion"
+    description: >-
+      The first of several mechanisms the review lists for smoke-induced mucus
+      hypersecretion: cigarette smoke drives mucin production through
+      epidermal growth factor receptor activation, reported both in vitro and
+      in vivo. The review also notes a TACE-proligand-EGFR route to mucin
+      overproduction.
+    upstream_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:22973232"
+        reference_title: "Effects of second hand smoke on airway secretion and mucociliary clearance."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "CS could cause mucin production via epidermal growth factor receptor (EGFR) activation both in vitro and in vivo"
+        explanation: >-
+          The review lists EGFR activation first among the mechanisms
+          responsible for cigarette-smoke-induced mucus hypersecretion.
+
+  - id: "KER:liu2012-inflammation-to-mucin"
+    name: "Airway inflammation leads to mucin hypersecretion"
+    description: >-
+      The review's neutrophil-dependent route to mucus hypersecretion: smoke
+      promotes goblet cell metaplasia indirectly through activation and
+      recruitment of neutrophils and subsequent epithelial cell oxidative
+      stress, and neutrophil products themselves drive mucin release from
+      surface epithelial cells.
+    upstream_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    downstream_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    relationship_type: "indirectly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:22973232"
+        reference_title: "Effects of second hand smoke on airway secretion and mucociliary clearance."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "In vivo, neutrophils and neutrophil products can cause the upregulation and release of mucin from surface epithelial cells"
+        explanation: >-
+          The review states that neutrophils and their products upregulate and
+          release mucin from airway surface epithelial cells.
+
+  - id: "KER:liu2012-goblet-to-club-cell-loss"
+    name: "Goblet cell hyperplasia leads to club cell marker loss"
+    description: >-
+      The review states that new goblet cells are produced at the expense of
+      progenitor cells, so serous and Clara (club) cell numbers fall as goblet
+      cell numbers rise. It notes this matters because those cells supply
+      anti-inflammatory, immunomodulatory and antibacterial molecules. The
+      review reports a decrease in Clara cell NUMBER; the shared key event on
+      main is worded as club cell marker loss.
+    upstream_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ke-club-cell-loss"
+      name: "Club cell marker loss"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:22973232"
+        reference_title: "Effects of second hand smoke on airway secretion and mucociliary clearance."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "the progenitor cells, most notably serous and Clara cells, which decrease in number as goblet cell numbers increase"
+        explanation: >-
+          The review couples the rise in goblet cell number to a fall in
+          serous and Clara (club) cell number, because goblet cells are
+          produced at the progenitors' expense.
+
+  # --- Ciliary arm ---------------------------------------------------------
+
+  - id: "KER:liu2012-ciliogenesis-to-ciliary-function"
+    name: "Altered ciliogenesis leads to decreased ciliary function"
+    description: >-
+      The review states outright that second-hand smoke reduces ciliated cell
+      number, ciliogenesis, and ciliary beat frequency — so the ciliogenesis
+      defect and the loss of ciliary function are asserted together for SHS.
+    upstream_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ke3-impaired-ciliary"
+      name: "Decreased ciliary function"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:22973232"
+        reference_title: "Effects of second hand smoke on airway secretion and mucociliary clearance."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "SHS decreases not only ciliated cells and ciliogenesis but also CBF."
+        explanation: >-
+          A single sentence in which the review attributes decreased ciliated
+          cell number, decreased ciliogenesis, and decreased CBF to SHS.
+
+  - id: "KER:liu2012-cbf-to-mcc"
+    name: "Decreased ciliary beat frequency leads to impaired mucociliary clearance"
+    description: >-
+      The review defines MCC as requiring normal ciliary beat frequency
+      alongside adequate periciliary liquid volume and balanced mucus, and
+      states that inhaled SHS lowers CBF. Ciliary beats supply the physical
+      force that moves mucus, and CBF sets the speed of that movement.
+    upstream_event:
+      id: "KE:ke-decreased-cbf"
+      name: "Decreased ciliary beat frequency"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:22973232"
+        reference_title: "Effects of second hand smoke on airway secretion and mucociliary clearance."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "MCC is characterized by the upward movement of mucus by ciliary motion that requires a balance between the volume and composition of the mucus, adequate periciliary liquid (PCL) volume, and normal ciliary beat frequency (CBF)."
+        explanation: >-
+          The review makes normal CBF one of the three stated requirements for
+          mucociliary clearance, so a fall in CBF impairs MCC.
+      - reference: "PMID:22973232"
+        reference_title: "Effects of second hand smoke on airway secretion and mucociliary clearance."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "Ciliary beats provide the required physical force to move mucus and the trapped foreign particles"
+        explanation: >-
+          States the mechanism by which ciliary beating drives clearance,
+          which a reduced beat frequency degrades.
+
+  - id: "KER:liu2012-ciliary-function-to-mcc"
+    name: "Decreased ciliary function leads to impaired mucociliary clearance"
+    description: >-
+      The review's conclusion couples smoke-induced impairment of cilia
+      beating to the loss of normal MCC, and elsewhere describes CS-induced
+      MCC dysfunction as involving adverse effects on the structure and
+      function of cilia.
+    upstream_event:
+      id: "KE:ke3-impaired-ciliary"
+      name: "Decreased ciliary function"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:22973232"
+        reference_title: "Effects of second hand smoke on airway secretion and mucociliary clearance."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "changes in airway secretion and impairment of cilia beating that are critical to a normal MCC"
+        explanation: >-
+          From the conclusions: the review names impaired cilia beating as
+          critical to the loss of normal MCC after CS/SHS exposure.
+      - reference: "PMID:22973232"
+        reference_title: "Effects of second hand smoke on airway secretion and mucociliary clearance."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "CS-induced MCC dysfunction is complex and incompletely understood, but it involves adverse effects on the structure and function of cilia"
+        explanation: >-
+          The review places ciliary structure and function among the causes of
+          CS-induced MCC dysfunction, while noting the mechanism is
+          incompletely understood — the basis for evidence_support: moderate.
+
+  # --- Hydration arm -------------------------------------------------------
+
+  - id: "KER:liu2012-asl-to-mcc"
+    name: "Decreased ASL height leads to impaired mucociliary clearance"
+    description: >-
+      The review lists decreased luminal liquid, alongside increased mucin
+      production and impaired cilia beating, as a change with deleterious
+      consequences for airway health including mucus stasis. It separately
+      names adequate periciliary liquid volume as a requirement for MCC, with
+      the PCL "sol" layer height approximating outstretched cilia length
+      (about 7 micrometres).
+    upstream_event:
+      id: "KE:ke-decreased-asl"
+      name: "Decreased ASL height"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:22973232"
+        reference_title: "Effects of second hand smoke on airway secretion and mucociliary clearance."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "Increased mucin production, decreased luminal liquid, and impaired cilia beating motion in COPD have deleterious consequences for airway health, including mucus stasis and airway infection."
+        explanation: >-
+          The review names decreased luminal liquid as one of three changes
+          that produce mucus stasis, i.e. failed clearance.
+      - reference: "PMID:22973232"
+        reference_title: "Effects of second hand smoke on airway secretion and mucociliary clearance."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "with a height that approximates the length of the outstretched cilia (about 7 μm) and keeps mucus at an optimal distance from the underlying epithelia"
+        explanation: >-
+          Gives the review's structural rationale: the periciliary liquid
+          layer must match cilia length to hold mucus at the distance that
+          permits clearance.
+
+  # --- Downstream consequences --------------------------------------------
+
+  - id: "KER:liu2012-mcc-to-inflammation"
+    name: "Impaired mucociliary clearance leads to airway inflammation"
+    description: >-
+      The review proposes that smoke-decreased MCC in COPD leads to airway
+      infection, which in turn leads to inflammation and fibrosis, and that
+      CS/SHS-impaired MCC raises infection rate and disease severity in a way
+      that could be associated with COPD exacerbations. Presented by the
+      authors as a suggestion, hence weak support.
+    upstream_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    downstream_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    relationship_type: "indirectly leads to"
+    evidence_support: weak
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:22973232"
+        reference_title: "Effects of second hand smoke on airway secretion and mucociliary clearance."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "It is suggested that a CS-decreased MCC in COPD may lead to airway infection"
+        explanation: >-
+          The review offers the MCC-to-infection step as a suggestion; the
+          same sentence continues to inflammation and fibrosis. Quoted only as
+          far as the review's own hedged wording goes.
+      - reference: "PMID:22973232"
+        reference_title: "Effects of second hand smoke on airway secretion and mucociliary clearance."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "CS/SHS-impaired MCC results in the increased infection rate and disease severity that could be associated with COPD exacerbations."
+        explanation: >-
+          The conclusion restates the consequence of impaired MCC as increased
+          infection and disease severity.
+
+  - id: "KER:liu2012-mucin-to-lung-function"
+    name: "Mucin hypersecretion leads to decreased lung function"
+    description: >-
+      The review cites epidemiological data associating mucus hypersecretion
+      with a more rapid decline in FEV1 and increased hospitalization among
+      COPD patients. No effect size is given in this paper, so the
+      quantitative understanding is low.
+    upstream_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    relationship_type: "indirectly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:22973232"
+        reference_title: "Effects of second hand smoke on airway secretion and mucociliary clearance."
+        supports: SUPPORT
+        evidence_source: OTHER
+        snippet: "associated with a more rapid decline in FEV1 and increased hospitalization of patients with COPD"
+        explanation: >-
+          The review reports the epidemiological association between mucus
+          hypersecretion and accelerated FEV1 decline, an organ-level loss of
+          lung function.
