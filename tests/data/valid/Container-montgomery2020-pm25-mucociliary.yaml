@@ -119,8 +119,8 @@ gene_expression_assays:
       id: "soma:montgomery-culture-001"
       name: "Primary nasal AEC ALI culture - GALA II donors"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -128,8 +128,8 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       days_at_differentiation: 28
       donor_info: "12 donors (6 healthy, 6 asthmatic) from GALA II childhood asthma study"
@@ -185,8 +185,8 @@ gene_expression_assays:
       id: "soma:montgomery-culture-001"
       name: "Primary nasal AEC ALI culture - GALA II donors"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -240,8 +240,8 @@ gene_expression_assays:
       id: "soma:montgomery-culture-001"
       name: "Primary nasal AEC ALI culture - GALA II donors"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -300,8 +300,8 @@ gene_expression_assays:
       id: "soma:montgomery-culture-chronic"
       name: "Primary nasal AEC ALI culture - chronic stimulation"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -367,8 +367,8 @@ gene_expression_assays:
       id: "soma:montgomery-culture-chronic"
       name: "Primary nasal AEC ALI culture - chronic stimulation"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -422,8 +422,8 @@ gene_expression_assays:
       id: "soma:montgomery-culture-001"
       name: "Primary nasal AEC ALI culture - GALA II donors"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -477,8 +477,8 @@ gene_expression_assays:
       id: "soma:montgomery-culture-001"
       name: "Primary nasal AEC ALI culture - GALA II donors"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -544,8 +544,8 @@ goblet_cell_assays:
       id: "soma:montgomery-culture-chronic"
       name: "Primary nasal AEC ALI culture - chronic stimulation"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -619,8 +619,8 @@ goblet_cell_assays:
       id: "soma:montgomery-culture-chronic"
       name: "Primary nasal AEC ALI culture - chronic stimulation"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -678,8 +678,8 @@ goblet_cell_assays:
       id: "soma:montgomery-culture-chronic"
       name: "Primary nasal AEC ALI culture - chronic stimulation"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -735,8 +735,8 @@ goblet_cell_assays:
       id: "soma:montgomery-culture-001"
       name: "Primary nasal AEC ALI culture - GALA II donors"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -797,8 +797,8 @@ foxj_assays:
       id: "soma:montgomery-culture-chronic"
       name: "Primary nasal AEC ALI culture - chronic stimulation"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -806,8 +806,8 @@ foxj_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       days_at_differentiation: 28
       donor_info: "3 donors from GALA II study"
@@ -868,8 +868,8 @@ foxj_assays:
       id: "soma:montgomery-culture-high"
       name: "Primary nasal AEC ALI culture - high OE dose"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
