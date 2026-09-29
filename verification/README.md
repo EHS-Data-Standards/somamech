@@ -1,8 +1,9 @@
 # Verification receipts
 
 One JSON file per paper whose committed cache entry
-(`references_cache/PMID_<n>.md`) is **abstract-only** — the publisher blocks
-automated full-text fetching, so CI cannot verify quotes from it directly.
+(`references_cache/PMID_<n>.md`) is **abstract-only** *and* whose quoted
+snippets are not present in that committed cache text — in that case CI cannot
+verify those quotes directly.
 
 A receipt records a SHA-256 hash of every evidence snippet quoted from that
 paper, written by `just verify-snippets` **only after** the quote checker
@@ -10,7 +11,8 @@ passed against the paper's full text in the curator's local, gitignored
 `references_cache_local/`. In CI, `just check-receipts` recomputes each hash
 from the kb YAML and requires a match: a quote with no receipt, or one edited
 after verification, fails the build. Papers with full text in the committed
-cache never appear here — CI verifies those quotes directly.
+cache never appear here, and neither do abstract-only quotes that already
+resolve in the committed cache text — CI verifies those directly.
 
 Never write or edit these files by hand. A receipt is the pipeline's record
 that a local verification actually ran; a hand-written one is fabricated
