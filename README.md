@@ -86,6 +86,42 @@ just install
 If you need to run a Python tool directly, prefer `uv run ...` so it executes inside the
 managed project environment.
 
+### Querying the knowledge base
+
+The `kb/publications/*.yaml` files are the source of truth. Two generated products
+make them queryable; both are gitignored and rebuilt on demand, never hand-edited.
+
+- `just build-db` — build `exports/soma.duckdb`, a local [DuckDB](https://duckdb.org)
+  database with one table per schema class.
+- `just dump-tsv` — dump every table and view to `exports/tsv/*.tsv`.
+- `just build-db-all` — both of the above.
+- `just query 'SELECT ...'` — run one query; with no argument, list the relations.
+- `just generate-workbook` — the pooled Excel workbook (see `scripts/build_workbook.py`).
+
+Start with the **`measurement_full`** view: one row per number in the KB, already
+joined to its paper, assay, exposure condition, experimental group and key event.
+
+```sh
+just query "SELECT paper_id, measurement, value, unit_label, exposure_agent_label \
+            FROM measurement_full WHERE measurement LIKE '%beat%'"
+```
+
+Alongside the per-class tables, three tables carry what the class-per-table layout
+cannot: `measurement` (long format, with dispersion and sample size), `link` (every
+entity-to-entity edge, authoritative for many-to-many slots such as
+`follows_protocols`) and `term` (every ontology term referenced, with its label).
+The views `assay` and `assay_output` union the 11 assay and 11 output subclasses so
+a cross-assay question does not need an 11-way `UNION`.
+
+The DuckDB schema is derived from the installed `soma-schema` at build time, so a
+version bump regenerates it — inspect it with `just db-schema`. It deliberately
+differs from LinkML's own relational model (`just db-schema-linkml`) in three ways,
+documented in [scripts/soma_duckdb.py](scripts/soma_duckdb.py): value objects such
+as `QuantityValue` are flattened into named columns rather than joined through a
+shared table, reused children carry one `parent_type`/`parent_id` pair instead of one
+nullable foreign key per possible parent, and multivalued scalars stay on the parent
+row as DuckDB `LIST` columns instead of side tables.
+
 ## Repository Structure
 
 * [docs/](docs/) - mkdocs-managed documentation

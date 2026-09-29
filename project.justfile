@@ -151,11 +151,18 @@ check-stubs:
 check-entity-ids:
     uv run python scripts/build_workbook.py --check-only
 
+# Smoke-test the DuckDB build: the schema still maps cleanly to tables, value
+# objects stay flattened, and measurement_full still joins a number to its
+# paper, assay and exposure. Catches soma-schema drift breaking the loader.
+[group('QC')]
+db-test:
+    uv run python -m pytest tests/test_build_duckdb.py -q
+
 # Run every automatic check. This is what CI runs on every PR, over the whole
 # repository (checking only changed files lets two individually-green PRs
 # break each other when both merge).
 [group('QC')]
-qc: check-duplicate-keys check-stubs check-entity-ids validate-all check-receipts pipeline-test
+qc: check-duplicate-keys check-stubs check-entity-ids validate-all check-receipts pipeline-test db-test
     @echo "All QC checks passed!"
 
 # ============ Derived products ============
@@ -206,3 +213,70 @@ pipeline-test:
   uv run linkml-validate -s {{soma_schema}} tests/data/valid/Container-montgomery2020-pm25-mucociliary.yaml
   uv run python scripts/yaml_to_excel.py --input tests/data/valid/Container-montgomery2020-pm25-mucociliary.yaml --output tmp/Montgomery2020_pipeline_test.xlsx
   @echo "Pipeline test completed. Output in tmp/"
+
+# ============ Local analytical database (DuckDB) ============
+
+# Build exports/soma.duckdb from every kb/publications/ YAML file. The YAML is
+# the source of truth; this database is a generated product — never committed.
+# Falls back to tests/data/valid while kb/publications/ is still empty.
+# Layout: one table per LinkML class (value objects flattened into named
+# columns), plus measurement (one row per number), link (entity edges) and
+# term (ontology terms used); then the analysis views assay, assay_output,
+# measurement_full, evidence, term_usage.
+[group('exports')]
+build-db out="exports/soma.duckdb" kb_dir="":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [ -n "{{kb_dir}}" ]; then
+        uv run python scripts/build_duckdb.py --kb-dir "{{kb_dir}}" --output "{{out}}"
+    else
+        uv run python scripts/build_duckdb.py --output "{{out}}"
+    fi
+
+# Dump every table and view as a TSV, for people who would rather open this in
+# Excel, pandas or R than write SQL. measurement_full.tsv is the one to start
+# with: one row per number with its paper, assay, exposure and key event.
+[group('exports')]
+dump-tsv out="exports/tsv" db="exports/soma.duckdb":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    [ -f "{{db}}" ] || just build-db "{{db}}"
+    uv run python -c "import sys; sys.path.insert(0,'scripts'); \
+      from build_duckdb import dump_tsv; from pathlib import Path; \
+      w = dump_tsv(Path('{{db}}'), Path('{{out}}')); \
+      print(f'Wrote {len(w)} TSV files to {{out}}')"
+
+# Build the database and the TSV dump in one go.
+[group('exports')]
+build-db-all: build-db dump-tsv
+
+# Print the generated DDL and views without building anything — the schema this
+# DuckDB instance uses, derived from the installed soma-schema.
+[group('exports')]
+db-schema:
+    uv run python scripts/build_duckdb.py --ddl-only
+
+# The vanilla LinkML relational model, for provenance and comparison. Differs
+# from db-schema deliberately: it keeps QuantityValue as a joined table (114 FK
+# columns across the schema) and gives reused children one FK column per
+# possible parent (EvidenceItem gets 27). See scripts/soma_duckdb.py.
+#
+# The dialect is sqlite, not duckdb: gen-sqltables resolves dialects through
+# SQLAlchemy and there is no duckdb dialect installed. It makes no difference
+# here — DuckDB executes this DDL as-is once the `--` comment lines are stripped
+# (they contain semicolons and prose, so they break naive statement splitting).
+[group('exports')]
+db-schema-linkml out="tmp/soma.linkml.sql":
+    mkdir -p "$(dirname {{out}})"
+    uv run gen-sqltables --dialect sqlite {{soma_schema}} > {{out}}
+    @echo "Wrote {{out}}"
+
+# Open a DuckDB shell on the built database, or run one query:
+#   just query
+#   just query 'SELECT measurement, value, unit_label FROM measurement_full LIMIT 10'
+[group('exports')]
+query sql="" db="exports/soma.duckdb":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    [ -f "{{db}}" ] || just build-db "{{db}}"
+    uv run python scripts/soma_query.py "{{db}}" "{{sql}}"
