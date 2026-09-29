@@ -37,6 +37,9 @@ def test_pools_multiple_papers_into_one_workbook(tmp_path):
     # rows from both papers land in the same GeneExpressionAssay tab
     sources = {r[0] for r in wb["GeneExpressionAssay"].iter_rows(min_row=2, values_only=True)}
     assert len(sources) == 2
+    # has_specified_output is multivalued; pooled workbook should include output rows
+    assert "GeneExpressionOutput" in wb.sheetnames
+    assert wb["GeneExpressionOutput"].max_row > 1
 
 
 def test_cross_paper_id_collision_fails(tmp_path):
