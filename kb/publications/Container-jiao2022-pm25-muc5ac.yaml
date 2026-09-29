@@ -1,0 +1,2216 @@
+# =============================================================================
+# Jiao et al. (2022) - PM2.5 Upregulates the Expression of MUC5AC via the
+# EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells
+# =============================================================================
+#
+# Source: Int Arch Allergy Immunol. 2022;183(4):361-374
+# DOI: 10.1159/000519702
+#
+# Study design (in vitro only):
+#   - Primary human nasal epithelial cells (HNECs) at air-liquid interface
+#   - Donors: 8 control subjects (non-inflammatory sinus surgery) and
+#     14 patients with chronic rhinosinusitis with nasal polyps (CRSwNP);
+#     n = 4 control-derived and n = 6 CRSwNP-derived cultures per experiment
+#   - PM2.5 collected in Beijing (Sept-Nov 2019), applied apically at
+#     100 or 200 ug/mL for 24 h; Western blot arm used 200 ug/mL for 30 min
+#   - Inhibitors: AG1478 (10 uM, EGFR inhibitor) and LY294002 (25 uM, PI3K
+#     inhibitor), 30 min pretreatment before PM2.5
+#   - Statistics: mean +/- SEM, t test or one-way ANOVA with Bonferroni;
+#     significance reported only as * p < 0.05 (no exact p-values given)
+#
+# Key findings:
+#   - 200 ug/mL PM2.5 increased MUC5AC mRNA and the percentage of
+#     MUC5AC-positive cells in both donor groups
+#   - 200 ug/mL PM2.5 increased SPDEF mRNA (goblet cell differentiation TF)
+#   - PM2.5 increased HB-EGF, AREG and EREG mRNA (EGFR ligands)
+#   - PM2.5 (30 min) increased p-PI3K, p-AKT and p-ERK; total protein unchanged
+#   - AG1478 and LY294002 pretreatment attenuated PM2.5-induced MUC5AC
+#   - NULL RESULT: PM2.5 did not change GMNC, MCIDAS, FOXJ1 or DNAI2 mRNA,
+#     nor the percentage of beta-tubulin IV-positive (ciliated) cells
+#
+# Provenance of numbers: every quoted snippet below is verbatim from the
+# committed abstract in references_cache/PMID_34736257.md. The fold-change
+# values and sample sizes come from the Results section of the full text,
+# read locally from the PDF (references_cache_local/, gitignored); the
+# abstract states the direction of each change but not its magnitude.
+# Control output records are anchored at 1.0 because the paper expresses
+# every treated value as "-fold than that of cells treated with medium only".
+#
+# =============================================================================
+
+source_publication:
+  reference: "PMID:34736257"
+  reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+  doi: "10.1159/000519702"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:jiao-ali-001"
+    name: "Primary HNEC air-liquid interface culture"
+    description: "Nasal mucosal tissue dissociated in 0.1% protease type XIV in DMEM overnight at 4C. Cells seeded at 150,000 per well onto human placental collagen-precoated 6.5-mm Transwell polyester membranes (0.4 um pore, Costar/Corning). Submerged culture in bronchial epithelial growth medium:DMEM (1:1); ALI established at confluence by removing apical medium, basolateral ALI medium containing 50 nM all-trans retinoic acid, changed every other day for 14 days until differentiated. PM2.5 added to the apical compartment; control cultures received ALI culture medium only."
+    equipment_required:
+      - "Transwell polyester membrane inserts, 6.5 mm, 0.4 um pore (Costar, Corning)"
+      - "Human placental collagen coating"
+      - "Bronchial epithelial growth medium:DMEM (1:1) with 50 nM all-trans retinoic acid"
+
+  - id: "PROTOCOL:jiao-qpcr-001"
+    name: "Real-time PCR for mucociliary and EGFR ligand genes"
+    description: "ALI cultures lysed in RLT buffer after 24 h PM2.5; total RNA extracted with RNeasy mini kit (Qiagen). Reverse transcription with PrimeScript RT Master Mix (TaKaRa). SYBR Green assay on ABI7500 Real-Time PCR Detection System (Applied Biosystems). GAPDH endogenous reference; relative expression by the comparative cycle threshold method."
+    equipment_required:
+      - "ABI7500 Real-Time PCR Detection System (Applied Biosystems)"
+      - "RNeasy mini kit (Qiagen)"
+      - "PrimeScript RT Master Mix (TaKaRa Biotechnology)"
+
+  - id: "PROTOCOL:jiao-icc-001"
+    name: "Immunocytochemical staining for beta-tubulin IV and MUC5AC"
+    description: "ALI cultures fixed in 50:50 methanol:acetone, permeabilized with 0.3% Triton X-100, blocked with 5% skim milk, incubated overnight at 4C with anti-beta-tubulin IV (1:500, Sigma-Aldrich) and anti-MUC5AC (1:200, Abcam). Secondary antibodies labelled with fluorescein isothiocyanate (1:500, Invitrogen) and rhodamine (1:500, Invitrogen). Nuclei counterstained with 4,6-diamidino-2-phenylindole. Imaged on an Olympus IX81 confocal microscope; positive cells expressed as a percentage of total cells."
+    equipment_required:
+      - "Olympus IX81 confocal microscope"
+      - "anti-beta-tubulin IV (Sigma-Aldrich)"
+      - "anti-MUC5AC (Abcam)"
+
+  - id: "PROTOCOL:jiao-elisa-001"
+    name: "ELISA for EGFR ligand protein (HB-EGF, TGF-alpha, AREG)"
+    description: "ALI cultures treated with PM2.5 for 24 h assayed with commercial ELISA kits (Cloud Clone Corp., Wuhan) for HB-EGF, TGF-alpha and AREG. Absorbance read at 450 nm. Protein concentration of each culture determined by Bradford assay."
+    equipment_required:
+      - "ELISA plate reader (450 nm)"
+      - "HB-EGF / TGF-alpha / AREG ELISA kits (Cloud Clone Corp., Wuhan)"
+
+  - id: "PROTOCOL:jiao-wb-001"
+    name: "Western blot for PI3K, AKT and ERK phosphorylation"
+    description: "ALI cultures treated with PM2.5 for 30 min harvested in RIPA lysis buffer with protease and phosphatase inhibitors. Equal protein separated by SDS-PAGE, transferred to polyvinylidene fluoride membranes, blocked in 5% BSA, incubated overnight at 4C with anti-p-PI3K (1:1,000), anti-PI3K (1:2,000), anti-p-AKT (1:1,000), anti-AKT (1:2,000), anti-p-ERK (1:1,000), anti-ERK (1:2,000) (Cell Signaling Technology) and anti-GAPDH (1:10,000, Abcam). Electrogenerated chemiluminescence detection; bands analysed in ImageJ."
+    equipment_required:
+      - "SDS-PAGE and polyvinylidene fluoride transfer apparatus"
+      - "Electrogenerated chemiluminescence detection system"
+      - "ImageJ densitometry software"
+
+# =============================================================================
+# GOBLET CELL / MUCIN ASSAYS - MUC5AC mRNA and MUC5AC-positive cells
+# =============================================================================
+
+goblet_cell_assays:
+  # ---------------------------------------------------------------------------
+  # MUC5AC mRNA, control-subject-derived HNECs
+  # ---------------------------------------------------------------------------
+  - id: "GCM:jiao-muc5ac-mrna-control-24h"
+    name: "MUC5AC mRNA - control-subject HNECs, PM2.5 24 h"
+    description: "Real-time PCR for MUC5AC mRNA in ALI cultures from control subjects (n = 4). 100 ug/mL PM2.5 produced no significant change; 200 ug/mL PM2.5 increased MUC5AC mRNA to 2.13 +/- 0.37-fold that of medium-only cultures (full-text Results; significance reported only as p < 0.05). Values normalised to GAPDH and expressed relative to the medium-only control, which is therefore 1.0 by construction."
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "However, 200 μg/mL PM2.5 exposure significantly increased mRNA expression of SAM-pointed domain-containing ETS transcription factor and MUC5AC and the percentage of MUC5AC-positive cells."
+        explanation: "The abstract states that 200 ug/mL PM2.5 significantly increased MUC5AC mRNA expression, which is the direction of change this assay's treated output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GCM:jiao-muc5ac-mrna-control-24h-output-medium"
+        name: "MUC5AC mRNA, medium-only control (control donors)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+        muc5ac_mrna_expression:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+      - id: "GCM:jiao-muc5ac-mrna-control-24h-output-pm25-200"
+        name: "MUC5AC mRNA, 200 ug/mL PM2.5 (control donors)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+        muc5ac_mrna_expression:
+          value: "2.13"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+          variability:
+            variability_type: standard_error
+            value: "0.37"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-control"
+      name: "Primary HNEC ALI culture, control subjects"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+      substrate_type: transwell_insert
+      coating: "human placental collagen"
+      days_at_differentiation: 14
+      donor_info: "Control subjects undergoing paranasal sinus surgery for non-inflammatory conditions; middle turbinate or uncinate process mucosa"
+      culture_media:
+        id: "soma:jiao-media-ali"
+        name: "Bronchial epithelial growth medium:DMEM (1:1) with all-trans retinoic acid"
+        base_medium: "Bronchial epithelial growth medium:DMEM (1:1)"
+        supplements:
+          - id: "soma:jiao-supp-atra"
+            name: "All-trans retinoic acid"
+            supplement_type: growth_factor
+            concentration:
+              value: "50"
+              unit:
+                id: "UO:0000065"
+                name: "nanomolar"
+    follows_protocols:
+      - id: "PROTOCOL:jiao-ali-001"
+        name: "Primary HNEC air-liquid interface culture"
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-qpcr-001"
+        name: "Real-time PCR for MUC5AC"
+        detection_method: "SYBR Green real-time PCR"
+        reference_gene: "GAPDH"
+        primer_sequences:
+          - "MUC5AC-F: ACCAATGCTCTGTATCCTTCCC"
+          - "MUC5AC-R: GTTTGGGTGGAGTAAGCCACA"
+
+  # ---------------------------------------------------------------------------
+  # MUC5AC mRNA, CRSwNP-derived HNECs
+  # ---------------------------------------------------------------------------
+  - id: "GCM:jiao-muc5ac-mrna-crswnp-24h"
+    name: "MUC5AC mRNA - CRSwNP HNECs, PM2.5 24 h"
+    description: "Real-time PCR for MUC5AC mRNA in ALI cultures from patients with chronic rhinosinusitis with nasal polyps (n = 6). 200 ug/mL PM2.5 increased MUC5AC mRNA to 1.71 +/- 0.41-fold that of medium-only cultures (full-text Results; p < 0.05). Values normalised to GAPDH and expressed relative to the medium-only control."
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "HNECs derived from control subjects and patients with chronic rhinosinusitis with nasal polyps were established as air-liquid interface cultures."
+        explanation: "The abstract names the two donor groups whose ALI cultures were assayed; this assay records the CRSwNP-derived arm."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GCM:jiao-muc5ac-mrna-crswnp-24h-output-medium"
+        name: "MUC5AC mRNA, medium-only control (CRSwNP donors)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+        muc5ac_mrna_expression:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 6
+      - id: "GCM:jiao-muc5ac-mrna-crswnp-24h-output-pm25-200"
+        name: "MUC5AC mRNA, 200 ug/mL PM2.5 (CRSwNP donors)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+        muc5ac_mrna_expression:
+          value: "1.71"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 6
+          variability:
+            variability_type: standard_error
+            value: "0.41"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-crswnp"
+      name: "Primary HNEC ALI culture, CRSwNP patients"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+      substrate_type: transwell_insert
+      coating: "human placental collagen"
+      days_at_differentiation: 14
+      donor_info: "Patients with chronic rhinosinusitis with nasal polyps (EPOS 2012 criteria); nasal polyp tissue. Comorbid allergic rhinitis or asthma excluded"
+    follows_protocols:
+      - id: "PROTOCOL:jiao-ali-001"
+        name: "Primary HNEC air-liquid interface culture"
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-qpcr-001"
+        name: "Real-time PCR for MUC5AC"
+        detection_method: "SYBR Green real-time PCR"
+        reference_gene: "GAPDH"
+
+  # ---------------------------------------------------------------------------
+  # MUC5AC-positive cell percentage, control-subject HNECs (dose response)
+  # ---------------------------------------------------------------------------
+  - id: "GCM:jiao-muc5ac-positive-control-24h"
+    name: "MUC5AC-positive cells - control-subject HNECs, PM2.5 24 h"
+    description: "Immunofluorescence quantification of MUC5AC-positive cells as a percentage of total cells in ALI cultures from control subjects (n = 4), reported as the relative change from medium-only cultures. 100 ug/mL PM2.5 produced a non-significant increasing trend (1.16 +/- 0.21-fold); 200 ug/mL PM2.5 increased MUC5AC-positive cells 2.29 +/- 0.41-fold (full-text Results; p < 0.05). beta-tubulin IV-positive cell percentage was unchanged in the same cultures (recorded separately in ciliary_function_assays)."
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "However, 200 μg/mL PM2.5 exposure significantly increased mRNA expression of SAM-pointed domain-containing ETS transcription factor and MUC5AC and the percentage of MUC5AC-positive cells."
+        explanation: "The abstract states that 200 ug/mL PM2.5 significantly increased the percentage of MUC5AC-positive cells, the measurement this assay records at each dose."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-100ug-24h"
+        name: "PM2.5 100 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GCM:jiao-muc5ac-positive-control-24h-output-medium"
+        name: "MUC5AC-positive cells, medium-only control (control donors)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+        muc5ac_protein_expression:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+      - id: "GCM:jiao-muc5ac-positive-control-24h-output-pm25-100"
+        name: "MUC5AC-positive cells, 100 ug/mL PM2.5 (control donors)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-100ug-24h"
+        muc5ac_protein_expression:
+          value: "1.16"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+          variability:
+            variability_type: standard_error
+            value: "0.21"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+      - id: "GCM:jiao-muc5ac-positive-control-24h-output-pm25-200"
+        name: "MUC5AC-positive cells, 200 ug/mL PM2.5 (control donors)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+        muc5ac_protein_expression:
+          value: "2.29"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+          variability:
+            variability_type: standard_error
+            value: "0.41"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+    informs_on_key_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-control"
+      name: "Primary HNEC ALI culture, control subjects"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Control subjects undergoing paranasal sinus surgery for non-inflammatory conditions"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:jiao-icc-001"
+        name: "Immunocytochemical staining for MUC5AC"
+        staining_type: "immunofluorescence"
+        fixation_method: "50:50 methanol:acetone"
+        antibodies_used:
+          - "anti-MUC5AC (1:200, Abcam)"
+          - "rhodamine-labelled secondary (1:500, Invitrogen)"
+        detection_method: "confocal microscopy (Olympus IX81)"
+
+  # ---------------------------------------------------------------------------
+  # MUC5AC-positive cell percentage, CRSwNP HNECs (dose response)
+  # ---------------------------------------------------------------------------
+  - id: "GCM:jiao-muc5ac-positive-crswnp-24h"
+    name: "MUC5AC-positive cells - CRSwNP HNECs, PM2.5 24 h"
+    description: "Immunofluorescence quantification of MUC5AC-positive cells in ALI cultures from CRSwNP patients (n = 6), reported as the relative change from medium-only cultures. 100 ug/mL PM2.5 gave a non-significant trend (1.13 +/- 0.45-fold); 200 ug/mL PM2.5 increased MUC5AC-positive cells 2.68 +/- 0.67-fold (full-text Results; p < 0.05)."
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "However, 200 μg/mL PM2.5 exposure significantly increased mRNA expression of SAM-pointed domain-containing ETS transcription factor and MUC5AC and the percentage of MUC5AC-positive cells."
+        explanation: "The abstract reports the significant rise in the percentage of MUC5AC-positive cells at 200 ug/mL PM2.5 that this assay's treated outputs quantify in CRSwNP-derived cultures."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-100ug-24h"
+        name: "PM2.5 100 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GCM:jiao-muc5ac-positive-crswnp-24h-output-medium"
+        name: "MUC5AC-positive cells, medium-only control (CRSwNP donors)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+        muc5ac_protein_expression:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 6
+      - id: "GCM:jiao-muc5ac-positive-crswnp-24h-output-pm25-100"
+        name: "MUC5AC-positive cells, 100 ug/mL PM2.5 (CRSwNP donors)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-100ug-24h"
+        muc5ac_protein_expression:
+          value: "1.13"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 6
+          variability:
+            variability_type: standard_error
+            value: "0.45"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+      - id: "GCM:jiao-muc5ac-positive-crswnp-24h-output-pm25-200"
+        name: "MUC5AC-positive cells, 200 ug/mL PM2.5 (CRSwNP donors)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+        muc5ac_protein_expression:
+          value: "2.68"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 6
+          variability:
+            variability_type: standard_error
+            value: "0.67"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+    informs_on_key_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-crswnp"
+      name: "Primary HNEC ALI culture, CRSwNP patients"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Patients with chronic rhinosinusitis with nasal polyps; nasal polyp tissue"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:jiao-icc-001"
+        name: "Immunocytochemical staining for MUC5AC"
+        staining_type: "immunofluorescence"
+        fixation_method: "50:50 methanol:acetone"
+        antibodies_used:
+          - "anti-MUC5AC (1:200, Abcam)"
+
+  # ---------------------------------------------------------------------------
+  # EGFR inhibition arm: AG1478 blocks the PM2.5-induced rise in MUC5AC
+  # ---------------------------------------------------------------------------
+  - id: "GCM:jiao-muc5ac-positive-ag1478-crswnp"
+    name: "MUC5AC-positive cells - EGFR inhibitor AG1478 + PM2.5, CRSwNP HNECs"
+    description: "CRSwNP-derived ALI cultures (n = 4) pretreated for 30 min with the EGFR inhibitor AG1478 (10 uM) before 200 ug/mL PM2.5 for 24 h. MUC5AC-positive cell percentages were 2.51 +/- 0.44-fold (PM2.5 alone) and 1.50 +/- 0.21-fold (AG1478 + PM2.5) relative to medium-only cells (full-text Results; p < 0.05). AG1478 alone did not affect basal MUC5AC protein expression."
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "pretreatment of HNECs with AG1478 or LY294002 attenuated PM2.5-induced MUC5AC mRNA and protein expression."
+        explanation: "The abstract states that EGFR inhibition with AG1478 attenuated PM2.5-induced MUC5AC protein expression, which is the drop from 2.51-fold to 1.50-fold recorded by this assay's two treated outputs."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-ag1478-pm25-24h"
+        name: "AG1478 10 uM pretreatment 30 min, then PM2.5 200 ug/mL for 24 hours"
+        exposure_agent:
+          id: "CHEBI:75404"
+          name: "tyrphostin AG 1478"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GCM:jiao-muc5ac-positive-ag1478-crswnp-output-medium"
+        name: "MUC5AC-positive cells, medium-only control"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+        muc5ac_protein_expression:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+      - id: "GCM:jiao-muc5ac-positive-ag1478-crswnp-output-pm25"
+        name: "MUC5AC-positive cells, PM2.5 200 ug/mL alone"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+        muc5ac_protein_expression:
+          value: "2.51"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+          variability:
+            variability_type: standard_error
+            value: "0.44"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+      - id: "GCM:jiao-muc5ac-positive-ag1478-crswnp-output-ag1478-pm25"
+        name: "MUC5AC-positive cells, AG1478 pretreatment + PM2.5"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-ag1478-pm25-24h"
+        muc5ac_protein_expression:
+          value: "1.50"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+          variability:
+            variability_type: standard_error
+            value: "0.21"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-crswnp"
+      name: "Primary HNEC ALI culture, CRSwNP patients"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+      donor_info: "Patients with chronic rhinosinusitis with nasal polyps; nasal polyp tissue"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:jiao-icc-001"
+        name: "Immunocytochemical staining for MUC5AC"
+        staining_type: "immunofluorescence"
+        antibodies_used:
+          - "anti-MUC5AC (1:200, Abcam)"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS - SPDEF and EGFR ligands
+# =============================================================================
+
+gene_expression_assays:
+  # ---------------------------------------------------------------------------
+  # SPDEF mRNA
+  # ---------------------------------------------------------------------------
+  - id: "GE:jiao-spdef-mrna-control-24h"
+    name: "SPDEF mRNA - control-subject HNECs, PM2.5 24 h"
+    description: "SPDEF (SAM-pointed domain-containing ETS transcription factor) is the key transcription factor for goblet cell differentiation and mucus production. 200 ug/mL PM2.5 for 24 h increased SPDEF mRNA to 1.70 +/- 0.26-fold that of medium-only cultures from control subjects (n = 4; full-text Results; p < 0.05)."
+    target_gene: "NCBIGene:25803"
+    gene_expression_method: "real-time PCR (SYBR Green)"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "However, 200 μg/mL PM2.5 exposure significantly increased mRNA expression of SAM-pointed domain-containing ETS transcription factor and MUC5AC and the percentage of MUC5AC-positive cells."
+        explanation: "The abstract names SAM-pointed domain-containing ETS transcription factor (SPDEF) as significantly increased at 200 ug/mL PM2.5, the change this assay's treated output quantifies."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:jiao-spdef-mrna-control-24h-output-medium"
+        name: "SPDEF mRNA, medium-only control (control donors)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+      - id: "GE:jiao-spdef-mrna-control-24h-output-pm25-200"
+        name: "SPDEF mRNA, 200 ug/mL PM2.5 (control donors)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+        mrna_level:
+          value: "1.70"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+          variability:
+            variability_type: standard_error
+            value: "0.26"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+    informs_on_key_event:
+      id: "KE:ke-mucus-metaplasia"
+      name: "Mucus secretory program activation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-control"
+      name: "Primary HNEC ALI culture, control subjects"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-qpcr-001"
+        name: "Real-time PCR for SPDEF"
+        detection_method: "SYBR Green real-time PCR"
+        reference_gene: "GAPDH"
+        primer_sequences:
+          - "SPDEF-F: CAGTGCCCGGTCATTGACA"
+          - "SPDEF-R: CAGCCGGTATTGGTGCTCT"
+
+  - id: "GE:jiao-spdef-mrna-crswnp-24h"
+    name: "SPDEF mRNA - CRSwNP HNECs, PM2.5 24 h"
+    description: "200 ug/mL PM2.5 for 24 h increased SPDEF mRNA to 2.32 +/- 1.55-fold that of medium-only cultures from CRSwNP patients (n = 6; full-text Results; p < 0.05)."
+    target_gene: "NCBIGene:25803"
+    gene_expression_method: "real-time PCR (SYBR Green)"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "However, 200 μg/mL PM2.5 exposure significantly increased mRNA expression of SAM-pointed domain-containing ETS transcription factor and MUC5AC and the percentage of MUC5AC-positive cells."
+        explanation: "The abstract reports the significant SPDEF mRNA increase at 200 ug/mL PM2.5 that this assay quantifies in CRSwNP-derived cultures."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:jiao-spdef-mrna-crswnp-24h-output-medium"
+        name: "SPDEF mRNA, medium-only control (CRSwNP donors)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 6
+      - id: "GE:jiao-spdef-mrna-crswnp-24h-output-pm25-200"
+        name: "SPDEF mRNA, 200 ug/mL PM2.5 (CRSwNP donors)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+        mrna_level:
+          value: "2.32"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 6
+          variability:
+            variability_type: standard_error
+            value: "1.55"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+    informs_on_key_event:
+      id: "KE:ke-mucus-metaplasia"
+      name: "Mucus secretory program activation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-crswnp"
+      name: "Primary HNEC ALI culture, CRSwNP patients"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-qpcr-001"
+        name: "Real-time PCR for SPDEF"
+        detection_method: "SYBR Green real-time PCR"
+        reference_gene: "GAPDH"
+
+  # ---------------------------------------------------------------------------
+  # HB-EGF mRNA (EGFR ligand)
+  # ---------------------------------------------------------------------------
+  - id: "GE:jiao-hbegf-mrna-control-24h"
+    name: "HB-EGF mRNA - control-subject HNECs, PM2.5 24 h"
+    description: "Heparin-binding EGF-like growth factor mRNA rose to 1.44 +/- 0.15-fold that of medium-only cultures from control subjects after 200 ug/mL PM2.5 for 24 h (n = 4; full-text Results; p < 0.05). HB-EGF protein measured by ELISA was likewise increased."
+    target_gene: "NCBIGene:1839"
+    gene_expression_method: "real-time PCR (SYBR Green)"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "PM2.5 also increased expression of EGFR ligands, including heparin-binding EGF-like growth factor and amphiregulin."
+        explanation: "The abstract names heparin-binding EGF-like growth factor among the EGFR ligands increased by PM2.5, the change this assay's treated output quantifies."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:jiao-hbegf-mrna-control-24h-output-medium"
+        name: "HB-EGF mRNA, medium-only control (control donors)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+      - id: "GE:jiao-hbegf-mrna-control-24h-output-pm25-200"
+        name: "HB-EGF mRNA, 200 ug/mL PM2.5 (control donors)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+        mrna_level:
+          value: "1.44"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+          variability:
+            variability_type: standard_error
+            value: "0.15"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-control"
+      name: "Primary HNEC ALI culture, control subjects"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-qpcr-001"
+        name: "Real-time PCR for HB-EGF"
+        detection_method: "SYBR Green real-time PCR"
+        reference_gene: "GAPDH"
+        primer_sequences:
+          - "HB-EGF-F: CCAAACAAGGAGGAGCACGGGA"
+          - "HB-EGF-R: CCCAGCCGATTCCTTGAGCACA"
+
+  - id: "GE:jiao-hbegf-mrna-crswnp-24h"
+    name: "HB-EGF mRNA - CRSwNP HNECs, PM2.5 24 h"
+    description: "Heparin-binding EGF-like growth factor mRNA rose to 1.56 +/- 0.56-fold that of medium-only cultures from CRSwNP patients after 200 ug/mL PM2.5 for 24 h (n = 6; full-text Results; p < 0.05)."
+    target_gene: "NCBIGene:1839"
+    gene_expression_method: "real-time PCR (SYBR Green)"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "PM2.5 also increased expression of EGFR ligands, including heparin-binding EGF-like growth factor and amphiregulin."
+        explanation: "The abstract reports the PM2.5-driven increase in heparin-binding EGF-like growth factor that this assay quantifies in CRSwNP-derived cultures."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:jiao-hbegf-mrna-crswnp-24h-output-medium"
+        name: "HB-EGF mRNA, medium-only control (CRSwNP donors)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 6
+      - id: "GE:jiao-hbegf-mrna-crswnp-24h-output-pm25-200"
+        name: "HB-EGF mRNA, 200 ug/mL PM2.5 (CRSwNP donors)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+        mrna_level:
+          value: "1.56"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 6
+          variability:
+            variability_type: standard_error
+            value: "0.56"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-crswnp"
+      name: "Primary HNEC ALI culture, CRSwNP patients"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-qpcr-001"
+        name: "Real-time PCR for HB-EGF"
+        detection_method: "SYBR Green real-time PCR"
+        reference_gene: "GAPDH"
+
+  # ---------------------------------------------------------------------------
+  # Amphiregulin (AREG) mRNA
+  # ---------------------------------------------------------------------------
+  - id: "GE:jiao-areg-mrna-control-24h"
+    name: "Amphiregulin mRNA - control-subject HNECs, PM2.5 24 h"
+    description: "Amphiregulin mRNA rose to 1.42 +/- 0.14-fold that of medium-only cultures from control subjects after 200 ug/mL PM2.5 for 24 h (n = 4; full-text Results; p < 0.05). AREG protein by ELISA was also significantly increased."
+    target_gene: "NCBIGene:374"
+    gene_expression_method: "real-time PCR (SYBR Green)"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "PM2.5 also increased expression of EGFR ligands, including heparin-binding EGF-like growth factor and amphiregulin."
+        explanation: "The abstract names amphiregulin among the EGFR ligands increased by PM2.5, the change this assay's treated output quantifies."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:jiao-areg-mrna-control-24h-output-medium"
+        name: "AREG mRNA, medium-only control (control donors)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+      - id: "GE:jiao-areg-mrna-control-24h-output-pm25-200"
+        name: "AREG mRNA, 200 ug/mL PM2.5 (control donors)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+        mrna_level:
+          value: "1.42"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+          variability:
+            variability_type: standard_error
+            value: "0.14"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-control"
+      name: "Primary HNEC ALI culture, control subjects"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-qpcr-001"
+        name: "Real-time PCR for AREG"
+        detection_method: "SYBR Green real-time PCR"
+        reference_gene: "GAPDH"
+        primer_sequences:
+          - "AREG-F: ATATCACATTGGAGTCACTGCC"
+          - "AREG-R: GAAAGAGGACCGACTCATCATT"
+
+  - id: "GE:jiao-areg-mrna-crswnp-24h"
+    name: "Amphiregulin mRNA - CRSwNP HNECs, PM2.5 24 h"
+    description: "Amphiregulin mRNA rose to 1.23 +/- 0.25-fold that of medium-only cultures from CRSwNP patients after 200 ug/mL PM2.5 for 24 h (n = 6; full-text Results; p < 0.05)."
+    target_gene: "NCBIGene:374"
+    gene_expression_method: "real-time PCR (SYBR Green)"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "PM2.5 also increased expression of EGFR ligands, including heparin-binding EGF-like growth factor and amphiregulin."
+        explanation: "The abstract reports the PM2.5-driven increase in amphiregulin that this assay quantifies in CRSwNP-derived cultures."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:jiao-areg-mrna-crswnp-24h-output-medium"
+        name: "AREG mRNA, medium-only control (CRSwNP donors)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 6
+      - id: "GE:jiao-areg-mrna-crswnp-24h-output-pm25-200"
+        name: "AREG mRNA, 200 ug/mL PM2.5 (CRSwNP donors)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+        mrna_level:
+          value: "1.23"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 6
+          variability:
+            variability_type: standard_error
+            value: "0.25"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-crswnp"
+      name: "Primary HNEC ALI culture, CRSwNP patients"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-qpcr-001"
+        name: "Real-time PCR for AREG"
+        detection_method: "SYBR Green real-time PCR"
+        reference_gene: "GAPDH"
+
+  # ---------------------------------------------------------------------------
+  # Epiregulin (EREG) mRNA - increased at mRNA level; protein below ELISA range
+  # ---------------------------------------------------------------------------
+  - id: "GE:jiao-ereg-mrna-control-24h"
+    name: "Epiregulin mRNA - control-subject HNECs, PM2.5 24 h"
+    description: "Epiregulin mRNA rose to 1.46 +/- 0.31-fold that of medium-only cultures from control subjects after 200 ug/mL PM2.5 for 24 h (n = 4; full-text Results; p < 0.05). EREG protein could not be confirmed: its concentration was below the detection range of the ELISA kit. EGF, TGF-alpha and neuregulin mRNA were not significantly elevated."
+    target_gene: "NCBIGene:2069"
+    gene_expression_method: "real-time PCR (SYBR Green)"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "PM2.5 also increased expression of EGFR ligands, including heparin-binding EGF-like growth factor and amphiregulin."
+        explanation: "The abstract states that PM2.5 increased EGFR ligand expression; epiregulin is one of the ligands measured in that panel, and the full text reports the 1.46-fold mRNA rise recorded here."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:jiao-ereg-mrna-control-24h-output-medium"
+        name: "EREG mRNA, medium-only control (control donors)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+      - id: "GE:jiao-ereg-mrna-control-24h-output-pm25-200"
+        name: "EREG mRNA, 200 ug/mL PM2.5 (control donors)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+        mrna_level:
+          value: "1.46"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+          variability:
+            variability_type: standard_error
+            value: "0.31"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-control"
+      name: "Primary HNEC ALI culture, control subjects"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-qpcr-001"
+        name: "Real-time PCR for EREG"
+        detection_method: "SYBR Green real-time PCR"
+        reference_gene: "GAPDH"
+        primer_sequences:
+          - "EREG-F: TGCTCTGCCTGGGTTTCCAT"
+          - "EREG-R: TGAGCCACACGTGGATTGTC"
+
+  - id: "GE:jiao-ereg-mrna-crswnp-24h"
+    name: "Epiregulin mRNA - CRSwNP HNECs, PM2.5 24 h"
+    description: "Epiregulin mRNA rose to 1.94 +/- 1.03-fold that of medium-only cultures from CRSwNP patients after 200 ug/mL PM2.5 for 24 h (n = 6; full-text Results; p < 0.05)."
+    target_gene: "NCBIGene:2069"
+    gene_expression_method: "real-time PCR (SYBR Green)"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "PM2.5 also increased expression of EGFR ligands, including heparin-binding EGF-like growth factor and amphiregulin."
+        explanation: "The abstract states that PM2.5 increased EGFR ligand expression; epiregulin is one of the ligands in that panel, and the full text reports the 1.94-fold mRNA rise recorded here for CRSwNP-derived cultures."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:jiao-ereg-mrna-crswnp-24h-output-medium"
+        name: "EREG mRNA, medium-only control (CRSwNP donors)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 6
+      - id: "GE:jiao-ereg-mrna-crswnp-24h-output-pm25-200"
+        name: "EREG mRNA, 200 ug/mL PM2.5 (CRSwNP donors)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+        mrna_level:
+          value: "1.94"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 6
+          variability:
+            variability_type: standard_error
+            value: "1.03"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-crswnp"
+      name: "Primary HNEC ALI culture, CRSwNP patients"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-qpcr-001"
+        name: "Real-time PCR for EREG"
+        detection_method: "SYBR Green real-time PCR"
+        reference_gene: "GAPDH"
+
+  # ---------------------------------------------------------------------------
+  # PI3K inhibition arm: LY294002 blocks PM2.5-induced MUC5AC mRNA
+  # ---------------------------------------------------------------------------
+  - id: "GE:jiao-muc5ac-mrna-ly294002-crswnp"
+    name: "MUC5AC mRNA - PI3K inhibitor LY294002 + PM2.5, CRSwNP HNECs"
+    description: "CRSwNP-derived ALI cultures (n = 4) pretreated for 30 min with the PI3K inhibitor LY294002 (25 uM) before 200 ug/mL PM2.5 for 24 h. MUC5AC mRNA expression was significantly blocked by LY294002 in PM2.5-stimulated cells (Fig. 6; p < 0.05); LY294002 alone did not affect basal MUC5AC expression. The paper reports this result graphically only, so no fold-change values are recorded for the treated groups; the direction of the effect is captured in the response comparison layer."
+    target_gene: "NCBIGene:4586"
+    gene_expression_method: "real-time PCR (SYBR Green)"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "pretreatment of HNECs with AG1478 or LY294002 attenuated PM2.5-induced MUC5AC mRNA and protein expression."
+        explanation: "The abstract states that PI3K inhibition with LY294002 attenuated PM2.5-induced MUC5AC mRNA expression, which is what this assay records."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-ly294002-pm25-24h"
+        name: "LY294002 25 uM pretreatment 30 min, then PM2.5 200 ug/mL for 24 hours"
+        exposure_agent:
+          id: "CHEBI:65329"
+          name: "LY294002"
+        exposure_concentration:
+          value: "25"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:jiao-muc5ac-mrna-ly294002-crswnp-output-medium"
+        name: "MUC5AC mRNA, medium-only control"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 4
+      - id: "GE:jiao-muc5ac-mrna-ly294002-crswnp-output-ly294002-pm25"
+        name: "MUC5AC mRNA, LY294002 pretreatment + PM2.5 (values shown graphically only)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-ly294002-pm25-24h"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-crswnp"
+      name: "Primary HNEC ALI culture, CRSwNP patients"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-qpcr-001"
+        name: "Real-time PCR for MUC5AC"
+        detection_method: "SYBR Green real-time PCR"
+        reference_gene: "GAPDH"
+
+# =============================================================================
+# EGFR SIGNALING ASSAY - PI3K/AKT/ERK phosphorylation (Western blot)
+# =============================================================================
+
+egfr_signaling_assays:
+  - id: "EGFR:jiao-pi3k-akt-erk-30min"
+    name: "PI3K-AKT/ERK activation after PM2.5, CRSwNP HNECs"
+    description: "Western blot of CRSwNP-derived ALI cultures (n = 4) treated with 200 ug/mL PM2.5 for 30 min. p-PI3K, p-AKT and p-ERK were all significantly increased while total PI3K, AKT and ERK protein was unchanged (Fig. 5; p < 0.05). The paper reports the densitometry graphically only, so no numeric phosphorylation values are recorded. EGFR phosphorylation itself was not measured: EGFR involvement rests on the ligand data and on reversal by the EGFR inhibitor AG1478."
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Confluent cultures were exposed to 100 or 200 μg/mL PM2.5 for 24 h and assessed for expression of specific mucociliary-associated factors, the percentage of β-tubulin IV-positive and MUC5AC-positive cells, expression of epidermal growth factor receptor (EGFR) ligand and activation of phosphoinositide 3-kinase (PI3K)-AKT/ERK."
+        explanation: "The abstract's methods sentence states that PI3K-AKT/ERK activation was one of the assessed endpoints, which is what this Western blot assay records."
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Furthermore, this study shows that PM2.5-induced MUC5AC expression is likely mediated through the EGFR-PI3K pathway."
+        explanation: "The abstract's conclusion attributes PM2.5-induced MUC5AC expression to the EGFR-PI3K pathway, the pathway activation this assay measures."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-30min"
+        name: "ALI culture medium only, 30 minutes (control)"
+        exposure_duration:
+          value: "30"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+      - id: "EXPOSURE:jiao-pm25-200ug-30min"
+        name: "PM2.5 200 ug/mL apical, 30 minutes"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "30"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    has_specified_output:
+      - id: "EGFR:jiao-pi3k-akt-erk-30min-output-medium"
+        name: "Medium-only control, basal PI3K/AKT/ERK phosphorylation"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-30min"
+        downstream_kinase_activation: "Basal phosphorylation of PI3K, AKT and ERK in medium-only cultures"
+      - id: "EGFR:jiao-pi3k-akt-erk-30min-output-pm25"
+        name: "PM2.5 200 ug/mL, 30 min"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-30min"
+        downstream_kinase_activation: "p-PI3K, p-AKT and p-ERK significantly increased; total PI3K, AKT and ERK protein unchanged"
+        pathway_biomarkers:
+          - "p-PI3K"
+          - "p-AKT"
+          - "p-ERK"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-crswnp"
+      name: "Primary HNEC ALI culture, CRSwNP patients"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-wb-001"
+        name: "Western blot for PI3K, AKT and ERK phosphorylation"
+        detection_method: "electrogenerated chemiluminescence"
+        antibodies_used:
+          - "anti-p-PI3K (1:1,000, Cell Signaling Technology)"
+          - "anti-PI3K (1:2,000, Cell Signaling Technology)"
+          - "anti-p-AKT (1:1,000, Cell Signaling Technology)"
+          - "anti-AKT (1:2,000, Cell Signaling Technology)"
+          - "anti-p-ERK (1:1,000, Cell Signaling Technology)"
+          - "anti-ERK (1:2,000, Cell Signaling Technology)"
+          - "anti-GAPDH (1:10,000, Abcam)"
+        normalization_method: "GAPDH loading control"
+
+# =============================================================================
+# NULL RESULTS - ciliogenesis was NOT affected by PM2.5
+# These records exist so the pooled workbook carries the negative finding
+# alongside the positive mucin findings.
+# =============================================================================
+
+foxj_assays:
+  - id: "FOXJ:jiao-foxj1-mrna-24h"
+    name: "FOXJ1 mRNA - HNECs, PM2.5 24 h (no change)"
+    description: "NULL RESULT. Real-time PCR for FOXJ1 in ALI cultures from control subjects (n = 4) and CRSwNP patients (n = 6). Neither 100 nor 200 ug/mL PM2.5 for 24 h altered FOXJ1 mRNA expression; the same was true of GMNC, MCIDAS and DNAI2. No fold-change values are recorded because the paper reports these data graphically only and states no significant difference. The authors attribute the absent effect to the short exposure time or the low PM2.5 concentrations."
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "PM2.5 exposure at 100 or 200 μg/mL for 24 h did not affect geminin coiled-coil domain containing, multiciliate differentiation and DNA synthesis associated cell cycle protein, FOXJ1, or DNAI2 mRNA expression or the percentage of β-tubulin IV-positive cells."
+        explanation: "The quote reports that FOXJ1 mRNA was unchanged by PM2.5, so this assay's evidence points against the key event of altered ciliogenesis rather than for it."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-100ug-24h"
+        name: "PM2.5 100 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "FOXJ:jiao-foxj1-mrna-24h-output-medium"
+        name: "FOXJ1 mRNA, medium-only control"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+      - id: "FOXJ:jiao-foxj1-mrna-24h-output-pm25-100"
+        name: "FOXJ1 mRNA, 100 ug/mL PM2.5 (no significant change)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-100ug-24h"
+      - id: "FOXJ:jiao-foxj1-mrna-24h-output-pm25-200"
+        name: "FOXJ1 mRNA, 200 ug/mL PM2.5 (no significant change)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+    informs_on_key_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-crswnp"
+      name: "Primary HNEC ALI culture, CRSwNP patients"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-qpcr-001"
+        name: "Real-time PCR for FOXJ1"
+        detection_method: "SYBR Green real-time PCR"
+        reference_gene: "GAPDH"
+        primer_sequences:
+          - "FOXJ1-F: GTGGGAGCAACTTCTTCCAGA"
+          - "FOXJ1-R: ATAAGTATGTGGTGCCTGGCT"
+
+ciliary_function_assays:
+  - id: "CILIA:jiao-btubulin-positive-24h"
+    name: "Ciliated cell coverage (beta-tubulin IV-positive cells) - PM2.5 24 h (no change)"
+    description: "NULL RESULT. Immunofluorescence quantification of beta-tubulin IV-positive cells as a percentage of total cells in ALI cultures from control subjects (n = 4) and CRSwNP patients (n = 6). No significant change in ciliated cell coverage was observed at either 100 or 200 ug/mL PM2.5 for 24 h, in contrast to the MUC5AC-positive cell increase measured in the same stained cultures. The paper reports these data graphically only, so no values are recorded."
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "PM2.5 exposure at 100 or 200 μg/mL for 24 h did not affect geminin coiled-coil domain containing, multiciliate differentiation and DNA synthesis associated cell cycle protein, FOXJ1, or DNAI2 mRNA expression or the percentage of β-tubulin IV-positive cells."
+        explanation: "The quote states that the percentage of beta-tubulin IV-positive cells was unchanged by PM2.5, so this assay's evidence points against decreased ciliary function rather than for it."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-100ug-24h"
+        name: "PM2.5 100 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "CILIA:jiao-btubulin-positive-24h-output-medium"
+        name: "beta-tubulin IV-positive cells, medium-only control"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+      - id: "CILIA:jiao-btubulin-positive-24h-output-pm25-100"
+        name: "beta-tubulin IV-positive cells, 100 ug/mL PM2.5 (no significant change)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-100ug-24h"
+      - id: "CILIA:jiao-btubulin-positive-24h-output-pm25-200"
+        name: "beta-tubulin IV-positive cells, 200 ug/mL PM2.5 (no significant change)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+    airway_region: "nasal"
+    analysis_software: "Olympus confocal imaging, manual counting"
+    informs_on_key_event:
+      id: "KE:ke3-impaired-ciliary"
+      name: "Decreased ciliary function"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-control"
+      name: "Primary HNEC ALI culture, control subjects"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:jiao-icc-001"
+        name: "Immunocytochemical staining for beta-tubulin IV"
+        staining_type: "immunofluorescence"
+        fixation_method: "50:50 methanol:acetone"
+        antibodies_used:
+          - "anti-beta-tubulin IV (1:500, Sigma-Aldrich)"
+          - "fluorescein isothiocyanate-labelled secondary (1:500, Invitrogen)"
+
+# =============================================================================
+# RESPONSE COMPARISONS - changes vs. medium-only control as stated in the paper
+# The paper reports significance only as * p < 0.05, so no exact p-values are
+# recorded; every value below is stated in the Results text.
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:jiao-muc5ac-mrna-control"
+    name: "MUC5AC mRNA, 200 ug/mL PM2.5 vs medium (control donors)"
+    derived_from_assay: "GCM:jiao-muc5ac-mrna-control-24h"
+    compared_measurement: "muc5ac_mrna_expression"
+    control_output: "GCM:jiao-muc5ac-mrna-control-24h-output-medium"
+    treated_output: "GCM:jiao-muc5ac-mrna-control-24h-output-pm25-200"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "2.13"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "0.37"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-muc5ac-mrna-crswnp"
+    name: "MUC5AC mRNA, 200 ug/mL PM2.5 vs medium (CRSwNP donors)"
+    derived_from_assay: "GCM:jiao-muc5ac-mrna-crswnp-24h"
+    compared_measurement: "muc5ac_mrna_expression"
+    control_output: "GCM:jiao-muc5ac-mrna-crswnp-24h-output-medium"
+    treated_output: "GCM:jiao-muc5ac-mrna-crswnp-24h-output-pm25-200"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.71"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "0.41"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-muc5ac-positive-control-200"
+    name: "MUC5AC-positive cells, 200 ug/mL PM2.5 vs medium (control donors)"
+    derived_from_assay: "GCM:jiao-muc5ac-positive-control-24h"
+    compared_measurement: "muc5ac_protein_expression"
+    control_output: "GCM:jiao-muc5ac-positive-control-24h-output-medium"
+    treated_output: "GCM:jiao-muc5ac-positive-control-24h-output-pm25-200"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "2.29"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "0.41"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-muc5ac-positive-control-100"
+    name: "MUC5AC-positive cells, 100 ug/mL PM2.5 vs medium (control donors, trend only)"
+    description: "Reported as an increasing trend; the paper does not mark this comparison as significant."
+    derived_from_assay: "GCM:jiao-muc5ac-positive-control-24h"
+    compared_measurement: "muc5ac_protein_expression"
+    control_output: "GCM:jiao-muc5ac-positive-control-24h-output-medium"
+    treated_output: "GCM:jiao-muc5ac-positive-control-24h-output-pm25-100"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.16"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "0.21"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-muc5ac-positive-crswnp-200"
+    name: "MUC5AC-positive cells, 200 ug/mL PM2.5 vs medium (CRSwNP donors)"
+    derived_from_assay: "GCM:jiao-muc5ac-positive-crswnp-24h"
+    compared_measurement: "muc5ac_protein_expression"
+    control_output: "GCM:jiao-muc5ac-positive-crswnp-24h-output-medium"
+    treated_output: "GCM:jiao-muc5ac-positive-crswnp-24h-output-pm25-200"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "2.68"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "0.67"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-muc5ac-positive-crswnp-100"
+    name: "MUC5AC-positive cells, 100 ug/mL PM2.5 vs medium (CRSwNP donors, trend only)"
+    description: "Reported as an increasing trend; the paper does not mark this comparison as significant."
+    derived_from_assay: "GCM:jiao-muc5ac-positive-crswnp-24h"
+    compared_measurement: "muc5ac_protein_expression"
+    control_output: "GCM:jiao-muc5ac-positive-crswnp-24h-output-medium"
+    treated_output: "GCM:jiao-muc5ac-positive-crswnp-24h-output-pm25-100"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.13"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "0.45"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-muc5ac-positive-ag1478"
+    name: "MUC5AC-positive cells, AG1478 + PM2.5 vs medium (CRSwNP donors)"
+    description: "EGFR inhibition arm. The paper states 2.51 +/- 0.44-fold for PM2.5 alone and 1.50 +/- 0.21-fold for AG1478-pretreated cells, both relative to medium-only cells; this record keeps the reported AG1478 + PM2.5 value against the same medium-only anchor rather than computing the attenuation."
+    derived_from_assay: "GCM:jiao-muc5ac-positive-ag1478-crswnp"
+    compared_measurement: "muc5ac_protein_expression"
+    control_output: "GCM:jiao-muc5ac-positive-ag1478-crswnp-output-medium"
+    treated_output: "GCM:jiao-muc5ac-positive-ag1478-crswnp-output-ag1478-pm25"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.50"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "0.21"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-spdef-mrna-control"
+    name: "SPDEF mRNA, 200 ug/mL PM2.5 vs medium (control donors)"
+    derived_from_assay: "GE:jiao-spdef-mrna-control-24h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:jiao-spdef-mrna-control-24h-output-medium"
+    treated_output: "GE:jiao-spdef-mrna-control-24h-output-pm25-200"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.70"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "0.26"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-spdef-mrna-crswnp"
+    name: "SPDEF mRNA, 200 ug/mL PM2.5 vs medium (CRSwNP donors)"
+    derived_from_assay: "GE:jiao-spdef-mrna-crswnp-24h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:jiao-spdef-mrna-crswnp-24h-output-medium"
+    treated_output: "GE:jiao-spdef-mrna-crswnp-24h-output-pm25-200"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "2.32"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "1.55"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-hbegf-mrna-control"
+    name: "HB-EGF mRNA, 200 ug/mL PM2.5 vs medium (control donors)"
+    derived_from_assay: "GE:jiao-hbegf-mrna-control-24h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:jiao-hbegf-mrna-control-24h-output-medium"
+    treated_output: "GE:jiao-hbegf-mrna-control-24h-output-pm25-200"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.44"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "0.15"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-hbegf-mrna-crswnp"
+    name: "HB-EGF mRNA, 200 ug/mL PM2.5 vs medium (CRSwNP donors)"
+    derived_from_assay: "GE:jiao-hbegf-mrna-crswnp-24h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:jiao-hbegf-mrna-crswnp-24h-output-medium"
+    treated_output: "GE:jiao-hbegf-mrna-crswnp-24h-output-pm25-200"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.56"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "0.56"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-areg-mrna-control"
+    name: "AREG mRNA, 200 ug/mL PM2.5 vs medium (control donors)"
+    derived_from_assay: "GE:jiao-areg-mrna-control-24h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:jiao-areg-mrna-control-24h-output-medium"
+    treated_output: "GE:jiao-areg-mrna-control-24h-output-pm25-200"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.42"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "0.14"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-areg-mrna-crswnp"
+    name: "AREG mRNA, 200 ug/mL PM2.5 vs medium (CRSwNP donors)"
+    derived_from_assay: "GE:jiao-areg-mrna-crswnp-24h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:jiao-areg-mrna-crswnp-24h-output-medium"
+    treated_output: "GE:jiao-areg-mrna-crswnp-24h-output-pm25-200"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.23"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "0.25"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-ereg-mrna-control"
+    name: "EREG mRNA, 200 ug/mL PM2.5 vs medium (control donors)"
+    derived_from_assay: "GE:jiao-ereg-mrna-control-24h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:jiao-ereg-mrna-control-24h-output-medium"
+    treated_output: "GE:jiao-ereg-mrna-control-24h-output-pm25-200"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.46"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "0.31"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-ereg-mrna-crswnp"
+    name: "EREG mRNA, 200 ug/mL PM2.5 vs medium (CRSwNP donors)"
+    derived_from_assay: "GE:jiao-ereg-mrna-crswnp-24h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:jiao-ereg-mrna-crswnp-24h-output-medium"
+    treated_output: "GE:jiao-ereg-mrna-crswnp-24h-output-pm25-200"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.94"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "1.03"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS - the mechanism this paper argues for
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:jiao-egfr-to-mucin"
+    name: "EGFR activation leads to mucin hypersecretion"
+    description: "Central mechanism of Jiao 2022: PM2.5 raises EGFR ligand expression (HB-EGF, AREG, EREG) and activates PI3K-AKT/ERK, and blocking either EGFR (AG1478) or PI3K (LY294002) attenuates the PM2.5-induced rise in MUC5AC mRNA and protein in human nasal epithelial cells."
+    upstream_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: strong
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Furthermore, this study shows that PM2.5-induced MUC5AC expression is likely mediated through the EGFR-PI3K pathway."
+        explanation: "The abstract's conclusion states the directional link this key event relationship records: EGFR-PI3K pathway activation mediates the increase in MUC5AC."
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "pretreatment of HNECs with AG1478 or LY294002 attenuated PM2.5-induced MUC5AC mRNA and protein expression."
+        explanation: "Inhibitor reversal of the MUC5AC response is the empirical basis for calling this relationship strongly supported."
+
+  - id: "KER:jiao-egfr-to-goblet"
+    name: "EGFR activation leads to goblet cell hyperplasia"
+    description: "The percentage of MUC5AC-positive (goblet) cells rose with PM2.5 and was reduced by EGFR inhibition with AG1478, linking EGFR activation to the goblet cell phenotype in nasal epithelium."
+    upstream_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "However, 200 μg/mL PM2.5 exposure significantly increased mRNA expression of SAM-pointed domain-containing ETS transcription factor and MUC5AC and the percentage of MUC5AC-positive cells."
+        explanation: "The rise in MUC5AC-positive cell percentage is the downstream goblet cell change; the paper attributes it to the same EGFR-PI3K pathway, but reports no exact quantitative dose-response, so support is recorded as moderate."
