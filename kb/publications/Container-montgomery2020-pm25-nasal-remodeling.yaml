@@ -312,8 +312,8 @@ gene_expression_assays:
       id: "soma:montgomery-nasal-ali-doseresponse"
       name: "Primary nasal AEC ALI cultures - five-donor dose-response set"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -321,8 +321,8 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       substrate_type: transwell_insert
       days_at_differentiation: 28
@@ -414,8 +414,8 @@ gene_expression_assays:
       id: "soma:montgomery-nasal-ali-12donor"
       name: "Primary nasal AEC ALI cultures - 12-donor moderate OE set"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -423,8 +423,8 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       substrate_type: transwell_insert
       days_at_differentiation: 28
@@ -513,8 +513,8 @@ gene_expression_assays:
       id: "soma:montgomery-nasal-ali-12donor"
       name: "Primary nasal AEC ALI cultures - 12-donor moderate OE set"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -522,8 +522,8 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       substrate_type: transwell_insert
       days_at_differentiation: 28
@@ -605,8 +605,8 @@ gene_expression_assays:
       id: "soma:montgomery-nasal-ali-12donor"
       name: "Primary nasal AEC ALI cultures - 12-donor moderate OE set"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -614,8 +614,8 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       substrate_type: transwell_insert
       days_at_differentiation: 28
@@ -695,8 +695,8 @@ gene_expression_assays:
       id: "soma:montgomery-nasal-ali-doseresponse"
       name: "Primary nasal AEC ALI cultures - five-donor dose-response set"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -704,8 +704,8 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       substrate_type: transwell_insert
       days_at_differentiation: 28
@@ -800,8 +800,8 @@ gene_expression_assays:
       id: "soma:montgomery-nasal-ali-chronic"
       name: "Primary nasal AEC ALI cultures - chronic stimulation set"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -809,8 +809,8 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       substrate_type: transwell_insert
       days_at_differentiation: 28
@@ -902,8 +902,8 @@ gene_expression_assays:
       id: "soma:montgomery-nasal-ali-chronic"
       name: "Primary nasal AEC ALI cultures - chronic stimulation set"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -911,8 +911,8 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       substrate_type: transwell_insert
       days_at_differentiation: 28
@@ -1031,8 +1031,8 @@ goblet_cell_assays:
       id: "soma:montgomery-nasal-ali-12donor"
       name: "Primary nasal AEC ALI cultures - 12-donor moderate OE set"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -1040,8 +1040,8 @@ goblet_cell_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       substrate_type: transwell_insert
       days_at_differentiation: 28
@@ -1083,7 +1083,7 @@ goblet_cell_assays:
         measured_under: "EXPOSURE:montgomery-media-control-chronic"
       - id: "GCM:montgomery-mucin-cells-chronic-output-oe"
         name: "MUC5AC+ and MUC5B+ cells after chronic OE stimulation"
-        description: "muc5ac_mrna_expression and muc5b_mrna_expression are log2 fold changes (LFC 1.72, P = 1.27e-2; LFC -0.72, P = 9.74e-2 respectively) versus paired media control. The protein-level fold changes in MUC5AC+ cells (FC 2.88) and MUC5B+ cells (FC 0.74) are recorded in response_comparisons with their p-values."
+        description: "muc5ac_mrna_expression and muc5b_mrna_expression are log2 fold changes (LFC 1.72, P = 1.27e-2; LFC -0.72, P = 9.74e-2 respectively) versus paired media control. The cell-count fold changes in MUC5AC+ cells (FC 2.88) and MUC5B+ cells (FC 0.74) are recorded in response_comparisons with their p-values."
         experimental_group: treated
         measured_under: "EXPOSURE:montgomery-oe-high-chronic"
         muc5ac_mrna_expression:
@@ -1139,8 +1139,8 @@ goblet_cell_assays:
       id: "soma:montgomery-nasal-ali-chronic"
       name: "Primary nasal AEC ALI cultures - chronic stimulation set"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -1148,8 +1148,8 @@ goblet_cell_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       substrate_type: transwell_insert
       days_at_differentiation: 28
@@ -1219,8 +1219,8 @@ goblet_cell_assays:
       id: "soma:montgomery-nasal-ali-chronic"
       name: "Primary nasal AEC ALI cultures - chronic stimulation set"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -1228,8 +1228,8 @@ goblet_cell_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       substrate_type: transwell_insert
       days_at_differentiation: 28
@@ -1309,8 +1309,8 @@ goblet_cell_assays:
       id: "soma:montgomery-nasal-ali-chronic"
       name: "Primary nasal AEC ALI cultures - chronic stimulation set"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -1318,8 +1318,8 @@ goblet_cell_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       substrate_type: transwell_insert
       days_at_differentiation: 28
@@ -1410,8 +1410,8 @@ foxj_assays:
       id: "soma:montgomery-nasal-ali-doseresponse"
       name: "Primary nasal AEC ALI cultures - five-donor dose-response set"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -1419,8 +1419,8 @@ foxj_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       substrate_type: transwell_insert
       days_at_differentiation: 28
@@ -1512,8 +1512,8 @@ foxj_assays:
       id: "soma:montgomery-nasal-ali-chronic"
       name: "Primary nasal AEC ALI cultures - chronic stimulation set"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -1521,8 +1521,8 @@ foxj_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       substrate_type: transwell_insert
       days_at_differentiation: 28
@@ -1550,9 +1550,9 @@ foxj_assays:
 response_comparisons:
   - id: "COMP:montgomery-muc5ac-cells-chronic"
     name: "MUC5AC+ cells, chronic OE vs mock"
-    description: "Increase seen in all four donor pairs examined."
+    description: "Increase seen in all four donor pairs examined. Figure 5B quantifies the number of MUC5AC+ cells by immunofluorescence, so the compared measurement is a cell count (of MUC5AC+ mucus secretory cells), not a protein expression level."
     derived_from_assay: "GCM:montgomery-mucin-cells-chronic"
-    compared_measurement: "muc5ac_protein_expression"
+    compared_measurement: "goblet_cell_count"
     control_output: "GCM:montgomery-mucin-cells-chronic-output-control"
     treated_output: "GCM:montgomery-mucin-cells-chronic-output-oe"
     change_type: fold_change
@@ -1569,9 +1569,9 @@ response_comparisons:
 
   - id: "COMP:montgomery-muc5b-cells-chronic"
     name: "MUC5B+ cells, chronic OE vs mock"
-    description: "Decrease seen in all four donor pairs examined; P above the 0.05 threshold."
+    description: "Decrease seen in all four donor pairs examined; P above the 0.05 threshold. Figure 5B quantifies the number of MUC5B+ cells by immunofluorescence, so the compared measurement is a cell count (of MUC5B+ mucus secretory cells), not a protein expression level."
     derived_from_assay: "GCM:montgomery-mucin-cells-chronic"
-    compared_measurement: "muc5b_protein_expression"
+    compared_measurement: "goblet_cell_count"
     control_output: "GCM:montgomery-mucin-cells-chronic-output-control"
     treated_output: "GCM:montgomery-mucin-cells-chronic-output-oe"
     change_type: fold_change
