@@ -182,7 +182,7 @@ cftr_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       cell_line:
-        id: "CLO:0003679"
+        id: "CLO:0002192"
         name: "Calu-3"
       cell_culture_growth_mode: adherent
       days_at_differentiation: 21
@@ -377,7 +377,7 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       cell_line:
-        id: "CLO:0003679"
+        id: "CLO:0002192"
         name: "Calu-3"
     follows_protocols:
       - protocol_type: MolecularAssayProtocol
@@ -439,7 +439,7 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       cell_line:
-        id: "CLO:0003679"
+        id: "CLO:0002192"
         name: "Calu-3"
     follows_protocols:
       - protocol_type: MolecularAssayProtocol
@@ -501,7 +501,7 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       cell_line:
-        id: "CLO:0003679"
+        id: "CLO:0002192"
         name: "Calu-3"
     follows_protocols:
       - protocol_type: MolecularAssayProtocol
@@ -563,7 +563,7 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       cell_line:
-        id: "CLO:0003679"
+        id: "CLO:0002192"
         name: "Calu-3"
     follows_protocols:
       - protocol_type: MolecularAssayProtocol
