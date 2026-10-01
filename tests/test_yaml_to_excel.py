@@ -1,4 +1,5 @@
 """Tests for yaml_to_excel.py converter."""
+import importlib.util
 import os
 import subprocess
 import tempfile
@@ -114,3 +115,75 @@ def test_yaml_to_excel(yaml_name, expectations):
     finally:
         if os.path.exists(output_path):
             os.unlink(output_path)
+
+
+# ---------------------------------------------------------------------------
+# _fmt_cell: coercion for header-driven slots whose range is an inlined class
+# ---------------------------------------------------------------------------
+
+_spec = importlib.util.spec_from_file_location(
+    "yaml_to_excel", os.path.join(os.path.dirname(__file__), "..", "scripts", "yaml_to_excel.py")
+)
+y2e = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(y2e)
+
+
+@pytest.mark.parametrize(
+    "value,expected",
+    [
+        # scalars pass through untouched -- openpyxl writes these itself
+        ("plain string", "plain string"),
+        (42, 42),
+        (1.5, 1.5),
+        (True, True),
+        (None, None),
+        ("", ""),
+        # an ontology term reads the way the hand-written row builders write one
+        ({"id": "CL:0000771", "name": "eosinophil"}, "eosinophil (CL:0000771)"),
+        ({"id": "CL:0000775"}, "CL:0000775"),
+        ({"name": "eosinophil"}, "eosinophil"),
+        # a measurement keeps its unit
+        ({"value": "10", "unit": {"id": "UO:0000275", "name": "ng/mL"}}, "10 ng/mL (UO:0000275)"),
+        # anything else flattens rather than reaching openpyxl as an object
+        (["a", "b"], "a; b"),
+        ([{"gene": "Foxj1"}], "gene: Foxj1"),
+        ({"other": "shape"}, "other: shape"),
+    ],
+)
+def test_fmt_cell_coerces_to_something_excel_accepts(value, expected):
+    assert y2e._fmt_cell(value) == expected
+
+
+def test_assay_row_never_yields_a_non_scalar():
+    """The regression that broke `just generate-workbook`: target_cell_type is
+    an inlined CellTypeReference, so the generic branch handed openpyxl a dict.
+    """
+    assay = {
+        "id": "ASSAY:x",
+        "target_cell_type": {"id": "CL:0000771", "name": "eosinophil"},
+    }
+    row = y2e._assay_row(assay, y2e.HEADERS["BALFSputumAssay"])
+    assert all(isinstance(c, (str, int, float, bool, type(None))) for c in row), row
+    assert "eosinophil (CL:0000771)" in row
+
+
+@pytest.mark.parametrize(
+    "fixture_name",
+    sorted(f for f in os.listdir(DATA_DIR) if f.endswith(".yaml")),
+)
+def test_every_valid_fixture_converts(fixture_name, tmp_path):
+    """Every committed valid fixture must survive the converter.
+
+    `just pipeline-test` runs two of them by name, so a fixture it does not
+    name could stop converting without anything failing -- which is how the
+    target_cell_type crash reached main.
+    """
+    out = tmp_path / "out.xlsx"
+    result = subprocess.run(
+        ["uv", "run", "python", SCRIPT,
+         "--input", os.path.join(DATA_DIR, fixture_name),
+         "--output", str(out)],
+        capture_output=True, text=True,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert out.exists()

@@ -543,6 +543,28 @@ def _join_multivalued(values):
     return "; ".join(parts)
 
 
+def _fmt_cell(value):
+    """Coerce one slot value into something openpyxl can write.
+
+    The assay and output row builders are header-driven: a slot named in
+    HEADERS with no special handling is read straight off the record. Most are
+    scalars, but a slot whose range is an inlined class arrives as a dict --
+    target_cell_type, for one, is a CellTypeReference -- and openpyxl raises
+    ValueError rather than writing it. Format those the way the hand-written
+    row builders already format their term and measurement objects, so adding
+    an inlined slot to HEADERS can never break the workbook again.
+    """
+    if value is None or isinstance(value, (str, int, float, bool)):
+        return value
+    if isinstance(value, dict):
+        if value.get("id") or value.get("name"):
+            return _fmt_id_name(value)
+        if "value" in value:
+            val, unit = _fmt_value_unit(value)
+            return f"{val} {unit}".strip()
+    return _join_multivalued(value)
+
+
 def _protocol_row(p):
     return (
         p.get("id", ""),
@@ -682,7 +704,7 @@ def _assay_row(assay, assay_headers):
             protos = assay.get("follows_protocols", [])
             row.append(_fmt_list_refs(protos))
         else:
-            row.append(assay.get(h, ""))
+            row.append(_fmt_cell(assay.get(h, "")))
     return tuple(row)
 
 
@@ -706,7 +728,7 @@ def _output_row(output, output_headers):
             else:
                 row.append(str(unit_obj) if unit_obj else "")
         else:
-            row.append(output.get(h, ""))
+            row.append(_fmt_cell(output.get(h, "")))
     return tuple(row)
 
 
