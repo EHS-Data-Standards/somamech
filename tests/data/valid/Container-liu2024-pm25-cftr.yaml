@@ -799,7 +799,7 @@ balf_sputum_assays:
             name: "day"
     informs_on_key_event:
       id: "KE:ke-airway-inflammation"
-      name: "Th2 airway inflammation"
+      name: "Airway inflammation"
       biological_action: increased
       level_of_biological_organization: tissue
     study_subject:
@@ -863,8 +863,8 @@ lung_function_assays:
             name: "day"
     informs_on_key_event:
       id: "KE:ao-decreased-lung-function"
-      name: "Increased airway hyperresponsiveness"
-      biological_action: increased
+      name: "Decreased lung function"
+      biological_action: decreased
       level_of_biological_organization: organ
     study_subject:
       subject_type: InVivoSubject
@@ -921,8 +921,8 @@ lung_function_assays:
             name: "day"
     informs_on_key_event:
       id: "KE:ao-decreased-lung-function"
-      name: "Increased airway hyperresponsiveness"
-      biological_action: increased
+      name: "Decreased lung function"
+      biological_action: decreased
       level_of_biological_organization: organ
     study_subject:
       subject_type: InVivoSubject
