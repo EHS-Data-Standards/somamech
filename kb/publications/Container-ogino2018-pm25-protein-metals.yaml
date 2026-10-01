@@ -1,0 +1,1065 @@
+# =============================================================================
+# Ogino et al. (2018) - Involvement of PM2.5-bound protein and metals in
+# PM2.5-induced allergic airway inflammation in mice
+# =============================================================================
+#
+# Source: Inhal Toxicol (2018)
+# DOI: 10.1080/08958378.2018.1561769
+# PMID: 30849251
+#
+# EXTRACTION SCOPE — ABSTRACT ONLY
+#   The committed reference cache entry for PMID:30849251 is `content_type:
+#   abstract_only` and no local PDF of this paper exists in the repository.
+#   Every `snippet:` below is therefore taken verbatim from the cached
+#   abstract, and nothing is recorded that the abstract does not state.
+#   Consequences for this file:
+#     - No numeric measurement values are recorded. The abstract reports the
+#       DIRECTION of each change ("attenuated" / "was increased") but no
+#       values, units, group sizes or p-values. Output records therefore carry
+#       the group linkage only, and the reported direction is captured in
+#       `response_comparisons` with `derivation: reported_in_paper` and no
+#       `change_value`.
+#     - Protocol records describe only what the abstract states about method.
+#     - Serum IgE, IL-4, IL-5, eotaxin-1, MUC5ac and MUC5b were measured by
+#       the authors (they are named in the METHODS sentence) but the abstract
+#       does not report which way any of them moved, so no assay is recorded
+#       for them. They are named here so a later full-text pass knows what is
+#       still missing.
+#
+# Study design (as stated in the abstract):
+#   - Species: BALB/c mice (Mus musculus). The PubMed record indexes the study
+#     under "Mice, Inbred BALB C" and "Male".
+#   - Sensitization protocol: the abstract describes NO separate allergen
+#     (e.g. OVA) sensitization or challenge step. PM2.5 itself, collected by a
+#     cyclone system, was administered to the mice and is reported to have
+#     induced the allergic airway inflammation. Any sensitization detail beyond
+#     that is not in the abstract and is deliberately not recorded.
+#   - Three groups: (1) saline, (2) pure PM2.5, (3) treated PM2.5.
+#   - "Treated PM2.5" = PM2.5 held at high temperature and exposed to a strong
+#     acid, which hydrolyzes the PM2.5-bound protein and removes trace
+#     elements. It is the component-subtraction arm: comparing treated PM2.5
+#     against pure PM2.5 isolates the contribution of PM2.5-bound protein plus
+#     acid-soluble metals.
+#
+# The two components, kept distinct (this is the point of the paper):
+#
+#   PM2.5-BOUND PROTEIN + ACID-SOLUBLE METALS (removed by the treatment).
+#   The treatment "reduced PM2.5-bound proteins as well as the percentages of
+#   the trace elements in PM2.5 in the order Zn > Cu > Pb > P > S > Mn > Fe >
+#   Ca > Ni". Removing them ATTENUATED the eosinophilic/Th2-type arm of the
+#   response: AHR, BALF eosinophil percentage, IL-13 and CXCL3 mRNA, and
+#   peribronchial inflammation all fell. So the bound protein and the
+#   acid-soluble metal fraction are what drive the allergic, eosinophilic
+#   airway inflammation.
+#
+#   THE RESIDUAL PARTICLE CORE (what the treatment left behind; the abstract
+#   reports the percentage of C, Si and Cl increased). Against that
+#   protein- and metal-depleted particle the response SHIFTED rather than
+#   disappeared: BALF neutrophil percentage, MIP2a, EGFR, Nrf2 and TLR4 mRNA,
+#   and lung 4-OH-2-nonenal all rose — a neutrophilic, oxidative-stress /
+#   innate-signalling response attributable to the carbonaceous core, not to
+#   the protein or the acid-soluble metals.
+#
+#   The abstract does not separate PM2.5-bound protein from acid-soluble
+#   metals from each other: a single treatment removes both at once, so the
+#   paper's own conclusion attributes the effect to them jointly ("PM2.5-bound
+#   proteins and acid-soluble metals may be involved"). This file does not
+#   attribute any effect to protein alone or to metals alone.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:30849251"
+  reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+  doi: "10.1080/08958378.2018.1561769"
+
+# =============================================================================
+# PROTOCOLS
+# Descriptions are limited to what the abstract states about method.
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:ogino-pm25-treatment-001"
+    name: "High-temperature strong-acid treatment of PM2.5"
+    description: "Component-subtraction preparation of the test particle. PM2.5 was treated at high temperature and with a strong acid in order to hydrolyze any protein content and remove trace elements. The abstract reports the treatment reduced PM2.5-bound proteins and the percentages of the trace elements in PM2.5 in the order Zn > Cu > Pb > P > S > Mn > Fe > Ca > Ni, while the percentage of C, Si and Cl increased. Specific temperature, acid identity, concentration and contact time are not given in the abstract."
+    equipment_required:
+      - "Cyclone PM2.5 collection system"
+
+  - id: "PROTOCOL:ogino-ahr-001"
+    name: "Airway hyperresponsiveness measurement"
+    description: "Airway hyperresponsiveness (AHR) was evaluated in each of the three groups. The abstract names AHR as an endpoint but gives no instrument, bronchoconstrictor agent, dose series or reported metric."
+
+  - id: "PROTOCOL:ogino-balf-001"
+    name: "Bronchoalveolar lavage fluid cell differential"
+    description: "Bronchoalveolar lavage fluid (BALF) cells were evaluated and reported as eosinophil and neutrophil percentages. The abstract gives no lavage volume, stain or counting method."
+
+  - id: "PROTOCOL:ogino-mrna-001"
+    name: "Cytokine, chemokine and mucus protein mRNA measurement in lung"
+    description: "mRNA of various cytokines (IL-4, IL-5, IL-13, eotaxin-1 and CXCL3) and mucus protein mRNA (MUC5ac and MUC5b) were evaluated; the results section additionally reports mRNA expression of MIP2a, EGFR, Nrf2 and TLR4. The abstract names no platform, reference gene or primers."
+
+  - id: "PROTOCOL:ogino-lung-histology-001"
+    name: "Lung histology for inflammatory cell infiltration"
+    description: "The filtration of inflammatory cells in the lung was evaluated; the results are reported as peribronchial inflammation. The abstract names no fixation, section thickness or stain."
+
+  - id: "PROTOCOL:ogino-4hne-001"
+    name: "4-OH-2-nonenal measurement in lung"
+    description: "4-OH-2-nonenal (4-hydroxy-2-nonenal, a lipid peroxidation marker) levels were measured in the lung. The abstract names no detection method."
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS — airway hyperresponsiveness (in vivo)
+#
+# Pure PM2.5 induced the response; removing PM2.5-bound protein and
+# acid-soluble metals attenuated it.
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:ogino-ahr-pure-pm25"
+    name: "Airway hyperresponsiveness - pure PM2.5"
+    description: "AHR in BALB/c mice administered untreated (pure) PM2.5 collected by the cyclone system. This is the intact-particle arm: protein and trace elements still bound. The abstract reports that this PM2.5 induced allergic airway inflammation in mice but gives no AHR value."
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "PM2.5 collected by of the cyclone system induced allergic airway inflammation in mice."
+        explanation: "The paper's own conclusion that the intact, cyclone-collected PM2.5 induced allergic airway inflammation in the mouse. Airway hyperresponsiveness is one of the endpoints by which that inflammation was compared between groups, so this sentence establishes the pure-PM2.5 arm this assay records."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-pure-pm25"
+        name: "Pure (untreated) PM2.5 administration"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "LF:ogino-ahr-pure-pm25-output"
+        name: "AHR - pure PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-pure-pm25"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-pure-pm25"
+      name: "Pure PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      subject_characteristics: "BALB/c mice. The abstract describes no separate allergen sensitization or challenge step; PM2.5 itself was administered. Age and body weight are not given in the abstract."
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:ogino-ahr-001"
+        name: "Airway hyperresponsiveness measurement"
+
+  - id: "LF:ogino-ahr-treated-pm25"
+    name: "Airway hyperresponsiveness - acid/heat-treated PM2.5"
+    description: "AHR in BALB/c mice administered PM2.5 whose bound protein had been hydrolyzed and whose trace elements had been removed by high-temperature strong-acid treatment. AHR was attenuated relative to pure PM2.5, so PM2.5-bound protein and acid-soluble metals are required for the airway hyperresponsiveness. The abstract reports attenuation without a value or p-value."
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The treatment of PM2.5 with a strong acid at a high temperature attenuated AHR, eosinophil percentage in BALF, mRNA levels of IL-13 and CXCL3 and peribronchial inflammation."
+        explanation: "States directly that the strong-acid, high-temperature treatment — the treatment the abstract elsewhere says hydrolyzes PM2.5-bound protein and removes trace elements — attenuated AHR. That attenuation is what this treated-PM2.5 output record captures."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-treated-pm25"
+        name: "Acid- and heat-treated PM2.5 administration (bound protein hydrolyzed, trace elements removed)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "LF:ogino-ahr-treated-pm25-output"
+        name: "AHR - treated PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-treated-pm25"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-treated-pm25"
+      name: "Treated PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      subject_characteristics: "BALB/c mice. The abstract describes no separate allergen sensitization or challenge step; acid- and heat-treated PM2.5 was administered. Age and body weight are not given in the abstract."
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:ogino-ahr-001"
+        name: "Airway hyperresponsiveness measurement"
+
+# =============================================================================
+# BALF ASSAYS — inflammatory cell differential (in vivo)
+#
+# The component-subtraction result splits cleanly by cell type: removing
+# PM2.5-bound protein and acid-soluble metals LOWERED eosinophils but RAISED
+# neutrophils. One assay record per group; both cell percentages sit in that
+# group's single output record.
+# =============================================================================
+
+balf_sputum_assays:
+  - id: "BALF:ogino-pure-pm25"
+    name: "BALF inflammatory cell differential - pure PM2.5"
+    description: "BALF eosinophil and neutrophil percentages in mice given untreated PM2.5. This is the reference arm against which the acid/heat-treated particle is compared. The abstract gives no percentages for either arm."
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Allergic airway inflammation was compared between the three groups (saline, pure PM2.5 and treated PM2.5) by evaluating airway hyperresponsiveness (AHR), bronchoalveolar lavage fluid (BALF) cells, serum IgE, the mRNA of various cytokine (IL-4, IL-5, IL-13, eotaxin-1 and CXCL3), mucus protein mRNA (MUC5ac and MUC5b) and the filtration of inflammatory cells in the lung."
+        explanation: "Establishes that BALF cells were measured in a pure PM2.5 group alongside a saline group and a treated PM2.5 group, which is exactly the group structure and endpoint this assay record represents."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-pure-pm25"
+        name: "Pure (untreated) PM2.5 administration"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "BALF:ogino-pure-pm25-output"
+        name: "BALF cell percentages - pure PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-pure-pm25"
+    target_cell_type:
+      id: "CL:0000771"
+      name: "eosinophil"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-pure-pm25"
+      name: "Pure PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      sample_type: balf
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:ogino-balf-001"
+        name: "Bronchoalveolar lavage fluid cell differential"
+
+  - id: "BALF:ogino-treated-pm25"
+    name: "BALF inflammatory cell differential - acid/heat-treated PM2.5"
+    description: "BALF eosinophil and neutrophil percentages in mice given PM2.5 stripped of bound protein and acid-soluble trace elements. Eosinophil percentage was attenuated, while neutrophil percentage was increased: removing the protein and metal fraction removes the eosinophilic (allergic) cell response but leaves a neutrophilic response driven by the residual particle core."
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The treatment of PM2.5 with a strong acid at a high temperature attenuated AHR, eosinophil percentage in BALF, mRNA levels of IL-13 and CXCL3 and peribronchial inflammation."
+        explanation: "Supports the eosinophil half of this output record: the acid/heat treatment that removes PM2.5-bound protein and trace elements attenuated the BALF eosinophil percentage."
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "the percentage of neutrophils in BALF"
+        explanation: "Supports the neutrophil half of this output record. In the abstract this phrase heads the list introduced by \"On the contrary,\" and closed by \"was increased\", i.e. the BALF neutrophil percentage rose in the treated-PM2.5 group while the eosinophil percentage fell. Quoted as a fragment because the full sentence contains a non-ASCII character (MIP2a is written with a Greek alpha) that the committed cache renders in a form a whole-sentence quote cannot be guaranteed to reproduce."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-treated-pm25"
+        name: "Acid- and heat-treated PM2.5 administration (bound protein hydrolyzed, trace elements removed)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "BALF:ogino-treated-pm25-output"
+        name: "BALF cell percentages - treated PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-treated-pm25"
+    target_cell_type:
+      id: "CL:0000775"
+      name: "neutrophil"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-treated-pm25"
+      name: "Treated PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      sample_type: balf
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:ogino-balf-001"
+        name: "Bronchoalveolar lavage fluid cell differential"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS — lung mRNA (in vivo)
+#
+# Two blocks. The first four records are the transcripts the treatment
+# ATTENUATED (IL-13, CXCL3) — the protein/metal-dependent Th2 arm — paired
+# with their pure-PM2.5 reference. The rest are the transcripts the treatment
+# RAISED (MIP2a, EGFR, Nrf2, TLR4) — the residual-core arm.
+#
+# `target_gene` is deliberately omitted throughout: it takes an ontology CURIE
+# and the abstract names the transcripts only by symbol, so asserting a PR or
+# NCBIGene identifier would be an inference, not an extraction. The symbol is
+# carried in each assay's name and description instead.
+# =============================================================================
+
+gene_expression_assays:
+  # --- IL-13: attenuated by removing PM2.5-bound protein and metals ---
+  - id: "GE:ogino-il13-pure-pm25"
+    name: "IL-13 mRNA in lung - pure PM2.5"
+    description: "IL-13 mRNA in lung of mice given untreated PM2.5. Reference arm for the IL-13 comparison. IL-13 is named in the abstract's list of cytokine mRNAs evaluated across the three groups; no value is reported."
+    gene_expression_method: "mRNA measurement (platform not stated in the abstract)"
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "the mRNA of various cytokine (IL-4, IL-5, IL-13, eotaxin-1 and CXCL3)"
+        explanation: "Establishes that IL-13 mRNA was one of the cytokine transcripts measured and compared across the saline, pure PM2.5 and treated PM2.5 groups, which is what this pure-PM2.5 reference record holds."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-pure-pm25"
+        name: "Pure (untreated) PM2.5 administration"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "GE:ogino-il13-pure-pm25-output"
+        name: "IL-13 mRNA - pure PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-pure-pm25"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-pure-pm25"
+      name: "Pure PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      collection_site: "lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ogino-mrna-001"
+        name: "Cytokine, chemokine and mucus protein mRNA measurement in lung"
+
+  - id: "GE:ogino-il13-treated-pm25"
+    name: "IL-13 mRNA in lung - acid/heat-treated PM2.5"
+    description: "IL-13 mRNA in lung of mice given PM2.5 stripped of bound protein and acid-soluble trace elements. Attenuated relative to pure PM2.5, so the Th2 cytokine response depends on the PM2.5-bound protein and acid-soluble metal fraction rather than on the particle core."
+    gene_expression_method: "mRNA measurement (platform not stated in the abstract)"
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "attenuated AHR, eosinophil percentage in BALF, mRNA levels of IL-13 and CXCL3 and peribronchial inflammation"
+        explanation: "The abstract's result sentence names IL-13 mRNA among the endpoints attenuated by the strong-acid, high-temperature treatment. That is the decrease this treated-PM2.5 output record captures."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-treated-pm25"
+        name: "Acid- and heat-treated PM2.5 administration (bound protein hydrolyzed, trace elements removed)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "GE:ogino-il13-treated-pm25-output"
+        name: "IL-13 mRNA - treated PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-treated-pm25"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-treated-pm25"
+      name: "Treated PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      collection_site: "lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ogino-mrna-001"
+        name: "Cytokine, chemokine and mucus protein mRNA measurement in lung"
+
+  # --- CXCL3: attenuated by removing PM2.5-bound protein and metals ---
+  - id: "GE:ogino-cxcl3-pure-pm25"
+    name: "CXCL3 mRNA in lung - pure PM2.5"
+    description: "CXCL3 mRNA in lung of mice given untreated PM2.5. Reference arm for the CXCL3 comparison. No value is reported in the abstract."
+    gene_expression_method: "mRNA measurement (platform not stated in the abstract)"
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "the mRNA of various cytokine (IL-4, IL-5, IL-13, eotaxin-1 and CXCL3)"
+        explanation: "Establishes that CXCL3 mRNA was among the transcripts measured and compared across the saline, pure PM2.5 and treated PM2.5 groups, which is what this pure-PM2.5 reference record holds."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-pure-pm25"
+        name: "Pure (untreated) PM2.5 administration"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "GE:ogino-cxcl3-pure-pm25-output"
+        name: "CXCL3 mRNA - pure PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-pure-pm25"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-pure-pm25"
+      name: "Pure PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      collection_site: "lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ogino-mrna-001"
+        name: "Cytokine, chemokine and mucus protein mRNA measurement in lung"
+
+  - id: "GE:ogino-cxcl3-treated-pm25"
+    name: "CXCL3 mRNA in lung - acid/heat-treated PM2.5"
+    description: "CXCL3 mRNA in lung of mice given PM2.5 stripped of bound protein and acid-soluble trace elements. Attenuated relative to pure PM2.5."
+    gene_expression_method: "mRNA measurement (platform not stated in the abstract)"
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "attenuated AHR, eosinophil percentage in BALF, mRNA levels of IL-13 and CXCL3 and peribronchial inflammation"
+        explanation: "The abstract's result sentence names CXCL3 mRNA among the endpoints attenuated by the strong-acid, high-temperature treatment that removes PM2.5-bound protein and trace elements."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-treated-pm25"
+        name: "Acid- and heat-treated PM2.5 administration (bound protein hydrolyzed, trace elements removed)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "GE:ogino-cxcl3-treated-pm25-output"
+        name: "CXCL3 mRNA - treated PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-treated-pm25"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-treated-pm25"
+      name: "Treated PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      collection_site: "lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ogino-mrna-001"
+        name: "Cytokine, chemokine and mucus protein mRNA measurement in lung"
+
+  # --- MIP2a: INCREASED once protein and metals were removed ---
+  - id: "GE:ogino-mip2a-pure-pm25"
+    name: "MIP2a mRNA in lung - pure PM2.5"
+    description: "MIP2a (CXCL2) mRNA in lung of mice given untreated PM2.5. Reference arm for the MIP2a comparison. The abstract reports MIP2a only in the treated-versus-pure contrast, with no value for either arm."
+    gene_expression_method: "mRNA measurement (platform not stated in the abstract)"
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "PM2.5, treated at high temperature and with a strong acid to hydrolyze any protein content and remove trace elements, was administered to BALB/c mice."
+        explanation: "Establishes the pure-versus-treated particle contrast that this reference record is the pure arm of: the acid/heat treatment is what hydrolyzes the bound protein and removes the trace elements, so the untreated particle is the comparator against which the MIP2a increase is read."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-pure-pm25"
+        name: "Pure (untreated) PM2.5 administration"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "GE:ogino-mip2a-pure-pm25-output"
+        name: "MIP2a mRNA - pure PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-pure-pm25"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-pure-pm25"
+      name: "Pure PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      collection_site: "lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ogino-mrna-001"
+        name: "Cytokine, chemokine and mucus protein mRNA measurement in lung"
+
+  - id: "GE:ogino-mip2a-treated-pm25"
+    name: "MIP2a mRNA in lung - acid/heat-treated PM2.5"
+    description: "MIP2a (CXCL2, a neutrophil chemoattractant) mRNA in lung of mice given PM2.5 stripped of bound protein and acid-soluble trace elements. Increased relative to pure PM2.5, tracking the rise in BALF neutrophils: the residual, carbon-enriched particle core drives a neutrophilic rather than eosinophilic chemokine program."
+    gene_expression_method: "mRNA measurement (platform not stated in the abstract)"
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "On the contrary, the percentage of neutrophils in BALF, mRNA expression of MIP2"
+        explanation: "The abstract's contrary-direction sentence lists MIP2a mRNA among the endpoints that rose in the treated-PM2.5 group (the sentence closes \"... was increased\"). Quoted as a fragment stopping before the Greek alpha in MIP2a so the span is exact ASCII text present verbatim in the committed cache entry."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-treated-pm25"
+        name: "Acid- and heat-treated PM2.5 administration (bound protein hydrolyzed, trace elements removed)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "GE:ogino-mip2a-treated-pm25-output"
+        name: "MIP2a mRNA - treated PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-treated-pm25"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-treated-pm25"
+      name: "Treated PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      collection_site: "lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ogino-mrna-001"
+        name: "Cytokine, chemokine and mucus protein mRNA measurement in lung"
+
+  # --- TLR4: INCREASED once protein and metals were removed ---
+  - id: "GE:ogino-tlr4-pure-pm25"
+    name: "TLR4 mRNA in lung - pure PM2.5"
+    description: "TLR4 mRNA in lung of mice given untreated PM2.5. Reference arm for the TLR4 comparison. No value is reported in the abstract."
+    gene_expression_method: "mRNA measurement (platform not stated in the abstract)"
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "PM2.5, treated at high temperature and with a strong acid to hydrolyze any protein content and remove trace elements, was administered to BALB/c mice."
+        explanation: "Establishes the untreated-particle comparator arm that this record holds, against which the abstract's reported TLR4 mRNA increase in the treated group is read."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-pure-pm25"
+        name: "Pure (untreated) PM2.5 administration"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "GE:ogino-tlr4-pure-pm25-output"
+        name: "TLR4 mRNA - pure PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-pure-pm25"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-pure-pm25"
+      name: "Pure PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      collection_site: "lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ogino-mrna-001"
+        name: "Cytokine, chemokine and mucus protein mRNA measurement in lung"
+
+  - id: "GE:ogino-tlr4-treated-pm25"
+    name: "TLR4 mRNA in lung - acid/heat-treated PM2.5"
+    description: "TLR4 mRNA in lung of mice given PM2.5 stripped of bound protein and acid-soluble trace elements. Increased relative to pure PM2.5 — innate pattern-recognition signalling rises as the allergic arm falls, consistent with the shift from an eosinophilic to a neutrophilic response once the protein and metal fraction is gone."
+    gene_expression_method: "mRNA measurement (platform not stated in the abstract)"
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "EGFR, Nrf2, and TLR4 and 4-OH-2-nonenal levels in the lung was increased."
+        explanation: "Names TLR4 mRNA among the endpoints the abstract reports as increased in the acid/heat-treated PM2.5 group. Quoted from the point after the Greek alpha in MIP2a so the span is exact ASCII text present verbatim in the committed cache entry."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-treated-pm25"
+        name: "Acid- and heat-treated PM2.5 administration (bound protein hydrolyzed, trace elements removed)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "GE:ogino-tlr4-treated-pm25-output"
+        name: "TLR4 mRNA - treated PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-treated-pm25"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-treated-pm25"
+      name: "Treated PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      collection_site: "lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ogino-mrna-001"
+        name: "Cytokine, chemokine and mucus protein mRNA measurement in lung"
+
+  # --- EGFR: INCREASED once protein and metals were removed ---
+  - id: "GE:ogino-egfr-pure-pm25"
+    name: "EGFR mRNA in lung - pure PM2.5"
+    description: "EGFR mRNA in lung of mice given untreated PM2.5. Reference arm for the EGFR comparison. No value is reported in the abstract."
+    gene_expression_method: "mRNA measurement (platform not stated in the abstract)"
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "PM2.5, treated at high temperature and with a strong acid to hydrolyze any protein content and remove trace elements, was administered to BALB/c mice."
+        explanation: "Establishes the untreated-particle comparator arm that this record holds, against which the abstract's reported EGFR mRNA increase in the treated group is read."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-pure-pm25"
+        name: "Pure (untreated) PM2.5 administration"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "GE:ogino-egfr-pure-pm25-output"
+        name: "EGFR mRNA - pure PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-pure-pm25"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-pure-pm25"
+      name: "Pure PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      collection_site: "lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ogino-mrna-001"
+        name: "Cytokine, chemokine and mucus protein mRNA measurement in lung"
+
+  - id: "GE:ogino-egfr-treated-pm25"
+    name: "EGFR mRNA in lung - acid/heat-treated PM2.5"
+    description: "EGFR mRNA in lung of mice given PM2.5 stripped of bound protein and acid-soluble trace elements. Increased relative to pure PM2.5. Note the abstract reports EGFR at the mRNA level only; it makes no claim about receptor phosphorylation or downstream signalling."
+    gene_expression_method: "mRNA measurement (platform not stated in the abstract)"
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "EGFR, Nrf2, and TLR4 and 4-OH-2-nonenal levels in the lung was increased."
+        explanation: "Names EGFR mRNA among the endpoints the abstract reports as increased in the acid/heat-treated PM2.5 group, which is the increase this output record captures."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-treated-pm25"
+        name: "Acid- and heat-treated PM2.5 administration (bound protein hydrolyzed, trace elements removed)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "GE:ogino-egfr-treated-pm25-output"
+        name: "EGFR mRNA - treated PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-treated-pm25"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-treated-pm25"
+      name: "Treated PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      collection_site: "lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ogino-mrna-001"
+        name: "Cytokine, chemokine and mucus protein mRNA measurement in lung"
+
+  # --- Nrf2: INCREASED once protein and metals were removed ---
+  - id: "GE:ogino-nrf2-pure-pm25"
+    name: "Nrf2 mRNA in lung - pure PM2.5"
+    description: "Nrf2 mRNA in lung of mice given untreated PM2.5. Reference arm for the Nrf2 comparison. No value is reported in the abstract."
+    gene_expression_method: "mRNA measurement (platform not stated in the abstract)"
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "PM2.5, treated at high temperature and with a strong acid to hydrolyze any protein content and remove trace elements, was administered to BALB/c mice."
+        explanation: "Establishes the untreated-particle comparator arm that this record holds, against which the abstract's reported Nrf2 mRNA increase in the treated group is read."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-pure-pm25"
+        name: "Pure (untreated) PM2.5 administration"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "GE:ogino-nrf2-pure-pm25-output"
+        name: "Nrf2 mRNA - pure PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-pure-pm25"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-pure-pm25"
+      name: "Pure PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      collection_site: "lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ogino-mrna-001"
+        name: "Cytokine, chemokine and mucus protein mRNA measurement in lung"
+
+  - id: "GE:ogino-nrf2-treated-pm25"
+    name: "Nrf2 mRNA in lung - acid/heat-treated PM2.5"
+    description: "Nrf2 mRNA in lung of mice given PM2.5 stripped of bound protein and acid-soluble trace elements. Increased relative to pure PM2.5. Nrf2 is the antioxidant-response transcription factor; its induction alongside the rise in 4-OH-2-nonenal indicates the residual particle core imposes more oxidative stress than the intact particle did."
+    gene_expression_method: "mRNA measurement (platform not stated in the abstract)"
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "EGFR, Nrf2, and TLR4 and 4-OH-2-nonenal levels in the lung was increased."
+        explanation: "Names Nrf2 mRNA among the endpoints the abstract reports as increased in the acid/heat-treated PM2.5 group, in the same clause as the 4-OH-2-nonenal rise."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-treated-pm25"
+        name: "Acid- and heat-treated PM2.5 administration (bound protein hydrolyzed, trace elements removed)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "GE:ogino-nrf2-treated-pm25-output"
+        name: "Nrf2 mRNA - treated PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-treated-pm25"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-treated-pm25"
+      name: "Treated PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      collection_site: "lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ogino-mrna-001"
+        name: "Cytokine, chemokine and mucus protein mRNA measurement in lung"
+
+# =============================================================================
+# OXIDATIVE STRESS ASSAYS — lung 4-OH-2-nonenal (in vivo)
+# =============================================================================
+
+oxidative_stress_assays:
+  - id: "OX:ogino-4hne-pure-pm25"
+    name: "Lung 4-OH-2-nonenal - pure PM2.5"
+    description: "4-OH-2-nonenal (4-hydroxy-2-nonenal), a lipid peroxidation end-product, measured in lung of mice given untreated PM2.5. Reference arm for the 4-HNE comparison. No value is reported in the abstract."
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "PM2.5, treated at high temperature and with a strong acid to hydrolyze any protein content and remove trace elements, was administered to BALB/c mice."
+        explanation: "Establishes the untreated-particle comparator arm that this record holds, against which the abstract's reported rise in lung 4-OH-2-nonenal in the treated group is read."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-pure-pm25"
+        name: "Pure (untreated) PM2.5 administration"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "OX:ogino-4hne-pure-pm25-output"
+        name: "Lung 4-OH-2-nonenal - pure PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-pure-pm25"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-pure-pm25"
+      name: "Pure PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:ogino-4hne-001"
+        name: "4-OH-2-nonenal measurement in lung"
+
+  - id: "OX:ogino-4hne-treated-pm25"
+    name: "Lung 4-OH-2-nonenal - acid/heat-treated PM2.5"
+    description: "4-OH-2-nonenal measured in lung of mice given PM2.5 stripped of bound protein and acid-soluble trace elements. Increased relative to pure PM2.5. Removing the acid-soluble metals therefore did NOT reduce lung lipid peroxidation — it raised it, which argues the oxidative-stress arm of PM2.5 toxicity in this model is carried by the residual (C/Si/Cl-enriched) particle core rather than by the acid-soluble metal fraction."
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "4-OH-2-nonenal levels in the lung was increased."
+        explanation: "States directly that lung 4-OH-2-nonenal rose. In the abstract this clause sits in the sentence opening \"On the contrary,\" which contrasts these endpoints with the attenuated ones, so the increase belongs to the acid/heat-treated PM2.5 group this record holds."
+    has_exposure_condition:
+      - id: "EXPOSURE:ogino-treated-pm25"
+        name: "Acid- and heat-treated PM2.5 administration (bound protein hydrolyzed, trace elements removed)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "OX:ogino-4hne-treated-pm25-output"
+        name: "Lung 4-OH-2-nonenal - treated PM2.5 group"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ogino-treated-pm25"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:ogino-mouse-treated-pm25"
+      name: "Treated PM2.5 BALB/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      disease_state: "PM2.5-induced allergic airway inflammation"
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:ogino-4hne-001"
+        name: "4-OH-2-nonenal measurement in lung"
+
+# =============================================================================
+# RESPONSE COMPARISONS
+#
+# Every comparison here is acid/heat-TREATED PM2.5 against PURE PM2.5 — i.e.
+# the effect of SUBTRACTING PM2.5-bound protein and acid-soluble metals, not
+# the effect of PM2.5 against saline. `control_output` therefore holds the
+# pure-PM2.5 record: pure PM2.5 is the baseline for this particular contrast,
+# which is the contrast the abstract's RESULTS sentences actually report.
+#
+# `change_value`, `change_type`, `p_value` and `statistical_test` are omitted
+# throughout: the abstract reports direction only ("attenuated" / "was
+# increased") with no magnitudes, units or statistics. `derivation:
+# reported_in_paper` records that the direction is the paper's own statement.
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:ogino-ahr"
+    name: "AHR, treated PM2.5 vs pure PM2.5"
+    description: "Removing PM2.5-bound protein and acid-soluble metals attenuated airway hyperresponsiveness. Direction reported in the abstract; no value or p-value available without the full text."
+    derived_from_assay: "LF:ogino-ahr-treated-pm25"
+    compared_measurement: "lung_resistance"
+    control_output: "LF:ogino-ahr-pure-pm25-output"
+    treated_output: "LF:ogino-ahr-treated-pm25-output"
+    change_direction: decreased
+    derivation: reported_in_paper
+
+  - id: "COMP:ogino-balf-eosinophil"
+    name: "BALF eosinophil percentage, treated PM2.5 vs pure PM2.5"
+    description: "Removing PM2.5-bound protein and acid-soluble metals attenuated the BALF eosinophil percentage — the eosinophilic, allergic arm of the response depends on that fraction. Direction reported in the abstract; no percentages given."
+    derived_from_assay: "BALF:ogino-treated-pm25"
+    compared_measurement: "eosinophil_percentage"
+    control_output: "BALF:ogino-pure-pm25-output"
+    treated_output: "BALF:ogino-treated-pm25-output"
+    change_direction: decreased
+    derivation: reported_in_paper
+
+  - id: "COMP:ogino-balf-neutrophil"
+    name: "BALF neutrophil percentage, treated PM2.5 vs pure PM2.5"
+    description: "Removing PM2.5-bound protein and acid-soluble metals INCREASED the BALF neutrophil percentage. Opposite direction to the eosinophil comparison: the response shifts from eosinophilic to neutrophilic rather than disappearing. Direction reported in the abstract; no percentages given."
+    derived_from_assay: "BALF:ogino-treated-pm25"
+    compared_measurement: "neutrophil_percentage"
+    control_output: "BALF:ogino-pure-pm25-output"
+    treated_output: "BALF:ogino-treated-pm25-output"
+    change_direction: increased
+    derivation: reported_in_paper
+
+  - id: "COMP:ogino-il13-mrna"
+    name: "Lung IL-13 mRNA, treated PM2.5 vs pure PM2.5"
+    description: "Removing PM2.5-bound protein and acid-soluble metals attenuated lung IL-13 mRNA. Direction reported in the abstract; no value given."
+    derived_from_assay: "GE:ogino-il13-treated-pm25"
+    compared_measurement: "mrna_level"
+    control_output: "GE:ogino-il13-pure-pm25-output"
+    treated_output: "GE:ogino-il13-treated-pm25-output"
+    change_direction: decreased
+    derivation: reported_in_paper
+
+  - id: "COMP:ogino-cxcl3-mrna"
+    name: "Lung CXCL3 mRNA, treated PM2.5 vs pure PM2.5"
+    description: "Removing PM2.5-bound protein and acid-soluble metals attenuated lung CXCL3 mRNA. Direction reported in the abstract; no value given."
+    derived_from_assay: "GE:ogino-cxcl3-treated-pm25"
+    compared_measurement: "mrna_level"
+    control_output: "GE:ogino-cxcl3-pure-pm25-output"
+    treated_output: "GE:ogino-cxcl3-treated-pm25-output"
+    change_direction: decreased
+    derivation: reported_in_paper
+
+  - id: "COMP:ogino-mip2a-mrna"
+    name: "Lung MIP2a mRNA, treated PM2.5 vs pure PM2.5"
+    description: "Removing PM2.5-bound protein and acid-soluble metals increased lung MIP2a (CXCL2) mRNA, tracking the neutrophil rise. Direction reported in the abstract; no value given."
+    derived_from_assay: "GE:ogino-mip2a-treated-pm25"
+    compared_measurement: "mrna_level"
+    control_output: "GE:ogino-mip2a-pure-pm25-output"
+    treated_output: "GE:ogino-mip2a-treated-pm25-output"
+    change_direction: increased
+    derivation: reported_in_paper
+
+  - id: "COMP:ogino-tlr4-mrna"
+    name: "Lung TLR4 mRNA, treated PM2.5 vs pure PM2.5"
+    description: "Removing PM2.5-bound protein and acid-soluble metals increased lung TLR4 mRNA. Direction reported in the abstract; no value given."
+    derived_from_assay: "GE:ogino-tlr4-treated-pm25"
+    compared_measurement: "mrna_level"
+    control_output: "GE:ogino-tlr4-pure-pm25-output"
+    treated_output: "GE:ogino-tlr4-treated-pm25-output"
+    change_direction: increased
+    derivation: reported_in_paper
+
+  - id: "COMP:ogino-egfr-mrna"
+    name: "Lung EGFR mRNA, treated PM2.5 vs pure PM2.5"
+    description: "Removing PM2.5-bound protein and acid-soluble metals increased lung EGFR mRNA. Direction reported in the abstract; no value given."
+    derived_from_assay: "GE:ogino-egfr-treated-pm25"
+    compared_measurement: "mrna_level"
+    control_output: "GE:ogino-egfr-pure-pm25-output"
+    treated_output: "GE:ogino-egfr-treated-pm25-output"
+    change_direction: increased
+    derivation: reported_in_paper
+
+  - id: "COMP:ogino-nrf2-mrna"
+    name: "Lung Nrf2 mRNA, treated PM2.5 vs pure PM2.5"
+    description: "Removing PM2.5-bound protein and acid-soluble metals increased lung Nrf2 mRNA. Direction reported in the abstract; no value given."
+    derived_from_assay: "GE:ogino-nrf2-treated-pm25"
+    compared_measurement: "mrna_level"
+    control_output: "GE:ogino-nrf2-pure-pm25-output"
+    treated_output: "GE:ogino-nrf2-treated-pm25-output"
+    change_direction: increased
+    derivation: reported_in_paper
+
+  - id: "COMP:ogino-4hne"
+    name: "Lung 4-OH-2-nonenal, treated PM2.5 vs pure PM2.5"
+    description: "Removing PM2.5-bound protein and acid-soluble metals increased lung 4-OH-2-nonenal. Direction reported in the abstract; no value given."
+    derived_from_assay: "OX:ogino-4hne-treated-pm25"
+    compared_measurement: "four_hydroxynonenal_level"
+    control_output: "OX:ogino-4hne-pure-pm25-output"
+    treated_output: "OX:ogino-4hne-treated-pm25-output"
+    change_direction: increased
+    derivation: reported_in_paper
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS
+#
+# One relationship only. The abstract reports airway hyperresponsiveness,
+# BALF eosinophilia and peribronchial inflammation moving together in the same
+# direction under the same manipulation, which supports the inflammation ->
+# lung function link. It does NOT support an oxidative-stress -> airway
+# inflammation link in this model: 4-OH-2-nonenal and Nrf2 rose while the
+# allergic inflammation fell, so that edge is deliberately not asserted.
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:ogino-airway-inflammation-to-lung-function"
+    name: "Airway inflammation leads to decreased lung function"
+    description: "In this component-subtraction experiment airway hyperresponsiveness, BALF eosinophil percentage and peribronchial inflammation were all attenuated together by the same manipulation (removal of PM2.5-bound protein and acid-soluble metals), linking the inflammatory key event to the functional outcome."
+    upstream_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    downstream_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    evidence:
+      - reference: "PMID:30849251"
+        reference_title: "Involvement of PM2.5-bound protein and metals in PM2.5-induced allergic airway inflammation in mice."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The treatment of PM2.5 with a strong acid at a high temperature attenuated AHR, eosinophil percentage in BALF, mRNA levels of IL-13 and CXCL3 and peribronchial inflammation."
+        explanation: "AHR (the functional outcome) is attenuated in the same sentence, by the same manipulation, as BALF eosinophilia, IL-13/CXCL3 mRNA and peribronchial inflammation (the inflammatory key event). Co-attenuation of the upstream and downstream measures under one intervention is the coherence this relationship rests on; the abstract does not test the edge directly, hence moderate rather than strong support."
