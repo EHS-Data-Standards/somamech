@@ -7,6 +7,9 @@ on:  # yamllint disable-line rule:truthy
   push:
     branches: [main]
   pull_request:
+  # Required so the qc check reports on merge-queue merge groups; without
+  # this the queue times out waiting for the check and evicts every entry.
+  merge_group:
 
 env:
   FORCE_COLOR: "1" # Make tools pretty.
