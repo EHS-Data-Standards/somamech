@@ -172,40 +172,40 @@ protocols:
   - id: "PROTOCOL:herath-ihc-mda"
     protocol_type: StainingProtocol
     name: "Immunohistochemistry for malondialdehyde adducts"
-    description: "Trachea and lung sections on glass slides were de-paraffinised in a xylene series and rehydrated in an ethanol series. Nonspecific binding was blocked by immersing tissues in 0.3% hydrogen peroxide with rabbit or horse serum for 30 min. Following blocking, tissues were incubated with MDA antibody (1:400) overnight at 4 C. After washing, tissues were incubated with biotinylated anti-rabbit IgG for 45 min followed by treatment with an avidin-biotin peroxidase complex using the Vectastain Elite ABC kit (Vector Inc., Burlingame, CA, USA). HRP binding sites were detected with 3,3'-diaminobenzidine (DAB, Vector Inc.). Images were captured using an Olympus DP-72 microscope camera (Olympus, Tokyo, Japan). The number of positive cells per site from at least three sites of each section (3 sections were taken from each mouse) was acquired with ImageJ (v1.46) software."
+    description: "Trachea and lung sections on glass slides were de-paraffinised in a xylene series and rehydrated in an ethanol series. Nonspecific binding was blocked by immersing tissues in 0.3% hydrogen peroxide with rabbit or horse serum for 30 min. Following blocking, tissues were incubated with MDA antibody (1:400) overnight at 4 C. After washing, tissues were incubated with biotinylated anti-rat IgG or anti-rabbit IgG for 45 min followed by treatment with an avidin-biotin peroxidase complex using the Vectastain Elite ABC kit (Vector Inc., Burlingame, CA, USA). HRP binding sites were detected with 3,3'-diaminobenzidine (DAB, Vector Inc.). Images were captured using an Olympus DP-72 microscope camera (Olympus, Tokyo, Japan). The number of positive cells per site from at least three sites of each section (3 sections were taken from each mouse) was acquired with ImageJ (v1.46) software."
     staining_type: "immunohistochemistry"
     antibodies_used:
       - "anti-malondialdehyde antibody (abcam, Cambridge, UK), 1:400"
-      - "biotinylated anti-rabbit IgG, 45 min"
+      - "biotinylated anti-rat IgG or anti-rabbit IgG, 45 min (the paper does not say which secondary pairs with which primary)"
     detection_method: "Avidin-biotin peroxidase complex (Vectastain Elite ABC kit) with 3,3'-diaminobenzidine; positive cells per site counted in ImageJ v1.46"
     replicate_requirements: 3
 
   - id: "PROTOCOL:herath-ihc-gr1"
     protocol_type: StainingProtocol
     name: "Immunohistochemistry for Gr-1+ granulocytes"
-    description: "As for the MDA immunohistochemistry protocol, with mouse Gr-1 antibody (1:200) as the overnight primary antibody and biotinylated anti-rat IgG as the secondary antibody."
+    description: "As for the MDA immunohistochemistry protocol, with mouse Gr-1 antibody (1:200) as the overnight primary antibody; the paper states the secondary step as a disjunction - biotinylated anti-rat IgG or anti-rabbit IgG for 45 min - without saying which goes with which primary, so no assignment is made here."
     staining_type: "immunohistochemistry"
     antibodies_used:
       - "mouse Gr-1 antibody (R&D Systems, Minneapolis, MN, USA), 1:200"
-      - "biotinylated anti-rat IgG, 45 min"
+      - "biotinylated anti-rat IgG or anti-rabbit IgG, 45 min (the paper does not say which secondary pairs with which primary)"
     detection_method: "Avidin-biotin peroxidase complex (Vectastain Elite ABC kit) with 3,3'-diaminobenzidine; positive cells per site counted in ImageJ v1.46"
     replicate_requirements: 3
 
   - id: "PROTOCOL:herath-ihc-f480"
     protocol_type: StainingProtocol
     name: "Immunohistochemistry for F4/80+ macrophages"
-    description: "As for the MDA immunohistochemistry protocol, with purified anti-mouse F4/80 antibody (1:200) as the overnight primary antibody and biotinylated anti-rat IgG as the secondary antibody."
+    description: "As for the MDA immunohistochemistry protocol, with purified anti-mouse F4/80 antibody (1:200) as the overnight primary antibody; the paper states the secondary step as a disjunction - biotinylated anti-rat IgG or anti-rabbit IgG for 45 min - without saying which goes with which primary, so no assignment is made here."
     staining_type: "immunohistochemistry"
     antibodies_used:
       - "purified anti-mouse F4/80 antibody (BioLegend, San Diego, CA, USA), 1:200"
-      - "biotinylated anti-rat IgG, 45 min"
+      - "biotinylated anti-rat IgG or anti-rabbit IgG, 45 min (the paper does not say which secondary pairs with which primary)"
     detection_method: "Avidin-biotin peroxidase complex (Vectastain Elite ABC kit) with 3,3'-diaminobenzidine; positive cells per site counted in ImageJ v1.46"
     replicate_requirements: 3
 
   - id: "PROTOCOL:herath-ihc-cd4"
     protocol_type: StainingProtocol
     name: "Immunohistochemistry for CD4+ T lymphocytes"
-    description: "As for the MDA immunohistochemistry protocol, with anti-CD4 antibody (1:400) as the overnight primary antibody."
+    description: "As for the MDA immunohistochemistry protocol, with anti-CD4 antibody (1:400) as the overnight primary antibody; the paper states the secondary step as a disjunction - biotinylated anti-rat IgG or anti-rabbit IgG for 45 min - without saying which goes with which primary, so no assignment is made here."
     staining_type: "immunohistochemistry"
     antibodies_used:
       - "CD4 antibody (Novus Biologicals, LLC, USA), 1:400"
@@ -4321,12 +4321,22 @@ gene_expression_assays:
 # CHANGES VS CONTROL THAT THE PAPER STATES
 #
 # Every entry is a percentage the paper states in its own text, recorded with
-# `change_type: percent_change` and `derivation: reported_in_paper`. Four
-# entries carry a direction only - the MDA immunohistochemistry pair and the
-# BALF differential comparisons - because the paper states those directions
-# without a magnitude. `p_value` is omitted throughout: the paper reports
-# significance thresholds, not p-values, and each threshold is named in the
-# entry's description.
+# `change_type: percent_change` and `derivation: reported_in_paper`. Six of the
+# 71 entries carry a direction only - the two MDA immunohistochemistry entries
+# and the four BALF differential entries - because the paper states those
+# directions without a magnitude. `p_value` is omitted throughout: the paper
+# reports significance thresholds, not p-values, and each threshold is named in
+# the entry's description.
+#
+# The three cytokine assays (serum, BALF and lung IL-4 / IL-17a / IL-33) have
+# NO entries here, and that is deliberate rather than an oversight. The paper
+# states their directions but no magnitudes, so they could only be
+# direction-only entries - and `compared_measurement` cannot name which of the
+# three cytokines such an entry is about: BALFSputumOutput has no IL-4, IL-17a
+# or IL-33 slot at all, and in GeneExpressionOutput all three collapse onto the
+# single `protein_level` slot. An entry that cannot say which analyte it
+# describes would assert less than the assay and output descriptions already
+# do, so those directions stay there instead.
 # =============================================================================
 
 response_comparisons:
