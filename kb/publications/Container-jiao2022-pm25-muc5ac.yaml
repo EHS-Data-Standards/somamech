@@ -23,16 +23,26 @@
 #     MUC5AC-positive cells in both donor groups
 #   - 200 ug/mL PM2.5 increased SPDEF mRNA (goblet cell differentiation TF)
 #   - PM2.5 increased HB-EGF, AREG and EREG mRNA (EGFR ligands)
+#   - PM2.5 increased HB-EGF and AREG protein by ELISA in both donor groups;
+#     TGF-alpha protein did not change and EREG protein was below the kit's
+#     detection range (Fig. 4, graphical only - no values stated)
 #   - PM2.5 (30 min) increased p-PI3K, p-AKT and p-ERK; total protein unchanged
 #   - AG1478 and LY294002 pretreatment attenuated PM2.5-induced MUC5AC
 #   - NULL RESULT: PM2.5 did not change GMNC, MCIDAS, FOXJ1 or DNAI2 mRNA,
 #     nor the percentage of beta-tubulin IV-positive (ciliated) cells
 #
-# Provenance of numbers: every quoted snippet below is verbatim from the
+# Provenance of numbers: most quoted snippets below are verbatim from the
 # committed abstract in references_cache/PMID_34736257.md. The fold-change
 # values and sample sizes come from the Results section of the full text,
 # read locally from the PDF (references_cache_local/, gitignored); the
 # abstract states the direction of each change but not its magnitude.
+# The EGFR ligand protein (ELISA) assays are the exception: the abstract says
+# nothing about them, so their snippets quote the full-text Results and the
+# Figure 4 legend, verified against the local PDF extraction and held to the
+# committed receipt verification/PMID_34736257.json. Those quotes carry "..."
+# elisions at the points where the PDF's two-column layout hyphenates a word
+# across a line break ("HB-EGF" -> "HB- EGF", "patients" -> "pa- tients");
+# the elision is the quote checker's own form for a span it must skip.
 # Control output records are anchored at 1.0 because the paper expresses
 # every treated value as "-fold than that of cells treated with medium only".
 #
@@ -73,8 +83,11 @@ protocols:
       - "anti-MUC5AC (Abcam)"
 
   - id: "PROTOCOL:jiao-elisa-001"
+    protocol_type: MolecularAssayProtocol
     name: "ELISA for EGFR ligand protein (HB-EGF, TGF-alpha, AREG)"
-    description: "ALI cultures treated with PM2.5 for 24 h assayed with commercial ELISA kits (Cloud Clone Corp., Wuhan) for HB-EGF, TGF-alpha and AREG. Absorbance read at 450 nm. Protein concentration of each culture determined by Bradford assay."
+    description: "ALI cultures treated with PM2.5 for 24 h assayed with commercial ELISA kits (Cloud Clone Corp., Wuhan) for HB-EGF, TGF-alpha and AREG. Absorbance read at 450 nm. Protein concentration of each culture determined by Bradford assay. EREG protein was also assayed but fell below the kit's detection range, so no EREG protein assay record exists."
+    detection_method: "colorimetric ELISA, absorbance read at 450 nm"
+    normalization_method: "analyte mass per mg total cell culture protein (Bradford assay)"
     equipment_required:
       - "ELISA plate reader (450 nm)"
       - "HB-EGF / TGF-alpha / AREG ELISA kits (Cloud Clone Corp., Wuhan)"
@@ -1450,6 +1463,500 @@ gene_expression_assays:
         reference_gene: "GAPDH"
 
   # ---------------------------------------------------------------------------
+  # EGFR LIGAND PROTEIN (ELISA, Fig. 4) - the protein-level counterpart of the
+  # ligand mRNA assays above, and the only assays that follow
+  # PROTOCOL:jiao-elisa-001.
+  #
+  # Two things to know before reading these six records:
+  #   1. The paper reports the ELISA data graphically only (Fig. 4; y-axes in
+  #      pg per mg total cell culture protein) and states no mean, SEM or exact
+  #      p-value anywhere in the text or a table. Every numeric value in this
+  #      file is quoted from the paper, so these outputs carry no
+  #      protein_level: the direction is recorded in response_comparisons
+  #      instead, exactly as the Western blot and inhibitor arms are.
+  #   2. The ELISA arm used n = 4 cultures in BOTH donor groups (Fig. 4
+  #      legend), whereas the mRNA arm used n = 6 CRSwNP-derived cultures.
+  #      That is why these are separate assays rather than extra outputs on
+  #      the mRNA assays above.
+  #
+  # EREG protein was assayed by the same ELISA but fell below the kit's
+  # detection range, so it gets no assay record (see PROTOCOL:jiao-elisa-001).
+  # ---------------------------------------------------------------------------
+  - id: "GE:jiao-hbegf-protein-control-24h"
+    name: "HB-EGF protein (ELISA) - control-subject HNECs, PM2.5 24 h"
+    description: "ELISA for heparin-binding EGF-like growth factor protein in ALI cultures from control subjects (n = 4) treated with 200 ug/mL PM2.5 for 24 h. HB-EGF protein was increased relative to medium-only cultures (Fig. 4; p < 0.05), matching the HB-EGF mRNA rise recorded in GE:jiao-hbegf-mrna-control-24h. Values are expressed as pg per mg total cell culture protein (Bradford assay). The paper shows these data graphically only, so neither output carries a numeric protein_level; COMP:jiao-hbegf-protein-control records the direction without a magnitude."
+    target_gene: "NCBIGene:1839"
+    gene_expression_method: "ELISA (Cloud Clone Corp. kit, absorbance at 450 nm)"
+    normalization_reference: "total cell culture protein (Bradford assay)"
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "treatment with PM2.5 at 200 μg/mL for 24 h obviously increased the protein expression of HB-...EGF and AREG in both control cultures and CRSwNP-...derived cultures (Fig. 4)."
+        explanation: "The Results state that 200 ug/mL PM2.5 for 24 h increased HB-EGF protein in control cultures, the change this assay's treated output records. The quote is elided at the two points where the PDF column break hyphenates a word (HB-EGF and CRSwNP-derived)."
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Primary HNECs from control subjects (n = 4) and pa-...tients with CRSwNP (n = 4) were treated with 200 μg/mL PM2.5 for 24 h, and protein levels of HB-EGF, TGF-α, and AREG were detected by ELISA. *p < 0.05 between 2 groups."
+        explanation: "The Figure 4 legend gives the ELISA arm's sample size (n = 4 per donor group), its exposure (200 ug/mL PM2.5 for 24 h), its method (ELISA) and the only significance threshold the paper reports (p < 0.05). Elided where the column break hyphenates \"patients\"."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:jiao-hbegf-protein-control-24h-output-medium"
+        name: "HB-EGF protein, medium-only control (control donors; values shown graphically only)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+      - id: "GE:jiao-hbegf-protein-control-24h-output-pm25-200"
+        name: "HB-EGF protein, 200 ug/mL PM2.5 (control donors; values shown graphically only)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-control"
+      name: "Primary HNEC ALI culture, control subjects"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-elisa-001"
+        name: "ELISA for HB-EGF protein"
+        detection_method: "colorimetric ELISA, absorbance read at 450 nm"
+        normalization_method: "pg per mg total cell culture protein (Bradford assay)"
+        platform: "HB-EGF ELISA kit (Cloud Clone Corp., Wuhan)"
+
+  - id: "GE:jiao-hbegf-protein-crswnp-24h"
+    name: "HB-EGF protein (ELISA) - CRSwNP HNECs, PM2.5 24 h"
+    description: "ELISA for heparin-binding EGF-like growth factor protein in ALI cultures from CRSwNP patients (n = 4; the ELISA arm used four CRSwNP-derived cultures, not the six of the mRNA arm) treated with 200 ug/mL PM2.5 for 24 h. HB-EGF protein was increased relative to medium-only cultures (Fig. 4; p < 0.05). Values are expressed as pg per mg total cell culture protein (Bradford assay). The paper shows these data graphically only, so neither output carries a numeric protein_level; COMP:jiao-hbegf-protein-crswnp records the direction without a magnitude."
+    target_gene: "NCBIGene:1839"
+    gene_expression_method: "ELISA (Cloud Clone Corp. kit, absorbance at 450 nm)"
+    normalization_reference: "total cell culture protein (Bradford assay)"
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "treatment with PM2.5 at 200 μg/mL for 24 h obviously increased the protein expression of HB-...EGF and AREG in both control cultures and CRSwNP-...derived cultures (Fig. 4)."
+        explanation: "The Results state that the HB-EGF protein increase occurred in CRSwNP-derived cultures as well as control cultures, which is what this assay's treated output records. Elided at the two PDF column-break hyphenations."
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Primary HNECs from control subjects (n = 4) and pa-...tients with CRSwNP (n = 4) were treated with 200 μg/mL PM2.5 for 24 h, and protein levels of HB-EGF, TGF-α, and AREG were detected by ELISA. *p < 0.05 between 2 groups."
+        explanation: "The Figure 4 legend gives this assay's sample size (n = 4 CRSwNP-derived cultures), exposure, method and significance threshold. Elided where the column break hyphenates \"patients\"."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:jiao-hbegf-protein-crswnp-24h-output-medium"
+        name: "HB-EGF protein, medium-only control (CRSwNP donors; values shown graphically only)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+      - id: "GE:jiao-hbegf-protein-crswnp-24h-output-pm25-200"
+        name: "HB-EGF protein, 200 ug/mL PM2.5 (CRSwNP donors; values shown graphically only)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-crswnp"
+      name: "Primary HNEC ALI culture, CRSwNP patients"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-elisa-001"
+        name: "ELISA for HB-EGF protein"
+        detection_method: "colorimetric ELISA, absorbance read at 450 nm"
+        normalization_method: "pg per mg total cell culture protein (Bradford assay)"
+        platform: "HB-EGF ELISA kit (Cloud Clone Corp., Wuhan)"
+
+  - id: "GE:jiao-areg-protein-control-24h"
+    name: "Amphiregulin protein (ELISA) - control-subject HNECs, PM2.5 24 h"
+    description: "ELISA for amphiregulin protein in ALI cultures from control subjects (n = 4) treated with 200 ug/mL PM2.5 for 24 h. AREG protein was increased relative to medium-only cultures (Fig. 4; p < 0.05), matching the AREG mRNA rise recorded in GE:jiao-areg-mrna-control-24h. Values are expressed as pg per mg total cell culture protein (Bradford assay). The paper shows these data graphically only, so neither output carries a numeric protein_level; COMP:jiao-areg-protein-control records the direction without a magnitude."
+    target_gene: "NCBIGene:374"
+    gene_expression_method: "ELISA (Cloud Clone Corp. kit, absorbance at 450 nm)"
+    normalization_reference: "total cell culture protein (Bradford assay)"
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "treatment with PM2.5 at 200 μg/mL for 24 h obviously increased the protein expression of HB-...EGF and AREG in both control cultures and CRSwNP-...derived cultures (Fig. 4)."
+        explanation: "The Results name AREG alongside HB-EGF as increased at the protein level in control cultures, the change this assay's treated output records. Elided at the two PDF column-break hyphenations."
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Primary HNECs from control subjects (n = 4) and pa-...tients with CRSwNP (n = 4) were treated with 200 μg/mL PM2.5 for 24 h, and protein levels of HB-EGF, TGF-α, and AREG were detected by ELISA. *p < 0.05 between 2 groups."
+        explanation: "The Figure 4 legend gives the ELISA arm's sample size, exposure, method and significance threshold for the AREG panel as for the others. Elided where the column break hyphenates \"patients\"."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:jiao-areg-protein-control-24h-output-medium"
+        name: "AREG protein, medium-only control (control donors; values shown graphically only)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+      - id: "GE:jiao-areg-protein-control-24h-output-pm25-200"
+        name: "AREG protein, 200 ug/mL PM2.5 (control donors; values shown graphically only)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-control"
+      name: "Primary HNEC ALI culture, control subjects"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-elisa-001"
+        name: "ELISA for AREG protein"
+        detection_method: "colorimetric ELISA, absorbance read at 450 nm"
+        normalization_method: "pg per mg total cell culture protein (Bradford assay)"
+        platform: "AREG ELISA kit (Cloud Clone Corp., Wuhan)"
+
+  - id: "GE:jiao-areg-protein-crswnp-24h"
+    name: "Amphiregulin protein (ELISA) - CRSwNP HNECs, PM2.5 24 h"
+    description: "ELISA for amphiregulin protein in ALI cultures from CRSwNP patients (n = 4; the ELISA arm used four CRSwNP-derived cultures, not the six of the mRNA arm) treated with 200 ug/mL PM2.5 for 24 h. AREG protein was increased relative to medium-only cultures (Fig. 4; p < 0.05). Values are expressed as pg per mg total cell culture protein (Bradford assay). The paper shows these data graphically only, so neither output carries a numeric protein_level; COMP:jiao-areg-protein-crswnp records the direction without a magnitude."
+    target_gene: "NCBIGene:374"
+    gene_expression_method: "ELISA (Cloud Clone Corp. kit, absorbance at 450 nm)"
+    normalization_reference: "total cell culture protein (Bradford assay)"
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "treatment with PM2.5 at 200 μg/mL for 24 h obviously increased the protein expression of HB-...EGF and AREG in both control cultures and CRSwNP-...derived cultures (Fig. 4)."
+        explanation: "The Results state that the AREG protein increase occurred in CRSwNP-derived cultures as well as control cultures, which is what this assay's treated output records. Elided at the two PDF column-break hyphenations."
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Primary HNECs from control subjects (n = 4) and pa-...tients with CRSwNP (n = 4) were treated with 200 μg/mL PM2.5 for 24 h, and protein levels of HB-EGF, TGF-α, and AREG were detected by ELISA. *p < 0.05 between 2 groups."
+        explanation: "The Figure 4 legend gives this assay's sample size (n = 4 CRSwNP-derived cultures), exposure, method and significance threshold. Elided where the column break hyphenates \"patients\"."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:jiao-areg-protein-crswnp-24h-output-medium"
+        name: "AREG protein, medium-only control (CRSwNP donors; values shown graphically only)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+      - id: "GE:jiao-areg-protein-crswnp-24h-output-pm25-200"
+        name: "AREG protein, 200 ug/mL PM2.5 (CRSwNP donors; values shown graphically only)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-crswnp"
+      name: "Primary HNEC ALI culture, CRSwNP patients"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-elisa-001"
+        name: "ELISA for AREG protein"
+        detection_method: "colorimetric ELISA, absorbance read at 450 nm"
+        normalization_method: "pg per mg total cell culture protein (Bradford assay)"
+        platform: "AREG ELISA kit (Cloud Clone Corp., Wuhan)"
+
+  - id: "GE:jiao-tgfa-protein-control-24h"
+    name: "TGF-alpha protein (ELISA) - control-subject HNECs, PM2.5 24 h (no change)"
+    description: "NULL RESULT. ELISA for transforming growth factor-alpha protein in ALI cultures from control subjects (n = 4) treated with 200 ug/mL PM2.5 for 24 h. There was no significant increase in TGF-alpha protein (Fig. 4), the one EGFR ligand of the three assayed whose protein did not respond; TGF-alpha mRNA likewise showed only a non-significant increasing trend. The paper shows these data graphically only and reports no significant difference, so no values are recorded and no response_comparison is derived, following the convention used for this file's other null results."
+    target_gene: "NCBIGene:7039"
+    gene_expression_method: "ELISA (Cloud Clone Corp. kit, absorbance at 450 nm)"
+    normalization_reference: "total cell culture protein (Bradford assay)"
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "However, there was no signifi-...cant increase in the level of TGF-α protein after PM2.5 treatment (Fig. 4)"
+        explanation: "The Results state outright that TGF-alpha protein did not increase significantly after PM2.5, the null finding this assay records. Marked REFUTE because it is evidence against TGF-alpha being one of the ligands PM2.5 induces. Elided where the column break hyphenates \"significant\"."
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "We then examined the expression of HB-EGF, AREG, EREG, and TGF-α protein by ELISA."
+        explanation: "The Results name TGF-alpha among the proteins measured by ELISA, establishing that this null result comes from a performed measurement rather than an omitted one."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:jiao-tgfa-protein-control-24h-output-medium"
+        name: "TGF-alpha protein, medium-only control (control donors)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+      - id: "GE:jiao-tgfa-protein-control-24h-output-pm25-200"
+        name: "TGF-alpha protein, 200 ug/mL PM2.5 (control donors; no significant change)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-control"
+      name: "Primary HNEC ALI culture, control subjects"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-elisa-001"
+        name: "ELISA for TGF-alpha protein"
+        detection_method: "colorimetric ELISA, absorbance read at 450 nm"
+        normalization_method: "pg per mg total cell culture protein (Bradford assay)"
+        platform: "TGF-alpha ELISA kit (Cloud Clone Corp., Wuhan)"
+
+  - id: "GE:jiao-tgfa-protein-crswnp-24h"
+    name: "TGF-alpha protein (ELISA) - CRSwNP HNECs, PM2.5 24 h (no change)"
+    description: "NULL RESULT. ELISA for transforming growth factor-alpha protein in ALI cultures from CRSwNP patients (n = 4) treated with 200 ug/mL PM2.5 for 24 h. There was no significant increase in TGF-alpha protein (Fig. 4). The paper states the null result for TGF-alpha without separating the donor groups, and Figure 4 carries no significance marker on either TGF-alpha bar. The data are shown graphically only, so no values are recorded and no response_comparison is derived."
+    target_gene: "NCBIGene:7039"
+    gene_expression_method: "ELISA (Cloud Clone Corp. kit, absorbance at 450 nm)"
+    normalization_reference: "total cell culture protein (Bradford assay)"
+    evidence:
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "However, there was no signifi-...cant increase in the level of TGF-α protein after PM2.5 treatment (Fig. 4)"
+        explanation: "The Results report the absence of a TGF-alpha protein increase without restricting it to one donor group, so it covers the CRSwNP-derived cultures this assay records. Elided where the column break hyphenates \"significant\"."
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Primary HNECs from control subjects (n = 4) and pa-...tients with CRSwNP (n = 4) were treated with 200 μg/mL PM2.5 for 24 h, and protein levels of HB-EGF, TGF-α, and AREG were detected by ELISA. *p < 0.05 between 2 groups."
+        explanation: "The Figure 4 legend confirms that TGF-alpha was measured by ELISA in n = 4 CRSwNP-derived cultures under the same exposure, so this is a measured null rather than an untested condition. Elided where the column break hyphenates \"patients\"."
+    has_exposure_condition:
+      - id: "EXPOSURE:jiao-medium-24h"
+        name: "ALI culture medium only, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:jiao-pm25-200ug-24h"
+        name: "PM2.5 200 ug/mL apical, 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "200"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:jiao-tgfa-protein-crswnp-24h-output-medium"
+        name: "TGF-alpha protein, medium-only control (CRSwNP donors)"
+        experimental_group: control
+        measured_under: "EXPOSURE:jiao-medium-24h"
+      - id: "GE:jiao-tgfa-protein-crswnp-24h-output-pm25-200"
+        name: "TGF-alpha protein, 200 ug/mL PM2.5 (CRSwNP donors; no significant change)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jiao-pm25-200ug-24h"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:jiao-hnec-crswnp"
+      name: "Primary HNEC ALI culture, CRSwNP patients"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      substrate_type: transwell_insert
+      days_at_differentiation: 14
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:jiao-elisa-001"
+        name: "ELISA for TGF-alpha protein"
+        detection_method: "colorimetric ELISA, absorbance read at 450 nm"
+        normalization_method: "pg per mg total cell culture protein (Bradford assay)"
+        platform: "TGF-alpha ELISA kit (Cloud Clone Corp., Wuhan)"
+
+  # ---------------------------------------------------------------------------
   # PI3K inhibition arm: LY294002 blocks PM2.5-induced MUC5AC mRNA
   # ---------------------------------------------------------------------------
   - id: "GE:jiao-muc5ac-mrna-ly294002-crswnp"
@@ -2382,6 +2889,52 @@ response_comparisons:
         unit:
           id: "STATO:0000169"
           name: "fold change"
+    derivation: reported_in_paper
+
+  # The EGFR ligand protein (ELISA) contrasts. All four are direction-only: the
+  # paper shows Figure 4 graphically and marks significance with an asterisk
+  # (p < 0.05) but states no ELISA mean or SEM anywhere, so there is no
+  # magnitude to record and none is computed. TGF-alpha protein gets no
+  # comparison at all because the paper reports it as not significantly
+  # changed, matching how this file treats its other null results.
+  - id: "COMP:jiao-hbegf-protein-control"
+    name: "HB-EGF protein, 200 ug/mL PM2.5 vs medium (control donors)"
+    description: "Direction only: PM2.5 increased HB-EGF protein in control-derived cultures (Fig. 4, p < 0.05), but the paper reports the ELISA values graphically without a mean or SEM, so no change_value is recorded."
+    derived_from_assay: "GE:jiao-hbegf-protein-control-24h"
+    compared_measurement: "protein_level"
+    control_output: "GE:jiao-hbegf-protein-control-24h-output-medium"
+    treated_output: "GE:jiao-hbegf-protein-control-24h-output-pm25-200"
+    change_direction: increased
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-hbegf-protein-crswnp"
+    name: "HB-EGF protein, 200 ug/mL PM2.5 vs medium (CRSwNP donors)"
+    description: "Direction only: PM2.5 increased HB-EGF protein in CRSwNP-derived cultures (Fig. 4, p < 0.05), with no numeric value reported."
+    derived_from_assay: "GE:jiao-hbegf-protein-crswnp-24h"
+    compared_measurement: "protein_level"
+    control_output: "GE:jiao-hbegf-protein-crswnp-24h-output-medium"
+    treated_output: "GE:jiao-hbegf-protein-crswnp-24h-output-pm25-200"
+    change_direction: increased
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-areg-protein-control"
+    name: "AREG protein, 200 ug/mL PM2.5 vs medium (control donors)"
+    description: "Direction only: PM2.5 increased amphiregulin protein in control-derived cultures (Fig. 4, p < 0.05), with no numeric value reported."
+    derived_from_assay: "GE:jiao-areg-protein-control-24h"
+    compared_measurement: "protein_level"
+    control_output: "GE:jiao-areg-protein-control-24h-output-medium"
+    treated_output: "GE:jiao-areg-protein-control-24h-output-pm25-200"
+    change_direction: increased
+    derivation: reported_in_paper
+
+  - id: "COMP:jiao-areg-protein-crswnp"
+    name: "AREG protein, 200 ug/mL PM2.5 vs medium (CRSwNP donors)"
+    description: "Direction only: PM2.5 increased amphiregulin protein in CRSwNP-derived cultures (Fig. 4, p < 0.05), with no numeric value reported."
+    derived_from_assay: "GE:jiao-areg-protein-crswnp-24h"
+    compared_measurement: "protein_level"
+    control_output: "GE:jiao-areg-protein-crswnp-24h-output-medium"
+    treated_output: "GE:jiao-areg-protein-crswnp-24h-output-pm25-200"
+    change_direction: increased
     derivation: reported_in_paper
 
   # The two inhibitor contrasts the paper actually argues. Both are recorded as
