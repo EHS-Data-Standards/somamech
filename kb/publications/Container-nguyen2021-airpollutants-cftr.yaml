@@ -135,7 +135,7 @@ cftr_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       cell_line:
-        id: "CLO:0003679"
+        id: "CLO:0002192"
         name: "Calu-3"
     follows_protocols:
       - id: "PROTOCOL:nguyen-exposure-001"
@@ -205,7 +205,7 @@ cftr_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       cell_line:
-        id: "CLO:0003679"
+        id: "CLO:0002192"
         name: "Calu-3"
     follows_protocols:
       - id: "PROTOCOL:nguyen-exposure-001"
@@ -269,7 +269,7 @@ cftr_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       cell_line:
-        id: "CLO:0003679"
+        id: "CLO:0002192"
         name: "Calu-3"
     follows_protocols:
       - id: "PROTOCOL:nguyen-exposure-001"
@@ -336,7 +336,7 @@ cftr_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       cell_line:
-        id: "CLO:0003679"
+        id: "CLO:0002192"
         name: "Calu-3"
     follows_protocols:
       - id: "PROTOCOL:nguyen-exposure-001"
@@ -409,7 +409,7 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       cell_line:
-        id: "CLO:0003679"
+        id: "CLO:0002192"
         name: "Calu-3"
     follows_protocols:
       - id: "PROTOCOL:nguyen-exposure-001"
@@ -472,7 +472,7 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       cell_line:
-        id: "CLO:0003679"
+        id: "CLO:0002192"
         name: "Calu-3"
     follows_protocols:
       - id: "PROTOCOL:nguyen-exposure-001"
@@ -535,7 +535,7 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       cell_line:
-        id: "CLO:0003679"
+        id: "CLO:0002192"
         name: "Calu-3"
     follows_protocols:
       - id: "PROTOCOL:nguyen-exposure-001"
