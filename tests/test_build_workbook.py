@@ -123,3 +123,29 @@ def test_cross_paper_id_collision_fails(tmp_path):
 def test_empty_kb_dir_is_fine(tmp_path):
     result = run("--kb-dir", str(tmp_path), "--check-only")
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_review_only_paper_contributes_key_events_and_relationships(tmp_path):
+    kb = tmp_path / "kb"
+    kb.mkdir()
+    shutil.copy(ROOT / "kb" / "publications" / "Container-liu2012-shs-mcc.yaml", kb)
+    out = tmp_path / "pooled.xlsx"
+
+    result = run("--kb-dir", str(kb), "--output", str(out))
+    assert result.returncode == 0, result.stdout + result.stderr
+    wb = openpyxl.load_workbook(out)
+
+    assert "KeyEventRelationship" in wb.sheetnames
+    ker_sources = {
+        row[0]
+        for row in wb["KeyEventRelationship"].iter_rows(min_row=2, values_only=True)
+        if row and row[0]
+    }
+    assert "PMID:22973232" in ker_sources
+
+    ke_sources = {
+        row[0]
+        for row in wb["KeyEvent"].iter_rows(min_row=2, values_only=True)
+        if row and row[0]
+    }
+    assert "PMID:22973232" in ke_sources
