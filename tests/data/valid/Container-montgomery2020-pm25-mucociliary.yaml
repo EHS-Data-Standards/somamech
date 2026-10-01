@@ -92,7 +92,6 @@ gene_expression_assays:
           unit:
             id: "STATO:0000169"
             name: "fold change"
-    assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
         name: "PM2.5 organic extract 0.45 ug/cm2 (moderate dose)"
@@ -158,7 +157,6 @@ gene_expression_assays:
           unit:
             id: "STATO:0000169"
             name: "fold change"
-    assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
         name: "PM2.5 organic extract 0.45 ug/cm2 (moderate dose)"
@@ -213,7 +211,6 @@ gene_expression_assays:
           unit:
             id: "STATO:0000169"
             name: "fold change"
-    assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
         name: "PM2.5 organic extract 0.45 ug/cm2 (moderate dose)"
@@ -273,7 +270,6 @@ gene_expression_assays:
           unit:
             id: "STATO:0000169"
             name: "fold change"
-    assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
         name: "PM2.5 organic extract chronic 5-day stimulation (high OE dose)"
@@ -340,7 +336,6 @@ gene_expression_assays:
           unit:
             id: "STATO:0000169"
             name: "fold change"
-    assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
         name: "PM2.5 organic extract chronic 5-day stimulation (high OE dose)"
@@ -395,7 +390,6 @@ gene_expression_assays:
           unit:
             id: "STATO:0000169"
             name: "fold change"
-    assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
         name: "PM2.5 organic extract 0.45 ug/cm2 (moderate dose)"
@@ -450,7 +444,6 @@ gene_expression_assays:
           unit:
             id: "STATO:0000169"
             name: "fold change"
-    assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
         name: "PM2.5 organic extract 0.45 ug/cm2 (moderate dose)"
@@ -517,7 +510,6 @@ goblet_cell_assays:
           unit:
             id: "STATO:0000169"
             name: "fold change"
-    assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
         name: "PM2.5 organic extract chronic 5-day stimulation (high OE dose)"
@@ -592,7 +584,6 @@ goblet_cell_assays:
           unit:
             id: "STATO:0000169"
             name: "fold change"
-    assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
         name: "PM2.5 organic extract chronic 5-day stimulation (high OE dose)"
@@ -651,7 +642,6 @@ goblet_cell_assays:
           unit:
             id: "STATO:0000169"
             name: "fold change"
-    assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
         name: "PM2.5 organic extract chronic 5-day stimulation (high OE dose)"
@@ -708,7 +698,6 @@ goblet_cell_assays:
           unit:
             id: "STATO:0000169"
             name: "fold change"
-    assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-high-oe"
         name: "PM2.5 organic extract 4.5 ug/cm2 (high dose)"
@@ -770,7 +759,6 @@ foxj_assays:
           unit:
             id: "UO:0000187"
             name: "percent"
-    assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
         name: "PM2.5 organic extract chronic 5-day stimulation (high OE dose)"
@@ -841,7 +829,6 @@ foxj_assays:
           unit:
             id: "STATO:0000169"
             name: "fold change"
-    assay_date: "2020-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-high-oe"
         name: "PM2.5 organic extract 4.5 ug/cm2 (high dose)"
