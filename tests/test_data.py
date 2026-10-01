@@ -30,7 +30,6 @@ def test_valid_fixtures_do_not_use_astrocyte_cl_term_for_nasal_epithelium():
     ]
     assert offenders == []
 
-
 # Regression guard for issue #137: unit CURIEs that fixtures paired with the
 # wrong label. The authoritative check is the term validator (`just
 # validate-fixtures`, part of `just qc`), which resolves every CURIE against
