@@ -116,13 +116,15 @@ Worked example covering all of the above:
 ## Phase 3: Assign Ontology Terms
 
 Use `/oaklib` to find and verify CURIEs for:
-- **Chemicals/agents**: CHEBI (e.g., CHEBI:74481 for PM2.5)
-- **Cell types**: CL (e.g., CL:0002603 for nasal epithelial cell)
+- **Chemicals**: CHEBI (e.g., CHEBI:28939 for N-acetyl-L-cysteine)
+- **Environmental exposure agents**: ENVO (e.g., ENVO:01000415 for PM2.5, ENVO:01000838 for smoke) —
+  particulate matter and other environmental materials are *not* CHEBI chemicals
+- **Cell types**: CL (e.g., CL:2000094 for nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa)
 - **Species**: NCBITaxon (e.g., NCBITaxon:9606 for Homo sapiens)
 - **Units**: UO (e.g., UO:0000032 for hour)
 - **Anatomy**: UBERON (e.g., UBERON:0001707 for nasal cavity)
 - **Proteins/genes**: PR, NCBIGene (e.g., PR:000003411 for CFTR protein, NCBIGene:1080 for CFTR genes)
-- **Cell lines**: CLO (e.g., CLO:0003679 for Calu-3)
+- **Cell lines**: CLO (e.g., CLO:0002192 for Calu-3)
 
 ## Phase 4: Generate YAML
 
