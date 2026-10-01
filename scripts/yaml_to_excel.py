@@ -75,7 +75,8 @@ TAB_COLORS = {
 HEADERS = {
     "Protocol": [
         "id", "name", "description", "protocol_type", "protocol_version",
-        "equipment_required",
+        "equipment_required", "primer_sequences", "antibodies_used",
+        "detection_method", "reference_gene",
     ],
     "ExposureCondition": [
         "id", "name", "exposure_agent", "exposure_agent_id",
@@ -522,17 +523,38 @@ def _collect_subjects(data):
 # Row builders
 # ---------------------------------------------------------------------------
 
+def _join_multivalued(values):
+    """Render a multivalued slot as one '; '-joined cell.
+
+    Entries are plain strings in the schema (and in current kb data), but
+    tolerate dict entries (e.g. a primer set split into gene/forward/reverse)
+    by flattening them to 'key: value' pairs so nothing exports as '{...}'.
+    """
+    if values is None:
+        return ""
+    if not isinstance(values, list):
+        values = [values]
+    parts = []
+    for v in values:
+        if isinstance(v, dict):
+            parts.append(", ".join(f"{k}: {x}" for k, x in v.items()))
+        else:
+            parts.append(str(v))
+    return "; ".join(parts)
+
+
 def _protocol_row(p):
-    equip = p.get("equipment_required", [])
-    if isinstance(equip, list):
-        equip = "; ".join(str(e) for e in equip)
     return (
         p.get("id", ""),
         p.get("name", ""),
         p.get("description", ""),
         p.get("protocol_type", ""),
         p.get("protocol_version", ""),
-        equip,
+        _join_multivalued(p.get("equipment_required", [])),
+        _join_multivalued(p.get("primer_sequences", [])),
+        _join_multivalued(p.get("antibodies_used", [])),
+        p.get("detection_method", ""),
+        p.get("reference_gene", ""),
     )
 
 
