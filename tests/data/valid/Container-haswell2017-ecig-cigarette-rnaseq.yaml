@@ -107,8 +107,8 @@ ciliary_function_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -116,8 +116,8 @@ ciliary_function_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       donor_info: "Donor #MD058501, age 41, Caucasian female, non-smoker"
       substrate_type: transwell_insert
@@ -165,8 +165,8 @@ ciliary_function_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -209,8 +209,8 @@ ciliary_function_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -253,8 +253,8 @@ ciliary_function_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -286,8 +286,8 @@ goblet_cell_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -340,8 +340,8 @@ goblet_cell_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -394,8 +394,8 @@ foxj_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -450,8 +450,8 @@ gene_expression_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -459,8 +459,8 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       donor_info: "Donor #MD058501, age 41, Caucasian female, non-smoker"
       substrate_type: transwell_insert
@@ -507,8 +507,8 @@ gene_expression_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -554,8 +554,8 @@ gene_expression_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -601,8 +601,8 @@ gene_expression_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -648,8 +648,8 @@ gene_expression_assays:
       id: "soma:haswell-mucilair-multi"
       name: "MucilAir nasal ALI culture - 3 donors"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -657,8 +657,8 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       donor_info: "3 non-smoker donors: #MD058501 (F,41), #MD008301 (M,61), #MD009101 (F,48)"
       substrate_type: transwell_insert
@@ -707,8 +707,8 @@ gene_expression_assays:
       id: "soma:haswell-mucilair-multi"
       name: "MucilAir nasal ALI culture - 3 donors"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -754,8 +754,8 @@ gene_expression_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
