@@ -1,0 +1,1786 @@
+# =============================================================================
+# Montgomery et al. (2020) - Genome-Wide Analysis Reveals Mucociliary
+# Remodeling of the Nasal Airway Epithelium Induced by Urban PM2.5
+# =============================================================================
+#
+# Source: Am J Respir Cell Mol Biol (2020)
+# DOI: 10.1165/rcmb.2019-0454OC
+# Committed cache: references_cache/PMID_32275839.md (content_type:
+#   full_text_html, PMC7397762 via OpenAlex) — every snippet below is verbatim
+#   in that committed file, so CI can re-check all of them.
+#
+# Study design (from the committed full text):
+#   - Primary human nasal AECs from GALA II childhood asthma study donors,
+#     differentiated at air-liquid interface, stimulated on Day 28-32
+#   - PM2.5 collected 2011 on 47-mm PTFE filters at three California sites
+#     (Bakersfield/Fresno, Sacramento, Yuba City), fractionated into a
+#     water-soluble extract (WE) and an organic extract (OE); blank filters
+#     extracted as mock controls
+#   - Acute dose-response (n=5 donors): WE 3 and 30 ug/cm2; OE 0.045, 0.45 and
+#     4.5 ug/cm2; NIST 2786 reference material 30 ug/cm2. Two apical
+#     stimulations 24 h apart, harvest 24 h after the second (48 h total)
+#   - Moderate OE dose (0.45 ug/cm2) characterized on 12 donors (6 healthy,
+#     6 with asthma)
+#   - Chronic model: high OE dose (Yuba City sample) or 10 ng/ml IL-13,
+#     re-applied every 24 h for five stimulations (5 days)
+#
+# Units note: log2 fold changes (LFCs) from RNA-seq/qPCR are recorded in the
+# measurement slots WITHOUT a unit, because the repo has no unit term for a
+# log2 fold change and labelling an LFC "fold change" would misstate it by a
+# power of two. Each such output record's description says it is an LFC and
+# carries the paper's P value, which has no slot outside
+# response_comparisons. Genuine linear fold changes (immunofluorescence,
+# Western blot, AB-PAS, mucin secretion) and the percent decrease in FOXJ1+
+# nuclei are recorded in response_comparisons, with their p_value and
+# statistical_test in the dedicated slots.
+#
+# Relationship to the two existing test fixtures for this PMID
+# (tests/data/valid/Container-montgomery2020-pm25-mucociliary.yaml and
+# Container-montgomery2020-extended.yaml): those are schema fixtures, not kb
+# entries — they carry no source_publication and no evidence quotes. This file
+# is the corpus extraction: written from the committed cache text, with an
+# exact quote on every assay. KeyEvent blocks are copied byte-for-byte from
+# the fixtures (shared vocabulary); every other ID is new, so nothing in this
+# file collides with a fixture ID carrying different content.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:32275839"
+  reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+  doi: "10.1165/rcmb.2019-0454OC"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:montgomery-extract-prep-001"
+    name: "PM2.5 collection, fractionation and chemical characterization"
+    description: "PM2.5 collected on 47-mm polytetrafluoroethylene filters at three California monitoring sites in 2011, pooled by region and fractionated into water-soluble (WE) and organic (OE) extracts. WE species quantified by inductively coupled plasma mass spectrometry and ion chromatography; OE PAH species by gas chromatography-mass spectrometry. Blank filters were extracted to produce the mock extract controls used for stimulations."
+    equipment_required:
+      - "47-mm polytetrafluoroethylene filters"
+      - "Inductively coupled plasma mass spectrometer"
+      - "Ion chromatograph"
+      - "Gas chromatograph-mass spectrometer"
+
+  - id: "PROTOCOL:montgomery-ali-stim-001"
+    name: "Nasal AEC air-liquid interface culture and apical extract stimulation"
+    description: "Primary nasal AECs expanded and differentiated at air-liquid interface. On mucociliary differentiation (Day 28-32 of ALI culture) cultures were washed with PBS and apically treated with mock extract or PM2.5 extract in a final volume of 20 ul culture media; the wash and stimulation were repeated at 24 hours and RNA was collected 24 hours later. For chronic experiments the wash and stimulation were repeated every 24 hours for five stimulations, with a high OE dose or 10 ng/ml IL-13."
+    equipment_required:
+      - "Transwell inserts"
+      - "ALI culture media"
+      - "RNA lysis buffer (Zymo Research) with 40 mM DTT"
+
+  - id: "PROTOCOL:montgomery-transcriptome-001"
+    name: "Whole transcriptome RNA-seq of stimulated ALI cultures"
+    description: "KAPA mRNA HyperPrep (Roche) whole transcriptome libraries from 250 ng RNA per sample with 12 cycles of amplification, sequenced on the Illumina NovaSeq 6000. Paired differential expression analysis between mock-stimulated and extract-stimulated cultures from the same donor; DEG enrichment tested with Enrichr against GO/KEGG/Reactome and against scRNA-seq-derived cell type marker lists, with P values corrected for multiple testing. Networks built with FGNet and GeneTerm Linker."
+    equipment_required:
+      - "KAPA mRNA HyperPrep kit (Roche)"
+      - "Illumina NovaSeq 6000"
+
+  - id: "PROTOCOL:montgomery-qpcr-chronic-001"
+    name: "Quantitative PCR of chronically stimulated cultures"
+    description: "Quantitative PCR of chronic OE- and IL-13-stimulated cultures against paired mock/media controls. The paper places the detailed qPCR conditions in its online data supplement, which is not part of the cached article text."
+
+  - id: "PROTOCOL:montgomery-if-mucin-001"
+    name: "Immunofluorescence labeling for MUC5AC and MUC5B"
+    description: "Immunofluorescence labeling of culture histological sections for the gel-forming mucins MUC5AC and MUC5B with DAPI nuclear counterstain, followed by quantification of MUC5AC+ and MUC5B+ cells. Representative of labeling in cultures from four donors."
+    equipment_required:
+      - "Fluorescence microscope"
+      - "Anti-MUC5AC antibody"
+      - "Anti-MUC5B antibody"
+      - "DAPI"
+
+  - id: "PROTOCOL:montgomery-if-foxj1-001"
+    name: "Immunofluorescence labeling for FOXJ1 and acetylated alpha-tubulin"
+    description: "Confocal fluorescence microscopy maximum projections of intact epithelial cultures labeled for E-cadherin, acetylated alpha-tubulin (cilia) and FOXJ1, with DAPI nuclear counterstain, followed by quantification of FOXJ1+ nuclei. Representative of labeling in cultures from three donors."
+    equipment_required:
+      - "Confocal fluorescence microscope"
+      - "Anti-FOXJ1 antibody"
+      - "Anti-acetylated alpha-tubulin antibody"
+      - "Anti-E-cadherin antibody"
+      - "DAPI"
+
+  - id: "PROTOCOL:montgomery-abpas-staining-001"
+    name: "Alcian blue-periodic acid-Schiff staining of culture sections"
+    description: "Alcian blue-periodic acid-Schiff staining of culture histological sections for mucopolysaccharides/mucins, with quantification of AB-PAS+ cells. Four donor pairs examined."
+    equipment_required:
+      - "AB-PAS staining reagents"
+      - "Light microscope"
+
+  - id: "PROTOCOL:montgomery-wb-spdef-001"
+    name: "Western blot for SPDEF protein"
+    description: "Western blot analysis of total protein for SPDEF, quantified by band intensity normalized to actin as a loading control. Representative of data from five independent donors."
+    equipment_required:
+      - "SDS-PAGE apparatus"
+      - "Anti-SPDEF antibody"
+      - "Densitometry imaging system"
+
+  - id: "PROTOCOL:montgomery-mucin-elisa-001"
+    name: "ATP-induced mucin secretion assay with colorimetric ELISA"
+    description: "ATP-induced mucus secretion assay followed by colorimetric ELISA absorbance readings at 490 nm for MUC5AC and MUC5B in the secretions of cultures from five donors."
+    equipment_required:
+      - "Plate reader (490 nm)"
+      - "MUC5AC ELISA"
+      - "MUC5B ELISA"
+      - "ATP stimulation reagent"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS - acute stimulation, whole transcriptome RNA-seq
+# =============================================================================
+
+gene_expression_assays:
+
+  # ---- Dose-response: which PM2.5 fraction moves the transcriptome at all
+  - id: "GE:montgomery-deg-burden-dose-series"
+    name: "Differentially expressed gene burden across the PM2.5 extract dose series"
+    description: "Paired mock-versus-treated RNA-seq across the full acute dose series in five donor cultures. Water-soluble extract produced no DEGs at either 3 or 30 ug/cm2. Organic extract produced a dose-dependent DEG burden: 11 DEGs at the low dose (0.045 ug/cm2), 124 at the moderate dose (0.45 ug/cm2) and 1,296 at the high dose (4.5 ug/cm2) - roughly a 10-fold rise in DEG count per 10-fold rise in concentration. The NIST 2786 reference material at 30 ug/cm2 gave 111 DEGs, comparable in size to the moderate OE dose. DEG counts are study-level totals rather than per-gene measurements, so they are recorded in these descriptions and no QuantityValue is invented for them."
+    gene_expression_method: "Whole transcriptome RNA-seq (KAPA mRNA HyperPrep, Illumina NovaSeq 6000)"
+    normalization_reference: "paired mock-stimulated culture from the same donor"
+    evidence:
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "from 11 (low dose) to 124 (moderate dose) to 1,296 (high dose)"
+        explanation: "Gives the dose-dependent DEG counts for the three organic extract doses that this assay's three treated output records stand for."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "No genes exhibited significantly modified expression with either WE stimulation concentration tested."
+        explanation: "Supports the two water-soluble extract output records, which record a null transcriptomic response at both WE concentrations."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "We also detected 111 DEGs induced by NIST 2786 stimulation, a response comparable in size to the moderate OE dose stimulation"
+        explanation: "Supports the NIST 2786 benchmark output record and its comparison with the moderate OE dose."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Experiments were conducted by performing two consecutive stimulations at the indicated concentrations 24 hours apart, with culture harvest 24 hours after the second stimulation."
+        explanation: "Establishes the 48-hour acute exposure duration recorded on every acute exposure condition in this file."
+    has_specified_output:
+      - id: "GE:montgomery-deg-burden-dose-series-output-mock"
+        name: "Mock extract control, acute stimulation"
+        description: "Paired mock (blank filter extract) control. All DEG counts and log2 fold changes in this file are relative to this paired control, so no absolute expression value is recorded here."
+        experimental_group: control
+        measured_under: "EXPOSURE:montgomery-mock-48h"
+      - id: "GE:montgomery-deg-burden-dose-series-output-we3"
+        name: "Water-soluble extract 3 ug/cm2"
+        description: "No genes with significantly modified expression."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-we-3-48h"
+      - id: "GE:montgomery-deg-burden-dose-series-output-we30"
+        name: "Water-soluble extract 30 ug/cm2"
+        description: "No genes with significantly modified expression, at more than six times the highest OE dose tested."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-we-30-48h"
+      - id: "GE:montgomery-deg-burden-dose-series-output-oe-low"
+        name: "Organic extract 0.045 ug/cm2 (low dose)"
+        description: "11 differentially expressed genes; 9 of the 11 were also DEGs at the moderate dose."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-low-48h"
+      - id: "GE:montgomery-deg-burden-dose-series-output-oe-mod"
+        name: "Organic extract 0.45 ug/cm2 (moderate dose), n=5 dose-response set"
+        description: "124 differentially expressed genes in the five-donor dose-response experiment; 71% of them were also DEGs at the high dose."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-mod-48h"
+      - id: "GE:montgomery-deg-burden-dose-series-output-oe-high"
+        name: "Organic extract 4.5 ug/cm2 (high dose)"
+        description: "1,296 differentially expressed genes."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-high-48h"
+      - id: "GE:montgomery-deg-burden-dose-series-output-nist"
+        name: "NIST 2786 reference material 30 ug/cm2"
+        description: "111 differentially expressed genes; 35% of the moderate OE DEGs were also NIST DEGs and the LFCs of the two responses were correlated (Pearson 0.75, P = 1.68e-34)."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-nist-30-48h"
+    assay_date: "2020-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:montgomery-mock-48h"
+        name: "Mock extract control (blank filter extract), two apical stimulations 24 h apart"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-we-3-48h"
+        name: "PM2.5 water-soluble extract 3 ug/cm2, two apical stimulations 24 h apart"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "3"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-we-30-48h"
+        name: "PM2.5 water-soluble extract 30 ug/cm2, two apical stimulations 24 h apart"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "30"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-oe-low-48h"
+        name: "PM2.5 organic extract 0.045 ug/cm2 (low dose), two apical stimulations 24 h apart"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "0.045"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-oe-mod-48h"
+        name: "PM2.5 organic extract 0.45 ug/cm2 (moderate dose), two apical stimulations 24 h apart"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "0.45"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-oe-high-48h"
+        name: "PM2.5 organic extract 4.5 ug/cm2 (high dose), two apical stimulations 24 h apart"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "4.5"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-nist-30-48h"
+        name: "NIST 2786 fine particulate reference material 30 ug/cm2, two apical stimulations 24 h apart"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "30"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:mie-ahr-activation"
+      name: "AhR pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:montgomery-nasal-ali-doseresponse"
+      name: "Primary nasal AEC ALI cultures - five-donor dose-response set"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Nasal AECs from five healthy subjects selected randomly for the California extract dose-response experiments; NIST 2786 stimulations were conducted on four donors"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:montgomery-transcriptome-001"
+        name: "Whole transcriptome RNA-seq of stimulated ALI cultures"
+        detection_method: "Illumina NovaSeq 6000 sequencing"
+      - protocol_type: Protocol
+        id: "PROTOCOL:montgomery-ali-stim-001"
+        name: "Nasal AEC air-liquid interface culture and apical extract stimulation"
+      - protocol_type: Protocol
+        id: "PROTOCOL:montgomery-extract-prep-001"
+        name: "PM2.5 collection, fractionation and chemical characterization"
+
+  # ---- CYP1A1 and the AHR xenobiotic battery (moderate OE, n=12)
+  - id: "GE:montgomery-cyp1a1-ahr-battery-mod"
+    name: "CYP1A1 and AHR battery enzyme expression - moderate OE dose"
+    description: "In the 12-donor moderate OE dose characterization (424 DEGs: 281 up, 143 down), CYP1A1 was the most highly induced gene at LFC 6.21. Other AHR-inducible xenobiotic metabolizing enzymes were also significantly induced (CYP1B1, NQO1, ALDH3A1), consistent with the PAH content of the organic extract acting through AHR-mediated transcriptional activation. The paper reports no effect sizes for CYP1B1, NQO1 or ALDH3A1 in the cached text, so only CYP1A1 carries a value."
+    target_gene: "CYP1A1"
+    gene_expression_method: "Whole transcriptome RNA-seq (KAPA mRNA HyperPrep, Illumina NovaSeq 6000)"
+    normalization_reference: "paired mock-stimulated culture from the same donor"
+    evidence:
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "we found that the most highly OE-induced gene was the xenobiotic metabolizing cytochrome P450 enzyme,CYP1A1(LFC, 6.21;Figure 3B)"
+        explanation: "Source of the CYP1A1 LFC of 6.21 recorded on the treated output record, and of the statement that it was the most highly induced gene. Gene symbols run into the surrounding words in the cached HTML text; the quote is copied exactly as cached."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Consistent with OE activation of the AHR receptor, we observed significant induction of other AHR-inducible xenobiotic metabolizing enzymes, includingCYP1B1and genes encoding the AHR battery enzymesNQO1"
+        explanation: "Supports reading the CYP1A1 induction as AHR pathway activation rather than an isolated gene effect, which is the key event this assay informs on."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Paired differential gene expression analysis of these donors identified 424 DEGs consisting of 281 upregulated and 143 downregulated genes"
+        explanation: "Gives the size and composition of the 12-donor moderate OE response within which the CYP1A1 and AHR battery inductions sit."
+    has_specified_output:
+      - id: "GE:montgomery-cyp1a1-ahr-battery-mod-output-mock"
+        name: "CYP1A1 in paired mock-stimulated cultures"
+        description: "Paired mock control. The paper reports the response only as an LFC against this control, so no absolute value is recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:montgomery-mock-48h"
+      - id: "GE:montgomery-cyp1a1-ahr-battery-mod-output-oe-mod"
+        name: "CYP1A1 at the moderate OE dose"
+        description: "mrna_level is the log2 fold change (LFC = 6.21) versus paired mock-stimulated cultures, not a linear fold change; no unit term for a log2 fold change exists in this repo. The most highly OE-induced gene in the 424-DEG moderate dose response."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-mod-48h"
+        mrna_level:
+          value: "6.21"
+          central_tendency: single_value
+          sample_size: 12
+    assay_date: "2020-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:montgomery-mock-48h"
+        name: "Mock extract control (blank filter extract), two apical stimulations 24 h apart"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-oe-mod-48h"
+        name: "PM2.5 organic extract 0.45 ug/cm2 (moderate dose), two apical stimulations 24 h apart"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "0.45"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:mie-ahr-activation"
+      name: "AhR pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:montgomery-nasal-ali-12donor"
+      name: "Primary nasal AEC ALI cultures - 12-donor moderate OE set"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "12 donors: six healthy donors and six donors with asthma from the GALA II childhood asthma study"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:montgomery-transcriptome-001"
+        name: "Whole transcriptome RNA-seq of stimulated ALI cultures"
+        detection_method: "Illumina NovaSeq 6000 sequencing"
+
+  # ---- IL1A / IL1B: the inflammatory hub of the OE response
+  - id: "GE:montgomery-il1a-il1b-mod"
+    name: "IL1A and IL1B expression - moderate OE dose"
+    description: "IL1A (LFC 0.91) and IL1B (LFC 1.22) were among the most highly upregulated genes at the moderate OE dose. In the eight-metagroup OE response network built with FGNet, CYP1A1, IL1A and IL1B were shared across metagroups and had especially high betweenness centrality, marking the IL-1 axis as a hub of the response rather than an incidental signal. Both were further upregulated at the high OE dose."
+    target_gene: "IL1A; IL1B"
+    gene_expression_method: "Whole transcriptome RNA-seq (KAPA mRNA HyperPrep, Illumina NovaSeq 6000)"
+    normalization_reference: "paired mock-stimulated culture from the same donor"
+    evidence:
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "inflammatory cytokines were both among the most highly upregulated genes with OE stimulation (LFC, 0.91 and 1.22, respectively;Figure 3B)"
+        explanation: "Source of the IL1A LFC of 0.91 and the IL1B LFC of 1.22 recorded on the treated output records."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "TheCYP1A1,IL1A, andIL1Bgenes were shared by multiple metagroups and exhibited especially high betweenness centrality, indicating the likely critical nature of these genes in the transcriptional response to OE stimulation."
+        explanation: "Supports recording the IL-1 program as a central key event of the OE response; the quote is copied exactly as cached, where gene symbols run into the adjacent words."
+    has_specified_output:
+      - id: "GE:montgomery-il1a-il1b-mod-output-mock"
+        name: "IL1A and IL1B in paired mock-stimulated cultures"
+        description: "Paired mock control; responses are reported only as LFCs against it."
+        experimental_group: control
+        measured_under: "EXPOSURE:montgomery-mock-48h"
+      - id: "GE:montgomery-il1a-il1b-mod-output-il1a"
+        name: "IL1A at the moderate OE dose"
+        description: "mrna_level is the log2 fold change (LFC = 0.91) for IL1A versus paired mock-stimulated cultures."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-mod-48h"
+        mrna_level:
+          value: "0.91"
+          central_tendency: single_value
+          sample_size: 12
+      - id: "GE:montgomery-il1a-il1b-mod-output-il1b"
+        name: "IL1B at the moderate OE dose"
+        description: "mrna_level is the log2 fold change (LFC = 1.22) for IL1B versus paired mock-stimulated cultures."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-mod-48h"
+        mrna_level:
+          value: "1.22"
+          central_tendency: single_value
+          sample_size: 12
+    assay_date: "2020-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:montgomery-mock-48h"
+        name: "Mock extract control (blank filter extract), two apical stimulations 24 h apart"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-oe-mod-48h"
+        name: "PM2.5 organic extract 0.45 ug/cm2 (moderate dose), two apical stimulations 24 h apart"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "0.45"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-il1-inflammation"
+      name: "IL-1 inflammatory program activation"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:montgomery-nasal-ali-12donor"
+      name: "Primary nasal AEC ALI cultures - 12-donor moderate OE set"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "12 donors: six healthy donors and six donors with asthma from the GALA II childhood asthma study"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:montgomery-transcriptome-001"
+        name: "Whole transcriptome RNA-seq of stimulated ALI cultures"
+        detection_method: "Illumina NovaSeq 6000 sequencing"
+
+  # ---- Mucus metaplasia transcription factors SPDEF and FOXA3
+  - id: "GE:montgomery-spdef-foxa3-mod"
+    name: "SPDEF and FOXA3 expression - moderate OE dose"
+    description: "Coexpression analysis of the OE-upregulated mucus secretory genes put SPDEF - the canonical transcription factor driving mucus production and metaplasia - at the centre of a module containing MUC5AC, BPIFA1, BPIFB1 and the ER stress factor XBP1. FOXA3, a further mucus metaplasia transcription factor, was upregulated in a different cluster. The cached text reports no LFC for SPDEF or FOXA3 at the moderate dose (the chronic-stimulation SPDEF LFC is recorded on GE:montgomery-spdef-chronic-qpcr), so these output records carry no value."
+    target_gene: "SPDEF; FOXA3"
+    gene_expression_method: "Whole transcriptome RNA-seq (KAPA mRNA HyperPrep, Illumina NovaSeq 6000)"
+    normalization_reference: "paired mock-stimulated culture from the same donor"
+    evidence:
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "wasSPDEF(SAM pointed domain containing ETS transcription factor), a canonical TF reported to drive mucus production and metaplasia in response to the type 2 cytokine, IL-13"
+        explanation: "Identifies SPDEF as the central mucus metaplasia transcription factor in the OE-induced secretory coexpression module, the goblet cell hyperplasia key event this assay informs on."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "we also observed upregulation ofFOXA3(forkhead box A3), an additional mucus metaplasia TF functionally related toSPDEF"
+        explanation: "Supports the FOXA3 output record: the paper states its upregulation without an effect size."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "the most significant enrichment was for mucus secretory cell marker genes among OE-upregulated DEGs"
+        explanation: "Supports reading the SPDEF/FOXA3 induction as an expansion of the mucus secretory compartment rather than a change confined to gene expression; the paper gives this enrichment as Padj = 1.19e-74 at the moderate dose."
+    has_specified_output:
+      - id: "GE:montgomery-spdef-foxa3-mod-output-mock"
+        name: "SPDEF and FOXA3 in paired mock-stimulated cultures"
+        description: "Paired mock control."
+        experimental_group: control
+        measured_under: "EXPOSURE:montgomery-mock-48h"
+      - id: "GE:montgomery-spdef-foxa3-mod-output-oe-mod"
+        name: "SPDEF and FOXA3 at the moderate OE dose"
+        description: "Both upregulated; the cached text states the direction without an effect size for either gene at this dose, so no value is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-mod-48h"
+    assay_date: "2020-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:montgomery-mock-48h"
+        name: "Mock extract control (blank filter extract), two apical stimulations 24 h apart"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-oe-mod-48h"
+        name: "PM2.5 organic extract 0.45 ug/cm2 (moderate dose), two apical stimulations 24 h apart"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "0.45"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:montgomery-nasal-ali-12donor"
+      name: "Primary nasal AEC ALI cultures - 12-donor moderate OE set"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "12 donors: six healthy donors and six donors with asthma from the GALA II childhood asthma study"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:montgomery-transcriptome-001"
+        name: "Whole transcriptome RNA-seq of stimulated ALI cultures"
+        detection_method: "Illumina NovaSeq 6000 sequencing"
+
+  # ---- SCGB1A1: loss of club cell identity at the high OE dose
+  - id: "GE:montgomery-scgb1a1-high-oe"
+    name: "SCGB1A1 expression - high OE dose"
+    description: "The activation of mucus secretory genes at the high OE dose was matched by repression of SCGB1A1, the club secretory cell marker gene (LFC -0.92, Padj = 1.13e-3), which the paper reads as mucus metaplasia of club secretory cells of the kind reported for IL-13."
+    target_gene: "SCGB1A1"
+    gene_expression_method: "Whole transcriptome RNA-seq (KAPA mRNA HyperPrep, Illumina NovaSeq 6000)"
+    normalization_reference: "paired mock-stimulated culture from the same donor"
+    evidence:
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "this activation of mucus secretory genes with high OE dose stimulation was matched by repression ofSCGB1A1(secretoglobin family 1A member 1)"
+        explanation: "States the SCGB1A1 repression at the high OE dose that this assay records; the accompanying LFC of -0.92 and Padj of 1.13e-3 are given in the same sentence of the cached text."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "This is consistent with mucus metaplasia of club secretory cells, as has been reported for IL-13"
+        explanation: "Supports interpreting the SCGB1A1 loss as club cell mucus metaplasia, which is the club cell marker loss key event this assay informs on."
+    has_specified_output:
+      - id: "GE:montgomery-scgb1a1-high-oe-output-mock"
+        name: "SCGB1A1 in paired mock-stimulated cultures"
+        description: "Paired mock control."
+        experimental_group: control
+        measured_under: "EXPOSURE:montgomery-mock-48h"
+      - id: "GE:montgomery-scgb1a1-high-oe-output-oe-high"
+        name: "SCGB1A1 at the high OE dose"
+        description: "mrna_level is the log2 fold change (LFC = -0.92, Padj = 1.13e-3) versus paired mock-stimulated cultures."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-high-48h"
+        mrna_level:
+          value: "-0.92"
+          central_tendency: single_value
+          sample_size: 5
+    assay_date: "2020-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:montgomery-mock-48h"
+        name: "Mock extract control (blank filter extract), two apical stimulations 24 h apart"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-oe-high-48h"
+        name: "PM2.5 organic extract 4.5 ug/cm2 (high dose), two apical stimulations 24 h apart"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "4.5"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-club-cell-loss"
+      name: "Club cell marker loss"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:montgomery-nasal-ali-doseresponse"
+      name: "Primary nasal AEC ALI cultures - five-donor dose-response set"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Nasal AECs from five healthy subjects selected randomly for the California extract dose-response experiments; NIST 2786 stimulations were conducted on four donors"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:montgomery-transcriptome-001"
+        name: "Whole transcriptome RNA-seq of stimulated ALI cultures"
+        detection_method: "Illumina NovaSeq 6000 sequencing"
+
+  # ---- Chronic stimulation qPCR: SPDEF (with IL-13 benchmark)
+  - id: "GE:montgomery-spdef-chronic-qpcr"
+    name: "SPDEF expression - chronic OE stimulation, with IL-13 benchmark"
+    description: "Five days of repeat high-OE stimulation raised SPDEF expression (LFC 0.84, P = 3.19e-2), alongside MUC5AC upregulation - the signature of mucus metaplasia. Chronic IL-13, used as a benchmark for metaplastic expansion of mucus secretory cells, produced a larger SPDEF rise (LFC 2.91, P = 2.54e-2). The matching increase in SPDEF protein (1.5-fold) is recorded in response_comparisons as COMP:montgomery-spdef-protein-chronic."
+    target_gene: "SPDEF"
+    gene_expression_method: "Quantitative PCR"
+    normalization_reference: "paired mock/media-treated culture from the same donor"
+    evidence:
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "We found that both chronic OE and IL-13 stimulation resulted in upregulation ofMUC5AC"
+        explanation: "Opens the sentence that reports the chronic OE and IL-13 SPDEF and MUC5AC effect sizes this assay records, for both the OE and the IL-13 output records."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "characteristic of mucus metaplasia"
+        explanation: "The paper's own reading of the paired MUC5AC and SPDEF induction as mucus metaplasia, which is the goblet cell hyperplasia key event this assay informs on."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "As a benchmark for metaplastic expansion of mucus secretory cells, we also performed chronic stimulations of additional cultures from the same donors with the cytokine IL-13."
+        explanation: "Establishes the role of the IL-13 output record in this assay: a positive-control benchmark run on the same donors, not a second test article."
+    has_specified_output:
+      - id: "GE:montgomery-spdef-chronic-qpcr-output-control"
+        name: "SPDEF in paired media control cultures, chronic protocol"
+        description: "Paired media control for the chronic protocol; the paper reports only LFCs against it."
+        experimental_group: control
+        measured_under: "EXPOSURE:montgomery-media-control-chronic"
+      - id: "GE:montgomery-spdef-chronic-qpcr-output-oe"
+        name: "SPDEF after chronic OE stimulation"
+        description: "mrna_level is the log2 fold change (LFC = 0.84, P = 3.19e-2) versus paired media control."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-high-chronic"
+        mrna_level:
+          value: "0.84"
+          central_tendency: single_value
+      - id: "GE:montgomery-spdef-chronic-qpcr-output-il13"
+        name: "SPDEF after chronic IL-13 stimulation (benchmark)"
+        description: "mrna_level is the log2 fold change (LFC = 2.91, P = 2.54e-2) versus paired media control, for the IL-13 mucus metaplasia benchmark."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-il13-chronic"
+        mrna_level:
+          value: "2.91"
+          central_tendency: single_value
+    assay_date: "2020-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:montgomery-media-control-chronic"
+        name: "Media control, five apical treatments every 24 h"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-oe-high-chronic"
+        name: "PM2.5 organic extract, high dose (Yuba City sample), five apical stimulations every 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-il13-chronic"
+        name: "IL-13 10 ng/ml apical and basolateral, five treatments every 24 h (mucus metaplasia benchmark)"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:montgomery-nasal-ali-chronic"
+      name: "Primary nasal AEC ALI cultures - chronic stimulation set"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Mature cultures from GALA II donors; three to five donors per chronic readout (four donor pairs for AB-PAS and mucin immunofluorescence, five for Western blot and secretion ELISA, three for FOXJ1 labeling)"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:montgomery-qpcr-chronic-001"
+        name: "Quantitative PCR of chronically stimulated cultures"
+        detection_method: "quantitative PCR"
+      - protocol_type: Protocol
+        id: "PROTOCOL:montgomery-ali-stim-001"
+        name: "Nasal AEC air-liquid interface culture and apical extract stimulation"
+
+  # ---- Chronic stimulation qPCR: SCGB1A1
+  - id: "GE:montgomery-scgb1a1-chronic-qpcr"
+    name: "SCGB1A1 expression - chronic OE stimulation, with IL-13 benchmark"
+    description: "Chronic OE stimulation decreased SCGB1A1 expression (LFC -1.51, P = 2.94e-2), as did the IL-13 benchmark (LFC -1.74, P = 4.09e-2) - loss of club cell identity accompanying the mucus metaplasia phenotype."
+    target_gene: "SCGB1A1"
+    gene_expression_method: "Quantitative PCR"
+    normalization_reference: "paired mock/media-treated culture from the same donor"
+    evidence:
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Moreover, these stimuli resulted in decreased expression ofSCGB1A1"
+        explanation: "States the chronic OE and IL-13 decrease in SCGB1A1 that this assay records; the effect sizes follow in the same sentence of the cached text."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "These results support that OE induces a mucus metaplasia process similar to IL-13"
+        explanation: "The paper's conclusion from the chronic qPCR panel, supporting the club-cell-loss reading of the SCGB1A1 decrease."
+    has_specified_output:
+      - id: "GE:montgomery-scgb1a1-chronic-qpcr-output-control"
+        name: "SCGB1A1 in paired media control cultures, chronic protocol"
+        description: "Paired media control."
+        experimental_group: control
+        measured_under: "EXPOSURE:montgomery-media-control-chronic"
+      - id: "GE:montgomery-scgb1a1-chronic-qpcr-output-oe"
+        name: "SCGB1A1 after chronic OE stimulation"
+        description: "mrna_level is the log2 fold change (LFC = -1.51, P = 2.94e-2) versus paired media control."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-high-chronic"
+        mrna_level:
+          value: "-1.51"
+          central_tendency: single_value
+      - id: "GE:montgomery-scgb1a1-chronic-qpcr-output-il13"
+        name: "SCGB1A1 after chronic IL-13 stimulation (benchmark)"
+        description: "mrna_level is the log2 fold change (LFC = -1.74, P = 4.09e-2) versus paired media control."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-il13-chronic"
+        mrna_level:
+          value: "-1.74"
+          central_tendency: single_value
+    assay_date: "2020-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:montgomery-media-control-chronic"
+        name: "Media control, five apical treatments every 24 h"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-oe-high-chronic"
+        name: "PM2.5 organic extract, high dose (Yuba City sample), five apical stimulations every 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-il13-chronic"
+        name: "IL-13 10 ng/ml apical and basolateral, five treatments every 24 h (mucus metaplasia benchmark)"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-club-cell-loss"
+      name: "Club cell marker loss"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:montgomery-nasal-ali-chronic"
+      name: "Primary nasal AEC ALI cultures - chronic stimulation set"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Mature cultures from GALA II donors; three to five donors per chronic readout (four donor pairs for AB-PAS and mucin immunofluorescence, five for Western blot and secretion ELISA, three for FOXJ1 labeling)"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:montgomery-qpcr-chronic-001"
+        name: "Quantitative PCR of chronically stimulated cultures"
+        detection_method: "quantitative PCR"
+
+# =============================================================================
+# GOBLET CELL / MUCIN ASSAYS
+# =============================================================================
+
+goblet_cell_assays:
+
+  # ---- Gel-forming mucin transcripts and their ratio across the acute dose series
+  - id: "GCM:montgomery-mucin-transcripts-acute"
+    name: "Gel-forming mucin transcripts and MUC5AC/MUC5B ratio - acute OE dose series"
+    description: "MUC5AC was strongly induced at the moderate OE dose (LFC 0.90) together with the normally gut-restricted gel-forming mucin MUC2 (LFC 1.34). MUC5B trended down only at the high dose (LFC -0.79, Padj = 1.0e-1). The resulting MUC5AC/MUC5B ratio, which governs the viscoelastic properties of airway mucus, rose significantly at the moderate dose (P = 3.19e-2) and further at the high dose (P = 2.68e-2), both by two-tailed paired t test against mock-treated cultures. A high-dose-specific induction of mucin O-glycosylation enzymes (GALNT3, 5, 6, 7, 12 and GCNT3) accompanied the ratio shift. Mucin mRNA values are log2 fold changes; the ratio itself is reported only as a significant increase, with no ratio value, so no QuantityValue is recorded for it."
+    evidence:
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "MUC5AC(mucin 5AC), was strongly induced by OE stimulation, as was another gel-forming mucin,MUC2(mucin 2), which is normally expressed in the gut and lowly expressed in the airway (LFC, 0.90 and 1.34, respectively; Table E2)"
+        explanation: "Source of the MUC5AC LFC of 0.90 and the MUC2 LFC of 1.34 recorded on the moderate-dose output record."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "we observed a trend toward decreased expression of the other major gel-forming mucin,MUC5B(mucin 5B), only with the high OE dose"
+        explanation: "Source of the MUC5B decrease recorded on the high-dose output record, and of its status as a trend (Padj = 1.0e-1) rather than a significant change."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "It is notable that a significant increase in theMUC5AC/MUC5Bratio with moderate OE dose"
+        explanation: "States the significant increase in the MUC5AC/MUC5B ratio at the moderate dose, which this assay records qualitatively because the paper gives only its p-values."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "suggesting an important relationship between OE stimulation and alteration of mucus properties"
+        explanation: "The paper's interpretation of the mucin ratio shift, supporting the link from this assay to the mucin/goblet key event."
+    has_specified_output:
+      - id: "GCM:montgomery-mucin-transcripts-acute-output-mock"
+        name: "Gel-forming mucin transcripts in paired mock-stimulated cultures"
+        description: "Paired mock control; the paper reports mucin responses only as LFCs and ratio changes against it."
+        experimental_group: control
+        measured_under: "EXPOSURE:montgomery-mock-48h"
+      - id: "GCM:montgomery-mucin-transcripts-acute-output-oe-mod"
+        name: "Gel-forming mucin transcripts at the moderate OE dose"
+        description: "muc5ac_mrna_expression is the log2 fold change (LFC = 0.90) versus paired mock cultures. MUC2 was induced at LFC 1.34 in the same comparison; the schema has no MUC2 slot, so that value is kept in this description. The MUC5AC/MUC5B ratio rose significantly at this dose (P = 3.19e-2, two-tailed paired t test)."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-mod-48h"
+        muc5ac_mrna_expression:
+          value: "0.90"
+          central_tendency: single_value
+          sample_size: 12
+      - id: "GCM:montgomery-mucin-transcripts-acute-output-oe-high"
+        name: "Gel-forming mucin transcripts at the high OE dose"
+        description: "muc5b_mrna_expression is the log2 fold change (LFC = -0.79, Padj = 1.0e-1, a trend rather than a significant change) versus paired mock cultures. MUC5AC induction was maintained at this dose and the MUC5AC/MUC5B ratio rose further (P = 2.68e-2, two-tailed paired t test); the paper gives no separate high-dose MUC5AC LFC in the cached text."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-high-48h"
+        muc5b_mrna_expression:
+          value: "-0.79"
+          central_tendency: single_value
+          sample_size: 5
+    assay_date: "2020-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:montgomery-mock-48h"
+        name: "Mock extract control (blank filter extract), two apical stimulations 24 h apart"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-oe-mod-48h"
+        name: "PM2.5 organic extract 0.45 ug/cm2 (moderate dose), two apical stimulations 24 h apart"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "0.45"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-oe-high-48h"
+        name: "PM2.5 organic extract 4.5 ug/cm2 (high dose), two apical stimulations 24 h apart"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "4.5"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:montgomery-nasal-ali-12donor"
+      name: "Primary nasal AEC ALI cultures - 12-donor moderate OE set"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "12 donors: six healthy donors and six donors with asthma from the GALA II childhood asthma study"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:montgomery-transcriptome-001"
+        name: "Whole transcriptome RNA-seq of stimulated ALI cultures"
+        detection_method: "Illumina NovaSeq 6000 sequencing"
+
+  # ---- Chronic OE: MUC5AC / MUC5B transcripts and cell counts
+  - id: "GCM:montgomery-mucin-cells-chronic"
+    name: "MUC5AC+ and MUC5B+ cells and mucin transcripts - chronic OE stimulation"
+    description: "After five days of repeat high-OE stimulation, MUC5AC mRNA rose (LFC 1.72, P = 1.27e-2; IL-13 benchmark LFC 3.71, P = 8.86e-3) while MUC5B trended down (LFC -0.72, P = 9.74e-2; IL-13 LFC -5.24, P = 2.55e-2). Immunofluorescence for the two gel-forming mucins showed more MUC5AC+ cells in all four donor pairs (FC 2.88, P = 3.19e-2) and fewer MUC5B+ cells in all four (FC 0.74, P = 8.84e-2). AB-PAS staining of the same cultures is recorded separately as GCM:montgomery-abpas-chronic. The cell-count fold changes and their p-values are in response_comparisons; the transcript values here are log2 fold changes."
+    evidence:
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "we found an increase in MUC5AC+cells with chronic OE stimulation for all four donors"
+        explanation: "Source of the increase in MUC5AC+ cells recorded on the chronic OE output record, including that it held in every donor pair examined."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "cultures for all four donors exhibited a decrease in MUC5B+cells with chronic OE exposure"
+        explanation: "Source of the decrease in MUC5B+ cells recorded on the same output record."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "These data demonstrate that chronic OE stimulation induces simultaneous expansion and reduction of MUC5AC+and MUC5B+mucus secretory cells, respectively, resulting in corresponding changes in secretion of these mucins."
+        explanation: "The paper's summary of the reciprocal MUC5AC/MUC5B cell and secretion changes that this assay and the secretion assay record."
+    has_specified_output:
+      - id: "GCM:montgomery-mucin-cells-chronic-output-control"
+        name: "MUC5AC+ and MUC5B+ cells in paired media control cultures"
+        description: "Paired mock/media control. The paper reports cell counts only as fold changes against this control, so no absolute count is recorded here."
+        experimental_group: control
+        measured_under: "EXPOSURE:montgomery-media-control-chronic"
+      - id: "GCM:montgomery-mucin-cells-chronic-output-oe"
+        name: "MUC5AC+ and MUC5B+ cells after chronic OE stimulation"
+        description: "muc5ac_mrna_expression and muc5b_mrna_expression are log2 fold changes (LFC 1.72, P = 1.27e-2; LFC -0.72, P = 9.74e-2 respectively) versus paired media control. The cell-count fold changes in MUC5AC+ cells (FC 2.88) and MUC5B+ cells (FC 0.74) are recorded in response_comparisons with their p-values."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-high-chronic"
+        muc5ac_mrna_expression:
+          value: "1.72"
+          central_tendency: single_value
+        muc5b_mrna_expression:
+          value: "-0.72"
+          central_tendency: single_value
+      - id: "GCM:montgomery-mucin-cells-chronic-output-il13"
+        name: "Mucin transcripts after chronic IL-13 stimulation (benchmark)"
+        description: "muc5ac_mrna_expression and muc5b_mrna_expression are log2 fold changes (LFC 3.71, P = 8.86e-3; LFC -5.24, P = 2.55e-2) versus paired media control, for the IL-13 mucus metaplasia benchmark."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-il13-chronic"
+        muc5ac_mrna_expression:
+          value: "3.71"
+          central_tendency: single_value
+        muc5b_mrna_expression:
+          value: "-5.24"
+          central_tendency: single_value
+    assay_date: "2020-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:montgomery-media-control-chronic"
+        name: "Media control, five apical treatments every 24 h"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-oe-high-chronic"
+        name: "PM2.5 organic extract, high dose (Yuba City sample), five apical stimulations every 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-il13-chronic"
+        name: "IL-13 10 ng/ml apical and basolateral, five treatments every 24 h (mucus metaplasia benchmark)"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:montgomery-nasal-ali-chronic"
+      name: "Primary nasal AEC ALI cultures - chronic stimulation set"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Mature cultures from GALA II donors; three to five donors per chronic readout (four donor pairs for AB-PAS and mucin immunofluorescence, five for Western blot and secretion ELISA, three for FOXJ1 labeling)"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:montgomery-if-mucin-001"
+        name: "Immunofluorescence labeling for MUC5AC and MUC5B"
+        staining_type: "immunofluorescence"
+        antibodies_used:
+          - "anti-MUC5AC"
+          - "anti-MUC5B"
+        counterstain: "DAPI"
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:montgomery-qpcr-chronic-001"
+        name: "Quantitative PCR of chronically stimulated cultures"
+        detection_method: "quantitative PCR"
+
+  # ---- Chronic OE: AB-PAS mucin-positive cells
+  - id: "GCM:montgomery-abpas-chronic"
+    name: "AB-PAS mucin-positive cells - chronic OE stimulation"
+    description: "Alcian blue-periodic acid-Schiff staining of culture sections found more mucin-positive cells after chronic OE stimulation in three of the four donor pairs examined (average fold change 2.01, P = 6.52e-2). The paper attributes the extra staining primarily to MUC5AC. The fold change and p-value are in response_comparisons; the paper reports no absolute mucin-positive cell percentage."
+    evidence:
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "found higher numbers of mucin-positive cells in chronic OE-stimulated versus mock-stimulated cultures for three of the four donor pairs examined"
+        explanation: "Source of the AB-PAS finding this assay records, including that it held in three of four donor pairs; the average fold change of 2.01 and P of 6.52e-2 follow in the same sentence of the cached text."
+    has_specified_output:
+      - id: "GCM:montgomery-abpas-chronic-output-control"
+        name: "AB-PAS mucin-positive cells in paired mock-stimulated cultures"
+        description: "Paired mock control; the paper reports only the fold change against it."
+        experimental_group: control
+        measured_under: "EXPOSURE:montgomery-media-control-chronic"
+      - id: "GCM:montgomery-abpas-chronic-output-oe"
+        name: "AB-PAS mucin-positive cells after chronic OE stimulation"
+        description: "Increased in three of four donor pairs, average fold change 2.01 (P = 6.52e-2). Recorded as COMP:montgomery-abpas-chronic in response_comparisons; no absolute percentage is reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-high-chronic"
+    assay_date: "2020-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:montgomery-media-control-chronic"
+        name: "Media control, five apical treatments every 24 h"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-oe-high-chronic"
+        name: "PM2.5 organic extract, high dose (Yuba City sample), five apical stimulations every 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:montgomery-nasal-ali-chronic"
+      name: "Primary nasal AEC ALI cultures - chronic stimulation set"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Mature cultures from GALA II donors; three to five donors per chronic readout (four donor pairs for AB-PAS and mucin immunofluorescence, five for Western blot and secretion ELISA, three for FOXJ1 labeling)"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:montgomery-abpas-staining-001"
+        name: "Alcian blue-periodic acid-Schiff staining of culture sections"
+        staining_type: "AB-PAS"
+
+  # ---- Chronic OE: ATP-induced mucin secretion
+  - id: "GCM:montgomery-mucin-secretion-chronic"
+    name: "ATP-induced MUC5AC and MUC5B secretion - chronic OE stimulation"
+    description: "In an ATP-induced mucus secretion assay read by colorimetric ELISA in cultures from five donors, chronic OE raised total secreted MUC5AC 2.2-fold (P = 1.54e-2, comparable with the 3.87-fold rise under the IL-13 benchmark, P = 3.85e-2) and lowered MUC5B secretion to 0.81-fold (P = 3.59e-3; IL-13 0.70-fold, P = 5.20e-2). All four fold changes are recorded in response_comparisons with their p-values; the paper reports no absolute mucin concentrations."
+    evidence:
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Chronic OE induced a 2.2-fold increase in total secreted MUC5AC"
+        explanation: "Source of the 2.2-fold increase in secreted MUC5AC recorded for the chronic OE condition."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "we observed a significant decrease in the secretion of MUC5B with chronic OE"
+        explanation: "Source of the decrease in secreted MUC5B recorded for the same condition (FC 0.81, P = 3.59e-3 in the same sentence of the cached text)."
+    has_specified_output:
+      - id: "GCM:montgomery-mucin-secretion-chronic-output-control"
+        name: "ATP-induced mucin secretion in paired media control cultures"
+        description: "Paired media control; secretion is reported only as a fold change against it."
+        experimental_group: control
+        measured_under: "EXPOSURE:montgomery-media-control-chronic"
+      - id: "GCM:montgomery-mucin-secretion-chronic-output-oe"
+        name: "ATP-induced mucin secretion after chronic OE stimulation"
+        description: "MUC5AC secretion 2.2-fold up (P = 1.54e-2) and MUC5B secretion 0.81-fold (P = 3.59e-3) versus paired control, both recorded in response_comparisons. No absolute secreted mucin concentration is reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-high-chronic"
+      - id: "GCM:montgomery-mucin-secretion-chronic-output-il13"
+        name: "ATP-induced mucin secretion after chronic IL-13 stimulation (benchmark)"
+        description: "MUC5AC secretion 3.87-fold up (P = 3.85e-2) and MUC5B secretion 0.70-fold (P = 5.20e-2) versus paired control, for the IL-13 benchmark."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-il13-chronic"
+    assay_date: "2020-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:montgomery-media-control-chronic"
+        name: "Media control, five apical treatments every 24 h"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-oe-high-chronic"
+        name: "PM2.5 organic extract, high dose (Yuba City sample), five apical stimulations every 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-il13-chronic"
+        name: "IL-13 10 ng/ml apical and basolateral, five treatments every 24 h (mucus metaplasia benchmark)"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:montgomery-nasal-ali-chronic"
+      name: "Primary nasal AEC ALI cultures - chronic stimulation set"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Mature cultures from GALA II donors; three to five donors per chronic readout (four donor pairs for AB-PAS and mucin immunofluorescence, five for Western blot and secretion ELISA, three for FOXJ1 labeling)"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:montgomery-mucin-elisa-001"
+        name: "ATP-induced mucin secretion assay with colorimetric ELISA"
+        detection_method: "colorimetric ELISA absorbance at 490 nm"
+
+# =============================================================================
+# FOXJ1 / CILIOGENESIS ASSAYS
+# =============================================================================
+
+foxj_assays:
+
+  # ---- High acute OE dose: ciliated cell programs and their transcription factors
+  - id: "FOXJ:montgomery-ciliary-programs-high-oe"
+    name: "Ciliated cell expression programs - high acute OE dose"
+    description: "Downregulated DEGs specific to the high OE dose were dominated by cilia development and function terms, and were highly enriched for ciliated cell marker genes (Padj = 3.57e-118). Mean expression of the ciliary movement (P = 3.05e-3) and ciliary assembly (P = 4.20e-4) GO modules fell only at the high dose, by two-tailed paired t test. The canonical ciliated cell differentiation transcription factors MCIDAS, MYB, TP73, RFX2, RFX3 and FOXJ1 were consistently decreased. The cached text gives no per-gene LFC for these transcription factors at this dose, so no value is recorded on the output record."
+    evidence:
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Enrichment analysis of downregulated genes yielded multiple terms specific to the high OE dose, the majority of which were related to the development and function of cilia"
+        explanation: "Establishes that the ciliary programs are the high-dose-specific downregulated signature this assay records."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "exhibited significant downregulation in expression only with high OE dose"
+        explanation: "Covers the significant fall in the ciliary movement and ciliary assembly module means, and that it was confined to the high dose."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Supporting this loss in ciliated cell gene expression, we found canonical TFs controlling ciliated cell differentiation (MCIDAS,MYB,TP73,RFX2,RFX3, andFOXJ1) were consistently decreased with high OE dose"
+        explanation: "Names the ciliogenesis transcription factors whose decrease this assay records as decreased ciliogenesis; copied exactly as cached, where the gene symbols run together."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Together, these data show that high OE dose mediates the same mucus secretory changes observed with moderate OE dose but also downregulates ciliary expression programs."
+        explanation: "The paper's own summary that the ciliary downregulation is an additional, dose-dependent effect on top of the mucus secretory response."
+    has_specified_output:
+      - id: "FOXJ:montgomery-ciliary-programs-high-oe-output-mock"
+        name: "Ciliated cell programs in paired mock-stimulated cultures"
+        description: "Paired mock control; module expression and transcription factor changes are reported only against it."
+        experimental_group: control
+        measured_under: "EXPOSURE:montgomery-mock-48h"
+      - id: "FOXJ:montgomery-ciliary-programs-high-oe-output-oe-high"
+        name: "Ciliated cell programs at the high OE dose"
+        description: "Ciliary assembly (P = 4.20e-4) and ciliary movement (P = 3.05e-3) module mean expression significantly downregulated; ciliated cell marker enrichment among downregulated DEGs Padj = 3.57e-118; MCIDAS, MYB, TP73, RFX2, RFX3 and FOXJ1 consistently decreased. No per-gene effect size is reported in the cached text, so no value is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-high-48h"
+    assay_date: "2020-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:montgomery-mock-48h"
+        name: "Mock extract control (blank filter extract), two apical stimulations 24 h apart"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-oe-high-48h"
+        name: "PM2.5 organic extract 4.5 ug/cm2 (high dose), two apical stimulations 24 h apart"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "4.5"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:montgomery-nasal-ali-doseresponse"
+      name: "Primary nasal AEC ALI cultures - five-donor dose-response set"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Nasal AECs from five healthy subjects selected randomly for the California extract dose-response experiments; NIST 2786 stimulations were conducted on four donors"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:montgomery-transcriptome-001"
+        name: "Whole transcriptome RNA-seq of stimulated ALI cultures"
+        detection_method: "Illumina NovaSeq 6000 sequencing"
+
+  # ---- Chronic OE: FOXJ1 transcript and nuclear protein
+  - id: "FOXJ:montgomery-foxj1-chronic"
+    name: "FOXJ1 expression and nuclear localization - chronic OE stimulation"
+    description: "Chronic OE stimulation lowered FOXJ1 transcript levels (LFC -0.36, P = 1.92e-2; IL-13 benchmark LFC -1.15, P = 6.34e-3) and, by confocal immunofluorescence in three donors, produced a 75% average decrease in FOXJ1+ nuclei versus mock (P = 1.20e-2) - more pronounced than the nonsignificant 40% decrease under IL-13 (P = 1.02e-1). Ciliary structure and abundance were relatively consistent across conditions, although acetylated alpha-tubulin staining appeared weaker in OE-stimulated cultures, so the paper reads this as loss of nuclear FOXJ1 rather than loss of ciliated cells. The percent decreases are recorded in response_comparisons."
+    evidence:
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "OE-stimulated cultures displayed a 75% average decrease in FOXJ1+nuclei compared with mock-treated cultures"
+        explanation: "Source of the 75% decrease in FOXJ1+ nuclei recorded for the chronic OE condition (P = 1.20e-2 in the same sentence of the cached text)."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "as well as downregulation ofFOXJ1(forkhead box J1)"
+        explanation: "Source of the FOXJ1 transcript downregulation under chronic OE and IL-13 recorded on the two treated output records."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The lack of nuclear FOXJ1 in ciliated cells from chronic OE-stimulated cultures is consistent with the decrease in ciliated cell gene expression observed in our transcriptome analysis."
+        explanation: "Ties the chronic nuclear FOXJ1 loss to the acute high-dose ciliary transcriptional downregulation, which is why both assays inform on the same altered ciliogenesis key event."
+    has_specified_output:
+      - id: "FOXJ:montgomery-foxj1-chronic-output-control"
+        name: "FOXJ1 in paired mock/media control cultures"
+        description: "Paired control; FOXJ1 is reported only as an LFC and as a percent decrease in FOXJ1+ nuclei against it."
+        experimental_group: control
+        measured_under: "EXPOSURE:montgomery-media-control-chronic"
+      - id: "FOXJ:montgomery-foxj1-chronic-output-oe"
+        name: "FOXJ1 after chronic OE stimulation"
+        description: "foxj1_mrna_expression is the log2 fold change (LFC = -0.36, P = 1.92e-2) versus paired control. FOXJ1+ nuclei fell by 75% on average (P = 1.20e-2, n = 3 donors); that percent change is recorded in response_comparisons rather than as an absolute FOXJ1+ percentage, which the paper does not report."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-oe-high-chronic"
+        foxj1_mrna_expression:
+          value: "-0.36"
+          central_tendency: single_value
+      - id: "FOXJ:montgomery-foxj1-chronic-output-il13"
+        name: "FOXJ1 after chronic IL-13 stimulation (benchmark)"
+        description: "foxj1_mrna_expression is the log2 fold change (LFC = -1.15, P = 6.34e-3) versus paired control. FOXJ1+ nuclei fell by a nonsignificant 40% (P = 1.02e-1)."
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-il13-chronic"
+        foxj1_mrna_expression:
+          value: "-1.15"
+          central_tendency: single_value
+    assay_date: "2020-01-01"
+    has_exposure_condition:
+      - id: "EXPOSURE:montgomery-media-control-chronic"
+        name: "Media control, five apical treatments every 24 h"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-oe-high-chronic"
+        name: "PM2.5 organic extract, high dose (Yuba City sample), five apical stimulations every 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:montgomery-il13-chronic"
+        name: "IL-13 10 ng/ml apical and basolateral, five treatments every 24 h (mucus metaplasia benchmark)"
+        exposure_duration:
+          value: "120"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-altered-ciliogenesis"
+      name: "Altered ciliogenesis"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:montgomery-nasal-ali-chronic"
+      name: "Primary nasal AEC ALI cultures - chronic stimulation set"
+      cell_type:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      anatomical_origin:
+        id: "UBERON:0001707"
+        name: "nasal cavity"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      primary_cell:
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
+      cell_culture_growth_mode: air_liquid_interface
+      substrate_type: transwell_insert
+      days_at_differentiation: 28
+      donor_info: "Mature cultures from GALA II donors; three to five donors per chronic readout (four donor pairs for AB-PAS and mucin immunofluorescence, five for Western blot and secretion ELISA, three for FOXJ1 labeling)"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:montgomery-if-foxj1-001"
+        name: "Immunofluorescence labeling for FOXJ1 and acetylated alpha-tubulin"
+        staining_type: "immunofluorescence"
+        antibodies_used:
+          - "anti-FOXJ1"
+          - "anti-acetylated alpha-tubulin"
+          - "anti-E-cadherin"
+        counterstain: "DAPI"
+        detection_method: "confocal fluorescence microscopy maximum projection"
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:montgomery-qpcr-chronic-001"
+        name: "Quantitative PCR of chronically stimulated cultures"
+        detection_method: "quantitative PCR"
+
+# =============================================================================
+# RESPONSE COMPARISONS - changes vs control stated in the paper
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:montgomery-muc5ac-cells-chronic"
+    name: "MUC5AC+ cells, chronic OE vs mock"
+    description: "Increase seen in all four donor pairs examined. Figure 5B quantifies the number of MUC5AC+ cells by immunofluorescence, so the compared measurement is a cell count (of MUC5AC+ mucus secretory cells), not a protein expression level."
+    derived_from_assay: "GCM:montgomery-mucin-cells-chronic"
+    compared_measurement: "goblet_cell_count"
+    control_output: "GCM:montgomery-mucin-cells-chronic-output-control"
+    treated_output: "GCM:montgomery-mucin-cells-chronic-output-oe"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "2.88"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      sample_size: 4
+    p_value: 0.0319
+    statistical_test: "paired, one-tailed t test"
+    derivation: reported_in_paper
+
+  - id: "COMP:montgomery-muc5b-cells-chronic"
+    name: "MUC5B+ cells, chronic OE vs mock"
+    description: "Decrease seen in all four donor pairs examined; P above the 0.05 threshold. Figure 5B quantifies the number of MUC5B+ cells by immunofluorescence, so the compared measurement is a cell count (of MUC5B+ mucus secretory cells), not a protein expression level."
+    derived_from_assay: "GCM:montgomery-mucin-cells-chronic"
+    compared_measurement: "goblet_cell_count"
+    control_output: "GCM:montgomery-mucin-cells-chronic-output-control"
+    treated_output: "GCM:montgomery-mucin-cells-chronic-output-oe"
+    change_type: fold_change
+    change_direction: decreased
+    change_value:
+      value: "0.74"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      sample_size: 4
+    p_value: 0.0884
+    statistical_test: "paired, one-tailed t test"
+    derivation: reported_in_paper
+
+  - id: "COMP:montgomery-abpas-chronic"
+    name: "AB-PAS mucin-positive cells, chronic OE vs mock"
+    description: "Average fold change across four donor pairs; three of the four increased. P above the 0.05 threshold."
+    derived_from_assay: "GCM:montgomery-abpas-chronic"
+    compared_measurement: "goblet_cell_percentage"
+    control_output: "GCM:montgomery-abpas-chronic-output-control"
+    treated_output: "GCM:montgomery-abpas-chronic-output-oe"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "2.01"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      sample_size: 4
+    p_value: 0.0652
+    statistical_test: "paired, one-tailed t test"
+    derivation: reported_in_paper
+
+  - id: "COMP:montgomery-muc5ac-secretion-chronic"
+    name: "ATP-induced MUC5AC secretion, chronic OE vs control"
+    derived_from_assay: "GCM:montgomery-mucin-secretion-chronic"
+    compared_measurement: "mucin_secretion_rate"
+    control_output: "GCM:montgomery-mucin-secretion-chronic-output-control"
+    treated_output: "GCM:montgomery-mucin-secretion-chronic-output-oe"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "2.2"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      sample_size: 5
+    p_value: 0.0154
+    statistical_test: "paired, one-tailed t test"
+    derivation: reported_in_paper
+
+  - id: "COMP:montgomery-muc5b-secretion-chronic"
+    name: "ATP-induced MUC5B secretion, chronic OE vs control"
+    derived_from_assay: "GCM:montgomery-mucin-secretion-chronic"
+    compared_measurement: "mucin_secretion_rate"
+    control_output: "GCM:montgomery-mucin-secretion-chronic-output-control"
+    treated_output: "GCM:montgomery-mucin-secretion-chronic-output-oe"
+    change_type: fold_change
+    change_direction: decreased
+    change_value:
+      value: "0.81"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      sample_size: 5
+    p_value: 0.00359
+    statistical_test: "paired, one-tailed t test"
+    derivation: reported_in_paper
+
+  - id: "COMP:montgomery-muc5ac-secretion-il13"
+    name: "ATP-induced MUC5AC secretion, chronic IL-13 vs control (benchmark)"
+    description: "IL-13 benchmark for metaplastic expansion of mucus secretory cells, run on the same donors."
+    derived_from_assay: "GCM:montgomery-mucin-secretion-chronic"
+    compared_measurement: "mucin_secretion_rate"
+    control_output: "GCM:montgomery-mucin-secretion-chronic-output-control"
+    treated_output: "GCM:montgomery-mucin-secretion-chronic-output-il13"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "3.87"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      sample_size: 5
+    p_value: 0.0385
+    statistical_test: "paired, one-tailed t test"
+    derivation: reported_in_paper
+
+  - id: "COMP:montgomery-spdef-protein-chronic"
+    name: "SPDEF protein, chronic OE vs control"
+    description: "Western blot band intensity normalized to actin, five independent donors."
+    derived_from_assay: "GE:montgomery-spdef-chronic-qpcr"
+    compared_measurement: "protein_level"
+    control_output: "GE:montgomery-spdef-chronic-qpcr-output-control"
+    treated_output: "GE:montgomery-spdef-chronic-qpcr-output-oe"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.5"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      sample_size: 5
+    p_value: 0.0107
+    statistical_test: "paired, one-tailed t test"
+    derivation: reported_in_paper
+
+  - id: "COMP:montgomery-foxj1-nuclei-chronic"
+    name: "FOXJ1+ nuclei, chronic OE vs mock"
+    description: "Average percent decrease in FOXJ1+ nuclei by confocal immunofluorescence in cultures from three donors."
+    derived_from_assay: "FOXJ:montgomery-foxj1-chronic"
+    compared_measurement: "foxj1_positive_cell_percentage"
+    control_output: "FOXJ:montgomery-foxj1-chronic-output-control"
+    treated_output: "FOXJ:montgomery-foxj1-chronic-output-oe"
+    change_type: percent_change
+    change_direction: decreased
+    change_value:
+      value: "75"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      central_tendency: mean
+      sample_size: 3
+    p_value: 0.012
+    statistical_test: "paired, one-tailed t test"
+    derivation: reported_in_paper
+
+  - id: "COMP:montgomery-foxj1-nuclei-il13"
+    name: "FOXJ1+ nuclei, chronic IL-13 vs mock (benchmark)"
+    description: "Nonsignificant average decrease under the IL-13 benchmark, less pronounced than under chronic OE."
+    derived_from_assay: "FOXJ:montgomery-foxj1-chronic"
+    compared_measurement: "foxj1_positive_cell_percentage"
+    control_output: "FOXJ:montgomery-foxj1-chronic-output-control"
+    treated_output: "FOXJ:montgomery-foxj1-chronic-output-il13"
+    change_type: percent_change
+    change_direction: decreased
+    change_value:
+      value: "40"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      central_tendency: mean
+      sample_size: 3
+    p_value: 0.102
+    statistical_test: "paired, one-tailed t test"
+    derivation: reported_in_paper
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS - as stated by the paper
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:montgomery-ahr-to-il1"
+    name: "AhR pathway activation leads to IL-1 inflammatory program activation"
+    description: "The paper places AHR signaling activation by PM2.5 PAHs as the early, central event underlying the wider epithelial response, with IL1A and IL1B as the hub genes of the resulting inflammatory network."
+    upstream_event:
+      id: "KE:mie-ahr-activation"
+      name: "AhR pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-il1-inflammation"
+      name: "IL-1 inflammatory program activation"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "which in turn initiates a mucus secretory program in the airway epithelium"
+        explanation: "Closes the paper's summary sentence that moderate OE exposure triggers AHR signaling and IL-1-mediated inflammation, placing the two molecular events on one chain; the paper states co-occurrence and network centrality, not a perturbation experiment, so evidence_support is moderate."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "TheCYP1A1,IL1A, andIL1Bgenes were shared by multiple metagroups and exhibited especially high betweenness centrality, indicating the likely critical nature of these genes in the transcriptional response to OE stimulation."
+        explanation: "The network evidence placing the AHR marker CYP1A1 and the IL-1 cytokines in one connected response."
+
+  - id: "KER:montgomery-il1-to-goblet"
+    name: "IL-1 inflammatory program activation leads to goblet cell hyperplasia"
+    description: "The paper's central mechanistic claim: the IL-1-driven inflammatory network initiates the mucus secretory program, whose transcription factors SPDEF and FOXA3 drive mucus metaplasia, confirmed cellularly by the chronic exposure model."
+    upstream_event:
+      id: "KE:ke-il1-inflammation"
+      name: "IL-1 inflammatory program activation"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "which in turn initiates a mucus secretory program in the airway epithelium"
+        explanation: "The paper's statement that the AHR- and IL-1-driven response initiates the mucus secretory program; the chronic model then shows the cellular hyperplasia, but no IL-1 blockade experiment is reported, so evidence_support is moderate."
+      - reference: "PMID:32275839"
+        reference_title: "Genome-Wide Analysis Reveals Mucociliary Remodeling of the Nasal Airway Epithelium Induced by Urban PM(2.5)."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "These data demonstrate that chronic OE stimulation induces simultaneous expansion and reduction of MUC5AC+and MUC5B+mucus secretory cells, respectively, resulting in corresponding changes in secretion of these mucins."
+        explanation: "The cellular-level confirmation that the transcriptional mucus secretory program ends in an expanded MUC5AC+ secretory compartment and altered mucin secretion."

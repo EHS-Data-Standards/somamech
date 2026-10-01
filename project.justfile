@@ -172,6 +172,28 @@ validate-all:
     ALLOW_ABSTRACT_ONLY_MISSES=1 {{ref_validator_wrapper}} validate data "${files[@]}" --schema {{soma_schema}} --target-class Container --config {{ref_conf}} --cache-dir {{refs_cache}} --no-full-text
     echo "All kb files validated."
 
+# Term-check the test fixtures with the same validator (and --labels) that
+# gates kb/publications. The fixtures are source material that curation
+# copies from (the claim-paper skill points extraction agents at them), so a
+# mislabelled term here is latent until it lands in a real extraction and
+# becomes a hard CI failure there (issue #137). Only the term validator runs
+# here — fixtures have no committed reference-cache entries, so the
+# reference/quote validator does not apply; schema shape is covered by
+# _test-examples and the pytest suite. tests/data/invalid/ and
+# tests/data/quote_mismatch/ stay excluded: they are deliberately broken.
+[group('QC')]
+validate-fixtures:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    shopt -s nullglob
+    files=(tests/data/valid/*.yaml)
+    if [ ${#files[@]} -eq 0 ]; then
+        echo "No fixtures in tests/data/valid — nothing to validate."
+        exit 0
+    fi
+    echo "Term-checking ${#files[@]} fixture files..."
+    {{term_validator_wrapper}} validate-data "${files[@]}" -s {{soma_schema}} -t Container --labels -c {{oak_conf}}
+
 # Check that no YAML file repeats a key (a silent way merges break files).
 [group('QC')]
 check-duplicate-keys *files:
@@ -210,7 +232,7 @@ db-test:
 # repository (checking only changed files lets two individually-green PRs
 # break each other when both merge).
 [group('QC')]
-qc: check-duplicate-keys check-stubs check-entity-ids validate-all check-receipts pipeline-test db-test
+qc: check-duplicate-keys check-stubs check-entity-ids validate-all validate-fixtures check-receipts pipeline-test db-test
     @echo "All QC checks passed!"
 
 # ============ Derived products ============

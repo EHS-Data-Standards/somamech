@@ -207,12 +207,12 @@ ciliary_function_assays:
 ```yaml
 lung_function_assays:
   - id: "LF:001"
-    name: "FEV1 measurement"
+    name: "FEV1 measurement (percent of predicted)"
     fev1:
       value: "82.5"
       unit:
         id: "UO:0000187"
-        name: "percent predicted"
+        name: "percent"
     reference_dataset: "GLI-2012"
     assay_date: "2024-08-10"
     study_subject:
