@@ -1,0 +1,520 @@
+# =============================================================================
+# Isara et al. (2016) - Respiratory symptoms and ventilatory functions among
+# quarry workers in Edo state, Nigeria
+# =============================================================================
+#
+# Source: Pan Afr Med J. 2016;23:212
+# DOI: 10.11604/pamj.2016.23.212.7640
+# PMID: 27347301
+#
+# Study design (HUMAN OBSERVATIONAL — not in vitro, not an animal experiment):
+#   - Descriptive cross-sectional study in Ikpeshi community, Akoko-Edo local
+#     government area, Edo State, southern Nigeria
+#   - Population: 113 quarry workers — 76 "site workers" (production area:
+#     milling, grinding, breaking and loading of stones; the EXPOSURE group)
+#     and 37 "office workers" (administrative offices; the CONTROL group)
+#   - Eligibility: adults aged 18+ who had worked in the quarry for at least
+#     one year; contraindications to spirometry excluded
+#   - Spirometry with a KoKo Legend spirometer (Model 314000, Serial
+#     2007LB0538) per ATS/ERS 2005 criteria; FEV1, FVC, FEV1/FVC and PEFR
+#   - Respiratory symptoms by a questionnaire adapted from the BOLD
+#     (Burden of Obstructive Lung Diseases) questionnaire
+#
+# MODELLING NOTES:
+#   - Each worker group is its own assay with its own InVivoSubject (the
+#     calderon2001 pattern): the site-worker and office-worker cohorts differ
+#     in age and job, so merging them under one study_subject would lose which
+#     group a record describes. The response_comparisons therefore reference a
+#     control_output that lives on the companion (office-worker or non-smoker)
+#     assay, with derived_from_assay pointing at the exposed group's assay.
+#   - The paper also compares smokers with non-smokers pooled across both
+#     groups ("In both groups, smokers had significantly lower mean (SD) FEV1,
+#     FVC and PEFR compared with non-smokers"). That contrast is modelled as a
+#     second assay pair with cigarette smoke as the exposure agent. The paper
+#     does not report how many of the 113 workers smoked ("Less than quarter
+#     of the respondents in both groups were smokers"), so those output
+#     records carry no sample_size.
+#   - The exposure agent is recorded as ENVO:00002008 "dust": the paper
+#     reports no dust sampling ("we did not carry out dust sampling of the
+#     site and office environment in this study"), so no exposure
+#     concentration is recorded and exposure is group membership only.
+#   - FEV1/FVC ratio and PEFR per exposure group, and airflow obstruction
+#     prevalence (defined as FEV1/FVC <70%), appear only in Table 3, which is
+#     not reproduced in the cached full text, so no numeric values for them
+#     are recorded for the site/office contrast.
+#   - P-value discrepancy in the source: the abstract gives the FEV1
+#     site-vs-office comparison as p < 0.05, while the Results body gives
+#     p = 0.02. The exact body value (0.02) is recorded in the comparison.
+#   - Unit note: the paper prints FEV1, FVC and PEFR values with the unit "L"
+#     (e.g. "2.77L (0.73)"). For FEV1 and FVC litre is the correct volume
+#     unit. PEFR is a flow and is conventionally reported in L/s or L/min;
+#     the printed unit is recorded as-is (UO:0000099, liter) rather than
+#     silently normalised, with this caveat.
+#
+# RESPIRATORY SYMPTOM PREVALENCES (no SOMA slot exists for symptom
+# prevalence, so these stay in prose per the extraction rules):
+#   - Chest tightness: 35.5% exposure vs 16.2% control — the only
+#     statistically significant symptom difference (p < 0.05)
+#   - Cough 23.7% vs 13.5%, sputum 21.1% vs 16.2%, dyspnoea 7.9% vs 5.4%
+#     (higher in exposure, not significant); wheeze 10.8% vs 10.5% and nasal
+#     congestion 27.0% vs 25.0% (higher in controls, not significant)
+#
+# WHAT THE PAPER DOES *NOT* CLAIM:
+#   This is a cross-sectional association study with no dust measurements and
+#   no mechanistic intermediate readouts, so no key_event_relationships are
+#   recorded: the paper links exposure group membership to the adverse
+#   outcome (reduced lung function indices) directly.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:27347301"
+  reference_title: "Respiratory symptoms and ventilatory functions among quarry workers in Edo state, Nigeria."
+  doi: "10.11604/pamj.2016.23.212.7640"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - protocol_type: SpirometryProtocol
+    id: "PROTOCOL:isara-spirometry-001"
+    name: "KoKo Legend spirometry per ATS/ERS 2005 criteria"
+    description: "FEV1, FVC, FEV1/FVC and PEFR measured with a KoKo Legend spirometer (Model 314000, Serial 2007LB0538). A minimum of 3 and a maximum of 8 acceptable and repeatable forced expiratory manoeuvres were done with the study participant seated and upright according to ATS/ERS 2005 criteria. The best test (acceptable curve with the highest sum of FVC and FEV1) was used for interpretation. The spirometer was calibrated daily before the first participant and after the 8th participant or after 4 hours of continuous usage, using a valid certified accurate 3L calibration syringe. Airflow obstruction was defined as FEV1/FVC <70%."
+    spirometry_standard: "ATS/ERS 2005 criteria"
+    equipment_required:
+      - "KoKo Legend spirometer (Model 314000, Serial 2007LB0538)"
+      - "Certified accurate 3L calibration syringe"
+
+  - id: "PROTOCOL:isara-questionnaire-001"
+    name: "Respiratory symptom questionnaire adapted from the BOLD questionnaire"
+    description: "Structured questionnaire adapted from relevant sections of the Burden of Obstructive Lung Diseases (BOLD) questionnaire, administered on the study participants by the researchers. Collected socio-demographic characteristics and respiratory symptoms of interest: cough, sputum, wheezing, chest pain, dyspnoea and nasal congestion."
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS — spirometry per worker group. The site workers
+# (production area, quarry dust exposure) are the exposure group; the office
+# workers at the same quarries are the control group. A second assay pair
+# records the smoker vs non-smoker contrast pooled across both groups.
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:isara-site-workers-spirometry"
+    name: "Spirometry - quarry site workers (dust-exposed group)"
+    description: "FEV1 and FVC in the 76 quarry site workers were significantly lower than in the 37 office-worker controls: FEV1 2.77 +/- 0.73 L vs 3.14 +/- 0.78 L (p = 0.02 in the Results body; the abstract rounds this to p < 0.05), FVC 3.48 +/- 0.84 L vs 3.89 +/- 0.92 L (p < 0.05). FEV1/FVC and PEFR were also measured, but their per-group values appear only in Table 3, which is not reproduced in the cached full text, so they are not recorded here. The site workers also had a significantly higher occurrence of chest tightness (35.5% vs 16.2%, p < 0.05); cough (23.7% vs 13.5%), sputum (21.1% vs 16.2%) and dyspnoea (7.9% vs 5.4%) were higher in the exposure group without reaching statistical significance. No dust sampling was carried out, so exposure is recorded as group membership with no concentration."
+    evidence:
+      - reference: "PMID:27347301"
+        reference_title: "Respiratory symptoms and ventilatory functions among quarry workers in Edo state, Nigeria."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The mean (SD) FEV1, and FVC were significantly lower among the exposure compared with the control group; 2.77L (0.73) versus 3.14L (0.78), p = 0.02, and 3.48L (0.84) versus 3.89L (0.92), p < 0.05."
+        explanation: "States the mean and SD of FEV1 and FVC recorded on this assay's site-worker output and on the companion office-worker assay's output, with the exact p-value for FEV1."
+      - reference: "PMID:27347301"
+        reference_title: "Respiratory symptoms and ventilatory functions among quarry workers in Edo state, Nigeria."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The exposure group had significantly higher occurrence of chest tightness (35.5%) compared with 16.2% of the controls (p < 0.05)."
+        explanation: "Supports the symptom-prevalence findings carried in this assay's description; chest tightness was the only symptom with a statistically significant excess in the dust-exposed site workers."
+      - reference: "PMID:27347301"
+        reference_title: "Respiratory symptoms and ventilatory functions among quarry workers in Edo state, Nigeria."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Although we did not carry out dust sampling of the site and office environment in this study, it is expected that the level of respirable dust will be higher in the site environment than the office environment."
+        explanation: "Justifies recording the quarry-dust exposure condition without a concentration value: the study measured no dust levels, so exposure is group membership only."
+    has_exposure_condition:
+      - id: "EXPOSURE:isara-quarry-dust"
+        name: "Occupational quarry dust exposure in the production area (milling, grinding, breaking and loading of stones); no dust sampling performed, so no concentration is recorded"
+        exposure_agent:
+          id: "ENVO:00002008"
+          name: "dust"
+    has_specified_output:
+      - id: "LF:isara-site-workers-spirometry-output-exposed"
+        name: "Measured FEV1 and FVC in quarry site workers"
+        experimental_group: treated
+        measured_under: "EXPOSURE:isara-quarry-dust"
+        fev1:
+          value: "2.77"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 76
+          variability:
+            variability_type: standard_deviation
+            value: "0.73"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fvc:
+          value: "3.48"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 76
+          variability:
+            variability_type: standard_deviation
+            value: "0.84"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:isara-site-workers"
+      name: "Quarry site workers, Ikpeshi community, Edo State, Nigeria"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "36.2"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: mean
+        sample_size: 76
+        variability:
+          variability_type: standard_deviation
+          value: "10.9"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      subject_characteristics: "Adult quarry workers aged 18 years and above who had worked in the quarry for at least one year, working in the production area (milling, grinding, breaking and loading of stones). 53.9% had worked in the quarries for 1-5 years; less than a quarter were smokers. Significantly younger than the office-worker controls (p < 0.05). Workers with contraindications to spirometry were excluded."
+      clinical_context: "Descriptive cross-sectional study of quarry workers in Ikpeshi community, Akoko-Edo local government area, Edo State, southern Nigeria"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:isara-spirometry-001"
+        name: "KoKo Legend spirometry per ATS/ERS 2005 criteria"
+        spirometry_standard: "ATS/ERS 2005 criteria"
+
+  - id: "LF:isara-office-workers-spirometry"
+    name: "Spirometry - quarry office workers (control group)"
+    description: "FEV1 and FVC in the 37 office workers (administrative staff at the same quarries, designated the control group): FEV1 3.14 +/- 0.78 L, FVC 3.89 +/- 0.92 L. The controls were significantly older than the site workers (mean age 42.6 +/- 12.7 vs 36.2 +/- 10.9 years, p < 0.05); note that the age difference runs against the lung-function difference, since FEV1 and FVC decline with age yet the older office group had the higher values. Wheeze (10.8% vs 10.5%) and nasal congestion (27.0% vs 25.0%) were non-significantly higher in this control group."
+    evidence:
+      - reference: "PMID:27347301"
+        reference_title: "Respiratory symptoms and ventilatory functions among quarry workers in Edo state, Nigeria."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The mean (SD) FEV1, and FVC were significantly lower among the exposure compared with the control group; 2.77L (0.73) versus 3.14L (0.78), p = 0.02, and 3.48L (0.84) versus 3.89L (0.92), p < 0.05."
+        explanation: "States the control-group mean and SD of FEV1 (3.14 +/- 0.78 L) and FVC (3.89 +/- 0.92 L) recorded on this assay's output."
+      - reference: "PMID:27347301"
+        reference_title: "Respiratory symptoms and ventilatory functions among quarry workers in Edo state, Nigeria."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The controls with a mean age of 42.6 ± 12.7 years were significantly older than the exposure groups with a mean age of 36.2 ± 10.9 years (p < 0.05) and a higher proportion of them were married (p < 0.05)."
+        explanation: "States the mean age and SD recorded on this assay's study_subject and documents the age imbalance between the two groups."
+    has_exposure_condition:
+      - id: "COND:isara-office-environment"
+        name: "Administrative office environment at the same quarries (control condition; no dust sampling performed)"
+    has_specified_output:
+      - id: "LF:isara-office-workers-spirometry-output-control"
+        name: "Measured FEV1 and FVC in quarry office workers"
+        experimental_group: control
+        measured_under: "COND:isara-office-environment"
+        fev1:
+          value: "3.14"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 37
+          variability:
+            variability_type: standard_deviation
+            value: "0.78"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fvc:
+          value: "3.89"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 37
+          variability:
+            variability_type: standard_deviation
+            value: "0.92"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:isara-office-workers"
+      name: "Quarry office workers (controls), Ikpeshi community, Edo State, Nigeria"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "42.6"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: mean
+        sample_size: 37
+        variability:
+          variability_type: standard_deviation
+          value: "12.7"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      subject_characteristics: "Adult quarry workers aged 18 years and above who had worked in the quarry for at least one year, working in the administrative offices. 37.8% had worked in the quarries for 1-5 years; less than a quarter were smokers. Significantly older than the site workers and more often married (both p < 0.05). Workers with contraindications to spirometry were excluded."
+      clinical_context: "Descriptive cross-sectional study of quarry workers in Ikpeshi community, Akoko-Edo local government area, Edo State, southern Nigeria"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:isara-spirometry-001"
+        name: "KoKo Legend spirometry per ATS/ERS 2005 criteria"
+        spirometry_standard: "ATS/ERS 2005 criteria"
+
+  # ---------------------------------------------------------------------------
+  # Smoker vs non-smoker contrast, pooled across both worker groups. The paper
+  # reports this as a secondary analysis ("In both groups, smokers had
+  # significantly lower mean (SD) FEV1, FVC and PEFR compared with
+  # non-smokers") without giving the number of smokers, so these outputs carry
+  # no sample_size.
+  # ---------------------------------------------------------------------------
+
+  - id: "LF:isara-smokers-spirometry"
+    name: "Spirometry - quarry workers who smoke (both groups pooled)"
+    description: "Among the 113 quarry workers (site and office groups pooled), smokers had significantly lower lung function than non-smokers: FEV1 2.91 +/- 0.77 L vs 3.39 +/- 0.69 L (p = 0.01), FVC 3.61 +/- 0.91 L vs 4.26 +/- 0.74 L (p < 0.05), PEFR 6.56 +/- 2.43 vs 7.98 +/- 1.67 (printed unit L; PEFR is a flow conventionally in L/s or L/min, recorded as printed) (p < 0.05). The paper does not report the number of smokers, only that less than a quarter of respondents in both groups were smokers, so no sample_size is recorded. Smoking was not significantly associated with the prevalence of respiratory symptoms, which the authors attribute to the relatively few smokers identified."
+    evidence:
+      - reference: "PMID:27347301"
+        reference_title: "Respiratory symptoms and ventilatory functions among quarry workers in Edo state, Nigeria."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In both groups, smokers had significantly lower mean (SD) FEV1, FVC and PEFR compared with non-smokers; 2.91L (0.77) versus 3.39L (0.69), p = 0.01, 3.61L (0.91) versus 4.26L (0.74), p < 0.05 and 6.56L (2.43) versus 7.98L (1.67), p < 0.05."
+        explanation: "States the mean and SD of FEV1, FVC and PEFR recorded on this assay's smoker output and on the companion non-smoker assay's output, with the exact p-value for FEV1."
+      - reference: "PMID:27347301"
+        reference_title: "Respiratory symptoms and ventilatory functions among quarry workers in Edo state, Nigeria."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Less than quarter of the respondents in both groups were smokers."
+        explanation: "Documents why the smoker and non-smoker outputs carry no sample_size: the paper gives only this bound, not the number of smokers."
+    has_exposure_condition:
+      - id: "EXPOSURE:isara-cigarette-smoking"
+        name: "Cigarette smoking (self-reported current smoking; no dose or pack-year data reported)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+    has_specified_output:
+      - id: "LF:isara-smokers-spirometry-output-smokers"
+        name: "Measured FEV1, FVC and PEFR in quarry workers who smoke"
+        experimental_group: treated
+        measured_under: "EXPOSURE:isara-cigarette-smoking"
+        fev1:
+          value: "2.91"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "0.77"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fvc:
+          value: "3.61"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "0.91"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        peak_expiratory_flow:
+          value: "6.56"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "2.43"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:isara-smokers"
+      name: "Quarry workers who smoke (site and office groups pooled)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "Smokers among the 113 adult quarry workers (both site and office groups); the paper reports only that less than a quarter of respondents in both groups were smokers, without an exact count. All respiratory symptoms assessed were lower among smokers than non-smokers, an association the authors attribute to the small number of smokers."
+      clinical_context: "Descriptive cross-sectional study of quarry workers in Ikpeshi community, Akoko-Edo local government area, Edo State, southern Nigeria"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:isara-spirometry-001"
+        name: "KoKo Legend spirometry per ATS/ERS 2005 criteria"
+        spirometry_standard: "ATS/ERS 2005 criteria"
+
+  - id: "LF:isara-nonsmokers-spirometry"
+    name: "Spirometry - non-smoking quarry workers (both groups pooled)"
+    description: "Non-smoking quarry workers (site and office groups pooled): FEV1 3.39 +/- 0.69 L, FVC 4.26 +/- 0.74 L, PEFR 7.98 +/- 1.67 (printed unit L; PEFR is a flow conventionally in L/s or L/min, recorded as printed). These are the comparator values for the smoker assay. The paper does not report the number of non-smokers, so no sample_size is recorded."
+    evidence:
+      - reference: "PMID:27347301"
+        reference_title: "Respiratory symptoms and ventilatory functions among quarry workers in Edo state, Nigeria."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In both groups, smokers had significantly lower mean (SD) FEV1, FVC and PEFR compared with non-smokers; 2.91L (0.77) versus 3.39L (0.69), p = 0.01, 3.61L (0.91) versus 4.26L (0.74), p < 0.05 and 6.56L (2.43) versus 7.98L (1.67), p < 0.05."
+        explanation: "States the non-smoker mean and SD of FEV1 (3.39 +/- 0.69 L), FVC (4.26 +/- 0.74 L) and PEFR (7.98 +/- 1.67) recorded on this assay's output."
+    has_exposure_condition:
+      - id: "COND:isara-nonsmoking"
+        name: "Non-smoking quarry workers (comparator condition for the smoking contrast)"
+    has_specified_output:
+      - id: "LF:isara-nonsmokers-spirometry-output-nonsmokers"
+        name: "Measured FEV1, FVC and PEFR in non-smoking quarry workers"
+        experimental_group: control
+        measured_under: "COND:isara-nonsmoking"
+        fev1:
+          value: "3.39"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "0.69"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fvc:
+          value: "4.26"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "0.74"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        peak_expiratory_flow:
+          value: "7.98"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "1.67"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:isara-nonsmokers"
+      name: "Non-smoking quarry workers (site and office groups pooled)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      subject_characteristics: "Non-smokers among the 113 adult quarry workers (both site and office groups); more than three quarters of respondents in both groups were non-smokers, but the paper gives no exact count."
+      clinical_context: "Descriptive cross-sectional study of quarry workers in Ikpeshi community, Akoko-Edo local government area, Edo State, southern Nigeria"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:isara-spirometry-001"
+        name: "KoKo Legend spirometry per ATS/ERS 2005 criteria"
+        spirometry_standard: "ATS/ERS 2005 criteria"
+
+# =============================================================================
+# RESPONSE COMPARISONS
+#
+# The paper reports both groups' values and significance but never a
+# difference, percent change or fold change, so change_value is omitted
+# rather than computed (the extraction rule: never calculate a delta).
+# p_value is recorded only where the paper gives an exact value (FEV1
+# site-vs-office p = 0.02; FEV1 smokers-vs-non-smokers p = 0.01); the
+# remaining comparisons report only the p < 0.05 threshold, which the float
+# p_value slot cannot hold. Each control_output lives on the companion
+# control-group assay (see the modelling notes at the top of the file);
+# derived_from_assay points at the exposed group's assay.
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:isara-fev1-site-vs-office"
+    name: "FEV1 in quarry site workers vs office workers"
+    description: "FEV1 2.77 +/- 0.73 L in site workers vs 3.14 +/- 0.78 L in office workers, p = 0.02 (Results body; the abstract gives p < 0.05). The paper reports no difference value, so change_value is omitted. The control output lives on the office-worker assay."
+    derived_from_assay: "LF:isara-site-workers-spirometry"
+    compared_measurement: "fev1"
+    control_output: "LF:isara-office-workers-spirometry-output-control"
+    treated_output: "LF:isara-site-workers-spirometry-output-exposed"
+    change_type: absolute_difference
+    change_direction: decreased
+    p_value: 0.02
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
+
+  - id: "COMP:isara-fvc-site-vs-office"
+    name: "FVC in quarry site workers vs office workers"
+    description: "FVC 3.48 +/- 0.84 L in site workers vs 3.89 +/- 0.92 L in office workers, p < 0.05 (a significance threshold, not an exact p-value, so p_value is omitted). The paper reports no difference value, so change_value is omitted. The control output lives on the office-worker assay."
+    derived_from_assay: "LF:isara-site-workers-spirometry"
+    compared_measurement: "fvc"
+    control_output: "LF:isara-office-workers-spirometry-output-control"
+    treated_output: "LF:isara-site-workers-spirometry-output-exposed"
+    change_type: absolute_difference
+    change_direction: decreased
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
+
+  - id: "COMP:isara-fev1-smokers-vs-nonsmokers"
+    name: "FEV1 in smoking vs non-smoking quarry workers"
+    description: "FEV1 2.91 +/- 0.77 L in smokers vs 3.39 +/- 0.69 L in non-smokers, p = 0.01, pooled across both worker groups. The paper reports no difference value, so change_value is omitted. The control output lives on the non-smoker assay."
+    derived_from_assay: "LF:isara-smokers-spirometry"
+    compared_measurement: "fev1"
+    control_output: "LF:isara-nonsmokers-spirometry-output-nonsmokers"
+    treated_output: "LF:isara-smokers-spirometry-output-smokers"
+    change_type: absolute_difference
+    change_direction: decreased
+    p_value: 0.01
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
+
+  - id: "COMP:isara-fvc-smokers-vs-nonsmokers"
+    name: "FVC in smoking vs non-smoking quarry workers"
+    description: "FVC 3.61 +/- 0.91 L in smokers vs 4.26 +/- 0.74 L in non-smokers, p < 0.05 (threshold only, so p_value is omitted), pooled across both worker groups. The paper reports no difference value, so change_value is omitted. The control output lives on the non-smoker assay."
+    derived_from_assay: "LF:isara-smokers-spirometry"
+    compared_measurement: "fvc"
+    control_output: "LF:isara-nonsmokers-spirometry-output-nonsmokers"
+    treated_output: "LF:isara-smokers-spirometry-output-smokers"
+    change_type: absolute_difference
+    change_direction: decreased
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
+
+  - id: "COMP:isara-pefr-smokers-vs-nonsmokers"
+    name: "PEFR in smoking vs non-smoking quarry workers"
+    description: "PEFR 6.56 +/- 2.43 in smokers vs 7.98 +/- 1.67 in non-smokers (printed unit L, recorded as printed), p < 0.05 (threshold only, so p_value is omitted), pooled across both worker groups. The paper reports no difference value, so change_value is omitted. The control output lives on the non-smoker assay."
+    derived_from_assay: "LF:isara-smokers-spirometry"
+    compared_measurement: "peak_expiratory_flow"
+    control_output: "LF:isara-nonsmokers-spirometry-output-nonsmokers"
+    treated_output: "LF:isara-smokers-spirometry-output-smokers"
+    change_type: absolute_difference
+    change_direction: decreased
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
