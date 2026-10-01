@@ -29,6 +29,12 @@ def test_valid_fixtures_do_not_use_astrocyte_cl_term_for_nasal_epithelium():
     assert offenders == []
 
 
+def test_montgomery_fixture_does_not_infer_assay_dates_from_publication_year():
+    """The publication year is not evidence for an assay date."""
+    filepath = DATA_DIR_VALID / "Container-montgomery2020-pm25-mucociliary.yaml"
+    assert "assay_date:" not in filepath.read_text(encoding="utf-8")
+
+
 def test_data_do_not_use_hel_cell_line_term_for_calu3():
     """Regression test for CLO:0003679 misuse in Calu-3 cell lines."""
     def records(value):
