@@ -1,0 +1,1267 @@
+# =============================================================================
+# Huang et al. (2017) - Positive feedback of the amphiregulin-EGFR-ERK pathway
+# mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells
+# =============================================================================
+#
+# Source: Sci Rep (2017); PMID:28894207
+# DOI: 10.1038/s41598-017-11541-1
+#
+# Study design:
+#   - In vivo: 16 female Sprague-Dawley rats (9 weeks, 180-200 g), randomized
+#     to wood smoke or clean-air control; wood smoke 1 h x 4/day x 5 days/week
+#     for 3 months (exposure room average PM2.5 20.4 mg/m3, CO 90.15 ppm)
+#   - In vitro: primary human bronchial/tracheal epithelial cells at air-liquid
+#     interface (2 weeks ALI differentiation) and the NCI-H292 cell line
+#   - Stressor: PM2.5 collected from China fir burned in a conventional Chinese
+#     wood stove (WSPM2.5), resuspended from filters in DMSO
+#   - Controls: extracts from clean filters containing 0.1% DMSO
+#
+# Key findings:
+#   - Wood smoke induced airway mucous cell metaplasia and MUC5AC production in
+#     the rat airway; MUC5B rose but not significantly
+#   - WSPM2.5 induced MUC5AC mRNA (2.44-/4.55-fold) and protein (1.64-/2.29-fold)
+#     in primary ALI cultures at 8 and 40 ug/ml
+#   - WSPM2.5 (8 ug/ml) induced MUC5AC mRNA 40.26-fold and protein 4.65-fold in
+#     NCI-H292 cells
+#   - Induction is EGFR-ligand dependent and requires EGFR-ERK signaling
+#   - Amphiregulin (AR) is the major responsible ligand; EGFR-ERK activation in
+#     turn drives de novo AR synthesis, forming a positive feedback loop
+#
+# Extraction note: phosphorylation and staining results are reported only as
+# densitometry/figure panels in this paper, so those assays carry qualitative
+# output records and evidence quotes rather than invented numbers. Control
+# records on fold-change scales are anchored at 1.0, the paper's stated
+# reference ("the fold increase is the relative change over untreated cells").
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:28894207"
+  reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+  doi: "10.1038/s41598-017-11541-1"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:huang-woodsmoke-exposure-001"
+    name: "Rat whole-body wood smoke exposure"
+    description: "A total of 40 g of China fir sawdust was smouldered and the smoke channeled through a piston pump into the exposure room. Rats exposed 1 h four times per day, five days per week, for three months. Exposure-room averages: CO 90.15 ppm, O2 20.94%, PM2.5 20.4 mg/m3. Control rats breathed clean room air. Approved by the Local Ethics Committee of Guangzhou Medical University."
+    equipment_required:
+      - "Wood smoke exposure room"
+      - "Piston pump"
+      - "China fir sawdust"
+
+  - id: "PROTOCOL:huang-wspm25-collection-001"
+    name: "WSPM2.5 collection and resuspension"
+    description: "PM2.5 collected from China fir burned in a conventional Chinese wood stove (April 23-May 6, 2015) with a high-volume sampler (TE-6070, Tisch) fitted with a PM2.5 selective-inlet head (1.13 m3/min), onto glass fibre membrane filters (1.6 um pore, 406 cm2). Filters soaked in DMSO, filtered through a 5 um needle filter, pooled; 40 mg/ml stock stored at -20 C and sonicated 3 x 25 s before use. Controls prepared from clean filters containing 0.1% DMSO."
+    equipment_required:
+      - "High-volume sampler TE-6070 (Tisch, USA) with PM2.5 selective-inlet head"
+      - "Glass fibre membrane filters (1.6 um pore size)"
+      - "Sonicator"
+
+  - id: "PROTOCOL:huang-abpas-ihc-001"
+    protocol_type: StainingProtocol
+    name: "AB-PAS and MUC5AC/MUC5B immunohistochemistry on rat lung"
+    description: "Right lung inflated at 25 cm H2O, fixed in 4% paraformaldehyde for 24 h, paraffin-embedded and cut into 4 um para-sagittal sections (n = 5 rats/group). Sections stained with Alcian blue/periodic acid Schiff for mucus and immunostained for MUC5AC (1:50) and MUC5B (1:200) with an immunohistochemistry detection kit (Gene Tech, Shanghai). Quantified with Image-Pro Plus 6.0."
+    staining_type: "AB-PAS"
+    fixation_method: "4% paraformaldehyde"
+    antibodies_used:
+      - "anti-MUC5AC (45 M1, Abcam), 1:50"
+      - "anti-MUC5B (Santa Cruz Biotechnology), 1:200"
+    detection_method: "DAB immunohistochemistry detection kit (Gene Tech, Shanghai)"
+
+  - id: "PROTOCOL:huang-qpcr-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Real-time quantitative RT-PCR"
+    description: "TRIzol RNA extraction; 500 ng RNA reverse transcribed in 10 ul with the PrimeScript RT Reagent Kit (Takara). 2 ul cDNA amplified in 25 ul with SYBR Premix Ex Taq on an MXP3000 QPCR system (Stratagene): 95 C 30 s; 40 cycles of 95 C 5 s and 60 C 30 s; 95 C 1 min; melt 60-95 C. Relative amounts calculated by the 2^-ddCt method."
+    detection_method: "SYBR Green real-time PCR"
+    reference_gene: "GAPDH"
+    normalization_method: "2^-ddCt relative quantification against GAPDH"
+    platform: "MXP3000 QPCR system (Stratagene, USA)"
+
+  - id: "PROTOCOL:huang-elisa-muc5ac-001"
+    protocol_type: MolecularAssayProtocol
+    name: "MUC5AC ELISA on culture supernatants"
+    description: "50 ul of sample incubated with 50 ul bicarbonate-carbonate buffer for 2 h at 37 C, blocked with 2% BSA for 1 h, incubated with mouse anti-MUC5AC (1:200) for 2 h at 37 C, then HRP-conjugated anti-mouse IgG (1:5000) for 1 h. Developed with TMB, stopped with 2 M H2SO4, absorbance read at 450 nm. Standard curve from serially diluted bovine submaxillary gland mucin. Data expressed as the ratio of the observed value to the control group value."
+    detection_method: "colorimetric ELISA at 450 nm"
+    antibodies_used:
+      - "mouse anti-MUC5AC (45 M1, Abcam), 1:200"
+      - "HRP-conjugated anti-mouse IgG, 1:5000"
+
+  - id: "PROTOCOL:huang-elisa-ligand-001"
+    protocol_type: MolecularAssayProtocol
+    name: "ELISA for EGFR ligands AR, TGF-alpha and HB-EGF"
+    description: "Commercial ELISA kits for AR, TGF-alpha and HB-EGF (R&D Systems) used on cell culture medium per the manufacturer's instructions; optical density measured at 450 nm."
+    detection_method: "colorimetric ELISA at 450 nm"
+    platform: "R&D Systems ELISA kits"
+
+  - id: "PROTOCOL:huang-wb-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Western blot for phospho-EGFR and phospho-ERK"
+    description: "RIPA lysis with protease and phosphatase inhibitor cocktails, 30 min on ice; centrifuged 12,000 x g, 4 C, 20 min. Protein quantified by BCA. 30 ug protein per lane on 10% SDS-PAGE, transferred to PVDF, blocked in 5% milk, probed 16 h at 4 C with anti-phospho-ERK1/2 (1:1000) or anti-phospho-EGFR (1:10000), then HRP-conjugated secondary IgG and SuperSignal West Femto substrate. Membranes stripped and re-probed with anti-ERK (1:2000), anti-EGFR (1:100,000) and anti-GAPDH (1:1000) for normalization."
+    detection_method: "chemiluminescence (SuperSignal West Femto)"
+    antibodies_used:
+      - "anti-phospho-EGFR (Tyr1068) (Abcam), 1:10000"
+      - "anti-EGFR (Abcam), 1:100,000"
+      - "anti-phospho-ERK (Thr202/Tyr204) (Cell Signaling Technology), 1:1000"
+      - "anti-ERK (Cell Signaling Technology), 1:2000"
+      - "anti-GAPDH (TDYbio, Beijing), 1:1000"
+    normalization_method: "densitometry normalized to GAPDH or total ERK"
+    lysis_buffer: "RIPA buffer (Pierce) with protease and phosphatase inhibitor cocktails"
+
+  - id: "PROTOCOL:huang-if-muc5ac-001"
+    protocol_type: StainingProtocol
+    name: "MUC5AC immunofluorescence on differentiated ALI cultures"
+    description: "Differentiated bronchial/tracheal epithelial cells fixed in 4% paraformaldehyde 20 min, permeabilized with 0.5% Triton X-100, blocked with 3% BSA 1 h, incubated overnight at 4 C with mouse monoclonal anti-MUC5AC (1:100), then Cy3-conjugated anti-mouse IgG (1:200) for 1 h; nuclei stained with DAPI 5 min. Inserts excised, mounted and imaged by confocal microscopy; MUC5AC signal expressed as the ratio of Cy3 to total DAPI fluorescence (Image-Pro Plus 6.0)."
+    staining_type: "immunofluorescence"
+    fixation_method: "4% paraformaldehyde"
+    counterstain: "DAPI"
+    antibodies_used:
+      - "mouse monoclonal anti-MUC5AC (45 M1, Abcam), 1:100"
+      - "Cy3-conjugated anti-mouse IgG, 1:200"
+    detection_method: "confocal fluorescence microscopy"
+    normalization_method: "MUC5AC (Cy3) fluorescence divided by total DAPI fluorescence"
+
+# =============================================================================
+# GOBLET CELL / MUCIN ASSAYS
+# =============================================================================
+
+goblet_cell_assays:
+
+  # ---------------------------------------------------------------------------
+  # In vivo: rat airway after 3 months of wood smoke
+  # The paper reports these results as histology panels and figure-only
+  # quantification, so the output records are qualitative.
+  # ---------------------------------------------------------------------------
+  - id: "GCM:huang-woodsmoke-rat-3mo"
+    name: "Airway mucous cell metaplasia and mucin expression in rats after 3 months of wood smoke"
+    description: "AB-PAS staining, MUC5AC/MUC5B immunohistochemistry and whole-lung real-time PCR in Sprague-Dawley rats exposed to wood smoke or clean air for three months (n = 5 rats/group). Wood smoke induced severe airway mucous cell metaplasia and highly elevated MUC5AC; MUC5B also rose but not significantly. Quantification is reported only in figure panels, so no numeric values are recorded here."
+    evidence:
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "exposure to wood smoke for 3 months induced severe airway mucous cell metaplasia, whereas the control animals did not exhibit mucous cell metaplasia"
+        explanation: "States the in vivo contrast this assay records: wood smoke produced severe airway mucous cell metaplasia while control animals did not."
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Furthermore, both immunochemistry (Fig. 1C,D and H) and real-time PCR (Fig. 1J) revealed that MUC5AC levels were highly elevated in the wood smoke group."
+        explanation: "Names the two readouts (immunochemistry and real-time PCR) behind the elevated MUC5AC recorded for the wood smoke output record."
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "MUC5B expression (Fig. 1E,F,I and J) was also elevated after wood smoke challenge, although this changes was not statistically significant."
+        explanation: "Supports recording the MUC5B rise as non-significant rather than as an effect."
+    has_exposure_condition:
+      - id: "EXPOSURE:huang-rat-air-3mo"
+        name: "Clean room air for 3 months (control group)"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000035"
+            name: "month"
+      - id: "EXPOSURE:huang-rat-woodsmoke-3mo"
+        name: "Wood smoke, 1 h four times daily, five days per week, for 3 months (exposure-room average PM2.5 20.4 mg/m3, CO 90.15 ppm)"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000035"
+            name: "month"
+    has_specified_output:
+      - id: "GCM:huang-woodsmoke-rat-3mo-output-control"
+        name: "Clean-air control rat airway"
+        description: "Control animals did not exhibit mucous cell metaplasia; MUC5AC and MUC5B staining and whole-lung transcript levels served as the reference for the wood smoke group."
+        experimental_group: control
+        measured_under: "EXPOSURE:huang-rat-air-3mo"
+      - id: "GCM:huang-woodsmoke-rat-3mo-output-woodsmoke"
+        name: "Wood smoke-exposed rat airway"
+        description: "Severe airway mucous cell metaplasia with highly elevated MUC5AC by immunochemistry and real-time PCR; MUC5B elevated but not statistically significant."
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-rat-woodsmoke-3mo"
+    informs_on_key_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:huang-rat-woodsmoke"
+      name: "Female Sprague-Dawley rat, wood smoke inhalation model"
+      model_species:
+        id: "NCBITaxon:10116"
+        name: "Rattus norvegicus"
+      sex: female
+      age:
+        value: "9"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sample_type: bronchial_epithelium
+      subject_characteristics: "Healthy animals; readouts taken from 4 um para-sagittal sections of the right lung and from whole-lung RNA, n = 5 rats per group"
+    follows_protocols:
+      - id: "PROTOCOL:huang-woodsmoke-exposure-001"
+        name: "Rat whole-body wood smoke exposure"
+      - id: "PROTOCOL:huang-abpas-ihc-001"
+        name: "AB-PAS and MUC5AC/MUC5B immunohistochemistry on rat lung"
+      - id: "PROTOCOL:huang-qpcr-001"
+        name: "Real-time quantitative RT-PCR"
+
+  # ---------------------------------------------------------------------------
+  # In vitro: primary human airway epithelial cells at ALI, 24 h WSPM2.5
+  # ---------------------------------------------------------------------------
+  - id: "GCM:huang-wspm25-primary-ali-24h"
+    name: "MUC5AC mRNA and protein in primary human airway epithelial ALI cultures after 24 h WSPM2.5"
+    description: "Differentiated primary human bronchial/tracheal epithelial cells at air-liquid interface treated apically with WSPM2.5 (8 or 40 ug/ml) for 24 h. MUC5AC mRNA by real-time PCR and MUC5AC protein in culture supernatants by ELISA, both expressed as fold change over untreated cells; the control record anchors that scale at 1.0."
+    evidence:
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "MUC5AC mRNA expression increased 2.44- and 4.55-fold (Fig. 2A), whereas MUC5AC protein expression increased 1.64- and 2.29-fold in the presence of 8 and 40 μg/ml WSPM2.5, respectively"
+        explanation: "Gives the four fold-change values recorded in the 8 and 40 ug/ml output records for MUC5AC mRNA and protein."
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "WSPM2.5 could induce MUC5AC production in both primary human airway epithelial cells and the NCI-H292 cell line."
+        explanation: "Confirms that the MUC5AC induction recorded here was seen in primary human airway epithelial cells, the study subject of this assay."
+    has_exposure_condition:
+      - id: "EXPOSURE:huang-primary-vehicle-24h"
+        name: "Clean-filter extract containing 0.1% DMSO, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:huang-primary-wspm25-8ug-24h"
+        name: "WSPM2.5 8 ug/ml apically for 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "8"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:huang-primary-wspm25-40ug-24h"
+        name: "WSPM2.5 40 ug/ml (10 ug/cm2) apically for 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "40"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GCM:huang-wspm25-primary-ali-24h-output-control"
+        name: "Untreated control MUC5AC in primary ALI cultures"
+        description: "Reference condition for the fold-change scale; the paper reports treated values as the relative change over untreated cells."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:huang-primary-vehicle-24h"
+        muc5ac_mrna_expression:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 3
+        muc5ac_protein_expression:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 3
+      - id: "GCM:huang-wspm25-primary-ali-24h-output-8ug"
+        name: "MUC5AC after 8 ug/ml WSPM2.5 in primary ALI cultures"
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-primary-wspm25-8ug-24h"
+        muc5ac_mrna_expression:
+          value: "2.44"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 3
+        muc5ac_protein_expression:
+          value: "1.64"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 3
+      - id: "GCM:huang-wspm25-primary-ali-24h-output-40ug"
+        name: "MUC5AC after 40 ug/ml WSPM2.5 in primary ALI cultures"
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-primary-wspm25-40ug-24h"
+        muc5ac_mrna_expression:
+          value: "4.55"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 3
+        muc5ac_protein_expression:
+          value: "2.29"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 3
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:huang-primary-ali-001"
+      name: "Primary human bronchial/tracheal epithelial ALI culture"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      passage_number: 3
+      substrate_type: collagen_coated
+      coating: "collagen I (Corning Costar)"
+      culture_conditions:
+        id: "soma:huang-primary-conditions-001"
+        name: "Air-liquid interface culture on collagen I-coated Transwell inserts"
+        substrate_type: collagen_coated
+        days_at_air_liquid_interface: 14
+      culture_media:
+        id: "soma:huang-primary-media-001"
+        name: "1:1 epithelial cell basal medium and low-glucose DMEM"
+        base_medium: "1:1 epithelial cell basal medium : low-glucose DMEM"
+        manufacturer: "ATCC / Gibco"
+        supplements:
+          - id: "soma:huang-supp-retinoic-acid"
+            name: "Retinoic acid"
+            supplement_type: growth_factor
+            concentration:
+              value: "50"
+              unit:
+                id: "UO:0000065"
+                name: "nanomolar"
+    follows_protocols:
+      - id: "PROTOCOL:huang-wspm25-collection-001"
+        name: "WSPM2.5 collection and resuspension"
+      - id: "PROTOCOL:huang-qpcr-001"
+        name: "Real-time quantitative RT-PCR"
+      - id: "PROTOCOL:huang-elisa-muc5ac-001"
+        name: "MUC5AC ELISA on culture supernatants"
+      - id: "PROTOCOL:huang-if-muc5ac-001"
+        name: "MUC5AC immunofluorescence on differentiated ALI cultures"
+
+  # ---------------------------------------------------------------------------
+  # In vitro: NCI-H292 cell line, 24 h WSPM2.5 at 8 ug/ml
+  # ---------------------------------------------------------------------------
+  - id: "GCM:huang-wspm25-h292-24h"
+    name: "MUC5AC mRNA and protein in NCI-H292 cells after 24 h WSPM2.5"
+    description: "NCI-H292 cells treated with non-cytotoxic WSPM2.5 concentrations (0.5-24 ug/ml) for 24 h. At 8 ug/ml, MUC5AC mRNA rose 40.26-fold and MUC5AC protein in the supernatant 4.65-fold over untreated cells. Induction was also time dependent, rising continuously across the 36 h experiment. The control record anchors the fold-change scale at 1.0."
+    evidence:
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In the NCI-H292 epithelial cell line, WSPM2.5 dose dependently increased MUC5AC mRNA (Fig. 3A) and protein expression levels (Fig. 3C) (at 8 μg/ml, WSPM2.5 increased MUC5AC mRNA expression 40.26-fold and MUC5AC protein expression 4.65-fold)."
+        explanation: "Gives the two fold-change values recorded in the 8 ug/ml output record for MUC5AC mRNA and protein."
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "WSPM2.5 also induced MUC5AC production time-dependently [both MUC5AC mRNA (Fig. 3B) and MUC5AC protein levels (Fig. 3D) increased continuously throughout the 36-h experiment"
+        explanation: "Supports the time-dependence stated in this assay's description, which is reported only as figure panels."
+    has_exposure_condition:
+      - id: "EXPOSURE:huang-h292-vehicle-24h"
+        name: "Clean-filter extract containing 0.1% DMSO, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:huang-h292-wspm25-8ug-24h"
+        name: "WSPM2.5 8 ug/ml (2 ug/cm2) for 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "8"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GCM:huang-wspm25-h292-24h-output-control"
+        name: "Untreated control MUC5AC in NCI-H292 cells"
+        description: "Reference condition for the fold-change scale; the paper states the fold increase is the relative change over untreated cells."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:huang-h292-vehicle-24h"
+        muc5ac_mrna_expression:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 5
+        muc5ac_protein_expression:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 6
+      - id: "GCM:huang-wspm25-h292-24h-output-8ug"
+        name: "MUC5AC after 8 ug/ml WSPM2.5 in NCI-H292 cells"
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-h292-wspm25-8ug-24h"
+        muc5ac_mrna_expression:
+          value: "40.26"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 5
+        muc5ac_protein_expression:
+          value: "4.65"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 6
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:huang-h292-001"
+      name: "NCI-H292 human airway epithelial cell line"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+      culture_media:
+        id: "soma:huang-h292-media-001"
+        name: "RPMI-1640 with 10% fetal bovine serum"
+        base_medium: "RPMI-1640"
+        supplements:
+          - id: "soma:huang-supp-fbs"
+            name: "Fetal bovine serum"
+            supplement_type: growth_factor
+            concentration:
+              value: "10"
+              unit:
+                id: "UO:0000187"
+                name: "percent"
+    follows_protocols:
+      - id: "PROTOCOL:huang-wspm25-collection-001"
+        name: "WSPM2.5 collection and resuspension"
+      - id: "PROTOCOL:huang-qpcr-001"
+        name: "Real-time quantitative RT-PCR"
+      - id: "PROTOCOL:huang-elisa-muc5ac-001"
+        name: "MUC5AC ELISA on culture supernatants"
+
+# =============================================================================
+# EGFR SIGNALING ASSAYS
+# =============================================================================
+
+egfr_signaling_assays:
+
+  # ---------------------------------------------------------------------------
+  # EGFR and ERK phosphorylation time course. Reported as Western blot
+  # densitometry in figure panels only, so the output records are qualitative.
+  # ---------------------------------------------------------------------------
+  - id: "EGFR:huang-wspm25-h292-phospho"
+    name: "EGFR and ERK phosphorylation in NCI-H292 cells after WSPM2.5"
+    description: "Western blot time course in NCI-H292 cells stimulated with WSPM2.5 8 ug/ml. EGFR phosphorylation rose continuously, first significant at 60 min. ERK phosphorylation was biphasic, starting within 5 min with a second wave from 8 h to 24 h. AG1478 abolished ERK activation, placing EGFR upstream of ERK. Densitometry is reported only in figure panels, so no numeric values are recorded."
+    normalization_reference: "GAPDH"
+    phosphorylation_site: "Tyr1068"
+    evidence:
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "EGFR phosphorylation increased continuously, and a significant increase began to be observed at 60 min (Fig. 4A and B). Pretreatment with AG1478, an EGFR-selective tyrosine kinase inhibitor, significantly prevented MUC5AC expression"
+        explanation: "States the EGFR phosphorylation time course and the AG1478 result recorded in the 60 min output record."
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "biphasic activation of ERK was observed, with phosphorylation starting within 5 min. The second wave started at 8 h and lasted until 24 h."
+        explanation: "States the biphasic ERK activation recorded in the 5 min output record."
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "EGFR appears to function upstream of ERK, as AG1478 abolished ERK activation"
+        explanation: "Supports placing EGFR upstream of ERK, as this assay's description states."
+    has_exposure_condition:
+      - id: "EXPOSURE:huang-h292-vehicle-phospho"
+        name: "Clean-filter extract containing 0.1% DMSO, unstimulated control"
+      - id: "EXPOSURE:huang-h292-wspm25-8ug-5min"
+        name: "WSPM2.5 8 ug/ml for 5 minutes"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "8"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+      - id: "EXPOSURE:huang-h292-wspm25-8ug-60min"
+        name: "WSPM2.5 8 ug/ml for 60 minutes"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "8"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "60"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    has_specified_output:
+      - id: "EGFR:huang-wspm25-h292-phospho-output-control"
+        name: "Unstimulated control p-EGFR and p-ERK"
+        description: "Untreated lane used as the densitometry reference for phospho-EGFR (normalized to GAPDH) and phospho-ERK (normalized to total ERK)."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:huang-h292-vehicle-phospho"
+      - id: "EGFR:huang-wspm25-h292-phospho-output-5min"
+        name: "p-ERK 5 minutes after WSPM2.5"
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-h292-wspm25-8ug-5min"
+        downstream_kinase_activation: "ERK phosphorylation biphasic: first wave starting within 5 min, second wave starting at 8 h and lasting until 24 h; abolished by the EGFR inhibitor AG1478"
+      - id: "EGFR:huang-wspm25-h292-phospho-output-60min"
+        name: "p-EGFR 60 minutes after WSPM2.5"
+        description: "EGFR phosphorylation increased continuously after WSPM2.5, with the first significant increase observed at 60 min."
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-h292-wspm25-8ug-60min"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:huang-h292-002"
+      name: "NCI-H292 human airway epithelial cell line"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:huang-wb-001"
+        name: "Western blot for phospho-EGFR and phospho-ERK"
+
+  # ---------------------------------------------------------------------------
+  # Ligand dependence: EGFR-neutralizing antibody
+  # ---------------------------------------------------------------------------
+  - id: "EGFR:huang-ligand-dependence-h292"
+    name: "Ligand dependence of WSPM2.5-induced EGFR activation in NCI-H292 cells"
+    description: "NCI-H292 cells pretreated for 1 h with an EGFR-neutralizing antibody (0.5, 1 or 2 ug/ml), which prevents ligand binding to EGFR, or with a mouse control IgG, then stimulated with WSPM2.5 8 ug/ml. The antibody significantly reduced both EGFR phosphorylation (60 min) and MUC5AC expression (24 h), showing that EGFR activation by WSPM2.5 is ligand dependent. Results are reported as figure panels, so no numeric values are recorded."
+    normalization_reference: "GAPDH"
+    phosphorylation_site: "Tyr1068"
+    evidence:
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In addition, treatment with EGFR-neutralizing antibody, which prevents ligand binding to EGFR, significantly reduced EGFR phosphorylation (Fig. 4D and E) and MUC5AC expression (Fig. 4F), suggesting ligand-dependent EGFR activation in WSPM2.5-mediated MUC5AC expression."
+        explanation: "States the neutralizing-antibody result and the ligand-dependent interpretation this assay records."
+    has_exposure_condition:
+      - id: "EXPOSURE:huang-h292-wspm25-alone"
+        name: "WSPM2.5 8 ug/ml alone (no neutralizing antibody)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "8"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+      - id: "EXPOSURE:huang-h292-wspm25-anti-egfr"
+        name: "EGFR-neutralizing antibody 0.5-2 ug/ml for 1 h, then WSPM2.5 8 ug/ml"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "8"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+    has_specified_output:
+      - id: "EGFR:huang-ligand-dependence-h292-output-wspm25"
+        name: "WSPM2.5 alone"
+        description: "WSPM2.5 stimulation without neutralizing antibody; the reference arm for the antibody comparison."
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-h292-wspm25-alone"
+      - id: "EGFR:huang-ligand-dependence-h292-output-anti-egfr"
+        name: "WSPM2.5 with EGFR-neutralizing antibody"
+        description: "EGFR-neutralizing antibody significantly reduced WSPM2.5-induced EGFR phosphorylation and MUC5AC expression."
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-h292-wspm25-anti-egfr"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:huang-h292-003"
+      name: "NCI-H292 human airway epithelial cell line"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:huang-wb-001"
+        name: "Western blot for phospho-EGFR and phospho-ERK"
+      - id: "PROTOCOL:huang-qpcr-001"
+        name: "Real-time quantitative RT-PCR"
+
+  # ---------------------------------------------------------------------------
+  # Which ligand: AR, TGF-alpha or HB-EGF neutralization
+  # ---------------------------------------------------------------------------
+  - id: "EGFR:huang-ligand-neutralization-h292"
+    name: "Identification of amphiregulin as the EGFR ligand driving WSPM2.5-induced signaling"
+    description: "NCI-H292 cells pretreated 1 h with neutralizing antibodies against AR, TGF-alpha or HB-EGF, then stimulated with WSPM2.5 (60 min for p-EGFR, 5 min for p-ERK, 24 h for MUC5AC mRNA). AR neutralization suppressed most of the WSPM2.5-induced EGFR and ERK phosphorylation and MUC5AC expression, while TGF-alpha and HB-EGF blockade gave only non-significant partial reductions. Recombinant AR (300-1,800 pg/ml) induced MUC5AC dose-dependently. Results are reported as figure panels, so no numeric values are recorded."
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Interestingly, AR neutralization suppressed most of the WSPM2.5-induced EGFR and ERK phosphorylation (Fig. 7A,B and C) and MUC5AC gene expression (Fig. 7D), whereas blockade of TGF-α or HB-EGF showed a partial reduction, but this decrease failed to reach statistical significance."
+        explanation: "States the contrast between AR neutralization and TGF-alpha/HB-EGF blockade that the three treated output records here capture."
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Furthermore, recombinant AR dose-dependently induced MUC5AC expression (Fig. 7E). Thus, AR is crucial in mediating the WSPM2.5-induced activation of the EGFR-ERK pathway and MUC5AC up-regulation."
+        explanation: "Supports the recombinant-AR arm and the conclusion that AR drives EGFR-ERK activation and MUC5AC up-regulation."
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Amphiregulin (AR) was identified as the major ligand responsible for EGFR-ERK signaling activation and MUC5AC expression."
+        explanation: "The paper's own summary of the finding this assay records: AR is the major ligand responsible for EGFR-ERK activation and MUC5AC expression."
+    has_exposure_condition:
+      - id: "EXPOSURE:huang-h292-wspm25-igg"
+        name: "WSPM2.5 8 ug/ml with isotype-matched control IgG"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "8"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+      - id: "EXPOSURE:huang-h292-wspm25-anti-ar"
+        name: "Anti-AR neutralizing antibody for 1 h, then WSPM2.5 8 ug/ml"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "8"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+      - id: "EXPOSURE:huang-h292-wspm25-anti-tgfa-hbegf"
+        name: "Anti-TGF-alpha or anti-HB-EGF neutralizing antibody for 1 h, then WSPM2.5 8 ug/ml"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "8"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+      - id: "EXPOSURE:huang-h292-recombinant-ar-24h"
+        name: "Recombinant AR 300-1,800 pg/ml for 24 hours"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "EGFR:huang-ligand-neutralization-h292-output-igg"
+        name: "WSPM2.5 with control IgG"
+        description: "Isotype-matched control antibody arm; the reference for the neutralizing-antibody arms."
+        experimental_group: control
+        measured_under: "EXPOSURE:huang-h292-wspm25-igg"
+      - id: "EGFR:huang-ligand-neutralization-h292-output-anti-ar"
+        name: "WSPM2.5 with AR-neutralizing antibody"
+        description: "AR neutralization suppressed most of the WSPM2.5-induced EGFR and ERK phosphorylation and MUC5AC gene expression."
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-h292-wspm25-anti-ar"
+      - id: "EGFR:huang-ligand-neutralization-h292-output-anti-tgfa-hbegf"
+        name: "WSPM2.5 with TGF-alpha- or HB-EGF-neutralizing antibody"
+        description: "Blockade of TGF-alpha or HB-EGF gave a partial reduction that failed to reach statistical significance."
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-h292-wspm25-anti-tgfa-hbegf"
+      - id: "EGFR:huang-ligand-neutralization-h292-output-recombinant-ar"
+        name: "Recombinant AR without WSPM2.5"
+        description: "Recombinant AR dose-dependently induced MUC5AC expression, confirming AR is sufficient for the response."
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-h292-recombinant-ar-24h"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:huang-h292-004"
+      name: "NCI-H292 human airway epithelial cell line"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:huang-wb-001"
+        name: "Western blot for phospho-EGFR and phospho-ERK"
+      - id: "PROTOCOL:huang-qpcr-001"
+        name: "Real-time quantitative RT-PCR"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS - EGFR ligands
+# =============================================================================
+
+gene_expression_assays:
+
+  # ---------------------------------------------------------------------------
+  # Amphiregulin time course
+  # ---------------------------------------------------------------------------
+  - id: "GEX:huang-ar-h292-timecourse"
+    name: "Amphiregulin mRNA and protein in NCI-H292 cells over 36 h of WSPM2.5"
+    description: "NCI-H292 cells exposed to WSPM2.5 8 ug/ml for 2-36 h. AR mRNA by real-time PCR was elevated at 2 h (2.91-fold) and significantly increased at 24 h; AR protein released into the medium (ELISA) was significantly higher at 24 and 36 h. The control record anchors the fold-change scale at 1.0; the 24 and 36 h protein values are reported only in figure panels."
+    target_gene: "AREG (amphiregulin, AR)"
+    gene_expression_method: "real-time quantitative RT-PCR and ELISA"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The time-course study of WSPM2.5 exposure revealed elevated AR mRNA levels at 2 h (2.91-fold), with a significant increase at 24 h."
+        explanation: "Gives the 2.91-fold AR mRNA value recorded in the 2 h output record and the significant increase at 24 h."
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Consistent with the increase in AR mRNA expression, the AR protein levels were significantly higher at 24 and 36 h."
+        explanation: "Supports the AR protein result stated in this assay's description and recorded qualitatively in the 24-36 h output record."
+    has_exposure_condition:
+      - id: "EXPOSURE:huang-h292-vehicle-ligand"
+        name: "Clean-filter extract containing 0.1% DMSO, untreated control"
+      - id: "EXPOSURE:huang-h292-wspm25-8ug-2h"
+        name: "WSPM2.5 8 ug/ml for 2 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "8"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:huang-h292-wspm25-8ug-36h"
+        name: "WSPM2.5 8 ug/ml for 36 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "8"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "36"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GEX:huang-ar-h292-timecourse-output-control"
+        name: "Untreated control AR mRNA"
+        description: "Reference condition for the fold-change scale."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:huang-h292-vehicle-ligand"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 3
+      - id: "GEX:huang-ar-h292-timecourse-output-2h"
+        name: "AR mRNA 2 h after WSPM2.5"
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-h292-wspm25-8ug-2h"
+        mrna_level:
+          value: "2.91"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 3
+      - id: "GEX:huang-ar-h292-timecourse-output-36h"
+        name: "AR protein release at 24-36 h after WSPM2.5"
+        description: "AR protein levels in the culture medium were significantly higher at 24 and 36 h; the values themselves are reported only in figure panels."
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-h292-wspm25-8ug-36h"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:huang-h292-005"
+      name: "NCI-H292 human airway epithelial cell line"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:huang-qpcr-001"
+        name: "Real-time quantitative RT-PCR"
+      - id: "PROTOCOL:huang-elisa-ligand-001"
+        name: "ELISA for EGFR ligands AR, TGF-alpha and HB-EGF"
+
+  # ---------------------------------------------------------------------------
+  # HB-EGF
+  # ---------------------------------------------------------------------------
+  - id: "GEX:huang-hbegf-h292-36h"
+    name: "HB-EGF mRNA in NCI-H292 cells after 36 h of WSPM2.5"
+    description: "HB-EGF mRNA was significantly higher after 36 h of WSPM2.5 8 ug/ml (3.38-fold), but HB-EGF protein release measured by ELISA remained unchanged. The control record anchors the fold-change scale at 1.0."
+    target_gene: "HBEGF (heparin-binding EGF-like growth factor)"
+    gene_expression_method: "real-time quantitative RT-PCR"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "HB-EGF mRNA expression was significantly higher after 36 h of exposure (3.38-fold; Fig. 6A)."
+        explanation: "Gives the 3.38-fold HB-EGF mRNA value recorded in the 36 h output record."
+    has_exposure_condition:
+      - id: "EXPOSURE:huang-h292-vehicle-hbegf"
+        name: "Clean-filter extract containing 0.1% DMSO, untreated control"
+      - id: "EXPOSURE:huang-h292-wspm25-8ug-36h-hbegf"
+        name: "WSPM2.5 8 ug/ml for 36 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "8"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "36"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GEX:huang-hbegf-h292-36h-output-control"
+        name: "Untreated control HB-EGF mRNA"
+        description: "Reference condition for the fold-change scale."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:huang-h292-vehicle-hbegf"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 3
+      - id: "GEX:huang-hbegf-h292-36h-output-36h"
+        name: "HB-EGF mRNA 36 h after WSPM2.5"
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-h292-wspm25-8ug-36h-hbegf"
+        mrna_level:
+          value: "3.38"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          sample_size: 3
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:huang-h292-006"
+      name: "NCI-H292 human airway epithelial cell line"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:huang-qpcr-001"
+        name: "Real-time quantitative RT-PCR"
+      - id: "PROTOCOL:huang-elisa-ligand-001"
+        name: "ELISA for EGFR ligands AR, TGF-alpha and HB-EGF"
+
+  # ---------------------------------------------------------------------------
+  # Positive feedback: EGFR-ERK drives de novo AR synthesis
+  # ---------------------------------------------------------------------------
+  - id: "GEX:huang-ar-autocrine-feedback-h292"
+    name: "EGFR-ERK dependence and de novo synthesis of amphiregulin in NCI-H292 cells"
+    description: "Pretreatment with EGFR-neutralizing antibody (0.5 ug/ml), AG1478 (10 uM) or PD98059 (5 uM) significantly reduced WSPM2.5-induced AR mRNA expression and AR release, and exogenous AR (1,800 pg/ml) increased AR mRNA in an AG1478- and PD98059-sensitive way. Actinomycin D and cycloheximide (10 ug/ml) inhibited AR secretion and attenuated MUC5AC mRNA, showing de novo AR synthesis is required. This closes the positive feedback loop between AR release and EGFR-ERK activation. Results are reported as figure panels, so no numeric values are recorded."
+    target_gene: "AREG (amphiregulin, AR)"
+    gene_expression_method: "real-time quantitative RT-PCR and ELISA"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Pretreatment with anti-EGFR, AG1478 or PD98059 significantly reduced WSPM2.5-induced AR mRNA expression (Fig. 9A) and AR release (Fig. 9B), indicating that the autocrine effects of AR are mediated by the EGFR-ERK pathway in epithelial cells."
+        explanation: "States the inhibitor result recorded in the EGFR-ERK-blocked output records: AR expression and release depend on the EGFR-ERK pathway."
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "ActD and CHX not only significantly inhibited AR secretion at baseline or upon WSPM2.5 stimulation (Fig. 8A and B) but also attenuated MUC5AC mRNA expression (Fig. 8C and D), indicating that de novo synthesis of AR is needed for the transcriptional regulation of MUC5AC."
+        explanation: "Supports the ActD/CHX output record and the conclusion that de novo AR synthesis is needed for MUC5AC transcription."
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In turn, EGFR-ERK pathway activation was found to contribute to the de novo synthesis of AR."
+        explanation: "The paper's own summary of the feedback arm this assay records: EGFR-ERK activation contributes to de novo AR synthesis."
+    has_exposure_condition:
+      - id: "EXPOSURE:huang-h292-wspm25-24h-feedback"
+        name: "WSPM2.5 8 ug/ml for 24 hours (no inhibitor)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "8"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:huang-h292-wspm25-ag1478"
+        name: "AG1478 10 uM for 1 h, then WSPM2.5 8 ug/ml for 24 hours"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:huang-h292-wspm25-pd98059"
+        name: "PD98059 5 uM for 1 h, then WSPM2.5 8 ug/ml for 24 hours"
+        exposure_concentration:
+          value: "5"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:huang-h292-wspm25-actd-chx"
+        name: "Actinomycin D or cycloheximide 10 ug/ml, then WSPM2.5 8 ug/ml for 24 hours"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GEX:huang-ar-autocrine-feedback-h292-output-wspm25"
+        name: "WSPM2.5 alone"
+        description: "WSPM2.5 stimulation without inhibitor; the reference arm for the inhibitor comparisons."
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-h292-wspm25-24h-feedback"
+      - id: "GEX:huang-ar-autocrine-feedback-h292-output-ag1478"
+        name: "WSPM2.5 with the EGFR inhibitor AG1478"
+        description: "AG1478 significantly reduced WSPM2.5-induced AR mRNA expression and AR release."
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-h292-wspm25-ag1478"
+      - id: "GEX:huang-ar-autocrine-feedback-h292-output-pd98059"
+        name: "WSPM2.5 with the ERK kinase inhibitor PD98059"
+        description: "PD98059 significantly reduced WSPM2.5-induced AR mRNA expression and AR release."
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-h292-wspm25-pd98059"
+      - id: "GEX:huang-ar-autocrine-feedback-h292-output-actd-chx"
+        name: "WSPM2.5 with actinomycin D or cycloheximide"
+        description: "Actinomycin D and cycloheximide inhibited AR secretion at baseline and upon WSPM2.5 stimulation, and attenuated MUC5AC mRNA expression."
+        experimental_group: treated
+        measured_under: "EXPOSURE:huang-h292-wspm25-actd-chx"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:huang-h292-007"
+      name: "NCI-H292 human airway epithelial cell line"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:huang-qpcr-001"
+        name: "Real-time quantitative RT-PCR"
+      - id: "PROTOCOL:huang-elisa-ligand-001"
+        name: "ELISA for EGFR ligands AR, TGF-alpha and HB-EGF"
+
+# =============================================================================
+# ANALYSIS LAYER - changes vs. control stated in the paper
+# All values below are fold changes the paper reports directly, so every
+# record is derivation: reported_in_paper. The paper reports significance
+# only as asterisk bands in figure captions, so p_value is omitted.
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:huang-primary-muc5ac-mrna-8ug"
+    name: "Change in MUC5AC mRNA, 8 ug/ml WSPM2.5 vs untreated, primary ALI cultures"
+    derived_from_assay: "GCM:huang-wspm25-primary-ali-24h"
+    compared_measurement: "muc5ac_mrna_expression"
+    control_output: "GCM:huang-wspm25-primary-ali-24h-output-control"
+    treated_output: "GCM:huang-wspm25-primary-ali-24h-output-8ug"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "2.44"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:huang-primary-muc5ac-mrna-40ug"
+    name: "Change in MUC5AC mRNA, 40 ug/ml WSPM2.5 vs untreated, primary ALI cultures"
+    derived_from_assay: "GCM:huang-wspm25-primary-ali-24h"
+    compared_measurement: "muc5ac_mrna_expression"
+    control_output: "GCM:huang-wspm25-primary-ali-24h-output-control"
+    treated_output: "GCM:huang-wspm25-primary-ali-24h-output-40ug"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "4.55"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:huang-primary-muc5ac-protein-8ug"
+    name: "Change in MUC5AC protein, 8 ug/ml WSPM2.5 vs untreated, primary ALI cultures"
+    derived_from_assay: "GCM:huang-wspm25-primary-ali-24h"
+    compared_measurement: "muc5ac_protein_expression"
+    control_output: "GCM:huang-wspm25-primary-ali-24h-output-control"
+    treated_output: "GCM:huang-wspm25-primary-ali-24h-output-8ug"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.64"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:huang-primary-muc5ac-protein-40ug"
+    name: "Change in MUC5AC protein, 40 ug/ml WSPM2.5 vs untreated, primary ALI cultures"
+    derived_from_assay: "GCM:huang-wspm25-primary-ali-24h"
+    compared_measurement: "muc5ac_protein_expression"
+    control_output: "GCM:huang-wspm25-primary-ali-24h-output-control"
+    treated_output: "GCM:huang-wspm25-primary-ali-24h-output-40ug"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "2.29"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:huang-h292-muc5ac-mrna-8ug"
+    name: "Change in MUC5AC mRNA, 8 ug/ml WSPM2.5 vs untreated, NCI-H292 cells"
+    derived_from_assay: "GCM:huang-wspm25-h292-24h"
+    compared_measurement: "muc5ac_mrna_expression"
+    control_output: "GCM:huang-wspm25-h292-24h-output-control"
+    treated_output: "GCM:huang-wspm25-h292-24h-output-8ug"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "40.26"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:huang-h292-muc5ac-protein-8ug"
+    name: "Change in MUC5AC protein, 8 ug/ml WSPM2.5 vs untreated, NCI-H292 cells"
+    derived_from_assay: "GCM:huang-wspm25-h292-24h"
+    compared_measurement: "muc5ac_protein_expression"
+    control_output: "GCM:huang-wspm25-h292-24h-output-control"
+    treated_output: "GCM:huang-wspm25-h292-24h-output-8ug"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "4.65"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:huang-ar-mrna-2h"
+    name: "Change in AR mRNA, 2 h WSPM2.5 vs untreated, NCI-H292 cells"
+    derived_from_assay: "GEX:huang-ar-h292-timecourse"
+    compared_measurement: "mrna_level"
+    control_output: "GEX:huang-ar-h292-timecourse-output-control"
+    treated_output: "GEX:huang-ar-h292-timecourse-output-2h"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "2.91"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:huang-hbegf-mrna-36h"
+    name: "Change in HB-EGF mRNA, 36 h WSPM2.5 vs untreated, NCI-H292 cells"
+    derived_from_assay: "GEX:huang-hbegf-h292-36h"
+    compared_measurement: "mrna_level"
+    control_output: "GEX:huang-hbegf-h292-36h-output-control"
+    treated_output: "GEX:huang-hbegf-h292-36h-output-36h"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "3.38"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+    derivation: reported_in_paper
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS
+# Key Event blocks below are copied verbatim from the wordings already on main.
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:huang-egfr-to-mucin"
+    name: "EGFR activation leads to mucin hypersecretion"
+    upstream_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: strong
+    evidence:
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Furthermore, pretreatment with the selective ERK kinase inhibitor PD98059 (Fig. 5C) significantly inhibited WSPM2.5-induced MUC5AC expression, indicating that WSPM2.5-induced MUC5AC production is dependent on ERK activation."
+        explanation: "Inhibitor reversal: blocking ERK downstream of EGFR abolished the MUC5AC induction, which is the causal link this relationship asserts."
+      - reference: "PMID:28894207"
+        reference_title: "Positive feedback of the amphiregulin-EGFR-ERK pathway mediates PM2.5 from wood smoke-induced MUC5AC expression in epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In summary, this study found that WSPM2.5 induces MUC5AC expression through the AR-EGFR-ERK pathway and that subsequent activation of EGFR-ERK leads to autocrine effects of AR, with the released AR further promoting its own expression."
+        explanation: "The paper's own summary that WSPM2.5 induces MUC5AC expression through the AR-EGFR-ERK pathway."
