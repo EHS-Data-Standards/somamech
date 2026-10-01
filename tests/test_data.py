@@ -29,7 +29,7 @@ def test_valid_fixtures_do_not_use_astrocyte_cl_term_for_nasal_epithelium():
     assert offenders == []
 
 
-def test_valid_fixtures_do_not_use_hel_cell_line_term_for_calu3():
+def test_data_do_not_use_hel_cell_line_term_for_calu3():
     """Regression test for CLO:0003679 misuse in Calu-3 cell lines."""
     def records(value):
         if isinstance(value, dict):
@@ -40,8 +40,10 @@ def test_valid_fixtures_do_not_use_hel_cell_line_term_for_calu3():
             for child in value:
                 yield from records(child)
 
+    kb_files = Path(__file__).resolve().parents[1] / "kb"
+    data_files = [*VALID_EXAMPLE_FILES, *(str(path) for path in kb_files.rglob("*.yaml"))]
     offenders = []
-    for filepath in VALID_EXAMPLE_FILES:
+    for filepath in data_files:
         data = yaml.safe_load(Path(filepath).read_text(encoding="utf-8"))
         if any(
             isinstance(record.get("cell_line"), dict)
