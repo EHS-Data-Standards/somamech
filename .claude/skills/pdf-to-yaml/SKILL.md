@@ -116,13 +116,15 @@ Worked example covering all of the above:
 ## Phase 3: Assign Ontology Terms
 
 Use `/oaklib` to find and verify CURIEs for:
-- **Chemicals/agents**: CHEBI (e.g., CHEBI:74481 for PM2.5)
-- **Cell types**: CL (e.g., CL:0002603 for nasal epithelial cell)
+- **Chemicals**: CHEBI (e.g., CHEBI:28939 for N-acetyl-L-cysteine)
+- **Environmental exposure agents**: ENVO (e.g., ENVO:01000415 for PM2.5, ENVO:01000838 for smoke) —
+  particulate matter and other environmental materials are *not* CHEBI chemicals
+- **Cell types**: CL (e.g., CL:2000094 for nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa)
 - **Species**: NCBITaxon (e.g., NCBITaxon:9606 for Homo sapiens)
 - **Units**: UO (e.g., UO:0000032 for hour)
 - **Anatomy**: UBERON (e.g., UBERON:0001707 for nasal cavity)
 - **Proteins/genes**: PR, NCBIGene (e.g., PR:000003411 for CFTR protein, NCBIGene:1080 for CFTR genes)
-- **Cell lines**: CLO (e.g., CLO:0003679 for Calu-3)
+- **Cell lines**: CLO (e.g., CLO:0002192 for Calu-3)
 
 ## Phase 4: Generate YAML
 
@@ -197,7 +199,17 @@ Key structural patterns:
 
 ### ID Conventions
 
-- Protocols: `PROTOCOL:<author>-<method>-<number>` (e.g., `PROTOCOL:liu-ussing-001`)
+- Protocols: `PROTOCOL:<author>-<method>-<number>` (e.g., `PROTOCOL:liu-ussing-001`).
+  When one method is run against several targets with **different** parameters — say a
+  qPCR method with a distinct primer pair per gene — give each target its own id
+  (`PROTOCOL:jiao-qpcr-muc5ac`, `PROTOCOL:jiao-qpcr-spdef`) rather than reusing one id
+  for all of them. One id must denote one protocol: reusing it means every consumer
+  keyed on id keeps one variant and silently drops the rest. See issue #131 for the
+  reasoning and #127 for what it cost.
+- Define each protocol **once** in the top-level `protocols:` section, and make each
+  `follows_protocols:` entry a stub carrying only `id`, `protocol_type` and `name`.
+  Detail repeated at a use site can drift from the definition, and the workbook export
+  reads the top-level section only, so use-site-only detail reaches no consumer.
 - Exposures: `EXPOSURE:<author>-<agent>-<detail>` (e.g., `EXPOSURE:liu-pm25-100ug-24h`)
 - Key Events: `KE:<type>-<description>` (e.g., `KE:ke-decreased-cftr`)
 - Assays: `<PREFIX>:<author>-<target>-<condition>` (e.g., `CFTR:liu-pm25-24h`)
