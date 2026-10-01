@@ -1,0 +1,1025 @@
+# =============================================================================
+# Ferecatu et al. (2010) - Polycyclic aromatic hydrocarbon components
+# contribute to the mitochondria-antiapoptotic effect of fine particulate
+# matter on human bronchial epithelial cells via the aryl hydrocarbon receptor
+# =============================================================================
+#
+# Source: Part Fibre Toxicol. 2010;7:18
+# DOI: 10.1186/1743-8977-7-18
+# PMID: 20663163
+#
+# The committed reference cache for this PMID is FULL TEXT
+# (content_type: full_text_pdf), so every evidence snippet below is quoted
+# from the committed cache and is checkable by CI without a receipt.
+#
+# Study design (in vitro only):
+#   - Cells: 16HBE14o- (immortalized), NCI-H292 and BEAS-2B (carcinoma lines),
+#     and non-differentiated primary normal human bronchial epithelial cells
+#     (NHBE, Lonza). All subconfluent, submerged culture.
+#   - Exposure agent: urban Parisian PM2.5 collected in winter/summer 2003 at
+#     a curbside station (Porte d'Auteuil: AW, AS) and an urban background
+#     station (Vitry-sur-Seine: VW, VS). Standard dose 10 ug/cm2 (40 ug/ml);
+#     dose range 1-50 ug/cm2. Also tested: PM2.5-AW organic extracts (Oex),
+#     aqueous extracts (Aex), washed particles, 95 nm carbon black, five heavy
+#     (>=4-ring) PAH, light (3-ring) PAH, and an LPS-neutralizing protein.
+#   - Design: 4 h PM2.5 pretreatment, then 20 h with an apoptosis inducer
+#     (A23187 3 uM, staurosporine 1 uM, oligomycin 5 uM, rotenone 5 uM,
+#     antimycin A 25 ug/ml, ionomycin 0.5 uM, or H2O2 500 uM).
+#   - Readouts: four-parameter flow cytometry (DiOC6(3) for mitochondrial
+#     transmembrane potential, hydroethidine for superoxide anion, Annexin
+#     V-FITC for phosphatidylserine exposure, propidium iodide for plasma
+#     membrane permeabilization); transmission electron microscopy; ELISA for
+#     amphiregulin and GM-CSF; Western blot for AhR; AhR siRNA silencing;
+#     AhR agonist (beta-naphthoflavone) and antagonist
+#     (alpha-naphthoflavone).
+#
+# Key findings:
+#   - Parisian PM2.5 (1-50 ug/cm2, 24-72 h) is NOT cytotoxic to any of the
+#     four bronchial epithelial cell models: no mitochondrial depolarization,
+#     no superoxide anion production, no phosphatidylserine exposure, no
+#     plasma membrane permeabilization. H2O2 remained an effective positive
+#     control, so the cells were not intrinsically apoptosis-resistant.
+#   - A 4 h PM2.5-AW pretreatment instead PROTECTS against mitochondria-driven
+#     apoptosis: 33% reduction of DiOC6(3) low for oligomycin, 35% for
+#     A23187, 44% for staurosporine - but no protection against ionomycin,
+#     rotenone, antimycin A or H2O2. Confirmed in NCI-H292 and NHBE cells.
+#   - The protection is not an artifact of inducer adsorption onto particles
+#     (wash-out and cell-free co-incubation controls).
+#   - Amphiregulin and GM-CSF secretion appear only at 24 h, i.e. after the
+#     antiapoptotic effect; recombinant EGF and the EGFR inhibitor AG1478
+#     changed nothing, ruling the classical EGFR pathway out.
+#   - Aqueous extracts, organic extracts, washed particles and four of five
+#     heavy PAH (B(a)P most efficient) mimic the protection; carbon black,
+#     light PAH and endotoxin do not. PM2.5-VS (metal-rich, PAH-poor) was the
+#     only batch that failed to protect.
+#   - AhR carries part of the mechanism: the agonist beta-naphthoflavone
+#     reduced apoptosis on its own (31% reduction of DiOC6(3) low) and
+#     improved PM2.5 protection (54% vs. 37%); the antagonist
+#     alpha-naphthoflavone (25% vs. 37%) and AhR siRNA (18% vs. 27%) each
+#     partially removed it.
+#
+# EXTRACTION NOTES - read before adding numbers to this file:
+#   - NO measurement values are recorded in the output records. Every
+#     quantitative result in this paper is either (a) a percent reduction of
+#     "DiOC6(3) low" cells - a mitochondrial-transmembrane-potential /
+#     apoptosis readout for which the SOMA assay microschemas have no named
+#     measurement slot - or (b) figure-only (Figures 1-7 carry the dose and
+#     kinetic series; the text reports no numbers for them). Per the
+#     extraction rules, figure-derived values are not digitized and slots
+#     with no paper-reported value are omitted rather than guessed, so the
+#     output records carry only their experimental group and exposure link.
+#     The percent reductions ARE preserved, verbatim, as evidence snippets on
+#     KE:ke-inhibited-apoptosis and KE:mie-ahr-activation.
+#   - For the same reason there is no response_comparisons section: the
+#     paper's reported changes are all on that unmodelled DiOC6(3) readout,
+#     and inventing a compared_measurement name for it would be worse than
+#     omitting it.
+#   - The AhR pharmacology arms (beta-NF, alpha-NF, siRNA-AhR apoptosis
+#     readouts in Figure 7) are likewise recorded as key-event evidence
+#     rather than as assays: their readout is DiOC6(3)/PI apoptosis, not an
+#     oxidative-stress, gene-expression or EGFR measurement. The Western blot
+#     that validated the silencing IS modelled, as a GeneExpressionAssay.
+#   - The NCI-H292 / BEAS-2B / NHBE arms measured only DiOC6(3) and PI, with
+#     no ROS probe, so they are not modelled as OxidativeStressAssay records;
+#     their result is carried as evidence on KE:ke-inhibited-apoptosis.
+#   - The rEGF / AG1478 experiment measured apoptosis, not EGFR
+#     phosphorylation, so it is recorded as REFUTE evidence on
+#     KER:ferecatu-egfr-inhibited-apoptosis rather than as an assay.
+#   - PDF-text artifacts: the committed cache is a pypdf extraction, which
+#     renders the paper's "PM2.5" as "PM 2.5" in the body text (but not in
+#     the abstract) and breaks some words across line ends. Snippets below
+#     are copied verbatim from the committed cache, so body-text quotes keep
+#     the "PM 2.5" spacing and avoid line-broken words. None of this changes
+#     the quoted meaning.
+#
+# Key event vocabulary: KE:mie-oxidative-stress, KE:mie-ahr-activation,
+# KE:ke1-egfr-activation, KE:ke-airway-inflammation and KE:ke-airway-remodeling
+# are copied VERBATIM from the wordings on origin/main (each is unanimous
+# there: "Increased oxidative stress"/increased, "AhR pathway
+# activation"/activated, "EGFR activation"/activated, "Airway
+# inflammation"/increased - the majority wording, not the single
+# "Th2 airway inflammation" variant - and "Airway remodeling"/increased).
+# KE:ke-inhibited-apoptosis is newly minted here: no existing key event covers
+# suppression of apoptosis, and it is kept minimal so the next paper can reuse
+# it unchanged.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:20663163"
+  reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+  doi: "10.1186/1743-8977-7-18"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - protocol_type: MolecularAssayProtocol
+    id: "PROTOCOL:ferecatu-flow-apoptosis-001"
+    name: "Four-parameter flow cytometric apoptosis panel in bronchial epithelial cells"
+    description: >-
+      Apoptosis hallmarks recommended by the Nomenclature Committee on Cell
+      Death were quantified by flow cytometry: 3,3-dihexyloxacarbocyanine
+      iodide (DiOC6(3), 2 nM) for the mitochondrial transmembrane potential,
+      hydroethidine (HE, 2 uM) for superoxide anion generation, Annexin
+      V-FITC for phosphatidylserine exposure, and propidium iodide (PI,
+      10 ug/ml) for plasma membrane permeabilization. Percentage induction of
+      apoptosis was computed relative to the apoptotic fraction of control
+      cells.
+    detection_method: "flow cytometry (DiOC6(3), hydroethidine, Annexin V-FITC and propidium iodide staining)"
+    platform: "CyAn ADP LX (Dako Cytomation)"
+    replicate_requirements: 3
+    quality_control_criteria: "results reported as mean +/- standard deviation of three independent experiments; one-way ANOVA with Dunnett's test versus control and Student-Newman-Keuls for pairwise comparisons; p < 0.05 considered significant"
+
+  - protocol_type: MolecularAssayProtocol
+    id: "PROTOCOL:ferecatu-elisa-amphiregulin-001"
+    name: "Amphiregulin ELISA on bronchial epithelial cell supernatants"
+    description: >-
+      Subconfluent 16HBE cells were exposed to PM2.5-AW for 4 h or 24 h;
+      supernatants were recovered, centrifuged at 15,000 x g for 15 min at
+      4 degrees C to pellet particles, frozen at -80 degrees C, and assayed
+      for released amphiregulin.
+    detection_method: "enzyme-linked immunosorbent assay (R&D Systems Europe)"
+
+  - protocol_type: MolecularAssayProtocol
+    id: "PROTOCOL:ferecatu-elisa-gmcsf-001"
+    name: "GM-CSF ELISA on bronchial epithelial cell supernatants"
+    description: >-
+      Granulocyte monocyte colony-stimulating factor released into the
+      supernatant of PM2.5-AW-exposed subconfluent 16HBE cells (4 h or 24 h)
+      was measured on the same particle-cleared, frozen supernatants used for
+      amphiregulin.
+    detection_method: "enzyme-linked immunosorbent assay (R&D Systems Europe)"
+
+  - protocol_type: MolecularAssayProtocol
+    id: "PROTOCOL:ferecatu-sirna-ahr-001"
+    name: "AhR gene silencing by fluorescent siRNA in 16HBE cells"
+    description: >-
+      16HBE cells were seeded at 2 x 10^4 cells/cm2 and transfected overnight
+      later with 10 nM AhR siRNA (Hs_AHR_6 AlexaFluor-647, SI03043971,
+      Qiagen) or a non-silencing control siRNA (AllStars Neg AlexaFluor-647,
+      1027287, Qiagen) using HiPerFect. The AlexaFluor-647 tag allowed
+      transfected cells to be gated by flow cytometry. Experiments were run
+      48 h after transfection.
+    detection_method: "lipid-based siRNA transfection with AlexaFluor-647-tagged duplexes, transfected cells gated by flow cytometry"
+    platform: "HiPerFect Transfection Reagent (Qiagen)"
+
+  - protocol_type: MolecularAssayProtocol
+    id: "PROTOCOL:ferecatu-wb-ahr-001"
+    name: "Western blot for AhR protein in 16HBE cells"
+    description: >-
+      Whole-cell lysates from siRNA-transfected 16HBE cells were blotted for
+      AhR and for actin as the loading reference; immunoreactive bands were
+      detected by chemiluminescence. The blot is qualitative - the paper
+      reports no densitometric values - and served to confirm that the siRNA
+      silenced AhR.
+    detection_method: "immunoblot with chemiluminescent HRP substrate"
+    antibodies_used:
+      - "mouse-monoclonal anti-AhR (WH0000196M2, Sigma)"
+      - "mouse-monoclonal anti-Actin (A5441, Sigma)"
+      - "peroxidase-conjugated anti-mouse immunoglobulin (A9044, Sigma)"
+    normalization_method: "actin loading control"
+    platform: "FujiFilm LAS 4000 camera system"
+
+# =============================================================================
+# KEY EVENTS
+# Blocks for existing IDs are copied verbatim from origin/main.
+# KE:ke-inhibited-apoptosis is newly minted here.
+# =============================================================================
+
+key_events:
+  # --- Negative evidence: at these doses PM2.5 did NOT raise oxidative
+  # stress, and pretreatment LOWERED inducer-driven ROS production. Both
+  # snippets therefore point against this key event, and are marked REFUTE.
+  - id: "KE:mie-oxidative-stress"
+    name: "Increased oxidative stress"
+    biological_action: increased
+    level_of_biological_organization: molecular
+    evidence:
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "even when 16HBE cells were exposed for longer times to PM 2.5-AW (1-50 μg/cm2), no significative increase of apoptotic parameters was observed"
+        explanation: "Superoxide anion generation (hydroethidine) was one of the apoptotic parameters quantified, so this result shows that PM2.5-AW at 1-50 ug/cm2 did not increase oxidative stress in 16HBE cells even at 48-72 h."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "Conversely, a 4 hour-pretreatment with PM2.5 prevent mitochondria-driven apoptosis triggered by broad spectrum inducers (A23187, staurosporine and oligomycin) by reducing the mitochondrial transmembrane potential loss, the subsequent ROS production, phosphatidylserine externalization, plasma membrane permeabilization and typical morphological outcomes"
+        explanation: "PM2.5 pretreatment reduced rather than increased ROS production downstream of the apoptosis inducers, which is the opposite direction to this key event."
+
+  - id: "KE:mie-ahr-activation"
+    name: "AhR pathway activation"
+    biological_action: activated
+    level_of_biological_organization: molecular
+    evidence:
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Finally, the activation or silencing of the aryl hydrocarbon receptor (AhR) showed that it is involved into the molecular mechanism of the antiapoptotic effect of PM2.5 at the mitochondrial checkpoint of apoptosis."
+        explanation: "Both pharmacological activation and genetic silencing of AhR changed the PM2.5 response, placing AhR activation in the mechanism."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Note that the particle-coupled PAH are bioavailable in our system since CYP1A1 mRNA and its enzymatic activity were increased"
+        explanation: "Induction of CYP1A1, a canonical AhR target gene, is direct evidence that the particle-bound PAH reached and activated the AhR pathway in these cells."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "beta-NF (20 μg/ml) used prior to A23178 significantly reduced the amount of apoptotic cells (31% reduction of DiOC6(3) low), and further improved the protection conferred by PM 2.5 exposure (54% vs. 37% reduction of DioC6(3) low)."
+        explanation: "The AhR agonist beta-naphthoflavone reproduced and amplified the PM2.5 effect, showing that activating this pathway is sufficient to protect the mitochondrial checkpoint."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "exposure (25% vs. 37% reduction of DiOC6(3) low), although it did not noticeably modify the apoptotic effect of A23187."
+        explanation: "The AhR antagonist alpha-naphthoflavone cut the PM2.5 protection from 37% to 25% without affecting A23187 on its own, so the loss is specific to the AhR-dependent arm."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Then, intracellular PAH can target and activate the aryl hydrocarbon receptor (AhR)."
+        explanation: "The authors' mechanistic model names PAH desorbed from endocytosed particles as the AhR ligands."
+
+  # --- PM2.5 does drive EGFR-ligand (amphiregulin) secretion, but only at
+  # 24 h, and blocking the receptor did not touch the antiapoptotic effect.
+  # The first snippet supports the key event; the second refutes its place in
+  # this paper's mechanism.
+  - id: "KE:ke1-egfr-activation"
+    name: "EGFR activation"
+    biological_action: activated
+    level_of_biological_organization: molecular
+    evidence:
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Results showed that AR and GM-CSF secretion occur only after a 24 h exposure, which is in agreement with previous studies published on PM 2.5-VW and PM 2.5-AS"
+        explanation: "PM2.5 exposure does elicit secretion of the EGFR ligand amphiregulin from 16HBE cells, confirming EGFR pathway engagement - but as a late (24 h) event."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "The use of recombinant EGF and specific inhibitor led us to rule out the involvement of the classical EGFR signaling pathway as well as the proinflammatory cytokines secretion."
+        explanation: "Neither adding recombinant EGF nor inhibiting the receptor altered the response, so EGFR activation is not the step through which PM2.5 suppresses apoptosis here."
+
+  # --- Newly minted. No key event on origin/main covers suppression of
+  # apoptosis; kept minimal (name, action, level) for reuse.
+  - id: "KE:ke-inhibited-apoptosis"
+    name: "Inhibited apoptosis"
+    biological_action: inhibited
+    level_of_biological_organization: cellular
+    evidence:
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Conversely, a 4 hour-pretreatment with PM2.5 prevent mitochondria-driven apoptosis triggered by broad spectrum inducers (A23187, staurosporine and oligomycin) by reducing the mitochondrial transmembrane potential loss, the subsequent ROS production, phosphatidylserine externalization, plasma membrane permeabilization and typical morphological outcomes"
+        explanation: "A 4 h PM2.5 pretreatment suppressed every measured hallmark of mitochondria-driven apoptosis, which is this key event."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "(33% reduction of DiOC6(3) low), the calcium ionophore A23187 (35% reduction of DiOC6(3) low) and staurosporine (44% reduction of DiOC6(3) low), but not by ionomycin, rotenone,"
+        explanation: "Quantifies the inhibition in 16HBE cells - 33% for oligomycin, 35% for A23187, 44% for staurosporine - and shows it is selective, with no protection against ionomycin, rotenone, antimycin A or H2O2."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "experiments performed in NCI-H292 and NHBE cells showed that PM 2.5-AW also reduced apoptosis induced by A23187 or STS but not by H2O2"
+        explanation: "The inhibition is not a quirk of one immortalized line: it reproduces in the NCI-H292 carcinoma line and in primary NHBE cells."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "the antiapoptotic effect of PM 2.5 -AW was partially efficient at 10 μg/cm 2 and totally effective for concentrations beyond 25 μg/cm 2"
+        explanation: "Gives the particle dose-dependence of the inhibition: partial at the standard 10 ug/cm2 dose, complete above 25 ug/cm2."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "(149.2% of control) but PM 2.5 -AW (50 μg/cm 2) totally counteracted the cellular volume decrease"
+        explanation: "The morphological arm of the same inhibition: PM2.5 fully blocked the apoptotic cell-volume loss provoked by A23187."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Instead, the water-soluble fraction, washed particles and organic compounds such as polycyclic aromatic hydrocarbons (PAH) could mimic this antiapoptotic activity."
+        explanation: "Identifies which particle fractions carry the inhibitory activity: the water-soluble fraction, the washed particles themselves, and the adsorbed organic PAH."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Except for B(b)F, all the other PAH reduced the amount of apoptosis induced by A23187, similar to that of PM 2.5 pretreatment and B(a)P seems to be the most efficient"
+        explanation: "Four of the five heavy PAH tested reproduced the inhibition on their own, with benzo[a]pyrene the most potent."
+
+  - id: "KE:ke-airway-inflammation"
+    name: "Airway inflammation"
+    biological_action: increased
+    level_of_biological_organization: tissue
+    evidence:
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The PM2.5-antiapoptotic effect in addition to the well-documented inflammatory response might explain the maintenance of a prolonged inflammation state induced after pollution exposure and might delay repair processes of injured tissues."
+        explanation: "The authors place their finding alongside the established inflammatory response to PM2.5, proposing that apoptosis resistance is what sustains airway inflammation after exposure."
+
+  - id: "KE:ke-airway-remodeling"
+    name: "Airway remodeling"
+    biological_action: increased
+    level_of_biological_organization: tissue
+    evidence:
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Thus, mechanisms involved in airway remodelling might be the excessive cell proliferation as well as the resistance to the apoptotic cell death."
+        explanation: "The paper names resistance to apoptotic cell death as one of the mechanisms behind airway remodeling, which is why this tissue-level key event is relevant here."
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:ferecatu-ahr-inhibited-apoptosis"
+    name: "AhR pathway activation leads to inhibited apoptosis in bronchial epithelial cells"
+    description: >-
+      PAH desorbed from PM2.5 activate AhR, and AhR activation accounts for
+      part of the protection of the mitochondrial apoptosis checkpoint.
+      Three independent manipulations agree: the agonist beta-naphthoflavone
+      protected on its own and raised PM2.5 protection from 37% to 54%, the
+      antagonist alpha-naphthoflavone cut it to 25%, and AhR siRNA cut it
+      from 27% to 18%. Because neither the antagonist nor the siRNA abolished
+      the protection, the authors conclude AhR only partially contributes and
+      another pathway must also be involved - hence moderate, not strong,
+      support.
+    upstream_event:
+      id: "KE:mie-ahr-activation"
+      name: "AhR pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-inhibited-apoptosis"
+      name: "Inhibited apoptosis"
+      biological_action: inhibited
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    evidence:
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Finally, the activation or silencing of the aryl hydrocarbon receptor (AhR) showed that it is involved into the molecular mechanism of the antiapoptotic effect of PM2.5 at the mitochondrial checkpoint of apoptosis."
+        explanation: "States the causal link directly: AhR status determines whether PM2.5 suppresses apoptosis at the mitochondrial checkpoint."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "AhR silencing significantly reduced the protection triggered by PM 2.5 (18% vs. 27% reduction of DiOC(6)3 low) alike the antagonist (alpha-NF) did."
+        explanation: "Genetic loss of AhR weakened the downstream inhibition of apoptosis, the key necessity test for this relationship."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "these results suggest that AhR partially contributes to the antiapoptotic effect of PM 2.5 exposure."
+        explanation: "The authors' own summary of the relationship's strength: real but partial, which is why evidence_support is moderate."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "some of them might be mitochondrial MMP regulators (dotted arrow), thus might protect the cell from apoptosis induced by A23187, staurosporin (STS) or oligomycin (Omy)."
+        explanation: "Proposes the intermediate step - AhR target genes acting as mitochondrial membrane permeabilization regulators - linking AhR activation to the apoptosis block."
+
+  - id: "KER:ferecatu-egfr-inhibited-apoptosis"
+    name: "EGFR activation leads to inhibited apoptosis in bronchial epithelial cells"
+    description: >-
+      Tested and ruled out. Amphiregulin and GM-CSF secretion appeared only
+      at 24 h, after the antiapoptotic effect was already established, and
+      neither recombinant EGF nor the EGFR inhibitor AG1478 altered the
+      reduction of A23187-induced apoptosis. Recorded as a relationship with
+      REFUTE evidence so the negative result is not re-tested by the next
+      curator; evidence_support is weak because the paper argues against the
+      link rather than for it.
+    upstream_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-inhibited-apoptosis"
+      name: "Inhibited apoptosis"
+      biological_action: inhibited
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: weak
+    evidence:
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "we used a recombinant EGF ligand (rEGF) or the inhibitor of EGF receptor (AG1478, Figure 5B) to show that none of the two compounds modifies the reduction of A23187-induced apoptosis."
+        explanation: "Driving the receptor with ligand and blocking it with AG1478 both left the apoptosis inhibition unchanged, so EGFR activation is not the upstream step."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "Results showed that AR and GM-CSF secretion occur only after a 24 h exposure, which is in agreement with previous studies published on PM 2.5-VW and PM 2.5-AS"
+        explanation: "Timing argues against the link: the EGFR-ligand response is a late event while the apoptosis inhibition is established within the 4 h pretreatment."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "The use of recombinant EGF and specific inhibitor led us to rule out the involvement of the classical EGFR signaling pathway as well as the proinflammatory cytokines secretion."
+        explanation: "The authors state the rule-out explicitly for both the EGFR pathway and the proinflammatory cytokine arm."
+
+  - id: "KER:ferecatu-inhibited-apoptosis-airway-inflammation"
+    name: "Inhibited apoptosis leads to sustained airway inflammation"
+    description: >-
+      The authors' proposed in vivo consequence of their in vitro finding:
+      apoptosis resistance on top of the established inflammatory response
+      might maintain a prolonged inflammation state after pollution exposure.
+      Hedged ("might explain") and not tested in this paper, so support is
+      weak and the relationship is indirect.
+    upstream_event:
+      id: "KE:ke-inhibited-apoptosis"
+      name: "Inhibited apoptosis"
+      biological_action: inhibited
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    relationship_type: "indirectly leads to"
+    evidence_support: weak
+    evidence:
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The PM2.5-antiapoptotic effect in addition to the well-documented inflammatory response might explain the maintenance of a prolonged inflammation state induced after pollution exposure and might delay repair processes of injured tissues."
+        explanation: "States the hypothesised causal chain from the antiapoptotic effect to prolonged airway inflammation and delayed tissue repair."
+
+  - id: "KER:ferecatu-inhibited-apoptosis-airway-remodeling"
+    name: "Inhibited apoptosis leads to airway remodeling"
+    description: >-
+      Background reasoning the paper's result speaks to: airway remodeling
+      after chronic particle exposure may arise from excessive proliferation
+      and from resistance to apoptotic cell death. This paper supplies the
+      apoptosis-resistance half in vitro but does not measure remodeling, so
+      support is weak and the relationship is indirect.
+    upstream_event:
+      id: "KE:ke-inhibited-apoptosis"
+      name: "Inhibited apoptosis"
+      biological_action: inhibited
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ke-airway-remodeling"
+      name: "Airway remodeling"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    relationship_type: "indirectly leads to"
+    evidence_support: weak
+    evidence:
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Thus, mechanisms involved in airway remodelling might be the excessive cell proliferation as well as the resistance to the apoptotic cell death."
+        explanation: "Names resistance to apoptotic cell death as a mechanism of airway remodeling, which is the relationship asserted here."
+
+# =============================================================================
+# OXIDATIVE STRESS ASSAYS
+# Both assays read out superoxide anion generation with hydroethidine as part
+# of the four-parameter flow panel. No measurement values: the text reports
+# none and the dose/kinetic series live only in Figures 1 and 3.
+# =============================================================================
+
+oxidative_stress_assays:
+  - id: "OX:ferecatu-pm25-alone-16hbe"
+    name: "Superoxide anion generation and apoptosis hallmarks in 16HBE cells exposed to PM2.5-AW alone"
+    description: >-
+      Dose-response (1-50 ug/cm2) and kinetic (24, 48, 72 h) exposure of
+      subconfluent 16HBE cells to Auteuil-Winter PM2.5, read out by flow
+      cytometry for mitochondrial depolarization, superoxide anion
+      generation, phosphatidylserine exposure and plasma membrane
+      permeabilization. Hydrogen peroxide served as the positive control.
+      None of the apoptotic parameters rose significantly at any dose or
+      time point. The paper reports no numeric values for these panels
+      (Figure 1A and 1B only), so no measurement slots are filled.
+    ros_probe_type: "hydroethidine (HE), 2 uM - superoxide anion generation (HE -> Eth high)"
+    has_exposure_condition:
+      - id: "EXPOSURE:ferecatu-untreated-24h"
+        name: "Untreated culture medium, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "0"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:ferecatu-pm25aw-1to50-24h"
+        name: "PM2.5-AW 1-50 ug/cm2 for 24 hours (dose-response series)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1-50"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+          variability:
+            variability_type: range
+            lower_bound: "1"
+            upper_bound: "50"
+            unit:
+              id: "UO:0010071"
+              name: "microgram per square centimeter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "0"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:ferecatu-h2o2-500-24h"
+        name: "Hydrogen peroxide 500 uM for 24 hours (positive control for apoptosis)"
+        exposure_agent:
+          id: "CHEBI:16240"
+          name: "hydrogen peroxide"
+        exposure_concentration:
+          value: "500"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "0"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "OX:ferecatu-pm25-alone-16hbe-output-control"
+        name: "Untreated 16HBE control"
+        experimental_group: control
+        measured_under: "EXPOSURE:ferecatu-untreated-24h"
+      - id: "OX:ferecatu-pm25-alone-16hbe-output-pm25"
+        name: "16HBE exposed to PM2.5-AW 1-50 ug/cm2"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ferecatu-pm25aw-1to50-24h"
+      - id: "OX:ferecatu-pm25-alone-16hbe-output-h2o2"
+        name: "16HBE exposed to hydrogen peroxide (positive control)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ferecatu-h2o2-500-24h"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:ferecatu-16hbe-001"
+      name: "16HBE14o- human bronchial epithelial cell line"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: adherent
+      substrate_type: collagen_coated
+      coating: "bovine collagen (Purecol Natucan, 0.5 mg/cm2) and human fibronectin (Sigma, 4 ug/cm2)"
+      donor_info: "16HBE14o- line provided by Dr. D.C. Gruenert; grown to subconfluence in DMEM/F12 with 2 mM GlutaMAX-I, penicillin/streptomycin, fungizone and 2% UltroserG, with UltroserG removed before particle treatment"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ferecatu-flow-apoptosis-001"
+        name: "Four-parameter flow cytometric apoptosis panel in bronchial epithelial cells"
+    evidence:
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "epithelial cells to increasing amount of PM 2.5-AW from 1 to 50 μg/cm2."
+        explanation: "Gives the exposure series this assay records: PM2.5-AW from 1 to 50 ug/cm2 on 16HBE cells."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "2 μM hydroethidine (HE, Molecular Probes) for superoxide anion generation"
+        explanation: "Identifies the ROS probe and concentration recorded in ros_probe_type."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "even when 16HBE cells were exposed for longer times to PM 2.5-AW (1-50 μg/cm2), no significative increase of apoptotic parameters was observed"
+        explanation: "The assay's result: no significant rise in any apoptotic parameter, including superoxide anion generation, at any dose out to 72 h."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In this study, we showed that low levels of Parisian PM2.5 are not cytotoxic for three different cell lines and primary cultures of human bronchial epithelial cells."
+        explanation: "The paper's own summary of this negative cytotoxicity result across all four bronchial epithelial models."
+
+  - id: "OX:ferecatu-pm25-a23187-16hbe"
+    name: "Superoxide anion generation in 16HBE cells pretreated with PM2.5-AW before A23187-induced apoptosis"
+    description: >-
+      Subconfluent 16HBE cells received a 4 h PM2.5-AW pretreatment
+      (10 ug/cm2 standard dose; 1-50 ug/cm2 in the dose-response arm) and
+      were then exposed to the calcium ionophore A23187 for a further 20 h.
+      Apoptosis was quantified simultaneously on four flow-cytometry
+      parameters, ROS production (HE -> Eth high) among them. PM2.5
+      pretreatment reduced the A23187 response by 35% on the DiOC6(3)-low
+      readout and likewise lowered the downstream ROS production. The paper
+      gives no numeric ROS values (Figures 2 and 3 only), so no measurement
+      slots are filled; the percent reductions it does report are on the
+      unmodelled DiOC6(3) readout and are carried as evidence on
+      KE:ke-inhibited-apoptosis.
+    ros_probe_type: "hydroethidine (HE), 2 uM - superoxide anion generation (HE -> Eth high)"
+    has_exposure_condition:
+      - id: "EXPOSURE:ferecatu-untreated-24h"
+        name: "Untreated culture medium, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "0"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:ferecatu-a23187-3um-20h"
+        name: "A23187 (calcimycin) 3 uM for 20 hours"
+        exposure_agent:
+          id: "CHEBI:3305"
+          name: "Calcimycin"
+        exposure_concentration:
+          value: "3"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "20"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "0"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:ferecatu-pm25aw-10-4h-then-a23187"
+        name: "PM2.5-AW 10 ug/cm2 for 4 hours, then A23187 3 uM for a further 20 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "20"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "OX:ferecatu-pm25-a23187-16hbe-output-control"
+        name: "Untreated 16HBE control"
+        experimental_group: control
+        measured_under: "EXPOSURE:ferecatu-untreated-24h"
+      - id: "OX:ferecatu-pm25-a23187-16hbe-output-a23187"
+        name: "16HBE exposed to A23187 alone"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ferecatu-a23187-3um-20h"
+      - id: "OX:ferecatu-pm25-a23187-16hbe-output-pm25-a23187"
+        name: "16HBE pretreated with PM2.5-AW before A23187"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ferecatu-pm25aw-10-4h-then-a23187"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:ferecatu-16hbe-001"
+      name: "16HBE14o- human bronchial epithelial cell line"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: adherent
+      substrate_type: collagen_coated
+      coating: "bovine collagen (Purecol Natucan, 0.5 mg/cm2) and human fibronectin (Sigma, 4 ug/cm2)"
+      donor_info: "16HBE14o- line provided by Dr. D.C. Gruenert; grown to subconfluence in DMEM/F12 with 2 mM GlutaMAX-I, penicillin/streptomycin, fungizone and 2% UltroserG, with UltroserG removed before particle treatment"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ferecatu-flow-apoptosis-001"
+        name: "Four-parameter flow cytometric apoptosis panel in bronchial epithelial cells"
+    evidence:
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "by four parameters and expressed as percentage of 16HBE cells showing ΔΨm drop (DiOC6(3) low) and ROS production (HE->Eth high) or PS exposure (Annexin V+) and plasma membrane permeabilization (PI high)."
+        explanation: "Confirms ROS production was one of the four parameters quantified in this pretreatment experiment, which is what makes it an oxidative stress assay."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "After a 4 h pretreatment with PM 2.5-AW (10 μg/cm2), 16HBE cells were exposed to different inducers of cell death for another 20 h such as mitochondrial respiratory chain inhibitors (rotenone (Rot, 5 μM), antimycin A (AMA, 25 μg/ml) and oligomycin (Omy, 5 μM)), calcium ionophores (ionomycin (Iono, 0.5 μM) and A23187, 3 μM), protein kinases inhibitor (staurosporine STS, 1 μM) and oxidative stress activator"
+        explanation: "Gives the exposure design recorded in the conditions above: 4 h PM2.5-AW at 10 ug/cm2, then 20 h with A23187 at 3 uM."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Conversely, a 4 hour-pretreatment with PM2.5 prevent mitochondria-driven apoptosis triggered by broad spectrum inducers (A23187, staurosporine and oligomycin) by reducing the mitochondrial transmembrane potential loss, the subsequent ROS production, phosphatidylserine externalization, plasma membrane permeabilization and typical morphological outcomes"
+        explanation: "The assay's result on the ROS parameter: PM2.5 pretreatment lowered the ROS production that follows the mitochondrial transmembrane potential loss."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "mitochondrial and plasma membranes alterations of apoptosis at concentrations as high as 5 μM of A23187"
+        explanation: "The protection held across the A23187 dose range, up to 5 uM - the inducer dose-response arm of this assay."
+
+# =============================================================================
+# EGFR SIGNALING ASSAY
+# Amphiregulin is an EGFR ligand, so its secretion is the EGFR-pathway
+# readout here. ELISA values appear only in Figure 5A, so
+# egfr_ligand_expression is left unfilled.
+# =============================================================================
+
+egfr_signaling_assays:
+  - id: "EGFR:ferecatu-ar-gmcsf-16hbe"
+    name: "Amphiregulin and GM-CSF secretion from 16HBE cells after 4 h or 24 h PM2.5 exposure"
+    description: >-
+      Subconfluent 16HBE cells were exposed to PM2.5 (10 ug/cm2) for 4 h or
+      24 h and the released EGFR ligand amphiregulin and the cytokine GM-CSF
+      were measured by ELISA in particle-cleared supernatants. Secretion of
+      both appeared only at 24 h - after the antiapoptotic effect, which is
+      established within the 4 h pretreatment. This timing is the paper's
+      argument that the EGFR/proinflammatory arm is not the antiapoptotic
+      mechanism. The ELISA concentrations are reported only in Figure 5A, so
+      no measurement slots are filled.
+    normalization_reference: "amphiregulin and GM-CSF concentrations in particle-cleared culture supernatant"
+    has_exposure_condition:
+      - id: "EXPOSURE:ferecatu-untreated-24h"
+        name: "Untreated culture medium, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "0"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:ferecatu-pm25-10-4h"
+        name: "PM2.5 10 ug/cm2 for 4 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "0"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:ferecatu-pm25-10-24h"
+        name: "PM2.5 10 ug/cm2 for 24 hours"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0010071"
+            name: "microgram per square centimeter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "0"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "EGFR:ferecatu-ar-gmcsf-16hbe-output-control"
+        name: "Untreated 16HBE control supernatant"
+        experimental_group: control
+        measured_under: "EXPOSURE:ferecatu-untreated-24h"
+      - id: "EGFR:ferecatu-ar-gmcsf-16hbe-output-pm25-4h"
+        name: "16HBE supernatant after 4 h PM2.5 exposure"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ferecatu-pm25-10-4h"
+      - id: "EGFR:ferecatu-ar-gmcsf-16hbe-output-pm25-24h"
+        name: "16HBE supernatant after 24 h PM2.5 exposure"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ferecatu-pm25-10-24h"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:ferecatu-16hbe-001"
+      name: "16HBE14o- human bronchial epithelial cell line"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: adherent
+      substrate_type: collagen_coated
+      coating: "bovine collagen (Purecol Natucan, 0.5 mg/cm2) and human fibronectin (Sigma, 4 ug/cm2)"
+      donor_info: "16HBE14o- line provided by Dr. D.C. Gruenert; grown to subconfluence in DMEM/F12 with 2 mM GlutaMAX-I, penicillin/streptomycin, fungizone and 2% UltroserG, with UltroserG removed before particle treatment"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ferecatu-elisa-amphiregulin-001"
+        name: "Amphiregulin ELISA on bronchial epithelial cell supernatants"
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ferecatu-elisa-gmcsf-001"
+        name: "GM-CSF ELISA on bronchial epithelial cell supernatants"
+    evidence:
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Subconfluent 16HBE cells were exposed to PM 2.5-AW for 4 h or 24 h and supernatants were recovered"
+        explanation: "Gives the two exposure durations and the sample type this assay records."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "of Amphiregulin (AR) and GM-CSF released were evaluated with an enzyme-linked immunosorbent assay kit (ELISA, R&D Systems Europe; Abingdon, UK)"
+        explanation: "Names the two analytes and the ELISA method recorded in this assay's protocols."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Results showed that AR and GM-CSF secretion occur only after a 24 h exposure, which is in agreement with previous studies published on PM 2.5-VW and PM 2.5-AS"
+        explanation: "The assay's result: amphiregulin and GM-CSF rose at 24 h but not at 4 h, which is why the 4 h and 24 h output records are kept apart."
+
+# =============================================================================
+# GENE EXPRESSION ASSAY
+# Western blot confirming the AhR siRNA knockdown. Qualitative - no
+# densitometry is reported - so protein_level is left unfilled.
+# =============================================================================
+
+gene_expression_assays:
+  - id: "GENE:ferecatu-ahr-wb-16hbe"
+    name: "AhR protein in 16HBE cells after AhR siRNA silencing"
+    description: >-
+      16HBE cells were transfected with 10 nM AhR siRNA or a non-silencing
+      control siRNA and blotted for AhR 48 h later, with actin as the
+      loading reference, to confirm the knockdown before the apoptosis
+      readouts. The paper shows the blot (Figure 7B upper panel) but reports
+      no densitometric values, so protein_level is omitted rather than
+      estimated from the image.
+    target_gene: "PR:000003858"
+    gene_expression_method: "Western blot"
+    normalization_reference: "actin"
+    has_exposure_condition:
+      - id: "EXPOSURE:ferecatu-sirna-nonsilencing-48h"
+        name: "Non-silencing control siRNA 10 nM, 48 hours (transfection control)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000065"
+            name: "nanomolar"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "0"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:ferecatu-sirna-ahr-48h"
+        name: "AhR siRNA 10 nM, 48 hours"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000065"
+            name: "nanomolar"
+        exposure_duration:
+          value: "48"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "0"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GENE:ferecatu-ahr-wb-16hbe-output-nonsilencing"
+        name: "AhR protein in non-silencing siRNA 16HBE cells"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:ferecatu-sirna-nonsilencing-48h"
+      - id: "GENE:ferecatu-ahr-wb-16hbe-output-sirna-ahr"
+        name: "AhR protein in AhR siRNA 16HBE cells"
+        experimental_group: treated
+        measured_under: "EXPOSURE:ferecatu-sirna-ahr-48h"
+    informs_on_key_event:
+      id: "KE:mie-ahr-activation"
+      name: "AhR pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:ferecatu-16hbe-001"
+      name: "16HBE14o- human bronchial epithelial cell line"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: adherent
+      substrate_type: collagen_coated
+      coating: "bovine collagen (Purecol Natucan, 0.5 mg/cm2) and human fibronectin (Sigma, 4 ug/cm2)"
+      donor_info: "16HBE14o- line provided by Dr. D.C. Gruenert; seeded at 2 x 10^4 cells/cm2 in T25 dishes for Western blot or a P24 plate for flow cytometry"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ferecatu-sirna-ahr-001"
+        name: "AhR gene silencing by fluorescent siRNA in 16HBE cells"
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:ferecatu-wb-ahr-001"
+        name: "Western blot for AhR protein in 16HBE cells"
+    evidence:
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Then, 10 nM of AhR siRNA (Hs_AHR_6 AlexaFluor-647, Ref SI03043971, Qiagen) or control non-silencing siRNA (AllStars Neg AlexaFluor-647, Ref 1027287, Qiagen)"
+        explanation: "Gives the siRNA concentration and the two constructs recorded as this assay's two exposure conditions."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "validation of AhR silencing by western blot (Figure 7B upper panel)"
+        explanation: "The assay's result: the Western blot confirmed that the siRNA lowered AhR protein."
+      - reference: "PMID:20663163"
+        reference_title: "Polycyclic aromatic hydrocarbon components contribute to the mitochondria-antiapoptotic effect of fine particulate matter on human bronchial epithelial cells via the aryl hydrocarbon receptor."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "the primary antibodies used were: mouse-monoclonal anti-AhR (WH0000196M2, Sigma) and anti-Actin (A5441, Sigma)."
+        explanation: "Names the AhR antibody and the actin normalization reference recorded in this assay's Western blot protocol."
