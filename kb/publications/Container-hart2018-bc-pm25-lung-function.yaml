@@ -1,0 +1,572 @@
+# =============================================================================
+# Hart et al. (2018) - Effects of Indoor and Ambient Black Carbon and PM2.5 on
+# Pulmonary Function among Individuals with COPD
+# =============================================================================
+#
+# Source: Environ Health Perspect. 2018;126(12):127008
+# DOI: 10.1289/EHP3668
+# PMID: 30570336
+#
+# Study design (HUMAN OBSERVATIONAL — longitudinal panel study, not in vitro,
+# not an animal experiment):
+#   - The COPD and Air Pollution Study, Eastern Massachusetts, November 2012 to
+#     December 2014
+#   - 125 patients with COPD (mean age 73.4 +/- 8.6 y, mostly white males,
+#     recruited from VA Boston), not currently smoking, not living with a
+#     smoker, and without major known indoor combustion sources
+#   - Up to four clinic visits per participant approximately 3 months apart;
+#     367 study visits in all, each with pre- and post-bronchodilator (180 ug
+#     albuterol) spirometry
+#   - For the week before each visit, indoor PM2.5 and black carbon (BC) were
+#     measured in each home on a weekly integrated Teflon filter (Harvard
+#     Personal Exposure Monitor, 2.5 um cutoff; BC by reflectometry); daily
+#     ambient BC and PM2.5 came from a central site monitor (Countway Medical
+#     Library, Boston), which also supplied the weights used to estimate daily
+#     indoor exposures (lag0 to lag3)
+#
+# IMPORTANT — WHAT THE EXPOSURE CONTRAST ACTUALLY IS:
+#   This is a continuous-exposure panel study. There is NO unexposed control
+#   group and no two-group contrast anywhere in the paper: every headline
+#   number is a mixed-effects regression coefficient — the change in a
+#   pulmonary function measure per interquartile range (IQR) increase in an
+#   exposure. Those reported-in-paper effect estimates are recorded below as
+#   response_comparisons WITHOUT control_output/treated_output references,
+#   because no pair of output records exists for them to point at; each
+#   comparison's description says exactly what the coefficient is. The only
+#   within-assay grouping is pre- vs post-bronchodilator spirometry, modelled
+#   as two output records (baseline / treated) as in the pre/post fixture.
+#
+# Key findings recorded here:
+#   - Median (IQR) indoor BC 0.19 (0.22) ug/m3; indoor PM2.5 6.67 (5.80) ug/m3
+#     — very low-level exposures
+#   - Each IQR increase in weekly indoor BC was associated with a 17.87 mL
+#     decrease in pre-bronchodilator FEV1 (95% CI: -33.76, -1.98) — about the
+#     FEV1 decrease associated with an additional 1.5 y of age
+#   - Each IQR increase in weekly indoor PM2.5 was associated with a smaller,
+#     less precise 4.64 mL decrease in pre-bronchodilator FEV1 (95% CI:
+#     -23.39, 14.11)
+#   - Indoor and ambient PM2.5 were associated with decreases in FVC (from
+#     -5.85 mL for lag1 ambient to -21.28 mL for lag0 indoor, per IQR)
+#   - Indoor BC was associated with lower FEV1/FVC for all time periods;
+#     ambient BC showed no consistent association with any measure
+#   - Neither indoor nor ambient BC or PM2.5 were associated with
+#     post-bronchodilator pulmonary function
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:30570336"
+  reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+  doi: "10.1289/EHP3668"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - protocol_type: SpirometryProtocol
+    id: "PROTOCOL:hart-spirometry-001"
+    name: "Pre- and post-bronchodilator spirometry per American Thoracic Society methods"
+    description: "Spirometry (HDpft 1000; Nspire) performed pre- and post-180 ug of albuterol (2 puffs) administered by a valved spacer, using American Thoracic Society methods (Miller et al. 2005). The highest values of pre- and post-bronchodilator FEV1 and FVC from acceptable efforts were used. Usual bronchodilator medications were not withheld before testing. All visits were scheduled with the participant in stable clinical status (a minimum of 2 weeks after completion of antibiotics or steroids for a COPD exacerbation)."
+    spirometry_standard: "American Thoracic Society methods (Miller et al. 2005)"
+    bronchodilator_agent: "albuterol"
+    bronchodilator_dose:
+      value: "180"
+      unit:
+        id: "UO:0000023"
+        name: "microgram"
+    equipment_required:
+      - "HDpft 1000 spirometer (Nspire)"
+
+  - id: "PROTOCOL:hart-indoor-sampling-001"
+    name: "In-home weekly integrated filter sampling of PM2.5 and black carbon"
+    description: "For the week prior to each clinic visit, participants placed a small particle sampler in the room where they spent most time (excluding the kitchen) to collect PM2.5 on Teflon filters. Sampler pumps (VP0140; Medo USA) were preset to a flow rate of 1.8 L/min and used a Harvard Personal Exposure Monitor with a size-selective impactor to collect particles with a 2.5 um cutoff (Demokritou et al. 2001). Teflon filters were equilibrated in a temperature- and humidity-controlled room and weighed on a Mettler MT5 electronic microbalance before and after sampling (gravimetric PM2.5). BC was measured on the same filters with an EEL M43D Smokestain Reflectometer (Diffusion Systems), which determines the blackness of PM filter samples; each filter served as its own blank. Concentrations were calculated by dividing net micrograms by the total volume of air sampled. The sampler ran indoors for a mean of 7.6 days (range 4-10)."
+    equipment_required:
+      - "Harvard Personal Exposure Monitor with size-selective impactor (2.5 um cutoff)"
+      - "VP0140 sampler pump (Medo USA), 1.8 L/min"
+      - "Mettler MT5 electronic microbalance"
+      - "EEL M43D Smokestain Reflectometer (Diffusion Systems)"
+
+  - id: "PROTOCOL:hart-ambient-monitoring-001"
+    name: "Central site ambient monitoring and estimation of daily indoor exposures"
+    description: "Daily measures of outdoor BC and PM2.5 were available from the monitor located on top of the Countway Medical Library in Boston, Massachusetts (Kang et al. 2010). The daily central-site values were used as weights to estimate daily indoor values for each home (Indoor daily = Outdoor measured daily / Outdoor measured weekly x Indoor measured weekly), yielding estimated indoor concentrations on the day of spirometry (lag0) and the 3 days before testing (lags 1-3). Daily estimates were calculated only for the days each participant ran the sampler. BC at this central site captures temporal variability of BC at sites throughout Eastern Massachusetts (Gryparis et al. 2007; Tang et al. 2018), and fine-particle infiltration varies little over 7 days (Brown et al. 2009), so in the absence of significant indoor sources, indoor levels are assumed proportional to outdoor levels."
+    equipment_required:
+      - "Central site monitor, Countway Medical Library, Boston, Massachusetts"
+
+# =============================================================================
+# LUNG FUNCTION ASSAY — pre- and post-bronchodilator spirometry across 367
+# visits from 125 COPD patients, with indoor (weekly integrated filter) and
+# ambient (central site) BC and PM2.5 exposure characterization.
+#
+# The pre/post-bronchodilator pair follows the per-condition output pattern:
+# the pre-bronchodilator record is the baseline state, the post-albuterol
+# record the treated state. The air-pollution exposures are continuous
+# covariates, not assigned groups, so no output record points at them; their
+# distributions are recorded on the exposure conditions and their effect
+# estimates in response_comparisons below.
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:hart-copd-spirometry"
+    name: "Pre- and post-bronchodilator spirometry in COPD patients with indoor and ambient BC/PM2.5 exposure assessment"
+    description: "Longitudinal panel spirometry in the COPD and Air Pollution Study: 367 visits from 125 COPD patients in Eastern Massachusetts (2012-2014), each visit preceded by a week of in-home PM2.5 and BC filter sampling. Cohort averages across visits: pre-bronchodilator FEV1 1.82 +/- 0.60 L, FVC 3.32 +/- 0.80 L, FEV1/FVC 0.55 +/- 0.13; post-bronchodilator FEV1 1.93 +/- 0.16 L, FVC 3.46 +/- 0.81 L, FEV1/FVC 0.56 +/- 0.13 (values as printed in the paper; the post-bronchodilator FEV1 SD of 0.16 L is anomalously small next to the pre-bronchodilator SD of 0.60 L and may be a typo in the source, but is recorded as printed). Exposure distributions: average indoor PM2.5 on the integrated filter 8.61 +/- 6.34 ug/m3 [median (IQR) = 6.67 (5.80)]; average indoor BC 0.24 +/- 0.28 ug/m3 [median (IQR) = 0.19 (0.22)]; average indoor/outdoor ratio 1.48 +/- 1.20 for PM2.5 and 0.46 +/- 0.67 for BC. Associations between exposures and pulmonary function (per-IQR mixed-model effect estimates) are recorded in response_comparisons. Neither indoor nor ambient BC or PM2.5 were associated with post-bronchodilator pulmonary function; the authors suggest associations might have been attenuated or masked in participants who used a short-acting bronchodilator prior to clinic visits."
+    evidence:
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Spirometry (HDpft 1000; Nspire) pre- and post-180μg of albuterol (2 puffs) administered by a valved spacer was conducted using American Thoracic Society methods (Miller et al. 2005). The highest values of pre- and post-bronchodilator FEV1 and FVC from acceptable efforts were used."
+        explanation: "Documents the spirometry method, equipment, and the 180 ug albuterol bronchodilator protocol behind this assay's pre/post output records."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "METHODS: Between November 2012 and December 2014, 125 patients with COPD (mean age, 73.4 y) who were not currently smoking and without known indoor BC sources were recruited."
+        explanation: "Establishes the study population recorded in study_subject: 125 non-smoking COPD patients with no known indoor BC sources."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Sampler pumps (VP0140; Medo USA) were preset to a flow rate of 1.8 L/min and used a Harvard Personal Exposure Monitor with a size-selective impactor to collect particles with a 2.5μm cutoff (Demokritou et al. 2001)."
+        explanation: "Documents the in-home sampling equipment behind the indoor PM2.5 and BC exposure conditions."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "BC was measured using an EEL M43D Smokestain Reflectometer (Diffusion Systems) that determines the blackness of PM filter samples."
+        explanation: "Documents how black carbon was measured on the weekly integrated filters, supporting the mapping of the BC exposure agent to ENVO soot (carbonaceous combustion particles)."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Daily measures of outdoor BC and PM2.5 were available from the monitor located on top of the Countway Medical Library in Boston, Massachusetts (Kang et al. 2010)."
+        explanation: "Documents the central site monitor behind the ambient BC and PM2.5 exposure conditions."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The sampler ran indoors for a mean of 7.6 days (range 4–10)."
+        explanation: "States the sampling duration recorded as exposure_duration on the indoor exposure conditions."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The average pre-bronchodilator FEV1, FVC, and FEV1/FVC were 1.82±0.60L, 3.32±0.80L, and 0.55±0.13, respectively. The equivalent post-bronchodilator values were 1.93±0.16L, 3.46±0.81L, and 0.56±0.13."
+        explanation: "States all six values recorded on this assay's pre- and post-bronchodilator output records."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The average indoor measured PM2.5 on the integrated filter was 8.61±6.34 μg/m3"
+        explanation: "States the mean and SD of indoor PM2.5 quoted in this assay's description. The source sentence continues with the median and IQR in square brackets, quoted separately below because the quote checker treats square brackets specially."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "median (IQR)=6.67 (5.80)"
+        explanation: "The bracketed median and IQR of weekly indoor PM2.5 immediately following the mean in the source, recorded as exposure_concentration on EXPOSURE:hart-indoor-pm25-weekly; quoted without the enclosing square brackets."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "the average indoor measured BC on the integrated filter was 0.24±0.28 μg/m3"
+        explanation: "States the mean and SD of indoor BC quoted in this assay's description. The source sentence continues with the median and IQR in brackets, quoted separately below."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "median (IQR)=0.19 (0.22)"
+        explanation: "The bracketed median and IQR of weekly indoor BC immediately following the mean in the source, recorded as exposure_concentration on EXPOSURE:hart-indoor-bc-weekly; quoted without the enclosing square brackets."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Patterns of associations for indoor and ambient PM2.5 and BC with post-bronchodilator FEV1, FVC, and FEV1/FVC were generally consistent with associations for pre-bronchodilator measures, though negative associations with indoor BC tended to be weaker for all three outcomes, and associations between indoor PM2.5 and post-bronchodilator FEV1/FVC were null or slightly negative instead of slightly positive (Figures S2–S4)."
+        explanation: "Supports the description's statement that associations with post-bronchodilator pulmonary function were weaker; all per-IQR effect estimates recorded in response_comparisons are for PRE-bronchodilator measures."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Among this population of Boston-area individuals with COPD, we observed decreases in pulmonary function measures with increasing indoor air pollution exposures and, in particular, BC."
+        explanation: "The authors' summary conclusion linking the indoor BC and PM2.5 exposures recorded on this assay to the decreased-lung-function key event."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Characteristics of study participants at baseline (n=125) and outcomes, exposures, medication use, and other characteristics at each clinic visit (≤4 for each participant, n=367) among chronic obstructive pulmonary disease (COPD) patients living in Eastern Massachusetts, United States (2012–2014)."
+        explanation: "States the two sample sizes used throughout this file: 125 participants (study_subject, age) and 367 clinic visits (output records and exposure distributions)."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The participants had an average age of 73.4±8.6 y, were mostly white males, had an average BMI of 30.2±5.8 kg/m2, had a high school education or greater, and only six (4.8%) were never smokers."
+        explanation: "States the cohort age (recorded on study_subject) and the demographic characteristics recorded in subject_characteristics."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The average indoor/outdoor ratio for PM2.5 was 1.48±1.20, and the average indoor/outdoor ratio for BC was 0.46±0.67."
+        explanation: "States the indoor/outdoor ratios quoted in this assay's description, which support reading indoor BC as infiltrated outdoor (traffic) pollution while indoor PM2.5 also includes indoor-generated particles."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "For example, each IQR increase in measured indoor BC from the integrated filter (0.22 μg/m3) was associated with a 17.87 (95% CI: −33.76, −1.98) mL decrease in FEV1, with similar effect estimates for each of the individual lag days (lag0–3)."
+        explanation: "States the effect estimate recorded in COMP:hart-indoor-bc-fev1-pre: the per-IQR indoor BC coefficient on pre-bronchodilator FEV1 with its 95% CI."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "For example, each IQR increase in measured indoor PM2.5 from the integrated filter (5.80 μg/m3) was associated with a 4.64 (95% CI: −23.39, 14.11) mL decrease in FEV1."
+        explanation: "States the effect estimate recorded in COMP:hart-indoor-pm25-fev1-pre: the per-IQR indoor PM2.5 coefficient on pre-bronchodilator FEV1 with its 95% CI."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Increases in both indoor and ambient PM2.5 were associated with decreases in FVC, with effect estimates ranging from −5.85 (95% CI: −35.02, 23.33) mL for an IQR increase (3.80 μg/m3) in lag1 ambient PM2.5 to −21.28 (95% CI: −43.99, 1.43) mL for an IQR increase in lag0 (6.13 μg/m3) indoor PM2.5."
+        explanation: "States both FVC effect estimates recorded in COMP:hart-indoor-pm25-lag0-fvc-pre and COMP:hart-ambient-pm25-lag1-fvc-pre, with their IQRs and 95% CIs."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "For example, the estimated decrease in FEV1 with an IQR increase in average indoor BC over the previous week [−17.87mL (95% CI: −33.76, −1.98) for a 0.22-μg/m3 increase in integrated filter BC] was consistent with the decrease in FEV1 associated with an additional 1.5 y of age (−18.26mL; 95% CI: −37.10, 0.59)."
+        explanation: "States the age-equivalent framing quoted in COMP:hart-indoor-bc-fev1-pre's description, including the -18.26 mL per 1.5 y of age estimate."
+      - reference: "PMID:30570336"
+        reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "IQR increases in indoor BC were associated with lower FEV1/FVC for all time periods, while all estimates for ambient BC were close to the null."
+        explanation: "Supports the finding that indoor BC was also associated with lower FEV1/FVC; the paper gives no numeric FEV1/FVC effect estimates in the text, so none are recorded."
+    has_exposure_condition:
+      - id: "EXPOSURE:hart-indoor-bc-weekly"
+        name: "Indoor black carbon, weekly integrated filter (in-home, infiltrating from outdoor traffic sources)"
+        exposure_agent:
+          id: "ENVO:03000021"
+          name: "soot"
+        exposure_concentration:
+          value: "0.19"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          sample_size: 367
+          variability:
+            variability_type: interquartile_range
+            value: "0.22"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "7.6"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+          central_tendency: mean
+          variability:
+            variability_type: range
+            lower_bound: "4"
+            upper_bound: "10"
+            unit:
+              id: "UO:0000033"
+              name: "day"
+      - id: "EXPOSURE:hart-indoor-pm25-weekly"
+        name: "Indoor PM2.5, weekly integrated filter (in-home)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "6.67"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          sample_size: 367
+          variability:
+            variability_type: interquartile_range
+            value: "5.80"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "7.6"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+          central_tendency: mean
+          variability:
+            variability_type: range
+            lower_bound: "4"
+            upper_bound: "10"
+            unit:
+              id: "UO:0000033"
+              name: "day"
+      - id: "EXPOSURE:hart-ambient-bc"
+        name: "Ambient black carbon, daily central site monitor (Countway Medical Library, Boston); averages for the sampling week and daily lags 0-3. Distribution values appear only in Table 2, which is not reproduced in the cached full text, so no concentration is recorded"
+        exposure_agent:
+          id: "ENVO:03000021"
+          name: "soot"
+      - id: "EXPOSURE:hart-ambient-pm25"
+        name: "Ambient PM2.5, daily central site monitor (Countway Medical Library, Boston); averages for the sampling week and daily lags 0-3. Distribution values appear only in Table 2, which is not reproduced in the cached full text, so no concentration is recorded"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+      - id: "COND:hart-pre-bronchodilator"
+        name: "Pre-bronchodilator (baseline spirometry, usual medications not withheld)"
+      - id: "COND:hart-post-albuterol"
+        name: "Post-bronchodilator: after 180 ug albuterol (2 puffs) by valved spacer"
+        exposure_concentration:
+          value: "180"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+    has_specified_output:
+      - id: "LF:hart-copd-spirometry-output-pre"
+        name: "Pre-bronchodilator spirometry, cohort average over 367 visits from 125 COPD patients"
+        experimental_group: baseline
+        measured_under: "COND:hart-pre-bronchodilator"
+        evidence:
+          - reference: "PMID:30570336"
+            reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "The average pre-bronchodilator FEV1, FVC, and FEV1/FVC were 1.82±0.60L, 3.32±0.80L, and 0.55±0.13, respectively."
+            explanation: "States the three pre-bronchodilator values recorded on this output."
+        fev1:
+          value: "1.82"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 367
+          variability:
+            variability_type: standard_deviation
+            value: "0.60"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fvc:
+          value: "3.32"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 367
+          variability:
+            variability_type: standard_deviation
+            value: "0.80"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fev1_fvc_ratio:
+          value: "0.55"
+          unit:
+            id: "UO:0000190"
+            name: "ratio unit"
+          central_tendency: mean
+          sample_size: 367
+          variability:
+            variability_type: standard_deviation
+            value: "0.13"
+            unit:
+              id: "UO:0000190"
+              name: "ratio unit"
+      - id: "LF:hart-copd-spirometry-output-post"
+        name: "Post-bronchodilator spirometry, cohort average over 367 visits from 125 COPD patients"
+        experimental_group: treated
+        measured_under: "COND:hart-post-albuterol"
+        evidence:
+          - reference: "PMID:30570336"
+            reference_title: "Effects of Indoor and Ambient Black Carbon and PM2.5 on Pulmonary Function among Individuals with COPD."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "The equivalent post-bronchodilator values were 1.93±0.16L, 3.46±0.81L, and 0.56±0.13."
+            explanation: "States the three post-bronchodilator values recorded on this output. The FEV1 SD of 0.16 L is as printed in the paper, although it is anomalously small next to the pre-bronchodilator SD of 0.60 L."
+        fev1:
+          value: "1.93"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 367
+          variability:
+            variability_type: standard_deviation
+            value: "0.16"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fvc:
+          value: "3.46"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 367
+          variability:
+            variability_type: standard_deviation
+            value: "0.81"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fev1_fvc_ratio:
+          value: "0.56"
+          unit:
+            id: "UO:0000190"
+            name: "ratio unit"
+          central_tendency: mean
+          sample_size: 367
+          variability:
+            variability_type: standard_deviation
+            value: "0.13"
+            unit:
+              id: "UO:0000190"
+              name: "ratio unit"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:hart-copd-patients"
+      name: "COPD patients in the COPD and Air Pollution Study, Eastern Massachusetts"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "73.4"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: mean
+        sample_size: 125
+        variability:
+          variability_type: standard_deviation
+          value: "8.6"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      disease_state: "chronic obstructive pulmonary disease (COPD)"
+      subject_characteristics: "125 patients, mostly white males, mean BMI 30.2 +/- 5.8 kg/m2, high school education or greater; only six (4.8%) were never smokers; approximately a quarter had diagnosed diabetes and most were taking at least one pulmonary medication. Eligibility: 40 y of age or older with FEV1/FVC < 0.70 on post-bronchodilator spirometry or emphysema reported on a clinical CT scan, regardless of smoking history or chronic asthma care. Exclusions: malignancy (other than local skin or stable prostate cancer), systemic inflammatory disease, current smoking or living with a current smoker, or a major known source of indoor air pollution (e.g., wood stove or fireplace, burning of incense or candles). Recruited from VA Boston pulmonary and primary care clinics and pulmonary function laboratory encounters; participants spent, on average, 17 h indoors."
+      clinical_context: "Longitudinal panel study (the COPD and Air Pollution Study), Eastern Massachusetts, November 2012 to December 2014; up to four clinic visits per participant approximately 3 months apart (367 visits in all), each scheduled in stable clinical status and preceded by a week of in-home exposure sampling"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:hart-spirometry-001"
+        name: "Pre- and post-bronchodilator spirometry per American Thoracic Society methods"
+        spirometry_standard: "American Thoracic Society methods (Miller et al. 2005)"
+      - id: "PROTOCOL:hart-indoor-sampling-001"
+        name: "In-home weekly integrated filter sampling of PM2.5 and black carbon"
+      - id: "PROTOCOL:hart-ambient-monitoring-001"
+        name: "Central site ambient monitoring and estimation of daily indoor exposures"
+
+# =============================================================================
+# RESPONSE COMPARISONS — the paper's reported per-IQR effect estimates.
+#
+# MODELLING NOTE: these are multivariable adjusted mixed-effects regression
+# coefficients (change in a pre-bronchodilator pulmonary function measure per
+# IQR increase in a continuous exposure), reported directly in the paper.
+# There is no control group and no treated group, so control_output and
+# treated_output are deliberately omitted: no pair of output records exists
+# for a continuous-exposure coefficient to point at, and fabricating group
+# records would invent data the paper does not contain. change_value carries
+# the signed beta exactly as its 95% CI is printed (the paper words the first
+# two as a "17.87 ... mL decrease" and a "4.64 ... mL decrease"; the betas are
+# negative, matching their CIs). Models were adjusted for age, gender, race,
+# height (FEV1/FVC models excepted), BMI, season, ambient temperature and
+# relative humidity on the day of spirometry, pulmonary medication use,
+# self-reported cold or illness in the past 2 weeks, and individual-level
+# socioeconomic status, with a random intercept per participant. Exact
+# p-values are not reported, so p_value is omitted.
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:hart-indoor-bc-fev1-pre"
+    name: "Change in pre-bronchodilator FEV1 per IQR increase in weekly indoor BC"
+    description: "Each IQR increase (0.22 ug/m3) in indoor BC from the weekly integrated filter was associated with a 17.87 mL decrease in pre-bronchodilator FEV1 (95% CI: -33.76, -1.98), with similar effect estimates for each of the individual lag days (lag0-3). The authors note this decrease is consistent with the FEV1 decrease associated with an additional 1.5 y of age (-18.26 mL; 95% CI: -37.10, 0.59). Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:hart-copd-spirometry"
+    compared_measurement: "fev1"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-17.87"
+      unit:
+        id: "UO:0000098"
+        name: "milliliter"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-33.76"
+        upper_bound: "-1.98"
+        unit:
+          id: "UO:0000098"
+          name: "milliliter"
+    statistical_test: "multivariable adjusted mixed effects regression (random intercept per participant), scaled per IQR of exposure"
+    derivation: reported_in_paper
+
+  - id: "COMP:hart-indoor-pm25-fev1-pre"
+    name: "Change in pre-bronchodilator FEV1 per IQR increase in weekly indoor PM2.5"
+    description: "Each IQR increase (5.80 ug/m3) in measured indoor PM2.5 from the weekly integrated filter was associated with a 4.64 mL decrease in pre-bronchodilator FEV1 (95% CI: -23.39, 14.11) - smaller in magnitude than the indoor BC association and less precise (the CI spans zero). Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:hart-copd-spirometry"
+    compared_measurement: "fev1"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-4.64"
+      unit:
+        id: "UO:0000098"
+        name: "milliliter"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-23.39"
+        upper_bound: "14.11"
+        unit:
+          id: "UO:0000098"
+          name: "milliliter"
+    statistical_test: "multivariable adjusted mixed effects regression (random intercept per participant), scaled per IQR of exposure"
+    derivation: reported_in_paper
+
+  - id: "COMP:hart-indoor-pm25-lag0-fvc-pre"
+    name: "Change in pre-bronchodilator FVC per IQR increase in lag0 indoor PM2.5"
+    description: "The largest of the FVC effect estimates: a 21.28 mL decrease in pre-bronchodilator FVC (95% CI: -43.99, 1.43) per IQR increase (6.13 ug/m3) in estimated indoor PM2.5 on the day of spirometry (lag0; daily indoor estimates derived by weighting the weekly integrated filter measure with central-site daily variability). The CI narrowly spans zero. Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:hart-copd-spirometry"
+    compared_measurement: "fvc"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-21.28"
+      unit:
+        id: "UO:0000098"
+        name: "milliliter"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-43.99"
+        upper_bound: "1.43"
+        unit:
+          id: "UO:0000098"
+          name: "milliliter"
+    statistical_test: "multivariable adjusted mixed effects regression (random intercept per participant), scaled per IQR of exposure"
+    derivation: reported_in_paper
+
+  - id: "COMP:hart-ambient-pm25-lag1-fvc-pre"
+    name: "Change in pre-bronchodilator FVC per IQR increase in lag1 ambient PM2.5"
+    description: "The smallest of the FVC effect estimates: a 5.85 mL decrease in pre-bronchodilator FVC (95% CI: -35.02, 23.33) per IQR increase (3.80 ug/m3) in ambient PM2.5 on the day before spirometry (lag1, central site monitor). The CI spans zero. Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:hart-copd-spirometry"
+    compared_measurement: "fvc"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-5.85"
+      unit:
+        id: "UO:0000098"
+        name: "milliliter"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-35.02"
+        upper_bound: "23.33"
+        unit:
+          id: "UO:0000098"
+          name: "milliliter"
+    statistical_test: "multivariable adjusted mixed effects regression (random intercept per participant), scaled per IQR of exposure"
+    derivation: reported_in_paper
