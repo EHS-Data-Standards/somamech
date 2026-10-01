@@ -404,7 +404,6 @@ balf_sputum_assays:
             unit:
               id: "UO:0010070"
               name: "picogram per milliliter"
-    assay_date: "2018-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:lindner-pbs-h2o"
         name: "PBS sensitisation, water vehicle - non-allergic control"
@@ -551,7 +550,6 @@ balf_sputum_assays:
         name: "Differential immune cell count - OVA/AS-PAH"
         experimental_group: treated
         measured_under: "EXPOSURE:lindner-ova-as-pah"
-    assay_date: "2018-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:lindner-pbs-h2o"
         name: "PBS sensitisation, water vehicle - non-allergic control"
@@ -695,7 +693,6 @@ lung_function_assays:
         name: "Lung resistance at 100 mg/mL methacholine - OVA/AS-PAH"
         experimental_group: treated
         measured_under: "EXPOSURE:lindner-ova-as-pah"
-    assay_date: "2018-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:lindner-pbs-h2o"
         name: "PBS sensitisation, water vehicle - non-allergic control"
@@ -893,7 +890,6 @@ gene_expression_assays:
           variability:
             variability_type: standard_error
             value: "0.3"
-    assay_date: "2018-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:lindner-pbs-h2o"
         name: "PBS sensitisation, water vehicle - non-allergic control"
@@ -1083,7 +1079,6 @@ gene_expression_assays:
           variability:
             variability_type: standard_error
             value: "0.9"
-    assay_date: "2018-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:lindner-pbs-h2o"
         name: "PBS sensitisation, water vehicle - non-allergic control"
@@ -1280,7 +1275,6 @@ gene_expression_assays:
           variability:
             variability_type: standard_error
             value: "0.1"
-    assay_date: "2018-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:lindner-pbs-h2o"
         name: "PBS sensitisation, water vehicle - non-allergic control"
@@ -1472,7 +1466,6 @@ gene_expression_assays:
           variability:
             variability_type: standard_error
             value: "0.1"
-    assay_date: "2018-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:lindner-pbs-h2o"
         name: "PBS sensitisation, water vehicle - non-allergic control"
@@ -1672,7 +1665,6 @@ gene_expression_assays:
           variability:
             variability_type: standard_error
             value: "0.8"
-    assay_date: "2018-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:lindner-pbs-h2o"
         name: "PBS sensitisation, water vehicle - non-allergic control"
@@ -1872,7 +1864,6 @@ gene_expression_assays:
           variability:
             variability_type: standard_error
             value: "7"
-    assay_date: "2018-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:lindner-pbs-h2o"
         name: "PBS sensitisation, water vehicle - non-allergic control"
@@ -2128,7 +2119,6 @@ goblet_cell_assays:
           variability:
             variability_type: standard_error
             value: "0.4"
-    assay_date: "2018-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:lindner-pbs-h2o"
         name: "PBS sensitisation, water vehicle - non-allergic control"
@@ -2374,7 +2364,6 @@ goblet_cell_assays:
           variability:
             variability_type: standard_error
             value: "11"
-    assay_date: "2018-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:lindner-pbs-h2o"
         name: "PBS sensitisation, water vehicle - non-allergic control"
@@ -2441,9 +2430,9 @@ goblet_cell_assays:
             id: "UO:0000033"
             name: "day"
     informs_on_key_event:
-      id: "KE:ke-mucin-hypersecretion"
-      name: "Mucin hypersecretion"
-      biological_action: increased
+      id: "KE:ke-muc5b-decrease"
+      name: "Decreased Muc5b expression"
+      biological_action: decreased
       level_of_biological_organization: cellular
     study_subject:
       subject_type: InVivoSubject
@@ -2510,7 +2499,6 @@ goblet_cell_assays:
         name: "PAS goblet cell quantification - OVA/AS-PAH"
         experimental_group: treated
         measured_under: "EXPOSURE:lindner-ova-as-pah"
-    assay_date: "2018-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:lindner-pbs-h2o"
         name: "PBS sensitisation, water vehicle - non-allergic control"
@@ -2632,7 +2620,6 @@ goblet_cell_assays:
         name: "PAS-positive tracheal cells - OVA/P90"
         experimental_group: treated
         measured_under: "EXPOSURE:lindner-ova-p90"
-    assay_date: "2018-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:lindner-ova-h2o"
         name: "OVA sensitisation and challenge, water vehicle - allergic control"
@@ -2736,7 +2723,6 @@ ciliary_function_assays:
         name: "Ciliary beat frequency - OVA/AS-PAH"
         experimental_group: treated
         measured_under: "EXPOSURE:lindner-ova-as-pah"
-    assay_date: "2018-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:lindner-pbs-h2o"
         name: "PBS sensitisation, water vehicle - non-allergic control"
@@ -2880,7 +2866,6 @@ ciliary_function_assays:
         name: "ATP-stimulated ciliary beat frequency - OVA/AS-PAH"
         experimental_group: treated
         measured_under: "EXPOSURE:lindner-ova-as-pah"
-    assay_date: "2018-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:lindner-pbs-h2o"
         name: "PBS sensitisation, water vehicle - non-allergic control"
@@ -3033,7 +3018,6 @@ mcc_assays:
         name: "Particle transport speed - OVA/AS-PAH"
         experimental_group: treated
         measured_under: "EXPOSURE:lindner-ova-as-pah"
-    assay_date: "2018-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:lindner-pbs-h2o"
         name: "PBS sensitisation, water vehicle - non-allergic control"
@@ -3411,9 +3395,9 @@ key_event_relationships:
       is an inference rather than a measured relationship and is recorded as
       indirect with weak support.
     upstream_event:
-      id: "KE:ke-mucin-hypersecretion"
-      name: "Mucin hypersecretion"
-      biological_action: increased
+      id: "KE:ke-muc5b-decrease"
+      name: "Decreased Muc5b expression"
+      biological_action: decreased
       level_of_biological_organization: cellular
     downstream_event:
       id: "KE:ke3-impaired-mcc"
