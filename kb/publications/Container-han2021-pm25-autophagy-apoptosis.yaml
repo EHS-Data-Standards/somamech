@@ -1,0 +1,1039 @@
+# =============================================================================
+# Han & Zhuang (2021) - PM2.5 induces autophagy-mediated cell apoptosis via
+# PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells
+# =============================================================================
+#
+# Source: Exp Ther Med. 2021 (PMID:33235610)
+# DOI: 10.3892/etm.2020.9433
+# Committed reference cache: references_cache/PMID_33235610.md
+#   content_type: full_text_xml (PMC) - every snippet below is quoted from the
+#   committed full text, so no verification receipt is needed for this paper.
+#
+# Study design:
+#   - In vivo: 20 eight-week-old male C57BL/6 mice (20-23 g), randomly split
+#     into two groups of 10 - a PM2.5 environment and a normal survival
+#     (Control) environment - housed for 21 days and euthanized on day 22.
+#     PM2.5 was delivered by intratracheal instillation as previously
+#     reported. On day 22: FlexiVent pulmonary function, plasma ELISA for
+#     IL-1beta and IL-6, H&E lung histology, and TUNEL on lung sections.
+#   - In vitro: mouse bronchial epithelium cells (MBECs, Shanghai Sixin
+#     Biotechnology) seeded at 1x10^5/ml in six-well plates and placed for
+#     24 h in air containing PM2.5, PM2.5 + PI3K inhibitor (PI3KIR,
+#     Sigma-Aldrich cat. no. 526559), PI3KIR alone, or 95% air / 5% CO2
+#     (control). Readouts: DCFH-DA ROS imaging, western blot for PI3K,
+#     p-PI3K, AKT and p-AKT, TUNEL apoptosis, and LC3B immunofluorescence
+#     for autophagy.
+#
+# Key findings:
+#   - PM2.5 significantly decreased lung function (total lung capacity,
+#     residual volume, vital capacity, airway resistance) and body weight,
+#     and induced lung injury on H&E.
+#   - PM2.5 raised IL-1beta and IL-6 in serum and in MBECs, and raised ROS
+#     production in MBECs.
+#   - PM2.5 increased apoptosis in lung tissue and in MBECs.
+#   - PM2.5 increased PI3K, AKT and mTOR expression and PI3K/AKT
+#     phosphorylation in MBECs, and induced autophagy.
+#   - The PI3K inhibitor lowered PI3K, AKT and mTOR expression and blocked
+#     PM2.5-induced autophagy and apoptosis of MBECs.
+#
+# IMPORTANT - no numeric measurement values are recorded below. This paper
+# reports every group-level result in figures only (Fig. 1-5); the running
+# text and the abstract state directions of change ("significantly
+# decreased", "markedly increased") but give no numbers, no group means, no
+# spread and no p-values. Per the extraction rules, figure-derived values are
+# not estimated, so each output record carries only its experimental group,
+# the exposure condition it was measured under, and a description of the
+# reported direction. For the same reason there is no response_comparisons:
+# section - the paper states no percent change, fold change or difference
+# that could be recorded with derivation: reported_in_paper.
+#
+# The exposure concentration of PM2.5 is likewise never stated, in vivo or in
+# vitro, so exposure_concentration is omitted throughout and only the stated
+# durations (21 days in vivo, 24 h in vitro) are recorded. The PI3K inhibitor
+# is identified only by catalogue number (Sigma-Aldrich 526559), with no
+# chemical name or concentration, so it carries no exposure_agent CURIE.
+#
+# Note on the lung function parameter list: the Methods say "lung capacity,
+# residual volume, tidal volume and airway resistance" while the Results and
+# the abstract say "total lung capacity, residual volume, vital capacity and
+# airway resistance". The two lists disagree on tidal vs vital capacity; both
+# are recorded in the assay description rather than resolved.
+#
+# Three new Key Events are minted here (KE:mie-pi3k-akt-mtor-activation,
+# KE:ke-increased-autophagy, KE:ke-epithelial-apoptosis). No existing KE on
+# main covers pathway activation, autophagy or apoptosis; each new block is
+# kept minimal so the next paper can reuse it. All other KeyEvent blocks are
+# copied verbatim from main.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:33235610"
+  reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+  doi: "10.3892/etm.2020.9433"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:han-flexivent-001"
+    protocol_type: SpirometryProtocol
+    name: "FlexiVent pulmonary function testing in anaesthetized mice"
+    description: "On day 22 all experimental mice were anesthetized with 40 mg/kg sodium pentobarbital, intubated with a custom-made laryngoscope blade and mechanically ventilated with a rodent ventilator. Pulmonary functions - lung capacity, residual volume, tidal volume and airway resistance - were analysed using the FlexiVent system (SCIREQ) according to the manufacturer's protocol. The Results section lists the same panel as total lung capacity, residual volume, vital capacity and airway resistance."
+    spirometry_standard: "FlexiVent forced oscillation system (SCIREQ), manufacturer's protocol"
+    plethysmography_method: "invasive measurement in intubated, mechanically ventilated mice"
+    equipment_required:
+      - "FlexiVent system (SCIREQ)"
+      - "Rodent ventilator"
+      - "Custom-made laryngoscope blade"
+
+  - id: "PROTOCOL:han-elisa-il1b-001"
+    protocol_type: MolecularAssayProtocol
+    name: "ELISA for IL-1beta in mouse plasma"
+    description: "On day 22 blood was collected from each group and plasma obtained by centrifugation at 10,000 x g for 10 min at 4 C. IL-1beta was measured with an ELISA kit (cat. no. MLB00C; Bio-Rad Laboratories, Inc.)."
+    detection_method: "ELISA (Bio-Rad cat. no. MLB00C)"
+    equipment_required:
+      - "Microplate reader"
+      - "IL-1beta ELISA kit (Bio-Rad cat. no. MLB00C)"
+      - "Refrigerated centrifuge"
+
+  - id: "PROTOCOL:han-elisa-il6-001"
+    protocol_type: MolecularAssayProtocol
+    name: "ELISA for IL-6 in mouse plasma"
+    description: "On day 22 blood was collected from each group and plasma obtained by centrifugation at 10,000 x g for 10 min at 4 C. IL-6 was measured with an ELISA kit (cat. no. M6000B; Bio-Rad Laboratories, Inc.)."
+    detection_method: "ELISA (Bio-Rad cat. no. M6000B)"
+    equipment_required:
+      - "Microplate reader"
+      - "IL-6 ELISA kit (Bio-Rad cat. no. M6000B)"
+      - "Refrigerated centrifuge"
+
+  - id: "PROTOCOL:han-he-001"
+    protocol_type: StainingProtocol
+    name: "Hematoxylin and eosin staining of mouse lung sections"
+    description: "Lung tissues were fixed with 4% formaldehyde overnight at room temperature, embedded in paraffin and cut into 4 um sections. Sections underwent hematoxylin and eosin staining for 30 min at room temperature, were washed with PBS three times and observed under a light microscope at x100 magnification (Olympus Corporation)."
+    staining_type: "hematoxylin and eosin (H&E)"
+    detection_method: "light microscopy at x100 magnification"
+    equipment_required:
+      - "Microtome"
+      - "Light microscope (Olympus Corporation)"
+
+  - id: "PROTOCOL:han-dcfhda-001"
+    protocol_type: ImagingProtocol
+    name: "DCFH-DA fluorescence detection of ROS production in MBECs"
+    description: "A 2',7'-dicholorofluorescein-diacetate (DCFH-DA) probe was used to evaluate ROS production in PM2.5-treated MBECs in six-well plates. DCFH-DA (10 uM) was added and cells cultured for 30 min at 37 C in the dark, then washed three times with ice-cold PBS. ROS production was examined at x50 magnification on a fluorescence microscope (Olympus Corporation) and fluorescence intensity calculated with analysis LS 5.0 soft image solution (Olympus Imaging America Inc.)."
+    fluorescent_labeling: "2',7'-dicholorofluorescein-diacetate (DCFH-DA), 10 uM, 30 min at 37 C in the dark"
+    fluorescent_tracer: "DCFH-DA"
+    equipment_required:
+      - "Fluorescence microscope (Olympus Corporation)"
+      - "DCFH-DA probe"
+      - "analysis LS 5.0 soft image solution"
+
+  - id: "PROTOCOL:han-wb-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Western blotting for PI3K, phospho-PI3K, AKT and phospho-AKT"
+    description: "MBECs (5x10^6) were lysed in RIPA buffer (M-PER reagent for cells, T-PER for tissues; Thermo Fisher Scientific). Protein concentration was measured with a BCA protein assay kit. Protein (20 ug) was electrophoresed on a 15% SDS-PAGE gel and transferred to PVDF (EMD Millipore). Membranes were blocked with 5% BSA at 4 C overnight, probed with primary rabbit anti-rat antibodies, washed three times in PBST, incubated with HRP-conjugated goat anti-rabbit IgG mAb (1:2,000; cat. no. PV-6001; OriGene Technologies) for 1 h at 37 C, and developed with a chemiluminescence assay system (EMD Millipore). Densitometric quantification used Quantity-One 1.2 software (Bio-Rad Laboratories)."
+    detection_method: "chemiluminescent immunoblot with densitometric quantification (Quantity-One 1.2)"
+    normalization_method: "beta-actin loading control"
+    antibodies_used:
+      - "PI3K (1:1,000; cat. no. ab76315; Abcam)"
+      - "phosphorylated PI3K (1:500; cat. no. ab182651; Abcam)"
+      - "AKT (1:500; cat. no. ab185633; Abcam)"
+      - "phosphorylated AKT (1:1,000; cat. no. ab133458; Abcam)"
+      - "beta-actin (1:2,000; cat. no. ab8226; Abcam)"
+      - "HRP-conjugated goat anti-rabbit IgG mAb (1:2,000; cat. no. PV-6001; OriGene Technologies, Inc.)"
+    equipment_required:
+      - "SDS-PAGE apparatus"
+      - "Chemiluminescence imaging system (EMD Millipore)"
+
+  - id: "PROTOCOL:han-tunel-tissue-001"
+    protocol_type: StainingProtocol
+    name: "TUNEL apoptosis staining of mouse lung tissue sections"
+    description: "TUNEL analysis used an In Situ Cell Death Detection kit (DeadEnd Colorimetric Tunel System; Promega Corporation). Lung tissue sections (4 um) were deparaffinized in xylene, rehydrated in graded ethanol and rehydrated for 3 min, then incubated with TUNEL for 2 h at 37 C per the manufacturer's protocol. Images were captured in six fields of view with a ZEISS LSM 510 confocal microscope at 488 nm, x100 magnification, and the apoptosis rate measured with Developer XD 1.2 software (Definiens AG). Note the tissue incubation is 2 h, versus 1 h for cultured cells, so the two TUNEL runs are recorded as separate protocols."
+    staining_type: "TUNEL (DeadEnd Colorimetric Tunel System, Promega)"
+    detection_method: "confocal microscopy at 488 nm, x100 magnification; apoptosis rate by Developer XD 1.2"
+    equipment_required:
+      - "ZEISS LSM 510 confocal microscope"
+      - "In Situ Cell Death Detection kit (DeadEnd Colorimetric Tunel System, Promega)"
+      - "Developer XD 1.2 software (Definiens AG)"
+
+  - id: "PROTOCOL:han-tunel-cells-001"
+    protocol_type: StainingProtocol
+    name: "TUNEL apoptosis staining of cultured MBECs"
+    description: "MBECs were treated with 4% paraformaldehyde for 15 min at room temperature, washed three times with PBST at room temperature, and incubated with TUNEL (DeadEnd Colorimetric Tunel System, Promega) for 1 h at 37 C per the manufacturer's protocol. Cells were washed three times with PBS and incubated with 5% DAPI (Sigma-Aldrich) under Antifade mounting medium (cat. no. P0126; Beyotime Institute of Biotechnology) for 30 min at 37 C. Images were captured in six fields of view with a ZEISS LSM 510 confocal microscope at 488 nm, x100 magnification, and the apoptosis rate measured with Developer XD 1.2 software (Definiens AG)."
+    staining_type: "TUNEL (DeadEnd Colorimetric Tunel System, Promega) with DAPI counterstain"
+    detection_method: "confocal microscopy at 488 nm, x100 magnification; apoptosis rate by Developer XD 1.2"
+    equipment_required:
+      - "ZEISS LSM 510 confocal microscope"
+      - "In Situ Cell Death Detection kit (DeadEnd Colorimetric Tunel System, Promega)"
+      - "Developer XD 1.2 software (Definiens AG)"
+
+  - id: "PROTOCOL:han-lc3b-if-001"
+    protocol_type: ImagingProtocol
+    name: "LC3B immunofluorescence for autophagy in MBECs"
+    description: "MBECs in culture dishes were fixed with 4% paraformaldehyde for 15 min at room temperature and blocked with 0.5% BSA for 30 min at 37 C. Cells were washed three times with PBST at room temperature and incubated with anti-LC3B (1:1,000; cat. no. ab48394; Abcam) for 12 h at 4 C, then with Alexa Fluor 488-labeled goat anti-rabbit secondary antibodies (1:2,000; Beyotime Institute of Biotechnology) for 12 h at 4 C. Images were captured on a confocal microscope (ZEISS GmbH; LSM510 META; x100 magnification) and analysed with AxioVision Rel. 4.6 software (Zeiss GmbH)."
+    fluorescent_labeling: "anti-LC3B (Abcam ab48394, 1:1,000) with Alexa Fluor 488-labeled goat anti-rabbit secondary (1:2,000), imaged by confocal microscopy at x100 magnification and analysed with AxioVision Rel. 4.6"
+    equipment_required:
+      - "Confocal microscope (ZEISS LSM510 META)"
+      - "Anti-LC3B antibody (Abcam ab48394)"
+      - "AxioVision Rel. 4.6 software"
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS - In vivo, PM2.5-exposed C57BL/6 mice
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:han-mouse-pm25-21d"
+    name: "FlexiVent pulmonary function in mice after 21 days of PM2.5 exposure"
+    description: "Pulmonary function measured on day 22 in mice housed 21 days in a PM2.5 or a normal survival environment (n=10 per group). PM2.5 significantly decreased lung function - reported as total lung capacity, residual volume, vital capacity and airway resistance in the Results and the abstract, and as lung capacity, residual volume, tidal volume and airway resistance in the Methods. Body weight was also significantly decreased and H&E staining showed PM2.5-induced lung injury. All values are reported only in Fig. 1A-F, so no numeric measurement, spread or p-value is recorded. Note that 'decreased airway resistance' is the paper's own wording; it is grouped with the other parameters under a single statement of decreased lung function and is not separately quantified or discussed, so no direction is asserted here beyond the quoted sentence."
+    reference_dataset: "no reference dataset - mouse model, PM2.5 group compared with a concurrent control group"
+    evidence:
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The results indicated that PM2.5 significantly decreased lung function, including total lung capacity, residual volume, vital capacity and airway resistance in experimental mice (Fig. 1A-D)."
+        explanation: "States exactly what this assay records: the four pulmonary function parameters were significantly lower in the PM2.5 group than in the control group."
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Body weight of mice was significantly decreased by PM2.5 compared with the control (Fig. 1E). H&E staining demonstrated that PM2.5 induced lung injury (Fig. 1F)."
+        explanation: "Records the two accompanying in vivo findings described in this assay - decreased body weight and histological lung injury - that place the lung function loss in the context of overt organ damage."
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The pulmonary functions, including lung capacity, residual volume, tidal volume and airway resistance were analyzed using the FlexiVent system (SCIREQ) according to manufacturer's protocol."
+        explanation: "Documents the measurement method and the Methods section's version of the parameter panel, which differs from the Results version in listing tidal rather than vital capacity."
+    has_exposure_condition:
+      - id: "EXPOSURE:han-mouse-control-21d"
+        name: "Normal survival (Control) environment, 21 days"
+        exposure_duration:
+          value: "21"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:han-mouse-pm25-21d"
+        name: "PM2.5 environment with intratracheal instillation of PM2.5, 21 days (concentration not stated)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "21"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "LF:han-mouse-pm25-21d-output-control"
+        name: "Control mice - FlexiVent pulmonary function"
+        description: "Reference group, n=10. Values reported only in Fig. 1A-D; none recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:han-mouse-control-21d"
+      - id: "LF:han-mouse-pm25-21d-output-pm25"
+        name: "PM2.5-exposed mice - FlexiVent pulmonary function"
+        description: "Lung function significantly decreased versus control across total lung capacity, residual volume, vital capacity and airway resistance; body weight also significantly decreased. n=10. Values reported only in Fig. 1A-E; none recorded, and the paper reports no p-value."
+        experimental_group: treated
+        measured_under: "EXPOSURE:han-mouse-pm25-21d"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:han-mouse-c57bl6"
+      name: "Male C57BL/6 mouse housed in a PM2.5 or normal survival environment for 21 days"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        value: "8"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male"
+      subject_characteristics: "20 eight-week-old male C57BL/6 mice, weight 20-23 g, from Tianjin Medical University, housed at 23 +/- 1 C and 50 +/- 5% humidity on a 12 h light/dark cycle with food and water ad libitum. Randomly divided into two groups (n=10 each): PM2.5 environment and normal survival (Control) environment, for 21 days; euthanized by cervical decapitation on day 22."
+      clinical_context: "Pulmonary function measured on day 22 under 40 mg/kg sodium pentobarbital anaesthesia with mechanical ventilation"
+    follows_protocols:
+      - id: "PROTOCOL:han-flexivent-001"
+        protocol_type: SpirometryProtocol
+        name: "FlexiVent pulmonary function testing in anaesthetized mice"
+      - id: "PROTOCOL:han-he-001"
+        protocol_type: StainingProtocol
+        name: "Hematoxylin and eosin staining of mouse lung sections"
+
+# =============================================================================
+# OXIDATIVE STRESS ASSAYS - ROS production in MBECs
+# =============================================================================
+
+oxidative_stress_assays:
+  - id: "OX:han-mbec-ros-24h"
+    name: "ROS production in PM2.5-exposed MBECs (DCFH-DA)"
+    description: "Intracellular reactive oxygen species imaged with a DCFH-DA probe in MBECs placed for 24 h in air containing PM2.5 or in 95% air / 5% CO2. ROS production was upregulated by PM2.5 relative to control, which the authors read as the source of oxidative injury in lung cells. Fluorescence intensity was calculated with analysis LS 5.0 but reported only in Fig. 2C, so no numeric value is recorded."
+    ros_probe_type: "DCFH-DA"
+    evidence:
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "ROS production was indicated to be upregulated in MBECs in PM2.5-treated mice compared with the control (Fig. 2C), which may induce oxidative injury in lung cells."
+        explanation: "States exactly what this assay records: ROS production in MBECs rose above control after PM2.5 exposure."
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "PM2.5 increased interleukin (IL)-1β and IL-6 expression, and reactive oxygen species production in MBECs."
+        explanation: "The abstract's statement of the same result, confirming that the ROS rise in MBECs is one of the paper's headline findings and not an incidental observation."
+    has_exposure_condition:
+      - id: "EXPOSURE:han-mbec-air-24h"
+        name: "95% air and 5% CO2 at 37 C for 24 h (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:han-mbec-pm25-24h"
+        name: "Air containing PM2.5 for 24 h (concentration not stated)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "OX:han-mbec-ros-24h-output-control"
+        name: "Control MBECs - ROS fluorescence"
+        description: "Reference condition. Reported only in Fig. 2C; no value recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:han-mbec-air-24h"
+      - id: "OX:han-mbec-ros-24h-output-pm25"
+        name: "PM2.5-exposed MBECs - ROS fluorescence"
+        description: "ROS production upregulated relative to control. Reported only in Fig. 2C; no value, spread or p-value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:han-mbec-pm25-24h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:han-mbec-001"
+      name: "Mouse bronchial epithelium cells (MBECs)"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: adherent
+      culture_media:
+        id: "soma:han-media-endothelial"
+        name: "Endothelial culture medium with 10% FBS, 1% endothelial cell growth supplement and 1% penicillin/streptomycin"
+        base_medium: "Endothelial culture medium (ScienCell Research Laboratories cat. no. 1001)"
+      donor_info: "MBECs purchased from Shanghai Sixin Biotechnology Co., Ltd.; seeded at 1x10^5/ml onto six-well plates and cultured in 5% CO2 at 37 C"
+    follows_protocols:
+      - id: "PROTOCOL:han-dcfhda-001"
+        protocol_type: ImagingProtocol
+        name: "DCFH-DA fluorescence detection of ROS production in MBECs"
+
+# =============================================================================
+# GENE / PROTEIN EXPRESSION ASSAYS
+#
+# GeneExpressionAssay is used as the schema's generic expression assay for
+# four readouts that have no dedicated microschema class: serum cytokines
+# (precedent: Container-oluwole2013, serum CRP in human subjects), MBEC
+# cytokines, PI3K/AKT/mTOR immunoblots, and the TUNEL apoptosis rate. The
+# TUNEL assays are not expression measurements; they are recorded here
+# because the schema has no apoptosis assay class, and their output records
+# carry no expression value - see each description.
+# =============================================================================
+
+gene_expression_assays:
+  # --- Serum IL-1beta and IL-6, in vivo ---
+  - id: "GE:han-serum-il1b-il6"
+    name: "Serum IL-1beta and IL-6 by ELISA in PM2.5-exposed mice"
+    description: "IL-1beta (Bio-Rad MLB00C) and IL-6 (Bio-Rad M6000B) measured by ELISA in plasma collected on day 22 from both mouse groups. PM2.5 increased IL-1beta and IL-6 expression levels in serum relative to control. Concentrations are reported only in Fig. 2A, so no numeric concentration, spread or p-value is recorded."
+    gene_expression_method: "ELISA"
+    evidence:
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "PM2.5 increased IL-1β and IL-6 expression levels in the serum of the experimental animal model compared with the control (Fig. 2A)."
+        explanation: "States exactly what this assay records: both serum cytokines rose above control in the PM2.5-exposed mice."
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The current study demonstrated that PM2.5 increased IL-1β and IL-6 expression in the serum of an experimental animal model and upregulated IL-1β and IL-6 expression in MBECs."
+        explanation: "The Discussion's restatement, which separates the serum result recorded here from the MBEC result recorded in the next assay."
+    has_exposure_condition:
+      - id: "EXPOSURE:han-mouse-control-21d"
+        name: "Normal survival (Control) environment, 21 days"
+        exposure_duration:
+          value: "21"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:han-mouse-pm25-21d"
+        name: "PM2.5 environment with intratracheal instillation of PM2.5, 21 days (concentration not stated)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "21"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GE:han-serum-il1b-il6-output-control"
+        name: "Control mice - serum IL-1beta and IL-6"
+        description: "Reference group, n=10. Values reported only in Fig. 2A; none recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:han-mouse-control-21d"
+      - id: "GE:han-serum-il1b-il6-output-pm25"
+        name: "PM2.5-exposed mice - serum IL-1beta and IL-6"
+        description: "Both cytokines increased relative to control. n=10. Values reported only in Fig. 2A; no concentration, spread or p-value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:han-mouse-pm25-21d"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:ke-systemic-inflammation"
+      name: "Increased systemic inflammation"
+      biological_action: increased
+      level_of_biological_organization: organism
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:han-mouse-c57bl6"
+      name: "Male C57BL/6 mouse housed in a PM2.5 or normal survival environment for 21 days"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      sample_type: blood
+      sample_collection_method: "Blood collected from each group on day 22; plasma obtained by centrifugation at 10,000 x g for 10 min at 4 C"
+      collection_site: "blood"
+      subject_characteristics: "n=10 per group; the Results and Discussion describe the analyte as serum while the Methods describe plasma obtained by centrifugation"
+    follows_protocols:
+      - id: "PROTOCOL:han-elisa-il1b-001"
+        protocol_type: MolecularAssayProtocol
+        name: "ELISA for IL-1beta in mouse plasma"
+      - id: "PROTOCOL:han-elisa-il6-001"
+        protocol_type: MolecularAssayProtocol
+        name: "ELISA for IL-6 in mouse plasma"
+
+  # --- IL-1beta and IL-6 in MBECs, in vitro ---
+  - id: "GE:han-mbec-il1b-il6"
+    name: "IL-1beta and IL-6 expression in PM2.5-exposed MBECs"
+    description: "IL-1beta and IL-6 expression in MBECs placed for 24 h in air containing PM2.5 or in 95% air / 5% CO2. Both were markedly increased by PM2.5 relative to control. The paper does not state which method was used for the MBEC cytokine measurement - the ELISA kits in the Methods are described for plasma only - so gene_expression_method is omitted. Values are reported only in Fig. 2B; none recorded."
+    evidence:
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "IL-1β and IL-6 expression was also markedly increased by PM2.5 in MBECs compared with the control (Fig. 2B)."
+        explanation: "States exactly what this assay records: both cytokines rose above control in PM2.5-exposed MBECs."
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The results demonstrated that PM2.5 markedly induced inflammatory responses, oxidative injury and MBEC apoptosis."
+        explanation: "The abstract's summary of the inflammatory response in MBECs that this assay's cytokine measurements constitute."
+    has_exposure_condition:
+      - id: "EXPOSURE:han-mbec-air-24h"
+        name: "95% air and 5% CO2 at 37 C for 24 h (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:han-mbec-pm25-24h"
+        name: "Air containing PM2.5 for 24 h (concentration not stated)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:han-mbec-il1b-il6-output-control"
+        name: "Control MBECs - IL-1beta and IL-6 expression"
+        description: "Reference condition. Values reported only in Fig. 2B; none recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:han-mbec-air-24h"
+      - id: "GE:han-mbec-il1b-il6-output-pm25"
+        name: "PM2.5-exposed MBECs - IL-1beta and IL-6 expression"
+        description: "Both markedly increased relative to control. Values reported only in Fig. 2B; no value, spread or p-value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:han-mbec-pm25-24h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:han-mbec-001"
+      name: "Mouse bronchial epithelium cells (MBECs)"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: adherent
+      culture_media:
+        id: "soma:han-media-endothelial"
+        name: "Endothelial culture medium with 10% FBS, 1% endothelial cell growth supplement and 1% penicillin/streptomycin"
+        base_medium: "Endothelial culture medium (ScienCell Research Laboratories cat. no. 1001)"
+      donor_info: "MBECs purchased from Shanghai Sixin Biotechnology Co., Ltd.; seeded at 1x10^5/ml onto six-well plates and cultured in 5% CO2 at 37 C"
+    follows_protocols: []
+
+  # --- PI3K, AKT and mTOR in MBECs, with PI3K inhibitor ---
+  - id: "GE:han-mbec-pi3k-akt-mtor"
+    name: "PI3K, AKT and mTOR expression and PI3K/AKT phosphorylation in MBECs"
+    description: "Western blot for PI3K, phospho-PI3K, AKT and phospho-AKT (beta-actin loading control) in MBECs after 24 h in air containing PM2.5, PM2.5 plus the PI3K inhibitor PI3KIR, PI3KIR alone, or 95% air / 5% CO2. PM2.5 increased PI3K, AKT and mTOR expression, and a statistical difference in PI3K and AKT phosphorylation was identified between the PM2.5 and control groups. PI3KIR significantly decreased PI3K, AKT and mTOR expression. The paper reports mTOR among the three targets in the text but lists no mTOR antibody in the Methods, so the antibody list on PROTOCOL:han-wb-001 records only the four that are named. Densitometry was performed with Quantity-One 1.2 but reported only in Fig. 4A and Fig. 5A, so no numeric value, spread or p-value is recorded."
+    gene_expression_method: "western blot (chemiluminescent immunoblot with densitometry)"
+    target_gene: "PI3K, AKT and mTOR (protein level and PI3K/AKT phosphorylation)"
+    normalization_reference: "beta-actin"
+    evidence:
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The results demonstrated that PM2.5 increased PI3K, AKT and mTOR expression in MBECs."
+        explanation: "States the PM2.5-group result this assay records: all three pathway components rose above control."
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "A statistical difference was identified in the PI3K and AKT phosphorylation level between PM2.5 and the control group (Fig. 4A)."
+        explanation: "Records the phosphorylation result and the paper's only statement of statistical significance for this assay; no p-value is given."
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The results demonstrated that PI3KIR significantly decreased PI3K, AKT and mTOR expression in MBECs (Fig. 5A)."
+        explanation: "States the inhibitor-group result this assay records, which establishes that the immunoblot signal tracks PI3K pathway activity."
+    has_exposure_condition:
+      - id: "EXPOSURE:han-mbec-air-24h"
+        name: "95% air and 5% CO2 at 37 C for 24 h (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:han-mbec-pm25-24h"
+        name: "Air containing PM2.5 for 24 h (concentration not stated)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:han-mbec-pm25-pi3kir-24h"
+        name: "Air containing PM2.5 plus PI3K inhibitor PI3KIR (Sigma-Aldrich cat. no. 526559) for 24 h; neither concentration stated"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:han-mbec-pi3kir-24h"
+        name: "PI3K inhibitor PI3KIR (Sigma-Aldrich cat. no. 526559) alone for 24 h; concentration not stated"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:han-mbec-pi3k-akt-mtor-output-control"
+        name: "Control MBECs - PI3K, AKT, mTOR"
+        description: "Reference condition. Reported only in Fig. 4A; no value recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:han-mbec-air-24h"
+      - id: "GE:han-mbec-pi3k-akt-mtor-output-pm25"
+        name: "PM2.5-exposed MBECs - PI3K, AKT, mTOR"
+        description: "PI3K, AKT and mTOR expression increased relative to control, with a statistical difference in PI3K and AKT phosphorylation. Reported only in Fig. 4A; no value, spread or p-value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:han-mbec-pm25-24h"
+      - id: "GE:han-mbec-pi3k-akt-mtor-output-pm25-pi3kir"
+        name: "PM2.5 plus PI3K inhibitor MBECs - PI3K, AKT, mTOR"
+        description: "PI3K, AKT and mTOR expression significantly decreased by PI3KIR. Reported only in Fig. 5A; no value, spread or p-value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:han-mbec-pm25-pi3kir-24h"
+      - id: "GE:han-mbec-pi3k-akt-mtor-output-pi3kir"
+        name: "PI3K inhibitor alone MBECs - PI3K, AKT, mTOR"
+        description: "Inhibitor-only condition included in the Methods culture scheme. The paper's Fig. 5A statement covers PI3KIR without separating the two inhibitor arms, so no direction is asserted for this arm alone. No value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:han-mbec-pi3kir-24h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:mie-pi3k-akt-mtor-activation"
+      name: "PI3K/AKT/mTOR signaling activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:han-mbec-001"
+      name: "Mouse bronchial epithelium cells (MBECs)"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: adherent
+      culture_media:
+        id: "soma:han-media-endothelial"
+        name: "Endothelial culture medium with 10% FBS, 1% endothelial cell growth supplement and 1% penicillin/streptomycin"
+        base_medium: "Endothelial culture medium (ScienCell Research Laboratories cat. no. 1001)"
+      donor_info: "MBECs purchased from Shanghai Sixin Biotechnology Co., Ltd.; seeded at 1x10^5/ml onto six-well plates and cultured in 5% CO2 at 37 C"
+    follows_protocols:
+      - id: "PROTOCOL:han-wb-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blotting for PI3K, phospho-PI3K, AKT and phospho-AKT"
+
+  # --- Autophagy (LC3B) in MBECs ---
+  - id: "GE:han-mbec-lc3b-autophagy"
+    name: "LC3B immunofluorescence for autophagy in MBECs"
+    description: "Autophagy assessed by anti-LC3B immunofluorescence in MBECs after 24 h in air containing PM2.5, PM2.5 plus PI3KIR, PI3KIR alone, or 95% air / 5% CO2. All four Methods arms are recorded; the paper describes only three of them, so the inhibitor-only arm carries no direction. PM2.5 induced autophagy of MBECs, and the PI3K inhibitor blocked PM2.5-induced autophagy. Results are reported only in Fig. 4B and Fig. 5B-C; the paper reports no LC3B puncta count, no fluorescence intensity and no p-value, so the output records carry no measurement value."
+    gene_expression_method: "immunofluorescence (anti-LC3B, confocal microscopy)"
+    target_gene: "LC3B (MAP1LC3B), autophagy marker"
+    evidence:
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "PM2.5 was also demonstrated to induced autophagy of MBECs in vitro (Fig. 4B)."
+        explanation: "States the PM2.5-group result this assay records: autophagy was induced in MBECs. Quoted with the paper's own grammatical slip ('to induced') intact, as required for verbatim evidence."
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "PI3K inhibitor also blocked PM2.5-induced autophagy and apoptosis of MBECs (Fig. 5B-C)."
+        explanation: "States the inhibitor-group result this assay records: blocking PI3K abolished the PM2.5-induced autophagy."
+    has_exposure_condition:
+      - id: "EXPOSURE:han-mbec-air-24h"
+        name: "95% air and 5% CO2 at 37 C for 24 h (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:han-mbec-pm25-24h"
+        name: "Air containing PM2.5 for 24 h (concentration not stated)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:han-mbec-pm25-pi3kir-24h"
+        name: "Air containing PM2.5 plus PI3K inhibitor PI3KIR (Sigma-Aldrich cat. no. 526559) for 24 h; neither concentration stated"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:han-mbec-pi3kir-24h"
+        name: "PI3K inhibitor PI3KIR (Sigma-Aldrich cat. no. 526559) alone for 24 h; concentration not stated"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:han-mbec-lc3b-autophagy-output-control"
+        name: "Control MBECs - LC3B autophagy signal"
+        description: "Reference condition. Reported only in Fig. 4B; no value recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:han-mbec-air-24h"
+      - id: "GE:han-mbec-lc3b-autophagy-output-pm25"
+        name: "PM2.5-exposed MBECs - LC3B autophagy signal"
+        description: "Autophagy induced relative to control. Reported only in Fig. 4B; no puncta count, intensity or p-value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:han-mbec-pm25-24h"
+      - id: "GE:han-mbec-lc3b-autophagy-output-pm25-pi3kir"
+        name: "PM2.5 plus PI3K inhibitor MBECs - LC3B autophagy signal"
+        description: "PM2.5-induced autophagy blocked by the PI3K inhibitor. Reported only in Fig. 5B-C; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:han-mbec-pm25-pi3kir-24h"
+      - id: "GE:han-mbec-lc3b-autophagy-output-pi3kir"
+        name: "PI3K inhibitor alone MBECs - LC3B autophagy signal"
+        description: "Inhibitor-only condition included in the Methods culture scheme. The paper's Fig. 5B-C statement covers PI3KIR without separating the two inhibitor arms, so no direction is asserted for this arm alone. No value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:han-mbec-pi3kir-24h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:ke-increased-autophagy"
+      name: "Increased autophagy"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:han-mbec-001"
+      name: "Mouse bronchial epithelium cells (MBECs)"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: adherent
+      culture_media:
+        id: "soma:han-media-endothelial"
+        name: "Endothelial culture medium with 10% FBS, 1% endothelial cell growth supplement and 1% penicillin/streptomycin"
+        base_medium: "Endothelial culture medium (ScienCell Research Laboratories cat. no. 1001)"
+      donor_info: "MBECs purchased from Shanghai Sixin Biotechnology Co., Ltd.; seeded at 1x10^5/ml onto six-well plates and cultured in 5% CO2 at 37 C"
+    follows_protocols:
+      - id: "PROTOCOL:han-lc3b-if-001"
+        protocol_type: ImagingProtocol
+        name: "LC3B immunofluorescence for autophagy in MBECs"
+
+  # --- Apoptosis (TUNEL) in mouse lung tissue ---
+  - id: "GE:han-lung-tunel-apoptosis"
+    name: "TUNEL apoptosis in lung tissue of PM2.5-exposed mice"
+    description: "TUNEL staining of 4 um lung sections from both mouse groups. PM2.5 increased lung cell apoptosis in lung tissue relative to control. The apoptosis rate was measured with Developer XD 1.2 across six fields of view but reported only in Fig. 3A, so no apoptosis rate, spread or p-value is recorded. This is not a gene expression measurement; it is recorded under gene_expression_assays because the schema has no apoptosis assay class, and the output records therefore carry no mrna_level, protein_level or percentage_positive_cells value."
+    gene_expression_method: "TUNEL in situ cell death detection with confocal imaging"
+    evidence:
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "As indicated in Fig. 3A, PM2.5 increased lung cell apoptosis in lung tissue compared with the control."
+        explanation: "States exactly what this assay records: apoptosis in lung tissue rose above control after PM2.5 exposure."
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "These results indicated that PM2.5 can induce apoptosis of MBECs and in the lung tissue of experimental mice."
+        explanation: "The authors' combined reading of the in vivo and in vitro TUNEL results, confirming that the lung tissue arm recorded here is read as apoptosis rather than non-specific staining."
+    has_exposure_condition:
+      - id: "EXPOSURE:han-mouse-control-21d"
+        name: "Normal survival (Control) environment, 21 days"
+        exposure_duration:
+          value: "21"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:han-mouse-pm25-21d"
+        name: "PM2.5 environment with intratracheal instillation of PM2.5, 21 days (concentration not stated)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "21"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GE:han-lung-tunel-apoptosis-output-control"
+        name: "Control mice - lung tissue TUNEL"
+        description: "Reference group, n=10. Reported only in Fig. 3A; no apoptosis rate recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:han-mouse-control-21d"
+      - id: "GE:han-lung-tunel-apoptosis-output-pm25"
+        name: "PM2.5-exposed mice - lung tissue TUNEL"
+        description: "Lung cell apoptosis increased relative to control. n=10. Reported only in Fig. 3A; no apoptosis rate, spread or p-value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:han-mouse-pm25-21d"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-apoptosis"
+      name: "Increased epithelial cell apoptosis"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:han-mouse-c57bl6"
+      name: "Male C57BL/6 mouse housed in a PM2.5 or normal survival environment for 21 days"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Lung tissue fixed in 4% formaldehyde overnight at room temperature, paraffin-embedded and cut into 4 um sections"
+      subject_characteristics: "n=10 per group; apoptosis rate scored over six fields of view per section"
+    follows_protocols:
+      - id: "PROTOCOL:han-tunel-tissue-001"
+        protocol_type: StainingProtocol
+        name: "TUNEL apoptosis staining of mouse lung tissue sections"
+      - id: "PROTOCOL:han-he-001"
+        protocol_type: StainingProtocol
+        name: "Hematoxylin and eosin staining of mouse lung sections"
+
+  # --- Apoptosis (TUNEL) in MBECs ---
+  - id: "GE:han-mbec-tunel-apoptosis"
+    name: "TUNEL apoptosis in MBECs with and without PI3K inhibition"
+    description: "TUNEL staining with DAPI counterstain in MBECs after 24 h in air containing PM2.5, PM2.5 plus PI3KIR, PI3KIR alone, or 95% air / 5% CO2. All four Methods arms are recorded; the paper describes only three of them, so the inhibitor-only arm carries no direction. PM2.5 induced apoptosis of MBECs relative to control, and the PI3K inhibitor blocked PM2.5-induced apoptosis. The apoptosis rate was measured with Developer XD 1.2 across six fields of view but reported only in Fig. 3B and Fig. 5B-C, so no apoptosis rate, spread or p-value is recorded. As with the lung tissue arm, this is not a gene expression measurement and is recorded here only because the schema has no apoptosis assay class."
+    gene_expression_method: "TUNEL in situ cell death detection with confocal imaging"
+    evidence:
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The in vitro assay demonstrated that PM2.5 induced the apoptosis of MBECs compared with the control (Fig. 3B)."
+        explanation: "States the PM2.5-group result this assay records: apoptosis of MBECs rose above control."
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "PI3K inhibitor also blocked PM2.5-induced autophagy and apoptosis of MBECs (Fig. 5B-C)."
+        explanation: "States the inhibitor-group result this assay records: blocking PI3K abolished the PM2.5-induced apoptosis."
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Disruption of PI3K/AKT/mTOR signaling was also indicated to effectively inhibit apoptosis of MBECs."
+        explanation: "The abstract's statement of the same inhibitor result, which is the paper's central mechanistic claim about MBEC apoptosis."
+    has_exposure_condition:
+      - id: "EXPOSURE:han-mbec-air-24h"
+        name: "95% air and 5% CO2 at 37 C for 24 h (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:han-mbec-pm25-24h"
+        name: "Air containing PM2.5 for 24 h (concentration not stated)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:han-mbec-pm25-pi3kir-24h"
+        name: "Air containing PM2.5 plus PI3K inhibitor PI3KIR (Sigma-Aldrich cat. no. 526559) for 24 h; neither concentration stated"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:han-mbec-pi3kir-24h"
+        name: "PI3K inhibitor PI3KIR (Sigma-Aldrich cat. no. 526559) alone for 24 h; concentration not stated"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:han-mbec-tunel-apoptosis-output-control"
+        name: "Control MBECs - TUNEL apoptosis"
+        description: "Reference condition. Reported only in Fig. 3B; no apoptosis rate recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:han-mbec-air-24h"
+      - id: "GE:han-mbec-tunel-apoptosis-output-pm25"
+        name: "PM2.5-exposed MBECs - TUNEL apoptosis"
+        description: "Apoptosis induced relative to control. Reported only in Fig. 3B; no apoptosis rate, spread or p-value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:han-mbec-pm25-24h"
+      - id: "GE:han-mbec-tunel-apoptosis-output-pm25-pi3kir"
+        name: "PM2.5 plus PI3K inhibitor MBECs - TUNEL apoptosis"
+        description: "PM2.5-induced apoptosis blocked by the PI3K inhibitor. Reported only in Fig. 5B-C; no apoptosis rate recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:han-mbec-pm25-pi3kir-24h"
+      - id: "GE:han-mbec-tunel-apoptosis-output-pi3kir"
+        name: "PI3K inhibitor alone MBECs - TUNEL apoptosis"
+        description: "Inhibitor-only condition included in the Methods culture scheme. The paper's Fig. 5B-C statement covers PI3KIR without separating the two inhibitor arms, so no direction is asserted for this arm alone. No value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:han-mbec-pi3kir-24h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-apoptosis"
+      name: "Increased epithelial cell apoptosis"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:han-mbec-001"
+      name: "Mouse bronchial epithelium cells (MBECs)"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      cell_culture_growth_mode: adherent
+      culture_media:
+        id: "soma:han-media-endothelial"
+        name: "Endothelial culture medium with 10% FBS, 1% endothelial cell growth supplement and 1% penicillin/streptomycin"
+        base_medium: "Endothelial culture medium (ScienCell Research Laboratories cat. no. 1001)"
+      donor_info: "MBECs purchased from Shanghai Sixin Biotechnology Co., Ltd.; seeded at 1x10^5/ml onto six-well plates and cultured in 5% CO2 at 37 C"
+    follows_protocols:
+      - id: "PROTOCOL:han-tunel-cells-001"
+        protocol_type: StainingProtocol
+        name: "TUNEL apoptosis staining of cultured MBECs"
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS
+#
+# The paper states one explicit mechanistic chain - PM2.5 activates
+# PI3K/AKT/mTOR, which drives autophagy, which mediates apoptosis - and
+# supports it with inhibitor reversal. The downstream link from epithelial
+# apoptosis to the loss of lung function is the paper's framing rather than
+# something it tested, so it is recorded as an indirect, moderately supported
+# relationship. The oxidative stress link is recorded as weak: the paper
+# reports ROS and apoptosis in the same cells but tests no causal step
+# between them, and states only that ROS "may induce oxidative injury".
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:han-pi3k-to-autophagy"
+    name: "PI3K/AKT/mTOR signaling activation leads to increased autophagy"
+    description: "PM2.5 raised PI3K, AKT and mTOR expression and PI3K/AKT phosphorylation in MBECs and induced autophagy in the same cells; the PI3K inhibitor lowered pathway expression and blocked the autophagy, so the pathway is upstream of the autophagy response."
+    upstream_event:
+      id: "KE:mie-pi3k-akt-mtor-activation"
+      name: "PI3K/AKT/mTOR signaling activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-increased-autophagy"
+      name: "Increased autophagy"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: strong
+    evidence:
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The results of the present study revealed that PM2.5 upregulated PI3K, AKT and mTOR expression and induced autophagy in MBECs."
+        explanation: "Pairs the upstream and downstream events of this relationship in a single statement of the paper's result."
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Disruption of PI3K/AKT/mTOR pathway effectively reduced autophagy level and apoptosis of MBECs."
+        explanation: "Inhibitor reversal of the autophagy response is the empirical basis for recording this relationship as strongly supported rather than merely correlative."
+
+  - id: "KER:han-autophagy-to-apoptosis"
+    name: "Increased autophagy leads to increased epithelial cell apoptosis"
+    description: "The paper's central claim, stated in its title and conclusion: PM2.5-induced autophagy mediates the apoptosis of MBECs. Both responses were blocked together by the PI3K inhibitor. The paper does not manipulate autophagy independently of the pathway, so the ordering of autophagy before apoptosis rests on the authors' interpretation rather than on a separate experiment."
+    upstream_event:
+      id: "KE:ke-increased-autophagy"
+      name: "Increased autophagy"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ke-epithelial-apoptosis"
+      name: "Increased epithelial cell apoptosis"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    evidence:
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The results indicated that PM2.5 decreased the overall lung function of experimental mice and specifically induced autophagy of MBECs to increase apoptosis."
+        explanation: "States the directional link this relationship records: autophagy was induced in order to increase apoptosis, i.e. autophagy is upstream."
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "These results indicated that disruption of PI3K/AKT/mTOR signaling can effectively block autophagy and apoptosis of MBECs induced by PM2.5."
+        explanation: "Shows the two events rise and fall together under PI3K inhibition. Because they were never separated experimentally, this supports the pairing but not the ordering, which is why support is recorded as moderate rather than strong."
+
+  - id: "KER:han-apoptosis-to-lung-function"
+    name: "Increased epithelial cell apoptosis leads to decreased lung function"
+    description: "The same mice that lost lung function showed increased apoptosis in lung tissue, and the paper frames MBEC apoptosis as the mechanism of PM2.5-induced lung disease. No experiment separates the two, so this is recorded as an indirect relationship with moderate support."
+    upstream_event:
+      id: "KE:ke-epithelial-apoptosis"
+      name: "Increased epithelial cell apoptosis"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    relationship_type: "indirectly leads to"
+    evidence_support: moderate
+    evidence:
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The results indicated that PM2.5 decreased the overall lung function of experimental mice and specifically induced autophagy of MBECs to increase apoptosis."
+        explanation: "Places the loss of lung function and the rise in apoptosis in the same PM2.5-exposed animals, which is the whole of the paper's evidence for this link."
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In conclusion, the current study indicated that PM2.5 led to lung injury, increased tissue inflammatory factors, increased ROS production, and induced apoptosis and autophagy in MBECs."
+        explanation: "The authors' conclusion groups lung injury with apoptosis as outcomes of the same exposure without testing the step between them, which is why this relationship is recorded as indirect."
+
+  - id: "KER:han-oxidative-stress-to-apoptosis"
+    name: "Increased oxidative stress is associated with increased epithelial cell apoptosis"
+    description: "ROS production rose in the same PM2.5-exposed MBECs that underwent apoptosis, and the authors suggest the ROS rise induced oxidative injury. No antioxidant or ROS-scavenging experiment was performed, and the PI3K inhibitor arms were not assayed for ROS, so this relationship is recorded as weakly supported association rather than a tested causal step."
+    upstream_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-epithelial-apoptosis"
+      name: "Increased epithelial cell apoptosis"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    relationship_type: "indirectly leads to"
+    evidence_support: weak
+    evidence:
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The results of the current study demonstrated that ROS production in MBECs were upregulated in MBECs in PM2.5-treated mice, which further resulted in oxidative injury of experimental mice."
+        explanation: "The authors' own statement that the ROS rise produced oxidative injury. It is an inference from co-occurrence rather than a tested step, which is why evidence_support is weak."
+      - reference: "PMID:33235610"
+        reference_title: "PM2.5 induces autophagy-mediated cell apoptosis via PI3K/AKT/mTOR signaling pathway in mice bronchial epithelium cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The results demonstrated that PM2.5 markedly induced inflammatory responses, oxidative injury and MBEC apoptosis."
+        explanation: "Lists oxidative injury and MBEC apoptosis as co-occurring responses to PM2.5, with no claim that one caused the other."

@@ -1,0 +1,24 @@
+{
+  "reference_id": "PMID:32783621",
+  "kb_file": "kb/publications/Container-lkhagvadorj2020-prenatal-smoke-areg-egfr.yaml",
+  "content_type_in_committed_cache": "abstract_only",
+  "verified_with": "just verify-snippets (linkml-reference-validator, committed + local cache)",
+  "verified_date": "2026-09-28",
+  "snippet_sha256": [
+    "007536f4421b6072cf88b98f31ab681dbfdf1c90de18e944907ac66191745341",
+    "051f5889b3bfafab90138a4f2e015c6dcccc35dc4cb43254e64aa508ebf4b7e2",
+    "11020fa5a58c0c9e2846d93a1895583c4280a89cf613f47af298851c9d69dbd9",
+    "2547890da23de816d4111e6f0da6f53f4fb12a34afd7045f29f1c255d7da23cb",
+    "46a7cfc86b0f6eb1e797343f14318b0ce654ffd63c20ef6c66c2fa5e2786ff60",
+    "4b36e31d6e8a34a152eb027faffd223979a8cf6e7143485d0066e50be9a1220d",
+    "55440e9655539133b4461f54342af4466059dc80edf6139783cd713e7fc672df",
+    "77d4aad73e354d200e3af86e4b0eabd0d5fead40daf7aa1945436fc134a23545",
+    "7d5a8977f9f80a7a20c814e018c54b6849dd60325761c5dfe92d34bfbf2a605e",
+    "8face7b3448b5452d4a1bad8882e58680f7e57ccedbc0fb04bac6936377ef3e2",
+    "a6caafd104a2abc32734a2f2b98c22cf3741f4517177dbf59de903962814d8ca",
+    "c1a8632f5e1e5b3eb4bcffb4a40405cd7006c8a7f189135df49533247bb8e7db",
+    "cb62df2aa37013ee42adcd7b350a913158f368f29f65b611cbd67d85a85d8771",
+    "f763ab7d5f5061954721caada0e5d98372fff156e79e06952ca0bd46f1ab743d",
+    "fb0a244b4bb1d0416851c4e686b86d8f3dfd014e5dac9fa42b70b03b3392753b"
+  ]
+}

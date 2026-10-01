@@ -1,0 +1,2415 @@
+# =============================================================================
+# Harding et al. (2021) - Association between particulate matter containing
+# EPFRs and neutrophilic asthma through AhR and Th17
+# =============================================================================
+#
+# Source: Respir Res. 2021;22:275
+# DOI: 10.1186/s12931-021-01867-w
+#
+# The committed reference cache entry for this PMID is full text
+# (content_type: full_text_pdf), so every evidence snippet below is quoted
+# from text CI can resolve. No verification receipt is needed.
+#
+# Study design (all in vivo, single 4-h timepoint):
+#   - Male and female C57BL/6J mice, 8-10 weeks. A single oropharyngeal
+#     aspiration of 50 ul of either vehicle (sterile saline + 0.02%
+#     tween-80) or 50 ul of MCP230, a laboratory-generated combustion-derived
+#     particulate matter carrying environmentally persistent free radicals
+#     (EPFRs), mean aerodynamic diameter < 0.2 um, suspended at 1 mg/ml.
+#     The paper states this is equivalent to an inhalation exposure of
+#     200 ug/m3. Lungs were taken 4 h later.
+#   - Arm 1: RT2 Mouse Drug Metabolism profiler PCR array on whole-lung RNA,
+#     84 genes, n = 5 per group (Methods: n = 10 mice in total).
+#   - Arm 2: Drop-seq single-cell RNA sequencing of dissociated whole lung,
+#     6118 vehicle cells and 5337 PM cells after QC, clustered into 20
+#     populations and annotated with SingleR against ImmGen, then pathway
+#     enrichment (Enrichr / KEGG / Ahr wikipathway) per population.
+#
+# Key findings:
+#   - 12 of 84 array genes significantly increased after PM; Cyp1a1 by far
+#     the largest (log2 fold change 4.91). DAVID pathway analysis of the
+#     array pointed to oxidative stress and an antioxidant response.
+#   - scRNA-seq: 210 differentially expressed genes across the lung,
+#     upregulated Il17, Tnf, toll-like receptor and P53 signalling.
+#   - Epithelial cells upregulated the Ahr wikipathway (including Egfr) and
+#     Il-17, Egfr and T-cell receptor signalling; dendritic cells upregulated
+#     Th17 differentiation, Il-17, Tnf and NF-kB signalling; all three T-cell
+#     clusters upregulated Th17 differentiation.
+#   - Ahr expression itself did not change, so the authors attribute Ahr
+#     activation to Ahr/Arnt nuclear translocation and c-src/Egfr/Erk1/2
+#     signalling rather than to increased Ahr transcription.
+#   - Il-10 was not expressed in any lung cell, i.e. no regulatory Th17
+#     (rTh17) differentiation - the response is pathogenic eTh17.
+#
+# NUMERIC VALUES. Table 1 is the only source of per-group numbers in this
+# paper, and it reports LOG2 FOLD CHANGES with p-values, not absolute
+# expression levels. So:
+#   - No output record carries an mrna_level: there is no absolute value for
+#     either group to record, and estimating one from a figure is not allowed.
+#   - Each array gene's log2 fold change is recorded in response_comparisons.
+#     ChangeTypeEnum has no log2 member, so those entries use
+#     change_type: fold_change with a unit that names the log2 scale
+#     explicitly, and each one says in its description that the value must not
+#     be read as a linear fold change. Converting to a linear fold change
+#     would be a computed value, which extraction does not produce.
+#   - The scRNA-seq arm reports pathway enrichment and per-cell-type
+#     expression as figures and combined scores only. Those assays therefore
+#     record direction and significance threshold in their descriptions and
+#     carry no measurement values.
+#
+# ONE ASSAY PER GENE. GeneExpressionAssay.target_gene is single-valued, so a
+# single merged assay for the array could name only one of its twelve genes
+# and would silently drop the other eleven. Each gene therefore gets its own
+# assay id; all twelve share the one protocol id, because the array is one
+# protocol run.
+#
+# KEY EVENT ASSIGNMENT for the array genes: the two cytochrome P450
+# xenobiotic response elements (Cyp1a1, Cyp4b1) are assigned to
+# KE:mie-ahr-activation, since the paper uses Cyp1a1 induction as its readout
+# of Ahr activation. The ten detoxification and antioxidant genes are
+# assigned to KE:mie-oxidative-stress, following the paper's own DAVID
+# conclusion that the array indicates increased oxidative stress and an
+# antioxidant response. Every Key Event block is copied verbatim from
+# origin/main.
+#
+# PER-SPECIMEN SUBJECTS. The scRNA-seq populations are gated out of one
+# dissociated lung suspension, so each analysed population gets its own
+# InVivoSubject id rather than reusing one id (cf. issue #132, where id reuse
+# lost specimen detail in the workbook export). InVivoSubject has no
+# cell_type slot, so the CL identity of each population is stated in the
+# subject and assay names instead of being grounded in an ontology term.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:34702270"
+  reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+  doi: "10.1186/s12931-021-01867-w"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:harding-pm-oa-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+    description: "MCP230, a laboratory-generated particulate matter containing environmentally persistent free radicals with a mean aerodynamic diameter < 0.2 um, created and characterized by Dr. Lomnicki at Louisiana State University. Particles suspended at 1 mg/ml in sterile saline with 0.02% tween-80 and sonicated for 2 min at 30-s intervals on ice with a probe sonicator at 50% amplitude. Mice received 50 ul of vehicle or 50 ul of the PM suspension by oropharyngeal aspiration and were held for 4 h. The paper states that 50 ul oropharyngeal aspiration corresponds to an inhalation exposure equivalent of 200 ug/m3. Protocol typed as MolecularAssayProtocol because the schema offers no exposure-protocol subclass."
+    detection_method: "not applicable - exposure protocol"
+    equipment_required:
+      - "Probe sonicator"
+      - "MCP230 EPFR-containing particulate matter"
+    institution: "Louisiana State University"
+    quality_control_criteria: "All animal protocols written according to Policy for the Care and Use of Laboratory Animals and approved by the LSU Institutional Animal Care and Use Committee"
+
+  - id: "PROTOCOL:harding-rt2-array-001"
+    protocol_type: MolecularAssayProtocol
+    name: "RT2 Profiler PCR array for mouse drug metabolism"
+    description: "Lungs retrograde-perfused with 2 ml Hank's Balanced Salt solution to remove red blood cells, then total RNA isolated and purified per the manufacturer's protocol. The RT2 PCR kit for mouse drug metabolism (Catalog No. 330231) was used to analyse 84 genes related to the metabolism of PM particles. Data analysed with the RT2 Profiler PCR Data Analysis tools on Qiagen's website, using a CT cutoff of 35 and the full panel geometric mean normalization method. Significance by Student's t-test at p < 0.05."
+    detection_method: "RT2 Profiler quantitative PCR array (84-gene mouse drug metabolism panel)"
+    normalization_method: "full panel geometric mean normalization, CT cutoff 35"
+    platform: "Qiagen RT2 Profiler PCR Array, Catalog No. 330231"
+    # replicate_requirements is an integer slot: 5 mice per exposure group.
+    # Table 1 reports n = 5 per group; the Methods state n = 10 mice in total.
+    replicate_requirements: 5
+
+  - id: "PROTOCOL:harding-dropseq-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Single-cell dissociation of mouse lung and Drop-seq barcoding"
+    description: "Lungs retrograde-perfused with 2 ml Hank's Balanced Salt solution, then dissociated with a gentleMACS Dissociator in 2 ml pre-warmed digest buffer (2 mg/ml Type 2 Collagenase, 1 mg/ml ProNase E, 62.5 U/ml DNAse 1, 5 mM CaCl2 in DPBS) per 100 mg tissue, further dissociated by pipetting and on a ThermoMixer at 1200 RPM for 5 min at 37 C, passed through a 23-gauge needle and twice through a 40-uM filter, then centrifuged and resuspended in 1% FBS/PBS. Single cells were barcoded with the Drop-seq protocol Version 3.1 at 100 cells/ul and droplets sequenced on an Illumina Nextseq500."
+    detection_method: "Drop-seq single-cell RNA sequencing on Illumina Nextseq500"
+    platform: "Drop-seq protocol Version 3.1; Illumina Nextseq500"
+    equipment_required:
+      - "gentleMACS Dissociator (Miltenyi Biotec)"
+      - "ThermoMixer (Eppendorf)"
+      - "Illumina Nextseq500"
+    protocol_version: "Drop-seq protocol Version 3.1"
+    protocol_author: "Steven Potter (Cincinnati Children's Hospital)"
+
+  - id: "PROTOCOL:harding-scrnaseq-bioinf-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Drop-seq alignment, Seurat clustering and pathway enrichment pipeline"
+    description: "Drop-seq tools-2.3.0 used to tag cell and molecular barcodes, trim primer and polyA sequences and align with STAR to the M24 (GRCm38.p6) mouse genome. Cells with fewer than 300 detected genes or more than 10% mitochondrial transcript counts were removed, as were genes detected in fewer than 3 cells, leaving 15,813 genes x 6118 cells (vehicle) and 15,851 genes x 5337 cells (PM). Data processed with sctransform normalization and the standard Seurat (3.1.2) integration protocol, clustered with Seurat's UMAP on principal components selected by a JackStraw plot, and cell types assigned with SingleR against the ImmGen mouse database. Differentially expressed genes identified with Seurat's FindMarkers (Wilcoxon rank-sum test, FDR < 0.05); pathway and gene-set enrichment via R clusterProfiler, Enrichr and KEGG with Benjamini-Hochberg correction."
+    detection_method: "Seurat UMAP clustering with SingleR/ImmGen annotation and Enrichr/KEGG pathway enrichment"
+    normalization_method: "sctransform normalization; Benjamini-Hochberg FDR correction"
+    platform: "Drop-seq tools-2.3.0, STAR, Seurat 3.1.2, SingleR, clusterProfiler, Enrichr"
+    quality_control_criteria: "Cells with < 300 detected genes or > 10% mitochondrial transcript counts removed; genes detected in < 3 cells removed; significance at FDR < 0.05"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS
+#
+# Arm 1 - RT2 Profiler PCR array on whole-lung RNA (one assay per gene)
+# Arm 2 - Drop-seq single-cell RNA sequencing of dissociated whole lung
+# =============================================================================
+
+gene_expression_assays:
+  # --- Cyp1a1 ---
+  - id: "GE:harding-cyp1a1-rt2-4h"
+    name: "Cyp1a1 mRNA in whole lung after 4-h PM exposure (RT2 Profiler array)"
+    description: "Cytochrome P450, family 1, subfamily a, polypeptide 1 (Cyp1a1) was one of the 12 genes significantly increased in the lungs of PM-exposed mice relative to vehicle-exposed mice on the RT2 Mouse Drug Metabolism profiler PCR array, 4 h after oropharyngeal exposure. Table 1 reports the change as a log2 fold change with a p-value and gives no absolute expression level for either group, so no mrna_level is recorded on the output records; the log2 fold change is carried in response_comparisons as COMP:harding-cyp1a1-log2fc. Assigned to AhR pathway activation: this is a cytochrome P450 xenobiotic response element, and the paper treats Cyp1a1 induction as the readout of Ahr activation."
+    target_gene: "NCBIGene:13076"
+    gene_expression_method: "RT2 Profiler PCR array (mouse drug metabolism, Catalog No. 330231)"
+    normalization_reference: "full panel geometric mean, CT cutoff 35"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Cyp1a1 Cytochrome P450, family 1, subfamily a, polypeptide 1 4.91 0.010"
+        explanation: "The Table 1 row for Cyp1a1, giving the gene name, its log2 fold change of 4.91 and its p-value of 0.010 in PM-exposed versus vehicle-exposed lung."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The RT2 Profiler array shows significant (p < 0.05) gene regulation of Ahr cytokines in PM compared to vehicle exposed (n = 5) mice after 4-h post exposure (n = 5)"
+        explanation: "Table 1's caption establishes the comparison, the significance threshold and the group sizes behind this assay's output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-cyp1a1-rt2-4h-output-vehicle"
+        name: "Vehicle-exposed mouse lung - Cyp1a1 mRNA"
+        description: "Reference group for the array. Table 1 reports only the log2 fold change of PM versus vehicle, so no absolute value is recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-cyp1a1-rt2-4h-output-pm"
+        name: "PM-exposed mouse lung - Cyp1a1 mRNA"
+        description: "Significantly increased relative to vehicle (log2 fold change 4.91, p = 0.010). Table 1 reports no absolute value, so none is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:mie-ahr-activation"
+      name: "AhR pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-rt2"
+      name: "C57BL/6J mouse, retrograde-perfused whole lung, total RNA for the RT2 Profiler array"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        # The paper states an 8-10 week range, not a single age; recorded as
+        # bounds with no value rather than picking a midpoint.
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "10"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Lungs retrograde-perfused with 2 ml Hank's Balanced Salt solution to remove red blood cells, then total RNA isolated and purified"
+      subject_characteristics: "Both male and female C57BL/6J (Jackson) mice aged 8-10 weeks, maintained on a 12-h light cycle with free access to chow and water. Table 1 reports n = 5 PM-exposed and n = 5 vehicle-exposed mice; the Methods state the array was run on the lungs of n = 10 mice in total."
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-rt2-array-001"
+        protocol_type: MolecularAssayProtocol
+        name: "RT2 Profiler PCR array for mouse drug metabolism"
+
+  # --- Cyp4b1 ---
+  - id: "GE:harding-cyp4b1-rt2-4h"
+    name: "Cyp4b1 mRNA in whole lung after 4-h PM exposure (RT2 Profiler array)"
+    description: "Cytochrome P450, family 4, subfamily b, polypeptide 1 (Cyp4b1) was one of the 12 genes significantly increased in the lungs of PM-exposed mice relative to vehicle-exposed mice on the RT2 Mouse Drug Metabolism profiler PCR array, 4 h after oropharyngeal exposure. Table 1 reports the change as a log2 fold change with a p-value and gives no absolute expression level for either group, so no mrna_level is recorded on the output records; the log2 fold change is carried in response_comparisons as COMP:harding-cyp4b1-log2fc. Assigned to AhR pathway activation: this is a cytochrome P450 xenobiotic response element, and the paper treats Cyp1a1 induction as the readout of Ahr activation."
+    target_gene: "NCBIGene:13120"
+    gene_expression_method: "RT2 Profiler PCR array (mouse drug metabolism, Catalog No. 330231)"
+    normalization_reference: "full panel geometric mean, CT cutoff 35"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Cyp4b1 Cytochrome P450, family 4, subfamily b, polypeptide 1 1.48 0.011"
+        explanation: "The Table 1 row for Cyp4b1, giving the gene name, its log2 fold change of 1.48 and its p-value of 0.011 in PM-exposed versus vehicle-exposed lung."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The RT2 Profiler array shows significant (p < 0.05) gene regulation of Ahr cytokines in PM compared to vehicle exposed (n = 5) mice after 4-h post exposure (n = 5)"
+        explanation: "Table 1's caption establishes the comparison, the significance threshold and the group sizes behind this assay's output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-cyp4b1-rt2-4h-output-vehicle"
+        name: "Vehicle-exposed mouse lung - Cyp4b1 mRNA"
+        description: "Reference group for the array. Table 1 reports only the log2 fold change of PM versus vehicle, so no absolute value is recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-cyp4b1-rt2-4h-output-pm"
+        name: "PM-exposed mouse lung - Cyp4b1 mRNA"
+        description: "Significantly increased relative to vehicle (log2 fold change 1.48, p = 0.011). Table 1 reports no absolute value, so none is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:mie-ahr-activation"
+      name: "AhR pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-rt2"
+      name: "C57BL/6J mouse, retrograde-perfused whole lung, total RNA for the RT2 Profiler array"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        # The paper states an 8-10 week range, not a single age; recorded as
+        # bounds with no value rather than picking a midpoint.
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "10"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Lungs retrograde-perfused with 2 ml Hank's Balanced Salt solution to remove red blood cells, then total RNA isolated and purified"
+      subject_characteristics: "Both male and female C57BL/6J (Jackson) mice aged 8-10 weeks, maintained on a 12-h light cycle with free access to chow and water. Table 1 reports n = 5 PM-exposed and n = 5 vehicle-exposed mice; the Methods state the array was run on the lungs of n = 10 mice in total."
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-rt2-array-001"
+        protocol_type: MolecularAssayProtocol
+        name: "RT2 Profiler PCR array for mouse drug metabolism"
+
+  # --- Gpx2 ---
+  - id: "GE:harding-gpx2-rt2-4h"
+    name: "Gpx2 mRNA in whole lung after 4-h PM exposure (RT2 Profiler array)"
+    description: "Glutathione peroxidase 2 (Gpx2) was one of the 12 genes significantly increased in the lungs of PM-exposed mice relative to vehicle-exposed mice on the RT2 Mouse Drug Metabolism profiler PCR array, 4 h after oropharyngeal exposure. Table 1 reports the change as a log2 fold change with a p-value and gives no absolute expression level for either group, so no mrna_level is recorded on the output records; the log2 fold change is carried in response_comparisons as COMP:harding-gpx2-log2fc. Assigned to increased oxidative stress: the paper's DAVID pathway analysis of this array concluded that PM exposure increases oxidative stress and elicits an antioxidant response."
+    target_gene: "NCBIGene:14776"
+    gene_expression_method: "RT2 Profiler PCR array (mouse drug metabolism, Catalog No. 330231)"
+    normalization_reference: "full panel geometric mean, CT cutoff 35"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Gpx2 Glutathione peroxidase 2 2.72 0.001"
+        explanation: "The Table 1 row for Gpx2, giving the gene name, its log2 fold change of 2.72 and its p-value of 0.001 in PM-exposed versus vehicle-exposed lung."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The RT2 Profiler array shows significant (p < 0.05) gene regulation of Ahr cytokines in PM compared to vehicle exposed (n = 5) mice after 4-h post exposure (n = 5)"
+        explanation: "Table 1's caption establishes the comparison, the significance threshold and the group sizes behind this assay's output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-gpx2-rt2-4h-output-vehicle"
+        name: "Vehicle-exposed mouse lung - Gpx2 mRNA"
+        description: "Reference group for the array. Table 1 reports only the log2 fold change of PM versus vehicle, so no absolute value is recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-gpx2-rt2-4h-output-pm"
+        name: "PM-exposed mouse lung - Gpx2 mRNA"
+        description: "Significantly increased relative to vehicle (log2 fold change 2.72, p = 0.001). Table 1 reports no absolute value, so none is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-rt2"
+      name: "C57BL/6J mouse, retrograde-perfused whole lung, total RNA for the RT2 Profiler array"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        # The paper states an 8-10 week range, not a single age; recorded as
+        # bounds with no value rather than picking a midpoint.
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "10"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Lungs retrograde-perfused with 2 ml Hank's Balanced Salt solution to remove red blood cells, then total RNA isolated and purified"
+      subject_characteristics: "Both male and female C57BL/6J (Jackson) mice aged 8-10 weeks, maintained on a 12-h light cycle with free access to chow and water. Table 1 reports n = 5 PM-exposed and n = 5 vehicle-exposed mice; the Methods state the array was run on the lungs of n = 10 mice in total."
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-rt2-array-001"
+        protocol_type: MolecularAssayProtocol
+        name: "RT2 Profiler PCR array for mouse drug metabolism"
+
+  # --- Mt2 ---
+  - id: "GE:harding-mt2-rt2-4h"
+    name: "Mt2 mRNA in whole lung after 4-h PM exposure (RT2 Profiler array)"
+    description: "Metallothionein 2 (Mt2) was one of the 12 genes significantly increased in the lungs of PM-exposed mice relative to vehicle-exposed mice on the RT2 Mouse Drug Metabolism profiler PCR array, 4 h after oropharyngeal exposure. Table 1 reports the change as a log2 fold change with a p-value and gives no absolute expression level for either group, so no mrna_level is recorded on the output records; the log2 fold change is carried in response_comparisons as COMP:harding-mt2-log2fc. Assigned to increased oxidative stress: the paper's DAVID pathway analysis of this array concluded that PM exposure increases oxidative stress and elicits an antioxidant response."
+    target_gene: "NCBIGene:17750"
+    gene_expression_method: "RT2 Profiler PCR array (mouse drug metabolism, Catalog No. 330231)"
+    normalization_reference: "full panel geometric mean, CT cutoff 35"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Mt2 Metallothionein 2 2.58 0.005"
+        explanation: "The Table 1 row for Mt2, giving the gene name, its log2 fold change of 2.58 and its p-value of 0.005 in PM-exposed versus vehicle-exposed lung."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The RT2 Profiler array shows significant (p < 0.05) gene regulation of Ahr cytokines in PM compared to vehicle exposed (n = 5) mice after 4-h post exposure (n = 5)"
+        explanation: "Table 1's caption establishes the comparison, the significance threshold and the group sizes behind this assay's output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-mt2-rt2-4h-output-vehicle"
+        name: "Vehicle-exposed mouse lung - Mt2 mRNA"
+        description: "Reference group for the array. Table 1 reports only the log2 fold change of PM versus vehicle, so no absolute value is recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-mt2-rt2-4h-output-pm"
+        name: "PM-exposed mouse lung - Mt2 mRNA"
+        description: "Significantly increased relative to vehicle (log2 fold change 2.58, p = 0.005). Table 1 reports no absolute value, so none is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-rt2"
+      name: "C57BL/6J mouse, retrograde-perfused whole lung, total RNA for the RT2 Profiler array"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        # The paper states an 8-10 week range, not a single age; recorded as
+        # bounds with no value rather than picking a midpoint.
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "10"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Lungs retrograde-perfused with 2 ml Hank's Balanced Salt solution to remove red blood cells, then total RNA isolated and purified"
+      subject_characteristics: "Both male and female C57BL/6J (Jackson) mice aged 8-10 weeks, maintained on a 12-h light cycle with free access to chow and water. Table 1 reports n = 5 PM-exposed and n = 5 vehicle-exposed mice; the Methods state the array was run on the lungs of n = 10 mice in total."
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-rt2-array-001"
+        protocol_type: MolecularAssayProtocol
+        name: "RT2 Profiler PCR array for mouse drug metabolism"
+
+  # --- Gsr ---
+  - id: "GE:harding-gsr-rt2-4h"
+    name: "Gsr mRNA in whole lung after 4-h PM exposure (RT2 Profiler array)"
+    description: "Glutathione reductase (Gsr) was one of the 12 genes significantly increased in the lungs of PM-exposed mice relative to vehicle-exposed mice on the RT2 Mouse Drug Metabolism profiler PCR array, 4 h after oropharyngeal exposure. Table 1 reports the change as a log2 fold change with a p-value and gives no absolute expression level for either group, so no mrna_level is recorded on the output records; the log2 fold change is carried in response_comparisons as COMP:harding-gsr-log2fc. Assigned to increased oxidative stress: the paper's DAVID pathway analysis of this array concluded that PM exposure increases oxidative stress and elicits an antioxidant response."
+    target_gene: "NCBIGene:14782"
+    gene_expression_method: "RT2 Profiler PCR array (mouse drug metabolism, Catalog No. 330231)"
+    normalization_reference: "full panel geometric mean, CT cutoff 35"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Gsr Glutathione reductase 1.94 0.005"
+        explanation: "The Table 1 row for Gsr, giving the gene name, its log2 fold change of 1.94 and its p-value of 0.005 in PM-exposed versus vehicle-exposed lung."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The RT2 Profiler array shows significant (p < 0.05) gene regulation of Ahr cytokines in PM compared to vehicle exposed (n = 5) mice after 4-h post exposure (n = 5)"
+        explanation: "Table 1's caption establishes the comparison, the significance threshold and the group sizes behind this assay's output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-gsr-rt2-4h-output-vehicle"
+        name: "Vehicle-exposed mouse lung - Gsr mRNA"
+        description: "Reference group for the array. Table 1 reports only the log2 fold change of PM versus vehicle, so no absolute value is recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-gsr-rt2-4h-output-pm"
+        name: "PM-exposed mouse lung - Gsr mRNA"
+        description: "Significantly increased relative to vehicle (log2 fold change 1.94, p = 0.005). Table 1 reports no absolute value, so none is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-rt2"
+      name: "C57BL/6J mouse, retrograde-perfused whole lung, total RNA for the RT2 Profiler array"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        # The paper states an 8-10 week range, not a single age; recorded as
+        # bounds with no value rather than picking a midpoint.
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "10"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Lungs retrograde-perfused with 2 ml Hank's Balanced Salt solution to remove red blood cells, then total RNA isolated and purified"
+      subject_characteristics: "Both male and female C57BL/6J (Jackson) mice aged 8-10 weeks, maintained on a 12-h light cycle with free access to chow and water. Table 1 reports n = 5 PM-exposed and n = 5 vehicle-exposed mice; the Methods state the array was run on the lungs of n = 10 mice in total."
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-rt2-array-001"
+        protocol_type: MolecularAssayProtocol
+        name: "RT2 Profiler PCR array for mouse drug metabolism"
+
+  # --- Hk2 ---
+  - id: "GE:harding-hk2-rt2-4h"
+    name: "Hk2 mRNA in whole lung after 4-h PM exposure (RT2 Profiler array)"
+    description: "Hexokinase 2 (Hk2) was one of the 12 genes significantly increased in the lungs of PM-exposed mice relative to vehicle-exposed mice on the RT2 Mouse Drug Metabolism profiler PCR array, 4 h after oropharyngeal exposure. Table 1 reports the change as a log2 fold change with a p-value and gives no absolute expression level for either group, so no mrna_level is recorded on the output records; the log2 fold change is carried in response_comparisons as COMP:harding-hk2-log2fc. Assigned to increased oxidative stress: the paper's DAVID pathway analysis of this array concluded that PM exposure increases oxidative stress and elicits an antioxidant response."
+    target_gene: "NCBIGene:15277"
+    gene_expression_method: "RT2 Profiler PCR array (mouse drug metabolism, Catalog No. 330231)"
+    normalization_reference: "full panel geometric mean, CT cutoff 35"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Hk2 Hexokinase 2 1.70 0.014"
+        explanation: "The Table 1 row for Hk2, giving the gene name, its log2 fold change of 1.70 and its p-value of 0.014 in PM-exposed versus vehicle-exposed lung."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The RT2 Profiler array shows significant (p < 0.05) gene regulation of Ahr cytokines in PM compared to vehicle exposed (n = 5) mice after 4-h post exposure (n = 5)"
+        explanation: "Table 1's caption establishes the comparison, the significance threshold and the group sizes behind this assay's output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-hk2-rt2-4h-output-vehicle"
+        name: "Vehicle-exposed mouse lung - Hk2 mRNA"
+        description: "Reference group for the array. Table 1 reports only the log2 fold change of PM versus vehicle, so no absolute value is recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-hk2-rt2-4h-output-pm"
+        name: "PM-exposed mouse lung - Hk2 mRNA"
+        description: "Significantly increased relative to vehicle (log2 fold change 1.70, p = 0.014). Table 1 reports no absolute value, so none is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-rt2"
+      name: "C57BL/6J mouse, retrograde-perfused whole lung, total RNA for the RT2 Profiler array"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        # The paper states an 8-10 week range, not a single age; recorded as
+        # bounds with no value rather than picking a midpoint.
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "10"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Lungs retrograde-perfused with 2 ml Hank's Balanced Salt solution to remove red blood cells, then total RNA isolated and purified"
+      subject_characteristics: "Both male and female C57BL/6J (Jackson) mice aged 8-10 weeks, maintained on a 12-h light cycle with free access to chow and water. Table 1 reports n = 5 PM-exposed and n = 5 vehicle-exposed mice; the Methods state the array was run on the lungs of n = 10 mice in total."
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-rt2-array-001"
+        protocol_type: MolecularAssayProtocol
+        name: "RT2 Profiler PCR array for mouse drug metabolism"
+
+  # --- Nqo1 ---
+  - id: "GE:harding-nqo1-rt2-4h"
+    name: "Nqo1 mRNA in whole lung after 4-h PM exposure (RT2 Profiler array)"
+    description: "NAD(P)H dehydrogenase, quinone 1 (Nqo1) was one of the 12 genes significantly increased in the lungs of PM-exposed mice relative to vehicle-exposed mice on the RT2 Mouse Drug Metabolism profiler PCR array, 4 h after oropharyngeal exposure. Table 1 reports the change as a log2 fold change with a p-value and gives no absolute expression level for either group, so no mrna_level is recorded on the output records; the log2 fold change is carried in response_comparisons as COMP:harding-nqo1-log2fc. Assigned to increased oxidative stress: the paper's DAVID pathway analysis of this array concluded that PM exposure increases oxidative stress and elicits an antioxidant response."
+    target_gene: "NCBIGene:18104"
+    gene_expression_method: "RT2 Profiler PCR array (mouse drug metabolism, Catalog No. 330231)"
+    normalization_reference: "full panel geometric mean, CT cutoff 35"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Nqo1 NAD(P)H dehydrogenase, quinone 1 1.69 0.004"
+        explanation: "The Table 1 row for Nqo1, giving the gene name, its log2 fold change of 1.69 and its p-value of 0.004 in PM-exposed versus vehicle-exposed lung."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The RT2 Profiler array shows significant (p < 0.05) gene regulation of Ahr cytokines in PM compared to vehicle exposed (n = 5) mice after 4-h post exposure (n = 5)"
+        explanation: "Table 1's caption establishes the comparison, the significance threshold and the group sizes behind this assay's output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-nqo1-rt2-4h-output-vehicle"
+        name: "Vehicle-exposed mouse lung - Nqo1 mRNA"
+        description: "Reference group for the array. Table 1 reports only the log2 fold change of PM versus vehicle, so no absolute value is recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-nqo1-rt2-4h-output-pm"
+        name: "PM-exposed mouse lung - Nqo1 mRNA"
+        description: "Significantly increased relative to vehicle (log2 fold change 1.69, p = 0.004). Table 1 reports no absolute value, so none is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-rt2"
+      name: "C57BL/6J mouse, retrograde-perfused whole lung, total RNA for the RT2 Profiler array"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        # The paper states an 8-10 week range, not a single age; recorded as
+        # bounds with no value rather than picking a midpoint.
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "10"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Lungs retrograde-perfused with 2 ml Hank's Balanced Salt solution to remove red blood cells, then total RNA isolated and purified"
+      subject_characteristics: "Both male and female C57BL/6J (Jackson) mice aged 8-10 weeks, maintained on a 12-h light cycle with free access to chow and water. Table 1 reports n = 5 PM-exposed and n = 5 vehicle-exposed mice; the Methods state the array was run on the lungs of n = 10 mice in total."
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-rt2-array-001"
+        protocol_type: MolecularAssayProtocol
+        name: "RT2 Profiler PCR array for mouse drug metabolism"
+
+  # --- Comt ---
+  - id: "GE:harding-comt-rt2-4h"
+    name: "Comt mRNA in whole lung after 4-h PM exposure (RT2 Profiler array)"
+    description: "Catechol-O-methyltransferase (Comt) was one of the 12 genes significantly increased in the lungs of PM-exposed mice relative to vehicle-exposed mice on the RT2 Mouse Drug Metabolism profiler PCR array, 4 h after oropharyngeal exposure. Table 1 reports the change as a log2 fold change with a p-value and gives no absolute expression level for either group, so no mrna_level is recorded on the output records; the log2 fold change is carried in response_comparisons as COMP:harding-comt-log2fc. Assigned to increased oxidative stress: the paper's DAVID pathway analysis of this array concluded that PM exposure increases oxidative stress and elicits an antioxidant response."
+    target_gene: "NCBIGene:12846"
+    gene_expression_method: "RT2 Profiler PCR array (mouse drug metabolism, Catalog No. 330231)"
+    normalization_reference: "full panel geometric mean, CT cutoff 35"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Comt Catechol-O-methyltransferase 1.68 0.040"
+        explanation: "The Table 1 row for Comt, giving the gene name, its log2 fold change of 1.68 and its p-value of 0.040 in PM-exposed versus vehicle-exposed lung."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The RT2 Profiler array shows significant (p < 0.05) gene regulation of Ahr cytokines in PM compared to vehicle exposed (n = 5) mice after 4-h post exposure (n = 5)"
+        explanation: "Table 1's caption establishes the comparison, the significance threshold and the group sizes behind this assay's output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-comt-rt2-4h-output-vehicle"
+        name: "Vehicle-exposed mouse lung - Comt mRNA"
+        description: "Reference group for the array. Table 1 reports only the log2 fold change of PM versus vehicle, so no absolute value is recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-comt-rt2-4h-output-pm"
+        name: "PM-exposed mouse lung - Comt mRNA"
+        description: "Significantly increased relative to vehicle (log2 fold change 1.68, p = 0.040). Table 1 reports no absolute value, so none is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-rt2"
+      name: "C57BL/6J mouse, retrograde-perfused whole lung, total RNA for the RT2 Profiler array"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        # The paper states an 8-10 week range, not a single age; recorded as
+        # bounds with no value rather than picking a midpoint.
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "10"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Lungs retrograde-perfused with 2 ml Hank's Balanced Salt solution to remove red blood cells, then total RNA isolated and purified"
+      subject_characteristics: "Both male and female C57BL/6J (Jackson) mice aged 8-10 weeks, maintained on a 12-h light cycle with free access to chow and water. Table 1 reports n = 5 PM-exposed and n = 5 vehicle-exposed mice; the Methods state the array was run on the lungs of n = 10 mice in total."
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-rt2-array-001"
+        protocol_type: MolecularAssayProtocol
+        name: "RT2 Profiler PCR array for mouse drug metabolism"
+
+  # --- Aoc1 ---
+  - id: "GE:harding-aoc1-rt2-4h"
+    name: "Aoc1 mRNA in whole lung after 4-h PM exposure (RT2 Profiler array)"
+    description: "Amine oxidase, copper-containing 1 (Aoc1) was one of the 12 genes significantly increased in the lungs of PM-exposed mice relative to vehicle-exposed mice on the RT2 Mouse Drug Metabolism profiler PCR array, 4 h after oropharyngeal exposure. Table 1 reports the change as a log2 fold change with a p-value and gives no absolute expression level for either group, so no mrna_level is recorded on the output records; the log2 fold change is carried in response_comparisons as COMP:harding-aoc1-log2fc. Assigned to increased oxidative stress: the paper's DAVID pathway analysis of this array concluded that PM exposure increases oxidative stress and elicits an antioxidant response."
+    target_gene: "NCBIGene:76507"
+    gene_expression_method: "RT2 Profiler PCR array (mouse drug metabolism, Catalog No. 330231)"
+    normalization_reference: "full panel geometric mean, CT cutoff 35"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Aoc1 Amine oxidase, copper-containing 1 1.63 0.001"
+        explanation: "The Table 1 row for Aoc1, giving the gene name, its log2 fold change of 1.63 and its p-value of 0.001 in PM-exposed versus vehicle-exposed lung."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The RT2 Profiler array shows significant (p < 0.05) gene regulation of Ahr cytokines in PM compared to vehicle exposed (n = 5) mice after 4-h post exposure (n = 5)"
+        explanation: "Table 1's caption establishes the comparison, the significance threshold and the group sizes behind this assay's output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-aoc1-rt2-4h-output-vehicle"
+        name: "Vehicle-exposed mouse lung - Aoc1 mRNA"
+        description: "Reference group for the array. Table 1 reports only the log2 fold change of PM versus vehicle, so no absolute value is recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-aoc1-rt2-4h-output-pm"
+        name: "PM-exposed mouse lung - Aoc1 mRNA"
+        description: "Significantly increased relative to vehicle (log2 fold change 1.63, p = 0.001). Table 1 reports no absolute value, so none is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-rt2"
+      name: "C57BL/6J mouse, retrograde-perfused whole lung, total RNA for the RT2 Profiler array"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        # The paper states an 8-10 week range, not a single age; recorded as
+        # bounds with no value rather than picking a midpoint.
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "10"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Lungs retrograde-perfused with 2 ml Hank's Balanced Salt solution to remove red blood cells, then total RNA isolated and purified"
+      subject_characteristics: "Both male and female C57BL/6J (Jackson) mice aged 8-10 weeks, maintained on a 12-h light cycle with free access to chow and water. Table 1 reports n = 5 PM-exposed and n = 5 vehicle-exposed mice; the Methods state the array was run on the lungs of n = 10 mice in total."
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-rt2-array-001"
+        protocol_type: MolecularAssayProtocol
+        name: "RT2 Profiler PCR array for mouse drug metabolism"
+
+  # --- Aldh1a1 ---
+  - id: "GE:harding-aldh1a1-rt2-4h"
+    name: "Aldh1a1 mRNA in whole lung after 4-h PM exposure (RT2 Profiler array)"
+    description: "Aldehyde dehydrogenase family 1, subfamily A1 (Aldh1a1) was one of the 12 genes significantly increased in the lungs of PM-exposed mice relative to vehicle-exposed mice on the RT2 Mouse Drug Metabolism profiler PCR array, 4 h after oropharyngeal exposure. Table 1 reports the change as a log2 fold change with a p-value and gives no absolute expression level for either group, so no mrna_level is recorded on the output records; the log2 fold change is carried in response_comparisons as COMP:harding-aldh1a1-log2fc. Assigned to increased oxidative stress: the paper's DAVID pathway analysis of this array concluded that PM exposure increases oxidative stress and elicits an antioxidant response."
+    target_gene: "NCBIGene:11668"
+    gene_expression_method: "RT2 Profiler PCR array (mouse drug metabolism, Catalog No. 330231)"
+    normalization_reference: "full panel geometric mean, CT cutoff 35"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Aldh1a1 Aldehyde dehydrogenase family 1, subfamily A1 1.44 0.006"
+        explanation: "The Table 1 row for Aldh1a1, giving the gene name, its log2 fold change of 1.44 and its p-value of 0.006 in PM-exposed versus vehicle-exposed lung."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The RT2 Profiler array shows significant (p < 0.05) gene regulation of Ahr cytokines in PM compared to vehicle exposed (n = 5) mice after 4-h post exposure (n = 5)"
+        explanation: "Table 1's caption establishes the comparison, the significance threshold and the group sizes behind this assay's output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-aldh1a1-rt2-4h-output-vehicle"
+        name: "Vehicle-exposed mouse lung - Aldh1a1 mRNA"
+        description: "Reference group for the array. Table 1 reports only the log2 fold change of PM versus vehicle, so no absolute value is recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-aldh1a1-rt2-4h-output-pm"
+        name: "PM-exposed mouse lung - Aldh1a1 mRNA"
+        description: "Significantly increased relative to vehicle (log2 fold change 1.44, p = 0.006). Table 1 reports no absolute value, so none is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-rt2"
+      name: "C57BL/6J mouse, retrograde-perfused whole lung, total RNA for the RT2 Profiler array"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        # The paper states an 8-10 week range, not a single age; recorded as
+        # bounds with no value rather than picking a midpoint.
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "10"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Lungs retrograde-perfused with 2 ml Hank's Balanced Salt solution to remove red blood cells, then total RNA isolated and purified"
+      subject_characteristics: "Both male and female C57BL/6J (Jackson) mice aged 8-10 weeks, maintained on a 12-h light cycle with free access to chow and water. Table 1 reports n = 5 PM-exposed and n = 5 vehicle-exposed mice; the Methods state the array was run on the lungs of n = 10 mice in total."
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-rt2-array-001"
+        protocol_type: MolecularAssayProtocol
+        name: "RT2 Profiler PCR array for mouse drug metabolism"
+
+  # --- Pon1 ---
+  - id: "GE:harding-pon1-rt2-4h"
+    name: "Pon1 mRNA in whole lung after 4-h PM exposure (RT2 Profiler array)"
+    description: "Paraoxonase 1 (Pon1) was one of the 12 genes significantly increased in the lungs of PM-exposed mice relative to vehicle-exposed mice on the RT2 Mouse Drug Metabolism profiler PCR array, 4 h after oropharyngeal exposure. Table 1 reports the change as a log2 fold change with a p-value and gives no absolute expression level for either group, so no mrna_level is recorded on the output records; the log2 fold change is carried in response_comparisons as COMP:harding-pon1-log2fc. Assigned to increased oxidative stress: the paper's DAVID pathway analysis of this array concluded that PM exposure increases oxidative stress and elicits an antioxidant response."
+    target_gene: "NCBIGene:18979"
+    gene_expression_method: "RT2 Profiler PCR array (mouse drug metabolism, Catalog No. 330231)"
+    normalization_reference: "full panel geometric mean, CT cutoff 35"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Pon1 Paraoxonase 1 1.43 0.043"
+        explanation: "The Table 1 row for Pon1, giving the gene name, its log2 fold change of 1.43 and its p-value of 0.043 in PM-exposed versus vehicle-exposed lung."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The RT2 Profiler array shows significant (p < 0.05) gene regulation of Ahr cytokines in PM compared to vehicle exposed (n = 5) mice after 4-h post exposure (n = 5)"
+        explanation: "Table 1's caption establishes the comparison, the significance threshold and the group sizes behind this assay's output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-pon1-rt2-4h-output-vehicle"
+        name: "Vehicle-exposed mouse lung - Pon1 mRNA"
+        description: "Reference group for the array. Table 1 reports only the log2 fold change of PM versus vehicle, so no absolute value is recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-pon1-rt2-4h-output-pm"
+        name: "PM-exposed mouse lung - Pon1 mRNA"
+        description: "Significantly increased relative to vehicle (log2 fold change 1.43, p = 0.043). Table 1 reports no absolute value, so none is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-rt2"
+      name: "C57BL/6J mouse, retrograde-perfused whole lung, total RNA for the RT2 Profiler array"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        # The paper states an 8-10 week range, not a single age; recorded as
+        # bounds with no value rather than picking a midpoint.
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "10"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Lungs retrograde-perfused with 2 ml Hank's Balanced Salt solution to remove red blood cells, then total RNA isolated and purified"
+      subject_characteristics: "Both male and female C57BL/6J (Jackson) mice aged 8-10 weeks, maintained on a 12-h light cycle with free access to chow and water. Table 1 reports n = 5 PM-exposed and n = 5 vehicle-exposed mice; the Methods state the array was run on the lungs of n = 10 mice in total."
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-rt2-array-001"
+        protocol_type: MolecularAssayProtocol
+        name: "RT2 Profiler PCR array for mouse drug metabolism"
+
+  # --- Pon3 ---
+  - id: "GE:harding-pon3-rt2-4h"
+    name: "Pon3 mRNA in whole lung after 4-h PM exposure (RT2 Profiler array)"
+    description: "Paraoxonase 3 (Pon3) was one of the 12 genes significantly increased in the lungs of PM-exposed mice relative to vehicle-exposed mice on the RT2 Mouse Drug Metabolism profiler PCR array, 4 h after oropharyngeal exposure. Table 1 reports the change as a log2 fold change with a p-value and gives no absolute expression level for either group, so no mrna_level is recorded on the output records; the log2 fold change is carried in response_comparisons as COMP:harding-pon3-log2fc. Assigned to increased oxidative stress: the paper's DAVID pathway analysis of this array concluded that PM exposure increases oxidative stress and elicits an antioxidant response."
+    target_gene: "NCBIGene:269823"
+    gene_expression_method: "RT2 Profiler PCR array (mouse drug metabolism, Catalog No. 330231)"
+    normalization_reference: "full panel geometric mean, CT cutoff 35"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Pon3 Paraoxonase 3 1.26 0.039"
+        explanation: "The Table 1 row for Pon3, giving the gene name, its log2 fold change of 1.26 and its p-value of 0.039 in PM-exposed versus vehicle-exposed lung."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The RT2 Profiler array shows significant (p < 0.05) gene regulation of Ahr cytokines in PM compared to vehicle exposed (n = 5) mice after 4-h post exposure (n = 5)"
+        explanation: "Table 1's caption establishes the comparison, the significance threshold and the group sizes behind this assay's output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-pon3-rt2-4h-output-vehicle"
+        name: "Vehicle-exposed mouse lung - Pon3 mRNA"
+        description: "Reference group for the array. Table 1 reports only the log2 fold change of PM versus vehicle, so no absolute value is recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-pon3-rt2-4h-output-pm"
+        name: "PM-exposed mouse lung - Pon3 mRNA"
+        description: "Significantly increased relative to vehicle (log2 fold change 1.26, p = 0.039). Table 1 reports no absolute value, so none is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-rt2"
+      name: "C57BL/6J mouse, retrograde-perfused whole lung, total RNA for the RT2 Profiler array"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        # The paper states an 8-10 week range, not a single age; recorded as
+        # bounds with no value rather than picking a midpoint.
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "10"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Lungs retrograde-perfused with 2 ml Hank's Balanced Salt solution to remove red blood cells, then total RNA isolated and purified"
+      subject_characteristics: "Both male and female C57BL/6J (Jackson) mice aged 8-10 weeks, maintained on a 12-h light cycle with free access to chow and water. Table 1 reports n = 5 PM-exposed and n = 5 vehicle-exposed mice; the Methods state the array was run on the lungs of n = 10 mice in total."
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-rt2-array-001"
+        protocol_type: MolecularAssayProtocol
+        name: "RT2 Profiler PCR array for mouse drug metabolism"
+
+  # ===========================================================================
+  # Arm 2 - Drop-seq single-cell RNA sequencing of dissociated whole lung
+  # ===========================================================================
+
+  # --- Whole-lung differential expression and KEGG enrichment ---
+  - id: "GE:harding-scrnaseq-lung-deg-4h"
+    name: "Whole-lung differential gene expression and KEGG pathway enrichment after 4-h PM exposure (scRNA-seq)"
+    description: "Drop-seq single-cell RNA sequencing of all dissociated lung cells from PM-exposed versus vehicle-exposed mice. More than 6000 vehicle cells and more than 5000 PM cells were retained after quality control (15,813 genes x 6118 cells and 15,851 genes x 5337 cells respectively). Over 18,000 distinct genes were detected overall and 210 were differentially expressed at FDR < 0.05. KEGG analysis of those DEGs showed upregulated IL17 signalling, viral protein interaction with cytokine and cytokine receptors, chemokine signalling, Tnf signalling, toll-like receptor signalling and P53 signalling; downregulated pathways included antigen processing and presentation, salmonella infection, phagosome, oxidative phosphorylation and Staphylococcus aureus infection. No target_gene is named because this assay covers the whole transcriptome. Enrichment is reported as combined scores in Fig. 1c, so no measurement value is recorded."
+    gene_expression_method: "Drop-seq single-cell RNA sequencing with Seurat differential expression and KEGG pathway enrichment"
+    normalization_reference: "sctransform normalization; Wilcoxon rank-sum test with FDR < 0.05"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "we retained more than 6000 cells from our vehicle exposed and more than 5000 cells from our PM exposed groups"
+        explanation: "Gives the per-group cell counts behind this assay's two output records."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Comparing all RNA in PM-exposed to vehicle-exposed cells, over 18,000 distinct genes were detected overall"
+        explanation: "States the comparison this assay makes and the number of genes detected across it."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "B Volcano plot showing fold change of 210 differentially expressed genes (DEG) over vehicle-exposed that were FDR < 0.05."
+        explanation: "Gives the count of differentially expressed genes and the significance threshold recorded in this assay's description."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "C KEGG pathway analysis illustrating an increase in Il17 signaling, Tnf signaling, toll-like receptor signaling, and P 53 signaling"
+        explanation: "Names the upregulated inflammatory signalling pathways that make this assay inform on airway inflammation."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Among the other downregulated pathways are pathways such as salmonella infection, phagosome, oxidative phosphorylation, and Staphylococcus aureus infection."
+        explanation: "Names the downregulated pathways recorded in this assay's description, so the record is not limited to the upregulated side."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-scrnaseq-lung-deg-4h-output-vehicle"
+        name: "Vehicle-exposed lung - all cells, transcriptome"
+        description: "Reference group: 15,813 genes across 6118 cells after quality control. Enrichment is reported as combined scores in Fig. 1c, so no value is recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-scrnaseq-lung-deg-4h-output-pm"
+        name: "PM-exposed lung - all cells, transcriptome"
+        description: "15,851 genes across 5337 cells after quality control; 210 genes differentially expressed versus vehicle at FDR < 0.05, with upregulated IL17, Tnf, toll-like receptor and P53 signalling. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-sc-allcells"
+      name: "C57BL/6J mouse, dissociated whole-lung single-cell suspension, all cell populations"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "10"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Lungs retrograde-perfused with Hank's Balanced Salt solution, enzymatically and mechanically dissociated to a single-cell suspension, filtered twice through a 40-uM filter and barcoded by Drop-seq at 100 cells/ul"
+      subject_characteristics: "Both male and female C57BL/6J (Jackson) mice aged 8-10 weeks. After quality control the two libraries held 6118 vehicle-exposed cells and 5337 PM-exposed cells, clustered into 20 populations."
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-dropseq-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Single-cell dissociation of mouse lung and Drop-seq barcoding"
+      - id: "PROTOCOL:harding-scrnaseq-bioinf-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Drop-seq alignment, Seurat clustering and pathway enrichment pipeline"
+
+  # --- Epithelial cluster: Ahr wikipathway ---
+  - id: "GE:harding-scrnaseq-epithelial-ahrpathway-4h"
+    name: "Ahr wikipathway gene upregulation in the lung epithelial cell cluster after 4-h PM exposure (scRNA-seq)"
+    description: "Enrichr analysis of the positively regulated genes in the epithelial cluster of the PM-exposed lung. The epithelial transcriptomic profile showed increased Il-17 signalling, Ahr activation, Egfr signalling and T-cell receptor and co-stimulatory signalling. Within the Ahr wikipathway specifically, Hsp90aa1, Jund, Ptges3, Cdc37, Nfe2l2, Gclc, Cd36, Tnf and Egfr1 were upregulated, together with the xenobiotic response elements Cyp1a1 and Cyp1b1. No single target_gene is named because the assay records a multi-gene pathway; the Egfr component is recorded separately as GE:harding-egfr-sc-epithelial-4h. Significance was FDR < 0.05 (Bonferroni correction) and enrichment is reported as combined scores in Fig. 4, so no measurement value is recorded."
+    gene_expression_method: "Drop-seq single-cell RNA sequencing with Enrichr Ahr wikipathway enrichment"
+    normalization_reference: "sctransform normalization; FDR < 0.05 with Bonferroni correction"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Using single-cell RNA sequencing analysis, we observed that upon exposure epithelial cells acquire a transcriptomic profile indicative of increased Il-17 signaling, Ahr activation, Egfr signaling, and T cell receptor and co-stimulatory signaling pathways."
+        explanation: "States the epithelial pathway result this assay records, Ahr activation among them."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "genes upregulated in the Ahr  wikipathway, namely, Hsp90aa1, Jund, Ptges3, Cdc37, Nfe2l2, Gclc, Cd36, Tnf, and Egfr1."
+        explanation: "Lists the individual Ahr wikipathway genes this assay records as upregulated in epithelial cells."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The differential expression profile between vehicle- and PM-exposed epithelial cells was filtered for positively related gene expression and processed in Enrichr."
+        explanation: "Describes the analysis that produced this assay's result, and the two groups its output records represent."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-scrnaseq-epithelial-ahrpathway-4h-output-vehicle"
+        name: "Vehicle-exposed lung epithelial cluster - Ahr wikipathway genes"
+        description: "Reference group for the epithelial differential expression profile. Figure-only values; none recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-scrnaseq-epithelial-ahrpathway-4h-output-pm"
+        name: "PM-exposed lung epithelial cluster - Ahr wikipathway genes"
+        description: "Ahr wikipathway upregulated (Hsp90aa1, Jund, Ptges3, Cdc37, Nfe2l2, Gclc, Cd36, Tnf, Egfr1) along with the xenobiotic response elements Cyp1a1 and Cyp1b1, at FDR < 0.05. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:mie-ahr-activation"
+      name: "AhR pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-sc-epithelial"
+      name: "C57BL/6J mouse, dissociated whole-lung single-cell suspension, epithelial cell cluster"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "10"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Epithelial cluster identified within the dissociated lung Drop-seq libraries by Seurat UMAP clustering and SingleR annotation against the ImmGen mouse database"
+      subject_characteristics: "Epithelial cell population gated computationally out of the 20 clusters recovered from the dissociated lung. InVivoSubject carries no cell_type slot, so the population identity is recorded here in the name."
+      clinical_context: "Epithelial cells are the first cells to encounter inhaled PM, which is why the authors examine this cluster first"
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-dropseq-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Single-cell dissociation of mouse lung and Drop-seq barcoding"
+      - id: "PROTOCOL:harding-scrnaseq-bioinf-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Drop-seq alignment, Seurat clustering and pathway enrichment pipeline"
+
+  # --- Epithelial cluster: Egfr ---
+  - id: "GE:harding-egfr-sc-epithelial-4h"
+    name: "Egfr upregulation in the lung epithelial cell cluster after 4-h PM exposure (scRNA-seq)"
+    description: "Within the Ahr pathway map of the PM-exposed epithelial cluster, Egfr was among the upregulated genes, alongside the xenobiotic response elements Cyp1a1 and Cyp1b1. The authors read this together with the published c-src/Egfr/Erk1/2 route as evidence that Ahr activation drives Egfr activation, and propose blocking Egfr or c-src as a therapeutic target. Expression is shown as a coloured pathway map in Fig. 4b with no numeric value, so no mrna_level is recorded."
+    target_gene: "NCBIGene:13649"
+    gene_expression_method: "Drop-seq single-cell RNA sequencing with Enrichr Ahr wikipathway enrichment"
+    normalization_reference: "sctransform normalization; FDR < 0.05 with Bonferroni correction"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "B Ahr pathway that illustrates the upregulated genes in red and downregulated genes in blue showing an upregulation in Egfr and xenobiotic response elements Cyp1a1 and Cyp1b1."
+        explanation: "States directly that Egfr was upregulated in the epithelial Ahr pathway map, which is what this assay records."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In this paper, we present data suggesting that PM induced epithelial transcriptomic changes are responsible for the activation of Ahr through Ahr/Arnt activation/nuclear translocation and an increase in Egfr  expression, ultimately resulting in neutrophilic asthma"
+        explanation: "The authors' own summary of the increase in Egfr expression this assay records, and of what they take it to lead to."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-egfr-sc-epithelial-4h-output-vehicle"
+        name: "Vehicle-exposed lung epithelial cluster - Egfr mRNA"
+        description: "Reference group. Fig. 4b is a coloured pathway map with no numeric value; none recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-egfr-sc-epithelial-4h-output-pm"
+        name: "PM-exposed lung epithelial cluster - Egfr mRNA"
+        description: "Egfr upregulated relative to vehicle. Fig. 4b is a coloured pathway map with no numeric value; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-sc-epithelial"
+      name: "C57BL/6J mouse, dissociated whole-lung single-cell suspension, epithelial cell cluster"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-dropseq-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Single-cell dissociation of mouse lung and Drop-seq barcoding"
+      - id: "PROTOCOL:harding-scrnaseq-bioinf-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Drop-seq alignment, Seurat clustering and pathway enrichment pipeline"
+
+  # --- Ahr expression across all cells (unchanged) ---
+  - id: "GE:harding-ahr-sc-allcells-4h"
+    name: "Ahr expression across all lung cells after 4-h PM exposure (scRNA-seq)"
+    description: "Ahr transcript expression itself showed no significant change with PM exposure in any lung cell population (Fig. 8b), which the authors take as evidence that the Ahr activation seen in the epithelial pathway analysis is not driven by increased Ahr transcription but by Ahr/Arnt nuclear translocation and the c-src/Egfr/Erk1/2 route. The assay is kept against KE:mie-ahr-activation because that is the key event it bears on; the associated response comparison records change_direction: no_change so the negative result is not mistaken for support of increased Ahr expression. Figure-only; no value recorded."
+    target_gene: "NCBIGene:11622"
+    gene_expression_method: "Drop-seq single-cell RNA sequencing, per-cell expression mapping"
+    normalization_reference: "sctransform normalization; Wilcoxon rank-sum test with Bonferroni correction, FDR < 0.05"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "A IL-10 wasn’t expressed in any lung cell demonstrating a lack of rTh17 differentiation. B No significant changes in Ahr expression in PM exposure."
+        explanation: "Panel B states the result this assay records: Ahr expression did not change significantly with PM exposure."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Epithelial cells further showed, Ahr activation is brought on by Ahr/ARNT nuclear translocation and activation of tyrosine kinase c-src, Egfr, and subsequently Erk1/2 pathways."
+        explanation: "Gives the mechanism the authors propose instead of increased Ahr transcription, which is why an unchanged Ahr level still bears on AhR pathway activation."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-ahr-sc-allcells-4h-output-vehicle"
+        name: "Vehicle-exposed lung, all cells - Ahr mRNA"
+        description: "Reference group. Figure-only; no value recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-ahr-sc-allcells-4h-output-pm"
+        name: "PM-exposed lung, all cells - Ahr mRNA"
+        description: "No significant change in Ahr expression relative to vehicle in any lung cell population. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:mie-ahr-activation"
+      name: "AhR pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-sc-allcells"
+      name: "C57BL/6J mouse, dissociated whole-lung single-cell suspension, all cell populations"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-dropseq-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Single-cell dissociation of mouse lung and Drop-seq barcoding"
+      - id: "PROTOCOL:harding-scrnaseq-bioinf-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Drop-seq alignment, Seurat clustering and pathway enrichment pipeline"
+
+  # --- Dendritic cell cluster: Th17-promoting pathways ---
+  - id: "GE:harding-scrnaseq-dendritic-th17-4h"
+    name: "Th17-promoting pathway upregulation in the lung dendritic cell cluster after 4-h PM exposure (scRNA-seq)"
+    description: "Enrichr and KEGG analysis of the dendritic cell cluster showed five pathways significantly upregulated with respect to pathogenic Th17 (eTh17) differentiation and subsequent neutrophilic asthma: Th17 cell differentiation, Il-17 signalling, Tnf signalling, NF-kB signalling, and antigen processing and presentation. The authors read this as dendritic cells promoting a Th17 response through Il-17, Tnf-alpha and NF-kB upregulation. Significance was tested by Wilcoxon rank sum test with Bonferroni correction at FDR < 0.05; enrichment is reported as combined scores in Fig. 5, so no measurement value is recorded. No target_gene is named because the assay records multi-gene pathways."
+    gene_expression_method: "Drop-seq single-cell RNA sequencing with Enrichr and KEGG pathway enrichment"
+    normalization_reference: "sctransform normalization; Wilcoxon rank sum test with Bonferroni correction, FDR < 0.05"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "we see five pathways that were significantly (FDR < 0.05) upregulated with respect to eTh17"
+        explanation: "States the count of upregulated dendritic cell pathways and the significance threshold this assay records."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "dendritic cells further produce cytokines involved in Th17 cell differentiation, Il-17 signaling, Tnf ... NF-κB signaling, and antigen processing and presentation pathways"
+        explanation: "Names the five dendritic cell pathways this assay records as upregulated. The ellipsis skips a word broken across a line in the cached full text."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Fig. 5 Enrichr pathway analysis showing upregulated eTh17 cell pathways in dendritic cells (characterized in Fig. 3) from lungs of mice exposed to PM compared to vehicle exposed. Significance was tested by Wilcoxon rank sum test with Bonferroni correction FDR < 0.05."
+        explanation: "Identifies the figure, the two groups compared and the statistical test behind this assay's output records."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "We present data that suggest epithelial cells produce specific cytokines in the aryl hydrocarbon receptor (Ahr) pathway that inform dendritic cells to initiate the production of pathogenic T helper (eTh17) cells."
+        explanation: "Places the dendritic cell step this assay records in the epithelial-to-dendritic-to-T-cell sequence the paper proposes."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-scrnaseq-dendritic-th17-4h-output-vehicle"
+        name: "Vehicle-exposed lung dendritic cell cluster - Th17-promoting pathways"
+        description: "Reference group for the dendritic cell differential expression profile. Figure-only values; none recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-scrnaseq-dendritic-th17-4h-output-pm"
+        name: "PM-exposed lung dendritic cell cluster - Th17-promoting pathways"
+        description: "Th17 cell differentiation, Il-17 signalling, Tnf signalling, NF-kB signalling and antigen processing and presentation all upregulated at FDR < 0.05. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-sc-dendritic"
+      name: "C57BL/6J mouse, dissociated whole-lung single-cell suspension, dendritic cell cluster"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "10"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Dendritic cell cluster identified within the dissociated lung Drop-seq libraries by Seurat UMAP clustering and SingleR annotation against the ImmGen mouse database"
+      subject_characteristics: "Dendritic cell population gated computationally out of the 20 clusters recovered from the dissociated lung. InVivoSubject carries no cell_type slot, so the population identity is recorded here in the name."
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-dropseq-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Single-cell dissociation of mouse lung and Drop-seq barcoding"
+      - id: "PROTOCOL:harding-scrnaseq-bioinf-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Drop-seq alignment, Seurat clustering and pathway enrichment pipeline"
+
+  # --- T cell clusters: Th17 differentiation ---
+  - id: "GE:harding-scrnaseq-tcells-th17-4h"
+    name: "Th17 differentiation pathway upregulation across the three lung T-cell clusters after 4-h PM exposure (scRNA-seq)"
+    description: "Unsupervised UMAP clustering found three distinct T-cell clusters - gamma-delta, NK and alpha-beta T cells - and all three upregulated Th17 cell differentiation after PM exposure. Per cluster: alpha-beta and gamma-delta T cells upregulated the Tnf-alpha NF-kB pathway; NK T cells upregulated Il-17 signalling; gamma-delta T cells upregulated PI3K-Akt and Tgf-beta signalling. The three clusters are recorded in one assay because the paper reports no values that distinguish them, only the shared direction and the per-cluster pathway lists given here. Significance was tested by Wilcoxon rank sum test with Bonferroni correction at FDR < 0.05; enrichment is reported as combined scores in Fig. 6, so no measurement value is recorded."
+    gene_expression_method: "Drop-seq single-cell RNA sequencing with Enrichr pathway enrichment"
+    normalization_reference: "sctransform normalization; Wilcoxon rank sum test with Bonferroni correction, FDR < 0.05"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "found three distinct T-cell clusters, namely, gamma–delta, NK, and alpha–beta T cells."
+        explanation: "Names the three T-cell populations this assay covers."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "we observed an upregulation in Th17 cell differentiation"
+        explanation: "States the shared result across all three T-cell populations that this assay records."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Alpha–beta and gamma–delta T cells demonstrated upregulations in the Tnf-alpha NF-κB pathway"
+        explanation: "Supports the per-cluster detail recorded in this assay's description for alpha-beta and gamma-delta T cells."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "signaling, PI3K–Akt signaling, and Tgf-β  pathways were upregulated in NK T cells and gamma delta T cells, respectively."
+        explanation: "Supports the per-cluster detail recorded in this assay's description for NK T cells and gamma-delta T cells."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-scrnaseq-tcells-th17-4h-output-vehicle"
+        name: "Vehicle-exposed lung T-cell clusters - Th17 differentiation pathways"
+        description: "Reference group for the three T-cell differential expression profiles. Figure-only values; none recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-scrnaseq-tcells-th17-4h-output-pm"
+        name: "PM-exposed lung T-cell clusters - Th17 differentiation pathways"
+        description: "Th17 cell differentiation upregulated in all three clusters; Tnf-alpha NF-kB in alpha-beta and gamma-delta, Il-17 signalling in NK T, PI3K-Akt and Tgf-beta in gamma-delta. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-sc-tcells"
+      name: "C57BL/6J mouse, dissociated whole-lung single-cell suspension, gamma-delta, NK and alpha-beta T cell clusters"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "10"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+      sample_collection_method: "Three T-cell clusters identified within the dissociated lung Drop-seq libraries by Seurat UMAP clustering and SingleR annotation against the ImmGen mouse database"
+      subject_characteristics: "Gamma-delta, NK and alpha-beta T cell populations gated computationally out of the 20 clusters recovered from the dissociated lung. InVivoSubject carries no cell_type slot, so the population identities are recorded here in the name."
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-dropseq-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Single-cell dissociation of mouse lung and Drop-seq barcoding"
+      - id: "PROTOCOL:harding-scrnaseq-bioinf-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Drop-seq alignment, Seurat clustering and pathway enrichment pipeline"
+
+  # --- Il17a in alpha-beta T cells ---
+  - id: "GE:harding-il17a-sc-abt-4h"
+    name: "Il17a expression in lung alpha-beta T cells after 4-h PM exposure (scRNA-seq)"
+    description: "Interleukin 17A (Il17a) was upregulated in alpha-beta T cells of PM-exposed mice, which the authors take together with epithelial, neutrophil and monocyte Tgf-beta production as evidence that eTh17 induction is already under way at 4 h. Expression is mapped onto cells as coloured dots in Fig. 7b with no numeric value, so no mrna_level is recorded."
+    target_gene: "NCBIGene:16171"
+    gene_expression_method: "Drop-seq single-cell RNA sequencing, per-cell expression mapping"
+    normalization_reference: "sctransform normalization; Wilcoxon rank sum test with Bonferroni correction, FDR < 0.05"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "the alpha–beta cells are already producing Il-17a while epithelial cells, neutrophils, and monocytes produce Tgf-β further demonstrating the induction of eTh17 cells"
+        explanation: "States that alpha-beta T cells were producing Il-17a, which is what this assay records."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "A Upregulated Transforming growth factor beta (Tgfb1) was associated with PM exposure in epithelial and endothelial cells. B Upregulated Interleukin 17 (IL17a) was associated with PM exposure in alpha–beta T cells."
+        explanation: "Panel B states that IL17a upregulation in alpha-beta T cells was associated with PM exposure, which is this assay's result."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-il17a-sc-abt-4h-output-vehicle"
+        name: "Vehicle-exposed lung alpha-beta T cells - Il17a mRNA"
+        description: "Reference group. Fig. 7b maps expression as coloured dots with no numeric value; none recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-il17a-sc-abt-4h-output-pm"
+        name: "PM-exposed lung alpha-beta T cells - Il17a mRNA"
+        description: "Il17a upregulated relative to vehicle. Fig. 7b maps expression as coloured dots with no numeric value; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-sc-tcells"
+      name: "C57BL/6J mouse, dissociated whole-lung single-cell suspension, gamma-delta, NK and alpha-beta T cell clusters"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-dropseq-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Single-cell dissociation of mouse lung and Drop-seq barcoding"
+      - id: "PROTOCOL:harding-scrnaseq-bioinf-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Drop-seq alignment, Seurat clustering and pathway enrichment pipeline"
+
+  # --- Tgfb1 in epithelial and endothelial cells ---
+  - id: "GE:harding-tgfb1-sc-allcells-4h"
+    name: "Tgfb1 expression in lung epithelial and endothelial cells after 4-h PM exposure (scRNA-seq)"
+    description: "Transforming growth factor beta 1 (Tgfb1) was upregulated in epithelial and endothelial cells of PM-exposed mice. Tgf-beta signalling is one of the pathways the authors describe as essential to the induction of pathogenic eTh17 cells, so this is recorded as part of the inflammatory programme rather than as a separate key event. The running text also names neutrophils and monocytes as Tgf-beta producers; the figure legend names epithelial and endothelial cells, and both quotes are attached. Expression is mapped onto cells as coloured dots in Fig. 7a with no numeric value, so no mrna_level is recorded."
+    target_gene: "NCBIGene:21803"
+    gene_expression_method: "Drop-seq single-cell RNA sequencing, per-cell expression mapping"
+    normalization_reference: "sctransform normalization; Wilcoxon rank sum test with Bonferroni correction, FDR < 0.05"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "A Upregulated Transforming growth factor beta (Tgfb1) was associated with PM exposure in epithelial and endothelial cells. B Upregulated Interleukin 17 (IL17a) was associated with PM exposure in alpha–beta T cells."
+        explanation: "Panel A states that Tgfb1 upregulation in epithelial and endothelial cells was associated with PM exposure, which is this assay's result."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "the alpha–beta cells are already producing Il-17a while epithelial cells, neutrophils, and monocytes produce Tgf-β further demonstrating the induction of eTh17 cells"
+        explanation: "The running text's list of Tgf-beta-producing populations, which differs from the figure legend's and is recorded alongside it in this assay's description."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-tgfb1-sc-allcells-4h-output-vehicle"
+        name: "Vehicle-exposed lung - Tgfb1 mRNA"
+        description: "Reference group. Fig. 7a maps expression as coloured dots with no numeric value; none recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-tgfb1-sc-allcells-4h-output-pm"
+        name: "PM-exposed lung - Tgfb1 mRNA in epithelial and endothelial cells"
+        description: "Tgfb1 upregulated relative to vehicle in epithelial and endothelial cells. Fig. 7a maps expression as coloured dots with no numeric value; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-sc-allcells"
+      name: "C57BL/6J mouse, dissociated whole-lung single-cell suspension, all cell populations"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-dropseq-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Single-cell dissociation of mouse lung and Drop-seq barcoding"
+      - id: "PROTOCOL:harding-scrnaseq-bioinf-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Drop-seq alignment, Seurat clustering and pathway enrichment pipeline"
+
+  # --- Il10 across all cells (absent) ---
+  - id: "GE:harding-il10-sc-allcells-4h"
+    name: "Il10 expression across all lung cells after 4-h PM exposure (scRNA-seq)"
+    description: "Interleukin 10 (Il10) showed no induction in any lung cell population after PM exposure. Because Il-10 is required for regulatory Th17 (rTh17) differentiation, the authors read its absence as evidence that the response is pathogenic eTh17 rather than regulatory - a negative result that is part of the inflammation phenotype rather than a contradiction of it. The associated response comparison records change_direction: no_change. Figure-only; no value recorded."
+    target_gene: "NCBIGene:16153"
+    gene_expression_method: "Drop-seq single-cell RNA sequencing, per-cell expression mapping"
+    normalization_reference: "sctransform normalization; Wilcoxon rank sum test with Bonferroni correction, FDR < 0.05"
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "across all cells we see no induction of Il-10 demonstrating a distinct lack of rTh17 cells"
+        explanation: "States the result this assay records: no Il-10 induction in any cell, and therefore no regulatory Th17 population."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "A IL-10 wasn’t expressed in any lung cell demonstrating a lack of rTh17 differentiation. B No significant changes in Ahr expression in PM exposure."
+        explanation: "Panel A repeats the Il-10 result in the figure legend, confirming it holds across every lung cell population."
+    has_exposure_condition:
+      - id: "EXPOSURE:harding-vehicle-oa-4h"
+        name: "Vehicle control: 50 ul sterile saline with 0.02% tween-80 by oropharyngeal aspiration, 4 h"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:harding-pm-mcp230-oa-4h"
+        name: "MCP230 EPFR-containing combustion-derived particulate matter, mean aerodynamic diameter < 0.2 um, 50 ul of a 1 mg/ml suspension by oropharyngeal aspiration for 4 h (stated inhalation-exposure equivalent 200 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:harding-il10-sc-allcells-4h-output-vehicle"
+        name: "Vehicle-exposed lung, all cells - Il10 mRNA"
+        description: "Reference group; Il-10 not expressed. Figure-only; no value recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:harding-vehicle-oa-4h"
+      - id: "GE:harding-il10-sc-allcells-4h-output-pm"
+        name: "PM-exposed lung, all cells - Il10 mRNA"
+        description: "No induction of Il-10 in any lung cell population. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:harding-pm-mcp230-oa-4h"
+    assay_date: "2021-01-01"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:harding-mouse-lung-sc-allcells"
+      name: "C57BL/6J mouse, dissociated whole-lung single-cell suspension, all cell populations"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male and female"
+      sample_type: biopsy
+      collection_site: "lung"
+    follows_protocols:
+      - id: "PROTOCOL:harding-pm-oa-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Oropharyngeal aspiration exposure to MCP230 EPFR-containing particulate matter"
+      - id: "PROTOCOL:harding-dropseq-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Single-cell dissociation of mouse lung and Drop-seq barcoding"
+      - id: "PROTOCOL:harding-scrnaseq-bioinf-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Drop-seq alignment, Seurat clustering and pathway enrichment pipeline"
+
+# =============================================================================
+# RESPONSE COMPARISONS
+#
+# Table 1 log2 fold changes (see the header note on the log2 scale), plus the
+# two scRNA-seq negative results.
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:harding-cyp1a1-log2fc"
+    name: "Log2 fold change in Cyp1a1 mRNA, PM-exposed versus vehicle-exposed mouse lung at 4 h"
+    description: "Reported in Table 1 as a LOG2 fold change, not a linear fold change. change_type is fold_change because ChangeTypeEnum has no log2 member, and the unit names the log2 scale explicitly; a consumer must not read 4.91 as a 4.91-fold linear increase. No linear value is recorded because converting one would be a computed value, which extraction does not do."
+    derived_from_assay: "GE:harding-cyp1a1-rt2-4h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:harding-cyp1a1-rt2-4h-output-vehicle"
+    treated_output: "GE:harding-cyp1a1-rt2-4h-output-pm"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "4.91"
+      unit:
+        id: "UCUM:1"
+        name: "log2 fold change (dimensionless)"
+      sample_size: 5
+    p_value: 0.010
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
+
+  - id: "COMP:harding-cyp4b1-log2fc"
+    name: "Log2 fold change in Cyp4b1 mRNA, PM-exposed versus vehicle-exposed mouse lung at 4 h"
+    description: "Reported in Table 1 as a LOG2 fold change, not a linear fold change. change_type is fold_change because ChangeTypeEnum has no log2 member, and the unit names the log2 scale explicitly; a consumer must not read 1.48 as a 1.48-fold linear increase. No linear value is recorded because converting one would be a computed value, which extraction does not do."
+    derived_from_assay: "GE:harding-cyp4b1-rt2-4h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:harding-cyp4b1-rt2-4h-output-vehicle"
+    treated_output: "GE:harding-cyp4b1-rt2-4h-output-pm"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.48"
+      unit:
+        id: "UCUM:1"
+        name: "log2 fold change (dimensionless)"
+      sample_size: 5
+    p_value: 0.011
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
+
+  - id: "COMP:harding-gpx2-log2fc"
+    name: "Log2 fold change in Gpx2 mRNA, PM-exposed versus vehicle-exposed mouse lung at 4 h"
+    description: "Reported in Table 1 as a LOG2 fold change, not a linear fold change. change_type is fold_change because ChangeTypeEnum has no log2 member, and the unit names the log2 scale explicitly; a consumer must not read 2.72 as a 2.72-fold linear increase. No linear value is recorded because converting one would be a computed value, which extraction does not do."
+    derived_from_assay: "GE:harding-gpx2-rt2-4h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:harding-gpx2-rt2-4h-output-vehicle"
+    treated_output: "GE:harding-gpx2-rt2-4h-output-pm"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "2.72"
+      unit:
+        id: "UCUM:1"
+        name: "log2 fold change (dimensionless)"
+      sample_size: 5
+    p_value: 0.001
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
+
+  - id: "COMP:harding-mt2-log2fc"
+    name: "Log2 fold change in Mt2 mRNA, PM-exposed versus vehicle-exposed mouse lung at 4 h"
+    description: "Reported in Table 1 as a LOG2 fold change, not a linear fold change. change_type is fold_change because ChangeTypeEnum has no log2 member, and the unit names the log2 scale explicitly; a consumer must not read 2.58 as a 2.58-fold linear increase. No linear value is recorded because converting one would be a computed value, which extraction does not do."
+    derived_from_assay: "GE:harding-mt2-rt2-4h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:harding-mt2-rt2-4h-output-vehicle"
+    treated_output: "GE:harding-mt2-rt2-4h-output-pm"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "2.58"
+      unit:
+        id: "UCUM:1"
+        name: "log2 fold change (dimensionless)"
+      sample_size: 5
+    p_value: 0.005
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
+
+  - id: "COMP:harding-gsr-log2fc"
+    name: "Log2 fold change in Gsr mRNA, PM-exposed versus vehicle-exposed mouse lung at 4 h"
+    description: "Reported in Table 1 as a LOG2 fold change, not a linear fold change. change_type is fold_change because ChangeTypeEnum has no log2 member, and the unit names the log2 scale explicitly; a consumer must not read 1.94 as a 1.94-fold linear increase. No linear value is recorded because converting one would be a computed value, which extraction does not do."
+    derived_from_assay: "GE:harding-gsr-rt2-4h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:harding-gsr-rt2-4h-output-vehicle"
+    treated_output: "GE:harding-gsr-rt2-4h-output-pm"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.94"
+      unit:
+        id: "UCUM:1"
+        name: "log2 fold change (dimensionless)"
+      sample_size: 5
+    p_value: 0.005
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
+
+  - id: "COMP:harding-hk2-log2fc"
+    name: "Log2 fold change in Hk2 mRNA, PM-exposed versus vehicle-exposed mouse lung at 4 h"
+    description: "Reported in Table 1 as a LOG2 fold change, not a linear fold change. change_type is fold_change because ChangeTypeEnum has no log2 member, and the unit names the log2 scale explicitly; a consumer must not read 1.70 as a 1.70-fold linear increase. No linear value is recorded because converting one would be a computed value, which extraction does not do."
+    derived_from_assay: "GE:harding-hk2-rt2-4h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:harding-hk2-rt2-4h-output-vehicle"
+    treated_output: "GE:harding-hk2-rt2-4h-output-pm"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.70"
+      unit:
+        id: "UCUM:1"
+        name: "log2 fold change (dimensionless)"
+      sample_size: 5
+    p_value: 0.014
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
+
+  - id: "COMP:harding-nqo1-log2fc"
+    name: "Log2 fold change in Nqo1 mRNA, PM-exposed versus vehicle-exposed mouse lung at 4 h"
+    description: "Reported in Table 1 as a LOG2 fold change, not a linear fold change. change_type is fold_change because ChangeTypeEnum has no log2 member, and the unit names the log2 scale explicitly; a consumer must not read 1.69 as a 1.69-fold linear increase. No linear value is recorded because converting one would be a computed value, which extraction does not do."
+    derived_from_assay: "GE:harding-nqo1-rt2-4h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:harding-nqo1-rt2-4h-output-vehicle"
+    treated_output: "GE:harding-nqo1-rt2-4h-output-pm"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.69"
+      unit:
+        id: "UCUM:1"
+        name: "log2 fold change (dimensionless)"
+      sample_size: 5
+    p_value: 0.004
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
+
+  - id: "COMP:harding-comt-log2fc"
+    name: "Log2 fold change in Comt mRNA, PM-exposed versus vehicle-exposed mouse lung at 4 h"
+    description: "Reported in Table 1 as a LOG2 fold change, not a linear fold change. change_type is fold_change because ChangeTypeEnum has no log2 member, and the unit names the log2 scale explicitly; a consumer must not read 1.68 as a 1.68-fold linear increase. No linear value is recorded because converting one would be a computed value, which extraction does not do."
+    derived_from_assay: "GE:harding-comt-rt2-4h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:harding-comt-rt2-4h-output-vehicle"
+    treated_output: "GE:harding-comt-rt2-4h-output-pm"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.68"
+      unit:
+        id: "UCUM:1"
+        name: "log2 fold change (dimensionless)"
+      sample_size: 5
+    p_value: 0.040
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
+
+  - id: "COMP:harding-aoc1-log2fc"
+    name: "Log2 fold change in Aoc1 mRNA, PM-exposed versus vehicle-exposed mouse lung at 4 h"
+    description: "Reported in Table 1 as a LOG2 fold change, not a linear fold change. change_type is fold_change because ChangeTypeEnum has no log2 member, and the unit names the log2 scale explicitly; a consumer must not read 1.63 as a 1.63-fold linear increase. No linear value is recorded because converting one would be a computed value, which extraction does not do."
+    derived_from_assay: "GE:harding-aoc1-rt2-4h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:harding-aoc1-rt2-4h-output-vehicle"
+    treated_output: "GE:harding-aoc1-rt2-4h-output-pm"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.63"
+      unit:
+        id: "UCUM:1"
+        name: "log2 fold change (dimensionless)"
+      sample_size: 5
+    p_value: 0.001
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
+
+  - id: "COMP:harding-aldh1a1-log2fc"
+    name: "Log2 fold change in Aldh1a1 mRNA, PM-exposed versus vehicle-exposed mouse lung at 4 h"
+    description: "Reported in Table 1 as a LOG2 fold change, not a linear fold change. change_type is fold_change because ChangeTypeEnum has no log2 member, and the unit names the log2 scale explicitly; a consumer must not read 1.44 as a 1.44-fold linear increase. No linear value is recorded because converting one would be a computed value, which extraction does not do."
+    derived_from_assay: "GE:harding-aldh1a1-rt2-4h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:harding-aldh1a1-rt2-4h-output-vehicle"
+    treated_output: "GE:harding-aldh1a1-rt2-4h-output-pm"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.44"
+      unit:
+        id: "UCUM:1"
+        name: "log2 fold change (dimensionless)"
+      sample_size: 5
+    p_value: 0.006
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
+
+  - id: "COMP:harding-pon1-log2fc"
+    name: "Log2 fold change in Pon1 mRNA, PM-exposed versus vehicle-exposed mouse lung at 4 h"
+    description: "Reported in Table 1 as a LOG2 fold change, not a linear fold change. change_type is fold_change because ChangeTypeEnum has no log2 member, and the unit names the log2 scale explicitly; a consumer must not read 1.43 as a 1.43-fold linear increase. No linear value is recorded because converting one would be a computed value, which extraction does not do."
+    derived_from_assay: "GE:harding-pon1-rt2-4h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:harding-pon1-rt2-4h-output-vehicle"
+    treated_output: "GE:harding-pon1-rt2-4h-output-pm"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.43"
+      unit:
+        id: "UCUM:1"
+        name: "log2 fold change (dimensionless)"
+      sample_size: 5
+    p_value: 0.043
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
+
+  - id: "COMP:harding-pon3-log2fc"
+    name: "Log2 fold change in Pon3 mRNA, PM-exposed versus vehicle-exposed mouse lung at 4 h"
+    description: "Reported in Table 1 as a LOG2 fold change, not a linear fold change. change_type is fold_change because ChangeTypeEnum has no log2 member, and the unit names the log2 scale explicitly; a consumer must not read 1.26 as a 1.26-fold linear increase. No linear value is recorded because converting one would be a computed value, which extraction does not do."
+    derived_from_assay: "GE:harding-pon3-rt2-4h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:harding-pon3-rt2-4h-output-vehicle"
+    treated_output: "GE:harding-pon3-rt2-4h-output-pm"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.26"
+      unit:
+        id: "UCUM:1"
+        name: "log2 fold change (dimensionless)"
+      sample_size: 5
+    p_value: 0.039
+    statistical_test: "Student's t-test"
+    derivation: reported_in_paper
+
+  # --- scRNA-seq negative results, recorded so the direction is explicit ---
+  - id: "COMP:harding-ahr-expression-nochange"
+    name: "Change in Ahr expression across all lung cells, PM-exposed versus vehicle-exposed, at 4 h"
+    description: "Recorded because the negative result carries the paper's argument: Ahr activation is attributed to Ahr/Arnt nuclear translocation and c-src/Egfr/Erk1/2 signalling rather than to increased Ahr transcription. No change magnitude is recorded because the paper reports only that the change was not significant, and Fig. 8b gives no value."
+    derived_from_assay: "GE:harding-ahr-sc-allcells-4h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:harding-ahr-sc-allcells-4h-output-vehicle"
+    treated_output: "GE:harding-ahr-sc-allcells-4h-output-pm"
+    change_direction: no_change
+    statistical_test: "Wilcoxon rank sum test with Bonferroni correction, FDR < 0.05"
+    derivation: reported_in_paper
+
+  - id: "COMP:harding-il10-nochange"
+    name: "Change in Il10 expression across all lung cells, PM-exposed versus vehicle-exposed, at 4 h"
+    description: "Il-10 was not expressed in any lung cell in either group, so there was no induction to measure. Recorded as no_change because the absence is the reported finding: it rules out regulatory Th17 differentiation and marks the response as pathogenic eTh17. No change magnitude is recorded; Fig. 8a gives no value."
+    derived_from_assay: "GE:harding-il10-sc-allcells-4h"
+    compared_measurement: "mrna_level"
+    control_output: "GE:harding-il10-sc-allcells-4h-output-vehicle"
+    treated_output: "GE:harding-il10-sc-allcells-4h-output-pm"
+    change_direction: no_change
+    statistical_test: "Wilcoxon rank sum test with Bonferroni correction, FDR < 0.05"
+    derivation: reported_in_paper
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS
+#
+# Only links this paper states about its own data or asserts as the mechanism
+# it is testing. Every Key Event block is copied verbatim from origin/main.
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:harding-ahr-to-egfr"
+    name: "AhR pathway activation leads to EGFR activation via c-src"
+    description: "The paper's central proposed mechanism: ligand activation of Ahr releases the non-receptor tyrosine kinase c-src into the cytoplasm, which translocates to the cell membrane and activates Egfr, whose downstream target is Erk1/2. The paper's own scRNA-seq contribution is the observation that Egfr is upregulated in the epithelial Ahr pathway map; the c-src step is cited to prior literature, which is why evidence_support is moderate rather than strong."
+    upstream_event:
+      id: "KE:mie-ahr-activation"
+      name: "AhR pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Ahr activation is known to induce c-src-dependent stimulation of Egfr  and its downstream target Erk 1/2"
+        explanation: "States the AhR-to-EGFR link this relationship records, and names c-src as the intermediate."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "tyrosine kinase c-src in the cytoplasm. C-src kinase translocates to the cell membrane where it activates Egfr"
+        explanation: "Spells out the mechanistic step by which AhR ligand activation reaches EGFR."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Epithelial cells further showed, Ahr activation is brought on by Ahr/ARNT nuclear translocation and activation of tyrosine kinase c-src, Egfr, and subsequently Erk1/2 pathways."
+        explanation: "The authors' abstract-level statement of the same AhR to c-src to EGFR to Erk1/2 sequence, drawn from their own epithelial data."
+
+  - id: "KER:harding-egfr-to-airway-inflammation"
+    name: "EGFR activation indirectly leads to airway inflammation via Erk1/2, cox-2 and eTh17 differentiation"
+    description: "Egfr activation is described as leading to Erk1/2 activation and transcription of cox-2, which the paper states is essential to pathogenic eTh17 differentiation; eTh17 cells in turn drive the neutrophilic inflammation this paper is about. The chain has several steps the paper did not measure directly, so relationship_type is indirect and quantitative understanding is low."
+    upstream_event:
+      id: "KE:ke1-egfr-activation"
+      name: "EGFR activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    relationship_type: "indirectly leads to"
+    evidence_support: weak
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Egfr activation further leads to Erk1/2 pathway activation promoting the transcription of cox-2 which has been shown to be essential in eTh17 differentiation"
+        explanation: "States the EGFR to Erk1/2 to cox-2 to eTh17 chain that connects EGFR activation to the inflammatory phenotype."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Neutrophilic infiltration is dependent on Il-17 signaling through Il-17 induced proinflammatory cytokines and chemokines in lung structural cells promoting neutrophilic infiltration"
+        explanation: "Supplies the last step of the chain: the Il-17 programme downstream of eTh17 differentiation is what recruits neutrophils into the airway."
+
+  - id: "KER:harding-ahr-to-airway-inflammation"
+    name: "AhR pathway activation indirectly leads to airway inflammation through eTh17 differentiation"
+    description: "The paper's overall conclusion: PM-induced epithelial transcriptomic changes activate Ahr, which through epithelial, dendritic and T-cell cytokine programmes promotes pathogenic eTh17 differentiation and neutrophilic asthma. Recorded as indirect because the intervening cell-to-cell steps are inferred from pathway enrichment at a single 4-h timepoint rather than measured as a causal series."
+    upstream_event:
+      id: "KE:mie-ahr-activation"
+      name: "AhR pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    relationship_type: "indirectly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In this paper, we present data suggesting that PM induced epithelial transcriptomic changes are responsible for the activation of Ahr through Ahr/Arnt activation/nuclear translocation and an increase in Egfr  expression, ultimately resulting in neutrophilic asthma"
+        explanation: "States the relationship directly: Ahr activation in the epithelium ultimately results in neutrophilic asthma."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Collectively, our data corroborates that PM initiates an eTh17 specific inflammatory response causing neutrophilic asthma through pathways in epithelial, dendritic, and T cells that promote eTh17 differentiation during initial PM exposure."
+        explanation: "The paper's conclusion, naming the intervening epithelial, dendritic and T-cell pathways that make this relationship indirect."
+      - reference: "PMID:34702270"
+        reference_title: "Association between particulate matter containing EPFRs and neutrophilic asthma through AhR and Th17."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "However, our previous data found that PM is capable of inducing T helper cell 17 (Th17) immune responses via aryl hydrocarbon receptor (Ahr) activation, which was associated with neutrophilic invasion characteristic of steroid insensitive asthma."
+        explanation: "The prior finding this paper sets out to explain mechanistically, linking Ahr activation to Th17 responses and neutrophilic invasion."
