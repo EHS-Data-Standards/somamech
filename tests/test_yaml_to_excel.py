@@ -137,8 +137,8 @@ import yaml_to_excel as y2e  # noqa: E402 - needs the sys.path line above
         (True, True),
         (None, None),
         ("", ""),
-        # dates stay dates: assay_date is range: date, so an unquoted one
-        # parses to datetime.date and must not be flattened into text
+        # openpyxl writes temporal types as real typed cells, so they pass
+        # through rather than being flattened into text
         (datetime.date(2021, 1, 1), datetime.date(2021, 1, 1)),
         (datetime.datetime(2021, 1, 1, 9, 30), datetime.datetime(2021, 1, 1, 9, 30)),
         (datetime.time(9, 30), datetime.time(9, 30)),
@@ -153,6 +153,13 @@ import yaml_to_excel as y2e  # noqa: E402 - needs the sys.path line above
         ({"id": "X:1", "value": "10", "unit": {"name": "ng/mL"}}, "10 ng/mL"),
         # a unit with no value still reads as a label, not a repr
         ({"unit": {"id": "UO:1", "name": "ng/mL"}}, "ng/mL (UO:1)"),
+        # a present-but-null key blanks instead of rendering the text 'None'
+        ({"value": None}, ""),
+        ({"unit": None}, ""),
+        ({"value": None, "unit": {"name": "ng/mL"}}, "ng/mL"),
+        # ...but a real zero is a measurement, not an absence
+        ({"value": 0, "unit": {"name": "ng/mL"}}, "0 ng/mL"),
+        ({"value": "0"}, "0"),
         # anything else flattens rather than reaching openpyxl as an object
         (["a", "b"], "a; b"),
         ([{"gene": "Foxj1"}], "gene: Foxj1"),

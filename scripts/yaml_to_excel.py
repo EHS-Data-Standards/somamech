@@ -329,8 +329,13 @@ def _fmt_value_unit(obj):
     """Extract value and unit string from a measurement dict like {value: '0.5', unit: {id: ..., name: ...}}."""
     if not obj or not isinstance(obj, dict):
         return "", ""
-    val = obj.get("value", "")
-    unit_obj = obj.get("unit", {})
+    # a present-but-null key blanks rather than stringifying to 'None'.
+    # Checked against None instead of falsiness so a real 0 survives.
+    val = obj.get("value")
+    val = "" if val is None else val
+    unit_obj = obj.get("unit")
+    if unit_obj is None:
+        unit_obj = {}
     if isinstance(unit_obj, dict):
         unit_name = unit_obj.get("name", "")
         unit_id = unit_obj.get("id", "")
@@ -570,9 +575,13 @@ def _fmt_cell(value):
     row builders already format their term and measurement objects, so adding
     an inlined slot to HEADERS can never break the workbook again.
 
-    Everything openpyxl writes natively is handed back untouched, dates
-    included: `assay_date` is `range: date`, so an unquoted one parses to a
-    `datetime.date` and must stay a real date cell rather than become text.
+    Everything openpyxl writes natively is handed back untouched, temporal
+    types included: it writes date, time and timedelta as real typed cells, so
+    one reaching this function must not be flattened into text. A validated
+    kb file cannot carry one -- LinkML maps `range: date` to a JSON-Schema
+    string, so an unquoted `assay_date` fails `linkml-validate` before it gets
+    here -- but `yaml_to_excel.py --input` can be pointed at a file nobody
+    validated, and a passthrough that silently dropped them would be wrong.
     """
     if value is None or isinstance(value, _EXCEL_SCALARS):
         return value
