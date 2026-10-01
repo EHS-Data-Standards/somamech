@@ -13,18 +13,41 @@ and its own one-paper PR. The claim issues are what keep parallel agents
 ANY agent.
 
 If the user gave a number, use it; cap at 8. Papers marked `EXTRACT` in
-their stubs come before `UNDECIDED` ones.
+their stubs come before `UNDECIDED` ones — but full text outranks both
+(Step 1): a full-text `UNDECIDED` paper is extracted before an
+abstract-only `EXTRACT` one.
 
 ## Step 1 — Pick and verify N papers (in the main checkout)
 
 ```bash
 just fetch-claims
-just next-unclaimed <N+3>     # a few spares in case verification drops some
+just next-unclaimed <N+5>     # spares: both checks below drop candidates
 ```
 
-For each candidate, run the same three-surface check as claim-paper Step 1
-(kb/ on origin/main, open claim issues, open PRs) and keep the first N that
-are genuinely free.
+Every candidate has to pass the same two checks as claim-paper Step 1:
+
+1. **Free** — the three-surface check (kb/ on origin/main, open claim issues,
+   open PRs).
+2. **Fully downloadable** — one `check-fulltext` call over everything that
+   survived check 1:
+
+   ```bash
+   just check-fulltext PMID:<a> PMID:<b> PMID:<c> PMID:<d> PMID:<e>
+   ```
+
+Keep the first N candidates that are free *and* `FULL TEXT`. Leave every
+`ABSTRACT ONLY` candidate in the queue — unclaimed, stub untouched — and pull
+more from `next-unclaimed` until you have N full-text papers or the queue is
+exhausted.
+
+**A short batch beats a padded one.** If the queue yields only 2 full-text
+papers for a requested 3, dispatch 2 and tell the user why; do not fill the
+last slot with an abstract-only paper while downloadable ones are still
+waiting. Only when the whole unclaimed queue is abstract-only do those papers
+become eligible, and then prefer the ones whose stub has a `pdf_filename:`.
+
+The stub's `open_access:` flag is not evidence of full text — see claim-paper
+Step 1 for why.
 
 ## Step 2 — File ALL claim issues first
 
@@ -68,6 +91,12 @@ specific paper:
    - **Quotes must verify against the committed `references_cache/`**, which
      is what CI checks. A quote read out of a local PDF passes
      `verify-snippets` and fails CI. See claim-paper Step 5.
+   - **Your paper was triaged as full text before its claim was filed.** If
+     your own fetch comes back `abstract_only` anyway, stop before extracting
+     and report that — do not quietly fall back to a local PDF. The
+     orchestrator releases the claim and the paper returns to the queue
+     (Step 4). Deciding this for yourself puts an abstract-only extraction
+     ahead of downloadable papers still waiting.
    - One paper, one PR; add only YOUR paper's kb file, reference cache
      entries, term cache rows, verification receipt (abstract-only papers
      only), and stub deletion.
@@ -94,6 +123,11 @@ numbers (dismech matched `ORPHA:2704` against issue #2704 in production).
 For any agent whose branch is empty or whose PR is missing: its work is
 stranded in the worktree — inspect `../soma-wt-<key>`, commit/push what is
 there, or close its claim issue so the paper returns to the queue.
+
+For an agent that stopped because its paper turned out to be abstract-only,
+close its claim issue and leave the stub alone: that is what puts the paper
+back in the queue, available again once the downloadable ones are done. Report
+it to the user with the rest of the batch.
 
 ## Step 5 — Clean up worktrees
 

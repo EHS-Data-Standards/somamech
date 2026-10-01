@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> ## ⚠️ AI-Generated Content Notice
+>
+> **The vast majority of the content in this repository is AI-generated.** Schema files, knowledge-base entries, documentation, and code have been produced by AI agents (e.g., Claude) working under human direction.
+>
+> **A person's name on a commit, pull request, issue, or knowledge-base entry does *not* mean that person authored the content themselves.** It means that person guided an AI agent, which made the change on their behalf. Human contributors direct, review, and approve the work, but the content itself is written by AI.
+
 <p align="center">
   <img src="src/docs/soma-logo.svg" alt="SOMA Logo" width="700">
 </p>
@@ -79,13 +86,61 @@ just install
 If you need to run a Python tool directly, prefer `uv run ...` so it executes inside the
 managed project environment.
 
+### Querying the knowledge base
+
+The `kb/publications/*.yaml` files are the source of truth. Two generated products
+make them queryable; both are gitignored and rebuilt on demand, never hand-edited.
+
+- `just build-db` — build `exports/soma.duckdb`, a local [DuckDB](https://duckdb.org)
+  database with one table per schema class.
+- `just dump-tsv` — dump every table and view to `exports/tsv/*.tsv`.
+- `just build-db-all` — both of the above.
+- `just query 'SELECT ...'` — run one query; with no argument, list the relations.
+- `just generate-workbook` — the pooled Excel workbook (see `scripts/build_workbook.py`).
+
+Start with the **`measurement_full`** view: one row per number in the KB, already
+joined to its paper, assay, exposure condition, experimental group and key event.
+
+```sh
+just query "SELECT paper_id, measurement, value, unit_label, exposure_agent_label \
+            FROM measurement_full WHERE measurement LIKE '%beat%'"
+```
+
+Alongside the per-class tables, four carry what a class-per-table layout cannot:
+
+- **`measurement`** — long format, one row per number anywhere in the KB, with its
+  unit, dispersion, central tendency, sample size, and a `value_qualifier` that
+  preserves a recorded `<0.05` instead of silently turning it into `0.05`.
+- **`link`** — every entity-to-entity edge, and the table to use for many-to-many
+  slots such as `follows_protocols`. An edge from a paper to one of its top-level
+  entities has `parent_type = 'paper'` and carries the source filename as
+  `parent_id`, since that is the `paper` table's key.
+- **`term`** — every ontology term referenced, with its label.
+- **`term_ref`** — each place a term is used, which is what `term_usage` counts.
+
+The views `assay` and `assay_output` union the 11 assay and 11 output subclasses,
+so a cross-assay question does not need an 11-way `UNION`.
+
+Rows are keyed on `source_file`, not on the cited PMID: two kb files may
+legitimately cite one paper, and keying on the PMID would either abort the build
+on a primary-key clash or silently merge the two files' entities. `paper_id`
+remains on every row for grouping and display.
+
+The DuckDB schema is derived from the installed `soma-schema` at build time, so a
+version bump regenerates it — inspect it with `just db-schema`. It deliberately
+differs from LinkML's own relational model (`just db-schema-linkml`) in three ways,
+documented in [scripts/soma_duckdb.py](scripts/soma_duckdb.py): value objects such
+as `QuantityValue` are flattened into named columns rather than joined through a
+shared table, reused children carry one `parent_type`/`parent_id` pair instead of one
+nullable foreign key per possible parent, and multivalued scalars stay on the parent
+row as DuckDB `LIST` columns instead of side tables.
+
 ## Repository Structure
 
 * [docs/](docs/) - mkdocs-managed documentation
 * [examples/](examples/) - Examples of using the schema
 * [project/](project/) - project files (auto-generated, do not edit)
-* [src/soma/schema/](src/soma/schema) - LinkML schema (edit this)
-* [src/soma/datamodel/](src/soma/datamodel) - generated Python datamodel
+* Schema and datamodel: the [soma-schema](https://pypi.org/project/soma-schema/) package, maintained in [EHS-Data-Standards/soma](https://github.com/EHS-Data-Standards/soma)
 * [tests/](tests/) - Python tests
 
 ## Developer Tools

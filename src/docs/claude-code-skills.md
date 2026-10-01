@@ -87,12 +87,12 @@ Look up, search, and validate ontology terms (CURIEs) used in SOMA data files.
 
 ```
 /oaklib
-> Look up CHEBI:74481
+> Look up ENVO:01000415
 > Search the Cell Ontology for "nasal epithelial cell"
-> Validate that CL:0002603 is a real term
+> Validate that CL:2000094 is a real term
 ```
 
-**Supported ontologies:** CHEBI, CL, UBERON, NCBITaxon, UO, OBI, GO, ECTO, PR, HP, PATO, CLO
+**Supported ontologies:** CHEBI, ENVO, CL, UBERON, NCBITaxon, UO, OBI, GO, ECTO, PR, HP, PATO, CLO
 
 **Output:** Term labels, definitions, ancestors, and cross-references printed directly in the chat.
 
@@ -183,7 +183,7 @@ Here is a typical workflow using all four skills in sequence:
   Extract data from docs/papers/liu2024-pm25-cftr.pdf
 
 > /oaklib
-  Verify that CHEBI:74481 is correct for PM2.5
+  Verify that ENVO:01000415 is correct for PM2.5
 
 > /linkml-validate
   Validate tests/data/valid/Container-liu2024-pm25-cftr.yaml
@@ -299,8 +299,8 @@ opencode
 Once in the TUI, you can ask it to run the same underlying commands that the Claude Code skills use:
 
 ```
-> Run: uv run linkml-validate -s src/soma/schema/soma.yaml tests/data/valid/Container-liu2024-pm25-cftr.yaml
-> Run: uv run runoak -i sqlite:obo:chebi info CHEBI:74481
+> Run: just validate-file tests/data/valid/Container-liu2024-pm25-cftr.yaml
+> Run: uv run runoak -i sqlite:obo:envo info ENVO:01000415
 > Run: uv run python scripts/yaml_to_excel.py --input tests/data/valid/Container-liu2024-pm25-cftr.yaml --output src/docs/output.xlsx
 ```
 

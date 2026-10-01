@@ -9,7 +9,7 @@
 #
 # Usage: scripts/run_reference_validator.sh [args...]
 #   e.g.: scripts/run_reference_validator.sh validate data file.yaml \
-#           --schema src/soma/schema/soma.yaml --target-class Container \
+#           --schema "$(uv run python -c 'from importlib.resources import files; print(files("soma")/"schema"/"soma.yaml")')" --target-class Container \
 #           --config conf/reference_validator_config.yaml
 
 set -euo pipefail

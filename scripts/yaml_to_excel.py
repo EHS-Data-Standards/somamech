@@ -10,6 +10,7 @@ Usage:
 """
 
 import argparse
+import datetime
 import re
 import sys
 from pathlib import Path
@@ -63,6 +64,9 @@ TAB_COLORS = {
     "OxidativeStressOutput": "BF8F00",
     "EGFRSignalingAssay": "ED7D31",
     "EGFRSignalingOutput": "ED7D31",
+    "Responses": "2E75B6",
+    "ResponseComparison": "C55A11",
+    "KeyEventRelationship": "ED7D31",
 }
 
 # ---------------------------------------------------------------------------
@@ -72,7 +76,8 @@ TAB_COLORS = {
 HEADERS = {
     "Protocol": [
         "id", "name", "description", "protocol_type", "protocol_version",
-        "equipment_required",
+        "equipment_required", "primer_sequences", "antibodies_used",
+        "detection_method", "reference_gene",
     ],
     "ExposureCondition": [
         "id", "name", "exposure_agent", "exposure_agent_id",
@@ -162,6 +167,9 @@ HEADERS = {
     ],
     "LungFunctionOutput": [
         "id", "name", "description",
+        "fev1_value", "fev1_unit",
+        "fvc_value", "fvc_unit",
+        "total_lung_capacity_value", "total_lung_capacity_unit",
         "lung_resistance_value", "lung_resistance_unit",
         "source_assay",
     ],
@@ -232,7 +240,31 @@ HEADERS = {
         "egfr_phosphorylation_value", "egfr_phosphorylation_unit",
         "source_assay",
     ],
+    # Long-format tab: one row per (output record x measurement), so each
+    # experimental condition's response, uncertainty, and unit line up.
+    "Responses": [
+        "assay_id", "assay_type", "output_id", "experimental_group",
+        "exposure_condition", "measurement", "value", "unit",
+        "central_tendency", "variability", "sample_size",
+    ],
+    "ResponseComparison": [
+        "id", "name", "derived_from_assay", "compared_measurement",
+        "control_output", "treated_output", "change_type",
+        "change_direction", "change_value", "change_unit",
+        "p_value", "statistical_test", "derivation",
+    ],
+    "KeyEventRelationship": [
+        "id", "name", "upstream_event", "downstream_event",
+        "relationship_type", "evidence_support",
+    ],
 }
+
+# Every per-condition output record carries its group role and the exposure
+# condition it was measured under; surface both on every Output tab.
+for _tab, _cols in HEADERS.items():
+    if _tab.endswith("Output") and "source_assay" in _cols:
+        _idx = _cols.index("source_assay")
+        _cols[_idx:_idx] = ["experimental_group", "measured_under"]
 
 # Mapping from YAML collection key -> (assay tab name, output tab name)
 COLLECTION_MAP = {
@@ -297,8 +329,13 @@ def _fmt_value_unit(obj):
     """Extract value and unit string from a measurement dict like {value: '0.5', unit: {id: ..., name: ...}}."""
     if not obj or not isinstance(obj, dict):
         return "", ""
-    val = obj.get("value", "")
-    unit_obj = obj.get("unit", {})
+    # a present-but-null key blanks rather than stringifying to 'None'.
+    # Checked against None instead of falsiness so a real 0 survives.
+    val = obj.get("value")
+    val = "" if val is None else val
+    unit_obj = obj.get("unit")
+    if unit_obj is None:
+        unit_obj = {}
     if isinstance(unit_obj, dict):
         unit_name = unit_obj.get("name", "")
         unit_id = unit_obj.get("id", "")
@@ -306,6 +343,24 @@ def _fmt_value_unit(obj):
     else:
         unit_str = str(unit_obj)
     return str(val), unit_str
+
+
+def _fmt_variability(var):
+    """Format a Variability dict like {variability_type: ..., value: ..., unit: {...}}
+    or interval form {variability_type: ..., lower_bound: ..., upper_bound: ...}."""
+    if not var or not isinstance(var, dict):
+        return ""
+    vtype = var.get("variability_type", "")
+    unit_obj = var.get("unit", {})
+    unit_name = unit_obj.get("name", "") if isinstance(unit_obj, dict) else str(unit_obj or "")
+    lower = var.get("lower_bound")
+    upper = var.get("upper_bound")
+    if lower not in (None, "") or upper not in (None, ""):
+        core = f"{lower or ''}-{upper or ''}"
+    else:
+        core = f"±{var.get('value', '')}"
+    text = f"{core} {unit_name}".strip()
+    return f"{text} ({vtype})" if vtype else text
 
 
 def _fmt_id_name(obj):
@@ -404,6 +459,54 @@ def _collect_key_events(data):
     return list(seen.values())
 
 
+# Output-record keys that are not measurement slots
+_NON_MEASUREMENT_KEYS = {
+    "id", "name", "description", "experimental_group", "measured_under",
+    "source_assay",
+}
+
+
+def _iter_outputs(assay):
+    """Yield each output record of an assay (handles list and legacy dict form)."""
+    outs = assay.get("has_specified_output")
+    if isinstance(outs, dict):
+        outs = [outs]
+    for out in outs or []:
+        if isinstance(out, dict):
+            yield out
+
+
+def _collect_response_rows(data):
+    """One row per (output record x measurement): the long-format table with
+    each condition's response value, uncertainty, and unit side by side."""
+    rows = []
+    for coll_key, (assay_tab, _output_tab) in COLLECTION_MAP.items():
+        for assay in data.get(coll_key, []) or []:
+            for out in _iter_outputs(assay):
+                for slot, mv in out.items():
+                    if slot in _NON_MEASUREMENT_KEYS or not isinstance(mv, dict):
+                        continue
+                    if "value" not in mv and "unit" not in mv:
+                        continue
+                    val, unit = _fmt_value_unit(mv)
+                    rows.append((
+                        assay.get("id", ""),
+                        assay_tab,
+                        out.get("id", ""),
+                        out.get("experimental_group", ""),
+                        # range: ExposureCondition -- a CURIE string today
+                        # (non-inlined), coerced for the same reason as above
+                        _fmt_cell(out.get("measured_under", "")),
+                        slot,
+                        val,
+                        unit,
+                        mv.get("central_tendency", ""),
+                        _fmt_variability(mv.get("variability")),
+                        mv.get("sample_size", ""),
+                    ))
+    return rows
+
+
 def _collect_subjects(data):
     """Collect unique study subjects, split into CellularSystem and InVivoSubject."""
     cellular = {}
@@ -428,17 +531,82 @@ def _collect_subjects(data):
 # Row builders
 # ---------------------------------------------------------------------------
 
+def _join_multivalued(values):
+    """Render a multivalued slot as one '; '-joined cell.
+
+    Entries are plain strings in the schema (and in current kb data), but
+    tolerate dict entries (e.g. a primer set split into gene/forward/reverse)
+    by flattening them to 'key: value' pairs so nothing exports as '{...}'.
+    """
+    if values is None:
+        return ""
+    if not isinstance(values, list):
+        values = [values]
+    parts = []
+    for v in values:
+        if isinstance(v, dict):
+            parts.append(", ".join(f"{k}: {x}" for k, x in v.items()))
+        else:
+            parts.append(str(v))
+    return "; ".join(parts)
+
+
+# What openpyxl writes without help. datetime.datetime subclasses
+# datetime.date, so the one entry covers both.
+_EXCEL_SCALARS = (
+    str,
+    int,
+    float,
+    bool,
+    datetime.date,
+    datetime.time,
+    datetime.timedelta,
+)
+
+
+def _fmt_cell(value):
+    """Coerce one slot value into something openpyxl can write.
+
+    The assay and output row builders are header-driven: a slot named in
+    HEADERS with no special handling is read straight off the record. Most are
+    scalars, but a slot whose range is an inlined class arrives as a dict --
+    target_cell_type, for one, is a CellTypeReference -- and openpyxl raises
+    ValueError rather than writing it. Format those the way the hand-written
+    row builders already format their term and measurement objects, so adding
+    an inlined slot to HEADERS can never break the workbook again.
+
+    Everything openpyxl writes natively is handed back untouched, temporal
+    types included: it writes date, time and timedelta as real typed cells, so
+    one reaching this function must not be flattened into text. A validated
+    kb file cannot carry one -- LinkML maps `range: date` to a JSON-Schema
+    string, so an unquoted `assay_date` fails `linkml-validate` before it gets
+    here -- but `yaml_to_excel.py --input` can be pointed at a file nobody
+    validated, and a passthrough that silently dropped them would be wrong.
+    """
+    if value is None or isinstance(value, _EXCEL_SCALARS):
+        return value
+    if isinstance(value, dict):
+        # a measurement before a term: a dict carrying both keeps its value
+        if "value" in value or "unit" in value:
+            val, unit = _fmt_value_unit(value)
+            return f"{val} {unit}".strip()
+        if value.get("id") or value.get("name"):
+            return _fmt_id_name(value)
+    return _join_multivalued(value)
+
+
 def _protocol_row(p):
-    equip = p.get("equipment_required", [])
-    if isinstance(equip, list):
-        equip = "; ".join(str(e) for e in equip)
     return (
         p.get("id", ""),
         p.get("name", ""),
         p.get("description", ""),
         p.get("protocol_type", ""),
         p.get("protocol_version", ""),
-        equip,
+        _join_multivalued(p.get("equipment_required", [])),
+        _join_multivalued(p.get("primer_sequences", [])),
+        _join_multivalued(p.get("antibodies_used", [])),
+        p.get("detection_method", ""),
+        p.get("reference_gene", ""),
     )
 
 
@@ -519,6 +687,36 @@ def _invivo_subject_row(subj):
     )
 
 
+def _response_comparison_row(rc):
+    cv_val, cv_unit = _fmt_value_unit(rc.get("change_value"))
+    return (
+        rc.get("id", ""),
+        rc.get("name", ""),
+        rc.get("derived_from_assay", ""),
+        rc.get("compared_measurement", ""),
+        rc.get("control_output", ""),
+        rc.get("treated_output", ""),
+        rc.get("change_type", ""),
+        rc.get("change_direction", ""),
+        cv_val,
+        cv_unit,
+        rc.get("p_value", ""),
+        rc.get("statistical_test", ""),
+        rc.get("derivation", ""),
+    )
+
+
+def _key_event_relationship_row(ker):
+    return (
+        ker.get("id", ""),
+        ker.get("name", ""),
+        _fmt_id_name(ker.get("upstream_event")),
+        _fmt_id_name(ker.get("downstream_event")),
+        ker.get("relationship_type", ""),
+        ker.get("evidence_support", ""),
+    )
+
+
 def _assay_row(assay, assay_headers):
     """Build a generic assay row based on headers."""
     row = []
@@ -536,7 +734,7 @@ def _assay_row(assay, assay_headers):
             protos = assay.get("follows_protocols", [])
             row.append(_fmt_list_refs(protos))
         else:
-            row.append(assay.get(h, ""))
+            row.append(_fmt_cell(assay.get(h, "")))
     return tuple(row)
 
 
@@ -560,7 +758,7 @@ def _output_row(output, output_headers):
             else:
                 row.append(str(unit_obj) if unit_obj else "")
         else:
-            row.append(output.get(h, ""))
+            row.append(_fmt_cell(output.get(h, "")))
     return tuple(row)
 
 
@@ -660,10 +858,10 @@ def yaml_to_excel(input_path, output_path, template_path=None):
         )
 
         # Build output rows from has_specified_output
+        # (multivalued: one output record per experimental condition/group)
         output_rows = []
         for a in assays:
-            out = a.get("has_specified_output")
-            if out and isinstance(out, dict):
+            for out in _iter_outputs(a):
                 # Add source_assay reference
                 out_with_ref = dict(out)
                 if "source_assay" not in out_with_ref:
@@ -675,6 +873,32 @@ def yaml_to_excel(input_path, output_path, template_path=None):
                 wb, output_tab, output_headers, output_rows,
                 tab_color=TAB_COLORS.get(output_tab),
             )
+
+    # --- Responses tab (long format: one row per condition x measurement) ---
+    response_rows = _collect_response_rows(data)
+    if response_rows:
+        _make_sheet(
+            wb, "Responses", HEADERS["Responses"], response_rows,
+            tab_color=TAB_COLORS.get("Responses"),
+        )
+
+    # --- ResponseComparison tab (analysis layer: change vs. control) ---
+    comparisons = data.get("response_comparisons", []) or []
+    if comparisons:
+        _make_sheet(
+            wb, "ResponseComparison", HEADERS["ResponseComparison"],
+            [_response_comparison_row(rc) for rc in comparisons],
+            tab_color=TAB_COLORS.get("ResponseComparison"),
+        )
+
+    # --- KeyEventRelationship tab (container-level AOP network topology) ---
+    kers = data.get("key_event_relationships", []) or []
+    if kers:
+        _make_sheet(
+            wb, "KeyEventRelationship", HEADERS["KeyEventRelationship"],
+            [_key_event_relationship_row(ker) for ker in kers],
+            tab_color=TAB_COLORS.get("KeyEventRelationship"),
+        )
 
     # Save
     output_path.parent.mkdir(parents=True, exist_ok=True)

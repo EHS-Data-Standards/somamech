@@ -83,14 +83,15 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq (KAPA mRNA HyperPrep, NovaSeq 6000)"
     normalization_reference: "DESeq2 median of ratios"
     has_specified_output:
-      id: "GE:montgomery-cyp1a1-mod-output"
-      name: "CYP1A1 moderate OE measurement"
-      mrna_level:
-        value: "6.21"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-    assay_date: "2020-01-01"
+      - id: "GE:montgomery-cyp1a1-mod-output"
+        name: "CYP1A1 moderate OE measurement"
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-mod-oe"
+        mrna_level:
+          value: "6.21"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
         name: "PM2.5 organic extract 0.45 ug/cm2 (moderate dose)"
@@ -117,8 +118,8 @@ gene_expression_assays:
       id: "soma:montgomery-culture-001"
       name: "Primary nasal AEC ALI culture - GALA II donors"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -126,8 +127,8 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       days_at_differentiation: 28
       donor_info: "12 donors (6 healthy, 6 asthmatic) from GALA II childhood asthma study"
@@ -147,14 +148,15 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq"
     normalization_reference: "DESeq2 median of ratios"
     has_specified_output:
-      id: "GE:montgomery-il1a-mod-output"
-      name: "IL1A moderate OE measurement"
-      mrna_level:
-        value: "0.91"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-    assay_date: "2020-01-01"
+      - id: "GE:montgomery-il1a-mod-output"
+        name: "IL1A moderate OE measurement"
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-mod-oe"
+        mrna_level:
+          value: "0.91"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
         name: "PM2.5 organic extract 0.45 ug/cm2 (moderate dose)"
@@ -181,8 +183,8 @@ gene_expression_assays:
       id: "soma:montgomery-culture-001"
       name: "Primary nasal AEC ALI culture - GALA II donors"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -200,14 +202,15 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq"
     normalization_reference: "DESeq2 median of ratios"
     has_specified_output:
-      id: "GE:montgomery-il1b-mod-output"
-      name: "IL1B moderate OE measurement"
-      mrna_level:
-        value: "1.22"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-    assay_date: "2020-01-01"
+      - id: "GE:montgomery-il1b-mod-output"
+        name: "IL1B moderate OE measurement"
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-mod-oe"
+        mrna_level:
+          value: "1.22"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
         name: "PM2.5 organic extract 0.45 ug/cm2 (moderate dose)"
@@ -234,8 +237,8 @@ gene_expression_assays:
       id: "soma:montgomery-culture-001"
       name: "Primary nasal AEC ALI culture - GALA II donors"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -253,19 +256,20 @@ gene_expression_assays:
     gene_expression_method: "qRT-PCR"
     normalization_reference: "housekeeping gene"
     has_specified_output:
-      id: "GE:montgomery-spdef-chronic-output"
-      name: "SPDEF chronic OE measurement"
-      mrna_level:
-        value: "0.84"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-      protein_level:
-        value: "1.5"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-    assay_date: "2020-01-01"
+      - id: "GE:montgomery-spdef-chronic-output"
+        name: "SPDEF chronic OE measurement"
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-chronic-oe"
+        mrna_level:
+          value: "0.84"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+        protein_level:
+          value: "1.5"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
         name: "PM2.5 organic extract chronic 5-day stimulation (high OE dose)"
@@ -292,8 +296,8 @@ gene_expression_assays:
       id: "soma:montgomery-culture-chronic"
       name: "Primary nasal AEC ALI culture - chronic stimulation"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -323,14 +327,15 @@ gene_expression_assays:
     gene_expression_method: "qRT-PCR"
     normalization_reference: "housekeeping gene"
     has_specified_output:
-      id: "GE:montgomery-scgb1a1-chronic-output"
-      name: "SCGB1A1 chronic OE measurement"
-      mrna_level:
-        value: "-1.51"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-    assay_date: "2020-01-01"
+      - id: "GE:montgomery-scgb1a1-chronic-output"
+        name: "SCGB1A1 chronic OE measurement"
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-chronic-oe"
+        mrna_level:
+          value: "-1.51"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
         name: "PM2.5 organic extract chronic 5-day stimulation (high OE dose)"
@@ -357,8 +362,8 @@ gene_expression_assays:
       id: "soma:montgomery-culture-chronic"
       name: "Primary nasal AEC ALI culture - chronic stimulation"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -376,14 +381,15 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq"
     normalization_reference: "DESeq2 median of ratios"
     has_specified_output:
-      id: "GE:montgomery-muc5ac-mod-output"
-      name: "MUC5AC moderate OE RNA-seq measurement"
-      mrna_level:
-        value: "0.90"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-    assay_date: "2020-01-01"
+      - id: "GE:montgomery-muc5ac-mod-output"
+        name: "MUC5AC moderate OE RNA-seq measurement"
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-mod-oe"
+        mrna_level:
+          value: "0.90"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
         name: "PM2.5 organic extract 0.45 ug/cm2 (moderate dose)"
@@ -410,8 +416,8 @@ gene_expression_assays:
       id: "soma:montgomery-culture-001"
       name: "Primary nasal AEC ALI culture - GALA II donors"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -429,14 +435,15 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq"
     normalization_reference: "DESeq2 median of ratios"
     has_specified_output:
-      id: "GE:montgomery-muc2-mod-output"
-      name: "MUC2 moderate OE RNA-seq measurement"
-      mrna_level:
-        value: "1.34"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-    assay_date: "2020-01-01"
+      - id: "GE:montgomery-muc2-mod-output"
+        name: "MUC2 moderate OE RNA-seq measurement"
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-mod-oe"
+        mrna_level:
+          value: "1.34"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-mod-oe"
         name: "PM2.5 organic extract 0.45 ug/cm2 (moderate dose)"
@@ -463,8 +470,8 @@ gene_expression_assays:
       id: "soma:montgomery-culture-001"
       name: "Primary nasal AEC ALI culture - GALA II donors"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -484,24 +491,25 @@ goblet_cell_assays:
     name: "MUC5AC expression and secretion - chronic OE"
     description: "Chronic 5-day PM2.5 OE stimulation. MUC5AC mRNA LFC=1.72 (p=1.27e-2). MUC5AC+ cells FC=2.88 (p=3.19e-2). MUC5AC secretion FC=2.2 (p=1.54e-2). All 4 donors showed increase in MUC5AC+ cells."
     has_specified_output:
-      id: "GCM:montgomery-muc5ac-chronic-output"
-      name: "MUC5AC chronic OE measurements"
-      muc5ac_mrna_expression:
-        value: "1.72"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-      muc5ac_protein_expression:
-        value: "2.88"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-      mucin_secretion_rate:
-        value: "2.2"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-    assay_date: "2020-01-01"
+      - id: "GCM:montgomery-muc5ac-chronic-output"
+        name: "MUC5AC chronic OE measurements"
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-chronic-oe"
+        muc5ac_mrna_expression:
+          value: "1.72"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+        muc5ac_protein_expression:
+          value: "2.88"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+        mucin_secretion_rate:
+          value: "2.2"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
         name: "PM2.5 organic extract chronic 5-day stimulation (high OE dose)"
@@ -528,8 +536,8 @@ goblet_cell_assays:
       id: "soma:montgomery-culture-chronic"
       name: "Primary nasal AEC ALI culture - chronic stimulation"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -562,19 +570,20 @@ goblet_cell_assays:
     name: "MUC5B expression and secretion - chronic OE"
     description: "Chronic 5-day PM2.5 OE stimulation. MUC5B mRNA LFC=-0.72 (p=9.74e-2, trend). MUC5B+ cells FC=0.74 (p=8.84e-2). MUC5B secretion FC=0.81 (p=3.59e-3). All 4 donors showed MUC5B+ cell decrease."
     has_specified_output:
-      id: "GCM:montgomery-muc5b-chronic-output"
-      name: "MUC5B chronic OE measurements"
-      muc5b_mrna_expression:
-        value: "-0.72"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-      muc5b_protein_expression:
-        value: "0.74"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-    assay_date: "2020-01-01"
+      - id: "GCM:montgomery-muc5b-chronic-output"
+        name: "MUC5B chronic OE measurements"
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-chronic-oe"
+        muc5b_mrna_expression:
+          value: "-0.72"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+        muc5b_protein_expression:
+          value: "0.74"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
         name: "PM2.5 organic extract chronic 5-day stimulation (high OE dose)"
@@ -601,8 +610,8 @@ goblet_cell_assays:
       id: "soma:montgomery-culture-chronic"
       name: "Primary nasal AEC ALI culture - chronic stimulation"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -624,14 +633,15 @@ goblet_cell_assays:
     name: "Mucin-positive cells (AB-PAS) - chronic OE"
     description: "AB-PAS staining after chronic 5-day PM2.5 OE stimulation. Average FC=2.01 in mucin-positive cells (p=6.52e-2). 3 of 4 donors showed increase."
     has_specified_output:
-      id: "GCM:montgomery-abpas-chronic-output"
-      name: "AB-PAS chronic OE measurements"
-      goblet_cell_percentage:
-        value: "2.01"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-    assay_date: "2020-01-01"
+      - id: "GCM:montgomery-abpas-chronic-output"
+        name: "AB-PAS chronic OE measurements"
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-chronic-oe"
+        goblet_cell_percentage:
+          value: "2.01"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
         name: "PM2.5 organic extract chronic 5-day stimulation (high OE dose)"
@@ -658,8 +668,8 @@ goblet_cell_assays:
       id: "soma:montgomery-culture-chronic"
       name: "Primary nasal AEC ALI culture - chronic stimulation"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -674,19 +684,20 @@ goblet_cell_assays:
     name: "MUC5AC/MUC5B ratio shift - moderate OE dose"
     description: "MUC5AC/MUC5B ratio significantly increased at moderate OE dose (p=3.19e-2). MUC5AC LFC=0.90 with MUC5B trending down (LFC=-0.79 at high dose, Padj=1.0e-1)."
     has_specified_output:
-      id: "GCM:montgomery-ratio-mod-output"
-      name: "MUC5AC/MUC5B ratio moderate OE"
-      muc5ac_mrna_expression:
-        value: "0.90"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-      muc5b_mrna_expression:
-        value: "-0.79"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-    assay_date: "2020-01-01"
+      - id: "GCM:montgomery-ratio-mod-output"
+        name: "MUC5AC/MUC5B ratio moderate OE"
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-high-oe"
+        muc5ac_mrna_expression:
+          value: "0.90"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+        muc5b_mrna_expression:
+          value: "-0.79"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-high-oe"
         name: "PM2.5 organic extract 4.5 ug/cm2 (high dose)"
@@ -713,8 +724,8 @@ goblet_cell_assays:
       id: "soma:montgomery-culture-001"
       name: "Primary nasal AEC ALI culture - GALA II donors"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -734,19 +745,20 @@ foxj_assays:
     name: "FOXJ1 expression - chronic OE stimulation"
     description: "FOXJ1 downregulation after chronic 5-day PM2.5 OE. mRNA LFC=-0.36 (p=1.92e-2). FOXJ1+ nuclei decreased 75% vs mock (p=1.20e-2). n=3 donors. Weaker acetylated alpha-tubulin staining observed."
     has_specified_output:
-      id: "FOXJ:montgomery-chronic-output"
-      name: "FOXJ1 chronic OE measurements"
-      foxj1_mrna_expression:
-        value: "-0.36"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-      foxj1_positive_cell_percentage:
-        value: "25"
-        unit:
-          id: "UO:0000187"
-          name: "percent"
-    assay_date: "2020-01-01"
+      - id: "FOXJ:montgomery-chronic-output"
+        name: "FOXJ1 chronic OE measurements"
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-chronic-oe"
+        foxj1_mrna_expression:
+          value: "-0.36"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+        foxj1_positive_cell_percentage:
+          value: "25"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-chronic-oe"
         name: "PM2.5 organic extract chronic 5-day stimulation (high OE dose)"
@@ -773,8 +785,8 @@ foxj_assays:
       id: "soma:montgomery-culture-chronic"
       name: "Primary nasal AEC ALI culture - chronic stimulation"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -782,8 +794,8 @@ foxj_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       days_at_differentiation: 28
       donor_info: "3 donors from GALA II study"
@@ -808,14 +820,15 @@ foxj_assays:
     name: "FOXJ1 and ciliogenesis TFs - high OE acute dose"
     description: "At high OE dose (4.5 ug/cm2), ciliary assembly module mean expression downregulated (p=4.20e-4). Ciliogenesis TFs FOXJ1, MCIDAS, MYB, TP73, RFX2, RFX3 all decreased. Ciliated cell marker enrichment Padj=3.57e-118."
     has_specified_output:
-      id: "FOXJ:montgomery-high-acute-output"
-      name: "FOXJ1 high OE measurements"
-      foxj1_mrna_expression:
-        value: "-0.36"
-        unit:
-          id: "STATO:0000169"
-          name: "fold change"
-    assay_date: "2020-01-01"
+      - id: "FOXJ:montgomery-high-acute-output"
+        name: "FOXJ1 high OE measurements"
+        experimental_group: treated
+        measured_under: "EXPOSURE:montgomery-high-oe"
+        foxj1_mrna_expression:
+          value: "-0.36"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
     has_exposure_condition:
       - id: "EXPOSURE:montgomery-high-oe"
         name: "PM2.5 organic extract 4.5 ug/cm2 (high dose)"
@@ -842,8 +855,8 @@ foxj_assays:
       id: "soma:montgomery-culture-high"
       name: "Primary nasal AEC ALI culture - high OE dose"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"

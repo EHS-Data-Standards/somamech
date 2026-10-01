@@ -477,8 +477,8 @@ oxidative_stress_assays:
       - id: "EXPOSURE:pm25-24h"
         name: "PM2.5 10 ug/cm2 for 24 hours"
         exposure_agent:
-          id: "CHEBI:74481"
-          name: "PM2.5"
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
         exposure_concentration:
           value: "10"
           unit:
@@ -556,7 +556,7 @@ cftr_assays:
       sweat_chloride_concentration:
         value: "25"
         unit:
-          id: "UO:0000308"
+          id: "UCUM:meq/L"
           name: "milliequivalent per liter"
       nasal_potential_difference:
         value: "-18.5"
@@ -656,8 +656,8 @@ egfr_signaling_assays:
       - id: "EXPOSURE:cse-4h"
         name: "Cigarette smoke extract 5% for 4 hours"
         exposure_agent:
-          id: "CHEBI:39188"
-          name: "cigarette smoke extract"
+          id: "ENVO:01000838"
+          name: "smoke"
         exposure_concentration:
           value: "5"
           unit:

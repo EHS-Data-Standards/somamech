@@ -99,16 +99,16 @@ ciliary_function_assays:
     name: "CBF - Air control immediately post-exposure"
     description: "Cilia beat frequency measured immediately after 1hr air exposure in MucilAir. No reduction in CBF observed between air controls and any aerosol-treated cells (Supplementary Fig. S1)."
     has_specified_output:
-      id: "CBF:haswell-air-control-output"
-      name: "CBF air control measurement"
+      - id: "CBF:haswell-air-control-output"
+        name: "CBF air control measurement"
     assay_date: "2017-01-01"
     study_subject:
       subject_type: CellularSystem
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -116,8 +116,8 @@ ciliary_function_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       donor_info: "Donor #MD058501, age 41, Caucasian female, non-smoker"
       substrate_type: transwell_insert
@@ -136,8 +136,8 @@ ciliary_function_assays:
     name: "CBF - 3R4F smoke 1/30 immediately post-exposure"
     description: "CBF measured immediately after 1hr exposure to 3R4F smoke at 1/30 dilution. No reduction in CBF observed compared to air control (Supplementary Fig. S1)."
     has_specified_output:
-      id: "CBF:haswell-3r4f-130-output"
-      name: "CBF 3R4F 1/30 measurement"
+      - id: "CBF:haswell-3r4f-130-output"
+        name: "CBF 3R4F 1/30 measurement"
     assay_date: "2017-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:haswell-3r4f-130"
@@ -165,8 +165,8 @@ ciliary_function_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -180,8 +180,8 @@ ciliary_function_assays:
     name: "CBF - E-cigarette aerosol 1/7 immediately post-exposure"
     description: "CBF measured immediately after 1hr exposure to e-cigarette aerosol at 1/7 dilution (nicotine-matched to 3R4F 1/30). No reduction in CBF observed compared to air control (Supplementary Fig. S1)."
     has_specified_output:
-      id: "CBF:haswell-ecig-17-output"
-      name: "CBF e-cigarette 1/7 measurement"
+      - id: "CBF:haswell-ecig-17-output"
+        name: "CBF e-cigarette 1/7 measurement"
     assay_date: "2017-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:haswell-ecig-17"
@@ -209,8 +209,8 @@ ciliary_function_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -224,8 +224,8 @@ ciliary_function_assays:
     name: "CBF - E-cigarette aerosol 1/3 immediately post-exposure"
     description: "CBF measured immediately after 1hr exposure to e-cigarette aerosol at 1/3 dilution (2x nicotine vs 3R4F 1/30). No reduction in CBF observed compared to air control (Supplementary Fig. S1)."
     has_specified_output:
-      id: "CBF:haswell-ecig-13-output"
-      name: "CBF e-cigarette 1/3 measurement"
+      - id: "CBF:haswell-ecig-13-output"
+        name: "CBF e-cigarette 1/3 measurement"
     assay_date: "2017-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:haswell-ecig-13"
@@ -253,8 +253,8 @@ ciliary_function_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -273,21 +273,21 @@ goblet_cell_assays:
     name: "MUC5AC quantitative IHC - Air control"
     description: "MUC5AC quantitative immunohistochemistry in MucilAir after air exposure. 24hrs: 0.7 +/- 0.5%; 48hrs: 0.4 +/- 0.3% MUC5AC-positive cells. Limited representation of mucus-producing cells consistent with differentiated 3D airway cultures."
     has_specified_output:
-      id: "GCM:haswell-muc5ac-air-output"
-      name: "MUC5AC air control measurements"
-      muc5ac_protein_expression:
-        value: "0.7"
-        unit:
-          id: "UO:0000187"
-          name: "percent"
+      - id: "GCM:haswell-muc5ac-air-output"
+        name: "MUC5AC air control measurements"
+        muc5ac_protein_expression:
+          value: "0.7"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
     assay_date: "2017-01-01"
     study_subject:
       subject_type: CellularSystem
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -306,13 +306,13 @@ goblet_cell_assays:
     name: "MUC5AC quantitative IHC - E-cigarette 1/3"
     description: "MUC5AC decreased after e-cigarette aerosol 1/3 exposure vs air (p<0.05). 24hrs: 0.1 +/- 0.1%; 48hrs: 0.05 +/- 0.5%. Result should be interpreted with caution due to limited representation of mucus-producing cells."
     has_specified_output:
-      id: "GCM:haswell-muc5ac-ecig-13-output"
-      name: "MUC5AC e-cigarette 1/3 measurements"
-      muc5ac_protein_expression:
-        value: "0.1"
-        unit:
-          id: "UO:0000187"
-          name: "percent"
+      - id: "GCM:haswell-muc5ac-ecig-13-output"
+        name: "MUC5AC e-cigarette 1/3 measurements"
+        muc5ac_protein_expression:
+          value: "0.1"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
     assay_date: "2017-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:haswell-ecig-13"
@@ -340,8 +340,8 @@ goblet_cell_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -365,8 +365,8 @@ foxj_assays:
     name: "FOXJ1 quantitative IHC - all treatments"
     description: "FOXJ1 quantitative immunohistochemistry in MucilAir at 24hrs and 48hrs post-exposure. No significant change in FOXJ1 observed at p<0.05 between air, 3R4F 1/30, e-cigarette 1/7, or e-cigarette 1/3 (Fig. 3D). Micrographs confirmed differentiated pseudostratified tissue with mainly ciliated cells."
     has_specified_output:
-      id: "FOXJ:haswell-all-treatments-output"
-      name: "FOXJ1 all treatments measurement"
+      - id: "FOXJ:haswell-all-treatments-output"
+        name: "FOXJ1 all treatments measurement"
     assay_date: "2017-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:haswell-3r4f-130"
@@ -394,8 +394,8 @@ foxj_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -421,8 +421,8 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq (Illumina TruSeq Stranded Total RNA, NextSeq 500)"
     normalization_reference: "TMM normalization, voom transformation"
     has_specified_output:
-      id: "GE:haswell-3r4f-130-24h-output"
-      name: "3R4F 24hrs RNA-seq DEG counts"
+      - id: "GE:haswell-3r4f-130-24h-output"
+        name: "3R4F 24hrs RNA-seq DEG counts"
     assay_date: "2017-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:haswell-3r4f-130"
@@ -450,8 +450,8 @@ gene_expression_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -459,8 +459,8 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       donor_info: "Donor #MD058501, age 41, Caucasian female, non-smoker"
       substrate_type: transwell_insert
@@ -478,8 +478,8 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq (Illumina TruSeq Stranded Total RNA, NextSeq 500)"
     normalization_reference: "TMM normalization, voom transformation"
     has_specified_output:
-      id: "GE:haswell-3r4f-130-48h-output"
-      name: "3R4F 48hrs RNA-seq DEG counts"
+      - id: "GE:haswell-3r4f-130-48h-output"
+        name: "3R4F 48hrs RNA-seq DEG counts"
     assay_date: "2017-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:haswell-3r4f-130"
@@ -507,8 +507,8 @@ gene_expression_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -525,8 +525,8 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq (Illumina TruSeq Stranded Total RNA, NextSeq 500)"
     normalization_reference: "TMM normalization, voom transformation"
     has_specified_output:
-      id: "GE:haswell-ecig-13-adj-output"
-      name: "E-cigarette 1/3 time-adjusted RNA-seq DEG counts"
+      - id: "GE:haswell-ecig-13-adj-output"
+        name: "E-cigarette 1/3 time-adjusted RNA-seq DEG counts"
     assay_date: "2017-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:haswell-ecig-13"
@@ -554,8 +554,8 @@ gene_expression_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -572,8 +572,8 @@ gene_expression_assays:
     gene_expression_method: "RNA-seq (Illumina TruSeq Stranded Total RNA, NextSeq 500)"
     normalization_reference: "TMM normalization, voom transformation"
     has_specified_output:
-      id: "GE:haswell-ecig-17-adj-output"
-      name: "E-cigarette 1/7 time-adjusted RNA-seq DEG counts"
+      - id: "GE:haswell-ecig-17-adj-output"
+        name: "E-cigarette 1/7 time-adjusted RNA-seq DEG counts"
     assay_date: "2017-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:haswell-ecig-17"
@@ -601,8 +601,8 @@ gene_expression_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -619,8 +619,8 @@ gene_expression_assays:
     gene_expression_method: "qRT-PCR (TaqMan)"
     normalization_reference: "GAPDH"
     has_specified_output:
-      id: "GE:haswell-3r4f-qpcr-output"
-      name: "3R4F qPCR validation measurements"
+      - id: "GE:haswell-3r4f-qpcr-output"
+        name: "3R4F qPCR validation measurements"
     assay_date: "2017-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:haswell-3r4f-130"
@@ -648,8 +648,8 @@ gene_expression_assays:
       id: "soma:haswell-mucilair-multi"
       name: "MucilAir nasal ALI culture - 3 donors"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       anatomical_origin:
         id: "UBERON:0001707"
         name: "nasal cavity"
@@ -657,8 +657,8 @@ gene_expression_assays:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
       primary_cell:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       cell_culture_growth_mode: air_liquid_interface
       donor_info: "3 non-smoker donors: #MD058501 (F,41), #MD008301 (M,61), #MD009101 (F,48)"
       substrate_type: transwell_insert
@@ -678,8 +678,8 @@ gene_expression_assays:
     gene_expression_method: "qRT-PCR (TaqMan)"
     normalization_reference: "GAPDH"
     has_specified_output:
-      id: "GE:haswell-ecig-17-qpcr-output"
-      name: "E-cigarette 1/7 qPCR validation measurements"
+      - id: "GE:haswell-ecig-17-qpcr-output"
+        name: "E-cigarette 1/7 qPCR validation measurements"
     assay_date: "2017-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:haswell-ecig-17"
@@ -707,8 +707,8 @@ gene_expression_assays:
       id: "soma:haswell-mucilair-multi"
       name: "MucilAir nasal ALI culture - 3 donors"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
@@ -725,8 +725,8 @@ gene_expression_assays:
     description: "TEER significantly reduced for e-cigarette 1/3 vs air (p<0.05). Air: 24hrs 1432.7 +/- 198 ohm, 48hrs 1342.9 +/- 239 ohm. E-cig 1/3: 24hrs 1130.9 +/- 93 ohm, 48hrs 1105.9 +/- 130 ohm. Values still within functional range indicating tight junction integrity (>600 ohm)."
     gene_expression_method: "TEER measurement"
     has_specified_output:
-      id: "GE:haswell-teer-ecig-13-output"
-      name: "TEER e-cigarette 1/3 measurement"
+      - id: "GE:haswell-teer-ecig-13-output"
+        name: "TEER e-cigarette 1/3 measurement"
     assay_date: "2017-01-01"
     has_exposure_condition:
       - id: "EXPOSURE:haswell-ecig-13"
@@ -754,8 +754,8 @@ gene_expression_assays:
       id: "soma:haswell-mucilair-001"
       name: "MucilAir nasal ALI culture - Donor MD058501"
       cell_type:
-        id: "CL:0002603"
-        name: "nasal epithelial cell"
+        id: "CL:2000094"
+        name: "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa"
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"

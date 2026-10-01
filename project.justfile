@@ -12,8 +12,9 @@ refs_cache := "references_cache"
 # Local-only cache of full text extracted from PDFs on this machine
 # (gitignored; lets the quote check cover paywalled papers locally)
 refs_cache_local := "references_cache_local"
-soma_schema := "src/soma/schema/soma.yaml"
-stub_schema := "src/soma/schema/publication_stub.yaml"
+# Schema files inside the installed soma-schema package (see justfile)
+soma_schema := source_schema_path
+stub_schema := source_schema_dir / "publication_stub.yaml"
 oak_conf := "conf/oak_config.yaml"
 ref_conf := "conf/reference_validator_config.yaml"
 term_validator_wrapper := "scripts/run_term_validator.sh"
@@ -40,6 +41,54 @@ fetch-reference +identifiers:
 extract-paper-text pdf pmid:
     uv run python scripts/extract_paper_text.py "{{pdf}}" "{{pmid}}" --out-dir {{refs_cache_local}}
 
+# Report whether each paper's FULL TEXT can be fetched into the committed
+# reference cache, or only its abstract can. Fetches anything not yet cached,
+# then reads the cache entry's content_type. Usage:
+#   just check-fulltext PMID:12345678 PMID:23456789
+#
+# This is the triage step /claim-paper runs BEFORE claiming a paper. Full-text
+# papers are extracted first, because every quote in one can be verified by CI
+# against the committed cache. An abstract-only paper is still extractable
+# (local PDF + verification receipt) but goes to the back of the queue.
+#
+# Do not trust the stub's `open_access:` flag for this — it only means the
+# paper has a PubMed Central record, and a PMC record often yields no
+# retrievable full text (every stub in the queue today says true; two of the
+# four papers extracted so far came back abstract-only).
+#
+# Report which papers are fully downloadable; always exits 0 (a report, not a gate).
+[group('curation')]
+check-fulltext +identifiers:
+    #!/usr/bin/env bash
+    set -uo pipefail
+    for identifier in {{identifiers}}; do
+        file="{{refs_cache}}/$(printf '%s' "$identifier" | tr ':/?=' '____').md"
+        ctype=""
+        if [ -f "$file" ]; then
+            ctype=$(awk -F': *' '/^content_type:/{print $2; exit}' "$file")
+            attempted=$(awk -F': *' '/^full_text_attempted:/{print $2; exit}' "$file")
+            # Re-fetch a non-full-text entry that never cleanly tried for full
+            # text: the fetcher re-runs the provider chain in exactly that case,
+            # so a one-off provider outage does not cache as permanent absence.
+            case "$ctype" in
+                full_text_*) ;;
+                *) [ "${attempted:-}" = "true" ] || rm -f "$file" ;;
+            esac
+        fi
+        if [ ! -f "$file" ]; then
+            {{ref_validator_wrapper}} cache reference "$identifier" --cache-dir {{refs_cache}} >/dev/null 2>&1 || true
+            ctype=$(awk -F': *' '/^content_type:/{print $2; exit}' "$file" 2>/dev/null || true)
+        fi
+        if [ ! -f "$file" ]; then
+            printf '  %-20s UNFETCHED      (fetch failed — retry before judging this paper)\n' "$identifier"
+        else
+            case "$ctype" in
+                full_text_*) printf '  %-20s FULL TEXT      (%s)\n' "$identifier" "$ctype" ;;
+                *)           printf '  %-20s ABSTRACT ONLY  (%s)\n' "$identifier" "${ctype:-unknown}" ;;
+            esac
+        fi
+    done
+
 # ============ Validation ============
 
 # Validate one kb file: schema, then ontology terms, then evidence quotes.
@@ -64,7 +113,28 @@ verify-snippets file:
     merged=$(mktemp -d)
     trap 'rm -rf "$merged"' EXIT
     [ -d {{refs_cache}} ] && cp {{refs_cache}}/*.md "$merged"/ 2>/dev/null || true
-    [ -d {{refs_cache_local}} ] && cp {{refs_cache_local}}/*.md "$merged"/ 2>/dev/null || true
+    # Merge, don't replace. When a paper is in BOTH caches the local PDF
+    # extraction is APPENDED to the committed entry instead of overwriting it,
+    # so the fetcher-written abstract stays visible to the quote checker.
+    # Overwriting discarded the authoritative text: pypdf renders ligatures as
+    # single codepoints and sprays spurious spaces around them and around
+    # subscripts ("in <fl>ammation", "con <fi>rms", "PM 2.5"), so a quote that
+    # is verbatim in the cached abstract could fail this check purely because
+    # of a PDF artifact — and a failing check writes no receipt at all. The
+    # append only ever adds more real text from the same paper, so it cannot
+    # make a wrong quote pass.
+    if [ -d {{refs_cache_local}} ]; then
+        for local_file in {{refs_cache_local}}/*.md; do
+            [ -e "$local_file" ] || continue
+            base=$(basename "$local_file")
+            if [ -f "$merged/$base" ]; then
+                printf '\n\n## Full text (local PDF extraction)\n\n' >> "$merged/$base"
+                awk 'seen >= 2 { print } /^---[[:space:]]*$/ { seen++ }' "$local_file" >> "$merged/$base"
+            else
+                cp "$local_file" "$merged"/
+            fi
+        done
+    fi
     echo "Quote verification for {{file}} (committed + local cache):"
     {{ref_validator_wrapper}} validate data {{file}} --schema {{soma_schema}} --target-class Container --config {{ref_conf}} --cache-dir "$merged" --no-full-text
     uv run python scripts/snippet_receipts.py write {{file}}
@@ -129,11 +199,18 @@ check-stubs:
 check-entity-ids:
     uv run python scripts/build_workbook.py --check-only
 
+# Smoke-test the DuckDB build: the schema still maps cleanly to tables, value
+# objects stay flattened, and measurement_full still joins a number to its
+# paper, assay and exposure. Catches soma-schema drift breaking the loader.
+[group('QC')]
+db-test:
+    uv run python -m pytest tests/test_build_duckdb.py -q
+
 # Run every automatic check. This is what CI runs on every PR, over the whole
 # repository (checking only changed files lets two individually-green PRs
 # break each other when both merge).
 [group('QC')]
-qc: check-duplicate-keys check-stubs check-entity-ids validate-all check-receipts pipeline-test
+qc: check-duplicate-keys check-stubs check-entity-ids validate-all check-receipts pipeline-test db-test
     @echo "All QC checks passed!"
 
 # ============ Derived products ============
@@ -179,8 +256,78 @@ next-unclaimed count="5" claims="tmp/claims.json":
 [group('model development')]
 pipeline-test:
   mkdir -p tmp
-  uv run linkml-validate -s src/soma/schema/soma.yaml tests/data/valid/Container-liu2024-pm25-cftr.yaml
+  uv run linkml-validate -s {{soma_schema}} tests/data/valid/Container-liu2024-pm25-cftr.yaml
   uv run python scripts/yaml_to_excel.py --input tests/data/valid/Container-liu2024-pm25-cftr.yaml --output tmp/Liu2024_pipeline_test.xlsx
-  uv run linkml-validate -s src/soma/schema/soma.yaml tests/data/valid/Container-montgomery2020-pm25-mucociliary.yaml
+  uv run linkml-validate -s {{soma_schema}} tests/data/valid/Container-montgomery2020-pm25-mucociliary.yaml
   uv run python scripts/yaml_to_excel.py --input tests/data/valid/Container-montgomery2020-pm25-mucociliary.yaml --output tmp/Montgomery2020_pipeline_test.xlsx
   @echo "Pipeline test completed. Output in tmp/"
+
+# ============ Local analytical database (DuckDB) ============
+
+# Build exports/soma.duckdb from every kb/publications/ YAML file. The YAML is
+# the source of truth; this database is a generated product — never committed.
+# Falls back to tests/data/valid only if kb/publications/ has no YAML files.
+# Layout: one table per LinkML class (value objects flattened into named
+# columns), plus measurement (one row per number), link (entity edges),
+# term_ref (each use of an ontology term) and term (the terms themselves);
+# then the analysis views assay, assay_output, measurement_full, evidence and
+# term_usage. Pass --strict via scripts/build_duckdb.py to make the build fail
+# on any warning; the recipe does not, because the current kb/ files raise
+# content conflicts that need fixing in the YAML first.
+[group('exports')]
+build-db out="exports/soma.duckdb" kb_dir="":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [ -n "{{kb_dir}}" ]; then
+        uv run python scripts/build_duckdb.py --kb-dir "{{kb_dir}}" --output "{{out}}"
+    else
+        uv run python scripts/build_duckdb.py --output "{{out}}"
+    fi
+
+# Dump every table and view as a TSV, for people who would rather open this in
+# Excel, pandas or R than write SQL. measurement_full.tsv is the one to start
+# with: one row per number with its paper, assay, exposure and key event.
+[group('exports')]
+dump-tsv out="exports/tsv" db="exports/soma.duckdb":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    [ -f "{{db}}" ] || just build-db "{{db}}"
+    uv run python -c "import sys; sys.path.insert(0,'scripts'); \
+      from build_duckdb import dump_tsv; from pathlib import Path; \
+      w = dump_tsv(Path('{{db}}'), Path('{{out}}')); \
+      print(f'Wrote {len(w)} TSV files to {{out}}')"
+
+# Build the database and the TSV dump in one go.
+[group('exports')]
+build-db-all: build-db dump-tsv
+
+# Print the generated DDL and views without building anything — the schema this
+# DuckDB instance uses, derived from the installed soma-schema.
+[group('exports')]
+db-schema:
+    uv run python scripts/build_duckdb.py --ddl-only
+
+# The vanilla LinkML relational model, for provenance and comparison. Differs
+# from db-schema deliberately: it keeps QuantityValue as a joined table (114 FK
+# columns across the schema) and gives reused children one FK column per
+# possible parent (EvidenceItem gets 27). See scripts/soma_duckdb.py.
+#
+# The dialect is sqlite, not duckdb: gen-sqltables resolves dialects through
+# SQLAlchemy and there is no duckdb dialect installed. It makes no difference
+# here — DuckDB executes this DDL as-is once the `--` comment lines are stripped
+# (they contain semicolons and prose, so they break naive statement splitting).
+[group('exports')]
+db-schema-linkml out="tmp/soma.linkml.sql":
+    mkdir -p "$(dirname {{out}})"
+    uv run gen-sqltables --dialect sqlite {{soma_schema}} > {{out}}
+    @echo "Wrote {{out}}"
+
+# Open a DuckDB shell on the built database, or run one query:
+#   just query
+#   just query 'SELECT measurement, value, unit_label FROM measurement_full LIMIT 10'
+[group('exports')]
+query sql="" db="exports/soma.duckdb":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    [ -f "{{db}}" ] || just build-db "{{db}}"
+    uv run python scripts/soma_query.py "{{db}}" "{{sql}}"

@@ -9,11 +9,12 @@ file whose evidence snippet was altered ("significantly decreased" ->
 silently stopped working — which is the failure mode this test exists for.
 """
 import subprocess
+from importlib.resources import files
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
 WRAPPER = ROOT / "scripts" / "run_reference_validator.sh"
-SCHEMA = ROOT / "src" / "soma" / "schema" / "soma.yaml"
+SCHEMA = Path(str(files("soma") / "schema" / "soma.yaml"))
 CONFIG = ROOT / "conf" / "reference_validator_config.yaml"
 CACHE = ROOT / "references_cache"
 

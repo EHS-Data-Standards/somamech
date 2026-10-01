@@ -1,0 +1,576 @@
+# =============================================================================
+# Nguyen et al. (2021) - Effects of environmental air pollutants on CFTR
+# expression and function in human airway epithelial cells
+# =============================================================================
+#
+# Source: Toxicol In Vitro (2021)
+# DOI: 10.1016/j.tiv.2021.105253
+#
+# ABSTRACT-ONLY EXTRACTION
+#   There is no local PDF for this paper and `just fetch-reference` returned
+#   content_type: abstract_only. Every evidence snippet below is verbatim from
+#   references_cache/PMID_34601066.md, which holds only the abstract. The
+#   abstract reports directions of effect but no numeric values, so every
+#   output record here is deliberately value-free: concentrations, currents,
+#   expression levels, sample sizes and p-values are NOT in the cached text
+#   and are therefore omitted rather than guessed.
+#
+# Study design (as stated in the abstract):
+#   - In vitro only: human airway epithelial cells (Calu-3)
+#   - Exposure: air pollutant extracts for 24 h, with and without
+#     pharmacological interventions
+#   - Three pollutants tested, kept as separate exposures/assays here:
+#       * tobacco smoke extract (TSE)
+#       * urban particulate matter (UPM)
+#       * diesel exhaust particles (DEP)
+#   - Readouts: CFTR expression AND CFTR function (kept as separate assays)
+#
+# Key findings (abstract):
+#   - Tobacco smoke extract led to acquired CFTR dysfunction
+#   - Diesel exhaust particles led to acquired CFTR dysfunction
+#   - Urban particulate matter was tested but is NOT among the pollutants the
+#     abstract reports as causing acquired CFTR dysfunction (recorded below as
+#     REFUTE evidence against decreased CFTR function for UPM)
+#   - Acquired CFTR dysfunction was rescued pharmacologically in the diesel
+#     exhaust particle models
+#   - The abstract states CFTR readouts were taken for expression as well as
+#     function, but does NOT report the direction or size of any expression
+#     change; the expression assays below record that the readout was taken
+#     and carry no values.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:34601066"
+  reference_title: "Effects of environmental air pollutants on CFTR expression and function in human airway epithelial cells."
+  doi: "10.1016/j.tiv.2021.105253"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+#
+# The abstract does not describe methods in detail. These protocol records
+# capture only what the cached record states or indexes: a 24 h exposure of
+# Calu-3 cells to air pollutant extracts, with CFTR function read out
+# electrophysiologically (the record is indexed under "Membrane
+# Potentials/drug effects") and CFTR expression read out by immunoblot (the
+# record is indexed under "Blotting, Western"). No reagent, concentration or
+# instrument details are available from the abstract, so none are asserted.
+
+protocols:
+  - id: "PROTOCOL:nguyen-exposure-001"
+    name: "Calu-3 air pollutant extract exposure, 24 hours"
+    description: "Human airway epithelial cells (Calu-3) exposed to air pollutant extracts (tobacco smoke extract, urban particulate matter, or diesel exhaust particles) for 24 h, with and without pharmacological interventions. Extract preparation, concentrations and vehicle are not reported in the abstract, which is the only text available for this paper."
+
+  - id: "PROTOCOL:nguyen-cftr-function-001"
+    name: "CFTR function readout in Calu-3 cells"
+    description: "Electrophysiological readout of CFTR function after 24 h pollutant extract exposure. The abstract states only that CFTR function was a readout; the cached record is indexed under the MeSH heading 'Membrane Potentials/drug effects'. Chamber type, stimulation agent, inhibitor and units are not reported in the abstract."
+
+  - id: "PROTOCOL:nguyen-cftr-expression-001"
+    name: "CFTR expression readout by immunoblot"
+    description: "CFTR protein expression measured after 24 h pollutant extract exposure. The abstract states only that CFTR expression was a readout; the cached record is indexed under the MeSH heading 'Blotting, Western'. Antibodies, loading control and quantification are not reported in the abstract."
+
+# =============================================================================
+# CFTR FUNCTION ASSAYS - one per pollutant, plus the DEP rescue arm
+# =============================================================================
+
+cftr_assays:
+  # ---------------------------------------------------------------------------
+  # Tobacco smoke extract -> acquired CFTR dysfunction
+  # ---------------------------------------------------------------------------
+  - id: "CFTR:nguyen-tse-24h"
+    name: "CFTR function - Calu-3, tobacco smoke extract 24 h"
+    description: "CFTR function in Calu-3 human airway epithelial cells after 24 h exposure to tobacco smoke extract. The abstract reports that tobacco smoke extract led to acquired CFTR dysfunction. No magnitude, concentration, sample size or p-value is reported in the abstract, so the output records carry no values."
+    evidence:
+      - reference: "PMID:34601066"
+        reference_title: "Effects of environmental air pollutants on CFTR expression and function in human airway epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "We demonstrate that both tobacco smoke extract and diesel exhaust particles led to acquired CFTR dysfunction"
+        explanation: "The abstract's stated result names tobacco smoke extract as one of the two pollutants that produced acquired CFTR dysfunction, which is the decreased CFTR function this assay's treated output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:nguyen-vehicle-24h"
+        name: "Vehicle control, 24 hours (unexposed Calu-3)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:nguyen-tse-24h"
+        name: "Tobacco smoke extract for 24 hours (concentration not reported in abstract)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "CFTR:nguyen-tse-24h-output-control"
+        name: "Vehicle control CFTR function (no values reported in abstract)"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:nguyen-vehicle-24h"
+      - id: "CFTR:nguyen-tse-24h-output-tse"
+        name: "Tobacco smoke extract CFTR function - dysfunction reported, no values in abstract"
+        experimental_group: treated
+        measured_under: "EXPOSURE:nguyen-tse-24h"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cftr"
+      name: "Decreased CFTR function"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:nguyen-calu3-001"
+      name: "Calu-3 human airway epithelial cells"
+      cell_type:
+        id: "CL:0000066"
+        name: "epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0002192"
+        name: "Calu-3"
+    follows_protocols:
+      - id: "PROTOCOL:nguyen-exposure-001"
+        name: "Calu-3 air pollutant extract exposure, 24 hours"
+      - id: "PROTOCOL:nguyen-cftr-function-001"
+        name: "CFTR function readout in Calu-3 cells"
+
+  # ---------------------------------------------------------------------------
+  # Urban particulate matter -> tested, NOT reported to cause dysfunction
+  # ---------------------------------------------------------------------------
+  - id: "CFTR:nguyen-upm-24h"
+    name: "CFTR function - Calu-3, urban particulate matter 24 h"
+    description: "CFTR function in Calu-3 cells after 24 h exposure to urban particulate matter. Urban particulate matter was one of the three pollutants the study set out to test, but the abstract's result sentence names only tobacco smoke extract and diesel exhaust particles as causing acquired CFTR dysfunction. Recorded here as a tested exposure with REFUTE evidence against decreased CFTR function; the abstract reports no values."
+    evidence:
+      - reference: "PMID:34601066"
+        reference_title: "Effects of environmental air pollutants on CFTR expression and function in human airway epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The aim of our study was to test whether environmental air pollutants tobacco smoke extract, urban particulate matter, and diesel exhaust particles lead to acquired CFTR dysfunction"
+        explanation: "The abstract's aim sentence establishes that urban particulate matter was one of the three pollutant exposures actually tested against CFTR readouts, which is what this assay record's exposure condition represents."
+      - reference: "PMID:34601066"
+        reference_title: "Effects of environmental air pollutants on CFTR expression and function in human airway epithelial cells."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "We demonstrate that both tobacco smoke extract and diesel exhaust particles led to acquired CFTR dysfunction"
+        explanation: "The result sentence attributes acquired CFTR dysfunction to tobacco smoke extract and diesel exhaust particles only, so it argues against decreased CFTR function for the urban particulate matter arm."
+    has_exposure_condition:
+      - id: "EXPOSURE:nguyen-vehicle-24h"
+        name: "Vehicle control, 24 hours (unexposed Calu-3)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:nguyen-upm-24h"
+        name: "Urban particulate matter for 24 hours (concentration not reported in abstract)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "CFTR:nguyen-upm-24h-output-control"
+        name: "Vehicle control CFTR function (no values reported in abstract)"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:nguyen-vehicle-24h"
+      - id: "CFTR:nguyen-upm-24h-output-upm"
+        name: "Urban particulate matter CFTR function - no dysfunction reported, no values in abstract"
+        experimental_group: treated
+        measured_under: "EXPOSURE:nguyen-upm-24h"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cftr"
+      name: "Decreased CFTR function"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:nguyen-calu3-001"
+      name: "Calu-3 human airway epithelial cells"
+      cell_type:
+        id: "CL:0000066"
+        name: "epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0002192"
+        name: "Calu-3"
+    follows_protocols:
+      - id: "PROTOCOL:nguyen-exposure-001"
+        name: "Calu-3 air pollutant extract exposure, 24 hours"
+      - id: "PROTOCOL:nguyen-cftr-function-001"
+        name: "CFTR function readout in Calu-3 cells"
+
+  # ---------------------------------------------------------------------------
+  # Diesel exhaust particles -> acquired CFTR dysfunction
+  # ---------------------------------------------------------------------------
+  - id: "CFTR:nguyen-dep-24h"
+    name: "CFTR function - Calu-3, diesel exhaust particles 24 h"
+    description: "CFTR function in Calu-3 cells after 24 h exposure to diesel exhaust particles. The abstract reports that diesel exhaust particles led to acquired CFTR dysfunction. No magnitude, concentration, sample size or p-value is reported in the abstract."
+    evidence:
+      - reference: "PMID:34601066"
+        reference_title: "Effects of environmental air pollutants on CFTR expression and function in human airway epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "We demonstrate that both tobacco smoke extract and diesel exhaust particles led to acquired CFTR dysfunction and that rescue of acquired CFTR dysfunction is possible with pharmacological interventions in diesel exhaust particle models."
+        explanation: "The abstract's result sentence names diesel exhaust particles as a pollutant that produced acquired CFTR dysfunction, which is the decreased CFTR function this assay's treated output records."
+    has_exposure_condition:
+      - id: "EXPOSURE:nguyen-vehicle-24h"
+        name: "Vehicle control, 24 hours (unexposed Calu-3)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:nguyen-dep-24h"
+        name: "Diesel exhaust particles for 24 hours (concentration not reported in abstract)"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "CFTR:nguyen-dep-24h-output-control"
+        name: "Vehicle control CFTR function (no values reported in abstract)"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:nguyen-vehicle-24h"
+      - id: "CFTR:nguyen-dep-24h-output-dep"
+        name: "Diesel exhaust particle CFTR function - dysfunction reported, no values in abstract"
+        experimental_group: treated
+        measured_under: "EXPOSURE:nguyen-dep-24h"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cftr"
+      name: "Decreased CFTR function"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:nguyen-calu3-001"
+      name: "Calu-3 human airway epithelial cells"
+      cell_type:
+        id: "CL:0000066"
+        name: "epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0002192"
+        name: "Calu-3"
+    follows_protocols:
+      - id: "PROTOCOL:nguyen-exposure-001"
+        name: "Calu-3 air pollutant extract exposure, 24 hours"
+      - id: "PROTOCOL:nguyen-cftr-function-001"
+        name: "CFTR function readout in Calu-3 cells"
+
+  # ---------------------------------------------------------------------------
+  # Diesel exhaust particles + pharmacological intervention -> rescue
+  # ---------------------------------------------------------------------------
+  - id: "CFTR:nguyen-dep-rescue-24h"
+    name: "CFTR function rescue - Calu-3, diesel exhaust particles plus pharmacological intervention, 24 h"
+    description: "CFTR function in Calu-3 cells co-treated with diesel exhaust particles and a pharmacological intervention for 24 h. The abstract reports that rescue of acquired CFTR dysfunction was possible with pharmacological interventions in the diesel exhaust particle models, but does not name the drug(s), the concentration, or the size of the rescue, so no agent term or value is asserted for the intervention."
+    evidence:
+      - reference: "PMID:34601066"
+        reference_title: "Effects of environmental air pollutants on CFTR expression and function in human airway epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "rescue of acquired CFTR dysfunction is possible with pharmacological interventions in diesel exhaust particle models"
+        explanation: "The abstract states directly that pharmacological intervention restored CFTR function in the diesel exhaust particle exposure, which is what this rescue arm records."
+    has_exposure_condition:
+      - id: "EXPOSURE:nguyen-dep-24h"
+        name: "Diesel exhaust particles for 24 hours (concentration not reported in abstract)"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:nguyen-dep-plus-drug-24h"
+        name: "Diesel exhaust particles plus pharmacological intervention for 24 hours (intervention not named in abstract)"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "CFTR:nguyen-dep-rescue-24h-output-dep"
+        name: "Diesel exhaust particles alone, CFTR function (no values reported in abstract)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:nguyen-dep-24h"
+      - id: "CFTR:nguyen-dep-rescue-24h-output-dep-drug"
+        name: "Diesel exhaust particles plus pharmacological intervention, CFTR function rescued (no values in abstract)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:nguyen-dep-plus-drug-24h"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cftr"
+      name: "Decreased CFTR function"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:nguyen-calu3-001"
+      name: "Calu-3 human airway epithelial cells"
+      cell_type:
+        id: "CL:0000066"
+        name: "epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0002192"
+        name: "Calu-3"
+    follows_protocols:
+      - id: "PROTOCOL:nguyen-exposure-001"
+        name: "Calu-3 air pollutant extract exposure, 24 hours"
+      - id: "PROTOCOL:nguyen-cftr-function-001"
+        name: "CFTR function readout in Calu-3 cells"
+
+# =============================================================================
+# CFTR EXPRESSION ASSAYS - the second readout, one per pollutant
+# =============================================================================
+#
+# The abstract states that CFTR expression was a readout alongside function,
+# but reports no expression result. These records document the readout and the
+# exposure it was taken under; the direction and size of any expression change
+# are NOT recoverable from the abstract and are therefore absent.
+
+gene_expression_assays:
+  - id: "GE:nguyen-cftr-expression-tse-24h"
+    name: "CFTR expression - Calu-3, tobacco smoke extract 24 h"
+    description: "CFTR protein expression readout in Calu-3 cells after 24 h tobacco smoke extract exposure. The abstract states CFTR expression was measured but does not report the result, so the output record carries no value."
+    target_gene: "PR:000003411"
+    gene_expression_method: "Western blot"
+    evidence:
+      - reference: "PMID:34601066"
+        reference_title: "Effects of environmental air pollutants on CFTR expression and function in human airway epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Human airway epithelial cells (Calu-3) were exposed to air pollutant extracts for 24 h, with and without pharmacological interventions, with readouts of CFTR expression and function."
+        explanation: "The methods sentence of the abstract establishes that CFTR expression was read out in Calu-3 cells after a 24 h air pollutant extract exposure, which is exactly what this assay record captures; the abstract reports no expression value, so none is recorded."
+    has_exposure_condition:
+      - id: "EXPOSURE:nguyen-vehicle-24h"
+        name: "Vehicle control, 24 hours (unexposed Calu-3)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:nguyen-tse-24h"
+        name: "Tobacco smoke extract for 24 hours (concentration not reported in abstract)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:nguyen-cftr-expression-tse-24h-output-control"
+        name: "Vehicle control CFTR expression (no values reported in abstract)"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:nguyen-vehicle-24h"
+      - id: "GE:nguyen-cftr-expression-tse-24h-output-tse"
+        name: "Tobacco smoke extract CFTR expression (no values reported in abstract)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:nguyen-tse-24h"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cftr"
+      name: "Decreased CFTR function"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:nguyen-calu3-001"
+      name: "Calu-3 human airway epithelial cells"
+      cell_type:
+        id: "CL:0000066"
+        name: "epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0002192"
+        name: "Calu-3"
+    follows_protocols:
+      - id: "PROTOCOL:nguyen-exposure-001"
+        name: "Calu-3 air pollutant extract exposure, 24 hours"
+      - id: "PROTOCOL:nguyen-cftr-expression-001"
+        name: "CFTR expression readout by immunoblot"
+
+  - id: "GE:nguyen-cftr-expression-upm-24h"
+    name: "CFTR expression - Calu-3, urban particulate matter 24 h"
+    description: "CFTR protein expression readout in Calu-3 cells after 24 h urban particulate matter exposure. The abstract states CFTR expression was measured but does not report the result, so the output record carries no value."
+    target_gene: "PR:000003411"
+    gene_expression_method: "Western blot"
+    evidence:
+      - reference: "PMID:34601066"
+        reference_title: "Effects of environmental air pollutants on CFTR expression and function in human airway epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "with readouts of CFTR expression and function"
+        explanation: "The abstract names CFTR expression as one of the two readouts taken on the pollutant-exposed Calu-3 cells, which is what this urban particulate matter expression record documents; no expression value is reported, so none is recorded."
+    has_exposure_condition:
+      - id: "EXPOSURE:nguyen-vehicle-24h"
+        name: "Vehicle control, 24 hours (unexposed Calu-3)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:nguyen-upm-24h"
+        name: "Urban particulate matter for 24 hours (concentration not reported in abstract)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:nguyen-cftr-expression-upm-24h-output-control"
+        name: "Vehicle control CFTR expression (no values reported in abstract)"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:nguyen-vehicle-24h"
+      - id: "GE:nguyen-cftr-expression-upm-24h-output-upm"
+        name: "Urban particulate matter CFTR expression (no values reported in abstract)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:nguyen-upm-24h"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cftr"
+      name: "Decreased CFTR function"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:nguyen-calu3-001"
+      name: "Calu-3 human airway epithelial cells"
+      cell_type:
+        id: "CL:0000066"
+        name: "epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0002192"
+        name: "Calu-3"
+    follows_protocols:
+      - id: "PROTOCOL:nguyen-exposure-001"
+        name: "Calu-3 air pollutant extract exposure, 24 hours"
+      - id: "PROTOCOL:nguyen-cftr-expression-001"
+        name: "CFTR expression readout by immunoblot"
+
+  - id: "GE:nguyen-cftr-expression-dep-24h"
+    name: "CFTR expression - Calu-3, diesel exhaust particles 24 h"
+    description: "CFTR protein expression readout in Calu-3 cells after 24 h diesel exhaust particle exposure. The abstract states CFTR expression was measured but does not report the result, so the output record carries no value."
+    target_gene: "PR:000003411"
+    gene_expression_method: "Western blot"
+    evidence:
+      - reference: "PMID:34601066"
+        reference_title: "Effects of environmental air pollutants on CFTR expression and function in human airway epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "exposed to air pollutant extracts for 24 h, with and without pharmacological interventions, with readouts of CFTR expression and function"
+        explanation: "This fragment of the abstract's methods sentence establishes the 24 h pollutant-extract exposure and the CFTR expression readout that this diesel exhaust particle record captures; the abstract reports no expression value."
+    has_exposure_condition:
+      - id: "EXPOSURE:nguyen-vehicle-24h"
+        name: "Vehicle control, 24 hours (unexposed Calu-3)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:nguyen-dep-24h"
+        name: "Diesel exhaust particles for 24 hours (concentration not reported in abstract)"
+        exposure_agent:
+          id: "ENVO:03510008"
+          name: "diesel exhaust"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:nguyen-cftr-expression-dep-24h-output-control"
+        name: "Vehicle control CFTR expression (no values reported in abstract)"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:nguyen-vehicle-24h"
+      - id: "GE:nguyen-cftr-expression-dep-24h-output-dep"
+        name: "Diesel exhaust particle CFTR expression (no values reported in abstract)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:nguyen-dep-24h"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cftr"
+      name: "Decreased CFTR function"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:nguyen-calu3-001"
+      name: "Calu-3 human airway epithelial cells"
+      cell_type:
+        id: "CL:0000066"
+        name: "epithelial cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0002192"
+        name: "Calu-3"
+    follows_protocols:
+      - id: "PROTOCOL:nguyen-exposure-001"
+        name: "Calu-3 air pollutant extract exposure, 24 hours"
+      - id: "PROTOCOL:nguyen-cftr-expression-001"
+        name: "CFTR expression readout by immunoblot"
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS - the topology the abstract states
+# =============================================================================
+#
+# No response_comparisons section: the abstract reports directions only, and a
+# ResponseComparison needs a change value the paper states. Computing one here
+# would mean inventing it.
+
+key_event_relationships:
+  - id: "KER:nguyen-cftr-to-mcc"
+    name: "Decreased CFTR function leads to impaired mucociliary clearance"
+    description: "Framing stated in the abstract's background: mucociliary clearance defends the airway against environmental air pollutants and is regulated by ion transporters including CFTR, so pollutant-acquired CFTR dysfunction acts on mucociliary clearance. Asserted as background in this paper, not measured in it."
+    upstream_event:
+      id: "KE:ke-decreased-cftr"
+      name: "Decreased CFTR function"
+      biological_action: decreased
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    relationship_type: "directly leads to"
+    evidence_support: weak
+    evidence:
+      - reference: "PMID:34601066"
+        reference_title: "Effects of environmental air pollutants on CFTR expression and function in human airway epithelial cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Mucociliary clearance is an important host defense mechanism against environmental air pollutants and this process is regulated by various ion transporters including the cystic fibrosis transmembrane conductance regulator (CFTR)."
+        explanation: "The abstract states that mucociliary clearance is regulated by CFTR, which is the causal link from decreased CFTR function to impaired mucociliary clearance recorded here; the paper states it as background rather than measuring clearance, hence weak support."

@@ -24,6 +24,11 @@ just next-unclaimed 5      # next papers in the queue nobody has claimed
 `next-unclaimed` already skips claimed papers. Papers marked `EXTRACT`
 (screened in) come before `UNDECIDED` ones.
 
+A candidate has to pass two checks before you claim it: nobody else has it,
+and the whole paper — not just its abstract — can be fetched.
+
+### Is it free? — the three-surface check
+
 Before committing to a paper, make sure it isn't already done or in flight
 somewhere the claim list can't see. Check all three places:
 
@@ -45,6 +50,58 @@ This grep is deliberately `kb/`-only, unlike the Key Event lookup in Step 4.
 It asks "has this paper already been extracted", and the test fixtures must
 not answer that — widening it to `tests/` would report fixture papers as
 already done.
+
+### Is the whole paper fetchable? — full text before abstract-only
+
+A paper whose full text lands in the committed `references_cache/` is worth
+much more than one that arrives as an abstract: CI can verify every quote in
+it, the extraction can cover methods and results instead of a summary, and it
+needs no verification receipt. So **extract fully downloadable papers first,
+and take an abstract-only paper only when the queue has no full-text paper
+left.**
+
+Run the check over the candidates that survived the three-surface check:
+
+```bash
+just check-fulltext PMID:<a> PMID:<b> PMID:<c>
+```
+
+It fetches anything not already cached and reports one line per paper:
+
+```
+  PMID:20420656        FULL TEXT      (full_text_pdf)
+  PMID:38809424        ABSTRACT ONLY  (abstract_only)
+```
+
+Take the first `FULL TEXT` paper in queue order and go on to Step 2.
+Queue order still puts `EXTRACT` before `UNDECIDED`, but full text outranks
+both: a full-text `UNDECIDED` paper comes before an abstract-only `EXTRACT`
+one.
+
+**Put every `ABSTRACT ONLY` paper back in the queue** — which means: do not
+claim it, and do not touch its stub. Nothing was claimed, so it is already
+back; `next-unclaimed` will offer it again. The check also re-tries the
+full-text fetch each time a cached entry never cleanly attempted one, so a
+paper that was abstract-only because a provider was down can come back as
+full text on a later run.
+
+If none of your candidates is full text, widen the search instead of
+settling: ask `next-unclaimed` for more and check those too. Extract an
+abstract-only paper only once **every** unclaimed paper in the queue is
+abstract-only. When you do fall back, prefer one whose stub has a
+`pdf_filename:` — there is a local PDF, so you can at least read the full
+text on this machine (Step 3) — and tell the user plainly that the queue held
+nothing fully downloadable.
+
+**The stub's `open_access:` flag does not answer this question.** It records
+only that the paper has a PubMed Central record. Every stub in the queue today
+says `open_access: true`, yet two of the four papers extracted so far came
+back `abstract_only` — a PMC record often carries no retrievable text. The
+fetched cache entry's `content_type:` is the only evidence.
+
+`check-fulltext` leaves a cache entry behind for every paper it checked,
+including the ones you did not claim. Those are untracked and harmless — just
+never `git add references_cache/` wholesale (Step 6).
 
 ## Step 2 — Claim it
 
@@ -77,18 +134,25 @@ label's color and description).
 
 ## Step 3 — Get the paper's text
 
+Step 1's `check-fulltext` already fetched it into
+`references_cache/PMID_<number>.md` — the abstract, or the full text when the
+paper is open access (the file's `content_type:` says which). If you arrived
+here without it, fetch it now:
+
 ```bash
 just fetch-reference PMID:<number>
 ```
 
-This writes `references_cache/PMID_<number>.md` — the abstract, or the full
-text when the paper is open access (the file's `content_type:` says which).
 Never create or edit cache files by hand; a cache the extractor can edit
 can't catch anything.
 
-If the cache holds only the abstract and a local PDF of the paper exists,
-make its full text checkable on this machine (this local cache is gitignored
-and never pushed — that is how paywalled text stays out of the public repo):
+For the `full_text_*` paper Step 1 chose, you have everything you need — go
+to Step 4.
+
+You are here with an abstract-only paper only if Step 1 found nothing better
+in the entire queue. If a local PDF of it exists, make its full text checkable
+on this machine (this local cache is gitignored and never pushed — that is how
+paywalled text stays out of the public repo):
 
 ```bash
 just extract-paper-text <path-to-pdf> PMID:<number>
@@ -180,29 +244,32 @@ Save `verify-snippets` output — its summary goes in the PR description.
 
 **Both must pass, and they check against different caches.** `validate-file`
 (and `validate-all`, which is what CI's `just qc` runs) resolves quotes against
-the committed `references_cache/` only. `verify-snippets` merges committed +
-`references_cache_local/`, with the local PDF text *overwriting* the committed
-file of the same name.
+the committed `references_cache/` only. `verify-snippets` checks against both:
+when a paper also has an entry in `references_cache_local/`, that local PDF
+text is *appended* to the committed entry under a `## Full text (local PDF
+extraction)` heading, so the checker sees the committed text and the PDF text
+together. So:
 
-Those two caches disagree in both directions, and the consequences differ:
+- A quote taken from the PDF body but absent from the committed cache passes
+  `verify-snippets`. When the paper is abstract-only, `validate-file` does not
+  fail on it either: the recipes set `ALLOW_ABSTRACT_ONLY_MISSES=1`, which
+  tells the wrapper to ignore misses flagged `only abstract available for
+  PMID:...` and hand responsibility to the committed receipt instead (see
+  below). Against a paper that is NOT abstract-only, the same miss is a hard
+  CI failure.
+- A quote that is verbatim in the committed text keeps verifying even when the
+  PDF text layer mangles that same sentence — fi/fl ligatures (`significant` →
+  `signiﬁcant`), injected spaces, hyphenated line wraps. The committed copy is
+  still in the merged cache to match against, so a PDF artifact alone cannot
+  fail a quote you took from the abstract.
 
-- **A quote from the PDF body that the committed cache does not contain.** When
-  the paper is abstract-only, `validate-file` does not fail on it: the recipes
-  set `ALLOW_ABSTRACT_ONLY_MISSES=1`, which tells the wrapper to ignore misses
-  flagged `only abstract available for PMID:...` and hand responsibility to the
-  receipt instead. Such a quote is legitimate *only* if the receipt covers it.
-  Against a paper that is NOT abstract-only, the same miss is a hard failure.
-- **A quote from the abstract that the PDF text layer mangles** — fi/fl
-  ligatures (`significant` → `signiﬁcant`), injected spaces, hyphenated line
-  wraps. This passes `validate-file` and **fails `verify-snippets`**, and that
-  failure is worse than it looks: the recipe runs the validator before writing
-  the receipt under `set -euo pipefail`, so a mangled local copy means **no
-  receipt is written at all**, and `check-receipts` then reds the PR.
-
-Prefer quote spans that are verbatim in *both* copies — a sentence fragment that
-verifies beats a whole sentence that does not. Full text read from a local PDF
-is also what `description:` fields are for; they are not quote-checked. Say in
-the PR body which claims rest on quotes and which on locally-read full text.
+When the committed cache is `abstract_only`, quote the abstract: that is the
+copy CI resolves against, so a span that is verbatim *there* is the one that
+survives. A sentence fragment that verifies beats a whole sentence that does
+not. Full text read from a local PDF is still worth having — it belongs in
+`description:` fields, which are not quote-checked, and it tells you what is
+worth recording. Say in the PR body which claims rest on quotes and which on
+locally-read full text.
 
 When the paper's committed cache entry is abstract-only, a passing
 `verify-snippets` run also writes `verification/PMID_<number>.json` — a

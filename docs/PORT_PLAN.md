@@ -30,7 +30,8 @@
   enums (CellTypeTerm etc.) with bindings on cell_type / exposure_agent /
   anatomical_origin / model_species / unit slots. ChemicalEntityReference now
   also allows ENVO (PM2.5 is ENVO:01000415, not a CHEBI term — the validator
-  caught the long-standing CHEBI:74481 mislabel and it is fixed in all data).
+  caught the long-standing CHEBI:74481 mislabel; the remaining data and skill
+  references were corrected separately, see issue #137).
 - **Validation stack**: linkml-term-validator + linkml-reference-validator in
   dev deps (Python floor now 3.10); `conf/oak_config.yaml`,
   `conf/reference_validator_config.yaml`; wrapper scripts in `scripts/`;
