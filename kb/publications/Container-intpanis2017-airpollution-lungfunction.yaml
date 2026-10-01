@@ -143,7 +143,7 @@ lung_function_assays:
         supports: SUPPORT
         evidence_source: HUMAN_CLINICAL
         snippet: "A total of 5404 clinical visits with lung function test were obtained for the 2449 participants."
-        explanation: "Gives the number of clinical visits with a lung function test (5404) behind every pooled spirometry value and comparison in this file, and the 2449 participants they came from."
+        explanation: "Gives the number of clinical visits with a lung function test (5404) behind the pooled Table 1 spirometry values and the PM10 and NO2 comparisons in this file, and the 2449 participants they came from. The ozone comparisons are restricted to the warm season (May to September), a subset of these visits whose n the paper does not report, so they carry no sample_size."
       - reference: "PMID:28615020"
         reference_title: "Short-term air pollution exposure decreases lung function: a repeated measures study in healthy adults."
         supports: SUPPORT
@@ -958,7 +958,7 @@ response_comparisons:
 
   - id: "COMP:intpanis-o3-lag0-fvc"
     name: "FVC change per 10 ug/m3 O3 at lag 0"
-    description: "Estimated change in FVC per 10 ug/m3 increase in ozone (warm season, May-September) on the day of the lung function test (lag 0). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (-7.0). Note an internal inconsistency in the source: the printed 95% CI (-16.6 to 15.2) is not centred on the -7.0 point estimate; the values are recorded exactly as printed, not corrected. This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted."
+    description: "Estimated change in FVC per 10 ug/m3 increase in ozone (warm season, May-September) on the day of the lung function test (lag 0). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (-7.0). Note an internal inconsistency in the source: the printed 95% CI (-16.6 to 15.2) is not centred on the -7.0 point estimate; the values are recorded exactly as printed, not corrected. This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted. sample_size is omitted deliberately: the paper restricts the ozone analyses to the warm season (May to September), so this estimate comes from a subset of the 5404 clinical visits, and the paper never reports that subset's n."
     derived_from_assay: "LF:intpanis-spirometry-cohort"
     compared_measurement: "fvc"
     change_type: absolute_difference
@@ -969,7 +969,6 @@ response_comparisons:
         id: "UCUM:mL"
         name: "milliliter"
       central_tendency: single_value
-      sample_size: 5404
       variability:
         variability_type: confidence_interval_95
         lower_bound: "-16.6"
@@ -983,7 +982,7 @@ response_comparisons:
 
   - id: "COMP:intpanis-o3-lag0-fev1"
     name: "FEV1 change per 10 ug/m3 O3 at lag 0"
-    description: "Estimated change in FEV1 per 10 ug/m3 increase in ozone (warm season, May-September) on the day of the lung function test (lag 0). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (4.1). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted."
+    description: "Estimated change in FEV1 per 10 ug/m3 increase in ozone (warm season, May-September) on the day of the lung function test (lag 0). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (4.1). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted. sample_size is omitted deliberately: the paper restricts the ozone analyses to the warm season (May to September), so this estimate comes from a subset of the 5404 clinical visits, and the paper never reports that subset's n."
     derived_from_assay: "LF:intpanis-spirometry-cohort"
     compared_measurement: "fev1"
     change_type: absolute_difference
@@ -994,7 +993,6 @@ response_comparisons:
         id: "UCUM:mL"
         name: "milliliter"
       central_tendency: single_value
-      sample_size: 5404
       variability:
         variability_type: confidence_interval_95
         lower_bound: "-8.0"
@@ -1008,7 +1006,7 @@ response_comparisons:
 
   - id: "COMP:intpanis-o3-lag0-ratio"
     name: "FEV1/FVC change per 10 ug/m3 O3 at lag 0"
-    description: "Estimated change in FEV1/FVC per 10 ug/m3 increase in ozone (warm season, May-September) on the day of the lung function test (lag 0). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (0.09). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted."
+    description: "Estimated change in FEV1/FVC per 10 ug/m3 increase in ozone (warm season, May-September) on the day of the lung function test (lag 0). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (0.09). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted. sample_size is omitted deliberately: the paper restricts the ozone analyses to the warm season (May to September), so this estimate comes from a subset of the 5404 clinical visits, and the paper never reports that subset's n."
     derived_from_assay: "LF:intpanis-spirometry-cohort"
     compared_measurement: "fev1_fvc_ratio"
     change_type: absolute_difference
@@ -1019,7 +1017,6 @@ response_comparisons:
         id: "UO:0000187"
         name: "percent"
       central_tendency: single_value
-      sample_size: 5404
       variability:
         variability_type: confidence_interval_95
         lower_bound: "-0.07"
@@ -1033,7 +1030,7 @@ response_comparisons:
 
   - id: "COMP:intpanis-o3-lag0-pef"
     name: "PEF change per 10 ug/m3 O3 at lag 0"
-    description: "Estimated change in PEF per 10 ug/m3 increase in ozone (warm season, May-September) on the day of the lung function test (lag 0). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (41.0). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted."
+    description: "Estimated change in PEF per 10 ug/m3 increase in ozone (warm season, May-September) on the day of the lung function test (lag 0). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (41.0). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted. sample_size is omitted deliberately: the paper restricts the ozone analyses to the warm season (May to September), so this estimate comes from a subset of the 5404 clinical visits, and the paper never reports that subset's n."
     derived_from_assay: "LF:intpanis-spirometry-cohort"
     compared_measurement: "peak_expiratory_flow"
     change_type: absolute_difference
@@ -1044,7 +1041,6 @@ response_comparisons:
         id: "UCUM:mL/s"
         name: "milliliter per second"
       central_tendency: single_value
-      sample_size: 5404
       variability:
         variability_type: confidence_interval_95
         lower_bound: "-1.0"
@@ -1255,7 +1251,7 @@ response_comparisons:
 
   - id: "COMP:intpanis-o3-lag1-fvc"
     name: "FVC change per 10 ug/m3 O3 at lag 1"
-    description: "Estimated change in FVC per 10 ug/m3 increase in ozone (warm season, May-September) one day before the lung function test (lag 1). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (-14.2). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted."
+    description: "Estimated change in FVC per 10 ug/m3 increase in ozone (warm season, May-September) one day before the lung function test (lag 1). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (-14.2). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted. sample_size is omitted deliberately: the paper restricts the ozone analyses to the warm season (May to September), so this estimate comes from a subset of the 5404 clinical visits, and the paper never reports that subset's n."
     derived_from_assay: "LF:intpanis-spirometry-cohort"
     compared_measurement: "fvc"
     change_type: absolute_difference
@@ -1266,7 +1262,6 @@ response_comparisons:
         id: "UCUM:mL"
         name: "milliliter"
       central_tendency: single_value
-      sample_size: 5404
       variability:
         variability_type: confidence_interval_95
         lower_bound: "-29.1"
@@ -1280,7 +1275,7 @@ response_comparisons:
 
   - id: "COMP:intpanis-o3-lag1-fev1"
     name: "FEV1 change per 10 ug/m3 O3 at lag 1"
-    description: "Estimated change in FEV1 per 10 ug/m3 increase in ozone (warm season, May-September) one day before the lung function test (lag 1). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (-9.0). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted."
+    description: "Estimated change in FEV1 per 10 ug/m3 increase in ozone (warm season, May-September) one day before the lung function test (lag 1). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (-9.0). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted. sample_size is omitted deliberately: the paper restricts the ozone analyses to the warm season (May to September), so this estimate comes from a subset of the 5404 clinical visits, and the paper never reports that subset's n."
     derived_from_assay: "LF:intpanis-spirometry-cohort"
     compared_measurement: "fev1"
     change_type: absolute_difference
@@ -1291,7 +1286,6 @@ response_comparisons:
         id: "UCUM:mL"
         name: "milliliter"
       central_tendency: single_value
-      sample_size: 5404
       variability:
         variability_type: confidence_interval_95
         lower_bound: "-20.2"
@@ -1305,7 +1299,7 @@ response_comparisons:
 
   - id: "COMP:intpanis-o3-lag1-ratio"
     name: "FEV1/FVC change per 10 ug/m3 O3 at lag 1"
-    description: "Estimated change in FEV1/FVC per 10 ug/m3 increase in ozone (warm season, May-September) one day before the lung function test (lag 1). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (0.073). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted."
+    description: "Estimated change in FEV1/FVC per 10 ug/m3 increase in ozone (warm season, May-September) one day before the lung function test (lag 1). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (0.073). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted. sample_size is omitted deliberately: the paper restricts the ozone analyses to the warm season (May to September), so this estimate comes from a subset of the 5404 clinical visits, and the paper never reports that subset's n."
     derived_from_assay: "LF:intpanis-spirometry-cohort"
     compared_measurement: "fev1_fvc_ratio"
     change_type: absolute_difference
@@ -1316,7 +1310,6 @@ response_comparisons:
         id: "UO:0000187"
         name: "percent"
       central_tendency: single_value
-      sample_size: 5404
       variability:
         variability_type: confidence_interval_95
         lower_bound: "-0.08"
@@ -1330,7 +1323,7 @@ response_comparisons:
 
   - id: "COMP:intpanis-o3-lag1-pef"
     name: "PEF change per 10 ug/m3 O3 at lag 1"
-    description: "Estimated change in PEF per 10 ug/m3 increase in ozone (warm season, May-September) one day before the lung function test (lag 1). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (-9.9). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted."
+    description: "Estimated change in PEF per 10 ug/m3 increase in ozone (warm season, May-September) one day before the lung function test (lag 1). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (-9.9). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted. sample_size is omitted deliberately: the paper restricts the ozone analyses to the warm season (May to September), so this estimate comes from a subset of the 5404 clinical visits, and the paper never reports that subset's n."
     derived_from_assay: "LF:intpanis-spirometry-cohort"
     compared_measurement: "peak_expiratory_flow"
     change_type: absolute_difference
@@ -1341,7 +1334,6 @@ response_comparisons:
         id: "UCUM:mL/s"
         name: "milliliter per second"
       central_tendency: single_value
-      sample_size: 5404
       variability:
         variability_type: confidence_interval_95
         lower_bound: "-48.9"
@@ -1553,7 +1545,7 @@ response_comparisons:
 
   - id: "COMP:intpanis-o3-lag2-fvc"
     name: "FVC change per 10 ug/m3 O3 at lag 2"
-    description: "Estimated change in FVC per 10 ug/m3 increase in ozone (warm season, May-September) two days before the lung function test (lag 2). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (-10.9). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted."
+    description: "Estimated change in FVC per 10 ug/m3 increase in ozone (warm season, May-September) two days before the lung function test (lag 2). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (-10.9). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted. sample_size is omitted deliberately: the paper restricts the ozone analyses to the warm season (May to September), so this estimate comes from a subset of the 5404 clinical visits, and the paper never reports that subset's n."
     derived_from_assay: "LF:intpanis-spirometry-cohort"
     compared_measurement: "fvc"
     change_type: absolute_difference
@@ -1564,7 +1556,6 @@ response_comparisons:
         id: "UCUM:mL"
         name: "milliliter"
       central_tendency: single_value
-      sample_size: 5404
       variability:
         variability_type: confidence_interval_95
         lower_bound: "-24.8"
@@ -1578,7 +1569,7 @@ response_comparisons:
 
   - id: "COMP:intpanis-o3-lag2-fev1"
     name: "FEV1 change per 10 ug/m3 O3 at lag 2"
-    description: "Estimated change in FEV1 per 10 ug/m3 increase in ozone (warm season, May-September) two days before the lung function test (lag 2). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (-5.2). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted."
+    description: "Estimated change in FEV1 per 10 ug/m3 increase in ozone (warm season, May-September) two days before the lung function test (lag 2). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (-5.2). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted. sample_size is omitted deliberately: the paper restricts the ozone analyses to the warm season (May to September), so this estimate comes from a subset of the 5404 clinical visits, and the paper never reports that subset's n."
     derived_from_assay: "LF:intpanis-spirometry-cohort"
     compared_measurement: "fev1"
     change_type: absolute_difference
@@ -1589,7 +1580,6 @@ response_comparisons:
         id: "UCUM:mL"
         name: "milliliter"
       central_tendency: single_value
-      sample_size: 5404
       variability:
         variability_type: confidence_interval_95
         lower_bound: "-15.6"
@@ -1603,7 +1593,7 @@ response_comparisons:
 
   - id: "COMP:intpanis-o3-lag2-ratio"
     name: "FEV1/FVC change per 10 ug/m3 O3 at lag 2"
-    description: "Estimated change in FEV1/FVC per 10 ug/m3 increase in ozone (warm season, May-September) two days before the lung function test (lag 2). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (0.10). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted."
+    description: "Estimated change in FEV1/FVC per 10 ug/m3 increase in ozone (warm season, May-September) two days before the lung function test (lag 2). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (0.10). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted. sample_size is omitted deliberately: the paper restricts the ozone analyses to the warm season (May to September), so this estimate comes from a subset of the 5404 clinical visits, and the paper never reports that subset's n."
     derived_from_assay: "LF:intpanis-spirometry-cohort"
     compared_measurement: "fev1_fvc_ratio"
     change_type: absolute_difference
@@ -1614,7 +1604,6 @@ response_comparisons:
         id: "UO:0000187"
         name: "percent"
       central_tendency: single_value
-      sample_size: 5404
       variability:
         variability_type: confidence_interval_95
         lower_bound: "-0.05"
@@ -1628,7 +1617,7 @@ response_comparisons:
 
   - id: "COMP:intpanis-o3-lag2-pef"
     name: "PEF change per 10 ug/m3 O3 at lag 2"
-    description: "Estimated change in PEF per 10 ug/m3 increase in ozone (warm season, May-September) two days before the lung function test (lag 2). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (-10.9). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted."
+    description: "Estimated change in PEF per 10 ug/m3 increase in ozone (warm season, May-September) two days before the lung function test (lag 2). Linear mixed model with a random intercept per participant (REML, unstructured autocorrelation), adjusted for sex, age, age squared, body mass index, smoking status, quality grade of the lung function test, apparent temperature, hour of the day, day of the week, month and year of the clinical visit. The paper treats p < 0.01 as significant, so this estimate is NOT significant by the paper's own criterion, which is why change_direction is no_change even though the point estimate has a sign (-10.9). This is a regression slope across a continuously exposed cohort, not a contrast between a control group and a treated group: the study has no unexposed arm, so control_output and treated_output are deliberately omitted. sample_size is omitted deliberately: the paper restricts the ozone analyses to the warm season (May to September), so this estimate comes from a subset of the 5404 clinical visits, and the paper never reports that subset's n."
     derived_from_assay: "LF:intpanis-spirometry-cohort"
     compared_measurement: "peak_expiratory_flow"
     change_type: absolute_difference
@@ -1639,7 +1628,6 @@ response_comparisons:
         id: "UCUM:mL/s"
         name: "milliliter per second"
       central_tendency: single_value
-      sample_size: 5404
       variability:
         variability_type: confidence_interval_95
         lower_bound: "-46.9"
