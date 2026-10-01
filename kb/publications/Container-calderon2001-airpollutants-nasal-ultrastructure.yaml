@@ -309,10 +309,12 @@ key_event_relationships:
       id: "KE:ke3-impaired-ciliary"
       name: "Decreased ciliary function"
       biological_action: decreased
+      level_of_biological_organization: cellular
     downstream_event:
       id: "KE:ke3-impaired-mcc"
       name: "Impaired mucociliary clearance"
       biological_action: impaired
+      level_of_biological_organization: tissue
     relationship_type: "directly leads to"
     evidence_support: moderate
     quantitative_understanding: not_specified

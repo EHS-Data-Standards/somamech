@@ -1258,7 +1258,7 @@ matter (PM2.5) exposure leading to impaired lung function. The pathway includes:
 
 - **MIE (Molecular Initiating Event)**: Oxidative stress
 - **KE1 (Key Event 1)**: EGFR activation/phosphorylation
-- **KE2 (Key Event 2)**: Goblet cell hyperplasia and mucin hypersecretion
+- **KE2 (Key Event 2)**: Goblet cell hyperplasia
 - **KE3 (Key Event 3)**: Impaired mucociliary clearance
 - **AO (Adverse Outcome)**: Reduced lung function
 
