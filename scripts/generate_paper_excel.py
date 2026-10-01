@@ -5,6 +5,8 @@ Each workbook has multiple tabs matching the LinkML schema classes (as in projec
 with data extracted from the YAML test files in tests/data/valid/.
 """
 
+from pathlib import Path
+
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
@@ -279,11 +281,11 @@ def create_montgomery_workbook():
     # ── ExposureCondition ──
     _make_sheet(wb, "ExposureCondition", EXPOSURE_CONDITION_HEADERS, [
         ("EXPOSURE:montgomery-mod-oe", "PM2.5 organic extract 0.45 ug/cm2 (moderate dose)",
-         "PM2.5", "CHEBI:74481", "0.45", "ug/cm2 (UO:0000274)", "48", "hour (UO:0000032)"),
+         "PM2.5", "ENVO:01000415", "0.45", "ug/cm2 (UO:0000274)", "48", "hour (UO:0000032)"),
         ("EXPOSURE:montgomery-high-oe", "PM2.5 organic extract 4.5 ug/cm2 (high dose)",
-         "PM2.5", "CHEBI:74481", "4.5", "ug/cm2 (UO:0000274)", "48", "hour (UO:0000032)"),
+         "PM2.5", "ENVO:01000415", "4.5", "ug/cm2 (UO:0000274)", "48", "hour (UO:0000032)"),
         ("EXPOSURE:montgomery-chronic-oe", "PM2.5 organic extract chronic 5-day stimulation (high OE dose)",
-         "PM2.5", "CHEBI:74481", "4.5", "ug/cm2 (UO:0000274)", "120", "hour (UO:0000032)"),
+         "PM2.5", "ENVO:01000415", "4.5", "ug/cm2 (UO:0000274)", "120", "hour (UO:0000032)"),
     ], tab_color="FFC000")
 
     # ── KeyEvent ──
@@ -299,19 +301,19 @@ def create_montgomery_workbook():
     _make_sheet(wb, "CellularSystem", CELLULAR_SYSTEM_HEADERS, [
         ("soma:montgomery-culture-001", "Primary nasal AEC ALI culture - GALA II donors",
          "Acute stimulation model (12 donors)", "CellularSystem",
-         "", "", "nasal epithelial cell", "nasal epithelial cell", "CL:0002603",
+         "", "", "nasal epithelial cell", "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa", "CL:2000094",
          "nasal cavity (UBERON:0001707)", "Homo sapiens", "NCBITaxon:9606",
          "air_liquid_interface", "transwell_insert", 28,
          "12 donors (6 healthy, 6 asthmatic) from GALA II childhood asthma study"),
         ("soma:montgomery-culture-high", "Primary nasal AEC ALI culture - high OE dose",
          "High dose acute model (5 donors)", "CellularSystem",
-         "", "", "nasal epithelial cell", "nasal epithelial cell", "CL:0002603",
+         "", "", "nasal epithelial cell", "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa", "CL:2000094",
          "nasal cavity (UBERON:0001707)", "Homo sapiens", "NCBITaxon:9606",
          "air_liquid_interface", "transwell_insert", 28,
          "5 donors from GALA II study"),
         ("soma:montgomery-culture-chronic", "Primary nasal AEC ALI culture - chronic stimulation",
          "5-day chronic stimulation model (4-5 donors)", "CellularSystem",
-         "", "", "nasal epithelial cell", "nasal epithelial cell", "CL:0002603",
+         "", "", "nasal epithelial cell", "nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa", "CL:2000094",
          "nasal cavity (UBERON:0001707)", "Homo sapiens", "NCBITaxon:9606",
          "air_liquid_interface", "transwell_insert", 28,
          "4-5 donors from GALA II study"),
@@ -466,7 +468,7 @@ def create_montgomery_workbook():
          "FOXJ:montgomery-high-acute"),
     ], tab_color="BF8F00")
 
-    out = "/Users/SMoxon/Documents/src/soma/src/docs/Montgomery2020_PM25_Mucociliary_SOMA.xlsx"
+    out = Path(__file__).resolve().parents[1] / "src" / "docs" / "Montgomery2020_PM25_Mucociliary_SOMA.xlsx"
     wb.save(out)
     print(f"Saved: {out}")
 
@@ -540,15 +542,15 @@ def create_liu_workbook():
     # ── ExposureCondition ──
     _make_sheet(wb, "ExposureCondition", EXPOSURE_CONDITION_HEADERS, [
         ("EXPOSURE:liu-pm25-100ug-24h", "PM2.5 100 ug/mL for 24 hours",
-         "PM2.5", "CHEBI:74481", "100", "ug/mL (UO:0000064)", "24", "hour (UO:0000032)"),
+         "PM2.5", "ENVO:01000415", "100", "ug/mL (UO:0000064)", "24", "hour (UO:0000032)"),
         ("EXPOSURE:liu-pm25-100ug-48h", "PM2.5 100 ug/mL for 48 hours",
-         "PM2.5", "CHEBI:74481", "100", "ug/mL (UO:0000064)", "48", "hour (UO:0000032)"),
+         "PM2.5", "ENVO:01000415", "100", "ug/mL (UO:0000064)", "48", "hour (UO:0000032)"),
         ("EXPOSURE:liu-mouse-ova-pm25", "OVA sensitization + PM2.5 nasal instillation",
-         "PM2.5", "CHEBI:74481", "100", "ug/mL (UO:0000064)", "7", "day (UO:0000033)"),
+         "PM2.5", "ENVO:01000415", "100", "ug/mL (UO:0000064)", "7", "day (UO:0000033)"),
         ("EXPOSURE:liu-mouse-ova-atp", "OVA sensitization + ATP 50 mg/kg nasal instillation",
          "ATP", "CHEBI:15422", "50", "mg/kg (UO:0000308)", "7", "day (UO:0000033)"),
         ("EXPOSURE:liu-mouse-suramin", "OVA sensitization + Suramin 50 mg/kg nasal instillation",
-         "suramin", "CHEBI:45653", "50", "mg/kg (UO:0000308)", "7", "day (UO:0000033)"),
+         "suramin", "CHEBI:45906", "50", "mg/kg (UO:0000308)", "7", "day (UO:0000033)"),
     ], tab_color="FFC000")
 
     # ── KeyEvent ──
@@ -569,7 +571,7 @@ def create_liu_workbook():
     _make_sheet(wb, "CellularSystem", CELLULAR_SYSTEM_HEADERS, [
         ("soma:liu-calu3-001", "Calu-3 submerged monolayer on transwell",
          "In vitro model for CFTR/P2Y2R studies", "CellularSystem",
-         "Calu-3", "CLO:0003679", "", "epithelial cell", "CL:0000066",
+         "Calu-3", "CLO:0002192", "", "epithelial cell", "CL:0000066",
          "", "Homo sapiens", "NCBITaxon:9606",
          "adherent", "transwell_insert", 21, ""),
     ], tab_color="4472C4")
@@ -746,7 +748,7 @@ def create_liu_workbook():
          "3.0", "fold change vs control (UO:0000193)", "LF:liu-ova-suramin"),
     ], tab_color="002060")
 
-    out = "/Users/SMoxon/Documents/src/soma/src/docs/Liu2024_PM25_CFTR_SOMA.xlsx"
+    out = Path(__file__).resolve().parents[1] / "src" / "docs" / "Liu2024_PM25_CFTR_SOMA.xlsx"
     wb.save(out)
     print(f"Saved: {out}")
 
