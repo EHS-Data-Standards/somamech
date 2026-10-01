@@ -89,7 +89,7 @@ Look up, search, and validate ontology terms (CURIEs) used in SOMA data files.
 /oaklib
 > Look up ENVO:01000415
 > Search the Cell Ontology for "nasal epithelial cell"
-> Validate that CL:0002603 is a real term
+> Validate that CL:2000094 is a real term
 ```
 
 **Supported ontologies:** CHEBI, ENVO, CL, UBERON, NCBITaxon, UO, OBI, GO, ECTO, PR, HP, PATO, CLO

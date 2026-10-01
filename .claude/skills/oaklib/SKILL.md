@@ -14,7 +14,7 @@ Use this skill when the user asks to look up, validate, or search ontology terms
 |--------|----------|---------|
 | CHEBI | Chemical Entities of Biological Interest | CHEBI:28939 (N-acetyl-L-cysteine) |
 | ENVO | Environment Ontology | ENVO:01000415 (fine respirable suspended particulate matter) |
-| CL | Cell Ontology | CL:0002603 (nasal epithelial cell) |
+| CL | Cell Ontology | CL:2000094 (nasal cavity respiratory epithelium epithelial cell of viscerocranial mucosa) |
 | UBERON | Uber-anatomy Ontology | UBERON:0001707 (nasal cavity) |
 | NCBITaxon | NCBI Taxonomy | NCBITaxon:9606 (Homo sapiens) |
 | UO | Units of Measurement | UO:0000032 (hour) |
@@ -24,7 +24,7 @@ Use this skill when the user asks to look up, validate, or search ontology terms
 | PR | Protein Ontology | PR:000003411 (CFTR) |
 | HP | Human Phenotype Ontology | HP:0002110 (bronchiectasis) |
 | PATO | Phenotypic Quality Ontology | PATO:0000001 (quality) |
-| CLO | Cell Line Ontology | CLO:0003679 (Calu-3) |
+| CLO | Cell Line Ontology | CLO:0002192 (Calu-3) |
 
 ## Commands
 
@@ -47,7 +47,7 @@ uv run runoak -i sqlite:obo:cl search "nasal epithelial cell"
 ### Get ancestors of a term
 
 ```bash
-uv run runoak -i sqlite:obo:cl ancestors CL:0002603
+uv run runoak -i sqlite:obo:cl ancestors CL:2000094
 ```
 
 ### Get relationships for a term
@@ -88,7 +88,7 @@ uv run runoak -i sqlite:obo:ncbitaxon info NCBITaxon:9606
 uv run runoak -i sqlite:obo:envo info ENVO:01000415
 
 # Verify nasal epithelial cell
-uv run runoak -i sqlite:obo:cl info CL:0002603
+uv run runoak -i sqlite:obo:cl info CL:2000094
 
 # Verify Homo sapiens
 uv run runoak -i sqlite:obo:ncbitaxon info NCBITaxon:9606
