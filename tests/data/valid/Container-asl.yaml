@@ -21,7 +21,7 @@ asl_assays:
         exposure_concentration:
           value: "200"
           unit:
-            id: "UO:0000169"
+            id: "UO:0000170"
             name: "parts per billion"
         exposure_duration:
           value: "4"

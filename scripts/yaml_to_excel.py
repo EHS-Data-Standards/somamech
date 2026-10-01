@@ -10,6 +10,7 @@ Usage:
 """
 
 import argparse
+import datetime
 import re
 import sys
 from pathlib import Path
@@ -328,8 +329,13 @@ def _fmt_value_unit(obj):
     """Extract value and unit string from a measurement dict like {value: '0.5', unit: {id: ..., name: ...}}."""
     if not obj or not isinstance(obj, dict):
         return "", ""
-    val = obj.get("value", "")
-    unit_obj = obj.get("unit", {})
+    # a present-but-null key blanks rather than stringifying to 'None'.
+    # Checked against None instead of falsiness so a real 0 survives.
+    val = obj.get("value")
+    val = "" if val is None else val
+    unit_obj = obj.get("unit")
+    if unit_obj is None:
+        unit_obj = {}
     if isinstance(unit_obj, dict):
         unit_name = unit_obj.get("name", "")
         unit_id = unit_obj.get("id", "")
@@ -488,7 +494,9 @@ def _collect_response_rows(data):
                         assay_tab,
                         out.get("id", ""),
                         out.get("experimental_group", ""),
-                        out.get("measured_under", ""),
+                        # range: ExposureCondition -- a CURIE string today
+                        # (non-inlined), coerced for the same reason as above
+                        _fmt_cell(out.get("measured_under", "")),
                         slot,
                         val,
                         unit,
@@ -541,6 +549,50 @@ def _join_multivalued(values):
         else:
             parts.append(str(v))
     return "; ".join(parts)
+
+
+# What openpyxl writes without help. datetime.datetime subclasses
+# datetime.date, so the one entry covers both.
+_EXCEL_SCALARS = (
+    str,
+    int,
+    float,
+    bool,
+    datetime.date,
+    datetime.time,
+    datetime.timedelta,
+)
+
+
+def _fmt_cell(value):
+    """Coerce one slot value into something openpyxl can write.
+
+    The assay and output row builders are header-driven: a slot named in
+    HEADERS with no special handling is read straight off the record. Most are
+    scalars, but a slot whose range is an inlined class arrives as a dict --
+    target_cell_type, for one, is a CellTypeReference -- and openpyxl raises
+    ValueError rather than writing it. Format those the way the hand-written
+    row builders already format their term and measurement objects, so adding
+    an inlined slot to HEADERS can never break the workbook again.
+
+    Everything openpyxl writes natively is handed back untouched, temporal
+    types included: it writes date, time and timedelta as real typed cells, so
+    one reaching this function must not be flattened into text. A validated
+    kb file cannot carry one -- LinkML maps `range: date` to a JSON-Schema
+    string, so an unquoted `assay_date` fails `linkml-validate` before it gets
+    here -- but `yaml_to_excel.py --input` can be pointed at a file nobody
+    validated, and a passthrough that silently dropped them would be wrong.
+    """
+    if value is None or isinstance(value, _EXCEL_SCALARS):
+        return value
+    if isinstance(value, dict):
+        # a measurement before a term: a dict carrying both keeps its value
+        if "value" in value or "unit" in value:
+            val, unit = _fmt_value_unit(value)
+            return f"{val} {unit}".strip()
+        if value.get("id") or value.get("name"):
+            return _fmt_id_name(value)
+    return _join_multivalued(value)
 
 
 def _protocol_row(p):
@@ -682,7 +734,7 @@ def _assay_row(assay, assay_headers):
             protos = assay.get("follows_protocols", [])
             row.append(_fmt_list_refs(protos))
         else:
-            row.append(assay.get(h, ""))
+            row.append(_fmt_cell(assay.get(h, "")))
     return tuple(row)
 
 
@@ -706,7 +758,7 @@ def _output_row(output, output_headers):
             else:
                 row.append(str(unit_obj) if unit_obj else "")
         else:
-            row.append(output.get(h, ""))
+            row.append(_fmt_cell(output.get(h, "")))
     return tuple(row)
 
 

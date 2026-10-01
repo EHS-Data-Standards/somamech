@@ -51,7 +51,7 @@ ciliary_function_assays:
           value: "180"
           unit:
             id: "UO:0000189"
-            name: "count"
+            name: "count unit"
           central_tendency: mean
           sample_size: 6
         ciliary_motion_patterns: coordinated
@@ -104,7 +104,7 @@ ciliary_function_assays:
           value: "150"
           unit:
             id: "UO:0000189"
-            name: "count"
+            name: "count unit"
           central_tendency: mean
           sample_size: 6
         ciliary_motion_patterns: dyskinetic
@@ -142,7 +142,7 @@ ciliary_function_assays:
         exposure_concentration:
           value: "200"
           unit:
-            id: "UO:0000169"
+            id: "UO:0000170"
             name: "parts per billion"
         exposure_duration:
           value: "4"

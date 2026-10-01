@@ -79,7 +79,7 @@ ciliary_function_assays:
         value: "150"
         unit:
           id: "UO:0000189"
-          name: "count"
+          name: "count unit"
       ciliary_motion_patterns: coordinated
       ciliary_beat_amplitude:
         value: "4.5"
@@ -101,7 +101,7 @@ ciliary_function_assays:
         exposure_concentration:
           value: "200"
           unit:
-            id: "UO:0000169"
+            id: "UO:0000170"
             name: "parts per billion"
         exposure_duration:
           value: "4"
@@ -350,7 +350,7 @@ mcc_assays:
       transport_rate:
         value: "45.3"
         unit:
-          id: "UO:0000103"
+          id: "UCUM:um/s"
           name: "micrometer per second"
       transport_directionality: normal
       mucus_layer_thickness:
@@ -430,22 +430,22 @@ oxidative_stress_assays:
       malondialdehyde_level:
         value: "3.2"
         unit:
-          id: "UO:0000063"
+          id: "UCUM:nmol/mg"
           name: "nanomole per milligram protein"
       protein_carbonyl_content:
         value: "2.1"
         unit:
-          id: "UO:0000063"
+          id: "UCUM:nmol/mg"
           name: "nanomole per milligram protein"
       glutathione_ratio:
         value: "0.65"
         unit:
           id: "UO:0000190"
-          name: "ratio"
+          name: "ratio unit"
       eight_ohdg_level:
         value: "12.5"
         unit:
-          id: "UO:0000275"
+          id: "UCUM:ng/mg"
           name: "nanogram per milligram creatinine"
       superoxide_dismutase_activity:
         value: "0.75"
@@ -718,7 +718,7 @@ goblet_cell_assays:
         value: "85"
         unit:
           id: "UO:0000189"
-          name: "count"
+          name: "count unit"
       muc5ac_protein_expression:
         value: "3.2"
         unit:
@@ -738,11 +738,11 @@ goblet_cell_assays:
         value: "2.7"
         unit:
           id: "UO:0000190"
-          name: "ratio"
+          name: "ratio unit"
       mucin_secretion_rate:
         value: "12.5"
         unit:
-          id: "UO:0000298"
+          id: "UCUM:ug/h"
           name: "microgram per hour"
       percent_solids:
         value: "4.2"
@@ -753,7 +753,7 @@ goblet_cell_assays:
         value: "0.45"
         unit:
           id: "UO:0000190"
-          name: "ratio"
+          name: "ratio unit"
     assay_date: "2024-06-15"
     informs_on_key_event:
       id: "KE:ke2-goblet-hyperplasia"
@@ -964,16 +964,17 @@ lung_function_assays:
     has_specified_output:
       id: "LF:001-output"
       name: "LF:001 measurement results"
+      description: "FEV1, FVC, DLCO and peak expiratory flow are expressed as percent of predicted (GLI-2012 reference)"
       fev1:
         value: "82.5"
         unit:
           id: "UO:0000187"
-          name: "percent predicted"
+          name: "percent"
       fvc:
         value: "95.0"
         unit:
           id: "UO:0000187"
-          name: "percent predicted"
+          name: "percent"
       fev1_fvc_ratio:
         value: "86.8"
         unit:
@@ -993,12 +994,12 @@ lung_function_assays:
         value: "88"
         unit:
           id: "UO:0000187"
-          name: "percent predicted"
+          name: "percent"
       peak_expiratory_flow:
         value: "92"
         unit:
           id: "UO:0000187"
-          name: "percent predicted"
+          name: "percent"
     reference_dataset: "GLI-2012"
     assay_date: "2024-08-10"
     informs_on_key_event:
@@ -1030,7 +1031,7 @@ lung_function_assays:
         bronchodilator_dose:
           value: "400"
           unit:
-            id: "UO:0000022"
+            id: "UO:0000023"
             name: "microgram"
 ```
 
@@ -1065,7 +1066,7 @@ balf_sputum_assays:
       il8_concentration:
         value: "250"
         unit:
-          id: "UO:0000175"
+          id: "UO:0010070"
           name: "picogram per milliliter"
       eosinophil_percentage:
         value: "3.5"
@@ -1085,17 +1086,17 @@ balf_sputum_assays:
       total_cell_count:
         value: "2500000"
         unit:
-          id: "UO:0000209"
+          id: "UO:0000201"
           name: "cells per milliliter"
       il6_concentration:
         value: "85"
         unit:
-          id: "UO:0000175"
+          id: "UO:0010070"
           name: "picogram per milliliter"
       tnf_alpha_concentration:
         value: "120"
         unit:
-          id: "UO:0000175"
+          id: "UO:0010070"
           name: "picogram per milliliter"
       total_protein_concentration:
         value: "1.2"

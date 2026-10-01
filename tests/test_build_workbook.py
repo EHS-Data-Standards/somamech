@@ -8,6 +8,7 @@ import openpyxl
 ROOT = Path(__file__).parent.parent
 SCRIPT = ROOT / "scripts" / "build_workbook.py"
 VALID = ROOT / "tests" / "data" / "valid"
+KB = ROOT / "kb" / "publications"
 
 
 def run(*args):
@@ -123,6 +124,49 @@ def test_cross_paper_id_collision_fails(tmp_path):
 def test_empty_kb_dir_is_fine(tmp_path):
     result = run("--kb-dir", str(tmp_path), "--check-only")
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_whole_corpus_writes_to_excel(tmp_path):
+    """`just generate-workbook` must survive every paper on main.
+
+    It did not: a slot whose range is an inlined class reaches the
+    header-driven row builders as a dict, and openpyxl raises rather than
+    writing it. `just check-entity-ids` missed it because --check-only returns
+    before write_workbook, so the only gate on the export path was a human
+    running the recipe. This pools the real corpus and writes the file.
+    """
+    out = tmp_path / "pooled.xlsx"
+    result = run("--kb-dir", str(KB), "--output", str(out))
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert out.exists()
+
+
+def test_inlined_object_slot_is_flattened_rather_than_crashing(tmp_path):
+    """target_cell_type is a CellTypeReference, so it arrives as {id, name}."""
+    kb = tmp_path / "kb"
+    kb.mkdir()
+    (kb / "term.yaml").write_text(
+        """\
+source_publication:
+  reference: "PMID:33333333"
+balf_sputum_assays:
+  - id: "ASSAY:term-balf"
+    target_cell_type:
+      id: "CL:0000771"
+      name: "eosinophil"
+    has_specified_output:
+      - id: "BALF:term-output"
+"""
+    )
+    out = tmp_path / "pooled.xlsx"
+
+    result = run("--kb-dir", str(kb), "--output", str(out))
+    assert result.returncode == 0, result.stdout + result.stderr
+
+    ws = openpyxl.load_workbook(out)["BALFSputumAssay"]
+    header = [c.value for c in ws[1]]
+    col = header.index("target_cell_type") + 1
+    assert ws.cell(2, col).value == "eosinophil (CL:0000771)"
 
 
 def test_review_only_paper_contributes_key_events_and_relationships(tmp_path):

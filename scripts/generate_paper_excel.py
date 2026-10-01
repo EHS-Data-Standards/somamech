@@ -561,10 +561,10 @@ def create_liu_workbook():
          "PM2.5 downregulates P2Y2R mRNA and protein in Calu-3 and mouse lung", "decreased", "molecular"),
         ("KE:ke2-goblet-hyperplasia", "Goblet cell hyperplasia",
          "PAS-positive cells increased in OVA+PM2.5 mouse lung", "increased", "cellular"),
-        ("KE:ke-airway-inflammation", "Th2 airway inflammation",
+        ("KE:ke-airway-inflammation", "Airway inflammation",
          "BALF IL-4, IL-5, IL-13 elevated in OVA+PM2.5", "increased", "tissue"),
-        ("KE:ao-decreased-lung-function", "Increased airway hyperresponsiveness",
-         "sRaw elevated at methacholine challenge", "increased", "organ"),
+        ("KE:ao-decreased-lung-function", "Decreased lung function",
+         "sRaw elevated at methacholine challenge", "decreased", "organ"),
     ], tab_color="ED7D31")
 
     # ── CellularSystem ──
