@@ -7,6 +7,8 @@ year: 2015
 source: corpus_csv
 open_access: true
 status: OPEN
-decision: UNDECIDED
+decision: NOT_RELEVANT
 added_date: '2026-09-28'
-notes: 'fully open access: PMC full-text XML + open license (verified 2026-09-28)'
+notes: 'abstract only: no downloadable full text (check-fulltext 2026-10-01). Relevant
+  topic, but removed from the extraction queue so agents stop retrying it; restore
+  decision: UNDECIDED if full text becomes available'

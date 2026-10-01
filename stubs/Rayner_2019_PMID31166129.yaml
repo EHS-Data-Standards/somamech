@@ -8,6 +8,8 @@ source: corpus_csv
 open_access: true
 pdf_filename: Rayner_2019_JEZ2MKIN.pdf
 status: OPEN
-decision: UNDECIDED
+decision: NOT_RELEVANT
 added_date: '2026-09-17'
-notes: from Zotero (resolved from DOI)
+notes: 'abstract only: no downloadable full text (check-fulltext 2026-10-01). Relevant
+  topic, but removed from the extraction queue so agents stop retrying it; restore
+  decision: UNDECIDED if full text becomes available'
