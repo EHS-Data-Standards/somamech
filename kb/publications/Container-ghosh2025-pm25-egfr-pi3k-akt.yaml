@@ -63,6 +63,12 @@
 #      response_comparisons with change_type: absolute_difference and a
 #      statistical_test string that states the per-10 ug/m3 scaling, so the
 #      number is never mistaken for a raw group delta.
+#   2a. For the transcript comparisons, change_direction describes
+#      mrna_level - transcript abundance - because that is the slot
+#      compared_measurement names, while change_value stays on the paper's
+#      delta-Ct scale, which runs INVERSELY to abundance. The sign of
+#      change_value is therefore deliberately opposite to change_direction on
+#      every mrna_level record, and each one says so in its description.
 #   3. The hematology numbers (Hb, ESR, WBC, monocyte %) are real and
 #      quoted in the lung function assay description, but the schema has no
 #      whole-blood hematology output class and LungFunctionAssay's
@@ -367,7 +373,7 @@ protocols:
 lung_function_assays:
   - id: "LF:ghosh-pm25-seasonal-spirometry"
     name: "Spirometry in thermal power plant participants during monsoon and spring"
-    description: "Measured and percent-predicted FVC, FEV1 and FEV1/FVC in the same 33 asymptomatic male participants at the low-PM2.5 monsoon visit (Aug 2021) and the high-PM2.5 spring visit (Mar 2022). FVC and FEV1 stayed within normal limits and did not differ significantly between seasons (p = 0.59 and p = 0.66), but the measured FEV1/FVC ratio fell significantly in spring (90.06 +/- 6.19% to 84.32 +/- 3.86%, p = 0.00), which the authors read as a tendency toward obstructive lung function. Percent-predicted values, reported in Table 3 but not recorded in the output slots because the schema has no percent-predicted slot, were: FVC 88.67 +/- 7.4% (monsoon) and 87.06 +/- 14.06% (spring); FEV1 100.15 +/- 6.39% and 100.55 +/- 15.61%; FEV1/FVC 109.85 +/- 9.28% and 109.48 +/- 10.66%. HEMATOLOGY CONTEXT (Table 2, same visits, N = 33 each, paired t-test): Hb 13.68 +/- 1.36 to 12.95 +/- 1.28 g/dl (p = 0.00); ESR 28.61 +/- 25.65 to 17.24 +/- 18.83 mm (p = 0.00); WBC 7603.03 +/- 1628.55 to 5551.52 +/- 2383.42 per cu. mm (p = 0.00); monocytes 1.03 +/- 0.18% to 2.19 +/- 1.6% (p = 0.00); eosinophils, lymphocytes and neutrophils unchanged. The corresponding LMER estimates per 10 ug/m3 PM2.5 were Hb -0.33 (95% CI -0.45, -0.21), ESR -5.19 (95% CI -8.46, -1.92) and WBC -937.49 (95% CI -1351.36, -523.62). These hematology values are recorded here as description text only: the schema has no whole-blood hematology output class, and LungFunctionAssay's hemoglobin_level slot sits on the assay rather than on the per-season output records, so it cannot carry two seasonal values."
+    description: "Measured and percent-predicted FVC, FEV1 and FEV1/FVC in the same 33 asymptomatic male participants at the low-PM2.5 monsoon visit (Aug 2021) and the high-PM2.5 spring visit (Mar 2022). FVC and FEV1 stayed within normal limits and did not differ significantly between seasons (p = 0.59 and p = 0.66), but the measured FEV1/FVC ratio fell significantly in spring (90.06 +/- 6.19% to 84.32 +/- 3.86%, p = 0.00), which the authors read as a tendency toward obstructive lung function. Percent-predicted values, reported in Table 3 but not recorded in the output slots because the schema has no percent-predicted slot, were: FVC 88.67 +/- 7.4% (monsoon) and 87.06 +/- 14.06% (spring); FEV1 100.15 +/- 6.39% and 100.55 +/- 15.61%; FEV1/FVC 109.85 +/- 9.28% and 109.48 +/- 10.66%. HEMATOLOGY CONTEXT (Table 2, same visits, N = 33 each, paired t-test): Hb 13.68 +/- 1.36 to 12.95 +/- 1.28 g/dl (p = 0.00); ESR 28.61 +/- 25.65 to 17.24 +/- 18.83 mm (p = 0.00); WBC 7603.03 +/- 1628.55 to 5551.52 +/- 2383.42 per cu. mm (p = 0.00); monocytes 1.03 +/- 0.18% to 2.19 +/- 1.6% (p = 0.00); eosinophils, lymphocytes and neutrophils unchanged. The corresponding LMER estimates per 10 ug/m3 PM2.5 were Hb -0.33 (95% CI -0.45, -0.21), ESR -5.19 (95% CI -8.46, -1.92) and WBC -937.49 (95% CI -1351.36, -523.62). UNITS: Table 3 prints bare numbers with no unit column, so the litre unit on FVC and FEV1 and the percent unit on FEV1/FVC are the conventional spirometry units rather than units the paper states. These hematology values are recorded here as description text only: the schema has no whole-blood hematology output class, and LungFunctionAssay's hemoglobin_level slot sits on the assay rather than on the per-season output records, so it cannot carry two seasonal values."
     reference_dataset: "reference equation not stated by the authors; percent-predicted values are reported in Table 3 alongside the measured values"
     evidence:
       - reference: "PMID:41469766"
@@ -584,7 +590,7 @@ lung_function_assays:
 balf_sputum_assays:
   - id: "BALF:ghosh-sputum-cytology"
     name: "Sputum differential cytology during monsoon and spring"
-    description: "Papanicolaou-stained spontaneous sputum from the same 33 participants in both seasons, counted over at least 10 random fields per sample. Alveolar macrophages - the primary cells recruited against respiratory pathogens - were significantly reduced in spring, which the authors read as reduced pulmonary immunity. Neutrophils trended upward in spring but the seasonal difference was not significant. The LMER model estimated a decrease in the frequency of alveolar macrophages of -5.46 (95% CI -9.44, -1.47) per 10 ug/m3 rise in PM2.5, adjusted for the independent covariates. Fig. 2a, b reports the average cell numbers graphically only, with no numeric values in the text; the paper's unit is an average cell number per field rather than a percentage, so no value is recorded in the percentage slots and the LMER estimate is kept in this description instead of a response_comparisons record."
+    description: "Papanicolaou-stained spontaneous sputum from the same 33 participants in both seasons, counted over at least 10 random fields per sample. Alveolar macrophages - the primary cells recruited against respiratory pathogens - were significantly reduced in spring, which the authors read as reduced pulmonary immunity. Neutrophils trended upward in spring but the seasonal difference was not significant. The LMER model estimated a decrease in the frequency of alveolar macrophages of -5.46 (95% CI -9.44, -1.47) per 10 ug/m3 rise in PM2.5, adjusted for the independent covariates. Fig. 2a, b reports the average cell numbers graphically only, with no numeric values in the text; the paper's unit is an average cell number per field rather than a percentage, so no value is recorded in the percentage slots; the LMER estimate is recorded as COMP:ghosh-sputum-alveolar-macrophages with its unit omitted and its scale explained."
     # The assay counts alveolar macrophages, neutrophils, eosinophils and
     # lymphocytes, but only the alveolar macrophage change reached
     # significance, so it is the primary focus recorded here.
@@ -912,10 +918,10 @@ oxidative_stress_assays:
 # =============================================================================
 
 gene_expression_assays:
-  - id: "GE:ghosh-airway-pik3ca"
-    name: "PIK3CA expression in sputum-derived airway cells during monsoon and spring"
-    description: "Phosphorylated PI3K p85alpha Tyr508 in sputum-derived airway cells, read by indirect ELISA and normalized to its total protein counterpart. PI3K activity was significantly increased in spring, evident from increased pPI3K p85alpha Tyr508 phosphorylation. LMER estimated +1.91 (95% CI 1.43, 2.39) relative units per 10 ug/m3 increase in PM2.5. Values are in Fig. 3c only, so no value is recorded in the output records. PIK3CA transcript was measured in the leukocytes rather than the airway cells."
-    target_gene: "NCBIGene:5290"
+  - id: "GE:ghosh-airway-pik3r1"
+    name: "PIK3R1 (PI3K p85alpha) phosphorylation in sputum-derived airway cells during monsoon and spring"
+    description: "Phosphorylated PI3K p85alpha Tyr508 in sputum-derived airway cells, read by indirect ELISA and normalized to its total protein counterpart. PI3K activity was significantly increased in spring, evident from increased pPI3K p85alpha Tyr508 phosphorylation. LMER estimated +1.91 (95% CI 1.43, 2.39) relative units per 10 ug/m3 increase in PM2.5. Values are in Fig. 3c only, so no value is recorded in the output records. The readout is the p85alpha regulatory subunit - the PIK3R1 gene product - so this assay is tagged PIK3R1 (NCBIGene:5295) and not the p110alpha catalytic subunit PIK3CA; no PIK3CA transcript was measured in the airway cells (it was measured in the leukocytes, see GE:ghosh-leukocyte-pik3ca)."
+    target_gene: "NCBIGene:5295"
     gene_expression_method: "indirect ELISA for pPI3K p85alpha Tyr508"
     normalization_reference: "GAPDH (transcripts); total protein per well (ELISA)"
     evidence:
@@ -977,20 +983,20 @@ gene_expression_assays:
             id: "UO:0000035"
             name: "month"
     has_specified_output:
-      - id: "GE:ghosh-airway-pik3ca-output-monsoon"
-        name: "Monsoon visit (lower PM2.5) - PIK3CA in sputum-derived airway cells"
+      - id: "GE:ghosh-airway-pik3r1-output-monsoon"
+        name: "Monsoon visit (lower PM2.5) - PIK3R1 (p85alpha) in sputum-derived airway cells"
         description: "Lower-exposure reference visit of the paired within-subject design. Figure-only values; none recorded."
         experimental_group: baseline
         measured_under: "EXPOSURE:ghosh-pm25-monsoon"
-      - id: "GE:ghosh-airway-pik3ca-output-spring"
-        name: "Spring visit (higher PM2.5) - PIK3CA in sputum-derived airway cells"
+      - id: "GE:ghosh-airway-pik3r1-output-spring"
+        name: "Spring visit (higher PM2.5) - PIK3R1 (p85alpha) in sputum-derived airway cells"
         description: "Higher-exposure visit. Direction of change is given in the assay description. Figure-only values; none recorded."
         experimental_group: treated
         measured_under: "EXPOSURE:ghosh-pm25-spring"
     assay_date: "2022-03-01"
     informs_on_key_event:
-      id: "KE:ke1-egfr-activation"
-      name: "EGFR activation"
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
       biological_action: activated
       level_of_biological_organization: molecular
     study_subject:
@@ -1088,8 +1094,8 @@ gene_expression_assays:
         measured_under: "EXPOSURE:ghosh-pm25-spring"
     assay_date: "2022-03-01"
     informs_on_key_event:
-      id: "KE:ke1-egfr-activation"
-      name: "EGFR activation"
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
       biological_action: activated
       level_of_biological_organization: molecular
     study_subject:
@@ -1184,8 +1190,8 @@ gene_expression_assays:
         measured_under: "EXPOSURE:ghosh-pm25-spring"
     assay_date: "2022-03-01"
     informs_on_key_event:
-      id: "KE:ke1-egfr-activation"
-      name: "EGFR activation"
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
       biological_action: activated
       level_of_biological_organization: molecular
     study_subject:
@@ -1283,8 +1289,8 @@ gene_expression_assays:
         measured_under: "EXPOSURE:ghosh-pm25-spring"
     assay_date: "2022-03-01"
     informs_on_key_event:
-      id: "KE:ke1-egfr-activation"
-      name: "EGFR activation"
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
       biological_action: activated
       level_of_biological_organization: molecular
     study_subject:
@@ -1409,7 +1415,7 @@ gene_expression_assays:
         name: "Isolation of sputum-derived airway cells and whole-blood leukocytes"
   - id: "GE:ghosh-airway-bcl2"
     name: "BCL2 expression in sputum-derived airway cells during monsoon and spring"
-    description: "The anti-apoptotic gene BCL2 in airway cells. BCL2 transcript was significantly upregulated in spring and Bcl-2 protein showed robust expression in spring, so Bcl-2 upregulation was consistent at both transcript and protein level in the airway cells. After Bonferroni adjustment the airway BCL2 delta-Ct differed significantly between the two PM2.5 exposure levels; LMER estimated a delta-Ct change of -1.61 (95% CI -2.14, -1.09) - higher transcript abundance - and a protein change of +0.82 (95% CI 0.69, 0.94) relative units per 10 ug/m3 increase in PM2.5. Airway cells also showed a significant decline in the frequency of early apoptotic cells in spring, with an LMER estimate of -11.00 (95% CI -14.27, -7.77) per 10 ug/m3 PM2.5; that flow-cytometry endpoint has no matching output slot, so it is recorded here as description text. Values are in Figs. 3g, 3i and 3k only, so no value is recorded in the output records."
+    description: "The anti-apoptotic gene BCL2 in airway cells. BCL2 transcript was significantly upregulated in spring and Bcl-2 protein showed robust expression in spring, so Bcl-2 upregulation was consistent at both transcript and protein level in the airway cells. After Bonferroni adjustment the airway BCL2 delta-Ct differed significantly between the two PM2.5 exposure levels; LMER estimated a delta-Ct change of -1.61 (95% CI -2.14, -1.09) - higher transcript abundance - and a protein change of +0.82 (95% CI 0.69, 0.94) relative units per 10 ug/m3 increase in PM2.5. Airway cells also showed a significant decline in the frequency of early apoptotic cells in spring, with an LMER estimate of -11.00 (95% CI -14.27, -7.77) per 10 ug/m3 PM2.5; that flow-cytometry endpoint is also recorded as COMP:ghosh-airway-early-apoptotic-cells. Values are in Figs. 3g, 3i and 3k only, so no value is recorded in the output records."
     target_gene: "NCBIGene:596"
     gene_expression_method: "RT-qPCR (delta-Ct against GAPDH) and indirect ELISA for Bcl-2"
     normalization_reference: "GAPDH (transcripts); total protein per well (ELISA)"
@@ -1934,7 +1940,7 @@ gene_expression_assays:
         name: "Isolation of sputum-derived airway cells and whole-blood leukocytes"
   - id: "GE:ghosh-leukocyte-pik3ca"
     name: "PIK3CA expression in whole-blood leukocytes during monsoon and spring"
-    description: "PIK3CA transcript and phosphorylated PI3K p85alpha Tyr508 protein in whole-blood leukocytes. Leukocytes showed higher PIK3CA transcript abundance in spring, and increased pPI3K p85alpha Tyr508 phosphorylation was also observed. LMER estimated a PIK3CA delta-Ct change of -1.01 (95% CI -1.45, -0.56) - higher transcript abundance - and a pPI3K p85alpha Tyr508 protein change of +1.62 (95% CI 1.22, 2.02) relative units per 10 ug/m3 increase in PM2.5. Values are in Figs. 3b and 3e only, so no value is recorded in the output records."
+    description: "PIK3CA transcript and phosphorylated PI3K p85alpha Tyr508 protein in whole-blood leukocytes. Leukocytes showed higher PIK3CA transcript abundance in spring, and increased pPI3K p85alpha Tyr508 phosphorylation was also observed. LMER estimated a PIK3CA delta-Ct change of -1.01 (95% CI -1.45, -0.56) - higher transcript abundance - and a pPI3K p85alpha Tyr508 protein change of +1.62 (95% CI 1.22, 2.02) relative units per 10 ug/m3 increase in PM2.5. The transcript readout is PIK3CA (the p110alpha catalytic subunit) while the protein readout is p85alpha (the PIK3R1 gene product); the paper reports the two PI3K readouts together, and this assay is tagged PIK3CA for the transcript it actually measures. Values are in Figs. 3b and 3e only, so no value is recorded in the output records."
     target_gene: "NCBIGene:5290"
     gene_expression_method: "RT-qPCR (delta-Ct against GAPDH) and indirect ELISA for pPI3K p85alpha Tyr508"
     normalization_reference: "GAPDH (transcripts); total protein per well (ELISA)"
@@ -2009,8 +2015,8 @@ gene_expression_assays:
         measured_under: "EXPOSURE:ghosh-pm25-spring"
     assay_date: "2022-03-01"
     informs_on_key_event:
-      id: "KE:ke1-egfr-activation"
-      name: "EGFR activation"
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
       biological_action: activated
       level_of_biological_organization: molecular
     study_subject:
@@ -2111,8 +2117,8 @@ gene_expression_assays:
         measured_under: "EXPOSURE:ghosh-pm25-spring"
     assay_date: "2022-03-01"
     informs_on_key_event:
-      id: "KE:ke1-egfr-activation"
-      name: "EGFR activation"
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
       biological_action: activated
       level_of_biological_organization: molecular
     study_subject:
@@ -2210,8 +2216,8 @@ gene_expression_assays:
         measured_under: "EXPOSURE:ghosh-pm25-spring"
     assay_date: "2022-03-01"
     informs_on_key_event:
-      id: "KE:ke1-egfr-activation"
-      name: "EGFR activation"
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
       biological_action: activated
       level_of_biological_organization: molecular
     study_subject:
@@ -2309,8 +2315,8 @@ gene_expression_assays:
         measured_under: "EXPOSURE:ghosh-pm25-spring"
     assay_date: "2022-03-01"
     informs_on_key_event:
-      id: "KE:ke1-egfr-activation"
-      name: "EGFR activation"
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
       biological_action: activated
       level_of_biological_organization: molecular
     study_subject:
@@ -3504,13 +3510,13 @@ response_comparisons:
     derivation: reported_in_paper
   - id: "COMP:ghosh-airway-mtor-mrna"
     name: "Association of PM2.5 with MTOR transcript (delta-Ct) in airway cells"
-    description: "LMER beta estimate on the delta-Ct scale (Ct_target - Ct_GAPDH). A negative estimate means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5; a positive estimate means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
+    description: "change_direction refers to mrna_level - transcript abundance - because that is what compared_measurement names. change_value is the LMER beta on the delta-Ct scale (Ct_target - Ct_GAPDH), which runs INVERSELY to transcript abundance, so its sign is deliberately opposite to change_direction: a negative beta means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5, and a positive beta means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
     derived_from_assay: "GE:ghosh-airway-mtor"
     compared_measurement: "mrna_level"
     control_output: "GE:ghosh-airway-mtor-output-monsoon"
     treated_output: "GE:ghosh-airway-mtor-output-spring"
     change_type: absolute_difference
-    change_direction: decreased
+    change_direction: increased
     change_value:
       value: "-1.35"
       variability:
@@ -3521,13 +3527,13 @@ response_comparisons:
     derivation: reported_in_paper
   - id: "COMP:ghosh-airway-pten-mrna"
     name: "Association of PM2.5 with PTEN transcript (delta-Ct) in airway cells"
-    description: "LMER beta estimate on the delta-Ct scale (Ct_target - Ct_GAPDH). A negative estimate means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5; a positive estimate means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
+    description: "change_direction refers to mrna_level - transcript abundance - because that is what compared_measurement names. change_value is the LMER beta on the delta-Ct scale (Ct_target - Ct_GAPDH), which runs INVERSELY to transcript abundance, so its sign is deliberately opposite to change_direction: a negative beta means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5, and a positive beta means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
     derived_from_assay: "GE:ghosh-airway-pten"
     compared_measurement: "mrna_level"
     control_output: "GE:ghosh-airway-pten-output-monsoon"
     treated_output: "GE:ghosh-airway-pten-output-spring"
     change_type: absolute_difference
-    change_direction: increased
+    change_direction: decreased
     change_value:
       value: "5.36"
       variability:
@@ -3538,13 +3544,13 @@ response_comparisons:
     derivation: reported_in_paper
   - id: "COMP:ghosh-airway-bcl2-mrna"
     name: "Association of PM2.5 with BCL2 transcript (delta-Ct) in airway cells"
-    description: "LMER beta estimate on the delta-Ct scale (Ct_target - Ct_GAPDH). A negative estimate means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5; a positive estimate means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
+    description: "change_direction refers to mrna_level - transcript abundance - because that is what compared_measurement names. change_value is the LMER beta on the delta-Ct scale (Ct_target - Ct_GAPDH), which runs INVERSELY to transcript abundance, so its sign is deliberately opposite to change_direction: a negative beta means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5, and a positive beta means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
     derived_from_assay: "GE:ghosh-airway-bcl2"
     compared_measurement: "mrna_level"
     control_output: "GE:ghosh-airway-bcl2-output-monsoon"
     treated_output: "GE:ghosh-airway-bcl2-output-spring"
     change_type: absolute_difference
-    change_direction: decreased
+    change_direction: increased
     change_value:
       value: "-1.61"
       variability:
@@ -3555,13 +3561,13 @@ response_comparisons:
     derivation: reported_in_paper
   - id: "COMP:ghosh-airway-hif1a-mrna"
     name: "Association of PM2.5 with HIF1A transcript (delta-Ct) in airway cells"
-    description: "LMER beta estimate on the delta-Ct scale (Ct_target - Ct_GAPDH). A negative estimate means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5; a positive estimate means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
+    description: "change_direction refers to mrna_level - transcript abundance - because that is what compared_measurement names. change_value is the LMER beta on the delta-Ct scale (Ct_target - Ct_GAPDH), which runs INVERSELY to transcript abundance, so its sign is deliberately opposite to change_direction: a negative beta means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5, and a positive beta means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
     derived_from_assay: "GE:ghosh-airway-hif1a"
     compared_measurement: "mrna_level"
     control_output: "GE:ghosh-airway-hif1a-output-monsoon"
     treated_output: "GE:ghosh-airway-hif1a-output-spring"
     change_type: absolute_difference
-    change_direction: decreased
+    change_direction: increased
     change_value:
       value: "-2.02"
       variability:
@@ -3572,13 +3578,13 @@ response_comparisons:
     derivation: reported_in_paper
   - id: "COMP:ghosh-airway-vegfa-mrna"
     name: "Association of PM2.5 with VEGFA transcript (delta-Ct) in airway cells"
-    description: "LMER beta estimate on the delta-Ct scale (Ct_target - Ct_GAPDH). A negative estimate means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5; a positive estimate means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
+    description: "change_direction refers to mrna_level - transcript abundance - because that is what compared_measurement names. change_value is the LMER beta on the delta-Ct scale (Ct_target - Ct_GAPDH), which runs INVERSELY to transcript abundance, so its sign is deliberately opposite to change_direction: a negative beta means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5, and a positive beta means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
     derived_from_assay: "GE:ghosh-airway-vegfa"
     compared_measurement: "mrna_level"
     control_output: "GE:ghosh-airway-vegfa-output-monsoon"
     treated_output: "GE:ghosh-airway-vegfa-output-spring"
     change_type: absolute_difference
-    change_direction: decreased
+    change_direction: increased
     change_value:
       value: "-2.11"
       variability:
@@ -3587,13 +3593,13 @@ response_comparisons:
         upper_bound: "-1.55"
     statistical_test: "linear mixed-effects regression (LMER) with participant identity code as the random effect, adjusted for age, BMI, marital status, number of family members, education, profession, income, number of working years, work duration, mode of transport, passive smoking and cooking fuel type; the estimate is the change per 10 ug/m3 increase in PM2.5, not a raw monsoon-to-spring difference"
     derivation: reported_in_paper
-  - id: "COMP:ghosh-airway-pik3ca-protein"
-    name: "Association of PM2.5 with pPI3K p85alpha Tyr508 protein in airway cells"
+  - id: "COMP:ghosh-airway-pik3r1-protein"
+    name: "Association of PM2.5 with PIK3R1 (pPI3K p85alpha Tyr508) protein in airway cells"
     description: "LMER beta estimate on the normalized relative-unit scale of the indirect ELISA readout. Unit omitted: the ELISA reports normalized relative units, not absolute protein concentrations."
-    derived_from_assay: "GE:ghosh-airway-pik3ca"
+    derived_from_assay: "GE:ghosh-airway-pik3r1"
     compared_measurement: "protein_level"
-    control_output: "GE:ghosh-airway-pik3ca-output-monsoon"
-    treated_output: "GE:ghosh-airway-pik3ca-output-spring"
+    control_output: "GE:ghosh-airway-pik3r1-output-monsoon"
+    treated_output: "GE:ghosh-airway-pik3r1-output-spring"
     change_type: absolute_difference
     change_direction: increased
     change_value:
@@ -3708,13 +3714,13 @@ response_comparisons:
     derivation: reported_in_paper
   - id: "COMP:ghosh-leukocyte-pik3ca-mrna"
     name: "Association of PM2.5 with PIK3CA transcript (delta-Ct) in leukocytes"
-    description: "LMER beta estimate on the delta-Ct scale (Ct_target - Ct_GAPDH). A negative estimate means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5; a positive estimate means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
+    description: "change_direction refers to mrna_level - transcript abundance - because that is what compared_measurement names. change_value is the LMER beta on the delta-Ct scale (Ct_target - Ct_GAPDH), which runs INVERSELY to transcript abundance, so its sign is deliberately opposite to change_direction: a negative beta means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5, and a positive beta means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
     derived_from_assay: "GE:ghosh-leukocyte-pik3ca"
     compared_measurement: "mrna_level"
     control_output: "GE:ghosh-leukocyte-pik3ca-output-monsoon"
     treated_output: "GE:ghosh-leukocyte-pik3ca-output-spring"
     change_type: absolute_difference
-    change_direction: decreased
+    change_direction: increased
     change_value:
       value: "-1.01"
       variability:
@@ -3725,13 +3731,13 @@ response_comparisons:
     derivation: reported_in_paper
   - id: "COMP:ghosh-leukocyte-hif1a-mrna"
     name: "Association of PM2.5 with HIF1A transcript (delta-Ct) in leukocytes"
-    description: "LMER beta estimate on the delta-Ct scale (Ct_target - Ct_GAPDH). A negative estimate means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5; a positive estimate means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
+    description: "change_direction refers to mrna_level - transcript abundance - because that is what compared_measurement names. change_value is the LMER beta on the delta-Ct scale (Ct_target - Ct_GAPDH), which runs INVERSELY to transcript abundance, so its sign is deliberately opposite to change_direction: a negative beta means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5, and a positive beta means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
     derived_from_assay: "GE:ghosh-leukocyte-hif1a"
     compared_measurement: "mrna_level"
     control_output: "GE:ghosh-leukocyte-hif1a-output-monsoon"
     treated_output: "GE:ghosh-leukocyte-hif1a-output-spring"
     change_type: absolute_difference
-    change_direction: decreased
+    change_direction: increased
     change_value:
       value: "-0.99"
       variability:
@@ -3742,13 +3748,13 @@ response_comparisons:
     derivation: reported_in_paper
   - id: "COMP:ghosh-leukocyte-pten-mrna"
     name: "Association of PM2.5 with PTEN transcript (delta-Ct) in leukocytes"
-    description: "LMER beta estimate on the delta-Ct scale (Ct_target - Ct_GAPDH). A negative estimate means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5; a positive estimate means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
+    description: "change_direction refers to mrna_level - transcript abundance - because that is what compared_measurement names. change_value is the LMER beta on the delta-Ct scale (Ct_target - Ct_GAPDH), which runs INVERSELY to transcript abundance, so its sign is deliberately opposite to change_direction: a negative beta means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5, and a positive beta means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
     derived_from_assay: "GE:ghosh-leukocyte-pten"
     compared_measurement: "mrna_level"
     control_output: "GE:ghosh-leukocyte-pten-output-monsoon"
     treated_output: "GE:ghosh-leukocyte-pten-output-spring"
     change_type: absolute_difference
-    change_direction: increased
+    change_direction: decreased
     change_value:
       value: "4.52"
       variability:
@@ -3759,13 +3765,13 @@ response_comparisons:
     derivation: reported_in_paper
   - id: "COMP:ghosh-leukocyte-bax-mrna"
     name: "Association of PM2.5 with BAX transcript (delta-Ct) in leukocytes"
-    description: "LMER beta estimate on the delta-Ct scale (Ct_target - Ct_GAPDH). A negative estimate means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5; a positive estimate means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
+    description: "change_direction refers to mrna_level - transcript abundance - because that is what compared_measurement names. change_value is the LMER beta on the delta-Ct scale (Ct_target - Ct_GAPDH), which runs INVERSELY to transcript abundance, so its sign is deliberately opposite to change_direction: a negative beta means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5, and a positive beta means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
     derived_from_assay: "GE:ghosh-leukocyte-bax"
     compared_measurement: "mrna_level"
     control_output: "GE:ghosh-leukocyte-bax-output-monsoon"
     treated_output: "GE:ghosh-leukocyte-bax-output-spring"
     change_type: absolute_difference
-    change_direction: increased
+    change_direction: decreased
     change_value:
       value: "1.24"
       variability:
@@ -3776,13 +3782,13 @@ response_comparisons:
     derivation: reported_in_paper
   - id: "COMP:ghosh-leukocyte-egfr-mrna"
     name: "Association of PM2.5 with EGFR transcript (delta-Ct) in leukocytes"
-    description: "LMER beta estimate on the delta-Ct scale (Ct_target - Ct_GAPDH). A negative estimate means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5; a positive estimate means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
+    description: "change_direction refers to mrna_level - transcript abundance - because that is what compared_measurement names. change_value is the LMER beta on the delta-Ct scale (Ct_target - Ct_GAPDH), which runs INVERSELY to transcript abundance, so its sign is deliberately opposite to change_direction: a negative beta means delta-Ct fell, i.e. transcript abundance ROSE with PM2.5, and a positive beta means transcript abundance FELL. Unit omitted: delta-Ct is a PCR cycle difference with no unit ontology term."
     derived_from_assay: "GE:ghosh-leukocyte-egfr"
     compared_measurement: "mrna_level"
     control_output: "GE:ghosh-leukocyte-egfr-output-monsoon"
     treated_output: "GE:ghosh-leukocyte-egfr-output-spring"
     change_type: absolute_difference
-    change_direction: decreased
+    change_direction: increased
     change_value:
       value: "-1.76"
       variability:
@@ -3912,7 +3918,7 @@ response_comparisons:
     derivation: reported_in_paper
   - id: "COMP:ghosh-leukocyte-pten-protein"
     name: "Association of PM2.5 with PTEN protein in leukocytes"
-    description: "LMER beta estimate on the normalized relative-unit scale of the indirect ELISA readout. Unit omitted: the ELISA reports normalized relative units, not absolute protein concentrations."
+    description: "LMER beta estimate on the normalized relative-unit scale of the indirect ELISA readout. Unit omitted: the ELISA reports normalized relative units, not absolute protein concentrations. NOTE: the 95% CI (-0.24, 0.01) spans zero, so this association is not statistically significant even though the paper describes PM2.5 as having 'decreased the leukocyte protein PTEN'; change_direction follows the paper’s wording."
     derived_from_assay: "GE:ghosh-leukocyte-pten"
     compared_measurement: "protein_level"
     control_output: "GE:ghosh-leukocyte-pten-output-monsoon"
@@ -3962,29 +3968,73 @@ response_comparisons:
     statistical_test: "linear mixed-effects regression (LMER) with participant identity code as the random effect, adjusted for age, BMI, marital status, number of family members, education, profession, income, number of working years, work duration, mode of transport, passive smoking and cooking fuel type; the estimate is the change per 10 ug/m3 increase in PM2.5, not a raw monsoon-to-spring difference"
     derivation: reported_in_paper
 
+  - id: "COMP:ghosh-sputum-alveolar-macrophages"
+    name: "Association of PM2.5 with the frequency of alveolar macrophages in sputum"
+    description: "LMER beta estimate for the frequency of alveolar macrophages in spontaneous sputum. Unit omitted and the slot name overstates the scale: the paper reports an average cell number per counted field (Fig. 2b legend), not a percentage, and macrophage_percentage is the only macrophage slot BALFSputumOutput offers. Recorded here rather than left in prose so the number is queryable alongside the other LMER estimates."
+    derived_from_assay: "BALF:ghosh-sputum-cytology"
+    compared_measurement: "macrophage_percentage"
+    control_output: "BALF:ghosh-sputum-cytology-output-monsoon"
+    treated_output: "BALF:ghosh-sputum-cytology-output-spring"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-5.46"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-9.44"
+        upper_bound: "-1.47"
+    statistical_test: "linear mixed-effects regression (LMER) with participant identity code as the random effect, adjusted for age, BMI, marital status, number of family members, education, profession, income, number of working years, work duration, mode of transport, passive smoking and cooking fuel type; the estimate is the change per 10 ug/m3 increase in PM2.5, not a raw monsoon-to-spring difference"
+    derivation: reported_in_paper
+  - id: "COMP:ghosh-airway-early-apoptotic-cells"
+    name: "Association of PM2.5 with the frequency of early apoptotic cells in airway cells"
+    description: "LMER beta estimate for the decrement of early apoptotic airway cells by annexin V-FITC/PI flow cytometry. Attached to GE:ghosh-airway-bcl2 because that assay carries the apoptosis readouts for this compartment; percentage_positive_cells is the nearest GeneExpressionOutput slot. Unit omitted: the paper reports an average number of early apoptotic cells (Fig. 3g legend) rather than a percentage. Recorded here rather than left in prose so the number is queryable."
+    derived_from_assay: "GE:ghosh-airway-bcl2"
+    compared_measurement: "percentage_positive_cells"
+    control_output: "GE:ghosh-airway-bcl2-output-monsoon"
+    treated_output: "GE:ghosh-airway-bcl2-output-spring"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-11.00"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-14.27"
+        upper_bound: "-7.77"
+    statistical_test: "linear mixed-effects regression (LMER) with participant identity code as the random effect, adjusted for age, BMI, marital status, number of family members, education, profession, income, number of working years, work duration, mode of transport, passive smoking and cooking fuel type; the estimate is the change per 10 ug/m3 increase in PM2.5, not a raw monsoon-to-spring difference"
+    derivation: reported_in_paper
+
 # =============================================================================
 # KEY EVENT RELATIONSHIPS
 # =============================================================================
 #
-# Three KE ids are minted here because no existing key event on main fits:
-#   KE:ke-suppressed-apoptosis, KE:ke-increased-proliferation and
-#   KE:ke-proangiogenic-signaling. Each is kept minimal so the next paper can
-#   reuse it verbatim. The other key events used in this file
-#   (KE:ao-decreased-lung-function, KE:ke-airway-inflammation,
-#   KE:ke-systemic-inflammation, KE:ke1-egfr-activation,
-#   KE:mie-oxidative-stress) are copied verbatim from main.
+# Four KE ids are minted here because no existing key event on main fits:
+#   KE:ke-pi3k-akt-activation, KE:ke-suppressed-apoptosis,
+#   KE:ke-increased-proliferation and KE:ke-proangiogenic-signaling. Each is
+#   kept minimal so the next paper can reuse it verbatim. The other key events
+#   used in this file (KE:ao-decreased-lung-function,
+#   KE:ke-airway-inflammation, KE:ke-systemic-inflammation,
+#   KE:ke1-egfr-activation, KE:mie-oxidative-stress) are copied verbatim from
+#   main.
 #
-# These relationships are the ones the paper states for its own data; the
-# PI3K/AKT-to-downstream links the paper only cites from other work are not
-# recorded here.
+# Topology follows the paper's own framing: EGFR is the upstream regulator of
+# the PI3K/AKT circuit, and it is PI3K/AKT signaling - not EGFR directly -
+# that the paper ties to suppressed apoptosis, proliferation and
+# pro-angiogenic signaling. So the assays measuring the PI3K/AKT nodes
+# (PIK3R1/PIK3CA, AKT2, MTOR, PTEN) inform on KE:ke-pi3k-akt-activation while
+# the EGFR assays inform on KE:ke1-egfr-activation, and the three downstream
+# edges start from PI3K/AKT activation.
+#
+# The EGFR-to-PI3K/AKT edge carries evidence_support: weak because the
+# authors cite that link as established rather than testing causality in
+# their own data.
 # =============================================================================
 
 key_event_relationships:
-  - id: "KER:ghosh-egfr-to-suppressed-apoptosis"
-    name: "EGFR/PI3K/AKT activation leads to suppressed apoptosis"
+  - id: "KER:ghosh-pi3k-akt-to-suppressed-apoptosis"
+    name: "PI3K/AKT pathway activation leads to suppressed apoptosis"
     upstream_event:
-      id: "KE:ke1-egfr-activation"
-      name: "EGFR activation"
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
       biological_action: activated
       level_of_biological_organization: molecular
     downstream_event:
@@ -4008,11 +4058,11 @@ key_event_relationships:
         snippet: "high PM 2.5 may impact the activation of pro-oncogenic signaling"
         explanation: "The paper's conclusion that PM2.5 exposure activates the EGFR/PI3K/AKT signaling that suppresses apoptosis."
 
-  - id: "KER:ghosh-egfr-to-proliferation"
-    name: "EGFR/PI3K/AKT activation leads to increased cell proliferation"
+  - id: "KER:ghosh-pi3k-akt-to-proliferation"
+    name: "PI3K/AKT pathway activation leads to increased cell proliferation"
     upstream_event:
-      id: "KE:ke1-egfr-activation"
-      name: "EGFR activation"
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
       biological_action: activated
       level_of_biological_organization: molecular
     downstream_event:
@@ -4036,11 +4086,11 @@ key_event_relationships:
         snippet: "the protein profile of Cyclin D1 showed prominent"
         explanation: "The proliferation marker whose spring upregulation supports the downstream proliferation event in this relationship."
 
-  - id: "KER:ghosh-egfr-to-proangiogenic-signaling"
-    name: "EGFR/PI3K/AKT activation leads to increased pro-angiogenic signaling"
+  - id: "KER:ghosh-pi3k-akt-to-proangiogenic-signaling"
+    name: "PI3K/AKT pathway activation leads to increased pro-angiogenic signaling"
     upstream_event:
-      id: "KE:ke1-egfr-activation"
-      name: "EGFR activation"
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
       biological_action: activated
       level_of_biological_organization: molecular
     downstream_event:
@@ -4064,19 +4114,19 @@ key_event_relationships:
         snippet: "the same proteins further validated their upregulation in the airway"
         explanation: "The VEGF and HIF-1alpha protein upregulation that supports the downstream pro-angiogenic event in this relationship."
 
-  - id: "KER:ghosh-egfr-upstream-of-pi3k-akt"
-    name: "EGFR activation is the upstream regulator of the PI3K/AKT circuit"
+  - id: "KER:ghosh-egfr-to-pi3k-akt-activation"
+    name: "EGFR activation leads to PI3K/AKT pathway activation"
     upstream_event:
       id: "KE:ke1-egfr-activation"
       name: "EGFR activation"
       biological_action: activated
       level_of_biological_organization: molecular
     downstream_event:
-      id: "KE:ke-increased-proliferation"
-      name: "Increased cell proliferation"
-      biological_action: increased
-      level_of_biological_organization: cellular
-    relationship_type: "indirectly leads to"
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    relationship_type: "directly leads to"
     evidence_support: weak
     # Not quantified by the authors: EGFR and the PI3K/AKT nodes were
     # measured in the same samples and moved together with PM2.5, but the
