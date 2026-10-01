@@ -556,7 +556,7 @@ cftr_assays:
       sweat_chloride_concentration:
         value: "25"
         unit:
-          id: "UO:0000308"
+          id: "UCUM:meq/L"
           name: "milliequivalent per liter"
       nasal_potential_difference:
         value: "-18.5"
