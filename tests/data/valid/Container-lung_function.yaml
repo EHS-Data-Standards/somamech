@@ -17,7 +17,7 @@ lung_function_assays:
         exposure_concentration:
           value: "400"
           unit:
-            id: "UO:0000022"
+            id: "UO:0000023"
             name: "microgram"
         timing_post_exposure:
           value: "15"
@@ -27,20 +27,21 @@ lung_function_assays:
     has_specified_output:
       - id: "LF:001-output-pre"
         name: "Pre-bronchodilator spirometry results"
+        description: "FEV1, FVC, DLCO and peak expiratory flow are expressed as percent of predicted (GLI-2012 reference); FEV1/FVC ratio is a plain percentage."
         experimental_group: baseline
         measured_under: "COND:lf-pre-bronchodilator"
         fev1:
           value: "82.5"
           unit:
             id: "UO:0000187"
-            name: "percent predicted"
+            name: "percent"
           central_tendency: single_value
           sample_size: 1
         fvc:
           value: "95.0"
           unit:
             id: "UO:0000187"
-            name: "percent predicted"
+            name: "percent"
           central_tendency: single_value
           sample_size: 1
         fev1_fvc_ratio:
@@ -61,32 +62,33 @@ lung_function_assays:
           value: "88"
           unit:
             id: "UO:0000187"
-            name: "percent predicted"
+            name: "percent"
           central_tendency: single_value
           sample_size: 1
         peak_expiratory_flow:
           value: "92"
           unit:
             id: "UO:0000187"
-            name: "percent predicted"
+            name: "percent"
           central_tendency: single_value
           sample_size: 1
       - id: "LF:001-output-post"
         name: "Post-bronchodilator spirometry results"
+        description: "FEV1, FVC and peak expiratory flow are expressed as percent of predicted (GLI-2012 reference); FEV1/FVC ratio and bronchodilator response are plain percentages."
         experimental_group: treated
         measured_under: "COND:lf-post-albuterol"
         fev1:
           value: "89.5"
           unit:
             id: "UO:0000187"
-            name: "percent predicted"
+            name: "percent"
           central_tendency: single_value
           sample_size: 1
         fvc:
           value: "97.8"
           unit:
             id: "UO:0000187"
-            name: "percent predicted"
+            name: "percent"
           central_tendency: single_value
           sample_size: 1
         fev1_fvc_ratio:
@@ -107,7 +109,7 @@ lung_function_assays:
           value: "98"
           unit:
             id: "UO:0000187"
-            name: "percent predicted"
+            name: "percent"
           central_tendency: single_value
           sample_size: 1
     reference_dataset: "GLI-2012"
@@ -141,7 +143,7 @@ lung_function_assays:
         bronchodilator_dose:
           value: "400"
           unit:
-            id: "UO:0000022"
+            id: "UO:0000023"
             name: "microgram"
 
 # Analysis layer: the bronchodilator response, which the assay also records

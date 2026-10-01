@@ -528,7 +528,7 @@ goblet_cell_assays:
             name: "hour"
     informs_on_key_event:
       id: "KE:ke2-goblet-hyperplasia"
-      name: "Goblet cell hyperplasia and mucin hypersecretion"
+      name: "Goblet cell hyperplasia"
       biological_action: increased
       level_of_biological_organization: cellular
     study_subject:
@@ -602,7 +602,7 @@ goblet_cell_assays:
             name: "hour"
     informs_on_key_event:
       id: "KE:ke2-goblet-hyperplasia"
-      name: "Goblet cell hyperplasia and mucin hypersecretion"
+      name: "Goblet cell hyperplasia"
       biological_action: increased
       level_of_biological_organization: cellular
     study_subject:
