@@ -1,0 +1,3415 @@
+# =============================================================================
+# Lindner et al. (2018) - Low Dose Carbon Black Nanoparticle Exposure Does Not
+# Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence
+# of Surface Polycyclic Aromatic Hydrocarbons
+# =============================================================================
+#
+# Source: Nanomaterials (Basel) 2018;8(4):213
+# DOI: 10.3390/nano8040213
+#
+# Study design (all in vivo, mouse):
+#   - Female Balb/c mice, 7-9 weeks old
+#   - OVA sensitisation i.p. on days 1, 14, 21; OVA aerosol challenge on
+#     days 26, 27, 28; PBS/H2O group = non-allergic control
+#   - CBNP given oropharyngeally twice (day 28 before the last challenge and
+#     day 29): 70 uL of a 100 ug/mL suspension = approx. 7 ug total dose
+#   - Six groups: PBS/H2O, OVA/H2O, OVA/P90, OVA/P90-BaP, OVA/P90-9NA,
+#     OVA/AS-PAH
+#   - P90 = Printex(R)90 carbon black; P90-BaP = P90 coated with
+#     benzo[a]pyrene (10% of particle mass); P90-9NA = P90 coated with
+#     9-nitroanthracene (14% of particle mass); AS-PAH = acetylene soot
+#     carrying a mixture of at least 12 surface PAH species
+#
+# THIS IS A NEGATIVE-RESULT PAPER. The primary finding is a null result: at a
+# low (ambient-equivalent) dose, none of the four CBNP aggravated an
+# established allergic airway inflammation. Every "no change" recorded below
+# is data the paper reports, not a missing measurement. The few significant
+# changes that were observed went in the opposite (attenuating) direction,
+# except for the unmodified P90 particles, which decreased tracheal ciliary
+# beat frequency, decreased Muc5b mRNA in intrapulmonary airways, and
+# increased tracheal Muc5ac mRNA.
+#
+# Numeric values: Table 2 (BAL cytokine/chemokine protein, pg/mL) and Table 3
+# (mRNA, n-fold expression) are transcribed as reported, mean +/- SEM.
+# Figure-derived endpoints (relative lung weight, differential cell counts,
+# airway resistance, PAS quantification, ciliary beat frequency, particle
+# transport speed) are recorded as output records WITHOUT numeric values,
+# because the paper reports them only as plots - the direction of the effect
+# is carried in response_comparisons and in the descriptions.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:29614747"
+  reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+  doi: "10.3390/nano8040213"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:lindner-cba-001"
+    name: "Cytometric bead array for BAL fluid cytokines and chemokines"
+    description: "BAL fluid centrifuged; cytokines and chemokines relevant for lung inflammation determined in the supernatant with CBA Flex Set Kits (BD Bioscience). Fluorescent intensity read on a BD Accuri C6 flow cytometer, analysed with FCAP Array v3.0. Results reported as absolute protein concentrations (pg/mL)."
+    equipment_required:
+      - "CBA Flex Set Kits (BD Bioscience, San Jose, CA, USA)"
+      - "BD Accuri C6 flow cytometer (BD Bioscience)"
+      - "FCAP Array v3.0 Software (BD Bioscience)"
+
+  - id: "PROTOCOL:lindner-bal-diffcount-001"
+    name: "Bronchoalveolar lavage and differential immune cell count"
+    description: "Trachea cannulated and lungs rinsed with 1 mL D-PBS containing protease inhibitor. BAL volume recorded and total immune cell number counted in a Neubauer chamber. For the differential count, 50 uL of BAL fluid was cytospinned (500 x g, 5 min) and macrophages, lymphocytes, eosinophil and neutrophil granulocytes stained by the Pappenheim method or with Diffquick solutions. At least 100 immune cells counted per sample; results given as total cells per mL BAL fluid."
+    equipment_required:
+      - "Neubauer counting chamber"
+      - "Cytospin (Thermo Scientific)"
+      - "Diffquick solutions (Medion Grifols Diagnostics AG)"
+
+  - id: "PROTOCOL:lindner-lungfx-001"
+    name: "Invasive measurement of total lung resistance with methacholine challenge"
+    description: "Airway responsiveness to methacholine assessed invasively as total lung resistance using Finepoint RC Units (Data Science International). Mice anaesthetised, tracheotomised with a cannula and mechanically ventilated. Data represent the airway resistance in response to a 100 mg/mL methacholine dose."
+    equipment_required:
+      - "Finepoint RC Units (Data Science International, New Brighton, MN, USA)"
+      - "Tracheal cannula and mechanical ventilator"
+
+  - id: "PROTOCOL:lindner-qpcr-trachea-001"
+    name: "TaqMan real-time RT-PCR on isolated tracheal epithelial cells"
+    description: "Total RNA isolated from tracheal epithelial cells. Real-time RT-PCR in TaqMan Universal PCR Master Mix on an ABI PRISM 7900HT or StepOnePlus Sequence Detector System; probes tagged with reporter 6-FAM and quencher Tamra. Expression changes calculated as the difference in cycle threshold to the housekeeping gene RPL32 with the delta-delta-CT method and reported as n-fold expression (2^-ddCT)."
+    equipment_required:
+      - "ABI PRISM 7900HT / StepOnePlus Sequence Detector System (Applied Biosystems)"
+      - "TaqMan Universal PCR Master Mix (Life Technologies)"
+
+  - id: "PROTOCOL:lindner-qpcr-airways-001"
+    name: "SYBR Green real-time RT-PCR on microdissected intrapulmonary airways"
+    description: "Distal airways microdissected from surrounding parenchyma under a stereomicroscope and pooled. Real-time RT-PCR on a Roche Light Cycler 480 II using Light Cycler 480 SYBR green I Master. Cycling: 95 C 10 min, then 45 cycles touch-down 63-58 C for 8 s at 0.5 C/s and 72 C for 10 s. Expression changes calculated as n-fold difference in cycle threshold to the housekeeping gene RPL32, normalised by the rule of proportion."
+    equipment_required:
+      - "Roche Light Cycler 480 II Instrument (Roche Diagnostics)"
+      - "Light Cycler 480 SYBR green I Master (Roche Diagnostics)"
+
+  - id: "PROTOCOL:lindner-pas-lung-001"
+    name: "PAS staining and stereological quantification of goblet cells in lung sections"
+    description: "Lungs fixed ex situ by intra-tracheal instillation of 4% phosphate buffered paraformaldehyde, stored overnight in 4% paraformaldehyde and paraffin embedded with randomised orientation (orientator technique). 2 um sections stained with periodic acid-Schiff reagent, imaged at 20-fold magnification. Surface area of mucin-containing goblet cells per epithelial basal membrane surface area (Sgc/Sep) and volume of PAS-stained epithelial mucin per Sep (Vmucin/Sep) determined with the newCAST computer-assisted stereology toolbox."
+    equipment_required:
+      - "Olympus BX-51 microscope with DP-25 digital camera"
+      - "newCAST stereology toolbox (Visiopharm, Hoersholm, Denmark)"
+      - "Periodic acid-Schiff reagent"
+
+  - id: "PROTOCOL:lindner-pas-trachea-001"
+    name: "PAS staining of tracheal epithelium and counting of PAS-positive cells"
+    description: "Tracheae pinned on a cork plate, fixed in 4% phosphate-buffered paraformaldehyde, paraffin embedded and longitudinally sliced in fractionated series. 7 um sections stained via PAS reaction and haematoxylin. PAS-positive cells counted in at least 2 areas 490 um apart, each at least 350 um wide, one slice every 70 um, with at least 520 total epithelial cells counted. Reported as the percentage of the total number of non-ciliated cells."
+    equipment_required:
+      - "Microtome"
+      - "Periodic acid-Schiff reagent and haematoxylin"
+
+  - id: "PROTOCOL:lindner-cbf-001"
+    name: "Video microscopy of ciliary beat frequency in explanted trachea"
+    description: "Trachea samples pinned epithelium-up in a Sylgard-coated Delta T4 culture dish under 2 mL HEPES-Ringer solution, held at 30 C. Cilia motion recorded with 1000 images at 100 Hz in at least four areas per trachea; ciliary beat frequency of 10 ciliated cells measured per area and determined by Fourier transformation of grey level changes over time with Matlab-based software. Mean frequency calculated per trachea. ATP (10 uM) added at the end of each experiment to activate cilia beating."
+    equipment_required:
+      - "Zeiss Examiner.D1 microscope, Achroplan 40x/0.80 W objective"
+      - "SMX-150M camera (EHD Imaging GmbH)"
+      - "Bioptechs Delta T4 Culture Dish Controller"
+    quality_control_criteria: "Mean ciliary beat frequency calculated from at least 40 ciliated cells measured at four different tracheal regions of each animal"
+
+  - id: "PROTOCOL:lindner-transport-001"
+    name: "Particle transport speed on explanted tracheal epithelium"
+    description: "Transport of 4.5 um polystyrene particles (2 x 10^6 particles/mL) recorded on the explanted tracheal epithelium at 30 C with 200 images at 12 Hz from at least four different areas per trachea. Particle transport speed determined with Image-Pro Plus 6.0 and the mean speed calculated for each trachea."
+    equipment_required:
+      - "Zeiss Examiner.D1 microscope, 20x/1.0 DIC (UV) VIS-R objective"
+      - "4.5 um polystyrene particles"
+      - "Image-Pro Plus 6.0 (Medium Cybernetics)"
+
+# =============================================================================
+# BALF/SPUTUM ASSAYS - BAL fluid inflammation (in vivo, mouse)
+# =============================================================================
+
+balf_sputum_assays:
+  # ---------------------------------------------------------------------------
+  # Table 2 - cytokine/chemokine protein in BAL fluid, all six groups.
+  # Slotted: IL-6, IL-1beta, and KC (the murine homologue of human IL-8, which
+  # is how the paper itself describes it) in il8_concentration. Mcp-1, IL-4,
+  # IL-5, IL-13 and IL-17A have no named slot and are transcribed in the
+  # description below.
+  # ---------------------------------------------------------------------------
+  - id: "BALF:lindner-cytokines-cbnp"
+    name: "BAL fluid cytokine and chemokine levels - CBNP during established allergic airway inflammation"
+    description: >-
+      Table 2, cytometric bead array, concentrations in pg/mL, mean +/- SEM,
+      n = 11-16, OVA/CBNP groups compared with the OVA/H2O group by
+      Mann-Whitney U test. NULL RESULT for aggravation: no CBNP increased any
+      cytokine or chemokine relative to OVA/H2O. Values without a named
+      measurement slot, in the order PBS/H2O, OVA/H2O, OVA/P90, OVA/P90-BaP,
+      OVA/P90-9NA, OVA/AS-PAH - Mcp-1: 0.01+/-0.01, 27.0+/-5.7, 12.7+/-3.9*,
+      7.4+/-5.5*, 11.7+/-5.7*, 0.6+/-0.3*; IL-4: 0.8+/-0.6, 1.2+/-0.2,
+      0.7+/-0.1, 0.7+/-0.1*, 0.9+/-0.2, 0.6+/-0.2*; IL-5: 0.8+/-0.3,
+      12.7+/-2.1, 10.4+/-1.8, 13.4+/-1.8, 11.1+/-1.8, 11.7+/-2.2; IL-13:
+      0.03+/-0.01, 7.3+/-1.1, 4.4+/-0.9*, 5.7+/-1.1, 4.4+/-0.6*, 5.4+/-1.2;
+      IL-17A: 0.2+/-0.1, 0.4+/-0.1, 0.3+/-0.1, 0.3+/-0.1, 0.4+/-0.1,
+      0.3+/-0.1 (* p < 0.05 vs OVA/H2O). Every significant CBNP effect was a
+      DECREASE, i.e. an attenuation rather than an aggravation.
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The exposure to CBNP did not increase the relative lung wet weight (Figure 1a) nor the number of immune cells (Figure 1b) or inflammatory cytokines (Table 2) in the BAL fluid, and the airway hyperresponsiveness to methacholine was not different from OVA/H2O treated mice (Figure 1c)."
+        explanation: "States directly that none of the CBNP raised BAL fluid inflammatory cytokines above the OVA/H2O level, which is the null result the treated output records carry."
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The reduction of Mcp-1 protein level in the BAL fluid was observed after exposure to all CBNP tested (Table 2)."
+        explanation: "Supports the one consistent significant BAL fluid change recorded in this assay's description - a decrease of Mcp-1 in every CBNP group, not an increase."
+    has_specified_output:
+      - id: "BALF:lindner-cytokines-cbnp-output-pbs"
+        name: "BAL cytokines - PBS/H2O non-allergic control"
+        experimental_group: control
+        measured_under: "EXPOSURE:lindner-pbs-h2o"
+        il6_concentration:
+          value: "0.4"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+        il1_beta_concentration:
+          value: "0.06"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.02"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+        il8_concentration:
+          value: "9.5"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "2.3"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+      - id: "BALF:lindner-cytokines-cbnp-output-ova"
+        name: "BAL cytokines - OVA/H2O allergic control"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:lindner-ova-h2o"
+        il6_concentration:
+          value: "1.1"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.3"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+        il1_beta_concentration:
+          value: "1.3"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.2"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+        il8_concentration:
+          value: "21.6"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "5.7"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+      - id: "BALF:lindner-cytokines-cbnp-output-p90"
+        name: "BAL cytokines - OVA/P90"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90"
+        il6_concentration:
+          value: "0.8"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.2"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+        il1_beta_concentration:
+          value: "0.8"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.2"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+        il8_concentration:
+          value: "16.7"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "4.3"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+      - id: "BALF:lindner-cytokines-cbnp-output-p90-bap"
+        name: "BAL cytokines - OVA/P90-BaP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-bap"
+        il6_concentration:
+          value: "0.7"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+        il1_beta_concentration:
+          value: "0.8"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.2"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+        il8_concentration:
+          value: "17.7"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "4.2"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+      - id: "BALF:lindner-cytokines-cbnp-output-p90-9na"
+        name: "BAL cytokines - OVA/P90-9NA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-9na"
+        il6_concentration:
+          value: "0.7"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.2"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+        il1_beta_concentration:
+          value: "0.7"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.2"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+        il8_concentration:
+          value: "21.3"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "7.9"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+      - id: "BALF:lindner-cytokines-cbnp-output-as-pah"
+        name: "BAL cytokines - OVA/AS-PAH"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-as-pah"
+        il6_concentration:
+          value: "0.7"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.2"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+        il1_beta_concentration:
+          value: "0.5"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+        il8_concentration:
+          value: "9.9"
+          unit:
+            id: "UO:0010070"
+            name: "picogram per milliliter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "2.5"
+            unit:
+              id: "UO:0010070"
+              name: "picogram per milliliter"
+    has_exposure_condition:
+      - id: "EXPOSURE:lindner-pbs-h2o"
+        name: "PBS sensitisation, water vehicle - non-allergic control"
+      - id: "EXPOSURE:lindner-ova-h2o"
+        name: "OVA sensitisation and challenge, water vehicle - allergic control"
+      - id: "EXPOSURE:lindner-ova-p90"
+        name: "OVA plus Printex(R)90 carbon black, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-bap"
+        name: "OVA plus P90 coated with benzo[a]pyrene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-9na"
+        name: "OVA plus P90 coated with 9-nitroanthracene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-as-pah"
+        name: "OVA plus acetylene soot with surface PAH mixture, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lindner-mouse-ova-cbnp"
+      name: "OVA-sensitised female Balb/c mouse exposed to CBNP"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "female"
+      disease_state: "OVA-induced experimental allergic asthma"
+      subject_characteristics: "Female 7-9 week old Balb/c mice, OVA-free diet, water ad libitum; OVA i.p. on days 1, 14, 21 and OVA aerosol challenge on days 26-28"
+      sample_type: balf
+      sample_collection_method: "Trachea cannulated, lungs rinsed with 1 mL D-PBS containing protease inhibitor"
+      collection_site: "whole lung bronchoalveolar lavage"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:lindner-cba-001"
+        name: "Cytometric bead array for BAL fluid cytokines and chemokines"
+        detection_method: "Cytometric bead array (CBA Flex Set Kits, BD Bioscience) read by flow cytometry"
+        platform: "BD Accuri C6 flow cytometer"
+
+  # ---------------------------------------------------------------------------
+  # Figure 1b - differential immune cell count. Reported as a plot only, so no
+  # numeric values are transcribed.
+  # ---------------------------------------------------------------------------
+  - id: "BALF:lindner-immune-cells-cbnp"
+    name: "BAL fluid differential immune cell count - CBNP during established allergic airway inflammation"
+    description: >-
+      Figure 1b, differential count of macrophages, lymphocytes, eosinophil
+      and neutrophil granulocytes per mL BAL fluid, n = 18-25, mean +/- SEM,
+      Mann-Whitney U test versus OVA/H2O. Macrophage, lymphocyte and
+      granulocyte numbers were increased in the OVA control relative to the
+      PBS control. NULL RESULT: CBNP exposure did not increase immune cell
+      numbers. The only significant CBNP effects were decreases in eosinophil
+      number after P90-BaP and P90-9NA. Values are plotted, not tabulated, so
+      no numeric measurements are recorded here.
+    target_cell_type:
+      id: "CL:0000771"
+      name: "eosinophil"
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "P90-BaP and P90-9NA decreased the number of eosinophils (Figure 1b)"
+        explanation: "Names the only significant change in the differential cell count - a decrease of eosinophils in the two PAH-coated P90 groups - which is what the P90-BaP and P90-9NA output records stand for."
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "we did not detect an increase or a decrease in immune cell numbers after exposure to P90 nanoparticles"
+        explanation: "Supports the explicit null finding recorded for the unmodified P90 group in this assay."
+    has_specified_output:
+      - id: "BALF:lindner-immune-cells-cbnp-output-pbs"
+        name: "Differential immune cell count - PBS/H2O non-allergic control"
+        experimental_group: control
+        measured_under: "EXPOSURE:lindner-pbs-h2o"
+      - id: "BALF:lindner-immune-cells-cbnp-output-ova"
+        name: "Differential immune cell count - OVA/H2O allergic control"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:lindner-ova-h2o"
+      - id: "BALF:lindner-immune-cells-cbnp-output-p90"
+        name: "Differential immune cell count - OVA/P90"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90"
+      - id: "BALF:lindner-immune-cells-cbnp-output-p90-bap"
+        name: "Differential immune cell count - OVA/P90-BaP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-bap"
+      - id: "BALF:lindner-immune-cells-cbnp-output-p90-9na"
+        name: "Differential immune cell count - OVA/P90-9NA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-9na"
+      - id: "BALF:lindner-immune-cells-cbnp-output-as-pah"
+        name: "Differential immune cell count - OVA/AS-PAH"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-as-pah"
+    has_exposure_condition:
+      - id: "EXPOSURE:lindner-pbs-h2o"
+        name: "PBS sensitisation, water vehicle - non-allergic control"
+      - id: "EXPOSURE:lindner-ova-h2o"
+        name: "OVA sensitisation and challenge, water vehicle - allergic control"
+      - id: "EXPOSURE:lindner-ova-p90"
+        name: "OVA plus Printex(R)90 carbon black, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-bap"
+        name: "OVA plus P90 coated with benzo[a]pyrene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-9na"
+        name: "OVA plus P90 coated with 9-nitroanthracene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-as-pah"
+        name: "OVA plus acetylene soot with surface PAH mixture, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lindner-mouse-ova-cbnp"
+      name: "OVA-sensitised female Balb/c mouse exposed to CBNP"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "female"
+      disease_state: "OVA-induced experimental allergic asthma"
+      subject_characteristics: "Female 7-9 week old Balb/c mice; n = 18-25 per group for the differential cell count"
+      sample_type: balf
+      sample_collection_method: "Trachea cannulated, lungs rinsed with 1 mL D-PBS; 50 uL cytospinned and stained by Pappenheim or Diffquick"
+      collection_site: "whole lung bronchoalveolar lavage"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:lindner-bal-diffcount-001"
+        name: "Bronchoalveolar lavage and differential immune cell count"
+        staining_type: "Pappenheim / Diffquick"
+        detection_method: "Light microscopic differential count of at least 100 immune cells per cytospin"
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS - airway hyperresponsiveness (in vivo, mouse)
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:lindner-ahr-methacholine"
+    name: "Total lung resistance in response to methacholine - CBNP during established allergic airway inflammation"
+    description: >-
+      Figure 1c, invasive measurement of total lung resistance in response to
+      a 100 mg/mL methacholine dose, n = 7-8, mean +/- SEM, Mann-Whitney U
+      test versus OVA/H2O. Airway hyperresponsiveness was increased in the
+      OVA control compared with the PBS control, confirming the asthma model.
+      NULL RESULT: airway hyperresponsiveness in the CBNP groups was not
+      different from the OVA/H2O group. Reported as a plot only, so no
+      numeric values are transcribed.
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "the airway hyperresponsiveness to methacholine was increased in the OVA control group compared to the PBS control group (Figure 1c)"
+        explanation: "Supports the difference between the PBS control and OVA control output records of this assay, which establishes that the model was working."
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "the airway hyperresponsiveness to methacholine was not different from OVA/H2O treated mice (Figure 1c)"
+        explanation: "The explicit null finding for lung resistance that the four CBNP output records and the no_change response comparison record."
+    has_specified_output:
+      - id: "LF:lindner-ahr-methacholine-output-pbs"
+        name: "Lung resistance at 100 mg/mL methacholine - PBS/H2O non-allergic control"
+        experimental_group: control
+        measured_under: "EXPOSURE:lindner-pbs-h2o"
+      - id: "LF:lindner-ahr-methacholine-output-ova"
+        name: "Lung resistance at 100 mg/mL methacholine - OVA/H2O allergic control"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:lindner-ova-h2o"
+      - id: "LF:lindner-ahr-methacholine-output-p90"
+        name: "Lung resistance at 100 mg/mL methacholine - OVA/P90"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90"
+      - id: "LF:lindner-ahr-methacholine-output-p90-bap"
+        name: "Lung resistance at 100 mg/mL methacholine - OVA/P90-BaP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-bap"
+      - id: "LF:lindner-ahr-methacholine-output-p90-9na"
+        name: "Lung resistance at 100 mg/mL methacholine - OVA/P90-9NA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-9na"
+      - id: "LF:lindner-ahr-methacholine-output-as-pah"
+        name: "Lung resistance at 100 mg/mL methacholine - OVA/AS-PAH"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-as-pah"
+    has_exposure_condition:
+      - id: "EXPOSURE:lindner-pbs-h2o"
+        name: "PBS sensitisation, water vehicle - non-allergic control"
+      - id: "EXPOSURE:lindner-ova-h2o"
+        name: "OVA sensitisation and challenge, water vehicle - allergic control"
+      - id: "EXPOSURE:lindner-ova-p90"
+        name: "OVA plus Printex(R)90 carbon black, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-bap"
+        name: "OVA plus P90 coated with benzo[a]pyrene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-9na"
+        name: "OVA plus P90 coated with 9-nitroanthracene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-as-pah"
+        name: "OVA plus acetylene soot with surface PAH mixture, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lindner-mouse-ova-cbnp"
+      name: "OVA-sensitised female Balb/c mouse exposed to CBNP"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "female"
+      disease_state: "OVA-induced experimental allergic asthma"
+      subject_characteristics: "Female 7-9 week old Balb/c mice, anaesthetised, tracheotomised and mechanically ventilated; n = 7-8 per group"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:lindner-lungfx-001"
+        name: "Invasive measurement of total lung resistance with methacholine challenge"
+        spirometry_standard: "Invasive total lung resistance, Finepoint RC Units"
+        bronchodilator_agent: "methacholine challenge"
+        bronchodilator_dose:
+          value: "100"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        plethysmography_method: "Invasive, tracheotomised and mechanically ventilated"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS - Table 3 mRNA, n-fold expression
+# =============================================================================
+
+gene_expression_assays:
+  # ---------------------------------------------------------------------------
+  # PAH metabolism / AhR pathway
+  # ---------------------------------------------------------------------------
+  - id: "GE:lindner-cyp1a1-intrapulmonary"
+    name: "Cyp1a1 mRNA in intrapulmonary airways - CBNP during established allergic airway inflammation"
+    description: >-
+      Table 3, Cyp1a1 mRNA in microdissected intrapulmonary airways, n-fold
+      expression normalised to RPL32, mean +/- SEM, n = 4-8, Mann-Whitney U
+      test versus OVA/H2O. NULL RESULT: no CBNP increased Cyp1a1. Cyp1a1 was
+      below the limit of detection in tracheal epithelial cells in every
+      group, so that airway section is not recorded here.
+    gene_expression_method: "SYBR Green real-time RT-PCR"
+    normalization_reference: "RPL32"
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Our results demonstrated that the exposure to CBNP did not increase the mRNA expression of both Cyp enzymes in tracheal epithelial and intrapulmonary airways compared to the OVA/H2O group (Table 3)."
+        explanation: "States the null result for the PAH-metabolising cytochrome P450 enzymes that this assay's treated output records carry, i.e. no AhR pathway activation by the CBNP."
+    has_specified_output:
+      - id: "GE:lindner-cyp1a1-intrapulmonary-output-pbs"
+        name: "Cyp1a1 mRNA - PBS/H2O non-allergic control"
+        experimental_group: control
+        measured_under: "EXPOSURE:lindner-pbs-h2o"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+      - id: "GE:lindner-cyp1a1-intrapulmonary-output-ova"
+        name: "Cyp1a1 mRNA - OVA/H2O allergic control"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:lindner-ova-h2o"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.2"
+      - id: "GE:lindner-cyp1a1-intrapulmonary-output-p90"
+        name: "Cyp1a1 mRNA - OVA/P90"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90"
+        mrna_level:
+          value: "1.3"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.4"
+      - id: "GE:lindner-cyp1a1-intrapulmonary-output-p90-bap"
+        name: "Cyp1a1 mRNA - OVA/P90-BaP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-bap"
+        mrna_level:
+          value: "1.3"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.2"
+      - id: "GE:lindner-cyp1a1-intrapulmonary-output-p90-9na"
+        name: "Cyp1a1 mRNA - OVA/P90-9NA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-9na"
+        mrna_level:
+          value: "0.7"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+      - id: "GE:lindner-cyp1a1-intrapulmonary-output-as-pah"
+        name: "Cyp1a1 mRNA - OVA/AS-PAH"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-as-pah"
+        mrna_level:
+          value: "1.5"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.3"
+    has_exposure_condition:
+      - id: "EXPOSURE:lindner-pbs-h2o"
+        name: "PBS sensitisation, water vehicle - non-allergic control"
+      - id: "EXPOSURE:lindner-ova-h2o"
+        name: "OVA sensitisation and challenge, water vehicle - allergic control"
+      - id: "EXPOSURE:lindner-ova-p90"
+        name: "OVA plus Printex(R)90 carbon black, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-bap"
+        name: "OVA plus P90 coated with benzo[a]pyrene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-9na"
+        name: "OVA plus P90 coated with 9-nitroanthracene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-as-pah"
+        name: "OVA plus acetylene soot with surface PAH mixture, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:mie-ahr-activation"
+      name: "AhR pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lindner-mouse-intrapulmonary-airways"
+      name: "Microdissected intrapulmonary airways of OVA-sensitised Balb/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "female"
+      disease_state: "OVA-induced experimental allergic asthma"
+      subject_characteristics: "Female 7-9 week old Balb/c mice; n = 4-8 per group"
+      sample_type: bronchial_epithelium
+      sample_collection_method: "Distal airways microdissected from surrounding parenchyma under a stereomicroscope and pooled for RNA isolation"
+      collection_site: "intrapulmonary (distal) airways"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:lindner-qpcr-airways-001"
+        name: "SYBR Green real-time RT-PCR on microdissected intrapulmonary airways"
+        detection_method: "SYBR Green I real-time RT-PCR"
+        reference_gene: "RPL32"
+        platform: "Roche Light Cycler 480 II"
+
+  - id: "GE:lindner-cyp1b1-trachea"
+    name: "Cyp1b1 mRNA in tracheal epithelial cells - CBNP during established allergic airway inflammation"
+    description: >-
+      Table 3, Cyp1b1 mRNA in isolated tracheal epithelial cells, n-fold
+      expression normalised to RPL32, mean +/- SEM, n = 4-8, Mann-Whitney U
+      test versus OVA/H2O. NULL RESULT: no CBNP significantly increased
+      Cyp1b1, including the PAH-coated particles. For comparison, Cyp1b1 in
+      intrapulmonary airways was 1.0+/-0.1 (PBS/H2O), 0.6+/-0.1 (OVA/H2O),
+      0.6+/-0.1 (P90), 0.8+/-0.1 (P90-BaP), 0.5+/-0.1 (P90-9NA) and
+      0.9+/-0.1 (AS-PAH).
+    gene_expression_method: "TaqMan real-time RT-PCR"
+    normalization_reference: "RPL32"
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Our results demonstrated that the exposure to CBNP did not increase the mRNA expression of both Cyp enzymes in tracheal epithelial and intrapulmonary airways compared to the OVA/H2O group (Table 3)."
+        explanation: "Covers Cyp1b1 in tracheal epithelial cells, the airway section this assay records, and states the null result its treated output records carry."
+    has_specified_output:
+      - id: "GE:lindner-cyp1b1-trachea-output-pbs"
+        name: "Cyp1b1 mRNA - PBS/H2O non-allergic control"
+        experimental_group: control
+        measured_under: "EXPOSURE:lindner-pbs-h2o"
+        mrna_level:
+          value: "1.1"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.2"
+      - id: "GE:lindner-cyp1b1-trachea-output-ova"
+        name: "Cyp1b1 mRNA - OVA/H2O allergic control"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:lindner-ova-h2o"
+        mrna_level:
+          value: "1.2"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.3"
+      - id: "GE:lindner-cyp1b1-trachea-output-p90"
+        name: "Cyp1b1 mRNA - OVA/P90"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90"
+        mrna_level:
+          value: "1.4"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.3"
+      - id: "GE:lindner-cyp1b1-trachea-output-p90-bap"
+        name: "Cyp1b1 mRNA - OVA/P90-BaP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-bap"
+        mrna_level:
+          value: "1.3"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.4"
+      - id: "GE:lindner-cyp1b1-trachea-output-p90-9na"
+        name: "Cyp1b1 mRNA - OVA/P90-9NA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-9na"
+        mrna_level:
+          value: "1.6"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.7"
+      - id: "GE:lindner-cyp1b1-trachea-output-as-pah"
+        name: "Cyp1b1 mRNA - OVA/AS-PAH"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-as-pah"
+        mrna_level:
+          value: "2.8"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.9"
+    has_exposure_condition:
+      - id: "EXPOSURE:lindner-pbs-h2o"
+        name: "PBS sensitisation, water vehicle - non-allergic control"
+      - id: "EXPOSURE:lindner-ova-h2o"
+        name: "OVA sensitisation and challenge, water vehicle - allergic control"
+      - id: "EXPOSURE:lindner-ova-p90"
+        name: "OVA plus Printex(R)90 carbon black, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-bap"
+        name: "OVA plus P90 coated with benzo[a]pyrene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-9na"
+        name: "OVA plus P90 coated with 9-nitroanthracene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-as-pah"
+        name: "OVA plus acetylene soot with surface PAH mixture, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:mie-ahr-activation"
+      name: "AhR pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lindner-mouse-tracheal-epithelium"
+      name: "Isolated tracheal epithelial cells of OVA-sensitised Balb/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "female"
+      disease_state: "OVA-induced experimental allergic asthma"
+      subject_characteristics: "Female 7-9 week old Balb/c mice; n = 4-8 per group"
+      sample_type: bronchial_epithelium
+      sample_collection_method: "Tracheae explanted, pinned in Sylgard-coated dishes in HEPES-buffered Ringer solution, epithelial cells isolated for RNA extraction"
+      collection_site: "tracheal epithelium"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:lindner-qpcr-trachea-001"
+        name: "TaqMan real-time RT-PCR on isolated tracheal epithelial cells"
+        detection_method: "TaqMan real-time RT-PCR, 6-FAM reporter and Tamra quencher"
+        reference_gene: "RPL32"
+        normalization_method: "delta-delta-CT, reported as n-fold expression (2^-ddCT)"
+        platform: "ABI PRISM 7900HT / StepOnePlus"
+
+  # ---------------------------------------------------------------------------
+  # Oxidative stress markers (mRNA, so recorded as gene expression rather than
+  # as an OxidativeStressAssay, whose slots are enzyme activities and adducts)
+  # ---------------------------------------------------------------------------
+  - id: "GE:lindner-ho1-intrapulmonary"
+    name: "HO-1 mRNA in intrapulmonary airways - CBNP during established allergic airway inflammation"
+    description: >-
+      Table 3, heme oxygenase-1 (HO-1) mRNA in microdissected intrapulmonary
+      airways, n-fold expression normalised to RPL32, mean +/- SEM, n = 4-8,
+      Mann-Whitney U test versus OVA/H2O. NULL RESULT for the oxidative
+      stress MIE: HO-1 did not increase after any CBNP. HO-1 in tracheal
+      epithelial cells was likewise flat: 1.2+/-0.3 (PBS/H2O), 1.0+/-0.2
+      (OVA/H2O), 1.1+/-0.2 (P90), 1.1+/-0.2 (P90-BaP), 1.1+/-0.4 (P90-9NA),
+      1.1+/-0.3 (AS-PAH). Glutathione reductase (Gr) in intrapulmonary
+      airways was 1.0+/-0.1, 1.3+/-0.1, 1.1+/-0.1, 1.5+/-0.1, 1.0+/-0.1 and
+      1.5+/-0.1 for the same group order.
+    gene_expression_method: "SYBR Green real-time RT-PCR"
+    normalization_reference: "RPL32"
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "After CBNP-exposure, the mRNA expression of the three oxidative stress markers did not increase, compared to the OVA controls, neither in tracheal epithelial cells nor in intrapulmonary airways (Table 3)."
+        explanation: "States the null result for HO-1, Gr and Gpx3 that the treated output records of this assay carry - no induction of the oxidative stress molecular initiating event."
+    has_specified_output:
+      - id: "GE:lindner-ho1-intrapulmonary-output-pbs"
+        name: "HO-1 mRNA - PBS/H2O non-allergic control"
+        experimental_group: control
+        measured_under: "EXPOSURE:lindner-pbs-h2o"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+      - id: "GE:lindner-ho1-intrapulmonary-output-ova"
+        name: "HO-1 mRNA - OVA/H2O allergic control"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:lindner-ova-h2o"
+        mrna_level:
+          value: "1.3"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+      - id: "GE:lindner-ho1-intrapulmonary-output-p90"
+        name: "HO-1 mRNA - OVA/P90"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90"
+        mrna_level:
+          value: "1.1"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+      - id: "GE:lindner-ho1-intrapulmonary-output-p90-bap"
+        name: "HO-1 mRNA - OVA/P90-BaP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-bap"
+        mrna_level:
+          value: "1.1"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+      - id: "GE:lindner-ho1-intrapulmonary-output-p90-9na"
+        name: "HO-1 mRNA - OVA/P90-9NA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-9na"
+        mrna_level:
+          value: "1.1"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+      - id: "GE:lindner-ho1-intrapulmonary-output-as-pah"
+        name: "HO-1 mRNA - OVA/AS-PAH"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-as-pah"
+        mrna_level:
+          value: "1.2"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+    has_exposure_condition:
+      - id: "EXPOSURE:lindner-pbs-h2o"
+        name: "PBS sensitisation, water vehicle - non-allergic control"
+      - id: "EXPOSURE:lindner-ova-h2o"
+        name: "OVA sensitisation and challenge, water vehicle - allergic control"
+      - id: "EXPOSURE:lindner-ova-p90"
+        name: "OVA plus Printex(R)90 carbon black, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-bap"
+        name: "OVA plus P90 coated with benzo[a]pyrene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-9na"
+        name: "OVA plus P90 coated with 9-nitroanthracene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-as-pah"
+        name: "OVA plus acetylene soot with surface PAH mixture, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lindner-mouse-intrapulmonary-airways"
+      name: "Microdissected intrapulmonary airways of OVA-sensitised Balb/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "female"
+      disease_state: "OVA-induced experimental allergic asthma"
+      subject_characteristics: "Female 7-9 week old Balb/c mice; n = 4-8 per group"
+      sample_type: bronchial_epithelium
+      sample_collection_method: "Distal airways microdissected from surrounding parenchyma under a stereomicroscope and pooled for RNA isolation"
+      collection_site: "intrapulmonary (distal) airways"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:lindner-qpcr-airways-001"
+        name: "SYBR Green real-time RT-PCR on microdissected intrapulmonary airways"
+        detection_method: "SYBR Green I real-time RT-PCR"
+        reference_gene: "RPL32"
+        platform: "Roche Light Cycler 480 II"
+
+  - id: "GE:lindner-gpx3-trachea"
+    name: "Gpx3 mRNA in tracheal epithelial cells - CBNP during established allergic airway inflammation"
+    description: >-
+      Table 3, glutathione peroxidase 3 (Gpx3) mRNA in isolated tracheal
+      epithelial cells, n-fold expression normalised to RPL32, mean +/- SEM,
+      n = 4-8, Mann-Whitney U test versus OVA/H2O. Gpx3 fell after the OVA
+      challenge itself (1.0+/-0.1 in PBS/H2O to 0.3+/-0.1 in OVA/H2O) and no
+      CBNP raised it back or lowered it further significantly. Gpx3 in
+      intrapulmonary airways was essentially unchanged across all six groups
+      (1.0+/-0.1, 0.9+/-0.1, 0.8+/-0.1, 1.0+/-0.1, 1.0+/-0.1, 1.0+/-0.1).
+      The authors note that the lowered antioxidant defence in the OVA model
+      did not translate into CBNP-induced cytokine or chemokine induction.
+    gene_expression_method: "TaqMan real-time RT-PCR"
+    normalization_reference: "RPL32"
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "After CBNP-exposure, the mRNA expression of the three oxidative stress markers did not increase, compared to the OVA controls, neither in tracheal epithelial cells nor in intrapulmonary airways (Table 3)."
+        explanation: "Gpx3 is one of the three oxidative stress markers referred to, and this sentence states the null result for the tracheal epithelial cells recorded in this assay."
+    has_specified_output:
+      - id: "GE:lindner-gpx3-trachea-output-pbs"
+        name: "Gpx3 mRNA - PBS/H2O non-allergic control"
+        experimental_group: control
+        measured_under: "EXPOSURE:lindner-pbs-h2o"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+      - id: "GE:lindner-gpx3-trachea-output-ova"
+        name: "Gpx3 mRNA - OVA/H2O allergic control"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:lindner-ova-h2o"
+        mrna_level:
+          value: "0.3"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+      - id: "GE:lindner-gpx3-trachea-output-p90"
+        name: "Gpx3 mRNA - OVA/P90"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90"
+        mrna_level:
+          value: "0.6"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+      - id: "GE:lindner-gpx3-trachea-output-p90-bap"
+        name: "Gpx3 mRNA - OVA/P90-BaP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-bap"
+        mrna_level:
+          value: "0.3"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+      - id: "GE:lindner-gpx3-trachea-output-p90-9na"
+        name: "Gpx3 mRNA - OVA/P90-9NA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-9na"
+        mrna_level:
+          value: "0.3"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+      - id: "GE:lindner-gpx3-trachea-output-as-pah"
+        name: "Gpx3 mRNA - OVA/AS-PAH"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-as-pah"
+        mrna_level:
+          value: "0.4"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+    has_exposure_condition:
+      - id: "EXPOSURE:lindner-pbs-h2o"
+        name: "PBS sensitisation, water vehicle - non-allergic control"
+      - id: "EXPOSURE:lindner-ova-h2o"
+        name: "OVA sensitisation and challenge, water vehicle - allergic control"
+      - id: "EXPOSURE:lindner-ova-p90"
+        name: "OVA plus Printex(R)90 carbon black, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-bap"
+        name: "OVA plus P90 coated with benzo[a]pyrene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-9na"
+        name: "OVA plus P90 coated with 9-nitroanthracene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-as-pah"
+        name: "OVA plus acetylene soot with surface PAH mixture, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lindner-mouse-tracheal-epithelium"
+      name: "Isolated tracheal epithelial cells of OVA-sensitised Balb/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "female"
+      disease_state: "OVA-induced experimental allergic asthma"
+      subject_characteristics: "Female 7-9 week old Balb/c mice; n = 4-8 per group"
+      sample_type: bronchial_epithelium
+      sample_collection_method: "Tracheae explanted and epithelial cells isolated for RNA extraction"
+      collection_site: "tracheal epithelium"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:lindner-qpcr-trachea-001"
+        name: "TaqMan real-time RT-PCR on isolated tracheal epithelial cells"
+        detection_method: "TaqMan real-time RT-PCR, 6-FAM reporter and Tamra quencher"
+        reference_gene: "RPL32"
+        normalization_method: "delta-delta-CT, reported as n-fold expression (2^-ddCT)"
+        platform: "ABI PRISM 7900HT / StepOnePlus"
+
+  # ---------------------------------------------------------------------------
+  # Inflammatory mediators (mRNA)
+  # ---------------------------------------------------------------------------
+  - id: "GE:lindner-il6-intrapulmonary"
+    name: "IL-6 mRNA in intrapulmonary airways - CBNP during established allergic airway inflammation"
+    description: >-
+      Table 3, IL-6 mRNA in microdissected intrapulmonary airways, n-fold
+      expression normalised to RPL32, mean +/- SEM, n = 4-8, Mann-Whitney U
+      test versus OVA/H2O. NULL RESULT: no CBNP increased IL-6. P90-9NA
+      significantly DECREASED IL-6 (4.3+/-0.5 vs 7.9+/-1.2, p < 0.05). IL-6
+      in tracheal epithelial cells was 1.2+/-0.3, 1.5+/-0.6, 2.4+/-1.3,
+      3.1+/-1.7, 0.6+/-0.3 and 3.5+/-1.8 for the same group order, with no
+      significant differences.
+    gene_expression_method: "SYBR Green real-time RT-PCR"
+    normalization_reference: "RPL32"
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Our results showed that no CBNP increased the mRNA expression of the analyzed inflammatory markers (Table 3)."
+        explanation: "States the null result for the inflammatory mRNA markers, of which IL-6 is one, that this assay's treated output records carry."
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Indeed, P90-9NA significantly decreased the mRNA expression of IL-6 and IL-13 in intrapulmonary airways compared to the OVA/H2O group (Table 3)."
+        explanation: "Supports the one significant change in this assay - a decrease of IL-6 in the P90-9NA output record - and its direction."
+    has_specified_output:
+      - id: "GE:lindner-il6-intrapulmonary-output-pbs"
+        name: "IL-6 mRNA - PBS/H2O non-allergic control"
+        experimental_group: control
+        measured_under: "EXPOSURE:lindner-pbs-h2o"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "1.3"
+      - id: "GE:lindner-il6-intrapulmonary-output-ova"
+        name: "IL-6 mRNA - OVA/H2O allergic control"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:lindner-ova-h2o"
+        mrna_level:
+          value: "7.9"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "1.2"
+      - id: "GE:lindner-il6-intrapulmonary-output-p90"
+        name: "IL-6 mRNA - OVA/P90"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90"
+        mrna_level:
+          value: "6.8"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "1.4"
+      - id: "GE:lindner-il6-intrapulmonary-output-p90-bap"
+        name: "IL-6 mRNA - OVA/P90-BaP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-bap"
+        mrna_level:
+          value: "8.5"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "1.0"
+      - id: "GE:lindner-il6-intrapulmonary-output-p90-9na"
+        name: "IL-6 mRNA - OVA/P90-9NA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-9na"
+        mrna_level:
+          value: "4.3"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.5"
+      - id: "GE:lindner-il6-intrapulmonary-output-as-pah"
+        name: "IL-6 mRNA - OVA/AS-PAH"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-as-pah"
+        mrna_level:
+          value: "5.7"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.8"
+    has_exposure_condition:
+      - id: "EXPOSURE:lindner-pbs-h2o"
+        name: "PBS sensitisation, water vehicle - non-allergic control"
+      - id: "EXPOSURE:lindner-ova-h2o"
+        name: "OVA sensitisation and challenge, water vehicle - allergic control"
+      - id: "EXPOSURE:lindner-ova-p90"
+        name: "OVA plus Printex(R)90 carbon black, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-bap"
+        name: "OVA plus P90 coated with benzo[a]pyrene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-9na"
+        name: "OVA plus P90 coated with 9-nitroanthracene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-as-pah"
+        name: "OVA plus acetylene soot with surface PAH mixture, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lindner-mouse-intrapulmonary-airways"
+      name: "Microdissected intrapulmonary airways of OVA-sensitised Balb/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "female"
+      disease_state: "OVA-induced experimental allergic asthma"
+      subject_characteristics: "Female 7-9 week old Balb/c mice; n = 4-8 per group"
+      sample_type: bronchial_epithelium
+      sample_collection_method: "Distal airways microdissected from surrounding parenchyma under a stereomicroscope and pooled for RNA isolation"
+      collection_site: "intrapulmonary (distal) airways"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:lindner-qpcr-airways-001"
+        name: "SYBR Green real-time RT-PCR on microdissected intrapulmonary airways"
+        detection_method: "SYBR Green I real-time RT-PCR"
+        reference_gene: "RPL32"
+        platform: "Roche Light Cycler 480 II"
+
+  - id: "GE:lindner-il13-intrapulmonary"
+    name: "IL-13 mRNA in intrapulmonary airways - CBNP during established allergic airway inflammation"
+    description: >-
+      Table 3, IL-13 mRNA in microdissected intrapulmonary airways, n-fold
+      expression normalised to RPL32, mean +/- SEM, n = 4-8, Mann-Whitney U
+      test versus OVA/H2O. NULL RESULT: no CBNP increased IL-13. P90-9NA
+      significantly DECREASED IL-13 (34+/-4 vs 52+/-8, p < 0.05), consistent
+      with the decreased IL-13 protein in its BAL fluid. IL-13 in tracheal
+      epithelial cells was 1.1+/-0.3, 41+/-14, 27+/-7, 20+/-9, 26+/-10 and
+      31+/-10 for the same group order, with no significant differences.
+      Other inflammatory mRNAs in intrapulmonary airways for the same group
+      order - Mcp-1: 1.0+/-0.6, 12+/-5, 11+/-4, 10+/-4, 8+/-3, 11+/-4; KC:
+      1.0+/-0.3, 2.1+/-0.6, 1.7+/-0.3, 1.9+/-0.3, 1.1+/-0.2, 1.5+/-0.3;
+      IL-17a: 1.0+/-2.9, 13+/-3, 13+/-3, 11+/-1, 8+/-2, 19+/-4.
+    gene_expression_method: "SYBR Green real-time RT-PCR"
+    normalization_reference: "RPL32"
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Indeed, P90-9NA significantly decreased the mRNA expression of IL-6 and IL-13 in intrapulmonary airways compared to the OVA/H2O group (Table 3)."
+        explanation: "Supports the direction and significance of the only change in this assay - the decrease of IL-13 mRNA in the P90-9NA output record."
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "None of the CBNP tested increased any parameter related to inflammation."
+        explanation: "The paper's own summary of the null result, which is what the P90, P90-BaP and AS-PAH output records of this assay carry."
+    has_specified_output:
+      - id: "GE:lindner-il13-intrapulmonary-output-pbs"
+        name: "IL-13 mRNA - PBS/H2O non-allergic control"
+        experimental_group: control
+        measured_under: "EXPOSURE:lindner-pbs-h2o"
+        mrna_level:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.4"
+      - id: "GE:lindner-il13-intrapulmonary-output-ova"
+        name: "IL-13 mRNA - OVA/H2O allergic control"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:lindner-ova-h2o"
+        mrna_level:
+          value: "52"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "8"
+      - id: "GE:lindner-il13-intrapulmonary-output-p90"
+        name: "IL-13 mRNA - OVA/P90"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90"
+        mrna_level:
+          value: "40"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "7"
+      - id: "GE:lindner-il13-intrapulmonary-output-p90-bap"
+        name: "IL-13 mRNA - OVA/P90-BaP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-bap"
+        mrna_level:
+          value: "48"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "7"
+      - id: "GE:lindner-il13-intrapulmonary-output-p90-9na"
+        name: "IL-13 mRNA - OVA/P90-9NA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-9na"
+        mrna_level:
+          value: "34"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "4"
+      - id: "GE:lindner-il13-intrapulmonary-output-as-pah"
+        name: "IL-13 mRNA - OVA/AS-PAH"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-as-pah"
+        mrna_level:
+          value: "48"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "7"
+    has_exposure_condition:
+      - id: "EXPOSURE:lindner-pbs-h2o"
+        name: "PBS sensitisation, water vehicle - non-allergic control"
+      - id: "EXPOSURE:lindner-ova-h2o"
+        name: "OVA sensitisation and challenge, water vehicle - allergic control"
+      - id: "EXPOSURE:lindner-ova-p90"
+        name: "OVA plus Printex(R)90 carbon black, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-bap"
+        name: "OVA plus P90 coated with benzo[a]pyrene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-9na"
+        name: "OVA plus P90 coated with 9-nitroanthracene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-as-pah"
+        name: "OVA plus acetylene soot with surface PAH mixture, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lindner-mouse-intrapulmonary-airways"
+      name: "Microdissected intrapulmonary airways of OVA-sensitised Balb/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "female"
+      disease_state: "OVA-induced experimental allergic asthma"
+      subject_characteristics: "Female 7-9 week old Balb/c mice; n = 4-8 per group"
+      sample_type: bronchial_epithelium
+      sample_collection_method: "Distal airways microdissected from surrounding parenchyma under a stereomicroscope and pooled for RNA isolation"
+      collection_site: "intrapulmonary (distal) airways"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:lindner-qpcr-airways-001"
+        name: "SYBR Green real-time RT-PCR on microdissected intrapulmonary airways"
+        detection_method: "SYBR Green I real-time RT-PCR"
+        reference_gene: "RPL32"
+        platform: "Roche Light Cycler 480 II"
+
+# =============================================================================
+# GOBLET CELL / MUCIN ASSAYS
+# =============================================================================
+
+goblet_cell_assays:
+  # ---------------------------------------------------------------------------
+  # Mucin mRNA - tracheal epithelial cells. The one clear POSITIVE finding of
+  # this paper: unmodified P90 raised Muc5ac (p < 0.01).
+  # ---------------------------------------------------------------------------
+  - id: "GCM:lindner-mucins-trachea"
+    name: "Muc5ac and Muc5b mRNA in tracheal epithelial cells - CBNP during established allergic airway inflammation"
+    description: >-
+      Table 3, Muc5ac and Muc5b mRNA in isolated tracheal epithelial cells,
+      n-fold expression normalised to RPL32, mean +/- SEM, n = 4-8,
+      Mann-Whitney U test versus OVA/H2O. The unmodified P90 particles
+      significantly INCREASED Muc5ac (101+/-15 vs 35+/-10, p < 0.01); none of
+      the PAH-coated particles or AS-PAH changed either mucin. Muc5b was flat
+      in the trachea in every group.
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "P90 increased the mRNA expression of Muc5ac in the tracheal epithelial cells and decreased the mRNA expression of Muc5b in the intrapulmonary airways (Table 3)."
+        explanation: "States the airway-region-specific P90 effect: the Muc5ac increase in the trachea is what this assay's P90 output record carries."
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Our results showed that the exposure to the PAH-containing CBNP, P90-BaP, P90-9NA, and AS-PAH, did not change the mRNA expression of the mucins compared to the OVA/H2O group (Table 3)."
+        explanation: "Supports the null result recorded in the P90-BaP, P90-9NA and AS-PAH output records of this assay."
+    has_specified_output:
+      - id: "GCM:lindner-mucins-trachea-output-pbs"
+        name: "Tracheal mucin mRNA - PBS/H2O non-allergic control"
+        experimental_group: control
+        measured_under: "EXPOSURE:lindner-pbs-h2o"
+        muc5ac_mrna_expression:
+          value: "1.1"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.3"
+        muc5b_mrna_expression:
+          value: "1.1"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.2"
+      - id: "GCM:lindner-mucins-trachea-output-ova"
+        name: "Tracheal mucin mRNA - OVA/H2O allergic control"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:lindner-ova-h2o"
+        muc5ac_mrna_expression:
+          value: "35"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "10"
+        muc5b_mrna_expression:
+          value: "2.2"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.6"
+      - id: "GCM:lindner-mucins-trachea-output-p90"
+        name: "Tracheal mucin mRNA - OVA/P90"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90"
+        muc5ac_mrna_expression:
+          value: "101"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "15"
+        muc5b_mrna_expression:
+          value: "2.2"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.2"
+      - id: "GCM:lindner-mucins-trachea-output-p90-bap"
+        name: "Tracheal mucin mRNA - OVA/P90-BaP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-bap"
+        muc5ac_mrna_expression:
+          value: "38"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "11"
+        muc5b_mrna_expression:
+          value: "2.1"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.2"
+      - id: "GCM:lindner-mucins-trachea-output-p90-9na"
+        name: "Tracheal mucin mRNA - OVA/P90-9NA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-9na"
+        muc5ac_mrna_expression:
+          value: "39"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "23"
+        muc5b_mrna_expression:
+          value: "2.2"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.4"
+      - id: "GCM:lindner-mucins-trachea-output-as-pah"
+        name: "Tracheal mucin mRNA - OVA/AS-PAH"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-as-pah"
+        muc5ac_mrna_expression:
+          value: "39"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "20"
+        muc5b_mrna_expression:
+          value: "2.4"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.4"
+    has_exposure_condition:
+      - id: "EXPOSURE:lindner-pbs-h2o"
+        name: "PBS sensitisation, water vehicle - non-allergic control"
+      - id: "EXPOSURE:lindner-ova-h2o"
+        name: "OVA sensitisation and challenge, water vehicle - allergic control"
+      - id: "EXPOSURE:lindner-ova-p90"
+        name: "OVA plus Printex(R)90 carbon black, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-bap"
+        name: "OVA plus P90 coated with benzo[a]pyrene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-9na"
+        name: "OVA plus P90 coated with 9-nitroanthracene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-as-pah"
+        name: "OVA plus acetylene soot with surface PAH mixture, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lindner-mouse-tracheal-epithelium"
+      name: "Isolated tracheal epithelial cells of OVA-sensitised Balb/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "female"
+      disease_state: "OVA-induced experimental allergic asthma"
+      subject_characteristics: "Female 7-9 week old Balb/c mice; n = 4-8 per group"
+      sample_type: bronchial_epithelium
+      sample_collection_method: "Tracheae explanted and epithelial cells isolated for RNA extraction"
+      collection_site: "tracheal epithelium"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:lindner-qpcr-trachea-001"
+        name: "TaqMan real-time RT-PCR on isolated tracheal epithelial cells"
+        detection_method: "TaqMan real-time RT-PCR, 6-FAM reporter and Tamra quencher"
+        reference_gene: "RPL32"
+        normalization_method: "delta-delta-CT, reported as n-fold expression (2^-ddCT)"
+        platform: "ABI PRISM 7900HT / StepOnePlus"
+
+  # ---------------------------------------------------------------------------
+  # Mucin mRNA - intrapulmonary airways. The second P90-specific finding:
+  # a DECREASE of Muc5b (p < 0.05).
+  # ---------------------------------------------------------------------------
+  - id: "GCM:lindner-mucins-intrapulmonary"
+    name: "Muc5ac and Muc5b mRNA in intrapulmonary airways - CBNP during established allergic airway inflammation"
+    description: >-
+      Table 3, Muc5ac and Muc5b mRNA in microdissected intrapulmonary
+      airways, n-fold expression normalised to RPL32, mean +/- SEM, n = 4-8,
+      Mann-Whitney U test versus OVA/H2O. The unmodified P90 particles
+      significantly DECREASED Muc5b (18+/-3 vs 31+/-5, p < 0.05) while
+      Muc5ac was unchanged, the mirror image of the tracheal response. No
+      PAH-containing CBNP changed either mucin here.
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "P90 increased the mRNA expression of Muc5ac in the tracheal epithelial cells and decreased the mRNA expression of Muc5b in the intrapulmonary airways (Table 3)."
+        explanation: "The Muc5b decrease in intrapulmonary airways is the change this assay's P90 output record carries, alongside an unchanged Muc5ac."
+    has_specified_output:
+      - id: "GCM:lindner-mucins-intrapulmonary-output-pbs"
+        name: "Intrapulmonary mucin mRNA - PBS/H2O non-allergic control"
+        experimental_group: control
+        measured_under: "EXPOSURE:lindner-pbs-h2o"
+        muc5ac_mrna_expression:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.3"
+        muc5b_mrna_expression:
+          value: "1.0"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.2"
+      - id: "GCM:lindner-mucins-intrapulmonary-output-ova"
+        name: "Intrapulmonary mucin mRNA - OVA/H2O allergic control"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:lindner-ova-h2o"
+        muc5ac_mrna_expression:
+          value: "44"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "11"
+        muc5b_mrna_expression:
+          value: "31"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "5"
+      - id: "GCM:lindner-mucins-intrapulmonary-output-p90"
+        name: "Intrapulmonary mucin mRNA - OVA/P90"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90"
+        muc5ac_mrna_expression:
+          value: "29"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "4"
+        muc5b_mrna_expression:
+          value: "18"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "3"
+      - id: "GCM:lindner-mucins-intrapulmonary-output-p90-bap"
+        name: "Intrapulmonary mucin mRNA - OVA/P90-BaP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-bap"
+        muc5ac_mrna_expression:
+          value: "52"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "9"
+        muc5b_mrna_expression:
+          value: "32"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "4"
+      - id: "GCM:lindner-mucins-intrapulmonary-output-p90-9na"
+        name: "Intrapulmonary mucin mRNA - OVA/P90-9NA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-9na"
+        muc5ac_mrna_expression:
+          value: "26"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "5"
+        muc5b_mrna_expression:
+          value: "20"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "2"
+      - id: "GCM:lindner-mucins-intrapulmonary-output-as-pah"
+        name: "Intrapulmonary mucin mRNA - OVA/AS-PAH"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-as-pah"
+        muc5ac_mrna_expression:
+          value: "82"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "25"
+        muc5b_mrna_expression:
+          value: "39"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "11"
+    has_exposure_condition:
+      - id: "EXPOSURE:lindner-pbs-h2o"
+        name: "PBS sensitisation, water vehicle - non-allergic control"
+      - id: "EXPOSURE:lindner-ova-h2o"
+        name: "OVA sensitisation and challenge, water vehicle - allergic control"
+      - id: "EXPOSURE:lindner-ova-p90"
+        name: "OVA plus Printex(R)90 carbon black, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-bap"
+        name: "OVA plus P90 coated with benzo[a]pyrene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-9na"
+        name: "OVA plus P90 coated with 9-nitroanthracene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-as-pah"
+        name: "OVA plus acetylene soot with surface PAH mixture, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-muc5b-decrease"
+      name: "Decreased Muc5b expression"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lindner-mouse-intrapulmonary-airways"
+      name: "Microdissected intrapulmonary airways of OVA-sensitised Balb/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "female"
+      disease_state: "OVA-induced experimental allergic asthma"
+      subject_characteristics: "Female 7-9 week old Balb/c mice; n = 4-8 per group"
+      sample_type: bronchial_epithelium
+      sample_collection_method: "Distal airways microdissected from surrounding parenchyma under a stereomicroscope and pooled for RNA isolation"
+      collection_site: "intrapulmonary (distal) airways"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:lindner-qpcr-airways-001"
+        name: "SYBR Green real-time RT-PCR on microdissected intrapulmonary airways"
+        detection_method: "SYBR Green I real-time RT-PCR"
+        reference_gene: "RPL32"
+        platform: "Roche Light Cycler 480 II"
+
+  # ---------------------------------------------------------------------------
+  # PAS histology - intrapulmonary airways (Figure 2b,c), plot only
+  # ---------------------------------------------------------------------------
+  - id: "GCM:lindner-pas-intrapulmonary"
+    name: "PAS goblet cell surface area and stored mucus volume in intrapulmonary airways - CBNP"
+    description: >-
+      Figure 2a-c, stereological quantification of the epithelial basement
+      membrane surface area covered by goblet cells (Sgc/Sep) and the stored
+      mucus volume per basement membrane area (Vmucin/Sep) on PAS-stained
+      lung sections, n = 7-8. NULL RESULT: no CBNP increased either measure
+      relative to OVA/H2O. Reported as plots only, so no numeric values are
+      transcribed.
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "the exposure to CBNP did not increase the surface covered by goblet cells nor the stored mucus volume in intrapulmonary airways compared to the OVA/H2O group"
+        explanation: "The direct null finding for goblet cell hyperplasia and stored mucus that the treated output records of this assay carry."
+    has_specified_output:
+      - id: "GCM:lindner-pas-intrapulmonary-output-pbs"
+        name: "PAS goblet cell quantification - PBS/H2O non-allergic control"
+        experimental_group: control
+        measured_under: "EXPOSURE:lindner-pbs-h2o"
+      - id: "GCM:lindner-pas-intrapulmonary-output-ova"
+        name: "PAS goblet cell quantification - OVA/H2O allergic control"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:lindner-ova-h2o"
+      - id: "GCM:lindner-pas-intrapulmonary-output-p90"
+        name: "PAS goblet cell quantification - OVA/P90"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90"
+      - id: "GCM:lindner-pas-intrapulmonary-output-p90-bap"
+        name: "PAS goblet cell quantification - OVA/P90-BaP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-bap"
+      - id: "GCM:lindner-pas-intrapulmonary-output-p90-9na"
+        name: "PAS goblet cell quantification - OVA/P90-9NA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-9na"
+      - id: "GCM:lindner-pas-intrapulmonary-output-as-pah"
+        name: "PAS goblet cell quantification - OVA/AS-PAH"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-as-pah"
+    has_exposure_condition:
+      - id: "EXPOSURE:lindner-pbs-h2o"
+        name: "PBS sensitisation, water vehicle - non-allergic control"
+      - id: "EXPOSURE:lindner-ova-h2o"
+        name: "OVA sensitisation and challenge, water vehicle - allergic control"
+      - id: "EXPOSURE:lindner-ova-p90"
+        name: "OVA plus Printex(R)90 carbon black, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-bap"
+        name: "OVA plus P90 coated with benzo[a]pyrene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-9na"
+        name: "OVA plus P90 coated with 9-nitroanthracene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-as-pah"
+        name: "OVA plus acetylene soot with surface PAH mixture, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lindner-mouse-lung-histology"
+      name: "Paraffin-embedded lung of OVA-sensitised Balb/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "female"
+      disease_state: "OVA-induced experimental allergic asthma"
+      subject_characteristics: "Female 7-9 week old Balb/c mice; n = 7-8 per group"
+      sample_type: biopsy
+      sample_collection_method: "Lungs fixed ex situ by intra-tracheal instillation of 4% phosphate buffered paraformaldehyde and paraffin embedded with randomised orientation"
+      collection_site: "intrapulmonary airways in lung sections"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:lindner-pas-lung-001"
+        name: "PAS staining and stereological quantification of goblet cells in lung sections"
+        staining_type: "PAS"
+        fixation_method: "4% phosphate buffered paraformaldehyde, intra-tracheal instillation then overnight immersion"
+        normalization_method: "Goblet cell surface area and mucin volume normalised to epithelial basal membrane surface area (Sep)"
+
+  # ---------------------------------------------------------------------------
+  # PAS histology - tracheal epithelium (Figure 2d,e), plot only. Tests
+  # whether the P90 Muc5ac mRNA rise showed up as more PAS-positive cells.
+  # ---------------------------------------------------------------------------
+  - id: "GCM:lindner-pas-trachea"
+    name: "PAS-positive cells in tracheal epithelium after P90 exposure"
+    description: >-
+      Figure 2d,e, PAS-positive cells as a percentage of non-ciliated cells
+      in the tracheal epithelium, n = 2-3. Stained only for the OVA/H2O and
+      OVA/P90 groups, as a follow-up to the P90-induced Muc5ac mRNA increase.
+      NULL RESULT: the number of PAS-positive cells was not increased after
+      P90 exposure, so the Muc5ac mRNA rise was not accompanied by more
+      mucus-storing goblet cells. Reported as a plot only and with a very
+      small n, so no numeric values are transcribed.
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The results showed that the number of PAS-positive cells was not increased after P90-exposure compared to the OVA/H2O group (Figure 2d,e)."
+        explanation: "The direct null finding this assay records: no increase in PAS-positive tracheal cells despite the P90-induced Muc5ac mRNA increase."
+    has_specified_output:
+      - id: "GCM:lindner-pas-trachea-output-ova"
+        name: "PAS-positive tracheal cells - OVA/H2O allergic control"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:lindner-ova-h2o"
+      - id: "GCM:lindner-pas-trachea-output-p90"
+        name: "PAS-positive tracheal cells - OVA/P90"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90"
+    has_exposure_condition:
+      - id: "EXPOSURE:lindner-ova-h2o"
+        name: "OVA sensitisation and challenge, water vehicle - allergic control"
+      - id: "EXPOSURE:lindner-ova-p90"
+        name: "OVA plus Printex(R)90 carbon black, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lindner-mouse-trachea-histology"
+      name: "Paraffin-embedded trachea of OVA-sensitised Balb/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "female"
+      disease_state: "OVA-induced experimental allergic asthma"
+      subject_characteristics: "Female 7-9 week old Balb/c mice; n = 2-3 per group"
+      sample_type: biopsy
+      sample_collection_method: "Tracheae pinned on a cork plate, fixed in 4% phosphate-buffered paraformaldehyde, paraffin embedded and longitudinally sliced in fractionated series"
+      collection_site: "tracheal epithelium"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:lindner-pas-trachea-001"
+        name: "PAS staining of tracheal epithelium and counting of PAS-positive cells"
+        staining_type: "PAS"
+        counterstain: "Hematoxylin"
+        fixation_method: "4% phosphate-buffered paraformaldehyde"
+        normalization_method: "PAS-positive cells as a percentage of the total number of non-ciliated cells"
+
+# =============================================================================
+# CILIARY FUNCTION ASSAYS - tracheal ciliary beat frequency
+# =============================================================================
+
+ciliary_function_assays:
+  - id: "CILIA:lindner-cbf-trachea"
+    name: "Tracheal ciliary beat frequency - CBNP during established allergic airway inflammation"
+    description: >-
+      Figure 3c, mean ciliary beat frequency of explanted tracheae, each data
+      point one animal, mean +/- SEM, calculated from at least 40 ciliated
+      cells at four tracheal regions per animal. The OVA challenge alone did
+      NOT affect ciliary beat frequency. The only CBNP effect was a DECREASE
+      after the unmodified P90; the PAH-coated particles and AS-PAH left
+      beat frequency unchanged. Reported as a scatter plot only, so no
+      numeric values are transcribed. The authors attribute the P90 effect to
+      the more adhesive, viscous Muc5ac-rich mucus agglutinating the cilia
+      rather than to cilia damage, since ATP stimulation restored the beat
+      frequency equally in all groups.
+    airway_region: "trachea"
+    analysis_software: "Matlab-based Fourier transformation of grey level changes over time"
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The exposure to the CBNP did not further decrease the particle transport (Figure 3b), but the ciliary beat frequency was decreased following exposure to P90 (Figure 3c)."
+        explanation: "Names the decrease of ciliary beat frequency specific to the unmodified P90 group, which is what this assay's P90 output record carries."
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Compared to the PBS control group, the cilia-induced particle transport speed was decreased in the OVA controls (Figure 3b), whereas the ciliary beat frequency was not affected (Figure 3c)"
+        explanation: "Supports the equality of the PBS and OVA control output records for beat frequency, which is the baseline the P90 decrease is measured against."
+    has_specified_output:
+      - id: "CILIA:lindner-cbf-trachea-output-pbs"
+        name: "Ciliary beat frequency - PBS/H2O non-allergic control"
+        experimental_group: control
+        measured_under: "EXPOSURE:lindner-pbs-h2o"
+      - id: "CILIA:lindner-cbf-trachea-output-ova"
+        name: "Ciliary beat frequency - OVA/H2O allergic control"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:lindner-ova-h2o"
+      - id: "CILIA:lindner-cbf-trachea-output-p90"
+        name: "Ciliary beat frequency - OVA/P90"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90"
+      - id: "CILIA:lindner-cbf-trachea-output-p90-bap"
+        name: "Ciliary beat frequency - OVA/P90-BaP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-bap"
+      - id: "CILIA:lindner-cbf-trachea-output-p90-9na"
+        name: "Ciliary beat frequency - OVA/P90-9NA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-9na"
+      - id: "CILIA:lindner-cbf-trachea-output-as-pah"
+        name: "Ciliary beat frequency - OVA/AS-PAH"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-as-pah"
+    has_exposure_condition:
+      - id: "EXPOSURE:lindner-pbs-h2o"
+        name: "PBS sensitisation, water vehicle - non-allergic control"
+      - id: "EXPOSURE:lindner-ova-h2o"
+        name: "OVA sensitisation and challenge, water vehicle - allergic control"
+      - id: "EXPOSURE:lindner-ova-p90"
+        name: "OVA plus Printex(R)90 carbon black, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-bap"
+        name: "OVA plus P90 coated with benzo[a]pyrene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-9na"
+        name: "OVA plus P90 coated with 9-nitroanthracene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-as-pah"
+        name: "OVA plus acetylene soot with surface PAH mixture, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cbf"
+      name: "Decreased ciliary beat frequency"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lindner-mouse-explanted-trachea"
+      name: "Freshly explanted trachea of OVA-sensitised Balb/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "female"
+      disease_state: "OVA-induced experimental allergic asthma"
+      subject_characteristics: "Female 7-9 week old Balb/c mice; trachea held at 30 C in HEPES-buffered Ringer solution, epithelium facing upwards"
+      sample_type: biopsy
+      sample_collection_method: "Trachea explanted and pinned in a Sylgard-coated Delta T4 dish under 2 mL HEPES-Ringer solution"
+      collection_site: "tracheal epithelium"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:lindner-cbf-001"
+        name: "Video microscopy of ciliary beat frequency in explanted trachea"
+        imaging_frame_rate:
+          value: "100"
+          unit:
+            id: "UO:0000106"
+            name: "hertz"
+        temperature_control:
+          value: "30"
+          unit:
+            id: "UO:0000027"
+            name: "degree Celsius"
+
+  - id: "CILIA:lindner-cbf-trachea-atp"
+    name: "Tracheal ciliary beat frequency after ATP stimulation - CBNP"
+    description: >-
+      Figure 3d, mean ciliary beat frequency after adding ATP (10 uM) to the
+      explanted trachea at the end of each experiment, calculated from at
+      least 30 ciliated cells at three tracheal regions per animal. Beat
+      frequency was equally increased in all test groups, which the authors
+      read as evidence that P90 did not damage the cilia themselves - the
+      P90-associated beat frequency decrease is attributed to the mucus
+      layer, not to cilia injury. Reported as a plot only, so no numeric
+      values are transcribed.
+    airway_region: "trachea"
+    analysis_software: "Matlab-based Fourier transformation of grey level changes over time"
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "After ATP-exposure, the ciliary beat frequency was equally increased in all test groups (Figure 3d) indicating that P90 did not induce a cilia damage."
+        explanation: "The finding this assay records: ATP raised beat frequency equally in every group, so the P90 effect on unstimulated beat frequency is not cilia damage."
+    has_specified_output:
+      - id: "CILIA:lindner-cbf-trachea-atp-output-pbs"
+        name: "ATP-stimulated ciliary beat frequency - PBS/H2O non-allergic control"
+        experimental_group: control
+        measured_under: "EXPOSURE:lindner-pbs-h2o"
+      - id: "CILIA:lindner-cbf-trachea-atp-output-ova"
+        name: "ATP-stimulated ciliary beat frequency - OVA/H2O allergic control"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:lindner-ova-h2o"
+      - id: "CILIA:lindner-cbf-trachea-atp-output-p90"
+        name: "ATP-stimulated ciliary beat frequency - OVA/P90"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90"
+      - id: "CILIA:lindner-cbf-trachea-atp-output-p90-bap"
+        name: "ATP-stimulated ciliary beat frequency - OVA/P90-BaP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-bap"
+      - id: "CILIA:lindner-cbf-trachea-atp-output-p90-9na"
+        name: "ATP-stimulated ciliary beat frequency - OVA/P90-9NA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-9na"
+      - id: "CILIA:lindner-cbf-trachea-atp-output-as-pah"
+        name: "ATP-stimulated ciliary beat frequency - OVA/AS-PAH"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-as-pah"
+    has_exposure_condition:
+      - id: "EXPOSURE:lindner-pbs-h2o"
+        name: "PBS sensitisation, water vehicle - non-allergic control"
+      - id: "EXPOSURE:lindner-ova-h2o"
+        name: "OVA sensitisation and challenge, water vehicle - allergic control"
+      - id: "EXPOSURE:lindner-ova-p90"
+        name: "OVA plus Printex(R)90 carbon black, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-bap"
+        name: "OVA plus P90 coated with benzo[a]pyrene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-9na"
+        name: "OVA plus P90 coated with 9-nitroanthracene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-as-pah"
+        name: "OVA plus acetylene soot with surface PAH mixture, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cbf"
+      name: "Decreased ciliary beat frequency"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lindner-mouse-explanted-trachea"
+      name: "Freshly explanted trachea of OVA-sensitised Balb/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "female"
+      disease_state: "OVA-induced experimental allergic asthma"
+      subject_characteristics: "Female 7-9 week old Balb/c mice; ATP 10 uM added at the end of each experiment to activate cilia beating"
+      sample_type: biopsy
+      sample_collection_method: "Trachea explanted and pinned in a Sylgard-coated Delta T4 dish under 2 mL HEPES-Ringer solution"
+      collection_site: "tracheal epithelium"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:lindner-cbf-001"
+        name: "Video microscopy of ciliary beat frequency in explanted trachea"
+        imaging_frame_rate:
+          value: "100"
+          unit:
+            id: "UO:0000106"
+            name: "hertz"
+        temperature_control:
+          value: "30"
+          unit:
+            id: "UO:0000027"
+            name: "degree Celsius"
+
+# =============================================================================
+# MUCOCILIARY CLEARANCE ASSAYS - tracheal particle transport speed
+# =============================================================================
+
+mcc_assays:
+  - id: "MCC:lindner-transport-trachea"
+    name: "Tracheal particle transport speed - CBNP during established allergic airway inflammation"
+    description: >-
+      Figure 3b, mean transport speed of 4.5 um polystyrene particles on the
+      explanted tracheal epithelium, each data point one animal, mean +/-
+      SEM. The OVA challenge alone decreased transport speed relative to the
+      PBS control, which the authors attribute to the mucus on the
+      epithelium decelerating transport rather than to a ciliary defect.
+      NULL RESULT: CBNP exposure did not further decrease particle transport.
+      Reported as a scatter plot only, so no numeric values are transcribed.
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The exposure to the CBNP did not further decrease the particle transport (Figure 3b), but the ciliary beat frequency was decreased following exposure to P90 (Figure 3c)."
+        explanation: "The null result for particle transport that this assay's treated output records carry, alongside the separate P90 effect on beat frequency."
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Compared to the PBS control group, the cilia-induced particle transport speed was decreased in the OVA controls (Figure 3b), whereas the ciliary beat frequency was not affected (Figure 3c)"
+        explanation: "Supports the difference between this assay's PBS control and OVA control output records, i.e. that the allergic model itself impaired transport."
+    mucus_composition: "Lectin staining (Ulex europaeus agglutinin-1 and wheat germ agglutinin) showed increased mucus on the epithelium of all OVA-treated mice, and a further increased mucus quantity after P90 exposure"
+    has_specified_output:
+      - id: "MCC:lindner-transport-trachea-output-pbs"
+        name: "Particle transport speed - PBS/H2O non-allergic control"
+        experimental_group: control
+        measured_under: "EXPOSURE:lindner-pbs-h2o"
+      - id: "MCC:lindner-transport-trachea-output-ova"
+        name: "Particle transport speed - OVA/H2O allergic control"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:lindner-ova-h2o"
+      - id: "MCC:lindner-transport-trachea-output-p90"
+        name: "Particle transport speed - OVA/P90"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90"
+      - id: "MCC:lindner-transport-trachea-output-p90-bap"
+        name: "Particle transport speed - OVA/P90-BaP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-bap"
+      - id: "MCC:lindner-transport-trachea-output-p90-9na"
+        name: "Particle transport speed - OVA/P90-9NA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-p90-9na"
+      - id: "MCC:lindner-transport-trachea-output-as-pah"
+        name: "Particle transport speed - OVA/AS-PAH"
+        experimental_group: treated
+        measured_under: "EXPOSURE:lindner-ova-as-pah"
+    has_exposure_condition:
+      - id: "EXPOSURE:lindner-pbs-h2o"
+        name: "PBS sensitisation, water vehicle - non-allergic control"
+      - id: "EXPOSURE:lindner-ova-h2o"
+        name: "OVA sensitisation and challenge, water vehicle - allergic control"
+      - id: "EXPOSURE:lindner-ova-p90"
+        name: "OVA plus Printex(R)90 carbon black, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-bap"
+        name: "OVA plus P90 coated with benzo[a]pyrene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-p90-9na"
+        name: "OVA plus P90 coated with 9-nitroanthracene, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:lindner-ova-as-pah"
+        name: "OVA plus acetylene soot with surface PAH mixture, 70 uL of 100 ug/mL twice"
+        exposure_agent:
+          id: "CHEBI:133602"
+          name: "carbon black nanoparticle"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "2"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    informs_on_key_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lindner-mouse-explanted-trachea"
+      name: "Freshly explanted trachea of OVA-sensitised Balb/c mouse"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "female"
+      disease_state: "OVA-induced experimental allergic asthma"
+      subject_characteristics: "Female 7-9 week old Balb/c mice; trachea held at 30 C in HEPES-buffered Ringer solution, epithelium facing upwards"
+      sample_type: biopsy
+      sample_collection_method: "Trachea explanted and pinned in a Sylgard-coated Delta T4 dish under 2 mL HEPES-Ringer solution"
+      collection_site: "tracheal epithelium"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:lindner-transport-001"
+        name: "Particle transport speed on explanted tracheal epithelium"
+        imaging_frame_rate:
+          value: "12"
+          unit:
+            id: "UO:0000106"
+            name: "hertz"
+        particle_size:
+          value: "4.5"
+          unit:
+            id: "UO:0000017"
+            name: "micrometer"
+        particle_tracking_method: "Image-Pro Plus 6.0 particle tracking over 200 images from at least four areas per trachea"
+        temperature_control:
+          value: "30"
+          unit:
+            id: "UO:0000027"
+            name: "degree Celsius"
+
+# =============================================================================
+# RESPONSE COMPARISONS
+#
+# Analysis layer: the changes the paper itself states for each CBNP group
+# versus the OVA/H2O allergic control. For this paper most of them are
+# `no_change` - that is the result, not an omission. The paper reports
+# significance as thresholds (p < 0.05, p < 0.01) rather than exact p-values,
+# so p_value is left unset and the threshold is given in the description.
+# No change magnitudes are recorded, because the paper states directions and
+# significance only; nothing is computed here.
+# =============================================================================
+
+response_comparisons:
+  # --- the null results -------------------------------------------------------
+  - id: "COMP:lindner-il6-balf-p90"
+    name: "BAL fluid IL-6, OVA/P90 vs OVA/H2O - no change"
+    description: "Table 2. NULL RESULT reported by the paper: P90 did not increase BAL fluid IL-6 (0.8+/-0.2 vs 1.1+/-0.3 pg/mL, not significant). No change magnitude is stated by the paper, so none is recorded."
+    derived_from_assay: "BALF:lindner-cytokines-cbnp"
+    compared_measurement: "il6_concentration"
+    control_output: "BALF:lindner-cytokines-cbnp-output-ova"
+    treated_output: "BALF:lindner-cytokines-cbnp-output-p90"
+    change_direction: no_change
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-il8-balf-p90"
+    name: "BAL fluid KC (murine IL-8 homologue), OVA/P90 vs OVA/H2O - no change"
+    description: "Table 2. NULL RESULT: P90 did not increase BAL fluid KC (16.7+/-4.3 vs 21.6+/-5.7 pg/mL, not significant). The paper describes KC as the murine homolog of human IL-8, which is why it is carried in il8_concentration."
+    derived_from_assay: "BALF:lindner-cytokines-cbnp"
+    compared_measurement: "il8_concentration"
+    control_output: "BALF:lindner-cytokines-cbnp-output-ova"
+    treated_output: "BALF:lindner-cytokines-cbnp-output-p90"
+    change_direction: no_change
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-lung-resistance-p90"
+    name: "Lung resistance to methacholine, OVA/P90 vs OVA/H2O - no change"
+    description: "Figure 1c. NULL RESULT: airway hyperresponsiveness to methacholine in the CBNP groups was not different from OVA/H2O. Values are plotted only, so no magnitude is available."
+    derived_from_assay: "LF:lindner-ahr-methacholine"
+    compared_measurement: "lung_resistance"
+    control_output: "LF:lindner-ahr-methacholine-output-ova"
+    treated_output: "LF:lindner-ahr-methacholine-output-p90"
+    change_direction: no_change
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-cyp1a1-intrapulmonary-p90"
+    name: "Cyp1a1 mRNA in intrapulmonary airways, OVA/P90 vs OVA/H2O - no change"
+    description: "Table 3. NULL RESULT: the exposure to CBNP did not increase Cyp1a1 mRNA (1.3+/-0.4 vs 1.0+/-0.2 n-fold, not significant), i.e. no AhR pathway activation."
+    derived_from_assay: "GE:lindner-cyp1a1-intrapulmonary"
+    compared_measurement: "mrna_level"
+    control_output: "GE:lindner-cyp1a1-intrapulmonary-output-ova"
+    treated_output: "GE:lindner-cyp1a1-intrapulmonary-output-p90"
+    change_direction: no_change
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-cyp1b1-trachea-as-pah"
+    name: "Cyp1b1 mRNA in tracheal epithelial cells, OVA/AS-PAH vs OVA/H2O - no change"
+    description: "Table 3. AS-PAH carries a mixture of at least 12 surface PAH species and gave the numerically highest Cyp1b1 value (2.8+/-0.9 vs 1.2+/-0.3 n-fold), but the paper states that no CBNP increased the Cyp enzymes, i.e. the difference was not significant."
+    derived_from_assay: "GE:lindner-cyp1b1-trachea"
+    compared_measurement: "mrna_level"
+    control_output: "GE:lindner-cyp1b1-trachea-output-ova"
+    treated_output: "GE:lindner-cyp1b1-trachea-output-as-pah"
+    change_direction: no_change
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-ho1-intrapulmonary-p90"
+    name: "HO-1 mRNA in intrapulmonary airways, OVA/P90 vs OVA/H2O - no change"
+    description: "Table 3. NULL RESULT for the oxidative stress MIE: HO-1 mRNA did not increase after CBNP exposure (1.1+/-0.1 vs 1.3+/-0.1 n-fold, not significant)."
+    derived_from_assay: "GE:lindner-ho1-intrapulmonary"
+    compared_measurement: "mrna_level"
+    control_output: "GE:lindner-ho1-intrapulmonary-output-ova"
+    treated_output: "GE:lindner-ho1-intrapulmonary-output-p90"
+    change_direction: no_change
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-muc5ac-intrapulmonary-p90"
+    name: "Muc5ac mRNA in intrapulmonary airways, OVA/P90 vs OVA/H2O - no change"
+    description: "Table 3. Airway-region specificity: while P90 raised Muc5ac in the trachea, Muc5ac mRNA in the intrapulmonary airways remained constant (29+/-4 vs 44+/-11 n-fold, not significant)."
+    derived_from_assay: "GCM:lindner-mucins-intrapulmonary"
+    compared_measurement: "muc5ac_mrna_expression"
+    control_output: "GCM:lindner-mucins-intrapulmonary-output-ova"
+    treated_output: "GCM:lindner-mucins-intrapulmonary-output-p90"
+    change_direction: no_change
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-muc5b-trachea-p90"
+    name: "Muc5b mRNA in tracheal epithelial cells, OVA/P90 vs OVA/H2O - no change"
+    description: "Table 3. The mirror of the intrapulmonary Muc5b decrease: P90 had no effect on Muc5b mRNA in the tracheal epithelial cells (2.2+/-0.2 vs 2.2+/-0.6 n-fold)."
+    derived_from_assay: "GCM:lindner-mucins-trachea"
+    compared_measurement: "muc5b_mrna_expression"
+    control_output: "GCM:lindner-mucins-trachea-output-ova"
+    treated_output: "GCM:lindner-mucins-trachea-output-p90"
+    change_direction: no_change
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-muc5ac-trachea-as-pah"
+    name: "Muc5ac mRNA in tracheal epithelial cells, OVA/AS-PAH vs OVA/H2O - no change"
+    description: "Table 3. The PAH-containing CBNP did not change mucin mRNA expression; AS-PAH gave 39+/-20 vs 35+/-10 n-fold. Read with the P90 result, this is the paper's basis for suggesting that the higher specific surface area of uncoated P90, not the surface PAH, drives the Muc5ac response."
+    derived_from_assay: "GCM:lindner-mucins-trachea"
+    compared_measurement: "muc5ac_mrna_expression"
+    control_output: "GCM:lindner-mucins-trachea-output-ova"
+    treated_output: "GCM:lindner-mucins-trachea-output-as-pah"
+    change_direction: no_change
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-pas-trachea-p90"
+    name: "PAS-positive cells in tracheal epithelium, OVA/P90 vs OVA/H2O - no change"
+    description: "Figure 2d,e. NULL RESULT: the number of PAS-positive cells was not increased after P90 exposure, so the P90-induced Muc5ac mRNA rise did not translate into more mucus-storing goblet cells. Plotted only (n = 2-3), so no magnitude is available."
+    derived_from_assay: "GCM:lindner-pas-trachea"
+    compared_measurement: "goblet_cell_percentage"
+    control_output: "GCM:lindner-pas-trachea-output-ova"
+    treated_output: "GCM:lindner-pas-trachea-output-p90"
+    change_direction: no_change
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-transport-rate-p90"
+    name: "Tracheal particle transport speed, OVA/P90 vs OVA/H2O - no change"
+    description: "Figure 3b. NULL RESULT: the exposure to the CBNP did not further decrease the particle transport, even though the OVA challenge itself had already slowed it. Plotted only, so no magnitude is available."
+    derived_from_assay: "MCC:lindner-transport-trachea"
+    compared_measurement: "transport_rate"
+    control_output: "MCC:lindner-transport-trachea-output-ova"
+    treated_output: "MCC:lindner-transport-trachea-output-p90"
+    change_direction: no_change
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  # --- the significant changes, all of them either attenuating or
+  # --- P90-specific epithelial effects ---------------------------------------
+  - id: "COMP:lindner-il1beta-balf-as-pah"
+    name: "BAL fluid IL-1 beta, OVA/AS-PAH vs OVA/H2O - decreased"
+    description: "Table 2. AS-PAH reduced IL-1 beta protein in the BAL fluid (0.5+/-0.1 vs 1.3+/-0.2 pg/mL). The paper marks significance as p < 0.05 without an exact p-value and states no change magnitude, so neither is recorded. This is an attenuation of the allergic inflammation, not an aggravation."
+    derived_from_assay: "BALF:lindner-cytokines-cbnp"
+    compared_measurement: "il1_beta_concentration"
+    control_output: "BALF:lindner-cytokines-cbnp-output-ova"
+    treated_output: "BALF:lindner-cytokines-cbnp-output-as-pah"
+    change_direction: decreased
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-il1beta-balf-p90-9na"
+    name: "BAL fluid IL-1 beta, OVA/P90-9NA vs OVA/H2O - decreased"
+    description: "Table 2. P90-9NA reduced IL-1 beta protein in the BAL fluid (0.7+/-0.2 vs 1.3+/-0.2 pg/mL), marked p < 0.05. Another attenuating effect of a PAH-coated particle."
+    derived_from_assay: "BALF:lindner-cytokines-cbnp"
+    compared_measurement: "il1_beta_concentration"
+    control_output: "BALF:lindner-cytokines-cbnp-output-ova"
+    treated_output: "BALF:lindner-cytokines-cbnp-output-p90-9na"
+    change_direction: decreased
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-il6-mrna-intrapulmonary-p90-9na"
+    name: "IL-6 mRNA in intrapulmonary airways, OVA/P90-9NA vs OVA/H2O - decreased"
+    description: "Table 3. P90-9NA significantly decreased IL-6 mRNA in intrapulmonary airways (4.3+/-0.5 vs 7.9+/-1.2 n-fold), marked p < 0.05."
+    derived_from_assay: "GE:lindner-il6-intrapulmonary"
+    compared_measurement: "mrna_level"
+    control_output: "GE:lindner-il6-intrapulmonary-output-ova"
+    treated_output: "GE:lindner-il6-intrapulmonary-output-p90-9na"
+    change_direction: decreased
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-il13-mrna-intrapulmonary-p90-9na"
+    name: "IL-13 mRNA in intrapulmonary airways, OVA/P90-9NA vs OVA/H2O - decreased"
+    description: "Table 3. P90-9NA significantly decreased IL-13 mRNA in intrapulmonary airways (34+/-4 vs 52+/-8 n-fold), marked p < 0.05, consistent with the decreased IL-13 protein in its BAL fluid."
+    derived_from_assay: "GE:lindner-il13-intrapulmonary"
+    compared_measurement: "mrna_level"
+    control_output: "GE:lindner-il13-intrapulmonary-output-ova"
+    treated_output: "GE:lindner-il13-intrapulmonary-output-p90-9na"
+    change_direction: decreased
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-muc5ac-trachea-p90"
+    name: "Muc5ac mRNA in tracheal epithelial cells, OVA/P90 vs OVA/H2O - increased"
+    description: "Table 3. The clearest positive finding of the paper: unmodified P90 increased Muc5ac mRNA in the tracheal epithelial cells (101+/-15 vs 35+/-10 n-fold), marked p < 0.01. The paper reports a direction and a significance threshold rather than an exact p-value or a change magnitude, so neither is recorded."
+    derived_from_assay: "GCM:lindner-mucins-trachea"
+    compared_measurement: "muc5ac_mrna_expression"
+    control_output: "GCM:lindner-mucins-trachea-output-ova"
+    treated_output: "GCM:lindner-mucins-trachea-output-p90"
+    change_direction: increased
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-muc5b-intrapulmonary-p90"
+    name: "Muc5b mRNA in intrapulmonary airways, OVA/P90 vs OVA/H2O - decreased"
+    description: "Table 3. Unmodified P90 decreased Muc5b mRNA in the intrapulmonary airways (18+/-3 vs 31+/-5 n-fold), marked p < 0.05. Because Muc5b is required for effective mucociliary clearance, the authors read this as a potential worsening of the allergic airway inflammation despite the overall null result."
+    derived_from_assay: "GCM:lindner-mucins-intrapulmonary"
+    compared_measurement: "muc5b_mrna_expression"
+    control_output: "GCM:lindner-mucins-intrapulmonary-output-ova"
+    treated_output: "GCM:lindner-mucins-intrapulmonary-output-p90"
+    change_direction: decreased
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-beat-frequency-p90"
+    name: "Tracheal ciliary beat frequency, OVA/P90 vs OVA/H2O - decreased"
+    description: "Figure 3c. The unmodified P90 decreased the tracheal ciliary beat frequency; the PAH-coated particles and AS-PAH did not. Plotted only, so no magnitude is available. The authors attribute the effect to the Muc5ac-rich mucus agglutinating the cilia, not to cilia damage, because ATP stimulation raised beat frequency equally in all groups."
+    derived_from_assay: "CILIA:lindner-cbf-trachea"
+    compared_measurement: "beat_frequency_hz"
+    control_output: "CILIA:lindner-cbf-trachea-output-ova"
+    treated_output: "CILIA:lindner-cbf-trachea-output-p90"
+    change_direction: decreased
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+  - id: "COMP:lindner-beat-frequency-p90-bap"
+    name: "Tracheal ciliary beat frequency, OVA/P90-BaP vs OVA/H2O - no change"
+    description: "Figure 3c. The PAH-coated P90 particles did not affect the ciliary beat frequency, which together with their unchanged Muc5ac mRNA is the paper's basis for pointing at the higher specific surface area of unmodified P90 as the critical particle characteristic."
+    derived_from_assay: "CILIA:lindner-cbf-trachea"
+    compared_measurement: "beat_frequency_hz"
+    control_output: "CILIA:lindner-cbf-trachea-output-ova"
+    treated_output: "CILIA:lindner-cbf-trachea-output-p90-bap"
+    change_direction: no_change
+    statistical_test: "Mann-Whitney U test"
+    derivation: reported_in_paper
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS - the mechanism the paper proposes for the one
+# positive P90 finding, kept separate from the null results
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:lindner-muc5ac-to-cbf"
+    name: "Increased Muc5ac-rich mucus leads to decreased ciliary beat frequency"
+    description: >-
+      The mechanism the authors propose for the single P90-specific effect on
+      ciliary function: the P90-induced Muc5ac increase makes the released
+      mucus more adhesive and viscous, which agglutinates the cilia. The
+      inference is explicitly hypothetical in the paper ("we suggest",
+      "might have"), and rests on a plotted beat frequency difference plus
+      the observation that ATP stimulation restored beat frequency equally
+      in all groups, so evidence support is recorded as weak.
+    upstream_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ke-decreased-cbf"
+      name: "Decreased ciliary beat frequency"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: weak
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The resulting more adhesive and viscous mucus might have agglutinated the cilia, causing the observed decrease in the ciliary beat frequency."
+        explanation: "The authors' own statement of this upstream-to-downstream link, phrased as a suggestion, which is why evidence_support is weak."
+
+  - id: "KER:lindner-muc5b-loss-to-mcc"
+    name: "Decreased Muc5b in intrapulmonary airways leads to impaired mucociliary clearance"
+    description: >-
+      Muc5b is required for airway defence against pathogens and for
+      effective mucociliary clearance, so the authors read the P90-induced
+      decrease of Muc5b mRNA in the intrapulmonary airways as probably
+      affecting mucociliary clearance. No clearance measurement was made in
+      the intrapulmonary airways in this study - the measured particle
+      transport speed is tracheal and was unchanged by CBNP - so this link
+      is an inference rather than a measured relationship and is recorded as
+      indirect with weak support.
+    upstream_event:
+      id: "KE:ke-muc5b-decrease"
+      name: "Decreased Muc5b expression"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    relationship_type: "indirectly leads to"
+    evidence_support: weak
+    evidence:
+      - reference: "PMID:29614747"
+        reference_title: "Low Dose Carbon Black Nanoparticle Exposure Does Not Aggravate Allergic Airway Inflammation in Mice Irrespective of the Presence of Surface Polycyclic Aromatic Hydrocarbons."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Our results indicate that the proportion of Muc5ac and Muc5b is affected due to the P90-induced decrease of Muc5b mRNA expression in the intrapulmonary airways, probably affecting the mucociliary clearance."
+        explanation: "The authors state the link between the altered Muc5ac/Muc5b proportion and mucociliary clearance, hedged with 'probably', matching the weak evidence support recorded here."
