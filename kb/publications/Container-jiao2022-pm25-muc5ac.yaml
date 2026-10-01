@@ -87,7 +87,7 @@ protocols:
     name: "ELISA for EGFR ligand protein (HB-EGF, TGF-alpha, AREG)"
     description: "ALI cultures treated with PM2.5 for 24 h assayed with commercial ELISA kits (Cloud Clone Corp., Wuhan) for HB-EGF, TGF-alpha and AREG. Absorbance read at 450 nm. Protein concentration of each culture determined by Bradford assay. EREG protein was also assayed but fell below the kit's detection range, so no EREG protein assay record exists."
     detection_method: "colorimetric ELISA, absorbance read at 450 nm"
-    normalization_method: "analyte mass per mg total cell culture protein (Bradford assay)"
+    normalization_method: "pg per mg total cell culture protein (Bradford assay)"
     equipment_required:
       - "ELISA plate reader (450 nm)"
       - "HB-EGF / TGF-alpha / AREG ELISA kits (Cloud Clone Corp., Wuhan)"
@@ -1800,7 +1800,7 @@ gene_expression_assays:
 
   - id: "GE:jiao-tgfa-protein-control-24h"
     name: "TGF-alpha protein (ELISA) - control-subject HNECs, PM2.5 24 h (no change)"
-    description: "NULL RESULT. ELISA for transforming growth factor-alpha protein in ALI cultures from control subjects (n = 4) treated with 200 ug/mL PM2.5 for 24 h. There was no significant increase in TGF-alpha protein (Fig. 4), the one EGFR ligand of the three assayed whose protein did not respond; TGF-alpha mRNA likewise showed only a non-significant increasing trend. The paper shows these data graphically only and reports no significant difference, so no values are recorded and no response_comparison is derived, following the convention used for this file's other null results."
+    description: "NULL RESULT. ELISA for transforming growth factor-alpha protein in ALI cultures from control subjects (n = 4) treated with 200 ug/mL PM2.5 for 24 h. There was no significant increase in TGF-alpha protein (Fig. 4), the one EGFR ligand of the three assayed whose protein did not respond; TGF-alpha mRNA was likewise not significantly elevated, as this file's EGFR ligand mRNA records already note. The paper shows these data graphically only and reports no significant difference, so no values are recorded and no response_comparison is derived, following the convention used for this file's other null results."
     target_gene: "NCBIGene:7039"
     gene_expression_method: "ELISA (Cloud Clone Corp. kit, absorbance at 450 nm)"
     normalization_reference: "total cell culture protein (Bradford assay)"
@@ -1817,6 +1817,12 @@ gene_expression_assays:
         evidence_source: IN_VITRO
         snippet: "We then examined the expression of HB-EGF, AREG, EREG, and TGF-α protein by ELISA."
         explanation: "The Results name TGF-alpha among the proteins measured by ELISA, establishing that this null result comes from a performed measurement rather than an omitted one."
+      - reference: "PMID:34736257"
+        reference_title: "PM2.5 Upregulates the Expression of MUC5AC via the EGFR-PI3K Pathway in Human Sinonasal Epithelial Cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Primary HNECs from control subjects (n = 4) and pa-...tients with CRSwNP (n = 4) were treated with 200 μg/mL PM2.5 for 24 h, and protein levels of HB-EGF, TGF-α, and AREG were detected by ELISA. *p < 0.05 between 2 groups."
+        explanation: "The Figure 4 legend is the source for this assay's sample size (n = 4 control-derived cultures), its exposure and its method, which the description states. Elided where the column break hyphenates \"patients\"."
     has_exposure_condition:
       - id: "EXPOSURE:jiao-medium-24h"
         name: "ALI culture medium only, 24 hours (control)"
