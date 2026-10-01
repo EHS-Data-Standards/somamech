@@ -48,11 +48,14 @@ from yaml_to_excel import (  # noqa: E402 - reuse the per-paper converter's piec
     _collect_key_events,
     _collect_subjects,
     _exposure_row,
+    _key_event_relationship_row,
+    _iter_outputs,
     _key_event_row,
     _invivo_subject_row,
     _make_sheet,
     _output_row,
     _protocol_row,
+    _response_comparison_row,
 )
 
 DEFAULT_KB_DIR = ROOT / "kb" / "publications"
@@ -69,6 +72,23 @@ def source_of(data: dict, path: Path) -> str:
         return src["reference"]
     print(f"WARNING: {path.name} has no source_publication — using filename", file=sys.stderr)
     return path.name
+
+
+def collect_key_events_for_pool(data: dict) -> list[dict]:
+    """Collect unique key events from assays and key_event_relationships."""
+    seen: dict[str, dict] = {}
+    for ke in _collect_key_events(data):
+        ke_id = (ke or {}).get("id", "")
+        if ke_id and ke_id not in seen:
+            seen[ke_id] = ke
+    for ker in data.get("key_event_relationships", []) or []:
+        for slot in ("upstream_event", "downstream_event"):
+            ke = ker.get(slot)
+            if isinstance(ke, dict):
+                ke_id = ke.get("id", "")
+                if ke_id and ke_id not in seen:
+                    seen[ke_id] = ke
+    return list(seen.values())
 
 
 def collect(files: list[Path]):
@@ -131,18 +151,23 @@ def collect(files: list[Path]):
             add("Protocol", source, p.get("id", ""), _protocol_row(p))
         for ec in _collect_exposure_conditions(data):
             add("ExposureCondition", source, ec.get("id", ""), _exposure_row(ec))
-        for ke in _collect_key_events(data):
+        for ke in collect_key_events_for_pool(data):
             add("KeyEvent", source, ke.get("id", ""), _key_event_row(ke))
         cellular, invivo = _collect_subjects(data)
         for s in cellular:
             add("CellularSystem", source, s.get("id", ""), _cellular_system_row(s))
         for s in invivo:
             add("InVivoSubject", source, s.get("id", ""), _invivo_subject_row(s))
+        for rc in data.get("response_comparisons", []) or []:
+            add("ResponseComparison", source, rc.get("id", ""), _response_comparison_row(rc))
+        for ker in data.get("key_event_relationships", []) or []:
+            add("KeyEventRelationship", source, ker.get("id", ""), _key_event_relationship_row(ker))
         for coll_key, (assay_tab, output_tab) in COLLECTION_MAP.items():
             for a in data.get(coll_key, []) or []:
                 add(assay_tab, source, a.get("id", ""), _assay_row(a, HEADERS.get(assay_tab, [])))
-                out = a.get("has_specified_output")
-                if out and isinstance(out, dict):
+                # has_specified_output is multivalued (a list of output
+                # records); _iter_outputs also accepts the legacy bare-dict form
+                for out in _iter_outputs(a):
                     out = dict(out)
                     out.setdefault("source_assay", a.get("id", ""))
                     add(output_tab, source, out.get("id", ""), _output_row(out, HEADERS.get(output_tab, [])))
@@ -163,7 +188,15 @@ def write_workbook(tabs, papers, output_path: Path):
     )
 
     # Fixed tab order: shared context first, then assay/output pairs
-    order = ["Protocol", "ExposureCondition", "KeyEvent", "CellularSystem", "InVivoSubject"]
+    order = [
+        "Protocol",
+        "ExposureCondition",
+        "KeyEvent",
+        "CellularSystem",
+        "InVivoSubject",
+        "ResponseComparison",
+        "KeyEventRelationship",
+    ]
     for _, (assay_tab, output_tab) in COLLECTION_MAP.items():
         order.extend([assay_tab, output_tab])
     for tab in [t for t in order if t in tabs]:
