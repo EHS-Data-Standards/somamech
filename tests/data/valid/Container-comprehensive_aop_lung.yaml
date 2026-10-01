@@ -315,8 +315,8 @@ egfr_signaling_assays:
       - id: "EXPOSURE:pm25-4h"
         name: "PM2.5 10 ug/cm2 for 4 hours"
         exposure_agent:
-          id: "CHEBI:74481"
-          name: "PM2.5"
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
         exposure_concentration:
           value: "10"
           unit:
@@ -374,8 +374,8 @@ egfr_signaling_assays:
       - id: "EXPOSURE:pm25-4h"
         name: "PM2.5 10 ug/cm2 for 4 hours"
         exposure_agent:
-          id: "CHEBI:74481"
-          name: "PM2.5"
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
         exposure_concentration:
           value: "10"
           unit:
@@ -475,8 +475,8 @@ goblet_cell_assays:
       - id: "EXPOSURE:pm25-24h"
         name: "PM2.5 10 ug/cm2 for 24 hours"
         exposure_agent:
-          id: "CHEBI:74481"
-          name: "PM2.5"
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
         exposure_concentration:
           value: "10"
           unit:
@@ -529,8 +529,8 @@ goblet_cell_assays:
       - id: "EXPOSURE:pm25-7d"
         name: "PM2.5 10 ug/cm2 daily for 7 days"
         exposure_agent:
-          id: "CHEBI:74481"
-          name: "PM2.5"
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
         exposure_concentration:
           value: "10"
           unit:
@@ -578,8 +578,8 @@ goblet_cell_assays:
       - id: "EXPOSURE:pm25-7d"
         name: "PM2.5 10 ug/cm2 daily for 7 days"
         exposure_agent:
-          id: "CHEBI:74481"
-          name: "PM2.5"
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
         exposure_concentration:
           value: "10"
           unit:
@@ -811,8 +811,8 @@ ciliary_function_assays:
       - id: "EXPOSURE:pm25-7d"
         name: "PM2.5 10 ug/cm2 daily for 7 days"
         exposure_agent:
-          id: "CHEBI:74481"
-          name: "PM2.5"
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
         exposure_concentration:
           value: "10"
           unit:
@@ -870,8 +870,8 @@ ciliary_function_assays:
       - id: "EXPOSURE:pm25-7d"
         name: "PM2.5 10 ug/cm2 daily for 7 days"
         exposure_agent:
-          id: "CHEBI:74481"
-          name: "PM2.5"
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
         exposure_concentration:
           value: "10"
           unit:
@@ -978,8 +978,8 @@ mcc_assays:
       - id: "EXPOSURE:pm25-24h"
         name: "PM2.5 10 ug/cm2 for 24 hours"
         exposure_agent:
-          id: "CHEBI:74481"
-          name: "PM2.5"
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
         exposure_concentration:
           value: "10"
           unit:
@@ -1034,8 +1034,8 @@ mcc_assays:
       - id: "EXPOSURE:pm25-7d"
         name: "PM2.5 10 ug/cm2 daily for 7 days"
         exposure_agent:
-          id: "CHEBI:74481"
-          name: "PM2.5"
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
         exposure_concentration:
           value: "10"
           unit:
@@ -1088,8 +1088,8 @@ mcc_assays:
       - id: "EXPOSURE:pm25-7d"
         name: "PM2.5 10 ug/cm2 daily for 7 days"
         exposure_agent:
-          id: "CHEBI:74481"
-          name: "PM2.5"
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
         exposure_concentration:
           value: "10"
           unit:
@@ -1142,8 +1142,8 @@ lung_function_assays:
       - id: "EXPOSURE:aop-ambient-pm25-baseline"
         name: "Residential ambient PM2.5, 15 years at enrollment"
         exposure_agent:
-          id: "CHEBI:74481"
-          name: "PM2.5"
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
         exposure_duration:
           value: "15"
           unit:
@@ -1204,8 +1204,8 @@ lung_function_assays:
       - id: "EXPOSURE:aop-ambient-pm25-followup"
         name: "Residential ambient PM2.5, 16 years at 1-year follow-up"
         exposure_agent:
-          id: "CHEBI:74481"
-          name: "PM2.5"
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
         exposure_duration:
           value: "16"
           unit:
@@ -1253,8 +1253,8 @@ lung_function_assays:
       - id: "EXPOSURE:aop-ambient-pm25-followup"
         name: "Residential ambient PM2.5, 16 years at 1-year follow-up"
         exposure_agent:
-          id: "CHEBI:74481"
-          name: "PM2.5"
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
         exposure_duration:
           value: "16"
           unit:
@@ -1300,8 +1300,8 @@ lung_function_assays:
       - id: "EXPOSURE:aop-ambient-pm25-followup"
         name: "Residential ambient PM2.5, 16 years at 1-year follow-up"
         exposure_agent:
-          id: "CHEBI:74481"
-          name: "PM2.5"
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
         exposure_duration:
           value: "16"
           unit:
