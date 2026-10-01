@@ -48,6 +48,7 @@ from yaml_to_excel import (  # noqa: E402 - reuse the per-paper converter's piec
     _collect_key_events,
     _collect_subjects,
     _exposure_row,
+    _iter_outputs,
     _key_event_row,
     _invivo_subject_row,
     _make_sheet,
@@ -141,8 +142,9 @@ def collect(files: list[Path]):
         for coll_key, (assay_tab, output_tab) in COLLECTION_MAP.items():
             for a in data.get(coll_key, []) or []:
                 add(assay_tab, source, a.get("id", ""), _assay_row(a, HEADERS.get(assay_tab, [])))
-                out = a.get("has_specified_output")
-                if out and isinstance(out, dict):
+                # has_specified_output is multivalued (a list of output
+                # records); _iter_outputs also accepts the legacy bare-dict form
+                for out in _iter_outputs(a):
                     out = dict(out)
                     out.setdefault("source_assay", a.get("id", ""))
                     add(output_tab, source, out.get("id", ""), _output_row(out, HEADERS.get(output_tab, [])))
