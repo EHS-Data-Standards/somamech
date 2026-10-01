@@ -1,7 +1,8 @@
 """Tests for yaml_to_excel.py converter."""
-import importlib.util
+import datetime
 import os
 import subprocess
+import sys
 import tempfile
 
 import pytest
@@ -121,11 +122,9 @@ def test_yaml_to_excel(yaml_name, expectations):
 # _fmt_cell: coercion for header-driven slots whose range is an inlined class
 # ---------------------------------------------------------------------------
 
-_spec = importlib.util.spec_from_file_location(
-    "yaml_to_excel", os.path.join(os.path.dirname(__file__), "..", "scripts", "yaml_to_excel.py")
-)
-y2e = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(y2e)
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
+
+import yaml_to_excel as y2e  # noqa: E402 - needs the sys.path line above
 
 
 @pytest.mark.parametrize(
@@ -138,12 +137,22 @@ _spec.loader.exec_module(y2e)
         (True, True),
         (None, None),
         ("", ""),
+        # dates stay dates: assay_date is range: date, so an unquoted one
+        # parses to datetime.date and must not be flattened into text
+        (datetime.date(2021, 1, 1), datetime.date(2021, 1, 1)),
+        (datetime.datetime(2021, 1, 1, 9, 30), datetime.datetime(2021, 1, 1, 9, 30)),
+        (datetime.time(9, 30), datetime.time(9, 30)),
+        (datetime.timedelta(days=1), datetime.timedelta(days=1)),
         # an ontology term reads the way the hand-written row builders write one
         ({"id": "CL:0000771", "name": "eosinophil"}, "eosinophil (CL:0000771)"),
         ({"id": "CL:0000775"}, "CL:0000775"),
         ({"name": "eosinophil"}, "eosinophil"),
         # a measurement keeps its unit
         ({"value": "10", "unit": {"id": "UO:0000275", "name": "ng/mL"}}, "10 ng/mL (UO:0000275)"),
+        # a dict carrying both an id and a measurement keeps the measurement
+        ({"id": "X:1", "value": "10", "unit": {"name": "ng/mL"}}, "10 ng/mL"),
+        # a unit with no value still reads as a label, not a repr
+        ({"unit": {"id": "UO:1", "name": "ng/mL"}}, "ng/mL (UO:1)"),
         # anything else flattens rather than reaching openpyxl as an object
         (["a", "b"], "a; b"),
         ([{"gene": "Foxj1"}], "gene: Foxj1"),

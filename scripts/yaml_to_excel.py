@@ -10,6 +10,7 @@ Usage:
 """
 
 import argparse
+import datetime
 import re
 import sys
 from pathlib import Path
@@ -488,7 +489,9 @@ def _collect_response_rows(data):
                         assay_tab,
                         out.get("id", ""),
                         out.get("experimental_group", ""),
-                        out.get("measured_under", ""),
+                        # range: ExposureCondition -- a CURIE string today
+                        # (non-inlined), coerced for the same reason as above
+                        _fmt_cell(out.get("measured_under", "")),
                         slot,
                         val,
                         unit,
@@ -543,6 +546,19 @@ def _join_multivalued(values):
     return "; ".join(parts)
 
 
+# What openpyxl writes without help. datetime.datetime subclasses
+# datetime.date, so the one entry covers both.
+_EXCEL_SCALARS = (
+    str,
+    int,
+    float,
+    bool,
+    datetime.date,
+    datetime.time,
+    datetime.timedelta,
+)
+
+
 def _fmt_cell(value):
     """Coerce one slot value into something openpyxl can write.
 
@@ -553,15 +569,20 @@ def _fmt_cell(value):
     ValueError rather than writing it. Format those the way the hand-written
     row builders already format their term and measurement objects, so adding
     an inlined slot to HEADERS can never break the workbook again.
+
+    Everything openpyxl writes natively is handed back untouched, dates
+    included: `assay_date` is `range: date`, so an unquoted one parses to a
+    `datetime.date` and must stay a real date cell rather than become text.
     """
-    if value is None or isinstance(value, (str, int, float, bool)):
+    if value is None or isinstance(value, _EXCEL_SCALARS):
         return value
     if isinstance(value, dict):
-        if value.get("id") or value.get("name"):
-            return _fmt_id_name(value)
-        if "value" in value:
+        # a measurement before a term: a dict carrying both keeps its value
+        if "value" in value or "unit" in value:
             val, unit = _fmt_value_unit(value)
             return f"{val} {unit}".strip()
+        if value.get("id") or value.get("name"):
+            return _fmt_id_name(value)
     return _join_multivalued(value)
 
 
