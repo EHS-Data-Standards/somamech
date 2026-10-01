@@ -199,7 +199,17 @@ Key structural patterns:
 
 ### ID Conventions
 
-- Protocols: `PROTOCOL:<author>-<method>-<number>` (e.g., `PROTOCOL:liu-ussing-001`)
+- Protocols: `PROTOCOL:<author>-<method>-<number>` (e.g., `PROTOCOL:liu-ussing-001`).
+  When one method is run against several targets with **different** parameters — say a
+  qPCR method with a distinct primer pair per gene — give each target its own id
+  (`PROTOCOL:jiao-qpcr-muc5ac`, `PROTOCOL:jiao-qpcr-spdef`) rather than reusing one id
+  for all of them. One id must denote one protocol: reusing it means every consumer
+  keyed on id keeps one variant and silently drops the rest. See issue #131 for the
+  reasoning and #127 for what it cost.
+- Define each protocol **once** in the top-level `protocols:` section, and make each
+  `follows_protocols:` entry a stub carrying only `id`, `protocol_type` and `name`.
+  Detail repeated at a use site can drift from the definition, and the workbook export
+  reads the top-level section only, so use-site-only detail reaches no consumer.
 - Exposures: `EXPOSURE:<author>-<agent>-<detail>` (e.g., `EXPOSURE:liu-pm25-100ug-24h`)
 - Key Events: `KE:<type>-<description>` (e.g., `KE:ke-decreased-cftr`)
 - Assays: `<PREFIX>:<author>-<target>-<condition>` (e.g., `CFTR:liu-pm25-24h`)
