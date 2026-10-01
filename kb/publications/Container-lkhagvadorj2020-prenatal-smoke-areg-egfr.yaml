@@ -160,7 +160,6 @@ ciliary_function_assays:
         name: "Ciliated cell number, offspring of smoke-exposed dams"
         experimental_group: treated
         measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
-    assay_date: "2020-01-01"
     informs_on_key_event:
       id: "KE:ke-altered-ciliogenesis"
       name: "Altered ciliogenesis"
@@ -179,9 +178,8 @@ ciliary_function_assays:
           id: "UO:0000033"
           name: "day"
       sex: "male and female (analysed separately as well as pooled)"
-      subject_characteristics: "C57Bl/6 neonates euthanized one day after birth. n=16 offspring from nonsmoking mothers (n=3 dams), n=24 from smoking mothers (n=4 dams). Dams were 8-10 wk old at the start of exposure. Offspring themselves were never directly exposed."
+      subject_characteristics: "C57Bl/6 neonates euthanized one day after birth. n=16 offspring from nonsmoking mothers (n=3 dams), n=24 from smoking mothers (n=4 dams). Dams were 8-10 wk old at the start of exposure. Offspring themselves were never directly exposed. The left lung was used for RNA isolation (RT-qPCR) and the right lung was formalin-fixed and paraffin-embedded for histology."
       sample_type: biopsy
-      collection_site: "right lung (formalin-fixed, paraffin-embedded)"
     follows_protocols:
       - id: "PROTOCOL:lkhagvadorj-smoke-001"
         name: "Maternal cigarette smoke exposure (prenatal window)"
@@ -236,7 +234,6 @@ ciliary_function_assays:
         name: "Tubulin+ cell number, AREG-treated bronchiolar organoids"
         experimental_group: treated
         measured_under: "EXPOSURE:lkhagvadorj-organoid-areg"
-    assay_date: "2020-01-01"
     informs_on_key_event:
       id: "KE:ke-altered-ciliogenesis"
       name: "Altered ciliogenesis"
@@ -316,7 +313,6 @@ foxj_assays:
         name: "Foxj1 mRNA, offspring of smoke-exposed dams"
         experimental_group: treated
         measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
-    assay_date: "2020-01-01"
     informs_on_key_event:
       id: "KE:ke-altered-ciliogenesis"
       name: "Altered ciliogenesis"
@@ -335,15 +331,14 @@ foxj_assays:
           id: "UO:0000033"
           name: "day"
       sex: "male and female (analysed separately as well as pooled)"
-      subject_characteristics: "C57Bl/6 neonates euthanized one day after birth; left lung used for qRT-PCR."
+      subject_characteristics: "C57Bl/6 neonates euthanized one day after birth. n=16 offspring from nonsmoking mothers (n=3 dams), n=24 from smoking mothers (n=4 dams). Dams were 8-10 wk old at the start of exposure. Offspring themselves were never directly exposed. The left lung was used for RNA isolation (RT-qPCR) and the right lung was formalin-fixed and paraffin-embedded for histology."
       sample_type: biopsy
-      collection_site: "left lung"
     follows_protocols:
       - id: "PROTOCOL:lkhagvadorj-smoke-001"
         name: "Maternal cigarette smoke exposure (prenatal window)"
       - protocol_type: MolecularAssayProtocol
         id: "PROTOCOL:lkhagvadorj-qpcr-001"
-        name: "TaqMan RT-qPCR for Foxj1"
+        name: "TaqMan RT-qPCR on neonatal lung tissue"
         detection_method: "TaqMan real-time quantitative PCR (LightCycler 480)"
         reference_gene: "Gapdh"
         normalization_method: "2^-dCp relative to Gapdh, fit points method"
@@ -397,7 +392,6 @@ gene_expression_assays:
         name: "Spdef mRNA, offspring of smoke-exposed dams"
         experimental_group: treated
         measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
-    assay_date: "2020-01-01"
     informs_on_key_event:
       id: "KE:ke-mucus-metaplasia"
       name: "Mucus secretory program activation"
@@ -416,12 +410,14 @@ gene_expression_assays:
           id: "UO:0000033"
           name: "day"
       sex: "male and female (analysed separately as well as pooled)"
+      subject_characteristics: "C57Bl/6 neonates euthanized one day after birth. n=16 offspring from nonsmoking mothers (n=3 dams), n=24 from smoking mothers (n=4 dams). Dams were 8-10 wk old at the start of exposure. Offspring themselves were never directly exposed. The left lung was used for RNA isolation (RT-qPCR) and the right lung was formalin-fixed and paraffin-embedded for histology."
       sample_type: biopsy
-      collection_site: "left lung"
     follows_protocols:
+      - id: "PROTOCOL:lkhagvadorj-smoke-001"
+        name: "Maternal cigarette smoke exposure (prenatal window)"
       - protocol_type: MolecularAssayProtocol
         id: "PROTOCOL:lkhagvadorj-qpcr-001"
-        name: "TaqMan RT-qPCR for Spdef"
+        name: "TaqMan RT-qPCR on neonatal lung tissue"
         detection_method: "TaqMan real-time quantitative PCR (LightCycler 480)"
         reference_gene: "Gapdh"
         normalization_method: "2^-dCp relative to Gapdh, fit points method"
@@ -466,7 +462,6 @@ gene_expression_assays:
         name: "Foxm1 mRNA, offspring of smoke-exposed dams"
         experimental_group: treated
         measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
-    assay_date: "2020-01-01"
     informs_on_key_event:
       id: "KE:ke-mucus-metaplasia"
       name: "Mucus secretory program activation"
@@ -485,12 +480,14 @@ gene_expression_assays:
           id: "UO:0000033"
           name: "day"
       sex: "male and female (analysed separately as well as pooled)"
+      subject_characteristics: "C57Bl/6 neonates euthanized one day after birth. n=16 offspring from nonsmoking mothers (n=3 dams), n=24 from smoking mothers (n=4 dams). Dams were 8-10 wk old at the start of exposure. Offspring themselves were never directly exposed. The left lung was used for RNA isolation (RT-qPCR) and the right lung was formalin-fixed and paraffin-embedded for histology."
       sample_type: biopsy
-      collection_site: "left lung"
     follows_protocols:
+      - id: "PROTOCOL:lkhagvadorj-smoke-001"
+        name: "Maternal cigarette smoke exposure (prenatal window)"
       - protocol_type: MolecularAssayProtocol
         id: "PROTOCOL:lkhagvadorj-qpcr-001"
-        name: "TaqMan RT-qPCR for Foxm1"
+        name: "TaqMan RT-qPCR on neonatal lung tissue"
         detection_method: "TaqMan real-time quantitative PCR (LightCycler 480)"
         reference_gene: "Gapdh"
         normalization_method: "2^-dCp relative to Gapdh, fit points method"
@@ -535,7 +532,6 @@ gene_expression_assays:
         name: "Pdpn mRNA, offspring of smoke-exposed dams"
         experimental_group: treated
         measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
-    assay_date: "2020-01-01"
     informs_on_key_event:
       id: "KE:ke-impaired-aeci-differentiation"
       name: "Impaired alveolar epithelial type I cell differentiation"
@@ -554,12 +550,14 @@ gene_expression_assays:
           id: "UO:0000033"
           name: "day"
       sex: "male and female (analysed separately as well as pooled)"
+      subject_characteristics: "C57Bl/6 neonates euthanized one day after birth. n=16 offspring from nonsmoking mothers (n=3 dams), n=24 from smoking mothers (n=4 dams). Dams were 8-10 wk old at the start of exposure. Offspring themselves were never directly exposed. The left lung was used for RNA isolation (RT-qPCR) and the right lung was formalin-fixed and paraffin-embedded for histology."
       sample_type: biopsy
-      collection_site: "left lung"
     follows_protocols:
+      - id: "PROTOCOL:lkhagvadorj-smoke-001"
+        name: "Maternal cigarette smoke exposure (prenatal window)"
       - protocol_type: MolecularAssayProtocol
         id: "PROTOCOL:lkhagvadorj-qpcr-001"
-        name: "TaqMan RT-qPCR for Pdpn"
+        name: "TaqMan RT-qPCR on neonatal lung tissue"
         detection_method: "TaqMan real-time quantitative PCR (LightCycler 480)"
         reference_gene: "Gapdh"
         normalization_method: "2^-dCp relative to Gapdh, fit points method"
@@ -604,7 +602,6 @@ gene_expression_assays:
         name: "Gramd2 mRNA, offspring of smoke-exposed dams"
         experimental_group: treated
         measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
-    assay_date: "2020-01-01"
     informs_on_key_event:
       id: "KE:ke-impaired-aeci-differentiation"
       name: "Impaired alveolar epithelial type I cell differentiation"
@@ -623,12 +620,14 @@ gene_expression_assays:
           id: "UO:0000033"
           name: "day"
       sex: "male and female (analysed separately as well as pooled)"
+      subject_characteristics: "C57Bl/6 neonates euthanized one day after birth. n=16 offspring from nonsmoking mothers (n=3 dams), n=24 from smoking mothers (n=4 dams). Dams were 8-10 wk old at the start of exposure. Offspring themselves were never directly exposed. The left lung was used for RNA isolation (RT-qPCR) and the right lung was formalin-fixed and paraffin-embedded for histology."
       sample_type: biopsy
-      collection_site: "left lung"
     follows_protocols:
+      - id: "PROTOCOL:lkhagvadorj-smoke-001"
+        name: "Maternal cigarette smoke exposure (prenatal window)"
       - protocol_type: MolecularAssayProtocol
         id: "PROTOCOL:lkhagvadorj-qpcr-001"
-        name: "TaqMan RT-qPCR for Gramd2"
+        name: "TaqMan RT-qPCR on neonatal lung tissue"
         detection_method: "TaqMan real-time quantitative PCR (LightCycler 480)"
         reference_gene: "Gapdh"
         normalization_method: "2^-dCp relative to Gapdh, fit points method"
@@ -673,7 +672,6 @@ gene_expression_assays:
         name: "pro-SPC+ AECII number, offspring of smoke-exposed dams"
         experimental_group: treated
         measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
-    assay_date: "2020-01-01"
     informs_on_key_event:
       id: "KE:ke-aecii-hyperplasia"
       name: "Alveolar epithelial type II cell hyperplasia"
@@ -692,9 +690,11 @@ gene_expression_assays:
           id: "UO:0000033"
           name: "day"
       sex: "male and female (analysed separately as well as pooled)"
+      subject_characteristics: "C57Bl/6 neonates euthanized one day after birth. n=16 offspring from nonsmoking mothers (n=3 dams), n=24 from smoking mothers (n=4 dams). Dams were 8-10 wk old at the start of exposure. Offspring themselves were never directly exposed. The left lung was used for RNA isolation (RT-qPCR) and the right lung was formalin-fixed and paraffin-embedded for histology."
       sample_type: biopsy
-      collection_site: "right lung (formalin-fixed, paraffin-embedded)"
     follows_protocols:
+      - id: "PROTOCOL:lkhagvadorj-smoke-001"
+        name: "Maternal cigarette smoke exposure (prenatal window)"
       - protocol_type: StainingProtocol
         id: "PROTOCOL:lkhagvadorj-ihc-001"
         name: "Immunohistochemistry for pro-SPC (AECII)"
@@ -745,7 +745,6 @@ gene_expression_assays:
         name: "NKX2.1+ AECII number, offspring of smoke-exposed dams"
         experimental_group: treated
         measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
-    assay_date: "2020-01-01"
     informs_on_key_event:
       id: "KE:ke-aecii-hyperplasia"
       name: "Alveolar epithelial type II cell hyperplasia"
@@ -764,9 +763,11 @@ gene_expression_assays:
           id: "UO:0000033"
           name: "day"
       sex: "male and female (analysed separately as well as pooled)"
+      subject_characteristics: "C57Bl/6 neonates euthanized one day after birth. n=16 offspring from nonsmoking mothers (n=3 dams), n=24 from smoking mothers (n=4 dams). Dams were 8-10 wk old at the start of exposure. Offspring themselves were never directly exposed. The left lung was used for RNA isolation (RT-qPCR) and the right lung was formalin-fixed and paraffin-embedded for histology."
       sample_type: biopsy
-      collection_site: "right lung (formalin-fixed, paraffin-embedded)"
     follows_protocols:
+      - id: "PROTOCOL:lkhagvadorj-smoke-001"
+        name: "Maternal cigarette smoke exposure (prenatal window)"
       - protocol_type: StainingProtocol
         id: "PROTOCOL:lkhagvadorj-ihc-001"
         name: "Immunohistochemistry for NKX2.1 (AECII)"
@@ -818,7 +819,6 @@ gene_expression_assays:
         name: "pro-SPC+ AECII number, AREG-treated alveolar organoids"
         experimental_group: treated
         measured_under: "EXPOSURE:lkhagvadorj-organoid-areg"
-    assay_date: "2020-01-01"
     informs_on_key_event:
       id: "KE:ke-aecii-hyperplasia"
       name: "Alveolar epithelial type II cell hyperplasia"
@@ -896,7 +896,6 @@ gene_expression_assays:
         name: "KRT5+ basal cell number, AREG-treated bronchiolar organoids"
         experimental_group: treated
         measured_under: "EXPOSURE:lkhagvadorj-organoid-areg"
-    assay_date: "2020-01-01"
     informs_on_key_event:
       id: "KE:ke-basal-cell-hyperplasia"
       name: "Basal cell hyperplasia"
@@ -907,8 +906,8 @@ gene_expression_assays:
       id: "soma:lkhagvadorj-bronchiolar-organoid-001"
       name: "Three-dimensional mouse bronchiolar lung organoid"
       cell_type:
-        id: "CL:0000646"
-        name: "basal cell"
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
       anatomical_origin:
         id: "UBERON:0002048"
         name: "lung"
@@ -918,7 +917,8 @@ gene_expression_assays:
       organoid_type: "bronchiolar lung organoid (EpCAM+ lung epithelial cells co-cultured with fibroblasts in Matrigel)"
       substrate_type: transwell_insert
       days_at_differentiation: 14
-      donor_info: "pathogen-free male (n=3) and female (n=2) mice, 8-12 wk old, not smoke-exposed"
+      matrix_composition: "growth factor-reduced Matrigel diluted 1:1 with DMEM/F12 containing 5% FBS"
+      donor_info: "pathogen-free male (n=3) and female (n=2) mice, 8-12 wk old, not smoke-exposed; ~10,000 EpCAM+ lung cells seeded with an equal number of fibroblasts per insert"
     follows_protocols:
       - id: "PROTOCOL:lkhagvadorj-organoid-001"
         name: "Three-dimensional mouse lung organoid culture with AREG treatment"
@@ -926,9 +926,12 @@ gene_expression_assays:
         id: "PROTOCOL:lkhagvadorj-if-001"
         name: "Triple immunofluorescence for tubulin, CC10 and KRT5 in bronchiolar organoids"
         staining_type: "immunofluorescence"
+        fixation_method: "acetone:methanol 1:1 (vol/vol), 15 min at -20C; 2% agarose stabilization, paraffin embedding"
         antibodies_used:
+          - "Mouse anti-acetylated alpha-tubulin, 1:10,000 (Sigma-Aldrich, T7451)"
           - "Chicken anti-keratin 5, 1:200 (BioLegend, 905901)"
-        detection_method: "fluorescent secondary antibodies with DAPI mounting medium; Leica SP8 confocal at x40"
+          - "Goat anti-club cell (CC10), 1:200 (Santa Cruz, sc-365992)"
+        detection_method: "fluorescent secondary antibodies with DAPI mounting medium (Abcam)"
 
 # =============================================================================
 # EGFR SIGNALING ASSAYS - AREG and EGF, the two competitive EGFR ligands
@@ -973,7 +976,6 @@ egfr_signaling_assays:
         name: "AREG expression, offspring of smoke-exposed dams"
         experimental_group: treated
         measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
-    assay_date: "2020-01-01"
     informs_on_key_event:
       id: "KE:ke1-egfr-activation"
       name: "EGFR activation"
@@ -992,14 +994,14 @@ egfr_signaling_assays:
           id: "UO:0000033"
           name: "day"
       sex: "male and female (analysed separately as well as pooled)"
+      subject_characteristics: "C57Bl/6 neonates euthanized one day after birth. n=16 offspring from nonsmoking mothers (n=3 dams), n=24 from smoking mothers (n=4 dams). Dams were 8-10 wk old at the start of exposure. Offspring themselves were never directly exposed. The left lung was used for RNA isolation (RT-qPCR) and the right lung was formalin-fixed and paraffin-embedded for histology."
       sample_type: biopsy
-      collection_site: "left lung (mRNA) and right lung (IHC)"
     follows_protocols:
       - id: "PROTOCOL:lkhagvadorj-smoke-001"
         name: "Maternal cigarette smoke exposure (prenatal window)"
       - protocol_type: MolecularAssayProtocol
         id: "PROTOCOL:lkhagvadorj-qpcr-001"
-        name: "TaqMan RT-qPCR for Areg and Egfr"
+        name: "TaqMan RT-qPCR on neonatal lung tissue"
         detection_method: "TaqMan real-time quantitative PCR (LightCycler 480)"
         reference_gene: "Gapdh"
         normalization_method: "2^-dCp relative to Gapdh, fit points method"
@@ -1050,7 +1052,6 @@ egfr_signaling_assays:
         name: "Egf mRNA, offspring of smoke-exposed dams"
         experimental_group: treated
         measured_under: "EXPOSURE:lkhagvadorj-prenatal-smoke"
-    assay_date: "2020-01-01"
     informs_on_key_event:
       id: "KE:ke1-egfr-activation"
       name: "EGFR activation"
@@ -1069,12 +1070,14 @@ egfr_signaling_assays:
           id: "UO:0000033"
           name: "day"
       sex: "male and female (analysed separately as well as pooled)"
+      subject_characteristics: "C57Bl/6 neonates euthanized one day after birth. n=16 offspring from nonsmoking mothers (n=3 dams), n=24 from smoking mothers (n=4 dams). Dams were 8-10 wk old at the start of exposure. Offspring themselves were never directly exposed. The left lung was used for RNA isolation (RT-qPCR) and the right lung was formalin-fixed and paraffin-embedded for histology."
       sample_type: biopsy
-      collection_site: "left lung"
     follows_protocols:
+      - id: "PROTOCOL:lkhagvadorj-smoke-001"
+        name: "Maternal cigarette smoke exposure (prenatal window)"
       - protocol_type: MolecularAssayProtocol
         id: "PROTOCOL:lkhagvadorj-qpcr-001"
-        name: "TaqMan RT-qPCR for Egf"
+        name: "TaqMan RT-qPCR on neonatal lung tissue"
         detection_method: "TaqMan real-time quantitative PCR (LightCycler 480)"
         reference_gene: "Gapdh"
         normalization_method: "2^-dCp relative to Gapdh, fit points method"
@@ -1257,7 +1260,11 @@ response_comparisons:
 # reproduced the ciliated-cell loss, basal-cell gain and AECII gain seen in
 # prenatally smoke-exposed neonates. EGFR phosphorylation itself was never
 # measured and Egfr mRNA was unchanged, and the paper states the link as
-# "may be induced by", so evidence_support is moderate throughout.
+# "may be induced by", so no relationship here is better than moderate:
+# moderate for the three endpoints AREG reproduced directly in organoids
+# (ciliogenesis, basal cell hyperplasia, AECII hyperplasia), and weak for the
+# two that rest only on the authors' hedged summary of the neonatal data
+# (mucus secretory program activation, impaired AECI differentiation).
 # =============================================================================
 
 key_event_relationships:
@@ -1286,7 +1293,7 @@ key_event_relationships:
 
   - id: "KER:lkhagvadorj-egfr-to-basal-hyperplasia"
     name: "EGFR activation leads to basal cell hyperplasia"
-    description: "AREG treatment of bronchiolar lung organoids increased KRT5-positive basal cell numbers (P=0.02), consistent with published reports that AREG-induced EGFR activation drives airway epithelial differentiation toward basal and mucous cell hyperplasia."
+    description: "AREG treatment of bronchiolar lung organoids increased KRT5-positive basal cell numbers (P=0.02), applying the EGFR ligand directly and so establishing the link on this paper's own evidence."
     upstream_event:
       id: "KE:ke1-egfr-activation"
       name: "EGFR activation"
