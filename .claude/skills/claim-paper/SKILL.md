@@ -126,7 +126,7 @@ That prints one line per distinct wording with its count — which is exactly
 what the "prefer the majority" rule below needs:
 
 ```
-  12       name: "Goblet cell hyperplasia"                          biological_action: increased
+  30       name: "Goblet cell hyperplasia"                          biological_action: increased
    2       name: "Goblet cell hyperplasia and mucin hypersecretion"  biological_action: increased
 ```
 
