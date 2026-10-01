@@ -53,7 +53,7 @@ goblet_cell_assays:
           value: "27"
           unit:
             id: "UO:0000189"
-            name: "count"
+            name: "count unit"
           central_tendency: mean
           sample_size: 4
         muc5ac_protein_expression:
@@ -81,13 +81,13 @@ goblet_cell_assays:
           value: "0.9"
           unit:
             id: "UO:0000190"
-            name: "ratio"
+            name: "ratio unit"
           central_tendency: mean
           sample_size: 4
         mucin_secretion_rate:
           value: "4.1"
           unit:
-            id: "UO:0000298"
+            id: "UCUM:ug/h"
             name: "microgram per hour"
           central_tendency: mean
           sample_size: 4
@@ -102,7 +102,7 @@ goblet_cell_assays:
           value: "0.13"
           unit:
             id: "UO:0000190"
-            name: "ratio"
+            name: "ratio unit"
           central_tendency: mean
           sample_size: 4
       - id: "GCM:001-output-il13"
@@ -139,7 +139,7 @@ goblet_cell_assays:
           value: "85"
           unit:
             id: "UO:0000189"
-            name: "count"
+            name: "count unit"
           central_tendency: mean
           sample_size: 4
         muc5ac_protein_expression:
@@ -167,13 +167,13 @@ goblet_cell_assays:
           value: "2.7"
           unit:
             id: "UO:0000190"
-            name: "ratio"
+            name: "ratio unit"
           central_tendency: mean
           sample_size: 4
         mucin_secretion_rate:
           value: "12.5"
           unit:
-            id: "UO:0000298"
+            id: "UCUM:ug/h"
             name: "microgram per hour"
           central_tendency: mean
           sample_size: 4
@@ -188,7 +188,7 @@ goblet_cell_assays:
           value: "0.45"
           unit:
             id: "UO:0000190"
-            name: "ratio"
+            name: "ratio unit"
           central_tendency: mean
           sample_size: 4
     assay_date: "2024-06-15"
