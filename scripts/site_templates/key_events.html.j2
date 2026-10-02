@@ -30,7 +30,7 @@
   {% for ke in key_events %}
   <tr id="{{ ke.anchor }}">
     <td><span class="lvl-dot lvl-{{ ke.level }}-bg"></span><b>{{ ke.name }}</b><div class="sub">{{ ke.id }}</div></td>
-    <td>{{ ke.level }}</td>
+    <td>{{ ke.level }}{% if ke.level_varies %}<div class="sub">⚠ varies across papers: {{ ke.level_varies|join(', ') }}</div>{% endif %}</td>
     <td>
       {% for p in ke.papers %}<a href="{{ root }}/publications/{{ p.slug }}.html">{{ p.short }}</a>{% if not loop.last %} · {% endif %}{% endfor %}
     </td>

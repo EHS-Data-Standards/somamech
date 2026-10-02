@@ -31,8 +31,16 @@ ROOT = Path(__file__).resolve().parents[1]
 TEMPLATES = Path(__file__).resolve().parent / "site_templates"
 REPO = "EHS-Data-Standards/somamech"
 
-LEVEL_ORDER = ["molecular", "cellular", "tissue", "organ", "organism", "unspecified"]
+# Every BiologicalOrganizationLevelEnum value, in AOP order. An enum value
+# this list doesn't know yet must degrade to "unspecified" (normalize_level),
+# never abort the build — the failure mode would be a failed release deploy.
+LEVEL_ORDER = ["molecular", "cellular", "tissue", "organ", "organism",
+               "population", "unspecified"]
 SUPPORT_RANK = {"strong": 3, "moderate": 2, "weak": 1, "not_specified": 0, None: 0}
+
+
+def normalize_level(value) -> str:
+    return value if value in LEVEL_ORDER else "unspecified"
 
 # Fields rendered explicitly by the templates; every OTHER scalar field on an
 # entity is shown generically as a "key: value" chip, so new schema slots
@@ -43,6 +51,8 @@ ASSAY_KNOWN_KEYS = {
     "follows_protocols", "assay_date",
 }
 PROTOCOL_KNOWN_KEYS = {"id", "name", "description", "protocol_type", "equipment_required"}
+KEY_EVENT_KNOWN_KEYS = {"id", "name", "description", "evidence", "biological_action",
+                        "level_of_biological_organization"}
 
 
 def slugify(value: str) -> str:
@@ -155,12 +165,20 @@ def aggregate(pubs: list[dict]):
                 "id": ke_id,
                 "anchor": slugify(ke_id),
                 "name": ke.get("name") or ke_id,
-                "level": ke.get("level_of_biological_organization") or "unspecified",
+                "level": normalize_level(ke.get("level_of_biological_organization")),
+                "levels_seen": set(),
                 "papers": {},
             })
+            if ke.get("level_of_biological_organization"):
+                entry["levels_seen"].add(ke["level_of_biological_organization"])
             entry["papers"][pub["slug"]] = {"slug": pub["slug"], "short": pub["short"]}
     for entry in key_events.values():
         entry["papers"] = list(entry["papers"].values())
+        # KeyEvent ids are shared vocabulary; `just check-entity-ids` rejects
+        # content drift across papers, but surface any disagreement that gets
+        # through rather than letting the first-seen file decide silently.
+        seen = entry.pop("levels_seen")
+        entry["level_varies"] = sorted(seen) if len(seen) > 1 else None
 
     kers: dict[tuple, dict] = {}
     for pub in pubs:
@@ -174,8 +192,8 @@ def aggregate(pubs: list[dict]):
                 "upstream_name": up.get("name") or up["id"],
                 "downstream_name": dn.get("name") or dn["id"],
                 "up_anchor": slugify(up["id"]), "dn_anchor": slugify(dn["id"]),
-                "up_level": up.get("level_of_biological_organization") or "unspecified",
-                "dn_level": dn.get("level_of_biological_organization") or "unspecified",
+                "up_level": normalize_level(up.get("level_of_biological_organization")),
+                "dn_level": normalize_level(dn.get("level_of_biological_organization")),
                 "relationship_type": ker.get("relationship_type") or "leads to",
                 "support": ker.get("evidence_support") or "not_specified",
                 "papers": {},
@@ -294,9 +312,9 @@ def build_network_svg(key_events: list[dict], kers: list[dict]) -> str:
         )
         parts.append(
             f'<a href="#{ke["anchor"]}"><g class="ke-node">'
-            f'<title>{html.escape(ke["name"])} ({ke["level"]}; {len(ke["papers"])} paper(s))</title>'
+            f'<title>{html.escape(ke["name"])} ({html.escape(ke["level"])}; {len(ke["papers"])} paper(s))</title>'
             f'<rect x="{x}" y="{y}" width="{NODE_W}" height="{NODE_H}" rx="8" '
-            f'stroke="var(--lvl-{ke["level"]})"/>'
+            f'stroke="var(--lvl-{html.escape(ke["level"])})"/>'
             f'<text font-size="11" text-anchor="middle">{tspans}</text>'
             f"</g></a>"
         )
@@ -357,10 +375,15 @@ def build_site(kb_dir: Path, out_dir: Path, version: str) -> int:
         (out_dir / "publications" / f"{pub['slug']}.html").write_text(pub_template.render(
             root="..", active="publications", pub=pub,
             assay_known_keys=ASSAY_KNOWN_KEYS, protocol_known_keys=PROTOCOL_KNOWN_KEYS,
+            key_event_known_keys=KEY_EVENT_KNOWN_KEYS, known_levels=LEVEL_ORDER,
             **common))
 
     print(f"Site built: {len(pubs)} publications, {stats['assays']} assays, "
           f"{stats['key_events']} key events, {stats['kers']} relationships -> {out_dir}")
+    if not (out_dir / "docs").is_dir():
+        print("Note: the 'Schema docs' nav link targets /docs/, which the deploy "
+              f"workflow adds via `just build-docs-site {out_dir}/docs`; it 404s "
+              "in a bare local preview.")
     return 0
 
 

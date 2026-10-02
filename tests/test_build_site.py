@@ -58,6 +58,44 @@ def test_key_event_network_pools_papers(tmp_path):
     assert "montgomery2020" in page
 
 
+def test_toplevel_key_events_render_with_evidence_and_any_level_builds(tmp_path):
+    """Two regressions from PR #172 review: evidence under a top-level
+    key_events: block was counted but never rendered, and a schema-valid
+    level_of_biological_organization missing from LEVEL_ORDER (population)
+    crashed the whole network build instead of degrading."""
+    kb = tmp_path / "kb"
+    kb.mkdir()
+    src = (VALID / "Container-liu2024-pm25-cftr.yaml").read_text()
+    assert "\nkey_events:" not in src
+    (kb / "Container-liu2024-pm25-cftr.yaml").write_text(src + """
+key_events:
+  - id: "KE:test-population-morbidity"
+    name: "Increased respiratory morbidity"
+    level_of_biological_organization: population
+    biological_action: increased
+    evidence:
+      - reference: "PMID:38880065"
+        supports: REFUTE
+        snippet: "A deliberately recorded negative finding."
+  - id: "KE:test-future-enum-level"
+    name: "Future enum value"
+    level_of_biological_organization: some_future_level
+""")
+    out = tmp_path / "site"
+    result = run("--kb-dir", str(kb), "--out", str(out))
+    assert result.returncode == 0, result.stdout + result.stderr
+
+    page = (out / "publications" / "liu2024-pm25-cftr.html").read_text()
+    assert 'id="key-events"' in page
+    assert "Increased respiratory morbidity" in page
+    assert "A deliberately recorded negative finding." in page
+    assert "REFUTE" in page
+
+    network = (out / "key-events.html").read_text()
+    assert "population" in network              # column/level rendered
+    assert "Future enum value" in network       # unknown level degraded, not crashed
+
+
 def test_version_is_stamped_into_footer_and_source_links(tmp_path):
     out = build(tmp_path, "Container-liu2024-pm25-cftr.yaml", version="v1.2.3")
     index = (out / "index.html").read_text()

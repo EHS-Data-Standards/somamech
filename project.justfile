@@ -365,3 +365,20 @@ gen-site out="_site" version="dev":
 [group('exports')]
 serve-site out="_site": (gen-site out)
     uv run python -m http.server --directory {{out}} 8900
+
+# Package the DataHarmonizer build and the MkDocs schema docs into one static
+# site. Shared by deploy-kb-site.yaml (which deploys it under /docs/ in the
+# Pages artifact) and deploy-docs.yaml (build-only validation), so the steps
+# live in one place. Assumes `just gen-project` and `just gen-doc` have run.
+[group('exports')]
+build-docs-site out="tmp/docs-site":
+    npm ci
+    npm run build
+    cp -r dist/assets docs/
+    cp dist/index.html docs/harmonizer.html
+    sed -i.bak 's|"/assets/|"assets/|g' docs/harmonizer.html
+    rm -f docs/harmonizer.html.bak
+    mkdir -p docs/schemas
+    uv run gen-linkml --materialize-patterns --materialize-attributes "$(uv run python -c 'from importlib.resources import files; print(files("soma") / "schema" / "soma.yaml")')" > docs/schemas/soma.json
+    cp menu.json docs/
+    uv run mkdocs build -d {{out}}

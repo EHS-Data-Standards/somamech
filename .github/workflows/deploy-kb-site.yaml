@@ -55,7 +55,7 @@ jobs:
         run: uv tool install rust-just
 
       - name: Install Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v7.0.0
         with:
           node-version: 18
 
@@ -73,19 +73,8 @@ jobs:
       - name: Generate schema documentation
         run: just gen-doc
 
-      - name: Build DataHarmonizer into docs
-        run: |
-          npm install
-          npm run build
-          cp -r dist/assets docs/
-          cp dist/index.html docs/harmonizer.html
-          sed -i 's|"/assets/|"assets/|g' docs/harmonizer.html
-          mkdir -p docs/schemas
-          uv run gen-linkml --materialize-patterns --materialize-attributes "$(uv run python -c 'from importlib.resources import files; print(files("soma")/"schema"/"soma.yaml")')" > docs/schemas/soma.json
-          cp menu.json docs/
-
-      - name: Build schema docs site
-        run: uv run mkdocs build -d _site/docs
+      - name: Build schema docs site (DataHarmonizer + MkDocs)
+        run: just build-docs-site _site/docs
 
       - name: Build KB review site
         env:
@@ -93,7 +82,7 @@ jobs:
         run: uv run python scripts/build_site.py --out _site --version "$SITE_VERSION"
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5.0.0
         with:
           path: _site
 
@@ -109,4 +98,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5.0.1

@@ -21,6 +21,7 @@
   --lvl-tissue: #1baf7a;
   --lvl-organ: #eda100;
   --lvl-organism: #e87ba4;
+  --lvl-population: #008300;
   --lvl-unspecified: #898781;
   --chip-bg: #f0efec;
   --code-bg: #f0efec;
@@ -44,6 +45,7 @@
     --lvl-tissue: #199e70;
     --lvl-organ: #c98500;
     --lvl-organism: #d55181;
+    --lvl-population: #008300;
     --chip-bg: #272725;
     --code-bg: #272725;
   }
@@ -184,6 +186,7 @@ td .sub { color: var(--muted); font-size: 0.82rem; }
 .lvl-tissue-bg { background: var(--lvl-tissue); }
 .lvl-organ-bg { background: var(--lvl-organ); }
 .lvl-organism-bg { background: var(--lvl-organism); }
+.lvl-population-bg { background: var(--lvl-population); }
 .lvl-unspecified-bg { background: var(--lvl-unspecified); }
 
 .network-wrap {
