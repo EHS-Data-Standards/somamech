@@ -1,0 +1,444 @@
+# =============================================================================
+# Cuesta-Mosquera et al. (2025) - Improved cookstoves enhance household air
+# quality and respiratory health in rural Rwanda
+# =============================================================================
+#
+# Source: Sci Rep. 2025;15:26065
+# DOI: 10.1038/s41598-025-09863-6
+# PMID: 40681630
+#
+# Study design (HUMAN RANDOMIZED CONTROLLED TRIAL — not in vitro, not an
+# animal experiment):
+#   - RCT over three years (September 2019 to May 2022) in two rural Rwandan
+#     districts (Musanze and Gatsibo); blinding not possible
+#   - 1001 adults responsible for cooking in their homes, randomly allocated
+#     to an intervention group that received the wood-fueled Save80 improved
+#     cookstove (ICS) at the start (n = 380) and a control group that kept
+#     cooking with traditional methods, mainly indoor three-stone wood fires
+#     (n = 621), receiving the stove only at the end
+#   - Health assessments in 2019 and 2022: RESPIRE-based questionnaire
+#     (symptoms: cough, mucus, chest tightness, wheezing, ocular itchiness)
+#     and ERS/ATS spirometry (FVC, FEV1, FEV1/FVC, PEF)
+#   - Follow-up: 907 questionnaires (557 traditional, 350 ICS), acceptable
+#     spirometry from 848 (520 traditional, 328 ICS)
+#   - Household air pollution (HAP) measured in 2022 in a subsample of 45
+#     control-group households cooking first with traditional methods, then
+#     with the ICS after training (paired within household): online BC, BrC
+#     and PM0.3-2.5 (microAeth MA200, TSI OPSS 3330), plus PM10 filters
+#     (n = 21) analysed for OC/EC/TC (EUSAAR-2) and 22 PAH species (GC-MS)
+#
+# MODELLING NOTES:
+#   - experimental_group follows the TRIAL arms, as the paper names them: the
+#     traditional-cooking arm is `control` and the ICS arm is `treated`
+#     (the intervention). Note the inversion relative to toxicology usage:
+#     here the CONTROL arm is the HIGHER-exposure arm, so the significant
+#     FVC difference favoring the ICS arm is recorded with change_direction
+#     `increased` (treated vs control).
+#   - One spirometry assay with one output record per arm (both arms come
+#     from the same randomized cohort; baseline showed no significant
+#     between-group differences in symptoms or lung function).
+#   - Respiratory symptom prevalences have no SOMA slot, so they stay in
+#     prose (the isara2016 pattern): at follow-up (Table 3, n = 907)
+#     coughing 18.2% traditional vs 7.5% ICS (P = 8.3e-04) and mucus 13.2%
+#     vs 4.8% (P = 8.7e-04) were significantly lower in the ICS arm; chest
+#     tightness (12.3% vs 6.7%), wheezing (5.4% vs 2.7%) and ocular
+#     itchiness (6.4% vs 3.2%) were lower without statistical significance.
+#   - Longitudinal change: mean dFVC over the three years was -0.02 in the
+#     ICS arm vs -0.16 in the control arm (P < 0.001). dFVC has no output
+#     slot (decline_rate is mL/year and computing a rate would violate the
+#     no-computed-deltas rule), so it is recorded in prose with its quote.
+#   - HAP measurements are environmental characterization, not biological
+#     assays, so they live on the two ExposureCondition records (Table 3
+#     values; exposure n = 45, filter concentrations n = 21).
+#   - No key_event_relationships are recorded: the paper links the exposure
+#     contrast (cooking method) directly to symptoms and lung function and
+#     measured no mechanistic intermediate key events.
+#
+# INTERNAL DISCREPANCIES IN THE SOURCE (recorded as printed, Table 3 taken
+# as primary for numeric records):
+#   - Coughing/mucus prevalence: the Results text says "coughing (29%
+#     traditional cooks vs. 19% ICS users)" and "mucus production (13%
+#     traditional cooks vs. 22% ICS users)" while Table 3 gives 18.2% vs
+#     7.5% and 13.2% vs 4.8%. The text's mucus figures contradict the
+#     "reductions" they illustrate and the abstract's "-9%", so the text
+#     values appear garbled; Table 3 values are recorded, in prose.
+#   - FEV1: Table 3 means are 2.30 L (traditional) vs 2.35 L (ICS), while
+#     the text's MEDIANS run the other way (2.30 L ICS vs 2.35 L
+#     traditional). Means and medians can legitimately disagree; Table 3
+#     means are recorded and the medians stay in the description.
+#   - FEV1/FVC: Table 3 prints the column as "(%)" with values 0.84 +/- 0.1
+#     (a fraction); the text gives medians of 84% (ICS) and 85%
+#     (traditional). Recorded as printed in Table 3 (0.84, dimensionless).
+#   - PEF: Table 3 prints "PEF (L)"; PEF is a flow conventionally reported
+#     in L/s, but the printed unit is recorded as-is (UO:0000099, liter)
+#     rather than silently normalised (the isara2016/oluwole2013 rule).
+#   - PM0.3-2.5 exposure: the text says 167 +/- 207 ug m-3 hour-1 for
+#     traditional cooking, Table 3 says 167.1 +/- 204.1; Table 3 recorded.
+#   - PM0.3-1: Table 3 heads the row "(ug m-3)" while the text calls the
+#     same numbers exposures in ug m-3 hour-1; left in prose.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:40681630"
+  reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+  doi: "10.1038/s41598-025-09863-6"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - protocol_type: SpirometryProtocol
+    id: "PROTOCOL:cuestamosquera-spirometry-001"
+    name: "Mobile Vyntus SPIRO spirometry per ERS/ATS guidelines"
+    description: "Spirometry following the guidelines from the European Respiratory Society and the American Thoracic Society (ERS/ATS), measuring forced vital capacity (FVC), forced expiratory volume in 1 s (FEV1), and peak expiratory flow (PEF). Airway obstruction defined as FEV1/FVC ratio < 70%. Repetitive measurements were carried out until at least three flow-volume curves met the ERS/GOLD criteria. Mobile spirometer Vyntus SPIRO PC-Spirometer (VYAIRE) with a mouthpiece with an integrated bacterial filter and a nose clip. Air volume calibration with a calibration pump at regular intervals throughout the day (every morning, afternoon, and after significant weather changes); meteorological parameters for calibration measured with a portable weather station (Technoline WS 6765). Conducted in community halls, supervised by medical doctors who trained personnel from Safer Rwanda."
+    spirometry_standard: "European Respiratory Society / American Thoracic Society (ERS/ATS) guidelines; flow-volume curves meeting ERS/GOLD criteria"
+    equipment_required:
+      - "Vyntus SPIRO PC-Spirometer (VYAIRE) with bacterial-filter mouthpiece and nose clip"
+      - "Portable weather station (Technoline WS 6765)"
+
+  - id: "PROTOCOL:cuestamosquera-questionnaire-001"
+    name: "RESPIRE-based structured health questionnaire with CAT"
+    description: "Structured questionnaire based on the RESPIRE study, integrating the COPD Assessment Test (CAT) and questions on cooking practices (time spent cooking per day, main cooking fuel, kitchen location indoor/outdoor, chimneys) and living conditions. Participants were asked about the occurrence and frequency of cough, wheezing, chest tightness, and ocular itchiness, about other disease diagnoses (e.g., asthma, COPD, allergies, heart disease), and whether they were active or passive smokers. The same questionnaire was applied in the 2019 baseline and the 2022 follow-up assessment, administered by trained interviewers."
+
+  - id: "PROTOCOL:cuestamosquera-hap-online-001"
+    name: "In-home online HAP monitoring of BC, BrC and PM during cooking"
+    description: "Household air pollution measured in 2022 at 45 control-group households, over two rounds: first cooking with traditional methods, then cooking with the Save80 ICS after training. Three stages per measurement: 10 to 15 min before the cooking fire started, during cooking with the fire on, and 10 to 15 min after the fire was turned off. Time-resolved black carbon measured with a portable microAeth MA200 light absorption photometer (Aethlabs; five wavelengths 375-880 nm, 10 s resolution) and PM estimated from particle number size distributions measured with an Optical Particle Size Spectrometer model 3330 (TSI Inc; 0.3-10 um, 10 s resolution), assuming spherical particles of density 1.4 g/cm3 with a biomass-burning refractive index correction; PM masses estimated for 0.3-1 um (PM0.3-1) and 1-2.5 um ranges. Instruments carried in TROPOS-made portable backpacks with silica gel dryers, placed indoors 2-3 m from the cooking fire or stove. Total HAP exposure computed by integrating the measured concentration over the cooking period. QA/QC per the World Calibration Centre for Aerosol Physics (WCCAP), Leipzig."
+    equipment_required:
+      - "microAeth MA200 portable light absorption photometer (Aethlabs)"
+      - "Optical Particle Size Spectrometer model 3330 (TSI Inc)"
+      - "TROPOS-made portable backpack with 1-m stainless-steel inlet and silica gel dryer"
+
+  - id: "PROTOCOL:cuestamosquera-filter-analysis-001"
+    name: "PM10 filter collection with OC/EC/TC and PAH laboratory analysis"
+    description: "Totalized PM10 filter samples collected during cooking periods at a subgroup of the HAP-measured households (n = 21) with a low-volume portable sampler Gilian 12 (Sensidyne; 10 L/min, 37 mm quartz-fiber filters pre-heated 24 h at 105 C and stored frozen). OC/EC mass concentrations determined by a thermal-optical method following the EUSAAR-2 protocol with a Sunset Laboratory dual carbonaceous analyzer. Twenty-two particulate PAH species (13 on the U.S. EPA sensitive list) determined from filter punches with a Curie-point pyrolyzer (JPS-350, JAI) coupled to a GC-MS system (6890N GC, 5973 inert MSD, Agilent Technologies)."
+    equipment_required:
+      - "Gilian 12 low-volume portable sampler (Sensidyne) with 37 mm quartz-fiber filters"
+      - "Sunset Laboratory dual carbonaceous analyzer"
+      - "Curie-point pyrolyzer (JPS-350, JAI) coupled to GC-MS (6890N GC, 5973 inert MSD, Agilent Technologies)"
+
+# =============================================================================
+# LUNG FUNCTION ASSAY — ERS/ATS spirometry at the 2022 follow-up, one output
+# record per trial arm. The traditional-cooking arm is the trial's control
+# group (and the higher-exposure arm); the ICS arm is the intervention.
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:cuestamosquera-spirometry-followup"
+    name: "Spirometry at three-year follow-up - traditional cooking vs Save80 improved cookstove arms"
+    description: "Follow-up (2022) spirometry in 848 adults (520 traditional cooking, 328 ICS) after three years of randomized cooking-method assignment. FVC was significantly higher in the ICS arm (Table 3 means: 2.82 +/- 0.62 L vs 2.74 +/- 0.58 L, Wilcoxon P = 4.4e-02; text medians 2.82 L vs 2.74 L, P = 0.044). FEV1 (Table 3 means: 2.30 +/- 0.51 L traditional vs 2.35 +/- 0.54 L ICS, P = 1.8e-01; the text's medians run the other way, 2.30 L ICS vs 2.35 L traditional, P = 0.179), FEV1/FVC (0.84 +/- 0.1 in both arms per Table 3, printed under a '(%)' header; text medians 84% ICS vs 85% traditional, P = 0.288) and PEF (4.46 +/- 1.3 vs 4.46 +/- 1.4, printed as 'PEF (L)', P = 0.936) did not differ significantly. At the 2019 baseline (1001 questionnaires, acceptable spirometry in 935) there were no significant between-group differences in symptoms or lung function; obstructive disease (FEV1/FVC < 70%) was found in 32 participants (3%) at baseline and 50 (6%) at follow-up (26 traditional, mean FEV1/FVC 62%; 24 ICS, mean FEV1/FVC 60%; no significant group difference). Longitudinal change: mean dFVC over the three years was -0.02 in the ICS arm vs -0.16 in the control arm (P < 0.001, favoring the intervention); dFVC is recorded here in prose because no output slot holds a within-group delta and computing a decline rate would violate the no-computed-deltas rule. Symptom prevalences at follow-up (no SOMA slot, prose only; Table 3, n = 907): coughing 18.2% traditional vs 7.5% ICS (P = 8.3e-04) and mucus 13.2% vs 4.8% (P = 8.7e-04) were significantly lower in the ICS arm; chest tightness (12.3% vs 6.7%, P = 4.5e-01), wheezing (5.4% vs 2.7%, P = 3.6e-01) and ocular itchiness (6.4% vs 3.2%, P = 3.5e-01) were lower without statistical significance. The Results text prints different symptom percentages (coughing 29% vs 19%; mucus 13% vs 22%) whose mucus figures contradict the reduction they illustrate; Table 3 values are taken as primary. PEF unit note: the paper prints PEF in L; PEF is a flow conventionally in L/s, but the unit is recorded as printed rather than silently normalised."
+    evidence:
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "we conducted a randomized controlled trial (RCT) among 1001 individuals from two Rwandan villages. Participants were randomly allocated to an intervention group (n = 380) and a control group (n = 621)."
+        explanation: "States the randomized trial design and the two arms whose output records this assay carries, with the allocation sizes."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In the follow-up, 907 participants responded to the questionnaire, and acceptable lung function data were obtained from 848 individuals (the sample of spirometry observation data decreased by 9.3%)."
+        explanation: "States the follow-up spirometry sample size (848) behind this assay's output records."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Lung function (n = 848)a n = 520 n = 328 FVC (L) 2.74 ± 0.58 2.82 ± 0.62 4.4e-02* FEV1 (L) 2.30 ± 0.51 2.35 ± 0.54 1.8e-01 FEV1/FVC (%) 0.84 ± 0.1 0.84 ± 0.1 2.8e-01 PEF (L) 4.46 ± 1.3 4.46 ± 1.4 9.4e-01"
+        explanation: "Table 3 rows stating every mean, standard deviation, per-arm sample size and P-value recorded on this assay's two output records (traditional column first, improved stove column second)."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "After three years, the lung function of the ICS users showed a higher forced vital capacity (FVC) than that of traditional cooks (Fig.  3b, median = 2.82  L for ICS users vs. 2.74  L for traditional cooks, Wilcoxon test, P-value = 0.044)."
+        explanation: "States the significant FVC advantage of the ICS arm at follow-up and the Wilcoxon test behind the response comparison recorded on this assay."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "However, no statistically significant differences were found for FEV 1 (median = 2.30  L for ICS users vs. 2.35 L for traditional cooks, P-value = 0.179) and PEF (median = 4.46 L for ICS users vs. 4.46 L for traditional cooks, P-value = 0.936). The FEV1/FVC ratio in the ICS users’ group (median = 84%) was not statistically significantly different from that of traditional cooks (median = 85%, P-value = 0.288)."
+        explanation: "States that FEV1, PEF and FEV1/FVC did not differ significantly between arms, and gives the text medians noted in the description beside the Table 3 means."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "During the first assessment, 1001 individuals responded to the questionnaire, and acceptable spirometry data were obtained from 935 participants. At the baseline, no significant differences in symptoms and lung function were observed between the intervention and control groups."
+        explanation: "Supports modelling both arms as one randomized cohort: at baseline the arms did not differ in symptoms or lung function."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "this decline was relatively lower within the intervention group (mean ∆FVC = −0.02) compared to the control group (mean ∆FVC = −0.16). The differences in ∆FVC between both groups of participants were statistically significantly different (∆FVCSave80 vs. ∆FVCTraditional, P-value < 0.001), favoring the intervention group."
+        explanation: "States the longitudinal dFVC finding carried in this assay's description: lung function declined less over three years in the ICS arm."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Respiratory symptoms (n = 907) a n = 557 n = 350 Coughing (%) 18.2 7.5 8.3e-04* Mucus (%) 13.2 4.8 8.7e-04* Chest tightness (%) 12.3 6.7 4.5e-01 Wheezing (%) 5.4 2.7 3.6e-01 Ocular itchiness (%) 6.4 3.2 3.5e-01"
+        explanation: "Table 3 rows stating the follow-up symptom prevalences per arm carried in this assay's description (no SOMA slot exists for symptom prevalence)."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "participants who remained with traditional cooking (Fig.  3a; Table 3), with significant reductions for cardinal symptoms like coughing (29% traditional cooks vs. 19% ICS users, Chi-square test, P-value < 0.001) and mucus production (13% traditional cooks vs. 22% ICS users, Chi-square test, P-value < 0.001). Only slight, but not significant, improvements were found for nonspecific symptoms: chest tightness ( P-value = 0.446), wheezing (P-value = 0.361), and ocular itchiness (P-value = 0.346)."
+        explanation: "The Results-text symptom passage: documents the Chi-square test, the significance pattern, and the text percentages that disagree with Table 3 (the discrepancy is flagged in the description; Table 3 values are taken as primary)."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Obstructive pulmonary disease was found in 50 participants (6%, FEV 1/FVC < 70%). From these, 26 individuals were traditional cooks (mean FEV 1/FVC = 62%), 24 individuals were ICS users (mean FEV 1/FVC = 60%), and no significant difference was found for individuals with FEV1/FVC < 70% when comparing both groups."
+        explanation: "States the follow-up airway-obstruction counts per arm carried in this assay's description."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "HAP measurements were performed in a subgroup of participants (n = 45), testing the pollution produced by traditional cooking and the ICS."
+        explanation: "States the n = 45 household subsample behind the exposure concentrations recorded on this assay's two exposure conditions."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The HAP measurements were performed on a subsample of households that did not receive the ICS during the first round, i.e., the control group, to build a baseline on air pollution before and after the intervention."
+        explanation: "Documents the paired within-household HAP design noted on the exposure conditions: the same control-arm households were measured cooking traditionally and then with the ICS."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Exposure (n = 45) Cooking time (min) 46.6 ± 13.2 30.8 ± 7.6 6.2e-08* BC (µg m−3 hour−1) 60.1 ± 49 29.9 ± 19.8 1.9e-04* BrC (µg m−3 hour−1) 163.1 ± 120 35.2 ± 22.9 7.4e-10* PM0.3−1 (µg m−3) 20.4 ± 21.1 5.9 ± 6.5 2.9e-08* PM0.3−2.5 (µg m−3 hour−1) 167.1 ± 204.1 37.6 ± 41.2 6.2e-08* Concentrations (n = 21) EC (µg m−3) 37.9 ± 22.8 62.2 ± 39.7 5.6e-02 OC (µg m−3) 329.8 ± 260.7 138.6 ± 79.4 3.5e-03* TC (µg m−3) 367.7 ± 277.4 200.8 ± 105.2 4.2e-02* EC/OC 0.14 ± 0.09 0.48 ± 0.27 5.6e-07* PAH13 (µg m−3) 1.0 ± 0.9 1.9 ± 1.8 6.7e-02 PAH22 (µg m−3) 4.8 ± 3.6 3.8 ± 3.5 7.6e-01"
+        explanation: "Table 3 exposure and filter-concentration rows (traditional column first, improved stove column second) stating every HAP value recorded on the two exposure conditions, including the PM0.3-2.5 means and SDs used as exposure_concentration."
+      - reference: "PMID:40681630"
+        reference_title: "Improved cookstoves enhance household air quality and respiratory health in rural Rwanda."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We found that households using the ICS spent, on average, 34% less time cooking and had 77% lower indoor PM0.3-2.5 levels. BC and BrC exposure decreased by 50% and 78%, respectively; OC and TC concentrations were 58% and 45% lower. PAH concentrations showed inconsistent patterns, with most species presenting non-statistically significant changes, constraining objective conclusions."
+        explanation: "Abstract summary of the HAP contrast between the two exposure conditions, including the inconsistent, mostly non-significant PAH results noted on the ICS condition."
+    has_exposure_condition:
+      - id: "EXPOSURE:cuestamosquera-traditional-cooking"
+        name: "Household air pollution from traditional cooking (mainly indoor three-stone firewood fires) over the three-year trial, control arm. 2022 HAP field measurements while cooking traditionally (n = 45 households): mean cooking time 46.6 +/- 13.2 min; BC 60.1 +/- 49 and BrC 163.1 +/- 120 ug m-3 hour-1; PM0.3-1 20.4 +/- 21.1 (printed 'ug m-3'); PM0.3-2.5 167.1 +/- 204.1 ug m-3 hour-1. Filter concentrations (n = 21): OC 329.8 +/- 260.7, EC 37.9 +/- 22.8, TC 367.7 +/- 277.4 ug/m3; EC/OC 0.14 +/- 0.09"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "167.1"
+          unit:
+            id: "UCUM:ug/m3/h"
+            name: "microgram per cubic meter per hour"
+          central_tendency: mean
+          sample_size: 45
+          variability:
+            variability_type: standard_deviation
+            value: "204.1"
+            unit:
+              id: "UCUM:ug/m3/h"
+              name: "microgram per cubic meter per hour"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:cuestamosquera-ics-cooking"
+        name: "Household air pollution from Save80 improved cookstove (natural draft, stainless steel, firewood) over the three-year trial, intervention arm. 2022 HAP field measurements at the same 45 households cooking with the ICS after training: mean cooking time 30.8 +/- 7.6 min; BC 29.9 +/- 19.8 and BrC 35.2 +/- 22.9 ug m-3 hour-1; PM0.3-1 5.9 +/- 6.5 (printed 'ug m-3'); PM0.3-2.5 37.6 +/- 41.2 ug m-3 hour-1. Filter concentrations (n = 21): OC 138.6 +/- 79.4, EC 62.2 +/- 39.7 (not significant, P = 5.6e-02), TC 200.8 +/- 105.2 ug/m3; EC/OC 0.48 +/- 0.27. PAH changes were inconsistent and mostly non-significant (PAH13 1.0 +/- 0.9 vs 1.9 +/- 1.8, P = 6.7e-02; PAH22 4.8 +/- 3.6 vs 3.8 +/- 3.5, P = 7.6e-01; post-hoc power 0.23)"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+        exposure_concentration:
+          value: "37.6"
+          unit:
+            id: "UCUM:ug/m3/h"
+            name: "microgram per cubic meter per hour"
+          central_tendency: mean
+          sample_size: 45
+          variability:
+            variability_type: standard_deviation
+            value: "41.2"
+            unit:
+              id: "UCUM:ug/m3/h"
+              name: "microgram per cubic meter per hour"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    has_specified_output:
+      - id: "LF:cuestamosquera-spirometry-followup-output-traditional"
+        name: "Follow-up spirometry, traditional-cooking (control) arm"
+        experimental_group: control
+        measured_under: "EXPOSURE:cuestamosquera-traditional-cooking"
+        fvc:
+          value: "2.74"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 520
+          variability:
+            variability_type: standard_deviation
+            value: "0.58"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fev1:
+          value: "2.30"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 520
+          variability:
+            variability_type: standard_deviation
+            value: "0.51"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fev1_fvc_ratio:
+          value: "0.84"
+          unit:
+            id: "UCUM:1"
+            name: "dimensionless ratio (Table 3 prints the column header as '%')"
+          central_tendency: mean
+          sample_size: 520
+          variability:
+            variability_type: standard_deviation
+            value: "0.1"
+            unit:
+              id: "UCUM:1"
+              name: "dimensionless ratio (Table 3 prints the column header as '%')"
+        peak_expiratory_flow:
+          value: "4.46"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 520
+          variability:
+            variability_type: standard_deviation
+            value: "1.3"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+      - id: "LF:cuestamosquera-spirometry-followup-output-ics"
+        name: "Follow-up spirometry, Save80 improved cookstove (intervention) arm"
+        experimental_group: treated
+        measured_under: "EXPOSURE:cuestamosquera-ics-cooking"
+        fvc:
+          value: "2.82"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 328
+          variability:
+            variability_type: standard_deviation
+            value: "0.62"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fev1:
+          value: "2.35"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 328
+          variability:
+            variability_type: standard_deviation
+            value: "0.54"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fev1_fvc_ratio:
+          value: "0.84"
+          unit:
+            id: "UCUM:1"
+            name: "dimensionless ratio (Table 3 prints the column header as '%')"
+          central_tendency: mean
+          sample_size: 328
+          variability:
+            variability_type: standard_deviation
+            value: "0.1"
+            unit:
+              id: "UCUM:1"
+              name: "dimensionless ratio (Table 3 prints the column header as '%')"
+        peak_expiratory_flow:
+          value: "4.46"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 328
+          variability:
+            variability_type: standard_deviation
+            value: "1.4"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:cuestamosquera-rwanda-adults"
+      name: "Adults responsible for cooking in rural Rwandan households (Musanze and Gatsibo districts)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "42.5"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: mean
+        sample_size: 1001
+        variability:
+          variability_type: standard_deviation
+          value: "12.5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      subject_characteristics: "1001 adults (499 from Musanze, 502 from Gatsibo) recruited through local farming cooperatives; 86% women (n = 862); 97% nonsmokers, 12% passive smokers; 93% farmers; mean 20 +/- 12.6 accumulated years as primary cook (traditional arm 19.6 +/- 11.7, Save80 arm 25 +/- 12.5); wood the primary cooking fuel for 95%, charcoal 5%. Inclusion: at least 18 years old, no chronic respiratory diseases, no improved cookstove at home. 907 remained at the three-year follow-up (9.4% dropout); dropouts did not differ statistically from remainers in age, gender, smoking history or medical conditions."
+      clinical_context: "Randomized controlled trial of the Save80 improved cookstove, September 2019 to May 2022, two rural Rwandan villages; intervention arm (n = 380) received the stove and a Wonderbox heat-retaining box at the start, control arm (n = 621) kept traditional cooking (mainly indoor three-stone wood fires) and received the stove at the end; health assessments in 2019 and 2022; ethics approval University of Luebeck protocol 19-309"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:cuestamosquera-spirometry-001"
+        name: "Mobile Vyntus SPIRO spirometry per ERS/ATS guidelines"
+        spirometry_standard: "European Respiratory Society / American Thoracic Society (ERS/ATS) guidelines; flow-volume curves meeting ERS/GOLD criteria"
+      - id: "PROTOCOL:cuestamosquera-questionnaire-001"
+        name: "RESPIRE-based structured health questionnaire with CAT"
+      - id: "PROTOCOL:cuestamosquera-hap-online-001"
+        name: "In-home online HAP monitoring of BC, BrC and PM during cooking"
+      - id: "PROTOCOL:cuestamosquera-filter-analysis-001"
+        name: "PM10 filter collection with OC/EC/TC and PAH laboratory analysis"
+
+# =============================================================================
+# RESPONSE COMPARISONS
+#
+# Only the FVC contrast is recorded: it is the one lung-function comparison
+# the paper reports as statistically significant. The paper's Discussion
+# rounds the FVC advantage to "100 mL", but that figure matches neither the
+# Table 3 means (difference 0.08 L) nor the text medians exactly, so
+# change_value is omitted rather than reconciled. Direction note: the
+# "control" arm here is the HIGHER-exposure (traditional cooking) arm, so
+# change_direction `increased` means the intervention (ICS) arm had the
+# higher FVC.
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:cuestamosquera-fvc"
+    name: "Follow-up FVC, Save80 ICS arm vs traditional-cooking arm"
+    description: "FVC at the three-year follow-up was significantly higher in the ICS arm than in the traditional-cooking control arm (Table 3 means 2.82 +/- 0.62 vs 2.74 +/- 0.58 L, P = 4.4e-02; text medians 2.82 vs 2.74 L, P-value = 0.044, Wilcoxon test). The Discussion rounds the advantage to 100 mL ('better forced vital capacity (FVC, 100 mL)'), which matches neither the Table 3 mean difference (0.08 L) nor the medians exactly, so change_value is omitted rather than computed or reconciled."
+    derived_from_assay: "LF:cuestamosquera-spirometry-followup"
+    compared_measurement: "fvc"
+    control_output: "LF:cuestamosquera-spirometry-followup-output-traditional"
+    treated_output: "LF:cuestamosquera-spirometry-followup-output-ics"
+    change_type: absolute_difference
+    change_direction: increased
+    p_value: 0.044
+    statistical_test: "Wilcoxon rank sum test"
+    derivation: reported_in_paper
