@@ -39,6 +39,15 @@
 #     evidence snippet, but not as a response_comparison — inventing a
 #     compared_measurement string that is not a real output slot would break
 #     consumers keyed on slot names.
+#   - The mucous comparisons use compared_measurement:
+#     mucin_protein_concentration, which is an APPROXIMATION. The paper
+#     measured the morphometric AREA or amount of acid and neutral mucous
+#     within epithelial cells histochemically, not a mucin protein
+#     concentration; GobletCellOutput has no slot for histochemical mucous
+#     content, and mucin_protein_concentration is the nearest real slot. Since
+#     no value is recorded — only a direction — the approximation costs no
+#     numeric fidelity, but a consumer reading the slot name literally should
+#     know the readout was morphometry, not a protein assay.
 #   - The paper asserts no key-event-to-key-event causal link in its own
 #     voice, so there is no key_event_relationships section.
 #
@@ -213,19 +222,19 @@ mcc_assays:
       - reference: "PMID:26598085"
         reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
         supports: SUPPORT
-        evidence_source: MODEL_ORGANISM
+        evidence_source: IN_VITRO
         snippet: "Exposure to total suspended particles and PM3.0 decreased mucociliary transport."
         explanation: "The result this assay records: mucociliary transport fell under total suspended particles and under PM2.5 at 3.0 mg/mL, with no value reported."
       - reference: "PMID:26598085"
         reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
         supports: SUPPORT
-        evidence_source: MODEL_ORGANISM
+        evidence_source: IN_VITRO
         snippet: "Mucociliary function was quantified by mucociliary transport, ciliary beating frequency and the amount of acid and neutral mucous in epithelial cells through morphometry of frog palate preparations."
         explanation: "Names mucociliary transport as a morphometry endpoint on frog palate preparations, establishing this assay's measurement and its study subject."
       - reference: "PMID:26598085"
         reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
         supports: SUPPORT
-        evidence_source: MODEL_ORGANISM
+        evidence_source: IN_VITRO
         snippet: "The palates were immersed in one of the following solutions: total suspended particles (0.1 mg/mL), particulate matter 2.5 \xB5m 0.1 mg/mL (PM0.1) or 3.0 mg/mL (PM3.0) and amphibian Ringer's solution (control)."
         explanation: "Supplies the four exposure conditions and their concentrations recorded in has_exposure_condition, including the Ringer's solution control."
 
@@ -324,13 +333,13 @@ ciliary_function_assays:
       - reference: "PMID:26598085"
         reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
         supports: SUPPORT
-        evidence_source: MODEL_ORGANISM
+        evidence_source: IN_VITRO
         snippet: "Ciliary beating frequency was diminished by total suspended particles at all times during exposure, while particulate matter of 2.5 \xB5m did not elicit changes."
         explanation: "The complete beating-frequency result this assay records: a decrease under total suspended particles at all exposure times, and no change under PM2.5."
       - reference: "PMID:26598085"
         reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
         supports: SUPPORT
-        evidence_source: MODEL_ORGANISM
+        evidence_source: IN_VITRO
         snippet: "We compared the adverse effects of two types of real ambient particles; i.e., total suspended particles from an electrostatic precipitator of a steel mill and fine air particles from an urban ambient particulate matter of 2.5 \xB5m, on mucociliary clearance."
         explanation: "Identifies the two exposure agents compared in this assay — steel-mill electrostatic-precipitator total suspended particles and urban ambient PM2.5."
 
@@ -430,13 +439,13 @@ goblet_cell_assays:
       - reference: "PMID:26598085"
         reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
         supports: SUPPORT
-        evidence_source: MODEL_ORGANISM
+        evidence_source: IN_VITRO
         snippet: "Particulate matter of 2.5 \xB5m reduced epithelial mucous and epithelium thickness, while total suspended particles behaved similarly to the control group."
         explanation: "The complete mucous result this assay records: PM2.5 lowered epithelial mucous content (and epithelium thickness), while total suspended particles did not differ from control."
       - reference: "PMID:26598085"
         reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
         supports: SUPPORT
-        evidence_source: MODEL_ORGANISM
+        evidence_source: IN_VITRO
         snippet: "the amount of acid and neutral mucous in epithelial cells through morphometry of frog palate preparations"
         explanation: "Names the measurement behind this assay — acid and neutral mucous content of epithelial cells, read out by morphometry."
 
