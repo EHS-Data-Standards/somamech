@@ -205,3 +205,39 @@ def test_every_valid_fixture_converts(fixture_name, tmp_path):
     )
     assert result.returncode == 0, result.stdout + result.stderr
     assert out.exists()
+
+
+def test_container_level_key_events_are_collected():
+    """Container.key_events was the one collection no converter read: a KE
+    declared only at the container level never reached the KeyEvent tab and
+    escaped the cross-paper divergence check."""
+    data = {
+        "key_events": [
+            {"id": "KE:container-only", "name": "Container-only event"},
+        ],
+        "lung_function_assays": [
+            {
+                "id": "ASSAY:lf",
+                "informs_on_key_event": {"id": "KE:from-assay", "name": "Assay event"},
+            }
+        ],
+    }
+    ids = [ke["id"] for ke in y2e._collect_key_events(data)]
+    assert ids == ["KE:container-only", "KE:from-assay"]
+
+
+@pytest.mark.parametrize(
+    "raw,expected",
+    [
+        ("2.99", 2.99),       # floats become numeric cells
+        ("4", 4),             # integers too
+        ("4.0", 4.0),         # an explicit decimal point stays a float
+        (0, 0),               # a real zero survives
+        ("<0.05", "<0.05"),   # curator strings pass through unchanged
+        ("~12", "~12"),
+    ],
+)
+def test_fmt_value_unit_yields_numeric_cells(raw, expected):
+    val, _ = y2e._fmt_value_unit({"value": raw})
+    assert val == expected
+    assert type(val) is type(expected)

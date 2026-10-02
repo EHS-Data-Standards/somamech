@@ -264,7 +264,19 @@ def _fmt_value_unit(obj):
         unit_str = f"{unit_name} ({unit_id})" if unit_id else unit_name
     else:
         unit_str = str(unit_obj)
-    return str(val), unit_str
+    return _as_number(val), unit_str
+
+
+def _as_number(val):
+    """A real int/float when the value parses as one, so Excel gets a numeric
+    cell; curator strings like '<0.05' or '~12' pass through unchanged."""
+    if isinstance(val, (int, float)):
+        return val
+    try:
+        f = float(val)
+    except (TypeError, ValueError):
+        return str(val)
+    return int(f) if f.is_integer() and "." not in str(val) and "e" not in str(val).lower() else f
 
 
 def _fmt_variability(var):
@@ -369,8 +381,14 @@ def _collect_exposure_conditions(data):
 
 
 def _collect_key_events(data):
-    """Collect unique key events from all assays."""
+    """Collect unique key events: the container-level declarations first
+    (the one Container collection nothing else reads), then assay inlines."""
     seen = {}
+    for ke in data.get("key_events", []) or []:
+        if isinstance(ke, dict):
+            ke_id = ke.get("id", "")
+            if ke_id and ke_id not in seen:
+                seen[ke_id] = ke
     for coll_key in COLLECTION_MAP:
         for assay in data.get(coll_key, []) or []:
             ke = assay.get("informs_on_key_event")
