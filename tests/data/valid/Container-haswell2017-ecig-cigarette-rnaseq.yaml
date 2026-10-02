@@ -148,7 +148,7 @@ ciliary_function_assays:
         exposure_concentration:
           value: "2743"
           unit:
-            id: "UO:0000024"
+            id: "UO:0000275"
             name: "nanogram per milliliter"
         exposure_duration:
           value: "60"
@@ -192,7 +192,7 @@ ciliary_function_assays:
         exposure_concentration:
           value: "2343"
           unit:
-            id: "UO:0000024"
+            id: "UO:0000275"
             name: "nanogram per milliliter"
         exposure_duration:
           value: "60"
@@ -236,7 +236,7 @@ ciliary_function_assays:
         exposure_concentration:
           value: "8579"
           unit:
-            id: "UO:0000024"
+            id: "UO:0000275"
             name: "nanogram per milliliter"
         exposure_duration:
           value: "60"
@@ -323,7 +323,7 @@ goblet_cell_assays:
         exposure_concentration:
           value: "8579"
           unit:
-            id: "UO:0000024"
+            id: "UO:0000275"
             name: "nanogram per milliliter"
         exposure_duration:
           value: "60"
@@ -377,7 +377,7 @@ foxj_assays:
         exposure_concentration:
           value: "2743"
           unit:
-            id: "UO:0000024"
+            id: "UO:0000275"
             name: "nanogram per milliliter"
         exposure_duration:
           value: "60"
@@ -433,7 +433,7 @@ gene_expression_assays:
         exposure_concentration:
           value: "2743"
           unit:
-            id: "UO:0000024"
+            id: "UO:0000275"
             name: "nanogram per milliliter"
         exposure_duration:
           value: "60"
@@ -490,7 +490,7 @@ gene_expression_assays:
         exposure_concentration:
           value: "2743"
           unit:
-            id: "UO:0000024"
+            id: "UO:0000275"
             name: "nanogram per milliliter"
         exposure_duration:
           value: "60"
@@ -537,7 +537,7 @@ gene_expression_assays:
         exposure_concentration:
           value: "8579"
           unit:
-            id: "UO:0000024"
+            id: "UO:0000275"
             name: "nanogram per milliliter"
         exposure_duration:
           value: "60"
@@ -584,7 +584,7 @@ gene_expression_assays:
         exposure_concentration:
           value: "2343"
           unit:
-            id: "UO:0000024"
+            id: "UO:0000275"
             name: "nanogram per milliliter"
         exposure_duration:
           value: "60"
@@ -631,7 +631,7 @@ gene_expression_assays:
         exposure_concentration:
           value: "2743"
           unit:
-            id: "UO:0000024"
+            id: "UO:0000275"
             name: "nanogram per milliliter"
         exposure_duration:
           value: "60"
@@ -690,7 +690,7 @@ gene_expression_assays:
         exposure_concentration:
           value: "2343"
           unit:
-            id: "UO:0000024"
+            id: "UO:0000275"
             name: "nanogram per milliliter"
         exposure_duration:
           value: "60"
@@ -737,7 +737,7 @@ gene_expression_assays:
         exposure_concentration:
           value: "8579"
           unit:
-            id: "UO:0000024"
+            id: "UO:0000275"
             name: "nanogram per milliliter"
         exposure_duration:
           value: "60"

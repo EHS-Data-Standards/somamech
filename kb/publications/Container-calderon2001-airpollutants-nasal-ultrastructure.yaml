@@ -308,9 +308,11 @@ key_event_relationships:
     upstream_event:
       id: "KE:ke3-impaired-ciliary"
       name: "Decreased ciliary function"
+      biological_action: decreased
     downstream_event:
       id: "KE:ke3-impaired-mcc"
       name: "Impaired mucociliary clearance"
+      biological_action: impaired
     relationship_type: "directly leads to"
     evidence_support: moderate
     quantitative_understanding: not_specified
