@@ -1,12 +1,15 @@
-# Build and deploy the KB review site (scripts/build_site.py) to GitHub Pages.
+# Build and deploy the GitHub Pages site: the KB review site at the root
+# (scripts/build_site.py — one page per paper plus the pooled key-event
+# network) and the MkDocs schema docs + DataHarmonizer under /docs/.
 #
-# The site is a generated product of kb/publications/ — one page per paper
-# plus the pooled key-event network — meant for reviewers to read the
-# extracted evidence without opening YAML. It is rebuilt from the tagged tree
-# whenever a release is published, so the public site always reflects a
-# released state of the KB rather than every merge. Use "Run workflow" to
-# redeploy from main on demand (e.g. to seed the site before the first
-# release or after a hotfix).
+# The site is rebuilt from the tagged tree whenever a release is published,
+# so the public site always reflects a released state of the KB rather than
+# every merge. Use "Run workflow" to redeploy from main on demand (e.g. to
+# seed the site before the first release or after a hotfix).
+#
+# Pages serves exactly one artifact per deployment, so the schema docs must
+# ship inside this artifact — they cannot be deployed by a second workflow.
+# deploy-docs.yaml only VALIDATES the docs build on pushes to main.
 #
 # Requires the repository's Pages source to be "GitHub Actions"
 # (Settings → Pages → Build and deployment → Source).
@@ -44,14 +47,47 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v10.2.0
         with:
-          python-version: "3.12"
+          python-version: "3.13"
           enable-cache: true
           cache-dependency-glob: "uv.lock"
+
+      - name: Install just
+        run: uv tool install rust-just
+
+      - name: Install Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 18
+
+      - name: Install SQLite for diagram generation
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sqlite3
 
       - name: Install project
         run: uv sync --dev
 
-      - name: Build site
+      - name: Generate project artifacts
+        run: just gen-project
+
+      - name: Generate schema documentation
+        run: just gen-doc
+
+      - name: Build DataHarmonizer into docs
+        run: |
+          npm install
+          npm run build
+          cp -r dist/assets docs/
+          cp dist/index.html docs/harmonizer.html
+          sed -i 's|"/assets/|"assets/|g' docs/harmonizer.html
+          mkdir -p docs/schemas
+          uv run gen-linkml --materialize-patterns --materialize-attributes "$(uv run python -c 'from importlib.resources import files; print(files("soma")/"schema"/"soma.yaml")')" > docs/schemas/soma.json
+          cp menu.json docs/
+
+      - name: Build schema docs site
+        run: uv run mkdocs build -d _site/docs
+
+      - name: Build KB review site
         env:
           SITE_VERSION: ${{ github.event_name == 'release' && github.event.release.tag_name || github.ref_name }}
         run: uv run python scripts/build_site.py --out _site --version "$SITE_VERSION"

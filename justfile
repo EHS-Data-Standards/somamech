@@ -292,8 +292,10 @@ _copy-artifacts:
   @echo "Copying generated artifacts to docs..."
   -mkdir -p docs/artifacts
   cp {{dest}}/jsonschema/{{schema_name}}.schema.json docs/artifacts/
-  cp {{pymodel}}/{{schema_name}}_pydantic.py docs/artifacts/
-  cp {{pymodel}}/{{schema_name}}.py docs/artifacts/
+  # The generated datamodel ships inside the installed soma-schema package
+  # (there is no {{pymodel}} directory in this repo since the PyPI split).
+  cp "$(uv run python -c 'from importlib.resources import files; print(files("{{schema_name}}") / "datamodel" / "{{schema_name}}_pydantic.py")')" docs/artifacts/
+  cp "$(uv run python -c 'from importlib.resources import files; print(files("{{schema_name}}") / "datamodel" / "{{schema_name}}.py")')" docs/artifacts/
   cp {{dest}}/excel/{{schema_name}}.xlsx docs/artifacts/
   @echo "Copying paper-derived SOMA data workbooks..."
   -cp {{src}}/docs/Montgomery2020_PM25_Mucociliary_SOMA.xlsx docs/artifacts/
