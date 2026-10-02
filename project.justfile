@@ -355,11 +355,14 @@ query sql="" db="exports/soma.duckdb":
     uv run python scripts/soma_query.py "{{db}}" "{{sql}}"
 
 # Build the static KB review site — one page per extracted paper plus the
-# pooled key-event network. Deployed to GitHub Pages from each release by
-# .github/workflows/deploy-kb-site.yaml; this recipe is the local preview.
+# pooled key-event network, with the pooled workbook at the site root so the
+# download always matches the deployed pages. Deployed to GitHub Pages from
+# each release by .github/workflows/deploy-kb-site.yaml; this recipe is the
+# local preview.
 [group('exports')]
-gen-site out="_site" version="dev":
+gen-site out="_site" version="dev": generate-workbook
     uv run python scripts/build_site.py --out {{out}} --version {{version}}
+    cp exports/soma_extractions.xlsx {{out}}/soma_extractions.xlsx
 
 # Build the KB site and serve it at http://localhost:8900 for review.
 [group('exports')]

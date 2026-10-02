@@ -76,10 +76,13 @@ jobs:
       - name: Build schema docs site (DataHarmonizer + MkDocs)
         run: just build-docs-site _site/docs
 
-      - name: Build KB review site
+      - name: Build KB review site (includes the pooled workbook)
+        # just gen-site also builds exports/soma_extractions.xlsx from this
+        # checkout and copies it to _site/, so the downloadable workbook is
+        # built from exactly the tree the deployed pages describe.
         env:
           SITE_VERSION: ${{ github.event_name == 'release' && github.event.release.tag_name || github.ref_name }}
-        run: uv run python scripts/build_site.py --out _site --version "$SITE_VERSION"
+        run: just gen-site _site "$SITE_VERSION"
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5.0.0
