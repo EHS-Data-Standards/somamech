@@ -1,0 +1,101 @@
+# Build and deploy the GitHub Pages site: the KB review site at the root
+# (scripts/build_site.py — one page per paper plus the pooled key-event
+# network) and the MkDocs schema docs + DataHarmonizer under /docs/.
+#
+# The site is rebuilt from the tagged tree whenever a release is published,
+# so the public site always reflects a released state of the KB rather than
+# every merge. Use "Run workflow" to redeploy from main on demand (e.g. to
+# seed the site before the first release or after a hotfix).
+#
+# Pages serves exactly one artifact per deployment, so the schema docs must
+# ship inside this artifact — they cannot be deployed by a second workflow.
+# deploy-docs.yaml only VALIDATES the docs build on pushes to main.
+#
+# Requires the repository's Pages source to be "GitHub Actions"
+# (Settings → Pages → Build and deployment → Source).
+---
+name: Deploy KB site
+
+on:  # yamllint disable-line rule:truthy
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions: {}
+
+# One deployment at a time; let an in-flight deploy finish.
+concurrency:
+  group: deploy-kb-site
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # The rolling workbook release re-publishes the same tag and is not a KB
+    # release; the site would not change meaningfully, so skip it.
+    if: github.event_name != 'release' || github.event.release.tag_name != 'workbook-latest'
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repository
+        # On a release event this checks out the tagged commit, so the site
+        # is built from exactly the released tree.
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v10.2.0
+        with:
+          python-version: "3.13"
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Install just
+        run: uv tool install rust-just
+
+      - name: Install Node.js
+        uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 18
+
+      - name: Install SQLite for diagram generation
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sqlite3
+
+      - name: Install project
+        run: uv sync --dev
+
+      - name: Generate project artifacts
+        run: just gen-project
+
+      - name: Generate schema documentation
+        run: just gen-doc
+
+      - name: Build schema docs site (DataHarmonizer + MkDocs)
+        run: just build-docs-site _site/docs
+
+      - name: Build KB review site
+        env:
+          SITE_VERSION: ${{ github.event_name == 'release' && github.event.release.tag_name || github.ref_name }}
+        run: uv run python scripts/build_site.py --out _site --version "$SITE_VERSION"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5.0.0
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment comes from this workflow
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5.0.1

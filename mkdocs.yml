@@ -43,6 +43,7 @@ nav:
   - Schema: elements/index.md
   - Data Harmonizer: harmonizer.html
   - Examples: examples.md
+  - Workbook Guide: workbook-guide.md
   - Artifacts: artifacts.md
   - Claude Code Skills: claude-code-skills.md
   - About: about.md
@@ -50,8 +51,9 @@ nav:
 exclude_docs: |
   /templates-linkml/
 
-site_url: https://EHS-Data-Standards.github.io/soma
-repo_url: https://github.com/EHS-Data-Standards/soma
+# Served under /docs/ inside the Pages artifact built by deploy-kb-site.yaml
+site_url: https://ehs-data-standards.github.io/somamech/docs/
+repo_url: https://github.com/EHS-Data-Standards/somamech
 
 # Uncomment this block to enable use of Google Analytics.
 # Replace the property value with your own ID.

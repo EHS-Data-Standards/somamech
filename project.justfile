@@ -172,6 +172,28 @@ validate-all:
     ALLOW_ABSTRACT_ONLY_MISSES=1 {{ref_validator_wrapper}} validate data "${files[@]}" --schema {{soma_schema}} --target-class Container --config {{ref_conf}} --cache-dir {{refs_cache}} --no-full-text
     echo "All kb files validated."
 
+# Term-check the test fixtures with the same validator (and --labels) that
+# gates kb/publications. The fixtures are source material that curation
+# copies from (the claim-paper skill points extraction agents at them), so a
+# mislabelled term here is latent until it lands in a real extraction and
+# becomes a hard CI failure there (issue #137). Only the term validator runs
+# here — fixtures have no committed reference-cache entries, so the
+# reference/quote validator does not apply; schema shape is covered by
+# _test-examples and the pytest suite. tests/data/invalid/ and
+# tests/data/quote_mismatch/ stay excluded: they are deliberately broken.
+[group('QC')]
+validate-fixtures:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    shopt -s nullglob
+    files=(tests/data/valid/*.yaml)
+    if [ ${#files[@]} -eq 0 ]; then
+        echo "No fixtures in tests/data/valid — nothing to validate."
+        exit 0
+    fi
+    echo "Term-checking ${#files[@]} fixture files..."
+    {{term_validator_wrapper}} validate-data "${files[@]}" -s {{soma_schema}} -t Container --labels -c {{oak_conf}}
+
 # Check that no YAML file repeats a key (a silent way merges break files).
 [group('QC')]
 check-duplicate-keys *files:
@@ -210,7 +232,7 @@ db-test:
 # repository (checking only changed files lets two individually-green PRs
 # break each other when both merge).
 [group('QC')]
-qc: check-duplicate-keys check-stubs check-entity-ids validate-all check-receipts pipeline-test db-test
+qc: check-duplicate-keys check-stubs check-entity-ids validate-all validate-fixtures check-receipts pipeline-test db-test
     @echo "All QC checks passed!"
 
 # ============ Derived products ============
@@ -331,3 +353,23 @@ query sql="" db="exports/soma.duckdb":
     set -euo pipefail
     [ -f "{{db}}" ] || just build-db "{{db}}"
     uv run python scripts/soma_query.py "{{db}}" "{{sql}}"
+
+# Build the static KB review site — one page per extracted paper plus the
+# pooled key-event network. Deployed to GitHub Pages from each release by
+# .github/workflows/deploy-kb-site.yaml; this recipe is the local preview.
+[group('exports')]
+gen-site out="_site" version="dev":
+    uv run python scripts/build_site.py --out {{out}} --version {{version}}
+
+# Build the KB site and serve it at http://localhost:8900 for review.
+[group('exports')]
+serve-site out="_site": (gen-site out)
+    uv run python -m http.server --directory {{out}} 8900
+
+# Package the DataHarmonizer build and the MkDocs schema docs into one static
+# site. Shared by deploy-kb-site.yaml (which deploys it under /docs/ in the
+# Pages artifact) and deploy-docs.yaml (build-only validation), so the steps
+# live in one place. Assumes `just gen-project` and `just gen-doc` have run.
+[group('exports')]
+build-docs-site out="tmp/docs-site": build-dh
+    uv run mkdocs build -d {{out}}

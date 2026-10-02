@@ -41,21 +41,24 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from yaml_to_excel import (  # noqa: E402 - reuse the per-paper converter's pieces
     COLLECTION_MAP,
     HEADERS,
+    SUBJECT_TABS,
     TAB_COLORS,
     _assay_row,
-    _cellular_system_row,
     _collect_exposure_conditions,
     _collect_key_events,
+    _collect_protocols,
+    _collect_response_rows,
     _collect_subjects,
     _exposure_row,
     _key_event_relationship_row,
     _iter_outputs,
     _key_event_row,
-    _invivo_subject_row,
     _make_sheet,
     _output_row,
     _protocol_row,
     _response_comparison_row,
+    _row_for_tab,
+    _subject_row,
 )
 
 DEFAULT_KB_DIR = ROOT / "kb" / "publications"
@@ -147,21 +150,26 @@ def collect(files: list[Path]):
             ]
         )
 
-        for p in data.get("protocols", []) or []:
+        for p in _collect_protocols(data):
             add("Protocol", source, p.get("id", ""), _protocol_row(p))
         for ec in _collect_exposure_conditions(data):
             add("ExposureCondition", source, ec.get("id", ""), _exposure_row(ec))
         for ke in collect_key_events_for_pool(data):
             add("KeyEvent", source, ke.get("id", ""), _key_event_row(ke))
-        cellular, invivo = _collect_subjects(data)
-        for s in cellular:
-            add("CellularSystem", source, s.get("id", ""), _cellular_system_row(s))
-        for s in invivo:
-            add("InVivoSubject", source, s.get("id", ""), _invivo_subject_row(s))
+        for subj_tab, subjects in _collect_subjects(data).items():
+            for s in subjects:
+                add(subj_tab, source, s.get("id", ""), _subject_row(s, subj_tab))
         for rc in data.get("response_comparisons", []) or []:
             add("ResponseComparison", source, rc.get("id", ""), _response_comparison_row(rc))
         for ker in data.get("key_event_relationships", []) or []:
             add("KeyEventRelationship", source, ker.get("id", ""), _key_event_relationship_row(ker))
+        for aop in data.get("adverse_outcome_pathways", []) or []:
+            add("AdverseOutcomePathway", source, aop.get("id", ""),
+                _row_for_tab(aop, "AdverseOutcomePathway"))
+        # Long-format Responses rows carry no entity id of their own, so they
+        # bypass the ID rules and are appended directly.
+        for row in _collect_response_rows(data):
+            tabs.setdefault("Responses", []).append((source, row))
         for coll_key, (assay_tab, output_tab) in COLLECTION_MAP.items():
             for a in data.get(coll_key, []) or []:
                 add(assay_tab, source, a.get("id", ""), _assay_row(a, HEADERS.get(assay_tab, [])))
@@ -192,10 +200,11 @@ def write_workbook(tabs, papers, output_path: Path):
         "Protocol",
         "ExposureCondition",
         "KeyEvent",
-        "CellularSystem",
-        "InVivoSubject",
+        *SUBJECT_TABS,
+        "Responses",
         "ResponseComparison",
         "KeyEventRelationship",
+        "AdverseOutcomePathway",
     ]
     for _, (assay_tab, output_tab) in COLLECTION_MAP.items():
         order.extend([assay_tab, output_tab])

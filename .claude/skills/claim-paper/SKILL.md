@@ -182,15 +182,18 @@ First count the variants, so a disagreement is visible rather than hidden
 below the fold:
 
 ```bash
-git grep -h -A3 '"KE:ke-decreased-cftr"' origin/main -- kb/ tests/data/valid/ \
+git grep -h -A3 '"KE:ke2-goblet-hyperplasia"' origin/main -- kb/ tests/data/valid/ \
   | grep -E 'name:|biological_action:' | paste - - | sort | uniq -c | sort -rn
 ```
 
-That prints one line per distinct wording with its count — which is exactly
-what the "prefer the majority" rule below needs:
+That prints one line per distinct wording with its count. One row means the
+corpus is unanimous — copy that block and move on. More than one row is a
+disagreement, and the counts are exactly what the "prefer the majority" rule
+below needs. This is what the output looked like while this ID was still
+contested (unified in #170 — do not expect these exact counts):
 
 ```
-  10       name: "Goblet cell hyperplasia"                          biological_action: increased
+  30       name: "Goblet cell hyperplasia"                          biological_action: increased
    2       name: "Goblet cell hyperplasia and mucin hypersecretion"  biological_action: increased
 ```
 
@@ -208,30 +211,24 @@ the founding vocabulary lives in the test fixtures.
   its own PR touching every file that uses the block.
 - Mint a new `KE:` ID only when no existing key event fits, and keep its
   content minimal so it is easy for the next paper to reuse.
-- **The fixtures are not internally consistent, so a grep can hand you two
-  answers.** 5 of the 22 KE IDs on main carry more than one wording, including
-  two that disagree inside a single file:
+- **The corpus has drifted before, so a grep can hand you two answers.** At
+  one point 5 of the 22 KE IDs on main carried more than one wording,
+  including two that disagreed inside a single file (unified in #170) —
+  which is why you count first instead of trusting the first block you see.
 
-  | ID | variants |
-  |---|---|
-  | `KE:ao-decreased-lung-function` | "Decreased lung function"/`decreased` vs "Increased airway hyperresponsiveness"/`increased` |
-  | `KE:ke-airway-inflammation` | "Airway inflammation" vs "Th2 airway inflammation" |
-  | `KE:ke-altered-ciliogenesis` | same name, `altered` vs `decreased` |
-  | `KE:ke-goblet-hyperplasia` | "Goblet cell hyperplasia" vs "…and mucin hypersecretion" |
-  | `KE:ke2-goblet-hyperplasia` | "Goblet cell hyperplasia" vs "…and mucin hypersecretion" |
-
-  When a grep returns more than one block, pick the variant whose name matches
+  When the count shows more than one row, pick the variant whose name matches
   its ID (`KE:ao-decreased-lung-function` → "Decreased lung function"), prefer
   the majority wording, and ignore `tests/data/quote_mismatch/` — that fixture
   is deliberately corrupt.
 
   When the names tie, apply the same majority rule to `biological_action`.
-  `KE:ke-altered-ciliogenesis` is the case in point: both variants are named
-  "Altered ciliogenesis" and differ only in the action, so the name test
-  cannot decide it. **Use `biological_action: decreased`** — it is the
-  majority (5 blocks to 1), even though the ID says "altered". Say in the PR body which variant you chose. These
-  live in fixtures, so `check-entity-ids` does not see the conflict today; it
-  fires the moment two `kb/publications/` files disagree.
+  `KE:ke-altered-ciliogenesis` was the case in point: both variants were named
+  "Altered ciliogenesis" and differed only in the action (`altered` vs the
+  majority `decreased`), so the name test could not decide it — only the
+  counts could. Say in the PR body which variant you chose. A conflict that
+  lives only in fixtures is invisible to `check-entity-ids` today; it fires
+  the moment two `kb/publications/` files disagree (#128 tracks closing that
+  gap).
 
 ## Step 5 — Verify
 
