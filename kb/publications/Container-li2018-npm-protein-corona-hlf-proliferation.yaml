@@ -1,0 +1,1343 @@
+# =============================================================================
+# Li et al. (2018) - Protein corona of airborne nanoscale PM2.5 induces
+# aberrant proliferation of human lung fibroblasts based on a 3D organotypic
+# culture
+# =============================================================================
+#
+# Source: Sci Rep. 2018;8:1939
+# DOI: 10.1038/s41598-018-20445-7
+# PMID:29386584
+#
+# The committed reference cache for this PMID is full text (content_type:
+# full_text_xml, PMC), so every evidence snippet below is quoted from the
+# committed cache and no verification receipt is needed.
+#
+# Study design (all in vitro, single cellular system):
+#   - Airborne PM2.5 collected on quartz filters in Wuhan City with a
+#     high-volume sampler, sonicated off the filter and filtered to < 1 um to
+#     isolate airborne nanoscale particulate matter (NPM, naked diameter
+#     ~50 nm). Characterized by SEM, SEM-EDS, AFM and ATR-FTIR.
+#   - NPM incubated with fetal bovine serum (37 C, 24 h) to form the
+#     NPM-protein corona (NPC); SEM showed complexes of 100-200 nm and FTIR
+#     confirmed the protein coat.
+#   - Primary human lung fibroblasts (HLFs, ATCC PCS-201-013) suspended in a
+#     fibrinogen/thrombin precursor, gelled for 1 h and cultured for three
+#     days as a 3D organotypic fibrin-hydrogel construct in a microfluidic
+#     chip (imaging) or a 96-well plate (quantitative assays).
+#   - Final 3D exposure concentrations: NPC at 5, 10 and 20 ug/ml NPM; naked
+#     NPM 20 ug/ml; pure serum; vitamin C 0.1 mg/ml co-treatment with NPC
+#     (20 ug/ml NPM); TGF-beta1 2 ng/ml as a positive comparator. Control was
+#     HLF medium alone.
+#   - Readouts: MTT cell proliferation/viability, ROS (DCFH-DA), GSH
+#     (ThioGlo-1), MDA and 8-OH-dG (ELISA), alpha-smooth muscle actin
+#     (alpha-SMA) immunofluorescence.
+#
+# Key findings:
+#   - The NPM-protein corona promoted 3D-HLF proliferation dose-dependently
+#     (cell viabilities 103%, 109%, 113% at 5, 10, 20 ug/ml NPM); 20 ug/ml was
+#     significant versus control (p < 0.01). Naked NPM (104%) and pure serum
+#     (105%) did not.
+#   - ROS rose with NPM concentration and GSH was depleted, but MDA and
+#     8-OH-dG did not change: a limited ROS increase without oxidative damage.
+#   - alpha-SMA expression rose with NPM concentration. Vitamin C repressed
+#     ROS, GSH depletion, alpha-SMA and proliferation; TGF-beta1 reproduced
+#     all of them.
+#   - The authors' mechanism: NPC -> limited ROS increase -> ROS-mediated
+#     alpha-SMA upregulation -> aberrant HLF proliferation -> pulmonary
+#     fibrosis.
+#
+# IMPORTANT - no numeric measurement values are recorded on the oxidative
+# stress or alpha-SMA outputs. ROS, GSH, MDA, 8-OH-dG and alpha-SMA are all
+# reported as fluorescence-intensity or ELISA bar charts (Figs 5-8) with no
+# numbers in the running text, and figure-derived values are not estimated.
+# The MTT cell viabilities ARE stated numerically in the text; because the
+# schema has no proliferation or viability assay slot, they are recorded in
+# the `description` of the key event relationship below and quoted verbatim
+# in its evidence, rather than being filed under an assay type they do not
+# belong to. (`quantitative_understanding` cannot hold them - it is an enum
+# of high/moderate/low/not_specified.) Exposure concentrations and durations
+# are stated numerically in the Methods and are recorded as such.
+#
+# The exposure agent is ENVO:01000416 (ultrafine respirable suspended
+# particulate matter) rather than ENVO:01000415 (fine, i.e. PM2.5): the
+# Methods filter the suspension to < 1 um "to remove larger particles",
+# naked NPM averages ~50 nm, and the nanoscale-versus-bulk-PM2.5 distinction
+# is the paper's entire point. The fit is not exact - AFM put most particles
+# in the "ten to hundreds of nanometres" range and the corona complexes
+# measured 100-200 nm, so the upper tail of what was dosed exceeds the
+# ultrafine cut-off - but filing these arms as bulk PM2.5 would pool them
+# with genuine PM2.5 exposures and lose the distinction entirely.
+#
+# Key events are copied verbatim from origin/main. Both were unanimous:
+#   KE:mie-oxidative-stress    "Increased oxidative stress"  (47 occurrences)
+#   KE:ke-increased-proliferation "Increased cell proliferation" (3 occurrences)
+# No new KE id is minted.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:29386584"
+  reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+  doi: "10.1038/s41598-018-20445-7"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:li2018-3dculture-001"
+    protocol_type: Protocol
+    name: "3D organotypic fibrin-hydrogel culture of human lung fibroblasts"
+    description: "Human lung fibroblasts were suspended at 2 x 10^6 cells/ml, mixed with the exposure solution, fibrinogen (10 mg/ml) and thrombin (100 U/ml) in a ratio of 60:20:19:1 on ice, and seeded as 15 ul aliquots in a microfluidic chip (AIM Biotech, Singapore) for imaging or 50 ul aliquots in a 96-well plate for quantitative assays. Gelation ran 1 h at 37 C, after which the construct was filled with HLF culture medium, replaced daily, and cultured for three days. Fibrinogen was dissolved in FBS-free HLF medium; thrombin in DPBS containing 0.1% BSA."
+    quality_control_criteria: "Live/dead and nuclear fluorescence confirmed intact, viable cells with clear nuclei in the fibrin scaffold before exposure readouts"
+    equipment_required:
+      - "Microfluidic chip (AIM Biotech, Singapore)"
+      - "Fibrinogen (Sigma) and thrombin (Sigma)"
+      - "Confocal microscope (Olympus IX81)"
+
+  - id: "PROTOCOL:li2018-mtt-001"
+    protocol_type: MolecularAssayProtocol
+    name: "MTT assay for cell proliferation of 3D-cultured HLFs"
+    description: "After three days of exposure the cell medium was removed by pipetting and 100 ul of gel dissociation saline solution (Biovision) was added. Mixtures were incubated at room temperature for 5-10 min and pipetted with a 1 ml tip until the fibrin matrix dissolved, then centrifuged at 1,000 x g for 5 min at 4 C and the supernatant removed. Cell proliferation was measured with an MTT kit (Nanjing Jiancheng, China) and reported as cell viability relative to the untreated control."
+    detection_method: "MTT colorimetric assay kit (Nanjing Jiancheng)"
+    normalization_method: "percentage of the untreated control group"
+    equipment_required:
+      - "Microplate reader"
+      - "MTT assay kit (Nanjing Jiancheng)"
+      - "Gel dissociation saline solution (Biovision)"
+
+  - id: "PROTOCOL:li2018-dcfhda-001"
+    protocol_type: ImagingProtocol
+    name: "DCFH-DA fluorescence detection of intracellular ROS in 3D-cultured HLFs"
+    description: "Intracellular reactive oxygen species were labelled with DCFH-DA (Merck KGaA, Germany). Images of fluorochrome-labelled ROS in 3D-cultured HLFs were captured on a confocal microscope (Olympus IX81) at x10 magnification and processed with Imaris software. For quantification, 3D-cultured HLFs on cell plates were released from the fibrin matrix with gel dissociation saline solution and ROS fluorescence intensity was read on a fluorescence reader (FLx800; BioTek Instruments)."
+    fluorescent_labeling: "DCFH-DA (Merck KGaA)"
+    fluorescent_tracer: "DCFH-DA"
+    equipment_required:
+      - "Confocal microscope (Olympus IX81)"
+      - "Fluorescence reader (FLx800, BioTek Instruments)"
+      - "DCFH-DA probe (Merck KGaA)"
+
+  - id: "PROTOCOL:li2018-thioglo-001"
+    protocol_type: ImagingProtocol
+    name: "ThioGlo-1 fluorescence detection of intracellular GSH in 3D-cultured HLFs"
+    description: "Intracellular glutathione was labelled with ThioGlo(TM)-1 (Merck KGaA, Germany). Images of fluorochrome-labelled GSH in 3D-cultured HLFs were captured on a confocal microscope (Olympus IX81) at x10 magnification. GSH fluorescence intensity was quantified on a fluorescence reader (FLx800; BioTek Instruments) after the cells were released from the fibrin matrix."
+    fluorescent_labeling: "ThioGlo(TM)-1 (Merck KGaA)"
+    fluorescent_tracer: "ThioGlo-1"
+    equipment_required:
+      - "Confocal microscope (Olympus IX81)"
+      - "Fluorescence reader (FLx800, BioTek Instruments)"
+      - "ThioGlo-1 probe (Merck KGaA)"
+
+  - id: "PROTOCOL:li2018-elisa-001"
+    protocol_type: MolecularAssayProtocol
+    name: "ELISA quantification of MDA and 8-OHdG in 3D-cultured HLFs"
+    description: "Concentrations of malondialdehyde (MDA, a lipid peroxidation end product) and 8-hydroxydeoxyguanosine (8-OHdG, a marker of oxidative DNA damage) were measured with ELISA kits according to the manufacturer's instructions (Nanjing Jiancheng, China), on 3D-cultured HLFs recovered from the fibrin matrix by gel dissociation and centrifugation."
+    detection_method: "ELISA kits (Nanjing Jiancheng)"
+    equipment_required:
+      - "Microplate reader"
+      - "MDA and 8-OHdG ELISA kits (Nanjing Jiancheng)"
+
+  - id: "PROTOCOL:li2018-asma-if-001"
+    protocol_type: StainingProtocol
+    name: "Alpha-SMA immunofluorescence in 3D-cultured HLFs"
+    description: "Alpha-smooth muscle actin was detected with a fluorescent anti-alpha-SMA agent (Abcam, USA) in HLFs cultured in the microfluidic chip. Nuclei were counterstained with DAPI (Invitrogen) and live cells labelled with an Invitrogen live-cell dye. 3D fluorescence images were captured on a confocal microscope (Olympus IX81) at x10 magnification and processed with Imaris software; the fluorescence intensity of alpha-SMA expression was analysed with ImageJ software."
+    staining_type: "immunofluorescence"
+    detection_method: "confocal fluorescence microscopy with ImageJ intensity quantification"
+    antibodies_used:
+      - "anti-alpha-SMA (Abcam, USA)"
+    counterstain: "DAPI (Invitrogen)"
+    equipment_required:
+      - "Confocal microscope (Olympus IX81)"
+      - "Imaris software (Bitplane Scientific Software)"
+      - "ImageJ software"
+
+# =============================================================================
+# OXIDATIVE STRESS ASSAYS - ROS, GSH, MDA and 8-OH-dG in 3D-cultured HLFs
+# =============================================================================
+
+oxidative_stress_assays:
+  # --- ROS, NPM-protein corona dose series ---
+  - id: "OX:li2018-3dhlf-ros-dose"
+    name: "ROS fluorescence in 3D-cultured HLFs across an NPM-protein corona dose series"
+    description: "Intracellular ROS labelled with DCFH-DA in 3D-cultured HLFs exposed for three days to the NPM-protein corona at 5, 10 and 20 ug/ml NPM. ROS increased positively with NPM concentration. Fluorescence intensity is reported only in Fig. 5A with images in Fig. 5F-H, so no numeric value is recorded. Significance versus control was marked *P < 0.05, **P < 0.01 in the figure legend without per-group attribution in the text."
+    ros_probe_type: "DCFH-DA"
+    evidence:
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "shows a positive ROS increase in relation to the NPM concentration."
+        explanation: "States exactly what this assay records: ROS fluorescence in the 3D-cultured HLFs rose with the NPM concentration of the protein corona."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Taken together, these results demonstrate that the NPM-protein corona is expected to result in a limited increase in ROS levels."
+        explanation: "The authors' summary of the magnitude of the ROS response recorded here - an increase, but a limited one."
+    has_exposure_condition:
+      - id: "EXPOSURE:li2018-3dhlf-control"
+        name: "Control, HLF medium alone in the 3D fibrin construct, three days"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc5"
+        name: "NPM-protein corona at 5 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "5"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc10"
+        name: "NPM-protein corona at 10 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc20"
+        name: "NPM-protein corona at 20 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "20"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "OX:li2018-3dhlf-ros-dose-output-control"
+        name: "Control 3D-HLFs - ROS fluorescence"
+        description: "Reference condition, HLF medium alone. Figure-only values; none recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:li2018-3dhlf-control"
+      - id: "OX:li2018-3dhlf-ros-dose-output-npc5"
+        name: "NPC 5 ug/ml NPM 3D-HLFs - ROS fluorescence"
+        description: "Lowest dose of the dose series; ROS increased relative to control. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc5"
+      - id: "OX:li2018-3dhlf-ros-dose-output-npc10"
+        name: "NPC 10 ug/ml NPM 3D-HLFs - ROS fluorescence"
+        description: "Middle dose of the dose series. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc10"
+      - id: "OX:li2018-3dhlf-ros-dose-output-npc20"
+        name: "NPC 20 ug/ml NPM 3D-HLFs - ROS fluorescence"
+        description: "Highest dose of the dose series; largest ROS increase. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc20"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:li2018-3dhlf-001"
+      name: "Primary human lung fibroblasts in a 3D fibrin-hydrogel organotypic culture"
+      primary_cell:
+        id: "CL:0002553"
+        name: "fibroblast of lung"
+      cell_type:
+        id: "CL:0002553"
+        name: "fibroblast of lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      substrate_type: hydrogel
+      donor_info: "Primary human lung fibroblasts, ATCC PCS-201-013, routinely grown in FGM fibroblast growth media (Lonza, USA) in 95% air / 5% CO2 at 37 C"
+      culture_media:
+        id: "soma:li2018-media-fgm"
+        name: "FGM fibroblast growth media (Lonza) in the 3D fibrin construct"
+        base_medium: "FGM fibroblast growth media (Lonza, USA)"
+    follows_protocols:
+      - id: "PROTOCOL:li2018-3dculture-001"
+        name: "3D organotypic fibrin-hydrogel culture of human lung fibroblasts"
+      - id: "PROTOCOL:li2018-dcfhda-001"
+        name: "DCFH-DA fluorescence detection of intracellular ROS in 3D-cultured HLFs"
+
+  # --- ROS, vitamin C and TGF-beta1 modulators ---
+  - id: "OX:li2018-3dhlf-ros-modulators"
+    name: "ROS fluorescence in 3D-cultured HLFs with vitamin C or TGF-beta1"
+    description: "ROS labelled with DCFH-DA in 3D-cultured HLFs exposed for three days to the NPM-protein corona (20 ug/ml NPM), to the same corona co-treated with vitamin C 0.1 mg/ml, or to TGF-beta1 2 ng/ml. Vitamin C repressed ROS generation and TGF-beta1 promoted it, reproducing the corona response. Values reported only in Fig. 5B with images in Fig. 5C-E; none recorded."
+    ros_probe_type: "DCFH-DA"
+    evidence:
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "An antioxidant (vitamin C) effectively repressed ROS generation"
+        explanation: "States the vitamin C result this assay records: co-treatment suppressed the corona-driven ROS increase, which is the antioxidant control on the oxidative stress event."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "TGF-β1 promoted ROS, as has been reported in the literature"
+        explanation: "States the positive-comparator result this assay records: TGF-beta1 raised ROS in the same 3D system."
+    has_exposure_condition:
+      - id: "EXPOSURE:li2018-3dhlf-control"
+        name: "Control, HLF medium alone in the 3D fibrin construct, three days"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc20"
+        name: "NPM-protein corona at 20 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "20"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc20-vc"
+        name: "NPM-protein corona at 20 ug/ml NPM with vitamin C 0.1 mg/ml, three days"
+        exposure_agent:
+          id: "CHEBI:22652"
+          name: "ascorbic acid"
+        exposure_concentration:
+          value: "0.1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-tgfb1"
+        name: "TGF-beta1 2 ng/ml in the 3D fibrin construct, three days (positive comparator)"
+        exposure_concentration:
+          value: "2"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "OX:li2018-3dhlf-ros-modulators-output-control"
+        name: "Control 3D-HLFs - ROS fluorescence"
+        description: "Reference condition, HLF medium alone. Figure-only values; none recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:li2018-3dhlf-control"
+      - id: "OX:li2018-3dhlf-ros-modulators-output-npc20"
+        name: "NPC 20 ug/ml NPM 3D-HLFs - ROS fluorescence"
+        description: "Corona group against which the modulators were compared; ROS increased. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc20"
+      - id: "OX:li2018-3dhlf-ros-modulators-output-npc20-vc"
+        name: "NPC 20 ug/ml NPM plus vitamin C 3D-HLFs - ROS fluorescence"
+        description: "ROS generation effectively repressed relative to the corona group. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc20-vc"
+      - id: "OX:li2018-3dhlf-ros-modulators-output-tgfb1"
+        name: "TGF-beta1 2 ng/ml 3D-HLFs - ROS fluorescence"
+        description: "Positive comparator; TGF-beta1 promoted ROS. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-tgfb1"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:li2018-3dhlf-001"
+      name: "Primary human lung fibroblasts in a 3D fibrin-hydrogel organotypic culture"
+      primary_cell:
+        id: "CL:0002553"
+        name: "fibroblast of lung"
+      cell_type:
+        id: "CL:0002553"
+        name: "fibroblast of lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      substrate_type: hydrogel
+      donor_info: "Primary human lung fibroblasts, ATCC PCS-201-013"
+    follows_protocols:
+      - id: "PROTOCOL:li2018-3dculture-001"
+        name: "3D organotypic fibrin-hydrogel culture of human lung fibroblasts"
+      - id: "PROTOCOL:li2018-dcfhda-001"
+        name: "DCFH-DA fluorescence detection of intracellular ROS in 3D-cultured HLFs"
+
+  # --- GSH depletion ---
+  - id: "OX:li2018-3dhlf-gsh"
+    name: "GSH fluorescence in 3D-cultured HLFs across the NPM-protein corona dose series and with vitamin C or TGF-beta1"
+    description: "Intracellular glutathione labelled with ThioGlo-1 in 3D-cultured HLFs after three days. GSH depletion was detected in every NPM-protein corona group (5, 10 and 20 ug/ml NPM) and in the TGF-beta1 group, accompanying the ROS rise; vitamin C co-treatment suppressed the depletion. Values reported only in Fig. 6A-B with images in Fig. 6C-H; none recorded."
+    evidence:
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "GSH depletion was detected in all groups of NPM-protein corona preparations and TGF-β1"
+        explanation: "States exactly what this assay records: glutathione was depleted in every corona dose group and in the TGF-beta1 comparator."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Vitamin C effectively suppressed GSH depletion"
+        explanation: "States the antioxidant control result this assay records: vitamin C prevented the corona-driven GSH depletion."
+    has_exposure_condition:
+      - id: "EXPOSURE:li2018-3dhlf-control"
+        name: "Control, HLF medium alone in the 3D fibrin construct, three days"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc5"
+        name: "NPM-protein corona at 5 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "5"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc10"
+        name: "NPM-protein corona at 10 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc20"
+        name: "NPM-protein corona at 20 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "20"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc20-vc"
+        name: "NPM-protein corona at 20 ug/ml NPM with vitamin C 0.1 mg/ml, three days"
+        exposure_agent:
+          id: "CHEBI:22652"
+          name: "ascorbic acid"
+        exposure_concentration:
+          value: "0.1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-tgfb1"
+        name: "TGF-beta1 2 ng/ml in the 3D fibrin construct, three days (positive comparator)"
+        exposure_concentration:
+          value: "2"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "OX:li2018-3dhlf-gsh-output-control"
+        name: "Control 3D-HLFs - GSH fluorescence"
+        description: "Reference condition, HLF medium alone. Figure-only values; none recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:li2018-3dhlf-control"
+      - id: "OX:li2018-3dhlf-gsh-output-npc5"
+        name: "NPC 5 ug/ml NPM 3D-HLFs - GSH fluorescence"
+        description: "GSH depletion detected. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc5"
+      - id: "OX:li2018-3dhlf-gsh-output-npc10"
+        name: "NPC 10 ug/ml NPM 3D-HLFs - GSH fluorescence"
+        description: "GSH depletion detected. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc10"
+      - id: "OX:li2018-3dhlf-gsh-output-npc20"
+        name: "NPC 20 ug/ml NPM 3D-HLFs - GSH fluorescence"
+        description: "GSH depletion detected. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc20"
+      - id: "OX:li2018-3dhlf-gsh-output-npc20-vc"
+        name: "NPC 20 ug/ml NPM plus vitamin C 3D-HLFs - GSH fluorescence"
+        description: "GSH depletion effectively suppressed relative to the corona group. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc20-vc"
+      - id: "OX:li2018-3dhlf-gsh-output-tgfb1"
+        name: "TGF-beta1 2 ng/ml 3D-HLFs - GSH fluorescence"
+        description: "Positive comparator; GSH depletion detected. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-tgfb1"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:li2018-3dhlf-001"
+      name: "Primary human lung fibroblasts in a 3D fibrin-hydrogel organotypic culture"
+      primary_cell:
+        id: "CL:0002553"
+        name: "fibroblast of lung"
+      cell_type:
+        id: "CL:0002553"
+        name: "fibroblast of lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      substrate_type: hydrogel
+      donor_info: "Primary human lung fibroblasts, ATCC PCS-201-013"
+    follows_protocols:
+      - id: "PROTOCOL:li2018-3dculture-001"
+        name: "3D organotypic fibrin-hydrogel culture of human lung fibroblasts"
+      - id: "PROTOCOL:li2018-thioglo-001"
+        name: "ThioGlo-1 fluorescence detection of intracellular GSH in 3D-cultured HLFs"
+
+  # --- MDA: no change (REFUTE for oxidative damage) ---
+  - id: "OX:li2018-3dhlf-mda"
+    name: "Intracellular MDA in 3D-cultured HLFs across the NPM-protein corona dose series and with vitamin C or TGF-beta1"
+    description: "Malondialdehyde, a lipid peroxidation end product, measured by ELISA after three days. Despite the ROS rise and GSH depletion, the NPM-protein corona induced no MDA increase at any dose, and neither vitamin C nor TGF-beta1 changed MDA. This negative result is the basis for the authors' conclusion that the corona produces a limited ROS increase without oxidative damage. Values reported only in Fig. 7A-B; none recorded."
+    evidence:
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "The NPM-protein corona stimulated ROS generation but induced no MDA increase"
+        explanation: "Recorded as REFUTE because this measurement argues against membrane lipid-peroxidation damage as part of the oxidative stress event: MDA did not rise even though ROS did."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "Moreover, the antioxidant (vitamin C) and TGF-β1 showed no change in MDA or 8-OH-dG"
+        explanation: "The modulator arms of this assay were also flat, so no treatment in the study produced a detectable lipid peroxidation signal."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "However, ROS generation induced no oxidative damage."
+        explanation: "The authors' own reading of this and the 8-OH-dG assay: the ROS increase did not translate into oxidative damage."
+    has_exposure_condition:
+      - id: "EXPOSURE:li2018-3dhlf-control"
+        name: "Control, HLF medium alone in the 3D fibrin construct, three days"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc5"
+        name: "NPM-protein corona at 5 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "5"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc10"
+        name: "NPM-protein corona at 10 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc20"
+        name: "NPM-protein corona at 20 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "20"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc20-vc"
+        name: "NPM-protein corona at 20 ug/ml NPM with vitamin C 0.1 mg/ml, three days"
+        exposure_agent:
+          id: "CHEBI:22652"
+          name: "ascorbic acid"
+        exposure_concentration:
+          value: "0.1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-tgfb1"
+        name: "TGF-beta1 2 ng/ml in the 3D fibrin construct, three days (positive comparator)"
+        exposure_concentration:
+          value: "2"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "OX:li2018-3dhlf-mda-output-control"
+        name: "Control 3D-HLFs - intracellular MDA"
+        description: "Reference condition. Figure-only values; none recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:li2018-3dhlf-control"
+      - id: "OX:li2018-3dhlf-mda-output-npc5"
+        name: "NPC 5 ug/ml NPM 3D-HLFs - intracellular MDA"
+        description: "No MDA increase versus control. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc5"
+      - id: "OX:li2018-3dhlf-mda-output-npc10"
+        name: "NPC 10 ug/ml NPM 3D-HLFs - intracellular MDA"
+        description: "No MDA increase versus control. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc10"
+      - id: "OX:li2018-3dhlf-mda-output-npc20"
+        name: "NPC 20 ug/ml NPM 3D-HLFs - intracellular MDA"
+        description: "No MDA increase versus control even at the highest dose. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc20"
+      - id: "OX:li2018-3dhlf-mda-output-npc20-vc"
+        name: "NPC 20 ug/ml NPM plus vitamin C 3D-HLFs - intracellular MDA"
+        description: "No change in MDA. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc20-vc"
+      - id: "OX:li2018-3dhlf-mda-output-tgfb1"
+        name: "TGF-beta1 2 ng/ml 3D-HLFs - intracellular MDA"
+        description: "No change in MDA. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-tgfb1"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:li2018-3dhlf-001"
+      name: "Primary human lung fibroblasts in a 3D fibrin-hydrogel organotypic culture"
+      primary_cell:
+        id: "CL:0002553"
+        name: "fibroblast of lung"
+      cell_type:
+        id: "CL:0002553"
+        name: "fibroblast of lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      substrate_type: hydrogel
+      donor_info: "Primary human lung fibroblasts, ATCC PCS-201-013"
+    follows_protocols:
+      - id: "PROTOCOL:li2018-3dculture-001"
+        name: "3D organotypic fibrin-hydrogel culture of human lung fibroblasts"
+      - id: "PROTOCOL:li2018-elisa-001"
+        name: "ELISA quantification of MDA and 8-OHdG in 3D-cultured HLFs"
+
+  # --- 8-OH-dG: no change (REFUTE for oxidative DNA damage) ---
+  - id: "OX:li2018-3dhlf-8ohdg"
+    name: "Intracellular 8-OH-dG in 3D-cultured HLFs across the NPM-protein corona dose series and with vitamin C or TGF-beta1"
+    description: "8-hydroxydeoxyguanosine, the most commonly measured marker of oxidative DNA damage, measured by ELISA after three days. The NPM-protein corona induced no variation in 8-OH-dG at any dose, and neither vitamin C nor TGF-beta1 changed it. Values reported only in Fig. 7C-D; none recorded."
+    evidence:
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "The NPM-protein corona also induced no variation in 8-OH-dG levels in the 3D-cultured HLFs"
+        explanation: "Recorded as REFUTE because this measurement argues against oxidative DNA damage as part of the oxidative stress event: 8-OH-dG was unchanged while ROS rose."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: REFUTE
+        evidence_source: IN_VITRO
+        snippet: "Moreover, the antioxidant (vitamin C) and TGF-β1 showed no change in MDA or 8-OH-dG"
+        explanation: "The modulator arms of this assay were flat as well, so no treatment produced a detectable oxidative DNA damage signal."
+    has_exposure_condition:
+      - id: "EXPOSURE:li2018-3dhlf-control"
+        name: "Control, HLF medium alone in the 3D fibrin construct, three days"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc5"
+        name: "NPM-protein corona at 5 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "5"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc10"
+        name: "NPM-protein corona at 10 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc20"
+        name: "NPM-protein corona at 20 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "20"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc20-vc"
+        name: "NPM-protein corona at 20 ug/ml NPM with vitamin C 0.1 mg/ml, three days"
+        exposure_agent:
+          id: "CHEBI:22652"
+          name: "ascorbic acid"
+        exposure_concentration:
+          value: "0.1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-tgfb1"
+        name: "TGF-beta1 2 ng/ml in the 3D fibrin construct, three days (positive comparator)"
+        exposure_concentration:
+          value: "2"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "OX:li2018-3dhlf-8ohdg-output-control"
+        name: "Control 3D-HLFs - intracellular 8-OH-dG"
+        description: "Reference condition. Figure-only values; none recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:li2018-3dhlf-control"
+      - id: "OX:li2018-3dhlf-8ohdg-output-npc5"
+        name: "NPC 5 ug/ml NPM 3D-HLFs - intracellular 8-OH-dG"
+        description: "No variation versus control. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc5"
+      - id: "OX:li2018-3dhlf-8ohdg-output-npc10"
+        name: "NPC 10 ug/ml NPM 3D-HLFs - intracellular 8-OH-dG"
+        description: "No variation versus control. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc10"
+      - id: "OX:li2018-3dhlf-8ohdg-output-npc20"
+        name: "NPC 20 ug/ml NPM 3D-HLFs - intracellular 8-OH-dG"
+        description: "No variation versus control even at the highest dose. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc20"
+      - id: "OX:li2018-3dhlf-8ohdg-output-npc20-vc"
+        name: "NPC 20 ug/ml NPM plus vitamin C 3D-HLFs - intracellular 8-OH-dG"
+        description: "No change in 8-OH-dG. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc20-vc"
+      - id: "OX:li2018-3dhlf-8ohdg-output-tgfb1"
+        name: "TGF-beta1 2 ng/ml 3D-HLFs - intracellular 8-OH-dG"
+        description: "No change in 8-OH-dG. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-tgfb1"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:li2018-3dhlf-001"
+      name: "Primary human lung fibroblasts in a 3D fibrin-hydrogel organotypic culture"
+      primary_cell:
+        id: "CL:0002553"
+        name: "fibroblast of lung"
+      cell_type:
+        id: "CL:0002553"
+        name: "fibroblast of lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      substrate_type: hydrogel
+      donor_info: "Primary human lung fibroblasts, ATCC PCS-201-013"
+    follows_protocols:
+      - id: "PROTOCOL:li2018-3dculture-001"
+        name: "3D organotypic fibrin-hydrogel culture of human lung fibroblasts"
+      - id: "PROTOCOL:li2018-elisa-001"
+        name: "ELISA quantification of MDA and 8-OHdG in 3D-cultured HLFs"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS - alpha-SMA (ACTA2), the proliferation pathway
+# =============================================================================
+#
+# alpha-SMA is measured by immunofluorescence intensity, not by transcript
+# quantification, so gene_expression_method records the imaging method.
+# target_gene is the human ACTA2 gene (actin alpha 2, smooth muscle), the gene
+# whose product alpha-smooth muscle actin is.
+# =============================================================================
+
+gene_expression_assays:
+  # --- alpha-SMA dose series ---
+  - id: "GE:li2018-3dhlf-asma-dose"
+    name: "Alpha-SMA expression in 3D-cultured HLFs across an NPM-protein corona dose series"
+    description: "Alpha-smooth muscle actin immunofluorescence in 3D-cultured HLFs after three days of exposure to the NPM-protein corona at 5, 10 and 20 ug/ml NPM. The corona stimulated HLFs to express alpha-SMA and expression was positively correlated with the NPM exposure concentration. Alpha-SMA is a key protein of activated, not quiescent, fibroblasts and a fibrosis marker, so this is the proliferation pathway the authors propose. Fluorescence intensity reported only in Fig. 8A with images in Fig. 8F-H; no numeric value recorded."
+    target_gene: "NCBIGene:59"
+    gene_expression_method: "immunofluorescence confocal imaging with ImageJ intensity quantification"
+    normalization_reference: "untreated control group fluorescence intensity"
+    evidence:
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The results demonstrated that the NPM-protein corona stimulated HLFs to express α-SMA."
+        explanation: "States the core result this assay records: the NPM-protein corona induced alpha-SMA expression in the 3D-cultured HLFs."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "α-SMA expression was positively correlated with the NPM exposure concentration"
+        explanation: "States the dose-response this assay's three corona groups record."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "α-SMA is a key protein expressed by activated HLFs but not by quiescent fibroblasts."
+        explanation: "Establishes why alpha-SMA induction is read as fibroblast activation and therefore informs the proliferation key event."
+    has_exposure_condition:
+      - id: "EXPOSURE:li2018-3dhlf-control"
+        name: "Control, HLF medium alone in the 3D fibrin construct, three days"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc5"
+        name: "NPM-protein corona at 5 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "5"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc10"
+        name: "NPM-protein corona at 10 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc20"
+        name: "NPM-protein corona at 20 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "20"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GE:li2018-3dhlf-asma-dose-output-control"
+        name: "Control 3D-HLFs - alpha-SMA fluorescence"
+        description: "Reference condition, HLF medium alone. Figure-only values; none recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:li2018-3dhlf-control"
+      - id: "GE:li2018-3dhlf-asma-dose-output-npc5"
+        name: "NPC 5 ug/ml NPM 3D-HLFs - alpha-SMA fluorescence"
+        description: "Lowest dose; alpha-SMA raised versus control. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc5"
+      - id: "GE:li2018-3dhlf-asma-dose-output-npc10"
+        name: "NPC 10 ug/ml NPM 3D-HLFs - alpha-SMA fluorescence"
+        description: "Middle dose of the positively correlated series. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc10"
+      - id: "GE:li2018-3dhlf-asma-dose-output-npc20"
+        name: "NPC 20 ug/ml NPM 3D-HLFs - alpha-SMA fluorescence"
+        description: "Highest dose; greatest alpha-SMA expression. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc20"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-increased-proliferation"
+      name: "Increased cell proliferation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:li2018-3dhlf-001"
+      name: "Primary human lung fibroblasts in a 3D fibrin-hydrogel organotypic culture"
+      primary_cell:
+        id: "CL:0002553"
+        name: "fibroblast of lung"
+      cell_type:
+        id: "CL:0002553"
+        name: "fibroblast of lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      substrate_type: hydrogel
+      donor_info: "Primary human lung fibroblasts, ATCC PCS-201-013"
+    follows_protocols:
+      - id: "PROTOCOL:li2018-3dculture-001"
+        name: "3D organotypic fibrin-hydrogel culture of human lung fibroblasts"
+      - id: "PROTOCOL:li2018-asma-if-001"
+        name: "Alpha-SMA immunofluorescence in 3D-cultured HLFs"
+
+  # --- alpha-SMA with vitamin C and TGF-beta1 ---
+  - id: "GE:li2018-3dhlf-asma-modulators"
+    name: "Alpha-SMA expression in 3D-cultured HLFs with vitamin C or TGF-beta1"
+    description: "Alpha-SMA immunofluorescence in 3D-cultured HLFs after three days of exposure to the NPM-protein corona (20 ug/ml NPM), the same corona co-treated with vitamin C 0.1 mg/ml, or TGF-beta1 2 ng/ml. Vitamin C repressed alpha-SMA secretion, tying the induction to the ROS it also suppressed; TGF-beta1 promoted alpha-SMA, reproducing the corona effect. Values reported only in Fig. 8B with images in Fig. 8C-E; none recorded."
+    target_gene: "NCBIGene:59"
+    gene_expression_method: "immunofluorescence confocal imaging with ImageJ intensity quantification"
+    normalization_reference: "untreated control group fluorescence intensity"
+    evidence:
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Vitamin C effectively repressed the secretion of α-SMA"
+        explanation: "States the antioxidant-arm result this assay records, which is the authors' evidence that alpha-SMA induction is ROS-dependent."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "TGF-β1 promoted α-SMA expression"
+        explanation: "States the positive-comparator result this assay records: TGF-beta1 raised alpha-SMA in the same 3D system."
+    has_exposure_condition:
+      - id: "EXPOSURE:li2018-3dhlf-control"
+        name: "Control, HLF medium alone in the 3D fibrin construct, three days"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc20"
+        name: "NPM-protein corona at 20 ug/ml NPM in the 3D fibrin construct, three days"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "20"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-npc20-vc"
+        name: "NPM-protein corona at 20 ug/ml NPM with vitamin C 0.1 mg/ml, three days"
+        exposure_agent:
+          id: "CHEBI:22652"
+          name: "ascorbic acid"
+        exposure_concentration:
+          value: "0.1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:li2018-3dhlf-tgfb1"
+        name: "TGF-beta1 2 ng/ml in the 3D fibrin construct, three days (positive comparator)"
+        exposure_concentration:
+          value: "2"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "3"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GE:li2018-3dhlf-asma-modulators-output-control"
+        name: "Control 3D-HLFs - alpha-SMA fluorescence"
+        description: "Reference condition. Figure-only values; none recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:li2018-3dhlf-control"
+      - id: "GE:li2018-3dhlf-asma-modulators-output-npc20"
+        name: "NPC 20 ug/ml NPM 3D-HLFs - alpha-SMA fluorescence"
+        description: "Corona group against which the modulators were compared. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc20"
+      - id: "GE:li2018-3dhlf-asma-modulators-output-npc20-vc"
+        name: "NPC 20 ug/ml NPM plus vitamin C 3D-HLFs - alpha-SMA fluorescence"
+        description: "Alpha-SMA secretion effectively repressed relative to the corona group. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-npc20-vc"
+      - id: "GE:li2018-3dhlf-asma-modulators-output-tgfb1"
+        name: "TGF-beta1 2 ng/ml 3D-HLFs - alpha-SMA fluorescence"
+        description: "Positive comparator; TGF-beta1 promoted alpha-SMA expression. Figure-only values; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:li2018-3dhlf-tgfb1"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-increased-proliferation"
+      name: "Increased cell proliferation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:li2018-3dhlf-001"
+      name: "Primary human lung fibroblasts in a 3D fibrin-hydrogel organotypic culture"
+      primary_cell:
+        id: "CL:0002553"
+        name: "fibroblast of lung"
+      cell_type:
+        id: "CL:0002553"
+        name: "fibroblast of lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      substrate_type: hydrogel
+      donor_info: "Primary human lung fibroblasts, ATCC PCS-201-013"
+    follows_protocols:
+      - id: "PROTOCOL:li2018-3dculture-001"
+        name: "3D organotypic fibrin-hydrogel culture of human lung fibroblasts"
+      - id: "PROTOCOL:li2018-asma-if-001"
+        name: "Alpha-SMA immunofluorescence in 3D-cultured HLFs"
+
+# =============================================================================
+# KEY EVENTS
+# =============================================================================
+#
+# Both blocks are copied verbatim from origin/main (unanimous wordings; see
+# the header note). The evidence attached below is this paper's contribution.
+# =============================================================================
+
+key_events:
+  - id: "KE:mie-oxidative-stress"
+    name: "Increased oxidative stress"
+    biological_action: increased
+    level_of_biological_organization: molecular
+    evidence:
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Taken together, these results demonstrate that the NPM-protein corona is expected to result in a limited increase in ROS levels."
+        explanation: "The paper's own characterisation of the oxidative stress event it induced: a real but limited rise in ROS, accompanied by GSH depletion and no damage markers."
+
+  - id: "KE:ke-increased-proliferation"
+    name: "Increased cell proliferation"
+    biological_action: increased
+    level_of_biological_organization: cellular
+    evidence:
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The protein corona is believed to mitigate NPM cytotoxicity and further stimulate aberrant HLF proliferation."
+        explanation: "The paper's conclusion naming the proliferation event, and noting that the protein coat is what makes it possible by blunting the cytotoxicity of naked NPM."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The results demonstrated that the NPM-protein corona potentially promoted the cell growth of 3D-cultured HLFs."
+        explanation: "The MTT result establishing that proliferation increased in the exposed 3D cultures."
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS
+# =============================================================================
+#
+# One edge: the limited ROS increase drives alpha-SMA upregulation and through
+# it the aberrant HLF proliferation. The authors test this with an antioxidant
+# (vitamin C), which suppressed ROS, GSH depletion, alpha-SMA and
+# proliferation together, and with TGF-beta1, which reproduced all four. That
+# is interventional support within one model system, so evidence_support is
+# moderate rather than strong: the pathway was inferred from a single cell
+# type in vitro, the final link to fibrosis is explicitly a "may", and no
+# direct alpha-SMA knockdown was performed.
+#
+# The `description` below carries the MTT cell viabilities, which are the
+# only numbers the paper states in text for the proliferation endpoint.
+# `quantitative_understanding` is an enum and holds only the grade.
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:li2018-oxidative-stress-to-proliferation"
+    name: "Increased oxidative stress leads to increased cell proliferation in 3D-cultured human lung fibroblasts"
+    upstream_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-increased-proliferation"
+      name: "Increased cell proliferation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    description: "Dose-response by MTT after three days of exposure in the 3D fibrin construct: cell viabilities of 103%, 109% and 113% of control at NPM-protein corona concentrations of 5, 10 and 20 ug/ml NPM, with the 20 ug/ml group significant versus control at p < 0.01. The specificity controls were flat: naked NPM at 20 ug/ml gave 104% and pure serum 105%, so neither component alone reproduced the effect. Vitamin C co-treatment lowered viability relative to the 20 ug/ml corona group, and TGF-beta1 2 ng/ml reproduced the whole response. No numeric values are available for the intervening ROS or alpha-SMA steps, which are reported as fluorescence bar charts only, so the quantitative chain stops at the proliferation endpoint."
+    relationship_type: "indirectly leads to"
+    evidence_support: moderate
+    # quantitative_understanding is low (this grades the quantitation of the
+    # edge, not the strength of the evidence above): the paper quantifies only
+    # the downstream endpoint. Neither the ROS rise nor the alpha-SMA rise has
+    # a numeric value, so no response-response relationship between the two
+    # key events can be stated.
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "ROS, as signalling molecules, play an important role in mediating α-SMA upregulation."
+        explanation: "The mechanistic step joining the two key events: the ROS increase acts as a signal that upregulates alpha-SMA."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "ROS are signal molecules that stimulate cell proliferation without inducing oxidative damage."
+        explanation: "States the relationship directly, and why it is a signalling edge rather than a damage edge - the damage markers MDA and 8-OH-dG did not move."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "the addition of an antioxidant was shown to diminish the proliferation efficiency of NPM-protein corona stimulation"
+        explanation: "The interventional evidence for this edge: blocking the upstream oxidative stress with vitamin C reduced the downstream proliferation."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "This suggests that oxidative stress is associated with HLF proliferation."
+        explanation: "The authors' own statement of the relationship drawn from the antioxidant experiment."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "ROS-activated alpha-smooth muscle actin (α-SMA) is considered to be one of the proliferation pathways."
+        explanation: "The abstract's framing of the pathway, naming ROS-activated alpha-SMA as the route to proliferation."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Nanoscale airborne particles could form a protein corona in the body and initiate HLF proliferation by ROS-mediated α-SMA upregulation, which may further result in pulmonary fibrosis."
+        explanation: "The full proposed chain, including the hedged extension to pulmonary fibrosis that this extraction deliberately does not record as a key event."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Cell numbers increased in a dose-dependent manner"
+        explanation: "The dose-dependence of the downstream event, which parallels the dose-dependence of the upstream ROS rise and of alpha-SMA."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The cell viabilities were 103%, 109% and 113%, respectively."
+        explanation: "The numeric dose-response recorded in this relationship's description, for the corona at 5, 10 and 20 ug/ml NPM."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "significantly promoted an increase in HLFs"
+        explanation: "The significance of the highest corona dose versus control for the downstream proliferation event."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The cell viabilities were 105% and 104%, respectively"
+        explanation: "The specificity controls - pure serum and naked NPM - neither of which reproduced the proliferation, so the corona complex is what drives the edge."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Cell viability declined compared to that with the NPM-protein corona"
+        explanation: "The vitamin C arm of the MTT assay, the quantitative counterpart of the antioxidant evidence for this edge."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "TGF-β1 was also shown to promote HLF proliferation in the 3D model"
+        explanation: "The positive comparator closing the loop: TGF-beta1 raised ROS, depleted GSH, raised alpha-SMA and raised proliferation, matching the corona response at every step of this edge."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Based on a 3D organotypic cell culture, the protein corona was shown to mitigate NPM cytotoxicity and further stimulate the proliferation of human lung fibroblasts (HLFs)."
+        explanation: "The abstract's statement of the model system and the overall outcome this relationship describes."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Consequently, the final cell exposure concentrations of NPM were 5, 10 and 20 μg/ml."
+        explanation: "The Methods statement fixing the three corona doses used throughout; the earlier 25/50/100 ug/ml figures are pre-dilution stock concentrations, not exposures."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The cell exposure concentrations of TGF-β1 and vitamin C in the 3D systems were 2 ng/ml and 0.1 mg/ml, respectively."
+        explanation: "The Methods statement fixing the comparator and antioxidant doses recorded on the exposure conditions above."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Following exposure to the different test groups, HLFs were cultured in the 3D culture systems for three days."
+        explanation: "The Methods statement fixing the three-day exposure duration recorded on every exposure condition above."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Cells were suspended at 2 × 106 cells/ml and mixed with the NPC solutions."
+        explanation: "The seeding density of the 3D construct, recorded in the culture protocol."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Cell proliferation was measured using an MTT kit (Nanjing Jiancheng, China)."
+        explanation: "The method behind the viability percentages in this relationship's description, recorded in the MTT protocol."
+      - reference: "PMID:29386584"
+        reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "To verify the biological function of the protein corona, pure serum and NPM"
+        explanation: "Names the two specificity-control arms whose viabilities are quoted above, confirming they were run to test the corona's own contribution."

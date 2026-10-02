@@ -241,6 +241,9 @@ lung_function_assays:
       biological_action: decreased
       level_of_biological_organization: organ
     study_subject:
+      # The whole animal: lung function is measured on the living rat, with
+      # no specimen taken. The per-specimen subjects (-lung, -serum, -balf)
+      # and this one all declare the same cohort via member_of_cohort (#132).
       subject_type: InVivoSubject
       id: "SUBJECT:li-rat-copd-pm25"
       name: "PM2.5-aggravated COPD Sprague-Dawley rat"
@@ -261,6 +264,7 @@ lung_function_assays:
       disease_state: "cigarette smoke plus Klebsiella pneumoniae-induced COPD, aggravated by concentrated ambient PM2.5"
       subject_characteristics: "32 male SD rats, 6-9 weeks old, randomized into four groups (n = 8): Control, Model (PM2.5-aggravated COPD), ECC-BYF, NAC. COPD induced over 8 weeks by twice-daily cigarette smoke inhalation (30 min each) plus intranasal Klebsiella pneumoniae every five days, then 8 weeks of whole-body concentrated PM2.5 exposure."
       clinical_context: "Pulmonary function measured every fourth week to week 16 (noninvasive) and at week 17 (invasive)"
+      member_of_cohort: "SUBJECT:li-rat-copd-cohort"
     follows_protocols:
       - id: "PROTOCOL:li-pft-001"
         name: "Noninvasive and invasive pulmonary function testing in rats"
@@ -339,8 +343,8 @@ goblet_cell_assays:
       level_of_biological_organization: cellular
     study_subject:
       subject_type: InVivoSubject
-      id: "SUBJECT:li-rat-copd-pm25"
-      name: "PM2.5-aggravated COPD Sprague-Dawley rat"
+      id: "SUBJECT:li-rat-copd-pm25-lung"
+      name: "PM2.5-aggravated COPD Sprague-Dawley rat - lung tissue"
       model_species:
         id: "NCBITaxon:10116"
         name: "Rattus norvegicus"
@@ -348,7 +352,9 @@ goblet_cell_assays:
       disease_state: "cigarette smoke plus Klebsiella pneumoniae-induced COPD, aggravated by concentrated ambient PM2.5"
       sample_type: biopsy
       collection_site: "lung"
-      subject_characteristics: "n = 6-8 per group for histomorphometric analysis"
+      # "n = 6-8 per group" for histomorphometry is on PROTOCOL:li-he-001.
+      subject_characteristics: "32 male SD rats, 6-9 weeks old, randomized into four groups (n = 8): Control, Model (PM2.5-aggravated COPD), ECC-BYF, NAC. COPD induced over 8 weeks by twice-daily cigarette smoke inhalation (30 min each) plus intranasal Klebsiella pneumoniae every five days, then 8 weeks of whole-body concentrated PM2.5 exposure."
+      member_of_cohort: "SUBJECT:li-rat-copd-cohort"
     follows_protocols:
       - id: "PROTOCOL:li-he-001"
         name: "Hematoxylin-eosin staining and histomorphometry of rat lung"
@@ -448,8 +454,8 @@ oxidative_stress_assays:
       level_of_biological_organization: molecular
     study_subject:
       subject_type: InVivoSubject
-      id: "SUBJECT:li-rat-copd-pm25"
-      name: "PM2.5-aggravated COPD Sprague-Dawley rat"
+      id: "SUBJECT:li-rat-copd-pm25-serum"
+      name: "PM2.5-aggravated COPD Sprague-Dawley rat - serum"
       model_species:
         id: "NCBITaxon:10116"
         name: "Rattus norvegicus"
@@ -457,6 +463,8 @@ oxidative_stress_assays:
       disease_state: "cigarette smoke plus Klebsiella pneumoniae-induced COPD, aggravated by concentrated ambient PM2.5"
       sample_type: blood
       collection_site: "serum"
+      subject_characteristics: "32 male SD rats, 6-9 weeks old, randomized into four groups (n = 8): Control, Model (PM2.5-aggravated COPD), ECC-BYF, NAC. COPD induced over 8 weeks by twice-daily cigarette smoke inhalation (30 min each) plus intranasal Klebsiella pneumoniae every five days, then 8 weeks of whole-body concentrated PM2.5 exposure."
+      member_of_cohort: "SUBJECT:li-rat-copd-cohort"
     follows_protocols:
       - id: "PROTOCOL:li-redoxkit-001"
         name: "Colorimetric kit assays for MDA, T-SOD and GSH-Px"
@@ -551,8 +559,8 @@ oxidative_stress_assays:
       level_of_biological_organization: molecular
     study_subject:
       subject_type: InVivoSubject
-      id: "SUBJECT:li-rat-copd-pm25"
-      name: "PM2.5-aggravated COPD Sprague-Dawley rat"
+      id: "SUBJECT:li-rat-copd-pm25-balf"
+      name: "PM2.5-aggravated COPD Sprague-Dawley rat - BALF"
       model_species:
         id: "NCBITaxon:10116"
         name: "Rattus norvegicus"
@@ -560,6 +568,8 @@ oxidative_stress_assays:
       disease_state: "cigarette smoke plus Klebsiella pneumoniae-induced COPD, aggravated by concentrated ambient PM2.5"
       sample_type: balf
       collection_site: "bronchoalveolar lavage fluid"
+      subject_characteristics: "32 male SD rats, 6-9 weeks old, randomized into four groups (n = 8): Control, Model (PM2.5-aggravated COPD), ECC-BYF, NAC. COPD induced over 8 weeks by twice-daily cigarette smoke inhalation (30 min each) plus intranasal Klebsiella pneumoniae every five days, then 8 weeks of whole-body concentrated PM2.5 exposure."
+      member_of_cohort: "SUBJECT:li-rat-copd-cohort"
     follows_protocols:
       - id: "PROTOCOL:li-redoxkit-001"
         name: "Colorimetric kit assays for MDA, T-SOD and GSH-Px"
@@ -1008,8 +1018,8 @@ gene_expression_assays:
       level_of_biological_organization: molecular
     study_subject:
       subject_type: InVivoSubject
-      id: "SUBJECT:li-rat-copd-pm25"
-      name: "PM2.5-aggravated COPD Sprague-Dawley rat"
+      id: "SUBJECT:li-rat-copd-pm25-lung"
+      name: "PM2.5-aggravated COPD Sprague-Dawley rat - lung tissue"
       model_species:
         id: "NCBITaxon:10116"
         name: "Rattus norvegicus"
@@ -1017,6 +1027,8 @@ gene_expression_assays:
       disease_state: "cigarette smoke plus Klebsiella pneumoniae-induced COPD, aggravated by concentrated ambient PM2.5"
       sample_type: biopsy
       collection_site: "lung"
+      subject_characteristics: "32 male SD rats, 6-9 weeks old, randomized into four groups (n = 8): Control, Model (PM2.5-aggravated COPD), ECC-BYF, NAC. COPD induced over 8 weeks by twice-daily cigarette smoke inhalation (30 min each) plus intranasal Klebsiella pneumoniae every five days, then 8 weeks of whole-body concentrated PM2.5 exposure."
+      member_of_cohort: "SUBJECT:li-rat-copd-cohort"
     follows_protocols:
       - id: "PROTOCOL:li-wb-001"
         name: "Western blotting for Nrf2, HO-1, FOXO3a and SOD2"
@@ -1115,8 +1127,8 @@ gene_expression_assays:
       level_of_biological_organization: molecular
     study_subject:
       subject_type: InVivoSubject
-      id: "SUBJECT:li-rat-copd-pm25"
-      name: "PM2.5-aggravated COPD Sprague-Dawley rat"
+      id: "SUBJECT:li-rat-copd-pm25-lung"
+      name: "PM2.5-aggravated COPD Sprague-Dawley rat - lung tissue"
       model_species:
         id: "NCBITaxon:10116"
         name: "Rattus norvegicus"
@@ -1124,6 +1136,8 @@ gene_expression_assays:
       disease_state: "cigarette smoke plus Klebsiella pneumoniae-induced COPD, aggravated by concentrated ambient PM2.5"
       sample_type: biopsy
       collection_site: "lung"
+      subject_characteristics: "32 male SD rats, 6-9 weeks old, randomized into four groups (n = 8): Control, Model (PM2.5-aggravated COPD), ECC-BYF, NAC. COPD induced over 8 weeks by twice-daily cigarette smoke inhalation (30 min each) plus intranasal Klebsiella pneumoniae every five days, then 8 weeks of whole-body concentrated PM2.5 exposure."
+      member_of_cohort: "SUBJECT:li-rat-copd-cohort"
     follows_protocols:
       - id: "PROTOCOL:li-wb-001"
         name: "Western blotting for Nrf2, HO-1, FOXO3a and SOD2"
