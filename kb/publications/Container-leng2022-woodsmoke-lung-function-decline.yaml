@@ -611,6 +611,19 @@ lung_function_assays:
 # A consumer that needs to separate slopes from intercepts should therefore key
 # on the unit, not on compared_measurement alone.
 #
+# NON-SIGNIFICANT ESTIMATES CARRY change_direction: no_change, following the
+# intpanis2017 convention, even where the point estimate has a sign. This
+# applies to COMP:leng-ws-fvc-decline (P = 0.30), COMP:leng-ws-fvc-baseline
+# (P = 0.30) and COMP:leng-ws-fev1-decline-younger (P = 0.85). It matters more
+# than usual here: the paper's central inference is that FVC did NOT decline
+# faster ("but not of FVC") while FEV1 and FEV1/FVC ratio did — the obstructive
+# rather than restrictive pattern — and that the younger stratum showed no
+# effect ("but not in the younger group"), which establishes the age
+# modification. Recording those as "decreased" would invert both inferences
+# for any consumer reading the pooled workbook rather than these descriptions.
+# The signed point estimates remain in change_value and in the quoted
+# evidence, so nothing is lost.
+#
 # control_output and treated_output reference the two group output records
 # throughout, because this study does have a genuine two-group contrast; what
 # they do NOT mean is that change_value equals the difference between the
@@ -671,13 +684,13 @@ response_comparisons:
 
   - id: "COMP:leng-ws-fvc-decline"
     name: "Difference in annual FVC decline between ever and never wood smoke-exposed subjects (all subjects) - null"
-    description: "A NULL result, and the basis of the paper's central inference. Ever WS exposure was not associated with a steeper FVC decline: -2.4 ml/year (SE 2.4, P = 0.30) against a reference slope of -15.0 ml/year (SE 1.2, P < 0.0001). Because FEV1 and FEV1/FVC ratio declined faster while FVC did not, the authors conclude WS exposure drives an OBSTRUCTIVE pattern of lung function loss, consistent with COPD development rather than a restrictive process. Recorded with change_direction decreased because the point estimate is negative, but the confidence in a real difference is low."
+    description: "A NULL result, and the basis of the paper's central inference. Ever WS exposure was not associated with a steeper FVC decline: -2.4 ml/year (SE 2.4, P = 0.30) against a reference slope of -15.0 ml/year (SE 1.2, P < 0.0001). Because FEV1 and FEV1/FVC ratio declined faster while FVC did not, the authors conclude WS exposure drives an OBSTRUCTIVE pattern of lung function loss, consistent with COPD development rather than a restrictive process. change_direction is no_change even though the point estimate has a sign (-2.4): the estimate is not significant and the paper's own wording is \"but not of FVC\", so asserting a decrease in the machine-readable slot would invert exactly the inference this null result carries."
     derived_from_assay: "LF:leng-ws-exposed-spirometry"
     compared_measurement: "fvc"
     control_output: "LF:leng-ws-never-spirometry-output-control"
     treated_output: "LF:leng-ws-exposed-spirometry-output-exposed"
     change_type: absolute_difference
-    change_direction: decreased
+    change_direction: no_change
     change_value:
       value: "-2.4"
       unit:
@@ -742,13 +755,13 @@ response_comparisons:
 
   - id: "COMP:leng-ws-fvc-baseline"
     name: "Difference in baseline FVC between ever and never wood smoke-exposed subjects - null"
-    description: "A NULL result: ever WS exposure had no significant effect on baseline FVC, -26.1 ml (SE 25.2, P = 0.30). WS exposure main effect in the LME model. Together with the null FVC decline comparison this supports the obstructive rather than restrictive interpretation."
+    description: "A NULL result: ever WS exposure had no significant effect on baseline FVC, -26.1 ml (SE 25.2, P = 0.30). WS exposure main effect in the LME model. Together with the null FVC decline comparison this supports the obstructive rather than restrictive interpretation. change_direction is no_change even though the point estimate has a sign (-26.1), since the estimate is not significant and recording a decrease would overstate it."
     derived_from_assay: "LF:leng-ws-exposed-spirometry"
     compared_measurement: "fvc"
     control_output: "LF:leng-ws-never-spirometry-output-control"
     treated_output: "LF:leng-ws-exposed-spirometry-output-exposed"
     change_type: absolute_difference
-    change_direction: decreased
+    change_direction: no_change
     change_value:
       value: "-26.1"
       unit:
@@ -810,11 +823,11 @@ response_comparisons:
 
   - id: "COMP:leng-ws-fev1-decline-younger"
     name: "Difference in annual FEV1 decline between ever and never wood smoke-exposed subjects, baseline age under 55.9 years - null"
-    description: "A NULL result that establishes the age modification: in the younger half of the cohort (baseline age < 55.9 years) ever WS exposure had essentially no effect on FEV1 decline, -0.5 ml/s per year (SE 2.8, P = 0.85), against a reference slope of -24.4 (SE 1.5). The FEV1/FVC ratio decline was likewise null in this stratum, -0.014 (0.053) %/year, P = 0.80. Baseline deficits, by contrast, persisted in the young: FEV1 main effect -65.6 (30.7) ml/s, P = 0.033; FEV1/FVC ratio -1.666 (0.493)%, P = 0.0008."
+    description: "A NULL result that establishes the age modification: in the younger half of the cohort (baseline age < 55.9 years) ever WS exposure had essentially no effect on FEV1 decline, -0.5 ml/s per year (SE 2.8, P = 0.85), against a reference slope of -24.4 (SE 1.5). The FEV1/FVC ratio decline was likewise null in this stratum, -0.014 (0.053) %/year, P = 0.80. Baseline deficits, by contrast, persisted in the young: FEV1 main effect -65.6 (30.7) ml/s, P = 0.033; FEV1/FVC ratio -1.666 (0.493)%, P = 0.0008. change_direction is no_change even though the point estimate has a sign (-0.5): the estimate is not significant and the paper's own wording is \"but not in the younger group\", so asserting a decrease would invert the age-modification finding this null result establishes."
     derived_from_assay: "LF:leng-ws-exposed-spirometry"
     compared_measurement: "decline_rate"
     change_type: absolute_difference
-    change_direction: decreased
+    change_direction: no_change
     change_value:
       value: "-0.5"
       unit:
