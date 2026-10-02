@@ -1,0 +1,1460 @@
+# =============================================================================
+# Chen et al. (2023) - The impact of the synergistic effect of SO2 and
+# PM2.5/PM10 on obstructive lung disease in subtropical Taiwan
+# =============================================================================
+#
+# Source: Front Public Health. 2023;11:1229820
+# DOI: 10.3389/fpubh.2023.1229820
+# PMID: 37809009
+#
+# Study design (HUMAN OBSERVATIONAL — cross-sectional, population-based; not
+# in vitro, not an animal experiment):
+#   - 2,635 Taiwan Biobank (TWB) volunteers aged 30-70 with no history of
+#     cancer, linked to the Taiwan Air Quality Monitoring Database (TAQMD)
+#   - Residential address geocoded to the nearest of 74 air quality monitoring
+#     stations; each participant's exposure is the station's AVERAGE
+#     concentration over the year leading up to their survey date
+#   - Spirometry recorded in the TWB (MicroLab spirometer, Spida 5 software);
+#     obstructive lung disease defined as FEV1/FVC < 70% per ATS/ERS guidance
+#
+# IMPORTANT — WHAT THE GROUP CONTRAST ACTUALLY IS:
+#   The two groups here are defined by OUTCOME, not by assigned exposure:
+#   participants were split by their own spirometry into an obstructive
+#   impairment group (FEV1/FVC < 70%, n = 733) and a normal spirometry group
+#   (n = 1,902), and the air pollutant concentrations are MEASURED EXPOSURES
+#   that happened to differ between those two outcome groups. There is no
+#   unexposed arm and no assigned treatment anywhere in the paper. The output
+#   records below therefore use experimental_group: treated for the
+#   obstructive impairment group and control for the normal spirometry group
+#   as the nearest available coding of "case" and "comparison" — the exposure
+#   did not create the groups, the outcome did. A third output record carries
+#   the propensity-score-matched normal spirometry group (1:2 matching on age
+#   category, sex, region, smoking, drinking, BMI, BAI and BRI; n = 1,466),
+#   which is a SUBSET of the 1,902 normal-spirometry participants rather than
+#   an independent group.
+#
+# IMPORTANT — THE ONLY NUMERIC LUNG FUNCTION VALUE IS PERCENT-PREDICTED:
+#   Table 1's only spirometry row is "FEV10_PRED" — FEV1 as a percentage of
+#   its predicted value (the row's own category breakdown runs >=80%, 50-80%,
+#   30-50%, <30%, confirming it is a percentage). The paper reports NO
+#   absolute FEV1 or FVC in litres and no mean FEV1/FVC ratio, so the fev1
+#   slot below carries a PERCENT value, not a volume, and every such record
+#   says so in its name and description. The LungFunctionAssay schema
+#   anticipates this ("often reported as % of predicted baseline") and
+#   reference_dataset records that the authors never state which reference
+#   equation produced the predicted values.
+#
+# IMPORTANT — THE PM ODDS RATIOS POINT THE "WRONG" WAY, AS REPORTED:
+#   Higher SO2 was associated with obstructive impairment (adjusted OR 1.25
+#   and 1.28), but higher PM10 and PM2.5 were associated with LOWER odds
+#   (adjusted OR 0.99 and 0.97) — i.e. the obstructive group lived where SO2
+#   was higher and PM was lower. The authors explicitly flag this as contrary
+#   to most previous studies and attribute it to the SO2 x PM synergy they
+#   report: injury occurs at LOW concentrations of both pollutants together.
+#   These directions are recorded exactly as the paper reports them, with the
+#   authors' own explanation in each comparison's description; nothing has
+#   been re-signed or re-interpreted.
+#
+# Key findings recorded here:
+#   - FEV1 percent-predicted 58.42 +/- 18.31% in the obstructive impairment
+#     group vs 95.09 +/- 13.73% in the normal spirometry group (p < 0.0001)
+#   - SO2 positively correlated with PM10 (r = 0.53) and PM2.5 (r = 0.52),
+#     both p < 0.0001; PM10 and PM2.5 correlated r = 0.69, p < 0.0001
+#   - SO2 modified the PM10 (beta = 0.01, p = 0.0052) and PM2.5 (beta = 0.01,
+#     p = 0.0155) relationships with the relative risk of obstructive
+#     impairment; per-SD, beta = 0.11 and 0.09 with the same p-values. These
+#     are Table 3's CRUDE interaction terms — see the note below, because the
+#     model-adjusted interaction terms in the same rows are NOT significant
+#   - Adjusted ORs for obstructive impairment: SO2 1.25 (model 1) and 1.28
+#     (model 2); PM10 0.99; PM2.5 0.97; temperature 1.24 and 1.31; relative
+#     humidity 1.05 and 1.04; rainfall 0.08 in both models
+#   - Bivariate thin-plate smoothing splines of SO2 with PM10 (chi-square
+#     37.19) and with PM2.5 (chi-square 48.04) were associated with
+#     obstructive impairment at p < 0.0001 — the synergy result
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:37809009"
+  reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+  doi: "10.3389/fpubh.2023.1229820"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - protocol_type: SpirometryProtocol
+    id: "PROTOCOL:chen-spirometry-001"
+    name: "Taiwan Biobank spirometry with ATS/ERS FEV1/FVC < 70% definition of obstruction"
+    description: "Pulmonary function parameters including forced expiratory volume in one second (FEV1), forced vital capacity (FVC), the FEV1/FVC% ratio, the FVC-predicted value and the FEV1-predicted value were recorded in the Taiwan Biobank. Technicians used MicroLab spirometers and Spida 5 software (Micro Medical Ltd., Rochester, Kent, UK) to perform the spirometry measurements. Obstructive lung diseases including asthma, COPD and bronchiectasis were defined as patients with FEV1/FVC < 70%, according to the American Thoracic Society and European Respiratory Society guidelines. The paper does not state a reference equation for the predicted values, nor whether spirometry was pre- or post-bronchodilator."
+    spirometry_standard: "American Thoracic Society and European Respiratory Society guidelines (FEV1/FVC < 70% defines obstruction)"
+    equipment_required:
+      - "MicroLab spirometer (Micro Medical Ltd., Rochester, Kent, UK)"
+      - "Spida 5 software (Micro Medical Ltd.)"
+
+  - id: "PROTOCOL:chen-air-monitoring-001"
+    name: "Taiwan Air Quality Monitoring Database: 74-station daily ambient pollutant monitoring"
+    description: "Daily ambient pollutant concentrations came from 74 air quality monitoring stations located throughout Taiwan, as recorded by the Taiwan Air Quality Monitoring Database (TAQMD) of the Taiwan Environmental Protection Administration. Measurement methods by pollutant: PM2.5 and PM10 by beta-ray attenuation; SO2 by ultraviolet fluorescence; CO by nondispersive infrared; O3 by ultraviolet absorption; NOx by chemiluminescence. All air pollutant data are stored in the cloud every hour and are free to access, and the average concentrations of air pollutants in a selected year were obtained before analysis."
+    equipment_required:
+      - "74 Taiwan EPA air quality monitoring stations"
+      - "Beta-ray attenuation monitors (PM2.5, PM10)"
+      - "Ultraviolet fluorescence analyser (SO2)"
+
+  - id: "PROTOCOL:chen-exposure-assignment-001"
+    name: "Three-step geocoding of residential address to nearest monitoring station, one-year average exposure"
+    description: "A three-step procedure assigned each participant an exposure. First, Google geocoding determined the exact geoposition of each residential address. Second, the interpolation point between each residential address and the nearest air quality monitoring station was determined. Lastly, data from that station recorded during the year leading up to the survey date were selected and the average values of PM2.5, PM10, CO, NO, NO2, NOx, SO2 and O3 for the chosen year were calculated. The exposure metric is therefore a ONE-YEAR AVERAGE at the nearest station, not a personal measurement; the authors list this as a limitation, since personal exposure, travel exposure and indoor air quality are not captured."
+
+  - id: "PROTOCOL:chen-statistics-001"
+    name: "ANOVA, propensity score matching, multinomial logistic regression and generalized additive modelling"
+    description: "Descriptive analysis between spirometry groups used one-way ANOVA and the chi-square or Fisher's exact tests as appropriate; air pollution factors were compared between the obstructive impairment group and the normal spirometry comparison group by independent t-test. Propensity score matching (1:2) balanced baseline characteristics (age categories, sex, live region, smoking, drinking, BMI, BAI and BRI). Multinomial logistic regression estimated crude odds ratios and 95% CIs, and stepwise multinomial logistic regression calculated adjusted ORs and 95% CIs. Pearson's correlation analysis evaluated relationships between temperature, relative humidity, rainfall, PM10, PM2.5 and SO2. Because SO2 correlated with both PM2.5 and PM10, a generalized additive model (GAM) was used to fit equations and splines and to explore linear and nonlinear effects on obstructive impairment, with a semiparametric model taking temperature, relative humidity and rainfall as the linear part. All analyses used SAS version 9.4."
+
+# =============================================================================
+# LUNG FUNCTION ASSAY — Taiwan Biobank spirometry in 2,635 participants,
+# linked to one-year average residential air pollutant concentrations.
+#
+# One assay, three output records: the outcome-defined obstructive impairment
+# group, the full normal spirometry comparison group, and the
+# propensity-score-matched subset of that comparison group. Each points at the
+# COND record describing its own group's residential air, while the per-group
+# per-pollutant distributions sit on the EXPOSURE records (one agent each, as
+# ExposureCondition carries a single exposure_agent). The regression and GAM
+# results are in response_comparisons below.
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:chen-twb-spirometry"
+    name: "Taiwan Biobank spirometry (FEV1 percent-predicted) by obstructive impairment status, with one-year average residential SO2, PM10 and PM2.5"
+    description: "Cross-sectional spirometry in 2,635 Taiwan Biobank participants (mean age 49.80 +/- 10.53 years; 1,225 men (46.5%) and 1,410 women (53.5%)), each linked to the one-year average pollutant concentrations at their nearest air quality monitoring station. Participants were stratified by their own lung function into a normal spirometry control group (72.2%, 1902/2635) and an obstructive impairment group (27.8%, 733/2635, FEV1/FVC < 70%). FEV1 percent-predicted was 58.42 +/- 18.31% in the obstructive impairment group versus 95.09 +/- 13.73% in the normal spirometry group (p < 0.0001), and 95.13 +/- 13.54% in the propensity-matched normal subset (p < 0.0001). No absolute FEV1 or FVC volume and no mean FEV1/FVC ratio is reported anywhere in the paper, so the fev1 slot on each output carries a PERCENT-PREDICTED value. AFTER 1:2 propensity score matching the two groups did not differ in age, gender, smoking, alcohol consumption, anthropometric factors or comorbidities - that sentence of the paper follows its matching paragraph and describes the MATCHED comparison. In Table 1's UNMATCHED columns several of those characteristics do differ: age p = 0.0216, body adiposity index p = 0.0369, type 2 diabetes p = 0.0449 and monitoring region p < 0.0001. So the balance claim should not be read as a property of the raw 733-vs-1,902 contrast that the rest of this file uses. WHOLE-COHORT POLLUTANT LEVELS (Table 1, median (IQR) over all 2,635 observations): PM10 68.12 (17.2) ug/m3, PM2.5 37.72 (10.8) ug/m3, SO2 3.63 (1.19) ppb, CO 0.44 (0.18) ppm, NO 4.09 (3.83) ppb, NO2 14.86 (5.6) ppb, NOX 18.93 (8.71) ppb, O3 30.97 (3.85) ppb; only SO2, PM10 and PM2.5 are carried as structured exposure conditions here because the remaining pollutants play no part in the paper's models. WHOLE-COHORT METEOROLOGY (Table 1, mean (SD)): temperature 24.33 (0.75) degrees C, relative humidity 74.28 (2.45)%, rainfall 0.22 (0.05) mm/day; the obstructive group lived at higher temperature (24.41 +/- 0.84 vs 24.31 +/- 0.72 degrees C, p = 0.0016), higher relative humidity (74.51 +/- 2.37 vs 74.20 +/- 2.47%, p = 0.0028) and lower rainfall (0.21 +/- 0.05 vs 0.22 +/- 0.05 mm/day, p = 0.0039). Meteorological values are recorded here as description text only: ExposureCondition carries exposure_agent, concentration, duration and timing, with no slot for ambient temperature, humidity or rainfall, and their odds ratios are recorded in response_comparisons. 61.2% of participants (1,612 individuals) were from southern Taiwan, which the authors offer as the reason their 27.8% prevalence of obstructive impairment far exceeds Taiwan's reported 6.1% COPD and 5.1% asthma prevalence."
+    reference_dataset: "reference equation not stated by the authors; FEV1-predicted and FVC-predicted values were recorded in the Taiwan Biobank and Table 1 reports FEV1 percent-predicted (FEV10_PRED) without naming the predicted-value source"
+    evidence:
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "This cross-sectional study obtained data from the Taiwan Biobank and Taiwan Air Quality Monitoring Database. We defined obstructive lung disease as patients with FEV1/FVC < 70%."
+        explanation: "Establishes the cross-sectional design, the two linked data sources, and the FEV1/FVC < 70% criterion that defines this assay's obstructive impairment output group."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The Taiwan Biobank (TWB) is the largest biobank in Taiwan, consisting of biological samples and associated data collected from volunteers aged between 30 and 70 years old who do not have a history of cancer."
+        explanation: "States the source cohort and its eligibility (volunteers aged 30-70 with no cancer history) recorded on study_subject."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The mean age of the 2,635 enrolled participants was 49.80 ± 10.53 years. Of these participants, 1,225 (46.5%) were men, and 1,410 (53.5%) were women."
+        explanation: "States the cohort size and mean age recorded on study_subject and the sex split recorded in subject_characteristics."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The participants were stratified into two groups according to lung function test results: the control group (normal spirometry group) and chronic lung disease group (obstructive impairment). Overall, 72.2% (1902/2635) of the participants were classified into the control group, and 27.8% (733/2635) were classified into the chronic lung disease group. Propensity score matching (1:2) was performed to balance the baseline characteristics between the two groups."
+        explanation: "States that the groups were defined by the participants' own lung function test results — the outcome, not an assigned exposure — and gives the three group sizes behind this assay's output records."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The two groups were propensity-score matched (1:2) for baseline characteristics of age categories, sex, live region, Smoke, Drink, BMI, BAI and BRI. Air pollution factors were analyzed using independent t-test to compare the obstructive impairment group with the comparison group of normal spirometry."
+        explanation: "States the matching variables behind the third output record and the test used for the between-group pollutant comparisons."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Technicians used MicroLab spirometers and Spida 5 software (Micro Medical Ltd., Rochester, Kent, UK) (22) to perform spirometry measurements."
+        explanation: "Documents the spirometry equipment recorded on PROTOCOL:chen-spirometry-001."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Obstructive lung diseases including asthma, COPD, and bronchiectasis were defined as patients with FEV1/FVC < 70%, according to the American Thoracic Society and European Respiratory Society guidelines."
+        explanation: "States the diagnostic criterion and the guideline basis recorded as this protocol's spirometry_standard."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV10_PRED, mean (SD) 84.89 (22.35) 58.42 (18.31) 95.09 (13.73) <0.0001 95.13 (13.54) <0.0001"
+        explanation: "The Table 1 row giving every FEV1 percent-predicted value recorded on this assay's three output records: whole cohort 84.89 (22.35), obstructive impairment 58.42 (18.31), normal spirometry 95.09 (13.73), and the propensity-matched normal subset 95.13 (13.54), each contrast at p < 0.0001."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "There were no significant differences in age, gender, smoking, alcohol consumption, anthropometric factors and comorbidities, including hypertension, type 2 diabetes mellitus, renal failure, metabolic syndrome, and coronary artery disease between the two groups."
+        explanation: "Supports the description's statement that the outcome groups were balanced on demographics and comorbidities, which is what leaves the pollutant and meteorological contrasts as the differences between them."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "used data from 74 air quality monitoring stations located throughout Taiwan, as recorded by the TAQMD on a daily basis."
+        explanation: "States the 74-station monitoring network recorded on PROTOCOL:chen-air-monitoring-001."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "SO2 was detected by ultraviolet fluorescence method, CO was determined by nondispersive infrared method, O3 was calculated by ultraviolet absorption method, NOx was detected by chemiluminescence method."
+        explanation: "Documents the per-pollutant measurement methods on PROTOCOL:chen-air-monitoring-001, including the ultraviolet fluorescence method behind the SO2 exposure conditions."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Lastly, we selected data from the air quality monitoring station recorded during the year leading up to the survey date and calculated the average values of air pollutants including PM2.5, PM10, CO, NO, NO2, NOx, SO2, and O3 for the chosen year (21)."
+        explanation: "States the one-year averaging window recorded as exposure_duration on every pollutant exposure condition below, and the geocoded nearest-station assignment on PROTOCOL:chen-exposure-assignment-001."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "SO2 (ppb) 3.63 (1.19) 3.70 (1.39) 3.61 (1.09) 0.0809 3.57 (1.15) 0.0265"
+        explanation: "The Table 1 row giving every SO2 concentration recorded below: whole cohort 3.63 (1.19) ppb, obstructive impairment 3.70 (1.39), normal spirometry 3.61 (1.09) (p = 0.0809) and the matched normal subset 3.57 (1.15) (p = 0.0265), all as median (IQR)."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM10 (μg/m3) 68.12 (17.2) 65.72 (17.51) 69.05 (16.99) <0.0001 67.74 (17.69) 0.0113 PM2.5 (μg/m3) 37.72 (10.8) 35.88 (10.74) 38.44 (10.74) <0.0001 37.47 (11.15) 0.0014"
+        explanation: "The Table 1 rows giving every PM10 and PM2.5 concentration recorded below, all as median (IQR), and showing that both were LOWER in the obstructive impairment group than in either comparison group."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Air pollution factors, median (IQR)"
+        explanation: "The Table 1 sub-heading establishing that the pollutant values above are medians with interquartile ranges, which is the central_tendency and variability_type recorded on every pollutant exposure condition."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In Table 1, we present the average air pollution levels based on a total of 2,635 observations, indicating the following values: PM10: 68.12 μg/m3, PM 2.5: 37.72 μg/m3, SO 2: 3.63 ppb, CO: 0.44 ppm, NO: 4.09 ppb, NO2: 14.86 ppb, NOx: 18.93 ppb."
+        explanation: "The authors' own restatement of the whole-cohort pollutant levels quoted in this assay's description, including the CO, NO, NO2 and NOx values that are not carried as structured exposure conditions."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Temperature (°C) 24.33 (0.75) 24.41 (0.84) 24.31 (0.72) 0.0016 24.27 (0.75) 0.0001"
+        explanation: "The Table 1 temperature row quoted in this assay's description; temperature has no ExposureCondition slot, so it is recorded as description text with its odds ratios in response_comparisons."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Relative humidity (%) 74.28 (2.45) 74.51 (2.37) 74.20 (2.47) 0.0028 74.25 (2.49) 0.0158 Rainfall (mm/day) 0.22 (0.05) 0.21 (0.05) 0.22 (0.05) 0.0039 0.22 (0.05) 0.0001"
+        explanation: "The Table 1 relative humidity and rainfall rows quoted in this assay's description, with their between-group p-values."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Regarding meteorological factors, higher temperature, higher relative humidity, and lower rainfall were risk factors for obstructive lung disease."
+        explanation: "The authors' summary of the meteorological contrast between the outcome groups, which the temperature, humidity and rainfall odds ratios in response_comparisons quantify."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In addition, we found that exposure to SO 2 in the environment increased the impact on patients with obstructive lung disease, whereas PM2.5 and PM10 decreased the impact (Table 1)."
+        explanation: "The authors' statement of the opposing directions of the SO2 and PM contrasts recorded on this assay's exposure conditions, before adjustment."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Compared with the control group, the obstructive impairment group was associated with higher temperature, higher relative humidity, and lower rainfall, and also exposure to a higher level of SO2 and lower levels of PM2.5 and PM10."
+        explanation: "States the exposure profile of each output group: the obstructive impairment group's residential air had more SO2 and less PM2.5/PM10 than the normal spirometry group's."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Overall, 27.8% of our study population had obstructive impairment. However, a previous study estimated that the prevalence of COPD in Taiwan was around 6.1% ( 23), with a prevalence of asthma of around 5.1% ( 24)."
+        explanation: "Supports the description's note that this cohort's 27.8% prevalence of obstructive impairment greatly exceeds Taiwan's reported COPD and asthma prevalence."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "around 1,612 individuals, which accounts for 61.2% of the total, were from southern Taiwan."
+        explanation: "States the southern-Taiwan share of the cohort recorded in the description and in subject_characteristics, which the authors offer as the reason for the high prevalence."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Multinomial logistic regression was used to estimate crude odds ratios (ORs) and 95% confidence intervals (CIs). Stepwise multinomial logistic regression was used to calculate adjusted ORs and 95% CIs."
+        explanation: "Documents the regression methods recorded as statistical_test on the odds-ratio comparisons in response_comparisons, and establishes that Table 3 carries both crude and adjusted estimates."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "TABLE 3 Predicted obstructive impairment by crude and multiple logistic regression model. PM10 or PM2.5 by SO2 Model 1 Model 2 PM10 or PM2.5 by SO2 Crude OR (95%CI) P-value β (SE), P for interaction Adjusted OR (95%CI) P-value Adjusted OR (95%CI) P-value Adjusted β (SE), P for interaction"
+        explanation: "Table 3's title and full column order, which is load-bearing for reading the interaction coefficients correctly: the 'β (SE), P for interaction' column sits inside the CRUDE block, immediately after the crude OR and its p-value and BEFORE the model 1 and model 2 adjusted OR columns, while a separate 'Adjusted β (SE), P for interaction' column closes the table. The crude and adjusted interaction terms are recorded as separate response_comparisons on this basis."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM10 (μg/m3) 0.99 (0.99– 0.999) 0.0115 0.01 (0.00), 0.0052 0.99 (0.98–0.99) <0.0001 0.00 (0.00), 0.3423"
+        explanation: "The Table 3 PM10 row, read against the column order above: crude OR 0.99 (0.99-0.999) p = 0.0115, CRUDE interaction beta 0.01 (0.00) p = 0.0052, model 1 adjusted OR 0.99 (0.98-0.99) p < 0.0001, and ADJUSTED interaction beta 0.00 (0.00) p = 0.3423 - the non-significant adjusted term recorded in COMP:chen-so2-pm10-interaction-adjusted. Note Table 3 prints p < 0.0001 for the adjusted OR where the Results text says p < 0.001."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM2.5 (μg/m3) 0.99 (0.98– 0.99) 0.0015 0.01 (0.00), 0.0155 0.97 (0.96–0.98) <0.0001 0.05 (0.05), 0.3423"
+        explanation: "The Table 3 PM2.5 row: crude OR 0.99 (0.98-0.99) p = 0.0015, CRUDE interaction beta 0.01 (0.00) p = 0.0155, model 2 adjusted OR 0.97 (0.96-0.98) p < 0.0001, and ADJUSTED interaction beta 0.05 (0.05) p = 0.3423."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "SO2 (ppb) 1.08 (1.01– 1.16) 0.0268 1.25 (1.14–1.36) <0.0001 1.28 (1.17–1.39) <0.0001"
+        explanation: "The Table 3 SO2 row: crude OR 1.08 (1.01-1.16) p = 0.0268, then the model 1 and model 2 adjusted ORs 1.25 (1.14-1.36) and 1.28 (1.17-1.39), both p < 0.0001 in the table where the Results text says p < 0.001. SO2 has no interaction cell of its own because it is the modifier in the SO2 x PM terms."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM10 (μg/m3) 0.90 (0.82– 0.98) 0.0115 0.11 (0.04), 0.0052 0.79 (0.71–0.88) <0.0001 −0.00 (0.00), 0.5086"
+        explanation: "The Table 3 'Per SD increasing' PM10 row: crude per-SD OR 0.90 (0.82-0.98), CRUDE per-SD interaction beta 0.11 (0.04) p = 0.0052, model 1 adjusted per-SD OR 0.79 (0.71-0.88) p < 0.0001, and ADJUSTED per-SD interaction beta -0.00 (0.00) p = 0.5086 - negative and non-significant, as recorded in COMP:chen-so2-pm10-interaction-persd-adjusted."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM2.5 (μg/m3) 0.87 (0.80– 0.95) 0.0015 0.09 (0.04), 0.0155 0.73 (0.65–0.81) <0.0001 −0.03 (0.04), 0.5086"
+        explanation: "The Table 3 'Per SD increasing' PM2.5 row: crude per-SD OR 0.87 (0.80-0.95), CRUDE per-SD interaction beta 0.09 (0.04) p = 0.0155, model 2 adjusted per-SD OR 0.73 (0.65-0.81) p < 0.0001, and ADJUSTED per-SD interaction beta -0.03 (0.04) p = 0.5086."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "SO2 (ppb) 1.10 (1.01– 1.20) 0.0268 1.30 (1.17–1.44) <0.0001 1.34 (1.21–1.48) <0.0001"
+        explanation: "The Table 3 'Per SD increasing' SO2 row, giving the crude per-SD OR 1.10 (1.01-1.20) and the model 1 and model 2 adjusted per-SD ORs 1.30 (1.17-1.44) and 1.34 (1.21-1.48) recorded in COMP:chen-so2-persd-or-model1 and COMP:chen-so2-persd-or-model2."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Pearson’s correlation analysis was used to evaluate the relationships between variables (temperature, relative humidity, rainfall, PM10, PM2.5, and SO2)."
+        explanation: "Documents the correlation method behind the SO2-PM10, SO2-PM2.5 and PM10-PM2.5 correlation coefficients quoted on this assay and in the key event relationship below."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "SO2 was positively correlated with PM10 and PM2.5, with correlation coefficients of 0.53 (p < 0.0001) and 0.52 (p < 0.0001), respectively."
+        explanation: "States the SO2-PM correlations that motivated the generalized additive modelling of their joint effect, the paper's central analysis."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In addition, PM10 and PM2.5 were also positively correlated (correlation coefficient = 0.69, p < 0.0001)."
+        explanation: "States the PM10-PM2.5 correlation, which is why the paper fits PM10 and PM2.5 in separate models (model 1 and model 2) rather than together."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Finally, because the participant’s residential address was used as the air pollutant exposure point, we did not include all factors affecting lung function, such as personal exposure, travel exposure, and indoor air quality. This may have led to underestimation of the risk of lung function impairment and the association with obstructive lung disease."
+        explanation: "The authors' own limitation on the exposure metric recorded on PROTOCOL:chen-exposure-assignment-001: a nearest-station annual average stands in for personal exposure."
+    has_exposure_condition:
+      # --- Per-group residential air conditions that the output records point at ---
+      - id: "COND:chen-residential-air-obstructive"
+        name: "Residential ambient air of the obstructive impairment group (n = 733): one-year average SO2 3.70 ppb, PM10 65.72 ug/m3, PM2.5 35.88 ug/m3, all median (IQR)"
+        exposure_agent:
+          id: "ENVO:00002005"
+          name: "air"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "COND:chen-residential-air-normal"
+        name: "Residential ambient air of the full normal spirometry comparison group (n = 1,902): one-year average SO2 3.61 ppb, PM10 69.05 ug/m3, PM2.5 38.44 ug/m3, all median (IQR)"
+        exposure_agent:
+          id: "ENVO:00002005"
+          name: "air"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "COND:chen-residential-air-normal-matched"
+        name: "Residential ambient air of the propensity-score-matched normal spirometry subset (n = 1,466, a subset of the 1,902): one-year average SO2 3.57 ppb, PM10 67.74 ug/m3, PM2.5 37.47 ug/m3, all median (IQR)"
+        exposure_agent:
+          id: "ENVO:00002005"
+          name: "air"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      # --- Per-pollutant, per-group distributions (ExposureCondition carries one agent) ---
+      - id: "EXPOSURE:chen-so2-obstructive"
+        name: "One-year average residential SO2, obstructive impairment group (numerically higher than both comparison groups, but significantly so only against the propensity-matched subset: p = 0.0265 matched vs p = 0.0809 against the full normal group)"
+        exposure_agent:
+          id: "CHEBI:18422"
+          name: "sulfur dioxide"
+        exposure_concentration:
+          value: "3.70"
+          unit:
+            id: "UO:0000170"
+            name: "parts per billion"
+          central_tendency: median
+          sample_size: 733
+          variability:
+            variability_type: interquartile_range
+            value: "1.39"
+            unit:
+              id: "UO:0000170"
+              name: "parts per billion"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:chen-so2-normal"
+        name: "One-year average residential SO2, full normal spirometry comparison group"
+        exposure_agent:
+          id: "CHEBI:18422"
+          name: "sulfur dioxide"
+        exposure_concentration:
+          value: "3.61"
+          unit:
+            id: "UO:0000170"
+            name: "parts per billion"
+          central_tendency: median
+          sample_size: 1902
+          variability:
+            variability_type: interquartile_range
+            value: "1.09"
+            unit:
+              id: "UO:0000170"
+              name: "parts per billion"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:chen-so2-normal-matched"
+        name: "One-year average residential SO2, propensity-score-matched normal spirometry subset"
+        exposure_agent:
+          id: "CHEBI:18422"
+          name: "sulfur dioxide"
+        exposure_concentration:
+          value: "3.57"
+          unit:
+            id: "UO:0000170"
+            name: "parts per billion"
+          central_tendency: median
+          sample_size: 1466
+          variability:
+            variability_type: interquartile_range
+            value: "1.15"
+            unit:
+              id: "UO:0000170"
+              name: "parts per billion"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:chen-pm10-obstructive"
+        name: "One-year average residential PM10, obstructive impairment group (LOWER than both comparison groups, p < 0.0001 and p = 0.0113)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "65.72"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          sample_size: 733
+          variability:
+            variability_type: interquartile_range
+            value: "17.51"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:chen-pm10-normal"
+        name: "One-year average residential PM10, full normal spirometry comparison group"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "69.05"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          sample_size: 1902
+          variability:
+            variability_type: interquartile_range
+            value: "16.99"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:chen-pm10-normal-matched"
+        name: "One-year average residential PM10, propensity-score-matched normal spirometry subset"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "67.74"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          sample_size: 1466
+          variability:
+            variability_type: interquartile_range
+            value: "17.69"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:chen-pm25-obstructive"
+        name: "One-year average residential PM2.5, obstructive impairment group (LOWER than both comparison groups, p < 0.0001 and p = 0.0014)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "35.88"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          sample_size: 733
+          variability:
+            variability_type: interquartile_range
+            value: "10.74"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:chen-pm25-normal"
+        name: "One-year average residential PM2.5, full normal spirometry comparison group"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "38.44"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          sample_size: 1902
+          variability:
+            variability_type: interquartile_range
+            value: "10.74"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:chen-pm25-normal-matched"
+        name: "One-year average residential PM2.5, propensity-score-matched normal spirometry subset"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "37.47"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          sample_size: 1466
+          variability:
+            variability_type: interquartile_range
+            value: "11.15"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    has_specified_output:
+      - id: "LF:chen-twb-spirometry-output-obstructive"
+        name: "FEV1 percent-predicted in the obstructive impairment group (FEV1/FVC < 70%, n = 733)"
+        description: "FEV1 as a PERCENTAGE OF ITS PREDICTED VALUE, not a volume: 58.42 +/- 18.31% in the 733 participants whose own spirometry put them below the FEV1/FVC < 70% threshold. This group is the paper's case group; experimental_group is treated as the nearest available coding of 'case', but note that the group was defined by this outcome rather than by an assigned exposure, and measured_under points at the group's residential air rather than at any assigned dose. Within this group FEV1 percent-predicted was >=80% in 80 participants (10.9%), 50-80% in 408 (55.7%), 30-50% in 200 (27.3%) and <30% in 45 (6.1%)."
+        experimental_group: treated
+        measured_under: "COND:chen-residential-air-obstructive"
+        evidence:
+          - reference: "PMID:37809009"
+            reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "FEV10_PRED, mean (SD) 84.89 (22.35) 58.42 (18.31) 95.09 (13.73) <0.0001 95.13 (13.54) <0.0001 ≥80% 1747 (66.3) 80 (10.9) 1,667 (87.6) 1,291 (88.1) 50–80% 639 (24.3) 408 (55.7) 231 (12.1) 171 (11.7) 30–50% 204 (7.7) 200 (27.3) 4 (0.2) 4 (0.3) <30% 45 (1.7) 45 (6.1) 0 (0.0) <0.0001 0 (0.0) <0.0001"
+            explanation: "States this group's FEV1 percent-predicted mean and SD (58.42 (18.31), the second column) and the severity distribution quoted in this record's description; the row's own category breakdown in percentages confirms FEV10_PRED is a percent-predicted measure rather than a volume."
+        fev1:
+          value: "58.42"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 733
+          variability:
+            variability_type: standard_deviation
+            value: "18.31"
+            unit:
+              id: "UO:0000187"
+              name: "percent"
+      - id: "LF:chen-twb-spirometry-output-normal"
+        name: "FEV1 percent-predicted in the full normal spirometry comparison group (n = 1,902)"
+        description: "FEV1 as a PERCENTAGE OF ITS PREDICTED VALUE, not a volume: 95.09 +/- 13.73% in the 1,902 participants with normal spirometry, the paper's control group (72.2% of the cohort). Within this group FEV1 percent-predicted was >=80% in 1,667 participants (87.6%), 50-80% in 231 (12.1%), 30-50% in 4 (0.2%) and <30% in none."
+        experimental_group: control
+        measured_under: "COND:chen-residential-air-normal"
+        evidence:
+          - reference: "PMID:37809009"
+            reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "FEV10_PRED, mean (SD) 84.89 (22.35) 58.42 (18.31) 95.09 (13.73) <0.0001 95.13 (13.54) <0.0001"
+            explanation: "States this group's FEV1 percent-predicted mean and SD (95.09 (13.73), the third column) and the p < 0.0001 for its contrast with the obstructive impairment group."
+          - reference: "PMID:37809009"
+            reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "Overall, 72.2% (1902/2635) of the participants were classified into the control group"
+            explanation: "States this group's size and that the authors themselves call it the control group, which is why experimental_group is control."
+        fev1:
+          value: "95.09"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 1902
+          variability:
+            variability_type: standard_deviation
+            value: "13.73"
+            unit:
+              id: "UO:0000187"
+              name: "percent"
+      - id: "LF:chen-twb-spirometry-output-normal-matched"
+        name: "FEV1 percent-predicted in the propensity-score-matched normal spirometry subset (n = 1,466)"
+        description: "FEV1 as a PERCENTAGE OF ITS PREDICTED VALUE, not a volume: 95.13 +/- 13.54% in the 1,466 normal-spirometry participants retained after 1:2 propensity score matching on age category, sex, region of residence, smoking, drinking, BMI, BAI and BRI. This record is a SUBSET of LF:chen-twb-spirometry-output-normal, not an independent group, and is recorded separately because the paper's between-group pollutant p-values differ between the matched and unmatched comparisons (for SO2, p = 0.0265 matched vs p = 0.0809 unmatched)."
+        experimental_group: control
+        measured_under: "COND:chen-residential-air-normal-matched"
+        evidence:
+          - reference: "PMID:37809009"
+            reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "FEV10_PRED, mean (SD) 84.89 (22.35) 58.42 (18.31) 95.09 (13.73) <0.0001 95.13 (13.54) <0.0001"
+            explanation: "States this subset's FEV1 percent-predicted mean and SD (95.13 (13.54), the matched-comparison column) and the p < 0.0001 for its contrast with the obstructive impairment group."
+          - reference: "PMID:37809009"
+            reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "The two groups were propensity-score matched (1:2) for baseline characteristics of age categories, sex, live region, Smoke, Drink, BMI, BAI and BRI."
+            explanation: "States the matching scheme and covariates that define this subset."
+        fev1:
+          value: "95.13"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 1466
+          variability:
+            variability_type: standard_deviation
+            value: "13.54"
+            unit:
+              id: "UO:0000187"
+              name: "percent"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:chen-twb-participants"
+      name: "Taiwan Biobank volunteers linked to the Taiwan Air Quality Monitoring Database"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "49.80"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: mean
+        sample_size: 2635
+        variability:
+          variability_type: standard_deviation
+          value: "10.53"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      disease_state: "mixed: 733 of 2,635 participants (27.8%) had obstructive impairment (FEV1/FVC < 70%, covering asthma, COPD and bronchiectasis); the remaining 1,902 (72.2%) had normal spirometry"
+      subject_characteristics: "2,635 Taiwan Biobank volunteers aged 30-70 with no history of cancer: 1,225 men (46.5%) and 1,410 women (53.5%), mean age 49.80 +/- 10.53 years. By monitoring region, 494 (18.7%) northern, 529 (20.1%) central and 1,612 (61.2%) southern Taiwan. 1,917 (72.8%) never smokers and 718 (27.2%) current or former smokers; 2,371 (90.0%) no or occasional alcohol consumption and 264 (10.0%) current or quit. Mean height 162.94 +/- 8.25 cm, weight 64.38 +/- 12.05 kg, BMI 24.14 +/- 3.4 kg/m2, body adiposity index 28.5 +/- 3.88, body roundness index 3.71 +/- 1.11. Comorbidities: hypertension 275 (10.4%), type 2 diabetes 120 (4.6%), renal failure 4 (0.2%), metabolic syndrome 475 (18.0%), coronary artery disease 27 (1.0%). Each participant provided informed consent and underwent a face-to-face interview, physical examination, blood sampling and a lifestyle questionnaire. The Taiwan Biobank holds no information on occupational exposure to toxic substances, which the authors list as a limitation."
+      clinical_context: "Cross-sectional, population-based study linking the Taiwan Biobank to the Taiwan Air Quality Monitoring Database; exposure assigned from the nearest of 74 monitoring stations as the average concentration over the year leading up to each participant's survey date. Because the design is cross-sectional, the authors state that further prospective studies are needed to elucidate causal effects."
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:chen-spirometry-001"
+        name: "Taiwan Biobank spirometry with ATS/ERS FEV1/FVC < 70% definition of obstruction"
+        spirometry_standard: "American Thoracic Society and European Respiratory Society guidelines (FEV1/FVC < 70% defines obstruction)"
+      - id: "PROTOCOL:chen-air-monitoring-001"
+        name: "Taiwan Air Quality Monitoring Database: 74-station daily ambient pollutant monitoring"
+      - id: "PROTOCOL:chen-exposure-assignment-001"
+        name: "Three-step geocoding of residential address to nearest monitoring station, one-year average exposure"
+      - id: "PROTOCOL:chen-statistics-001"
+        name: "ANOVA, propensity score matching, multinomial logistic regression and generalized additive modelling"
+
+# =============================================================================
+# RESPONSE COMPARISONS — the paper's reported regression and interaction
+# estimates.
+#
+# MODELLING NOTE: every record below is an estimate the paper states, with
+# derivation: reported_in_paper. Two kinds appear:
+#
+#   1. ODDS RATIOS for obstructive impairment, from stepwise multinomial
+#      logistic regression (model 1 carries PM10, model 2 carries PM2.5;
+#      PM10 and PM2.5 correlate at r = 0.69 so they are never fitted
+#      together). change_type is ratio and change_value is dimensionless.
+#      compared_measurement is "fev1_fvc_ratio" because the modelled outcome
+#      is obstructive impairment DICHOTOMIZED from that ratio at 70% — the
+#      odds ratio is not a change in the ratio itself, and each description
+#      says so. control_output and treated_output are omitted throughout:
+#      these are coefficients on continuous exposures across the whole
+#      cohort, not contrasts between the two output records, so no pair of
+#      records exists for them to point at.
+#
+#   2. INTERACTION COEFFICIENTS beta (SE) with their p for interaction,
+#      testing whether SO2 modifies the PM10 or PM2.5 relationship with the
+#      relative risk of obstructive impairment. These are log-odds-scale
+#      coefficients, so change_type is absolute_difference with a
+#      dimensionless unit, and change_direction reflects the sign of beta,
+#      not a direction of lung function change.
+#
+# READING TABLE 3'S COLUMNS CORRECTLY — this matters for the interaction
+# terms. Table 3's column order is:
+#
+#   Crude OR (95%CI) | P-value | beta (SE), P for interaction
+#     || Model 1 Adjusted OR | P || Model 2 Adjusted OR | P
+#     || Adjusted beta (SE), P for interaction
+#
+# So the "beta (SE), P for interaction" column the paper headlines in its
+# abstract sits inside the CRUDE block, BEFORE the model 1 and model 2
+# adjusted OR columns — it is an unadjusted interaction term, not a model 1
+# estimate. A separate "Adjusted beta (SE), P for interaction" column closes
+# the table. Both are recorded below, as separate comparisons:
+#
+#   term            crude beta (SE), p        adjusted beta (SE), p
+#   SO2 x PM10      0.01 (0.00), 0.0052       0.00 (0.00), 0.3423
+#   SO2 x PM2.5     0.01 (0.00), 0.0155       0.05 (0.05), 0.3423
+#   per-SD PM10     0.11 (0.04), 0.0052      -0.00 (0.00), 0.5086
+#   per-SD PM2.5    0.09 (0.04), 0.0155      -0.03 (0.04), 0.5086
+#
+# ALL FOUR ADJUSTED INTERACTION TERMS ARE NON-SIGNIFICANT, and the two
+# per-SD ones change sign. Keeping only the significant crude terms — which
+# is what the abstract and Results text discuss — would make this file read
+# as stronger synergy evidence than Table 3 shows, so the adjusted terms are
+# recorded alongside them. The paper never comments on the discrepancy. The
+# synergy claim in the abstract and Conclusion rests on the crude interaction
+# terms and on Table 4's bivariate thin-plate smoothing splines (chi-square
+# 37.19 for SO2 x PM10 and 48.04 for SO2 x PM2.5, both p < 0.0001), not on
+# the adjusted interaction coefficients.
+#
+# Table 3's crude main-effect ORs for the three pollutants are recorded too,
+# so the crude interaction terms sit beside the crude main effects they
+# belong with.
+#
+# A p-value printed only as a threshold (p < 0.001, p < 0.0001) cannot go in
+# the float p_value slot, so p_value is omitted for those records and the
+# threshold is stated in the description instead. Note that the Results text
+# and Table 3 disagree on these thresholds for several adjusted ORs (text
+# p < 0.001, table p < 0.0001); the affected descriptions say so.
+# =============================================================================
+
+response_comparisons:
+  # --- FEV1 percent-predicted, case group vs comparison groups ---
+  - id: "COMP:chen-fev1pred-obstructive-vs-normal"
+    name: "FEV1 percent-predicted, obstructive impairment group vs full normal spirometry group"
+    description: "FEV1 percent-predicted was 58.42 +/- 18.31% in the obstructive impairment group versus 95.09 +/- 13.73% in the normal spirometry group, reported at p < 0.0001 (Table 1, one-way ANOVA). The paper prints only the two group values and the threshold p, never a difference, percent change or ratio, so change_value is omitted rather than computed. The p-value is a threshold, not an exact value, so p_value is omitted too. Note the direction of this contrast is the definition of the groups, not a treatment effect: participants were assigned to groups by their own spirometry."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1"
+    control_output: "LF:chen-twb-spirometry-output-normal"
+    treated_output: "LF:chen-twb-spirometry-output-obstructive"
+    change_type: absolute_difference
+    change_direction: decreased
+    statistical_test: "one-way ANOVA between spirometry groups (Table 1), reported as p < 0.0001"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-fev1pred-obstructive-vs-normal-matched"
+    name: "FEV1 percent-predicted, obstructive impairment group vs propensity-score-matched normal spirometry subset"
+    description: "FEV1 percent-predicted was 58.42 +/- 18.31% in the obstructive impairment group versus 95.13 +/- 13.54% in the 1:2 propensity-score-matched normal spirometry subset, again at p < 0.0001 (Table 1). Matching on age category, sex, region, smoking, drinking, BMI, BAI and BRI barely moved the comparison group's value (95.09% unmatched to 95.13% matched), which is what the authors use to argue the spirometry contrast is not driven by those baseline characteristics. change_value and p_value are omitted for the same reasons as the unmatched comparison."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1"
+    control_output: "LF:chen-twb-spirometry-output-normal-matched"
+    treated_output: "LF:chen-twb-spirometry-output-obstructive"
+    change_type: absolute_difference
+    change_direction: decreased
+    statistical_test: "one-way ANOVA between spirometry groups after 1:2 propensity score matching (Table 1), reported as p < 0.0001"
+    derivation: reported_in_paper
+
+  # --- Model 1 adjusted odds ratios (PM10 model) ---
+  - id: "COMP:chen-so2-or-model1"
+    name: "Adjusted odds ratio for obstructive impairment per ppb SO2, model 1 (with PM10)"
+    description: "SO2 was an independent predictive factor for obstructive impairment in model 1: adjusted OR 1.25 (95% CI 1.14-1.36), reported as p < 0.001 in the Results text and as p < 0.0001 in Table 3 - the paper is internally inconsistent here, and either way the value is a threshold rather than an exact p, so p_value is omitted. This is the paper's headline SO2 result — higher SO2 at the residence, higher odds of obstructive impairment. The outcome is obstructive impairment dichotomized from FEV1/FVC at 70%, not a change in the FEV1/FVC ratio itself."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: increased
+    change_value:
+      value: "1.25"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "1.14"
+        upper_bound: "1.36"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    statistical_test: "stepwise multinomial logistic regression, model 1 (adjusted OR per ppb SO2, fitted with PM10)"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-pm10-or-model1"
+    name: "Adjusted odds ratio for obstructive impairment per ug/m3 PM10, model 1"
+    description: "PM10 was an independent predictive factor in model 1 with an adjusted OR BELOW one: 0.99 (95% CI 0.98-0.99), reported as p < 0.001 in the Results text and as p < 0.0001 in Table 3 - the paper is internally inconsistent here, and either way the value is a threshold rather than an exact p, so p_value is omitted. Higher PM10 at the residence went with LOWER odds of obstructive impairment, the opposite of most previous studies. The authors do not treat this as PM10 being protective: they attribute it to the SO2 x PM synergy they report, under which injury occurs at low concentrations of both pollutants together, and state that their finding 'is contrast to most of previous studies'. Recorded exactly as reported."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: decreased
+    change_value:
+      value: "0.99"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "0.98"
+        upper_bound: "0.99"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    statistical_test: "stepwise multinomial logistic regression, model 1 (adjusted OR per ug/m3 PM10)"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-temperature-or-model1"
+    name: "Adjusted odds ratio for obstructive impairment per degree C, model 1"
+    description: "Temperature was an independent predictive factor in model 1: adjusted OR 1.24 (95% CI 1.09-1.41), p = 0.0009. Higher ambient temperature at the residence went with higher odds of obstructive impairment. The authors read this through a previous Taiwanese finding of a V/U-shaped temperature-pollutant relationship, in which 24.3-24.9 degrees C corresponds to the lowest pollutant exposure, so temperature may act partly by shifting pollutant exposure."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: increased
+    change_value:
+      value: "1.24"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "1.09"
+        upper_bound: "1.41"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    p_value: 0.0009
+    statistical_test: "stepwise multinomial logistic regression, model 1 (adjusted OR per degree Celsius)"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-humidity-or-model1"
+    name: "Adjusted odds ratio for obstructive impairment per percent relative humidity, model 1"
+    description: "Relative humidity was an independent predictive factor in model 1: adjusted OR 1.05 (95% CI 1.01-1.10), p = 0.0160. The authors' proposed mechanism is that high relative humidity limits evaporative cooling by perspiration, creating physiological stress that leads to respiratory dysfunction, and that high temperature with high humidity can trigger bronchoconstriction."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: increased
+    change_value:
+      value: "1.05"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "1.01"
+        upper_bound: "1.10"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    p_value: 0.016
+    statistical_test: "stepwise multinomial logistic regression, model 1 (adjusted OR per percent relative humidity)"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-rainfall-or-model1"
+    name: "Adjusted odds ratio for obstructive impairment per mm/day rainfall, model 1"
+    description: "Rainfall was an independent predictive factor in model 1 with an adjusted OR far below one: 0.08 (95% CI 0.01-0.68), p = 0.0202. More rainfall went with much lower odds of obstructive impairment. Note the scale: Table 1 reports rainfall as mean (SD) 0.22 (0.05) mm/day, so an OR expressed per whole mm/day is about 4.5 times the cohort mean and roughly 20 cohort standard deviations - far outside the observed range, and not a per-SD effect. The authors attribute the direction to precipitation scavenging, citing a washout effect that reduces particle numbers during rainfall."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: decreased
+    change_value:
+      value: "0.08"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "0.01"
+        upper_bound: "0.68"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    p_value: 0.0202
+    statistical_test: "stepwise multinomial logistic regression, model 1 (adjusted OR per mm/day rainfall)"
+    derivation: reported_in_paper
+
+  # --- Model 2 adjusted odds ratios (PM2.5 model) ---
+  - id: "COMP:chen-so2-or-model2"
+    name: "Adjusted odds ratio for obstructive impairment per ppb SO2, model 2 (with PM2.5)"
+    description: "SO2 was an independent predictive factor in model 2 as well: adjusted OR 1.28 (95% CI 1.17-1.39), reported as p < 0.001 in the Results text and as p < 0.0001 in Table 3 - the paper is internally inconsistent here, and either way the value is a threshold rather than an exact p, so p_value is omitted. The SO2 estimate is stable across the two models (1.25 with PM10, 1.28 with PM2.5), which is the paper's basis for calling SO2 the pollutant strongly associated with obstructive lung disease."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: increased
+    change_value:
+      value: "1.28"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "1.17"
+        upper_bound: "1.39"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    statistical_test: "stepwise multinomial logistic regression, model 2 (adjusted OR per ppb SO2, fitted with PM2.5)"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-pm25-or-model2"
+    name: "Adjusted odds ratio for obstructive impairment per ug/m3 PM2.5, model 2"
+    description: "PM2.5 was an independent predictive factor in model 2 with an adjusted OR below one: 0.97 (95% CI 0.96-0.98), reported as p < 0.001 in the Results text and as p < 0.0001 in Table 3 - the paper is internally inconsistent here, and either way the value is a threshold rather than an exact p, so p_value is omitted. As with PM10 in model 1, higher PM2.5 went with LOWER odds of obstructive impairment, which the authors attribute to the SO2 x PM synergy rather than to any protective effect of PM2.5. Recorded exactly as reported."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: decreased
+    change_value:
+      value: "0.97"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "0.96"
+        upper_bound: "0.98"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    statistical_test: "stepwise multinomial logistic regression, model 2 (adjusted OR per ug/m3 PM2.5)"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-temperature-or-model2"
+    name: "Adjusted odds ratio for obstructive impairment per degree C, model 2"
+    description: "Temperature in model 2: adjusted OR 1.31 (95% CI 1.15-1.49), reported as p < 0.001 in the Results text and as p < 0.0001 in Table 3 - the paper is internally inconsistent here, and either way the value is a threshold rather than an exact p, so p_value is omitted - slightly stronger than the 1.24 of model 1."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: increased
+    change_value:
+      value: "1.31"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "1.15"
+        upper_bound: "1.49"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    statistical_test: "stepwise multinomial logistic regression, model 2 (adjusted OR per degree Celsius)"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-humidity-or-model2"
+    name: "Adjusted odds ratio for obstructive impairment per percent relative humidity, model 2"
+    description: "Relative humidity in model 2: adjusted OR 1.04 (95% CI 1.00-1.09), p = 0.0372. The lower confidence bound sits at 1.00 as printed, so this is the weakest of the meteorological associations."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: increased
+    change_value:
+      value: "1.04"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "1.00"
+        upper_bound: "1.09"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    p_value: 0.0372
+    statistical_test: "stepwise multinomial logistic regression, model 2 (adjusted OR per percent relative humidity)"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-rainfall-or-model2"
+    name: "Adjusted odds ratio for obstructive impairment per mm/day rainfall, model 2"
+    description: "Rainfall in model 2: adjusted OR 0.08 (95% CI 0.01-0.67), p = 0.0197 - essentially identical to model 1's 0.08 (0.01-0.68). The same scale caveat applies: cohort rainfall is 0.22 (0.05) mm/day as mean (SD), so an OR per whole mm/day spans roughly 20 cohort standard deviations and sits far outside the observed range."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: decreased
+    change_value:
+      value: "0.08"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "0.01"
+        upper_bound: "0.67"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    p_value: 0.0197
+    statistical_test: "stepwise multinomial logistic regression, model 2 (adjusted OR per mm/day rainfall)"
+    derivation: reported_in_paper
+
+  # --- Per-SD adjusted odds ratios (Table 3, "Per SD increasing" block) ---
+  - id: "COMP:chen-so2-persd-or-model1"
+    name: "Adjusted odds ratio for obstructive impairment per SD increase in SO2, model 1"
+    description: "Per standard deviation increase in SO2, the model 1 adjusted OR was 1.30 (95% CI 1.17-1.44), reported at p < 0.0001 (so p_value is omitted). The per-SD scaling makes the SO2 effect directly comparable with the per-SD PM estimates: SO2 1.30 up versus PM10 0.79 down."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: increased
+    change_value:
+      value: "1.30"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "1.17"
+        upper_bound: "1.44"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    statistical_test: "stepwise multinomial logistic regression, model 1, adjusted OR per standard deviation increase in SO2"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-so2-persd-or-model2"
+    name: "Adjusted odds ratio for obstructive impairment per SD increase in SO2, model 2"
+    description: "Per standard deviation increase in SO2, the model 2 adjusted OR was 1.34 (95% CI 1.21-1.48), reported at p < 0.0001 (so p_value is omitted) - the largest SO2 estimate in the paper."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: increased
+    change_value:
+      value: "1.34"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "1.21"
+        upper_bound: "1.48"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    statistical_test: "stepwise multinomial logistic regression, model 2, adjusted OR per standard deviation increase in SO2"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-pm10-persd-or-model1"
+    name: "Adjusted odds ratio for obstructive impairment per SD increase in PM10, model 1"
+    description: "Per standard deviation increase in PM10, the model 1 adjusted OR was 0.79 (95% CI 0.71-0.88), reported at p < 0.0001 (so p_value is omitted). On the per-SD scale the inverse PM10 association is much larger than the per-ug/m3 OR of 0.99 makes it look, because one SD of PM10 spans many ug/m3. The paper never reports pollutant standard deviations - Table 1 gives PM10 as median (IQR) 68.12 (17.2) ug/m3 - so the SD behind this rescaling is not stated; back-calculating from the two ORs puts it somewhere in the high teens to low twenties ug/m3 depending on how much the 0.99 is rounded."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: decreased
+    change_value:
+      value: "0.79"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "0.71"
+        upper_bound: "0.88"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    statistical_test: "stepwise multinomial logistic regression, model 1, adjusted OR per standard deviation increase in PM10"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-pm25-persd-or-model2"
+    name: "Adjusted odds ratio for obstructive impairment per SD increase in PM2.5, model 2"
+    description: "Per standard deviation increase in PM2.5, the model 2 adjusted OR was 0.73 (95% CI 0.65-0.81), reported at p < 0.0001 (so p_value is omitted) - the strongest of the inverse PM associations on the per-SD scale."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: decreased
+    change_value:
+      value: "0.73"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "0.65"
+        upper_bound: "0.81"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    statistical_test: "stepwise multinomial logistic regression, model 2, adjusted OR per standard deviation increase in PM2.5"
+    derivation: reported_in_paper
+
+  # --- SO2 x PM interaction coefficients: the paper's synergy result.
+  #     CRUDE (unadjusted) terms first, then their model-adjusted
+  #     counterparts, which are NOT significant. See the section note.
+  - id: "COMP:chen-so2-pm10-interaction"
+    name: "SO2 x PM10 crude (unadjusted) interaction coefficient for the relative risk of obstructive impairment"
+    description: "SO2 modified the relationship of PM10 with the relative risk of obstructive impairment: interaction beta = 0.01 with SE 0.00, p for interaction = 0.0052. This is the CRUDE, UNADJUSTED interaction term: in Table 3 the 'beta (SE), P for interaction' column sits inside the crude block, immediately after the crude OR and its p-value, and before the model 1 and model 2 adjusted OR columns. The model-adjusted counterpart from the same table row is recorded separately in COMP:chen-so2-pm10-interaction-adjusted and is NOT significant (beta = 0.00, SE 0.00, p = 0.3423). The paper headlines this crude term in its abstract and Results text, which is why it is recorded, but it should not be read as an adjusted effect. The value is a coefficient on the log-odds scale for the SO2 x PM10 product term, not a change in any lung function measurement, and its positive sign means the PM10 association strengthens as SO2 rises. change_type is absolute_difference with a dimensionless unit because that is what a regression coefficient is; change_direction reflects the sign of beta only."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: absolute_difference
+    change_direction: increased
+    change_value:
+      value: "0.01"
+      unit:
+        id: "UCUM:1"
+        name: "log-odds regression coefficient (dimensionless)"
+      variability:
+        variability_type: standard_error
+        value: "0.00"
+        unit:
+          id: "UCUM:1"
+          name: "log-odds regression coefficient (dimensionless)"
+    p_value: 0.0052
+    statistical_test: "multinomial logistic regression CRUDE (unadjusted) interaction term (SO2 x PM10), beta with standard error and p for interaction, from Table 3's crude block"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-so2-pm25-interaction"
+    name: "SO2 x PM2.5 crude (unadjusted) interaction coefficient for the relative risk of obstructive impairment"
+    description: "SO2 also modified the relationship of PM2.5 with the relative risk of obstructive impairment: interaction beta = 0.01 with SE 0.00, p for interaction = 0.0155. As with the SO2 x PM10 term, this is the CRUDE, UNADJUSTED interaction from Table 3's crude block, not a model estimate - and note that PM2.5 is the model 2 pollutant, so labelling it 'model 1' would be wrong twice over. The model-adjusted counterpart is recorded in COMP:chen-so2-pm25-interaction-adjusted and is NOT significant (beta = 0.05, SE 0.05, p = 0.3423). Same log-odds scale and caveats as the SO2 x PM10 interaction above."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: absolute_difference
+    change_direction: increased
+    change_value:
+      value: "0.01"
+      unit:
+        id: "UCUM:1"
+        name: "log-odds regression coefficient (dimensionless)"
+      variability:
+        variability_type: standard_error
+        value: "0.00"
+        unit:
+          id: "UCUM:1"
+          name: "log-odds regression coefficient (dimensionless)"
+    p_value: 0.0155
+    statistical_test: "multinomial logistic regression CRUDE (unadjusted) interaction term (SO2 x PM2.5), beta with standard error and p for interaction, from Table 3's crude block"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-so2-pm10-interaction-persd"
+    name: "SO2 x PM10 crude (unadjusted) interaction coefficient, per SD increase"
+    description: "On the per standard deviation scale the same CRUDE SO2 x PM10 interaction has beta = 0.11 with SE 0.04 and the same p for interaction = 0.0052 (Table 3, 'Per SD increasing' block, crude column). The p-value is identical to the per-unit version because rescaling an exposure does not change the test; only the coefficient's size does. The model-adjusted per-SD counterpart is recorded in COMP:chen-so2-pm10-interaction-persd-adjusted and is NOT significant (beta = -0.00, SE 0.00, p = 0.5086)."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: absolute_difference
+    change_direction: increased
+    change_value:
+      value: "0.11"
+      unit:
+        id: "UCUM:1"
+        name: "log-odds regression coefficient (dimensionless)"
+      variability:
+        variability_type: standard_error
+        value: "0.04"
+        unit:
+          id: "UCUM:1"
+          name: "log-odds regression coefficient (dimensionless)"
+    p_value: 0.0052
+    statistical_test: "multinomial logistic regression CRUDE (unadjusted) interaction term (SO2 x PM10) per standard deviation increase, beta with standard error and p for interaction, from Table 3's crude column"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-so2-pm25-interaction-persd"
+    name: "SO2 x PM2.5 crude (unadjusted) interaction coefficient, per SD increase"
+    description: "On the per standard deviation scale the CRUDE SO2 x PM2.5 interaction has beta = 0.09 with SE 0.04 and the same p for interaction = 0.0155 (Table 3, 'Per SD increasing' block, crude column). The model-adjusted per-SD counterpart is recorded in COMP:chen-so2-pm25-interaction-persd-adjusted and is NOT significant (beta = -0.03, SE 0.04, p = 0.5086)."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: absolute_difference
+    change_direction: increased
+    change_value:
+      value: "0.09"
+      unit:
+        id: "UCUM:1"
+        name: "log-odds regression coefficient (dimensionless)"
+      variability:
+        variability_type: standard_error
+        value: "0.04"
+        unit:
+          id: "UCUM:1"
+          name: "log-odds regression coefficient (dimensionless)"
+    p_value: 0.0155
+    statistical_test: "multinomial logistic regression CRUDE (unadjusted) interaction term (SO2 x PM2.5) per standard deviation increase, beta with standard error and p for interaction, from Table 3's crude column"
+    derivation: reported_in_paper
+
+  # --- The MODEL-ADJUSTED counterparts of the four interaction terms above.
+  #     All four are NON-SIGNIFICANT. They are recorded because omitting them
+  #     while keeping the significant crude terms would make this file read as
+  #     stronger synergy evidence than Table 3 actually shows: the interaction
+  #     that survives adjustment for temperature, relative humidity and
+  #     rainfall does not reach significance on either the per-unit or the
+  #     per-SD scale. The paper itself never discusses these adjusted terms.
+  - id: "COMP:chen-so2-pm10-interaction-adjusted"
+    name: "SO2 x PM10 model-adjusted interaction coefficient for the relative risk of obstructive impairment"
+    description: "The model-adjusted SO2 x PM10 interaction from Table 3's rightmost column ('Adjusted beta (SE), P for interaction'): beta = 0.00 with SE 0.00, p for interaction = 0.3423 - NOT significant. Compare the crude term in COMP:chen-so2-pm10-interaction (beta = 0.01, p = 0.0052), which the paper headlines in its abstract. The synergy claim in the abstract and Conclusion therefore rests on the crude interaction term and on the bivariate thin-plate smoothing splines of Table 4 (both p < 0.0001), not on this adjusted interaction coefficient. The paper does not comment on the discrepancy. change_direction is recorded as no_change because the coefficient is 0.00 as printed and its p-value is far from significance."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: absolute_difference
+    change_direction: no_change
+    change_value:
+      value: "0.00"
+      unit:
+        id: "UCUM:1"
+        name: "log-odds regression coefficient (dimensionless)"
+      variability:
+        variability_type: standard_error
+        value: "0.00"
+        unit:
+          id: "UCUM:1"
+          name: "log-odds regression coefficient (dimensionless)"
+    p_value: 0.3423
+    statistical_test: "multinomial logistic regression ADJUSTED interaction term (SO2 x PM10), beta with standard error and p for interaction, from Table 3's adjusted interaction column"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-so2-pm25-interaction-adjusted"
+    name: "SO2 x PM2.5 model-adjusted interaction coefficient for the relative risk of obstructive impairment"
+    description: "The model-adjusted SO2 x PM2.5 interaction from Table 3's rightmost column: beta = 0.05 with SE 0.05, p for interaction = 0.3423 - NOT significant, and with a standard error equal to the coefficient itself. Compare the crude term in COMP:chen-so2-pm25-interaction (beta = 0.01, p = 0.0155). Table 3 prints the same p-value (0.3423) for both the PM10 and PM2.5 adjusted interaction terms."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: absolute_difference
+    change_direction: no_change
+    change_value:
+      value: "0.05"
+      unit:
+        id: "UCUM:1"
+        name: "log-odds regression coefficient (dimensionless)"
+      variability:
+        variability_type: standard_error
+        value: "0.05"
+        unit:
+          id: "UCUM:1"
+          name: "log-odds regression coefficient (dimensionless)"
+    p_value: 0.3423
+    statistical_test: "multinomial logistic regression ADJUSTED interaction term (SO2 x PM2.5), beta with standard error and p for interaction, from Table 3's adjusted interaction column"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-so2-pm10-interaction-persd-adjusted"
+    name: "SO2 x PM10 model-adjusted interaction coefficient, per SD increase"
+    description: "The model-adjusted per-SD SO2 x PM10 interaction from Table 3's 'Per SD increasing' block: beta = -0.00 with SE 0.00, p for interaction = 0.5086 - NOT significant, and NEGATIVE as printed (the paper writes it with a minus sign, which is why change_value carries -0.00 rather than 0.00). Compare the crude per-SD term in COMP:chen-so2-pm10-interaction-persd (beta = 0.11, p = 0.0052): adjustment reverses the sign and removes the significance."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: absolute_difference
+    change_direction: no_change
+    change_value:
+      value: "-0.00"
+      unit:
+        id: "UCUM:1"
+        name: "log-odds regression coefficient (dimensionless)"
+      variability:
+        variability_type: standard_error
+        value: "0.00"
+        unit:
+          id: "UCUM:1"
+          name: "log-odds regression coefficient (dimensionless)"
+    p_value: 0.5086
+    statistical_test: "multinomial logistic regression ADJUSTED interaction term (SO2 x PM10) per standard deviation increase, beta with standard error and p for interaction"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-so2-pm25-interaction-persd-adjusted"
+    name: "SO2 x PM2.5 model-adjusted interaction coefficient, per SD increase"
+    description: "The model-adjusted per-SD SO2 x PM2.5 interaction from Table 3's 'Per SD increasing' block: beta = -0.03 with SE 0.04, p for interaction = 0.5086 - NOT significant and negative. Compare the crude per-SD term in COMP:chen-so2-pm25-interaction-persd (beta = 0.09, p = 0.0155): as with PM10, adjustment reverses the sign and removes the significance. Table 3 prints the same p-value (0.5086) for both per-SD adjusted interaction terms."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: absolute_difference
+    change_direction: no_change
+    change_value:
+      value: "-0.03"
+      unit:
+        id: "UCUM:1"
+        name: "log-odds regression coefficient (dimensionless)"
+      variability:
+        variability_type: standard_error
+        value: "0.04"
+        unit:
+          id: "UCUM:1"
+          name: "log-odds regression coefficient (dimensionless)"
+    p_value: 0.5086
+    statistical_test: "multinomial logistic regression ADJUSTED interaction term (SO2 x PM2.5) per standard deviation increase, beta with standard error and p for interaction"
+    derivation: reported_in_paper
+
+  # --- Crude (unadjusted) ORs for the three pollutants, from Table 3's crude
+  #     block. Recorded so the crude interaction terms above sit beside the
+  #     crude main effects they belong with.
+  - id: "COMP:chen-so2-or-crude"
+    name: "Crude odds ratio for obstructive impairment per ppb SO2"
+    description: "Before adjustment, SO2 carried a crude OR of 1.08 (95% CI 1.01-1.16), p = 0.0268 - in the same direction as the adjusted estimates (1.25 and 1.28) but much weaker, so adjustment for temperature, relative humidity and rainfall strengthens the SO2 association considerably."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: increased
+    change_value:
+      value: "1.08"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "1.01"
+        upper_bound: "1.16"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    p_value: 0.0268
+    statistical_test: "multinomial logistic regression, crude (unadjusted) OR per ppb SO2"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-pm10-or-crude"
+    name: "Crude odds ratio for obstructive impairment per ug/m3 PM10"
+    description: "Crude OR for PM10 0.99 (95% CI 0.99-0.999), p = 0.0115 - the inverse PM association is present before adjustment as well as after it (model 1 adjusted OR 0.99, 95% CI 0.98-0.99). Note the asymmetric upper bound printed as 0.999 in Table 3."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: decreased
+    change_value:
+      value: "0.99"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "0.99"
+        upper_bound: "0.999"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    p_value: 0.0115
+    statistical_test: "multinomial logistic regression, crude (unadjusted) OR per ug/m3 PM10"
+    derivation: reported_in_paper
+
+  - id: "COMP:chen-pm25-or-crude"
+    name: "Crude odds ratio for obstructive impairment per ug/m3 PM2.5"
+    description: "Crude OR for PM2.5 0.99 (95% CI 0.98-0.99), p = 0.0015 - again inverse before adjustment, and strengthened by adjustment (model 2 adjusted OR 0.97, 95% CI 0.96-0.98)."
+    derived_from_assay: "LF:chen-twb-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: decreased
+    change_value:
+      value: "0.99"
+      unit:
+        id: "UCUM:1"
+        name: "odds ratio (dimensionless)"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "0.98"
+        upper_bound: "0.99"
+        unit:
+          id: "UCUM:1"
+          name: "odds ratio (dimensionless)"
+    p_value: 0.0015
+    statistical_test: "multinomial logistic regression, crude (unadjusted) OR per ug/m3 PM2.5"
+    derivation: reported_in_paper
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS
+#
+# The KeyEvent blocks below are copied verbatim from the wordings already on
+# main: "Increased oxidative stress" (KE:mie-oxidative-stress, 55 occurrences,
+# unanimous) and "Decreased lung function" (KE:ao-decreased-lung-function,
+# 32 occurrences, unanimous). Neither was re-authored here.
+#
+# EVIDENCE STRENGTH: weak, and deliberately so. This paper measures no
+# oxidative stress marker of its own — not one. The oxidative stress limb of
+# this relationship is the authors' PROPOSED MECHANISM in the Discussion,
+# resting on cited work (SO2 causing oxidative stress and DNA damage; Yun et
+# al.'s finding that PM10 and SO2 together induce reactive oxygen species and
+# NF-kB activation at low concentrations). What this paper contributes is the
+# epidemiological other end: residential SO2, and the SO2 x PM interaction,
+# associated with obstructive impairment in 2,635 people. The relationship is
+# recorded because the authors explicitly draw it, with its provenance stated
+# rather than glossed.
+#
+# And note how narrow that epidemiological end is. The SO2 main effect is
+# solid (adjusted OR 1.25 and 1.28, both models). The INTERACTION, which is
+# the paper's title claim, is significant only in Table 3's crude column;
+# every model-adjusted interaction term is non-significant (see the response
+# comparisons note above). What survives adjustment is Table 4's bivariate
+# thin-plate smoothing splines, quoted below. So the synergy limb of this
+# relationship rests on the GAM spline result, not on an adjusted interaction
+# coefficient — another reason evidence_support is weak rather than moderate.
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:chen-oxidative-stress-to-lung-function"
+    name: "Increased oxidative stress is associated with decreased lung function"
+    description: "The authors' proposed mechanism linking their epidemiological findings to lung injury: SO2 exposure affects the respiratory tract and causes oxidative stress and DNA damage that further damages the lungs, and the SO2 x PM synergy they report is attributed, citing Yun et al., to PM10 and SO2 jointly inducing reactive oxygen species production and NF-kB activation at low concentrations of both. This paper measures no oxidative stress marker itself; the oxidative stress limb comes entirely from cited literature in the Discussion, while the decreased lung function limb is this paper's own cross-sectional association (adjusted OR for obstructive impairment 1.25 and 1.28 per ppb SO2). The design is cross-sectional, so the authors state that prospective studies are needed to elucidate causal effects."
+    upstream_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    relationship_type: "associated with"
+    evidence_support: weak
+    evidence:
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Exposure to SO2 has been shown to affect the respiratory tract and cause oxidative stress and DNA damage, which would further damage the lungs ( 39)."
+        explanation: "The authors' statement of the oxidative stress mechanism connecting SO2 exposure to lung damage. It cites reference 39 rather than any measurement in this paper, which is why evidence_support is weak."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "That is because, we found that there was a synergistic effect between SO2 and PM2.5/PM10. Yun et al. found that synergistic injury in terms of cell survival and apoptosis occurred under low concentrations of PM10 and SO2 (15). The proposed mechanism was that PM10 and SO2 synergistic induced cytotoxicity of radical oxygen species production and nuclear factor kappa B (NF-κB) activation (15, 50)."
+        explanation: "States the reactive-oxygen-species mechanism the authors propose for their SO2 x PM synergy, and makes explicit that it is Yun et al.'s in vitro finding rather than a measurement in this study."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The GAM (Figure 1) showed that obstructive impairment was associated with a quadratic pattern for SO2 (per SD) and PM10 (per SD) in model 1, and a quadratic pattern for SO2 (per SD) but not PM2.5 (per SD) in model 2. We also found that the bivariate thin-plate smoothing spline in models 1 and 2 were significantly associated with obstructive impairment (p < 0.0001) (Table 4)."
+        explanation: "This paper's own contribution to the downstream limb: the generalized additive model result establishing that the joint SO2-PM surface, not either pollutant alone, is what tracks obstructive impairment."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Spline2(SO2 per SD, PM10 per SD) 4.00 37.19 37.19 <0.0001"
+        explanation: "The Table 4 row giving the bivariate thin-plate smoothing spline statistic for SO2 with PM10 (DF 4.00, chi-square 37.19, p < 0.0001), the quantitative form of the synergy claim."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Spline2 (SO2 per SD, PM2.5 per SD) 4.00 48.04 48.04 <0.0001"
+        explanation: "The Table 4 row giving the bivariate thin-plate smoothing spline statistic for SO2 with PM2.5 (DF 4.00, chi-square 48.04, p < 0.0001)."
+      - reference: "PMID:37809009"
+        reference_title: "The impact of the synergistic effect of SO(2) and PM(2.5)/PM(10) on obstructive lung disease in subtropical Taiwan."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "CONCLUSION: Our study showed high temperature, humidity, and low rainfall increased the risk of obstructive lung disease. Synergistic effects were observed among temperature, SO2, and PM2.5/PM10. The impact of air pollutants on obstructive lung disease should consider these interactions."
+        explanation: "The authors' own conclusion, which is the claim this relationship records: the joint action of SO2, PM and meteorology on obstructive lung disease."
