@@ -587,13 +587,30 @@ lung_function_assays:
 # effects regression coefficient printed in the paper (Table 2 unless stated
 # otherwise), not a difference between the output records' unadjusted group
 # means. Two kinds appear:
-#   - DECLINE comparisons (compared_measurement: decline_rate) carry the
-#     WS exposure x time-in-cohort INTERACTION coefficient: the difference in
-#     annual slope between the groups. The never-exposed group's own slope is
-#     recorded as decline_rate on the control output.
-#   - BASELINE comparisons (compared_measurement: fev1 / fvc /
-#     fev1_fvc_ratio) carry the WS exposure MAIN effect: the difference in the
-#     modelled intercept, i.e. baseline lung function.
+#   - DECLINE comparisons carry the WS exposure x time-in-cohort INTERACTION
+#     coefficient: the difference in annual slope between the groups. The
+#     never-exposed group's own FEV1 slope is recorded as decline_rate on the
+#     control output.
+#   - BASELINE comparisons carry the WS exposure MAIN effect: the difference
+#     in the modelled intercept, i.e. baseline lung function.
+#
+# HOW compared_measurement IS SET, AND WHY IT IS NOT UNIFORM. The schema's only
+# slope slot, decline_rate, is FEV1-specific ("longitudinal decline rate in
+# mL/year"), so only the FEV1 decline comparisons can point at it
+# (COMP:leng-ws-fev1-decline, -decline-older, -decline-younger,
+# -decline-age-interaction, -decline-excl-lung-cancer). The FVC and FEV1/FVC
+# ratio decline comparisons have no slope slot to name, so they point at the
+# measurand slot (fvc, fev1_fvc_ratio) that their baseline siblings also use.
+# That is deliberate, not an oversight, and it does NOT collapse the two kinds
+# together: within each measurand the slope and the intercept stay
+# machine-distinguishable by the unit on change_value, because a slope carries
+# a per-year unit and an intercept does not --
+#   FVC:       decline UCUM:mL/a   vs  baseline UCUM:mL
+#   FEV1/FVC:  decline UCUM:%/a    vs  baseline UO:0000187 (percent)
+#   FEV1:      decline UCUM:mL/s/a vs  baseline UCUM:mL/s
+# A consumer that needs to separate slopes from intercepts should therefore key
+# on the unit, not on compared_measurement alone.
+#
 # control_output and treated_output reference the two group output records
 # throughout, because this study does have a genuine two-group contrast; what
 # they do NOT mean is that change_value equals the difference between the
@@ -606,7 +623,7 @@ lung_function_assays:
 response_comparisons:
   - id: "COMP:leng-ws-fev1-decline"
     name: "Difference in annual FEV1 decline between ever and never wood smoke-exposed subjects (all subjects)"
-    description: "The headline result: ever WS exposure was associated with an additional FEV1 decline of 4.3 ml/s per year (SE 1.9, P = 0.025) on top of the -24.2 ml/s per year seen without WS exposure. This is the WS exposure x time-in-cohort interaction coefficient from the LME model over all 2372 subjects, not a difference between the two groups' baseline means. Table 3 shows the estimate is robust to further adjustment: -4.1 (1.9) adding current smoking x years, -4.3 (1.9) adding airway obstruction x years, -4.0 (1.9) adding CMH x years, and -3.7 (1.9) with all three (P = 0.050), i.e. less than a 15% reduction in magnitude."
+    description: "The headline result: ever WS exposure was associated with an additional FEV1 decline of 4.3 ml/s per year (SE 1.9, P = 0.025) on top of the -24.2 ml/s per year seen without WS exposure. This is the WS exposure x time-in-cohort interaction coefficient from the LME model over all 2372 subjects, not a difference between the two groups' baseline means. Table 3 shows the estimate is robust to further adjustment: -4.1 (1.9) adding current smoking x years, -4.3 (1.9) adding airway obstruction x years, -4.0 (1.9) adding CMH x years, and -3.7 (1.9) with all three (P = 0.050), i.e. less than a 15% reduction in magnitude. SLOT NOTE: compared_measurement names decline_rate, but the treated_output referenced here deliberately carries no decline_rate value - the paper prints only this slope DIFFERENCE for the exposed group, never that group's own slope, and computing one is out of scope. The control_output does carry decline_rate (-24.2 ml/s per year), which is the slope this difference is relative to. See the section note above and the header's modelling notes."
     derived_from_assay: "LF:leng-ws-exposed-spirometry"
     compared_measurement: "decline_rate"
     control_output: "LF:leng-ws-never-spirometry-output-control"
@@ -702,7 +719,7 @@ response_comparisons:
 
   - id: "COMP:leng-ws-ratio-baseline"
     name: "Difference in baseline FEV1/FVC ratio between ever and never wood smoke-exposed subjects"
-    description: "Ever WS exposure was associated with a 1.792 percentage point lower baseline FEV1/FVC ratio (SE 0.430, P < 0.0001 - below the float p_value slot's reach, so the bound is stated here rather than recorded). WS exposure main effect in the LME model. As with baseline FEV1, this adjusted deficit is larger and far more significant than the unadjusted group comparison on the output records (72.3 vs 73.4%, P = 0.024), and the authors note it held regardless of age group."
+    description: "Ever WS exposure was associated with a 1.792 percentage point lower baseline FEV1/FVC ratio (SE 0.430, P < 0.0001 - below the float p_value slot's reach, so the bound is stated here rather than recorded). WS exposure main effect in the LME model. UNIT NOTE: the value is a difference in percentage POINTS, recorded with UO:0000187 \"percent\" because SOMA has no percentage-point unit; the same reading applies to the other ratio coefficients in this file. As with baseline FEV1, this adjusted deficit is larger and far more significant than the unadjusted group comparison on the output records (72.3 vs 73.4%, P = 0.024), and the authors note it held regardless of age group."
     derived_from_assay: "LF:leng-ws-exposed-spirometry"
     compared_measurement: "fev1_fvc_ratio"
     control_output: "LF:leng-ws-never-spirometry-output-control"
@@ -815,7 +832,7 @@ response_comparisons:
 
   - id: "COMP:leng-ws-fev1-decline-age-interaction"
     name: "Three-way interaction of wood smoke exposure, baseline age and time in cohort on FEV1 decline"
-    description: "The formal test of age modification, run across the whole cohort rather than in strata: the three-way interaction among WS exposure (yes versus no), baseline age (per year) and time in cohort (per year) on FEV1 was -8.0 ml/s (P = 0.038), meaning the WS-associated excess FEV1 decline grows with age at entry. The companion FEV1/FVC ratio three-way interaction was -0.184% (P = 0.017), while FVC again showed nothing (-2.4 ml/s, P = 0.61). No standard error is printed for these three-way estimates, so no variability is recorded."
+    description: "The formal test of age modification, run across the whole cohort rather than in strata: the three-way interaction among WS exposure (yes versus no), baseline age (per year) and time in cohort (per year) on FEV1 was -8.0 ml/s (P = 0.038), meaning the WS-associated excess FEV1 decline grows with age at entry. The companion FEV1/FVC ratio three-way interaction was -0.184% (P = 0.017), while FVC again showed nothing (-2.4 ml/s, P = 0.61). No standard error is printed for these three-way estimates, so no variability is recorded. UNIT CAVEAT: the paper prints this coefficient as bare \"ml/s\" and that is what is recorded, but dimensionally a WS x baseline-age x time interaction is ml/s per year of follow-up per year of baseline age. The printed unit is kept rather than constructed, so read this value with its description rather than from the unit alone."
     derived_from_assay: "LF:leng-ws-exposed-spirometry"
     compared_measurement: "decline_rate"
     change_type: absolute_difference
