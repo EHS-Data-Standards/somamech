@@ -1,0 +1,932 @@
+# =============================================================================
+# Amoabeng Nti et al. (2020) - Effect of Particulate Matter Exposure on
+# Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana
+# =============================================================================
+#
+# Source: Int J Environ Res Public Health. 2020;17(9):3042
+# DOI: 10.3390/ijerph17093042
+# PMID: 32349371
+#
+# Study design (HUMAN OBSERVATIONAL — longitudinal occupational cohort, not in
+# vitro, not an animal experiment):
+#   - Longitudinal cohort study with repeated measures among 207 male
+#     participants: 142 healthy informal e-waste workers at the Agbogbloshie
+#     scrapyard (Accra, Ghana) and 65 control participants from Madina Zongo,
+#     a suburb more than 10 km from the e-waste site, 2017-2018
+#   - Internal inconsistency in the source on the number of measurement
+#     rounds: the abstract says "three repeated measures" while the Methods
+#     describe "four rounds of repeated exposure and health outcome
+#     measurements" (March 2017 to November 2018) with three follow-ups after
+#     round 1. Recorded as described in the Methods.
+#   - Internal inconsistency on control recruitment: the study-area section
+#     says 64 male residents of Madina Zongo were selected as the control
+#     population, the recruitment section says 51 controls were recruited at
+#     round 1 plus 14 replacements at round 2 (= 65), and the abstract says
+#     65 control participants. The abstract total (65) is used as the control
+#     sample size.
+#   - Breathing-zone PM2.5 and PM10 measured with a personal MetOne Aerocet
+#     831 particle mass profiler worn in a backpack for a 4-h period of the
+#     work shift (2 h during the harmattan season); the coarse fraction
+#     (PM2.5-10) was derived as the difference between PM10 and PM2.5
+#   - Spirometry (FVC, FEV1, FEV1/FVC, PEF, FEF25-75) with a portable EasyOne
+#     spirometer per American Thoracic Society guidelines, expressed as
+#     predicted z-scores per the NHANES III equation
+#   - Data collection aligned to the dry, rainy and harmattan seasons;
+#     effects of PM on lung function estimated with random-effects models
+#     with random slope terms, controlling for age, education, job category,
+#     height, cigarette smoking status, location and seasonal variation
+#
+# MODELLING NOTES:
+#   - Each participant group is its own assay with its own InVivoSubject (the
+#     isara2016/calderon2001 pattern): the e-waste worker and Madina Zongo
+#     control cohorts differ in age, education and smoking, so merging them
+#     under one study_subject would lose which group a record describes.
+#   - PM concentrations: the paper calls these values "median/IQR
+#     concentrations" and prints them as "median ± value" (e.g. "69.86 ±
+#     36.33"); they are recorded here as central_tendency: median with
+#     variability_type: interquartile_range, as printed. Per-fraction,
+#     per-season breathing-zone concentrations are modelled as separate
+#     ExposureCondition entries on each group's assay; the spirometry output
+#     records point at an umbrella occupational/ambient condition because the
+#     measurement was made under the whole exposure, not under any single PM
+#     fraction (the intpanis2017 pattern).
+#   - Suspect prints recorded with caveats rather than silently corrected:
+#     e-waste harmattan PM2.5 "70.69 ± 4825" (IQR implausible next to the
+#     other seasons' 36.33 and 37.92, possibly 48.25 — median recorded, IQR
+#     omitted); control dry-season PM2.5 "34.88 ± 0.14.72" (unparseable —
+#     median recorded, IQR omitted); control harmattan PM10 "395.57 ± 412"
+#     (recorded as printed; it exceeds the e-waste value and its comparison
+#     p = 0.998).
+#   - ENVO has no term for the coarse PM fraction (PM2.5-10), so those
+#     conditions carry the parent class ENVO:01000405 "respirable suspended
+#     particulate matter" with the fraction stated in the condition name;
+#     PM10 conditions carry the same parent class.
+#   - Per-group spirometry means appear only in supplementary Table S3, which
+#     is not reproduced in the cached full text, so the two output records
+#     carry no numeric lung function values; the body text reports only
+#     pooled ranges ("FEV1 and FVC ranged from ... respectively among e-waste
+#     workers and the control group across the three seasons") and group
+#     contrasts with p-values, which are carried in descriptions and in
+#     response_comparisons.
+#   - The regression effect estimates are reported-in-paper coefficients from
+#     random-effects models on log-transformed lung function; there is no
+#     per-coefficient control/treated output pair for the PM, burner and
+#     asthma predictors (the hart2018 pattern), so those comparisons omit
+#     control_output/treated_output. change_value carries the paper's percent
+#     decrease; the printed beta and 95% CI are kept in the description
+#     because the CI is on the log-scale coefficient, not on the percent.
+#   - Source inconsistency on the headline PEF/FEF25-75 estimates: the
+#     abstract attributes "decreases in PEF and FEF 25-75 by 13.3% % [β =
+#     -3.133; 95% CI: -0.243, -0.022) and 26.6% [β = -0.266; 95% CI: -0.437,
+#     0.094]" to a 10 µg increase in PM, while the Results body prints the
+#     identical betas and CIs as the harmattan-season effect from the
+#     confounder analysis (Table S4). Both framings are quoted; the
+#     comparisons record the abstract's per-10-µg-PM framing with the
+#     discrepancy noted. The printed β = -3.133 for PEF is inconsistent with
+#     its own CI (-0.243, -0.022) and with the body's "PEF by 12.5%"/"PEF
+#     -13.3%" wording (likely a misprint for -0.133); it is quoted as printed
+#     and not corrected.
+#   - The paper's primary adjusted result is a null: "PM (2.5, 2.5–10 and 10
+#     µm) in personal air was not significantly associated with lung function
+#     percentage of predicted at a 95% confidence level". The significant
+#     findings are the group contrast in FEV1/FVC, the harmattan/per-10-µg
+#     PEF and FEF25-75 decreases, and the burner and asthma-history
+#     predictors; descriptions say which is which.
+#
+# WHAT THE PAPER DOES *NOT* CLAIM:
+#   This is an observational association study with no mechanistic
+#   intermediate readouts, so no key_event_relationships are recorded: the
+#   paper links breathing-zone PM exposure to the adverse outcome (decreased
+#   lung function) directly, and its statements about oxidative stress,
+#   inflammation and small airway disease are background/discussion, not
+#   measured results.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:32349371"
+  reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+  doi: "10.3390/ijerph17093042"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - protocol_type: SpirometryProtocol
+    id: "PROTOCOL:amoabengnti-spirometry-001"
+    name: "Portable EasyOne spirometry per American Thoracic Society guidelines, NHANES III z-scores"
+    description: "Lung function tests performed with a portable EasyOne spirometer (ndd Medical Technologies, Andover, MA) by a qualified technician and physician according to American Thoracic Society (ATS) guidelines. FVC, FEV1, FEV1/FVC, PEF and FEF25-75 were measured in the standing position. A minimum of three acceptable FVC manoeuvres were performed, up to a maximum of six when reproducibility criteria were not met; end-of-test criterion of at least 2 seconds of no change in volume with an exhalation time of at least 6 seconds; reproducibility criterion of less than 5% variation or 0.1 L difference of the largest FVC and FEV1. The largest FVC and FEV1 from acceptable curves were recorded. All lung function data were expressed as predicted z-scores of the normal values according to the NHANES III equation, with ethnically appropriate reference values (Hankinson, Odencrantz, & Fedan, 1999). An abnormal test was defined as less than 80% or greater than 120% of predicted for FVC and FEV1 and <70% for FEV1/FVC."
+    spirometry_standard: "American Thoracic Society (ATS) guidelines"
+    equipment_required:
+      - "EasyOne portable spirometer (ndd Medical Technologies, Andover, MA)"
+
+  - id: "PROTOCOL:amoabengnti-pm-sampling-001"
+    name: "Personal breathing-zone PM sampling with MetOne Aerocet 831 particle mass profiler"
+    description: "PM in the breathing zone of participants was measured using a MetOne Aerocet 831 particle mass profiler (MetOne Instruments Incorporated, Grants Pass, OR, USA), which simultaneously measured PM2.5 and PM10 levels per minute at a flow rate of 2.8 L/min. The battery-operated sampler was incorporated into a backpack worn by participants while performing their routine work tasks. Sampling was done for a 4-h period of the work shift, except during the harmattan season when PM collection was done for 2 h because the Aerocet pump got overloaded quickly. The coarse fraction (PM2.5-10) was derived by estimating the difference between the PM2.5 and PM10 concentrations. Readings were recorded at the beginning of each deployment and at retrieval."
+    equipment_required:
+      - "MetOne Aerocet 831 particle mass profiler (MetOne Instruments Incorporated, Grants Pass, OR, USA)"
+
+  - id: "PROTOCOL:amoabengnti-questionnaire-001"
+    name: "Comprehensive respiratory health questionnaire"
+    description: "Comprehensive respiratory health questionnaire administered by trained interviewers in the participant's preferred language (Dagbani, Hausa, Twi or English), collecting demographics (age, gender, religion, ethnicity, education, measures of socioeconomic position, location of birth, childhood and all residences), previous work and home inhalational exposures (including indoor cooking and biomass fuel use), personal and family medical history, and lifestyle habits including cigarette smoking (age at initiation, duration, sticks per day; current, ex- or never-smoker, with cessation greater than a month defining ex-smokers) and alcohol use. Limited interview guides at follow-up rounds explored changes in home and work exposures and other respiratory conditions."
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS — spirometry per participant group. The e-waste
+# workers at Agbogbloshie are the exposed group; the Madina Zongo residents
+# are the control group. Breathing-zone PM concentrations per fraction and
+# season are recorded as exposure conditions on each group's assay.
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:amoabengnti-ewaste-spirometry"
+    name: "Spirometry - informal e-waste workers at Agbogbloshie (PM-exposed group)"
+    description: "Repeated spirometry (FVC, FEV1, FEV1/FVC, PEF, FEF25-75; EasyOne, ATS guidelines, NHANES III z-scores) in 142 healthy male informal e-waste workers at the Agbogbloshie scrapyard across the dry, rainy and harmattan seasons, 2017-2018, with per-round breathing-zone PM (2.5, 2.5-10 and 10 µm) measurement. Lung function parameters were generally significantly lower among e-waste workers than controls; the FEV1/FVC ratio was lower among the e-waste workers across the dry, rainy and harmattan seasons (p ≤ 0.001, p = 0.007 and p = 0.007). Mean FEV1 and FVC were slightly lower than controls without reaching statistical significance; the body text gives only pooled ranges (FEV1 2.83 ± 0.54 to 3.84 ± 1.02 L; FVC 2.95 ± 0.54 to 3.85 ± 1.23 L across both groups and the three seasons) and per-group means appear only in supplementary Table S3, which is not reproduced in the cached full text, so no numeric lung function values are recorded on the output. Breathing-zone PM2.5 was 2-3x higher than in the control group and the highest PM concentrations were consistently observed among e-waste burners compared to non-burners (dismantlers, sorters and collectors). Adjusted random-effects models found PM in personal air not significantly associated with lung function percent of predicted at the 95% confidence level; the reported significant effects (per-10-µg PM / harmattan-season decreases in PEF and FEF25-75, burner job category, asthma history) are recorded in response_comparisons. Cigarette smoking was more frequent among e-waste workers (32.65% vs 10%, p < 0.001)."
+    evidence:
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "To evaluate lung function responses to PM (2.5, 2.5-10 and 10 µm), we conducted a longitudinal cohort study with three repeated measures among 207 participants comprising 142 healthy e-waste workers from Agbogbloshie scrapyard and 65 control participants from Madina-Zongo in Accra, Ghana from 2017-2018."
+        explanation: "Establishes the study design and the two group sizes used throughout this file: 142 e-waste workers (this assay) and 65 controls (the companion assay)."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We conducted a longitudinal cohort study comprising four rounds of repeated exposure and health outcome measurements among e-waste workers at Agbogbloshie and Madina Zongo from March 2017 to November 2018."
+        explanation: "The Methods' description of the measurement rounds and study period; note the abstract instead says three repeated measures (source inconsistency recorded in the header)."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Each participant performed lung function tests with the use of portable Easyone spirometer (ndd Medical Technologies, Andover, MA)."
+        explanation: "Documents the spirometer behind this assay's protocol."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Lung function test was performed by a qualified technician and physician according to the American Thoracic Society (ATS) guidelines"
+        explanation: "Documents the spirometry standard recorded on the protocol."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "All lung function data were expressed as predicted z-scores of the normal values according to the NHANES III equation"
+        explanation: "Documents how lung function values were expressed, which is why the regression effect estimates are on predicted z-scores rather than raw volumes."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Briefly, PM in the breathing zone of participants was measured using a MetOne Aerocet 831 particle mass profiler (MetOne Instruments Incorporated, Grants Pass, OR, USA) which simultaneously measured PM2.5 and PM10 levels per minute at a flow rate of 2.8 L/min."
+        explanation: "Documents the personal breathing-zone PM sampling equipment behind this assay's exposure conditions."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Sampling was done for a 4-h period of the work shift. However, during the harmattan season, PM collection was done for 2 h as the Aerocet pump got overloaded quickly."
+        explanation: "States the sampling durations referenced in the PM sampling protocol and the harmattan-season exposure condition names."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The coarse fraction component was derived by estimating the difference in the concentrations of PM2.5 and PM10."
+        explanation: "Documents that the PM2.5-10 coarse fraction recorded on the coarse exposure conditions is a derived quantity, not directly measured."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The observed median PM2.5 concentration levels at the e-waste and control sites were 69.86 ± 36.33, 61.18 ± 37.92 and 70.69 ± 4825 μg/m3 during the dry, rainy and harmattan seasons."
+        explanation: "States the e-waste workers' seasonal median PM2.5 concentrations recorded on this assay's PM2.5 exposure conditions; the harmattan '± 4825' is the suspect print discussed in the header, so that condition carries the median only."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Similar trends were observed for the PM2.5–10 fraction across the dry, rainy and harmattan seasons"
+        explanation: "Introduces the seasonal coarse-fraction (PM2.5-10) comparisons whose bracketed values are quoted separately below (the quote checker treats square brackets specially)."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "94.26 ± 87.34 μg/m3 vs. 68.23 ± 63.31 μg/m3; p = 0.009"
+        explanation: "Dry-season coarse PM (e-waste vs control), quoted without the enclosing square brackets; recorded on the dry-season coarse exposure conditions of this assay and the control assay."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "48.88 ± 84.68 μg/m3 vs. 34.74 ± 55.41 μg/m3; p = 0.009"
+        explanation: "Rainy-season coarse PM (e-waste vs control), quoted without the enclosing square brackets."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "54.30 ± 126.38 μg/m3 vs. 31.59 ± 383.81 μg/m3; p = 0.960"
+        explanation: "Harmattan-season coarse PM (e-waste vs control), quoted without the enclosing square brackets."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Concentration of PM10 during the three seasons were 214.43 ± 154.46 μg/m3, 173.49 ± 96.12 μg/m3 and 181.64 ± 104.46 μg/m3 among the e-waste workers"
+        explanation: "States the e-waste workers' seasonal median PM10 concentrations recorded on this assay's PM10 exposure conditions."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Generally, the median/IQR concentrations of PM among the e-waste workers at Agbogbloshie and the control population across the dry, rainy and harmattan seasons were consistently higher than the WHO air quality standards of 25 μg/m3 and 50 μg/m3 per 24-h mean."
+        explanation: "States that the printed PM values are median/IQR concentrations (the basis for recording them as median with interquartile_range) and that they exceeded WHO standards in both groups."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM2.5 concentrations were 2–3x times higher among the e-waste workers compared to the control group."
+        explanation: "Supports the description's statement of the exposure contrast between the two groups."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Moreover, we consistently observed the highest concentrations of PM (2.5, 2.5–10 and 10 µm) among the e-waste burners across the seasons compared to the non-burners (dismantlers, sorters and collectors)."
+        explanation: "Supports the within-group exposure gradient (burners highest) referenced in the description and in the burner response_comparisons."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Generally, lung function parameters were significantly lower among e-waste workers than controls."
+        explanation: "The paper's summary group contrast carried in this assay's description."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The FEV1/FVC ratio were however lower among the e-waste workers compared to the control group (p ≤ 0.001, p = 0.007 and p = 0.007) across the dry, rainy and harmattan seasons respectively."
+        explanation: "States the significant FEV1/FVC group contrast recorded in COMP:amoabengnti-fev1fvc-ewaste-vs-control."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The mean FEV1and FVC for the control group was slightly higher than the e-waste workers, however, the association was not statistically significant."
+        explanation: "Supports the description's statement that the FEV1 and FVC group differences were not significant (quoted exactly as printed, including the missing space in 'FEV1and')."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The results of the study showed that PM (2.5, 2.5–10 and 10 µm) in personal air was not significantly associated with lung function percentage of predicted at a 95% confidence level."
+        explanation: "The paper's primary adjusted null result, carried in this assay's description so the significant secondary findings below are read in context."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The effects of PM (2.5, 2.5–10 and 10 µm) exposures on lung function parameters, (FVC, FEV1, FEV1/FVC ratio PEF, and FEF25–75) parameters were investigated by fitting a random-effects model with random slope effects terms."
+        explanation: "Documents the statistical model named in the response_comparisons' statistical_test."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The frequency of cigarette smoking among the e-waste workers was 32.65% (45) compared to 10% (6) among the non- e-waste workers."
+        explanation: "States the smoking frequencies recorded in both assays' subject_characteristics (quoted exactly as printed, including the spacing in 'non- e-waste')."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Generally, e-waste workers were younger (26.45 ± 6.74) compared to the controls (30.97 ± 9.92)"
+        explanation: "States the mean age and SD recorded on this assay's study_subject and on the control assay's study_subject."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Exposure to elevated levels of PM in the breathing zone is a risk factor for decreased lung function parameters among healthy e-waste workers resulting in reduced spirometry results."
+        explanation: "The authors' conclusion linking the breathing-zone PM exposures recorded on this assay to the decreased-lung-function key event."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Furthermore, the higher increases in the reduction of smaller airway parameters (PEF and FEF25-75%) suggest that the e-waste workers may be at an increased risk for small airway diseases such as occupational asthma, bronchitis, bronchiolitis and COPD due to airway obstruction."
+        explanation: "The authors' interpretation of the PEF and FEF25-75 decreases recorded in the response_comparisons; a discussion inference, not a measured result."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "However, a 10 µg increase in PM (2.5, 2.5-10 and 10 µm) was associated with decreases in PEF and FEF 25-75 by 13.3% %"
+        explanation: "The abstract's framing of the PEF (-13.3%) and FEF25-75 decreases recorded in COMP:amoabengnti-pm-pef and COMP:amoabengnti-pm-fef2575 (quoted exactly as printed, including the doubled percent sign); the bracketed betas and CIs are quoted separately below because the quote checker treats square brackets specially."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "β = -3.133; 95% CI: -0.243, -0.022"
+        explanation: "The printed beta and 95% CI for the PEF decrease (COMP:amoabengnti-pm-pef), quoted without the enclosing brackets; the beta is inconsistent with its own CI and likely a misprint for -0.133, recorded as printed."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "β = -0.266; 95% CI: -0.437, 0.094"
+        explanation: "The printed beta and 95% CI for the FEF25-75 decrease (COMP:amoabengnti-pm-fef2575), quoted without the enclosing brackets."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Harmattan season showed significant influence especially on PEF and FEF 25–75."
+        explanation: "The Results body attributes the significant PEF and FEF25-75 decreases to the harmattan season with the same printed betas and CIs as the abstract's per-10-µg-PM framing; the source inconsistency is recorded in the comparison descriptions."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "With respect to job category, e-waste burners showed the highest decreases in their lung function parameters compared to the other job categories."
+        explanation: "Supports the burner response_comparisons: burners were the worst-affected job category."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The risk of work as a burner was predicted to decreased FEV1 by 4.5%"
+        explanation: "Start of the sentence reporting the burner-predicted decreases (quoted exactly as printed, including 'predicted to decreased'); the per-parameter percent figures and bracketed betas are quoted separately below."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PEF by 14.2% among e-waste burners"
+        explanation: "States the burner-predicted PEF decrease recorded in COMP:amoabengnti-burner-pef."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "β = −0.142; 95% CI: −0.278, −0.008"
+        explanation: "The printed beta and 95% CI for the burner-predicted PEF decrease (COMP:amoabengnti-burner-pef), quoted without the enclosing brackets."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEF25–75 by 22.5%"
+        explanation: "States the burner-predicted FEF25-75 decrease recorded in COMP:amoabengnti-burner-fef2575."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "β = −0.225; 95% CI: −0.451–0.001"
+        explanation: "The printed beta and 95% CI for the burner-predicted FEF25-75 decrease (COMP:amoabengnti-burner-fef2575), quoted without the enclosing brackets; the range is printed with an en-dash."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "E-waste burning and a history of asthma significantly predicted a decrease in PEF by 14.2%"
+        explanation: "The abstract's statement that the burner and asthma-history effects were significant predictors, supporting COMP:amoabengnti-burner-pef and COMP:amoabengnti-asthma-fev1."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Past history of Asthma was also significantly associated with the lung function parameters."
+        explanation: "Supports recording the asthma-history predictor (COMP:amoabengnti-asthma-fev1) as a paper-reported significant association."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Specifically, participants with a previous history of Asthma were predicted to have decreased FEV1 by 35.8 %"
+        explanation: "States the asthma-history FEV1 decrease recorded in COMP:amoabengnti-asthma-fev1 (quoted exactly as printed, including the space before the percent sign)."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "β = −0.358; 95% CI: −0.590, 0.125"
+        explanation: "The printed beta and 95% CI for the asthma-history FEV1 decrease (COMP:amoabengnti-asthma-fev1), quoted without the enclosing brackets; the CI as printed spans zero although the paper calls the association significant."
+    has_exposure_condition:
+      - id: "EXPOSURE:amoabengnti-ewaste-occupational"
+        name: "Occupational informal e-waste recycling at Agbogbloshie (collecting, sorting, dismantling, open-air burning of cables); overall breathing-zone PM exposure, characterized per fraction and season in the companion EXPOSURE entries. Spirometry outputs point here because they were measured under the whole occupational exposure, not any single PM fraction"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+      - id: "EXPOSURE:amoabengnti-ewaste-pm25-dry"
+        name: "Breathing-zone PM2.5, e-waste workers, dry season (median/IQR as printed: 69.86 ± 36.33 μg/m3; 4-h personal sampling)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "69.86"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          variability:
+            variability_type: interquartile_range
+            value: "36.33"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+      - id: "EXPOSURE:amoabengnti-ewaste-pm25-rainy"
+        name: "Breathing-zone PM2.5, e-waste workers, rainy season (median/IQR as printed: 61.18 ± 37.92 μg/m3; 4-h personal sampling)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "61.18"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          variability:
+            variability_type: interquartile_range
+            value: "37.92"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+      - id: "EXPOSURE:amoabengnti-ewaste-pm25-harmattan"
+        name: "Breathing-zone PM2.5, e-waste workers, harmattan season (median 70.69 μg/m3; printed IQR '± 4825' is implausible next to the other seasons' 36.33 and 37.92, possibly 48.25, so no IQR is recorded; 2-h personal sampling)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "70.69"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+      - id: "EXPOSURE:amoabengnti-ewaste-coarse-dry"
+        name: "Breathing-zone coarse PM (PM2.5-10, derived as PM10 minus PM2.5; no ENVO term exists for the coarse fraction so the parent respirable PM class is used), e-waste workers, dry season (median/IQR as printed: 94.26 ± 87.34 μg/m3)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "94.26"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          variability:
+            variability_type: interquartile_range
+            value: "87.34"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+      - id: "EXPOSURE:amoabengnti-ewaste-coarse-rainy"
+        name: "Breathing-zone coarse PM (PM2.5-10), e-waste workers, rainy season (median/IQR as printed: 48.88 ± 84.68 μg/m3)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "48.88"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          variability:
+            variability_type: interquartile_range
+            value: "84.68"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+      - id: "EXPOSURE:amoabengnti-ewaste-coarse-harmattan"
+        name: "Breathing-zone coarse PM (PM2.5-10), e-waste workers, harmattan season (median/IQR as printed: 54.30 ± 126.38 μg/m3; 2-h personal sampling)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "54.30"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          variability:
+            variability_type: interquartile_range
+            value: "126.38"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+      - id: "EXPOSURE:amoabengnti-ewaste-pm10-dry"
+        name: "Breathing-zone PM10, e-waste workers, dry season (median/IQR as printed: 214.43 ± 154.46 μg/m3; 4-h personal sampling)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "214.43"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          variability:
+            variability_type: interquartile_range
+            value: "154.46"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+      - id: "EXPOSURE:amoabengnti-ewaste-pm10-rainy"
+        name: "Breathing-zone PM10, e-waste workers, rainy season (median/IQR as printed: 173.49 ± 96.12 μg/m3; 4-h personal sampling)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "173.49"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          variability:
+            variability_type: interquartile_range
+            value: "96.12"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+      - id: "EXPOSURE:amoabengnti-ewaste-pm10-harmattan"
+        name: "Breathing-zone PM10, e-waste workers, harmattan season (median/IQR as printed: 181.64 ± 104.46 μg/m3; 2-h personal sampling)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "181.64"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          variability:
+            variability_type: interquartile_range
+            value: "104.46"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+    has_specified_output:
+      - id: "LF:amoabengnti-ewaste-spirometry-output-exposed"
+        name: "Spirometry outcomes in e-waste workers (per-group numeric means only in supplementary Table S3, not reproduced in the cached full text)"
+        description: "Lung function parameters were generally significantly lower among e-waste workers than controls, with the FEV1/FVC ratio significantly lower across the dry, rainy and harmattan seasons (p ≤ 0.001, p = 0.007, p = 0.007); mean FEV1 and FVC were slightly lower without statistical significance. The cached full text reports only pooled ranges across both groups and seasons (FEV1 2.83 ± 0.54 to 3.84 ± 1.02 L; FVC 2.95 ± 0.54 to 3.85 ± 1.23 L) and no per-group numeric means (those are in supplementary Table S3), so no numeric lung function values are recorded here."
+        experimental_group: treated
+        measured_under: "EXPOSURE:amoabengnti-ewaste-occupational"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:amoabengnti-ewaste-workers"
+      name: "Healthy male informal e-waste workers, Agbogbloshie scrapyard, Accra, Ghana"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "26.45"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: mean
+        sample_size: 142
+        variability:
+          variability_type: standard_deviation
+          value: "6.74"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      subject_characteristics: "142 healthy male informal e-waste workers (100 recruited at round 1 plus 42 replacements at round 2 after >30% attrition) working as burners, dismantlers, sorters and collectors at the Agbogbloshie scrapyard, rated by Pure Earth among the top ten most contaminated areas on earth. Significantly younger (mean 26.45 ± 6.74 years) than the controls, with lower mean daily income and education (56% had no formal or primary education). Cigarette smoking frequency 32.65% vs 10% in controls (p < 0.001); higher prevalence of self-reported past bronchial asthma than controls. Mostly migrants of the Dagomba tribe from northern Ghana."
+      clinical_context: "Longitudinal cohort study with repeated exposure and lung function measurements (four rounds per the Methods; the abstract says three repeated measures) aligned to the dry, rainy and harmattan seasons, Agbogbloshie informal e-waste recycling site, Accra, Ghana, March 2017 to November 2018"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:amoabengnti-spirometry-001"
+        name: "Portable EasyOne spirometry per American Thoracic Society guidelines, NHANES III z-scores"
+        spirometry_standard: "American Thoracic Society (ATS) guidelines"
+      - id: "PROTOCOL:amoabengnti-pm-sampling-001"
+        name: "Personal breathing-zone PM sampling with MetOne Aerocet 831 particle mass profiler"
+      - id: "PROTOCOL:amoabengnti-questionnaire-001"
+        name: "Comprehensive respiratory health questionnaire"
+
+  - id: "LF:amoabengnti-control-spirometry"
+    name: "Spirometry - Madina Zongo residents (control group)"
+    description: "Repeated spirometry (same EasyOne/ATS protocol) in 65 male control participants from Madina Zongo, a suburb of Accra more than 10 km from the Agbogbloshie e-waste site, selected for similarity in ethnicity and religion to the e-waste workers. The paper is internally inconsistent on control recruitment (64 selected in the study-area section; 51 recruited at round 1 plus 14 replacements; 65 in the abstract — the abstract total is used as sample size). Controls were older (mean 30.97 ± 9.92 years), better educated (61% attained high school education) and smoked less (10% vs 32.65%, p < 0.001) than the e-waste workers. Control breathing-zone PM concentrations, though 2-3x lower than the e-waste workers' for PM2.5, still exceeded the WHO air quality standards across the seasons; their seasonal medians are recorded on this assay's exposure conditions. Mean FEV1 and FVC were slightly higher than the e-waste workers' (not statistically significant) and the FEV1/FVC ratio was significantly higher; PEF and FEV1/FVC showed greater variability among Madina Zongo participants than at Agbogbloshie."
+    evidence:
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Sixty-four (n = 64) male residents from Madina Zongo, a suburb of Accra in the La Nkwantanang sub-metropolitan district located more than 10 km from the Agbogbloshie e-waste site were selected as the control population."
+        explanation: "Documents the control population and its distance from the exposure site; the count here (64) differs from the abstract's 65 (source inconsistency recorded in the header and description)."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Madina Zongo was selected as a control population because of similarities in ethnicity and religion, as similar to e-waste workers at Agbogbloshie, majority are of the Dagomba tribe who migrated from northern Ghana, as well as being Muslims"
+        explanation: "Documents why this group serves as the comparison population for the e-waste workers."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "This continued until a total of one hundred (100) male e- waste workers and fifty-one (51) male controls from Madina-Zongo were recruited."
+        explanation: "States the round-1 recruitment counts (quoted exactly as printed, including the spacing in 'e- waste'); with the 14 control replacements added at round 2 this yields the 65 controls used as this assay's sample size."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In comparison, the concentrations for the control population were 34.88 ± 0.14.72, 34.13 ± 7.22 and 50.21 ± 169.64 across the three seasons respectively (p < 0.001, p < 0.001 and p = 0.950)"
+        explanation: "States the control group's seasonal median PM2.5 concentrations recorded on this assay's PM2.5 exposure conditions; the dry-season '± 0.14.72' is unparseable as printed, so that condition carries the median only."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "118.12 ± 79.99 μg/m3/p ≤ 0.001, 99.35 ± 107.1 μg/m3/p ≤ 0.001 and 395.57 ± 412/p = 0.998"
+        explanation: "The control group's seasonal median PM10 concentrations (dry, rainy, harmattan), quoted without the enclosing square brackets; the harmattan value exceeds the e-waste workers' and its comparison p = 0.998, recorded as printed."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Generally, e-waste workers were younger (26.45 ± 6.74) compared to the controls (30.97 ± 9.92)"
+        explanation: "States the control group's mean age and SD recorded on this assay's study_subject."
+      - reference: "PMID:32349371"
+        reference_title: "Effect of Particulate Matter Exposure on Respiratory Health of e-Waste Workers at Agbogbloshie, Accra, Ghana."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Conversely, PEF and FEV1/FVC showed greater variability for Madina- Zongo participants compared to Agbogbloshie."
+        explanation: "Supports the description's statement about the control group's lung function variability (quoted exactly as printed, including the spacing in 'Madina- Zongo')."
+    has_exposure_condition:
+      - id: "COND:amoabengnti-madina-ambient"
+        name: "Community ambient air at Madina Zongo, more than 10 km from the Agbogbloshie e-waste site (control condition; breathing-zone PM still above WHO standards, characterized per fraction and season in the companion EXPOSURE entries)"
+        exposure_agent:
+          id: "ENVO:00002005"
+          name: "air"
+      - id: "EXPOSURE:amoabengnti-control-pm25-dry"
+        name: "Breathing-zone PM2.5, controls, dry season (median 34.88 μg/m3; printed IQR '± 0.14.72' is unparseable as printed, so no IQR is recorded)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "34.88"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+      - id: "EXPOSURE:amoabengnti-control-pm25-rainy"
+        name: "Breathing-zone PM2.5, controls, rainy season (median/IQR as printed: 34.13 ± 7.22 μg/m3)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "34.13"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          variability:
+            variability_type: interquartile_range
+            value: "7.22"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+      - id: "EXPOSURE:amoabengnti-control-pm25-harmattan"
+        name: "Breathing-zone PM2.5, controls, harmattan season (median/IQR as printed: 50.21 ± 169.64 μg/m3)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "50.21"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          variability:
+            variability_type: interquartile_range
+            value: "169.64"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+      - id: "EXPOSURE:amoabengnti-control-coarse-dry"
+        name: "Breathing-zone coarse PM (PM2.5-10; parent respirable PM class used, see header note), controls, dry season (median/IQR as printed: 68.23 ± 63.31 μg/m3)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "68.23"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          variability:
+            variability_type: interquartile_range
+            value: "63.31"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+      - id: "EXPOSURE:amoabengnti-control-coarse-rainy"
+        name: "Breathing-zone coarse PM (PM2.5-10), controls, rainy season (median/IQR as printed: 34.74 ± 55.41 μg/m3)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "34.74"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          variability:
+            variability_type: interquartile_range
+            value: "55.41"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+      - id: "EXPOSURE:amoabengnti-control-coarse-harmattan"
+        name: "Breathing-zone coarse PM (PM2.5-10), controls, harmattan season (median/IQR as printed: 31.59 ± 383.81 μg/m3)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "31.59"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          variability:
+            variability_type: interquartile_range
+            value: "383.81"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+      - id: "EXPOSURE:amoabengnti-control-pm10-dry"
+        name: "Breathing-zone PM10, controls, dry season (median/IQR as printed: 118.12 ± 79.99 μg/m3)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "118.12"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          variability:
+            variability_type: interquartile_range
+            value: "79.99"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+      - id: "EXPOSURE:amoabengnti-control-pm10-rainy"
+        name: "Breathing-zone PM10, controls, rainy season (median/IQR as printed: 99.35 ± 107.1 μg/m3)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "99.35"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          variability:
+            variability_type: interquartile_range
+            value: "107.1"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+      - id: "EXPOSURE:amoabengnti-control-pm10-harmattan"
+        name: "Breathing-zone PM10, controls, harmattan season (median/IQR as printed: 395.57 ± 412; this exceeds the e-waste workers' harmattan PM10 and the group comparison p = 0.998; recorded as printed)"
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "395.57"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: median
+          variability:
+            variability_type: interquartile_range
+            value: "412"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+    has_specified_output:
+      - id: "LF:amoabengnti-control-spirometry-output-control"
+        name: "Spirometry outcomes in Madina Zongo controls (per-group numeric means only in supplementary Table S3, not reproduced in the cached full text)"
+        description: "Mean FEV1 and FVC were slightly higher than the e-waste workers' (not statistically significant) and the FEV1/FVC ratio was significantly higher across the dry, rainy and harmattan seasons (p ≤ 0.001, p = 0.007, p = 0.007 for the group contrast). The cached full text reports no per-group numeric means (those are in supplementary Table S3), so no numeric lung function values are recorded here."
+        experimental_group: control
+        measured_under: "COND:amoabengnti-madina-ambient"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:amoabengnti-controls"
+      name: "Male residents of Madina Zongo, Accra, Ghana (control group)"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "30.97"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: mean
+        sample_size: 65
+        variability:
+          variability_type: standard_deviation
+          value: "9.92"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      subject_characteristics: "65 male control participants (51 recruited at round 1 plus 14 replacements at round 2; the study-area section says 64 were selected) from Madina Zongo, a suburb of Accra more than 10 km from the e-waste site, chosen for similarity in ethnicity (majority Dagomba migrants from northern Ghana) and religion (Muslim) to the e-waste workers. Significantly older (mean 30.97 ± 9.92 years) and better educated (61% attained high school education) than the e-waste workers; cigarette smoking frequency 10% vs 32.65% among e-waste workers (p < 0.001)."
+      clinical_context: "Longitudinal cohort study with repeated exposure and lung function measurements (four rounds per the Methods; the abstract says three repeated measures) aligned to the dry, rainy and harmattan seasons, Madina Zongo, Accra, Ghana, March 2017 to November 2018"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:amoabengnti-spirometry-001"
+        name: "Portable EasyOne spirometry per American Thoracic Society guidelines, NHANES III z-scores"
+        spirometry_standard: "American Thoracic Society (ATS) guidelines"
+      - id: "PROTOCOL:amoabengnti-pm-sampling-001"
+        name: "Personal breathing-zone PM sampling with MetOne Aerocet 831 particle mass profiler"
+      - id: "PROTOCOL:amoabengnti-questionnaire-001"
+        name: "Comprehensive respiratory health questionnaire"
+
+# =============================================================================
+# RESPONSE COMPARISONS
+#
+# MODELLING NOTE: the first comparison is the two-group FEV1/FVC contrast and
+# references the two output records; the paper reports only seasonal p-values
+# for it, never a difference value, so change_value is omitted (the rule:
+# never calculate a delta). The remaining comparisons are reported-in-paper
+# effect estimates from random-effects models on log-transformed lung
+# function (predictors: PM per 10 µg increase, burner job category, past
+# asthma history); no control/treated output pair exists for a regression
+# coefficient, so control_output/treated_output are omitted (the hart2018
+# pattern). change_value carries the paper's percent decrease; the printed
+# beta and 95% CI stay in the description because the CI is on the log-scale
+# coefficient, not on the percent. Exact p-values are not reported for the
+# regression estimates, so p_value is omitted throughout except where a
+# group-contrast p is exact.
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:amoabengnti-fev1fvc-ewaste-vs-control"
+    name: "FEV1/FVC ratio in e-waste workers vs Madina Zongo controls"
+    description: "The FEV1/FVC ratio was lower among the e-waste workers than the control group across the dry, rainy and harmattan seasons (p ≤ 0.001, p = 0.007 and p = 0.007 respectively). The paper reports no difference value, so change_value is omitted; p_value is omitted because the three seasonal p-values cannot be carried in one float slot (the two exact values are 0.007). The control output lives on the Madina Zongo assay."
+    derived_from_assay: "LF:amoabengnti-ewaste-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    control_output: "LF:amoabengnti-control-spirometry-output-control"
+    treated_output: "LF:amoabengnti-ewaste-spirometry-output-exposed"
+    change_type: absolute_difference
+    change_direction: decreased
+    statistical_test: "bivariate analysis (Student's t-test / Chi-square / Spearman's rank correlation per the Methods)"
+    derivation: reported_in_paper
+
+  - id: "COMP:amoabengnti-pm-pef"
+    name: "Decrease in PEF per 10 µg increase in breathing-zone PM"
+    description: "The abstract reports that a 10 µg increase in PM (2.5, 2.5-10 and 10 µm) was associated with a 13.3% decrease in PEF, printed as 'β = -3.133; 95% CI: -0.243, -0.022'. The printed β is inconsistent with its own CI and with the Results body (which gives 'PEF by 12.5%' for the rainy season and 'PEF −13.3%' for the harmattan season with the identical β and CI), and is likely a misprint for -0.133; it is quoted as printed and not corrected. The Results body attributes these same numbers to the harmattan season in the confounder analysis ('Harmattan season showed significant influence especially on PEF and FEF 25–75'), a source inconsistency recorded here rather than resolved. The CI excludes zero (the paper's only PM-effect CI to do so). Lung function was modelled as log-transformed predicted z-scores, so the beta is on the log scale and the CI is not in percent units; change_value carries the paper's percent figure without variability."
+    derived_from_assay: "LF:amoabengnti-ewaste-spirometry"
+    compared_measurement: "peak_expiratory_flow"
+    change_type: percent_change
+    change_direction: decreased
+    change_value:
+      value: "-13.3"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+    statistical_test: "random-effects model with random slope effects terms, adjusted for age, education, job category, height, cigarette smoking status, location and seasonal variation"
+    derivation: reported_in_paper
+
+  - id: "COMP:amoabengnti-pm-fef2575"
+    name: "Decrease in FEF25-75 per 10 µg increase in breathing-zone PM"
+    description: "The abstract reports that a 10 µg increase in PM (2.5, 2.5-10 and 10 µm) was associated with a 26.6% decrease in FEF 25-75, printed as 'β = -0.266; 95% CI: -0.437, 0.094' (the CI as printed spans zero; the Results body prints the identical numbers as the harmattan-season effect — the same source inconsistency as the PEF estimate). The beta is on the log scale (predicted z-scores), so change_value carries the paper's percent figure without variability."
+    derived_from_assay: "LF:amoabengnti-ewaste-spirometry"
+    compared_measurement: "fef25_75"
+    change_type: percent_change
+    change_direction: decreased
+    change_value:
+      value: "-26.6"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+    statistical_test: "random-effects model with random slope effects terms, adjusted for age, education, job category, height, cigarette smoking status, location and seasonal variation"
+    derivation: reported_in_paper
+
+  - id: "COMP:amoabengnti-burner-pef"
+    name: "Decrease in PEF predicted by e-waste burner job category"
+    description: "Work as an e-waste burner predicted a 14.2% decrease in PEF (β = −0.142; 95% CI: −0.278, −0.008 — excludes zero). Burners showed the highest decreases in lung function parameters of all job categories and consistently carried the highest breathing-zone PM concentrations across the seasons. Beta on the log scale (predicted z-scores); change_value carries the percent figure without variability."
+    derived_from_assay: "LF:amoabengnti-ewaste-spirometry"
+    compared_measurement: "peak_expiratory_flow"
+    change_type: percent_change
+    change_direction: decreased
+    change_value:
+      value: "-14.2"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+    statistical_test: "random-effects model with random slope effects terms (confounder analysis, Table S4)"
+    derivation: reported_in_paper
+
+  - id: "COMP:amoabengnti-burner-fef2575"
+    name: "Decrease in FEF25-75 predicted by e-waste burner job category"
+    description: "Work as an e-waste burner predicted a 22.5% decrease in FEF25-75 (β = −0.225; 95% CI: −0.451–0.001, printed with an en-dash range; the upper bound as printed is 0.001, so the CI marginally spans zero). The same sentence reports burner-predicted decreases in FEV1 of 4.5% (β = −0.045; 95% CI: −0.151–0.061) and FEV1/FVC of 6.0% (β = −0.060; 95% CI: −0.123–0.004), both with CIs spanning zero; they are carried here in prose rather than as separate comparisons. Beta on the log scale (predicted z-scores); change_value carries the percent figure without variability."
+    derived_from_assay: "LF:amoabengnti-ewaste-spirometry"
+    compared_measurement: "fef25_75"
+    change_type: percent_change
+    change_direction: decreased
+    change_value:
+      value: "-22.5"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+    statistical_test: "random-effects model with random slope effects terms (confounder analysis, Table S4)"
+    derivation: reported_in_paper
+
+  - id: "COMP:amoabengnti-asthma-fev1"
+    name: "Decrease in FEV1 predicted by past history of asthma"
+    description: "Participants with a previous history of asthma were predicted to have a 35.8% decrease in FEV1 (β = −0.358; 95% CI: −0.590, 0.125 as printed in the Results body; the abstract prints the same estimate as '-0.358; 95% CI: -0.590, 0.125' and calls it significant although the printed CI spans zero — recorded as printed). Asthma history is a subject characteristic, not an exposure; the comparison is kept because the paper reports it as a significant predictor of the lung function outcome alongside e-waste burning. Beta on the log scale (predicted z-scores); change_value carries the percent figure without variability."
+    derived_from_assay: "LF:amoabengnti-ewaste-spirometry"
+    compared_measurement: "fev1"
+    change_type: percent_change
+    change_direction: decreased
+    change_value:
+      value: "-35.8"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+    statistical_test: "random-effects model with random slope effects terms (confounder analysis, Table S4)"
+    derivation: reported_in_paper
