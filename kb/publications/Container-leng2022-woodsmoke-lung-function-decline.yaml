@@ -1,0 +1,954 @@
+# =============================================================================
+# Leng et al. (2022) - Wood smoke exposure affects lung aging, quality of life,
+# and all-cause mortality in New Mexican smokers
+# =============================================================================
+#
+# Source: Respir Res. 2022;23:236
+# DOI: 10.1186/s12931-022-02162-y
+# PMID: 36076291
+#
+# Study design (HUMAN OBSERVATIONAL — a longitudinal community cohort; not in
+# vitro, not an animal experiment):
+#   - The Lovelace Smokers Cohort (LSC), established in 2001 in the greater
+#     Albuquerque area of New Mexico, USA. Members were 40-75 years of age,
+#     former or current smokers with at least 10 pack-years, free of prior
+#     lung cancer, and able to understand English.
+#   - Analyses here used 2372 LSC subjects with at least one post-bronchodilator
+#     spirometry and no missing wood smoke (WS) exposure or covariate data:
+#     684 reporting ever WS exposure for over a year and 1688 reporting none.
+#   - Members returned roughly every 18 months for spirometry (pre- and
+#     post-bronchodilator, 1994 American Thoracic Society guidelines) and
+#     questionnaires; active on-site follow-up ended in summer 2017, after
+#     which lung cancer incidence and deaths were collected annually. 11,328
+#     person-visits of spirometry were collected across 2511 unique subjects.
+#   - Lung function decline was estimated with linear mixed effects (LME)
+#     models carrying a WS-exposure x time-in-cohort interaction term.
+#
+# IMPORTANT — WHAT THE EXPOSURE CONTRAST ACTUALLY IS:
+#   Exposure is a single self-reported binary question ("Have you been exposed
+#   to wood smoke for 12 months or longer"), asked once at study entry. There
+#   is no dosimetry, no concentration, and no timing: the authors state plainly
+#   that "this binary exposure assessment does not allow us to detect
+#   dose-response relationship". So the exposure condition below carries an
+#   agent (ENVO:01000838 "smoke") and no concentration, and group membership is
+#   the whole of the exposure characterisation — the isara2016 pattern.
+#
+# MODELLING NOTES:
+#   - Two assays, one per exposure group (the isara2016 / calderon2001
+#     pattern): the ever-exposed and never-exposed groups differ in age,
+#     ethnicity, smoking status and follow-up length, so merging them under one
+#     study_subject would lose which group a record describes. Each assay's
+#     output record carries that group's baseline spirometry (Table 1), and the
+#     response_comparisons point at the pair.
+#   - The output records' spirometry values are UNADJUSTED baseline group means
+#     from Table 1. Every value in response_comparisons is instead an ADJUSTED
+#     LME or Cox coefficient (Tables 2, 3 and 5). The two are not
+#     interchangeable, and the comparisons' change_values are therefore NOT
+#     the differences between the output records' means.
+#   - decline_rate is recorded only on the never-exposed (control) output. It
+#     is the LME main effect of time in cohort (Table 2, "Years" column), which
+#     in a model carrying a WS x time interaction is the modelled annual slope
+#     for subjects WITHOUT WS exposure. The paper never prints the exposed
+#     group's own slope — only the slope DIFFERENCE (the interaction
+#     coefficient, recorded as COMP:leng-ws-fev1-decline) — so no decline_rate
+#     is recorded on the exposed output rather than computing one.
+#   - Variability is recorded as standard_error for every model coefficient:
+#     Tables 2, 3 and 4 print "estimate (SE)", and Table 1 prints "mean +/- SD".
+#     Neither was converted into the other.
+#   - P values below 0.0001 cannot be expressed in the float-ranged p_value
+#     slot; those comparisons omit p_value and state "P < 0.0001" in their
+#     description.
+#   - INTERNAL DISCREPANCY IN THE SOURCE: the same basic-model coefficients
+#     appear in both Table 2 and Table 3 with slightly different rounding.
+#     Table 2 (and the abstract and Fig. 1) give FEV1 decline -4.3 (1.9),
+#     P = 0.025 and FEV1/FVC ratio decline -0.093 (0.038), P = 0.015; Table 3's
+#     "Basic model" row gives -4.3 (1.9), P = 0.024 and -0.094 (0.038),
+#     P = 0.015. The Table 2 / abstract values are the ones recorded, since
+#     they are the paper's headline numbers; Table 3's rounding is noted here
+#     rather than silently reconciled.
+#   - The demographic detail in each study_subject's subject_characteristics
+#     comes from Table 1. Individual Table 1 rows are quoted as evidence only
+#     for the values that land in a schema slot (group sizes, age, spirometry,
+#     airway obstruction, CMH); the remaining prose figures are read from the
+#     same table but not separately quoted, since description fields are not
+#     quote-checked.
+#   - Unit note: this paper reports FEV1 as a FLOW (L/s, declining in ml/s per
+#     year) rather than the conventional volume in litres. The printed units
+#     are recorded as-is (UCUM:L/s, UCUM:mL/s, UCUM:mL/s/a) rather than
+#     silently normalised to litres. FVC is a volume (L, declining in ml/year).
+#
+# FINDINGS WITH NO SOMA SLOT (kept in prose per the extraction rules):
+#   - Health-related quality of life: WS exposure worsened every SGRQ and SF-36
+#     domain. Adjusted SGRQ total score was 6.9 (SE 0.7) points higher with WS
+#     exposure (P < 0.0001), 4.6 (0.6) after adding comorbidity, airway
+#     obstruction and CMH — above the minimal clinically important difference
+#     of 4. Unadjusted baseline SGRQ total 27.8 +/- 19.54 vs 19.6 +/- 17.0.
+#   - Mortality and cancer: 380 deaths and 72 incident lung cancers by
+#     mid-2020. Adjusted HRs for ever WS exposure: all-cause mortality 1.53
+#     (95% CI 1.21-1.92, P = 0.0003); cardiopulmonary mortality 1.49
+#     (1.03-2.15, P = 0.033); cancer mortality 1.52 (1.02-2.28, P = 0.041);
+#     lung cancer incidence 1.53 (0.92-2.55, P = 0.10, borderline). All-cause
+#     mortality HR stayed elevated after further adjustment for baseline airway
+#     obstruction and comorbidity (HR 1.39, 95% CI 1.10-1.75, P = 0.0054).
+#     Mean age at death was 69.3 +/- 10.3 vs 72.8 +/- 10.2 years — a lifespan
+#     shortened by 3.5 years.
+#   - Mediation: SGRQ total score and SF-36 physical functioning each mediated
+#     about 21% of the WS-mortality association, comparable to or larger than
+#     FEV1 (18.8%).
+#   - Baseline group imbalances (Table 1): the WS-exposed group was younger
+#     (55.3 +/- 9.0 vs 56.7 +/- 9.5 y, P = 0.0013), more often Hispanic and
+#     currently smoking, less educated and lower income, and had more airway
+#     obstruction (31.4% vs 26.2%, P = 0.0097) and more chronic mucous
+#     hypersecretion (32.4% vs 23.5%, P < 0.0001). Sputum methylation index did
+#     not differ (P = 0.90).
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:36076291"
+  reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+  doi: "10.1186/s12931-022-02162-y"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - protocol_type: SpirometryProtocol
+    id: "PROTOCOL:leng-spirometry-001"
+    name: "Pre- and post-bronchodilator spirometry per the 1994 American Thoracic Society guidelines"
+    description: "At study entry cohort members underwent pre- and post-bronchodilator spirometry testing adhering to the 1994 American Thoracic Society guidelines, and returned approximately every 18 months to repeat spirometry alongside questionnaire updates and biological sample collection. Spirometry data were collected from 2511 unique subjects for a total of 11,328 person-visits; active enrollment and on-site follow-up ended in the summer of 2017. Analyses in this study used subjects with at least one post-bronchodilator spirometry. The bronchodilator agent and dose are not stated in the paper, so neither is recorded."
+    spirometry_standard: "1994 American Thoracic Society guidelines"
+
+  - id: "PROTOCOL:leng-ws-questionnaire-001"
+    name: "Self-reported binary wood smoke exposure question at study entry"
+    description: "Wood smoke exposure was self-reported in response to a single question, \"Have you been exposed to wood smoke for 12 months or longer\", asked once as part of the general health survey at study entry. The question is intended to give a qualitative yes/no readout of cumulative exposure of at least one year from any source (indoor wood stove, wildfire, occupational, recreational), and had been partially validated in earlier cross-sectional LSC analyses by its associations with lower percent predicted FEV1, airflow obstruction and chronic mucous hypersecretion. It yields no concentration, no duration beyond the 12-month floor, and no timing, so it cannot support dose-response analysis."
+
+  - id: "PROTOCOL:leng-lme-analysis-001"
+    name: "Linear mixed effects modelling of lung function decline with a wood smoke x time-in-cohort interaction"
+    description: "Linear mixed effects models with a subject-specific random intercept and slope assessed whether WS exposure was associated with more rapid decline of FEV1, FVC and FEV1/FVC ratio. An interaction term between WS exposure and time in cohort (TIC, in years) and their main effects were included. Fixed effects for baseline age, smoking status (current versus former), packyears of smoking, body mass index (BMI), and height, sex, and ethnicity (Hispanic and Others with non-Hispanic white as the reference) were included. A significant interaction estimate means the slope of lung function change over time varies by WS exposure, with the slope difference given by the interaction coefficient; a significant WS main effect quantifies the baseline (intercept) difference. Extended models added interaction terms between TIC and baseline current smoking, airway obstruction (FEV1/FVC ratio <= 70%) or chronic mucous hypersecretion. Stratified models split the cohort at the median baseline age of 55.9 years. Analyses were run in SAS 9.4."
+
+  - id: "PROTOCOL:leng-hrqol-001"
+    name: "Health-related quality of life by SGRQ and SF-36"
+    description: "Health-related quality of life was assessed with the generic SF-36 questionnaire and the lung disease-specific St. George's Respiratory Questionnaire (SGRQ), both with a four-week recall period. SF-36 scores run 0-100 with higher scores better; SGRQ total and its activity, symptom and impact subscores run 0-100 with higher scores worse, and the minimal clinically important difference is 4 points. SGRQ was collected for all cohort members at baseline and thereafter predominantly for those with FEV1/FVC ratio < 75%, whereas SF-36 was collected at the baseline visit only. No SOMA assay class covers questionnaire scores, so this protocol has no assay attached; the findings are summarised in the header notes."
+
+  - id: "PROTOCOL:leng-mortality-ascertainment-001"
+    name: "Mortality and lung cancer incidence ascertainment and Cox modelling"
+    description: "Two National Death Index searches, completed in 2014 and mid-2020, identified 380 deaths among the 2372 subjects; primary causes were coded with ICD-10. Incident lung cancer (n = 72) was identified through NDI searches, obituary data, or self-report by subjects or next of kin, with pathology reports collected to confirm diagnosis, histology and stage. Kaplan-Meier curves and Cox proportional hazards models assessed the impact of WS exposure on lung cancer incidence, all-cause mortality and cause-specific mortality, with deaths from other or unknown causes treated as competing risks and with baseline age, smoking status, packyears, BMI, income, education, sex and ethnicity adjusted. No SOMA assay class covers time-to-event outcomes, so this protocol has no assay attached; the hazard ratios are summarised in the header notes."
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS — baseline post-bronchodilator spirometry in the two
+# self-reported wood smoke exposure groups of the Lovelace Smokers Cohort.
+#
+# One assay per group, each with its own InVivoSubject, because the groups
+# differ systematically in age, ethnicity, smoking status and follow-up
+# length. The adjusted LME coefficients for decline and for baseline
+# differences live in response_comparisons below.
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:leng-ws-exposed-spirometry"
+    name: "Spirometry - LSC smokers reporting ever wood smoke exposure for over a year (exposed group)"
+    description: "Baseline post-bronchodilator spirometry in the 684 Lovelace Smokers Cohort subjects who self-reported ever wood smoke exposure for over a year: FEV1 2.54 +/- 0.77 L/s, FVC 3.51 +/- 0.94 L, FEV1/FVC ratio 72.3 +/- 11.3%. Unadjusted baseline FEV1 (P = 0.21) and FVC (P = 0.73) did not differ significantly from the never-exposed group, while the FEV1/FVC ratio was lower (P = 0.024); the adjusted LME models in response_comparisons show significantly lower baseline FEV1 and FEV1/FVC ratio once age, smoking, BMI, height, sex and ethnicity are accounted for. This group also had a higher baseline prevalence of airway obstruction (31.4% vs 26.2%, P = 0.0097) and of chronic mucous hypersecretion (32.4% vs 23.5%, P < 0.0001), was younger (55.3 +/- 9.0 vs 56.7 +/- 9.5 years, P = 0.0013), and had a shorter duration in cohort (median 3.6 vs 4.6 years) and fewer spirometry tests (median 3 vs 4). Over follow-up this group declined more rapidly in FEV1 and FEV1/FVC ratio but not FVC. No decline_rate is recorded here: the paper prints only the slope DIFFERENCE for this group (the WS x time interaction coefficient), never its own slope, and computing one is out of scope. Exposure is group membership from a single binary self-report question, with no concentration measured."
+    evidence:
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1 (L/s, mean ± SD) 2.54 ± 0.77 2.59 ± 0.76 0.21*"
+        explanation: "Table 1 row stating the baseline FEV1 mean and SD recorded on this assay's exposed output (2.54 +/- 0.77 L/s) and on the never-exposed assay's output (2.59 +/- 0.76 L/s), with the group comparison P = 0.21."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FVC (L, mean ± SD) 3.51 ± 0.94 3.53 ± 0.95 0.73*"
+        explanation: "Table 1 row stating the baseline FVC mean and SD recorded on this assay's exposed output (3.51 +/- 0.94 L) and on the never-exposed assay's output (3.53 +/- 0.95 L), with the group comparison P = 0.73."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1/FVC ratio (%, mean ± SD) 72.3 ± 11.3 73.4 ± 10.2 0.024*"
+        explanation: "Table 1 row stating the baseline FEV1/FVC ratio mean and SD recorded on this assay's exposed output (72.3 +/- 11.3%) and on the never-exposed assay's output (73.4 +/- 10.2%), with the group comparison P = 0.024."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "N 684 1688"
+        explanation: "Table 1 row giving the two group sizes used as sample_size throughout this file: 684 ever WS-exposed and 1688 never WS-exposed."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "WS exposure was self-reported in response to a question “Have you been exposed to wood smoke for 12 months or longer” as part of the general health survey at study entry."
+        explanation: "States the exposure assessment recorded as EXPOSURE:leng-woodsmoke-ever, and justifies recording an exposure agent with no concentration: group membership from one binary question is the whole of the exposure characterisation."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "this binary exposure assessment does not allow us to detect dose–response relationship"
+        explanation: "The authors' own statement that no dose-response can be derived from this exposure measure, which is why no exposure_concentration is recorded."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Approximately 29% of LSC subjects self-reported to be “ever exposed to WS for over a year” at baseline"
+        explanation: "States the prevalence of the exposure in the cohort, consistent with the 684 of 2372 subjects recorded in this group."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "spirometry testing adhering to the 1994 American Thoracic Society guidelines"
+        explanation: "Documents the spirometry standard recorded on PROTOCOL:leng-spirometry-001, which this assay follows."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Association analyses in this study were conducted in 2372 LSC subjects with at least one post-bronchodilator spirometry and no missing data for WS exposure and covariates."
+        explanation: "States the analytic sample of 2372 subjects that the two exposure groups in this file partition."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In brief, subjects were included in the study if they were 40–75 years of age, former or current smokers with at least 10 pack-years of smoking history, free of prior LC history, and able to understand English."
+        explanation: "States the cohort eligibility criteria recorded in subject_characteristics."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Age (year, mean ± SD) 55.3 ± 9.0 56.7 ± 9.5 0.0013*"
+        explanation: "Table 1 row stating the baseline age mean and SD recorded on this assay's study_subject (55.3 +/- 9.0 years) and on the never-exposed assay's study_subject (56.7 +/- 9.5 years)."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Airway obstruction (n, %) 215 (31.4) 442 (26.2) 0.0097†"
+        explanation: "Table 1 row stating the baseline airway obstruction prevalence quoted in this assay's description."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "CMH (n, %) 222 (32.4) 398 (23.5)  < 0.0001†"
+        explanation: "Table 1 row stating the baseline chronic mucous hypersecretion prevalence quoted in this assay's description and underlying the key event relationship recorded below."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "defined as FEV1/FVC ratio ≤ 70%"
+        explanation: "Gives the airway obstruction definition used for the prevalence figures quoted in this assay's description."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Compared to subjects without WS exposure, subjects with WS exposure had a more rapid decline of FEV1 (- 4.3 ml/s, P = 0.025) and FEV1/FVC ratio (- 0.093%, P = 0.015), but not of FVC (- 2.4 ml, P = 0.30)."
+        explanation: "The paper's headline result: this group declined faster in FEV1 and FEV1/FVC ratio but not FVC, as recorded in the three decline comparisons below."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We identified epidemiological evidence supporting WS exposure as an independent etiological factor for the development of COPD through accelerating lung function decline in an obstructive pattern."
+        explanation: "The authors' conclusion linking this group's wood smoke exposure to the decreased-lung-function key event this assay informs on."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Collectively, these findings provide strong support for an accelerated aging of the lung due to chronic WS exposure in a USA population with low exposure to ambient"
+        explanation: "The authors' framing of the result as accelerated lung aging in a low-ambient-exposure USA population, which is the setting recorded in clinical_context."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "analyses using the Lovelace Smokers Cohort (LSC) identified associations between “self-reported ever WS exposure for over a year” and a lower percent predicted FEV1 and a higher prevalence of airflow obstruction and chronic mucous hypersecretion (CMH)"
+        explanation: "The earlier cross-sectional LSC finding that partially validates this binary exposure question, noted on PROTOCOL:leng-ws-questionnaire-001."
+    has_exposure_condition:
+      - id: "EXPOSURE:leng-woodsmoke-ever"
+        name: "Self-reported ever wood smoke exposure for 12 months or longer, from any source (indoor wood stove, wildfire, occupational or recreational burning), asked once at study entry; no dosimetry was performed, so no concentration is recorded and the 12-month figure is a questionnaire floor rather than a measured duration"
+        exposure_agent:
+          id: "ENVO:01000838"
+          name: "smoke"
+    has_specified_output:
+      - id: "LF:leng-ws-exposed-spirometry-output-exposed"
+        name: "Baseline post-bronchodilator spirometry in the 684 ever wood smoke-exposed LSC subjects (unadjusted group means, Table 1)"
+        experimental_group: treated
+        measured_under: "EXPOSURE:leng-woodsmoke-ever"
+        evidence:
+          - reference: "PMID:36076291"
+            reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "FEV1 (L/s, mean ± SD) 2.54 ± 0.77 2.59 ± 0.76 0.21*"
+            explanation: "States the FEV1 mean and SD recorded on this output (first value pair, the ever WS exposure column)."
+          - reference: "PMID:36076291"
+            reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "FVC (L, mean ± SD) 3.51 ± 0.94 3.53 ± 0.95 0.73*"
+            explanation: "States the FVC mean and SD recorded on this output (first value pair, the ever WS exposure column)."
+          - reference: "PMID:36076291"
+            reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "FEV1/FVC ratio (%, mean ± SD) 72.3 ± 11.3 73.4 ± 10.2 0.024*"
+            explanation: "States the FEV1/FVC ratio mean and SD recorded on this output (first value pair, the ever WS exposure column)."
+        fev1:
+          value: "2.54"
+          unit:
+            id: "UCUM:L/s"
+            name: "liter per second"
+          central_tendency: mean
+          sample_size: 684
+          variability:
+            variability_type: standard_deviation
+            value: "0.77"
+            unit:
+              id: "UCUM:L/s"
+              name: "liter per second"
+        fvc:
+          value: "3.51"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 684
+          variability:
+            variability_type: standard_deviation
+            value: "0.94"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fev1_fvc_ratio:
+          value: "72.3"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 684
+          variability:
+            variability_type: standard_deviation
+            value: "11.3"
+            unit:
+              id: "UO:0000187"
+              name: "percent"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:leng-ws-exposed"
+      name: "Lovelace Smokers Cohort members reporting ever wood smoke exposure for over a year, greater Albuquerque, New Mexico"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "55.3"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: mean
+        sample_size: 684
+        variability:
+          variability_type: standard_deviation
+          value: "9.0"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      subject_characteristics: "684 subjects (approximately 29% of the cohort). Eligibility: 40-75 years of age, former or current smokers with at least 10 pack-years of smoking history, free of prior lung cancer history, and able to understand English. 27.5% male; 66.8% non-Hispanic white, 24.1% Hispanic, 9.1% other ethnicities; 62.1% current smokers; median 35.5 packyears (IQR 26.8-48.5); median time since quitting 6.3 years (IQR 2.2-15.4); 66.0% with college education; 44.6% with annual income of 30 K or more; 60.2% with a Charlson comorbidity score of 1 or more. Baseline airway obstruction (FEV1/FVC ratio <= 70%) in 31.4% and chronic mucous hypersecretion in 32.4%. Median sputum methylation index 2 (IQR 1-4), no different from the never-exposed group (P = 0.90). Compared with the never-exposed group this group was younger, more often Hispanic and currently smoking, had a shorter abstinence period if quit, lower education and income, and more comorbidity. Longitudinal follow-up: median 3 spirometry tests (IQR 1.5-6) over a median 3.6 years (IQR 0.5-8.5) in cohort; 108 deaths (15.8%) and 22 incident lung cancers (3.2%) by 2020, at a mean age at death of 69.3 +/- 10.3 years."
+      clinical_context: "Longitudinal community-based volunteer cohort (the Lovelace Smokers Cohort), established 2001 in the greater Albuquerque area of New Mexico, USA - a population with low ambient levels of combustion-emitted particulate matter. Visits approximately every 18 months with spirometry and questionnaires; active enrollment and on-site follow-up ended in summer 2017, after which lung cancer incidence and deaths were collected annually by phone or mail through mid-2020. Approved by the Western Institutional Review Board with signed consent from all participants."
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:leng-spirometry-001"
+        name: "Pre- and post-bronchodilator spirometry per the 1994 American Thoracic Society guidelines"
+        spirometry_standard: "1994 American Thoracic Society guidelines"
+      - id: "PROTOCOL:leng-ws-questionnaire-001"
+        name: "Self-reported binary wood smoke exposure question at study entry"
+      - id: "PROTOCOL:leng-lme-analysis-001"
+        name: "Linear mixed effects modelling of lung function decline with a wood smoke x time-in-cohort interaction"
+
+  - id: "LF:leng-ws-never-spirometry"
+    name: "Spirometry - LSC smokers reporting no wood smoke exposure (never-exposed control group)"
+    description: "Baseline post-bronchodilator spirometry in the 1688 Lovelace Smokers Cohort subjects who reported never having been exposed to wood smoke for 12 months or longer: FEV1 2.59 +/- 0.76 L/s, FVC 3.53 +/- 0.95 L, FEV1/FVC ratio 73.4 +/- 10.2%. This output also carries the modelled annual FEV1 decline of -24.2 ml/s per year (SE 1.0, P < 0.0001) from the linear mixed effects models' main effect of time in cohort (Table 2, \"Years\" column), which in a model carrying a WS exposure x time interaction is the slope for subjects without WS exposure; the corresponding reference slopes for FVC (-15.0 ml/year, SE 1.2) and FEV1/FVC ratio (-0.386%/year, SE 0.019) have no dedicated slot and are recorded in the comparisons' descriptions. This group was older (56.7 +/- 9.5 years), more often non-Hispanic white (76.2%) and former smokers, better educated and higher income, and stayed in the cohort longer (median 4.6 years, median 4 spirometry tests). 272 deaths (16.1%) and 50 incident lung cancers (3.0%) occurred by 2020, at a mean age at death of 72.8 +/- 10.2 years - 3.5 years later than in the exposed group."
+    evidence:
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1 (L/s, mean ± SD) 2.54 ± 0.77 2.59 ± 0.76 0.21*"
+        explanation: "Table 1 row stating the never-exposed baseline FEV1 mean and SD recorded on this assay's output (second value pair, 2.59 +/- 0.76 L/s)."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FVC (L, mean ± SD) 3.51 ± 0.94 3.53 ± 0.95 0.73*"
+        explanation: "Table 1 row stating the never-exposed baseline FVC mean and SD recorded on this assay's output (second value pair, 3.53 +/- 0.95 L)."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1/FVC ratio (%, mean ± SD) 72.3 ± 11.3 73.4 ± 10.2 0.024*"
+        explanation: "Table 1 row stating the never-exposed baseline FEV1/FVC ratio mean and SD recorded on this assay's output (second value pair, 73.4 +/- 10.2%)."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1 (ml/s) − 24.2 (1.0) − 75.2 (23.7) − 4.3 (1.9)"
+        explanation: "Table 2 row: the first value, -24.2 (SE 1.0) ml/s per year, is the main effect of time in cohort recorded as decline_rate on this control output - the modelled annual FEV1 decline for subjects without WS exposure. The second is the WS main effect on baseline FEV1 and the third the WS x time interaction, both recorded in response_comparisons."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "P value  < 0.0001 0.0016 0.025"
+        explanation: "The P value row beneath the Table 2 FEV1 row: the time-in-cohort main effect recorded as decline_rate here is P < 0.0001, the baseline WS main effect P = 0.0016, and the WS x time interaction P = 0.025."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Linear mixed effects (LME) models with a subject-spe"
+        explanation: "Opening of the statistical analysis section describing the LME models whose time-in-cohort main effect is recorded as decline_rate on this output; the sentence is hyphenated across a line break in the source PDF text, so only the clean leading fragment is quoted."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Fixed effects for baseline age, smoking status (current versus former), packyears of smoking, body mass index (BMI), and height, sex, and ethnicity"
+        explanation: "States the covariates adjusted in the LME models, recorded on PROTOCOL:leng-lme-analysis-001 and in the comparisons' statistical_test."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Subjects with “ever WS exposure for over a year” (n = 684) have a more rapid decline of FEV1 (by − 4.3 ml/s per year, P = 0.025, A and FEV1/FVC ratio (by − 0.093% per year, P = 0.015, B compared to those without (n = 1688)."
+        explanation: "Figure 1 caption stating both group sizes (684 exposed, 1688 never-exposed) recorded as sample_size, and confirming the decline differences are per year."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Age (year, mean ± SD) 55.3 ± 9.0 56.7 ± 9.5 0.0013*"
+        explanation: "Table 1 row stating the never-exposed baseline age mean and SD recorded on this assay's study_subject (56.7 +/- 9.5 years)."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Age at death (year, mean ± SD) 69.3 ± 10.3 72.8 ± 10.2 0.0029*"
+        explanation: "Table 1 row stating the mean age at death in both groups, quoted in this assay's description and the 3.5-year lifespan difference in the header notes."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Subjects reporting WS exposure had a shortened lifespan by 3.5 year at death (Table 1)."
+        explanation: "States the lifespan shortening quoted in this assay's description and in the header notes."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The LSC was established in 2001 to study sputum and blood biomarkers for LC risk assessment and COPD development in current and former smokers enrolled from the greater Albuquerque area of New Mexico."
+        explanation: "States the cohort's founding, purpose and setting, recorded in clinical_context on both assays."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Cohort members returned every 18 months to update smoking status, general health status and respiratory"
+        explanation: "States the follow-up interval recorded on PROTOCOL:leng-spirometry-001 and in clinical_context; the sentence continues across a page break in the source PDF text, so only the clean leading portion is quoted."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Spirometry data were collected from 2511 unique subjects for a total of 11,328 person-visits."
+        explanation: "States the total spirometry volume behind the longitudinal models, recorded on PROTOCOL:leng-spirometry-001."
+    has_exposure_condition:
+      - id: "COND:leng-no-woodsmoke"
+        name: "No self-reported wood smoke exposure for 12 months or longer (control condition; residual ambient wood smoke exposure was not measured and cannot be excluded)"
+    has_specified_output:
+      - id: "LF:leng-ws-never-spirometry-output-control"
+        name: "Baseline post-bronchodilator spirometry in the 1688 never wood smoke-exposed LSC subjects (unadjusted group means, Table 1), with the modelled reference annual FEV1 decline (LME main effect of time in cohort, Table 2)"
+        experimental_group: control
+        measured_under: "COND:leng-no-woodsmoke"
+        evidence:
+          - reference: "PMID:36076291"
+            reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "FEV1 (L/s, mean ± SD) 2.54 ± 0.77 2.59 ± 0.76 0.21*"
+            explanation: "States the FEV1 mean and SD recorded on this output (second value pair, the never WS exposure column)."
+          - reference: "PMID:36076291"
+            reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "FVC (L, mean ± SD) 3.51 ± 0.94 3.53 ± 0.95 0.73*"
+            explanation: "States the FVC mean and SD recorded on this output (second value pair, the never WS exposure column)."
+          - reference: "PMID:36076291"
+            reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "FEV1/FVC ratio (%, mean ± SD) 72.3 ± 11.3 73.4 ± 10.2 0.024*"
+            explanation: "States the FEV1/FVC ratio mean and SD recorded on this output (second value pair, the never WS exposure column)."
+          - reference: "PMID:36076291"
+            reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "FEV1 (ml/s) − 24.2 (1.0) − 75.2 (23.7) − 4.3 (1.9)"
+            explanation: "States the -24.2 (SE 1.0) ml/s per year time-in-cohort main effect recorded as decline_rate on this output."
+        fev1:
+          value: "2.59"
+          unit:
+            id: "UCUM:L/s"
+            name: "liter per second"
+          central_tendency: mean
+          sample_size: 1688
+          variability:
+            variability_type: standard_deviation
+            value: "0.76"
+            unit:
+              id: "UCUM:L/s"
+              name: "liter per second"
+        fvc:
+          value: "3.53"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 1688
+          variability:
+            variability_type: standard_deviation
+            value: "0.95"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fev1_fvc_ratio:
+          value: "73.4"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 1688
+          variability:
+            variability_type: standard_deviation
+            value: "10.2"
+            unit:
+              id: "UO:0000187"
+              name: "percent"
+        decline_rate:
+          value: "-24.2"
+          unit:
+            id: "UCUM:mL/s/a"
+            name: "milliliter per second per year"
+          central_tendency: mean
+          sample_size: 2372
+          variability:
+            variability_type: standard_error
+            value: "1.0"
+            unit:
+              id: "UCUM:mL/s/a"
+              name: "milliliter per second per year"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:leng-ws-never"
+      name: "Lovelace Smokers Cohort members reporting no wood smoke exposure for over a year, greater Albuquerque, New Mexico"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "56.7"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: mean
+        sample_size: 1688
+        variability:
+          variability_type: standard_deviation
+          value: "9.5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      subject_characteristics: "1688 subjects. Same eligibility as the exposed group: 40-75 years of age, former or current smokers with at least 10 pack-years of smoking history, free of prior lung cancer history, and able to understand English. 26.0% male; 76.2% non-Hispanic white, 16.1% Hispanic, 7.8% other ethnicities; 56.7% current smokers; median 34.5 packyears (IQR 25.5-48.5); median time since quitting 9.4 years (IQR 3.5-18.3); 70.7% with college education; 52.2% with annual income of 30 K or more; 48.5% with a Charlson comorbidity score of 1 or more. Baseline airway obstruction in 26.2% and chronic mucous hypersecretion in 23.5%. Median sputum methylation index 2 (IQR 1-4). Longitudinal follow-up: median 4 spirometry tests (IQR 2-7) over a median 4.6 years (IQR 1.4-9.6) in cohort; 272 deaths (16.1%) and 50 incident lung cancers (3.0%) by 2020, at a mean age at death of 72.8 +/- 10.2 years. Residual exposure caveat: this group reported no wood smoke exposure of 12 months or longer, but no measurement was made, so low-level or shorter ambient wood smoke exposure cannot be excluded."
+      clinical_context: "Longitudinal community-based volunteer cohort (the Lovelace Smokers Cohort), established 2001 in the greater Albuquerque area of New Mexico, USA - a population with low ambient levels of combustion-emitted particulate matter. Visits approximately every 18 months with spirometry and questionnaires; active enrollment and on-site follow-up ended in summer 2017, after which lung cancer incidence and deaths were collected annually by phone or mail through mid-2020. Approved by the Western Institutional Review Board with signed consent from all participants."
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:leng-spirometry-001"
+        name: "Pre- and post-bronchodilator spirometry per the 1994 American Thoracic Society guidelines"
+        spirometry_standard: "1994 American Thoracic Society guidelines"
+      - id: "PROTOCOL:leng-ws-questionnaire-001"
+        name: "Self-reported binary wood smoke exposure question at study entry"
+      - id: "PROTOCOL:leng-lme-analysis-001"
+        name: "Linear mixed effects modelling of lung function decline with a wood smoke x time-in-cohort interaction"
+
+# =============================================================================
+# RESPONSE COMPARISONS — the paper's reported LME coefficients for ever wood
+# smoke exposure.
+#
+# MODELLING NOTE: every value here is a multivariable-adjusted linear mixed
+# effects regression coefficient printed in the paper (Table 2 unless stated
+# otherwise), not a difference between the output records' unadjusted group
+# means. Two kinds appear:
+#   - DECLINE comparisons (compared_measurement: decline_rate) carry the
+#     WS exposure x time-in-cohort INTERACTION coefficient: the difference in
+#     annual slope between the groups. The never-exposed group's own slope is
+#     recorded as decline_rate on the control output.
+#   - BASELINE comparisons (compared_measurement: fev1 / fvc /
+#     fev1_fvc_ratio) carry the WS exposure MAIN effect: the difference in the
+#     modelled intercept, i.e. baseline lung function.
+# control_output and treated_output reference the two group output records
+# throughout, because this study does have a genuine two-group contrast; what
+# they do NOT mean is that change_value equals the difference between the
+# values stored on those records. Models adjusted for baseline age, smoking
+# status, packyears, BMI, height, sex and ethnicity, with random intercept and
+# slope per subject. Where the paper prints "P < 0.0001" the float-ranged
+# p_value slot is omitted and the bound stated in the description.
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:leng-ws-fev1-decline"
+    name: "Difference in annual FEV1 decline between ever and never wood smoke-exposed subjects (all subjects)"
+    description: "The headline result: ever WS exposure was associated with an additional FEV1 decline of 4.3 ml/s per year (SE 1.9, P = 0.025) on top of the -24.2 ml/s per year seen without WS exposure. This is the WS exposure x time-in-cohort interaction coefficient from the LME model over all 2372 subjects, not a difference between the two groups' baseline means. Table 3 shows the estimate is robust to further adjustment: -4.1 (1.9) adding current smoking x years, -4.3 (1.9) adding airway obstruction x years, -4.0 (1.9) adding CMH x years, and -3.7 (1.9) with all three (P = 0.050), i.e. less than a 15% reduction in magnitude."
+    derived_from_assay: "LF:leng-ws-exposed-spirometry"
+    compared_measurement: "decline_rate"
+    control_output: "LF:leng-ws-never-spirometry-output-control"
+    treated_output: "LF:leng-ws-exposed-spirometry-output-exposed"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-4.3"
+      unit:
+        id: "UCUM:mL/s/a"
+        name: "milliliter per second per year"
+      variability:
+        variability_type: standard_error
+        value: "1.9"
+        unit:
+          id: "UCUM:mL/s/a"
+          name: "milliliter per second per year"
+    p_value: 0.025
+    statistical_test: "linear mixed effects model with subject-specific random intercept and slope; coefficient of the ever WS exposure x time-in-cohort interaction, adjusted for baseline age, smoking status, packyears, BMI, height, sex and ethnicity"
+    derivation: reported_in_paper
+
+  - id: "COMP:leng-ws-ratio-decline"
+    name: "Difference in annual FEV1/FVC ratio decline between ever and never wood smoke-exposed subjects (all subjects)"
+    description: "Ever WS exposure was associated with an additional FEV1/FVC ratio decline of 0.093 percentage points per year (SE 0.038, P = 0.015) on top of the -0.386%/year (SE 0.019, P < 0.0001) reference slope. WS exposure x time-in-cohort interaction coefficient from the LME model over all 2372 subjects. Robust to further adjustment (Table 3): -0.088 (0.038) adding current smoking x years, -0.094 (0.039) adding airway obstruction x years, -0.088 (0.038) adding CMH x years, -0.080 (0.037) with all three (P = 0.034)."
+    derived_from_assay: "LF:leng-ws-exposed-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    control_output: "LF:leng-ws-never-spirometry-output-control"
+    treated_output: "LF:leng-ws-exposed-spirometry-output-exposed"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.093"
+      unit:
+        id: "UCUM:%/a"
+        name: "percent per year"
+      variability:
+        variability_type: standard_error
+        value: "0.038"
+        unit:
+          id: "UCUM:%/a"
+          name: "percent per year"
+    p_value: 0.015
+    statistical_test: "linear mixed effects model with subject-specific random intercept and slope; coefficient of the ever WS exposure x time-in-cohort interaction, adjusted for baseline age, smoking status, packyears, BMI, height, sex and ethnicity"
+    derivation: reported_in_paper
+
+  - id: "COMP:leng-ws-fvc-decline"
+    name: "Difference in annual FVC decline between ever and never wood smoke-exposed subjects (all subjects) - null"
+    description: "A NULL result, and the basis of the paper's central inference. Ever WS exposure was not associated with a steeper FVC decline: -2.4 ml/year (SE 2.4, P = 0.30) against a reference slope of -15.0 ml/year (SE 1.2, P < 0.0001). Because FEV1 and FEV1/FVC ratio declined faster while FVC did not, the authors conclude WS exposure drives an OBSTRUCTIVE pattern of lung function loss, consistent with COPD development rather than a restrictive process. Recorded with change_direction decreased because the point estimate is negative, but the confidence in a real difference is low."
+    derived_from_assay: "LF:leng-ws-exposed-spirometry"
+    compared_measurement: "fvc"
+    control_output: "LF:leng-ws-never-spirometry-output-control"
+    treated_output: "LF:leng-ws-exposed-spirometry-output-exposed"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-2.4"
+      unit:
+        id: "UCUM:mL/a"
+        name: "milliliter per year"
+      variability:
+        variability_type: standard_error
+        value: "2.4"
+        unit:
+          id: "UCUM:mL/a"
+          name: "milliliter per year"
+    p_value: 0.30
+    statistical_test: "linear mixed effects model with subject-specific random intercept and slope; coefficient of the ever WS exposure x time-in-cohort interaction, adjusted for baseline age, smoking status, packyears, BMI, height, sex and ethnicity"
+    derivation: reported_in_paper
+
+  - id: "COMP:leng-ws-fev1-baseline"
+    name: "Difference in baseline FEV1 between ever and never wood smoke-exposed subjects"
+    description: "Ever WS exposure was associated with a 75.2 ml/s lower baseline FEV1 (SE 23.7, P = 0.0016) - the WS exposure MAIN effect in the LME model, i.e. the adjusted intercept difference. Note the contrast with the unadjusted group means on the output records (2.54 vs 2.59 L/s, P = 0.21): adjustment for age, smoking, BMI, height, sex and ethnicity reveals a deficit the crude comparison does not. The authors note this baseline effect was independent of age at study entry, and suggest early-life WS exposure may blunt lung development and the maximal attainable lung function in addition to accelerating later decline."
+    derived_from_assay: "LF:leng-ws-exposed-spirometry"
+    compared_measurement: "fev1"
+    control_output: "LF:leng-ws-never-spirometry-output-control"
+    treated_output: "LF:leng-ws-exposed-spirometry-output-exposed"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-75.2"
+      unit:
+        id: "UCUM:mL/s"
+        name: "milliliter per second"
+      variability:
+        variability_type: standard_error
+        value: "23.7"
+        unit:
+          id: "UCUM:mL/s"
+          name: "milliliter per second"
+    p_value: 0.0016
+    statistical_test: "linear mixed effects model with subject-specific random intercept and slope; main effect of ever WS exposure, adjusted for baseline age, smoking status, packyears, BMI, height, sex and ethnicity"
+    derivation: reported_in_paper
+
+  - id: "COMP:leng-ws-ratio-baseline"
+    name: "Difference in baseline FEV1/FVC ratio between ever and never wood smoke-exposed subjects"
+    description: "Ever WS exposure was associated with a 1.792 percentage point lower baseline FEV1/FVC ratio (SE 0.430, P < 0.0001 - below the float p_value slot's reach, so the bound is stated here rather than recorded). WS exposure main effect in the LME model. As with baseline FEV1, this adjusted deficit is larger and far more significant than the unadjusted group comparison on the output records (72.3 vs 73.4%, P = 0.024), and the authors note it held regardless of age group."
+    derived_from_assay: "LF:leng-ws-exposed-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    control_output: "LF:leng-ws-never-spirometry-output-control"
+    treated_output: "LF:leng-ws-exposed-spirometry-output-exposed"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-1.792"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      variability:
+        variability_type: standard_error
+        value: "0.430"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    statistical_test: "linear mixed effects model with subject-specific random intercept and slope; main effect of ever WS exposure, adjusted for baseline age, smoking status, packyears, BMI, height, sex and ethnicity"
+    derivation: reported_in_paper
+
+  - id: "COMP:leng-ws-fvc-baseline"
+    name: "Difference in baseline FVC between ever and never wood smoke-exposed subjects - null"
+    description: "A NULL result: ever WS exposure had no significant effect on baseline FVC, -26.1 ml (SE 25.2, P = 0.30). WS exposure main effect in the LME model. Together with the null FVC decline comparison this supports the obstructive rather than restrictive interpretation."
+    derived_from_assay: "LF:leng-ws-exposed-spirometry"
+    compared_measurement: "fvc"
+    control_output: "LF:leng-ws-never-spirometry-output-control"
+    treated_output: "LF:leng-ws-exposed-spirometry-output-exposed"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-26.1"
+      unit:
+        id: "UCUM:mL"
+        name: "milliliter"
+      variability:
+        variability_type: standard_error
+        value: "25.2"
+        unit:
+          id: "UCUM:mL"
+          name: "milliliter"
+    p_value: 0.30
+    statistical_test: "linear mixed effects model with subject-specific random intercept and slope; main effect of ever WS exposure, adjusted for baseline age, smoking status, packyears, BMI, height, sex and ethnicity"
+    derivation: reported_in_paper
+
+  - id: "COMP:leng-ws-fev1-decline-older"
+    name: "Difference in annual FEV1 decline between ever and never wood smoke-exposed subjects, baseline age 55.9 years or older"
+    description: "In the older half of the cohort (baseline age >= 55.9 years, the median) the additional FEV1 decline with ever WS exposure was 8.7 ml/s per year (SE 2.6, P = 0.001) - roughly double the whole-cohort estimate of 4.3 ml/s per year. Reference slope in this stratum -24.0 (SE 1.2) ml/s per year; baseline WS main effect -76.6 (36.8) ml/s, P = 0.038. The authors attribute the age modification to defence mechanisms against environmental insults being compromised as people age."
+    derived_from_assay: "LF:leng-ws-exposed-spirometry"
+    compared_measurement: "decline_rate"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-8.7"
+      unit:
+        id: "UCUM:mL/s/a"
+        name: "milliliter per second per year"
+      variability:
+        variability_type: standard_error
+        value: "2.6"
+        unit:
+          id: "UCUM:mL/s/a"
+          name: "milliliter per second per year"
+    p_value: 0.001
+    statistical_test: "linear mixed effects model stratified at the median baseline age of 55.9 years; coefficient of the ever WS exposure x time-in-cohort interaction in the older stratum, adjusted for baseline age, smoking status, packyears, BMI, height, sex and ethnicity"
+    derivation: reported_in_paper
+
+  - id: "COMP:leng-ws-ratio-decline-older"
+    name: "Difference in annual FEV1/FVC ratio decline between ever and never wood smoke-exposed subjects, baseline age 55.9 years or older"
+    description: "In the older stratum the additional FEV1/FVC ratio decline with ever WS exposure was 0.196 percentage points per year (SE 0.055, P = 0.0004), about double the whole-cohort estimate of 0.093. Reference slope -0.391 (SE 0.026) %/year; baseline WS main effect -2.013 (0.724)%, P = 0.0055."
+    derived_from_assay: "LF:leng-ws-exposed-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.196"
+      unit:
+        id: "UCUM:%/a"
+        name: "percent per year"
+      variability:
+        variability_type: standard_error
+        value: "0.055"
+        unit:
+          id: "UCUM:%/a"
+          name: "percent per year"
+    p_value: 0.0004
+    statistical_test: "linear mixed effects model stratified at the median baseline age of 55.9 years; coefficient of the ever WS exposure x time-in-cohort interaction in the older stratum, adjusted for baseline age, smoking status, packyears, BMI, height, sex and ethnicity"
+    derivation: reported_in_paper
+
+  - id: "COMP:leng-ws-fev1-decline-younger"
+    name: "Difference in annual FEV1 decline between ever and never wood smoke-exposed subjects, baseline age under 55.9 years - null"
+    description: "A NULL result that establishes the age modification: in the younger half of the cohort (baseline age < 55.9 years) ever WS exposure had essentially no effect on FEV1 decline, -0.5 ml/s per year (SE 2.8, P = 0.85), against a reference slope of -24.4 (SE 1.5). The FEV1/FVC ratio decline was likewise null in this stratum, -0.014 (0.053) %/year, P = 0.80. Baseline deficits, by contrast, persisted in the young: FEV1 main effect -65.6 (30.7) ml/s, P = 0.033; FEV1/FVC ratio -1.666 (0.493)%, P = 0.0008."
+    derived_from_assay: "LF:leng-ws-exposed-spirometry"
+    compared_measurement: "decline_rate"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.5"
+      unit:
+        id: "UCUM:mL/s/a"
+        name: "milliliter per second per year"
+      variability:
+        variability_type: standard_error
+        value: "2.8"
+        unit:
+          id: "UCUM:mL/s/a"
+          name: "milliliter per second per year"
+    p_value: 0.85
+    statistical_test: "linear mixed effects model stratified at the median baseline age of 55.9 years; coefficient of the ever WS exposure x time-in-cohort interaction in the younger stratum, adjusted for baseline age, smoking status, packyears, BMI, height, sex and ethnicity"
+    derivation: reported_in_paper
+
+  - id: "COMP:leng-ws-fev1-decline-age-interaction"
+    name: "Three-way interaction of wood smoke exposure, baseline age and time in cohort on FEV1 decline"
+    description: "The formal test of age modification, run across the whole cohort rather than in strata: the three-way interaction among WS exposure (yes versus no), baseline age (per year) and time in cohort (per year) on FEV1 was -8.0 ml/s (P = 0.038), meaning the WS-associated excess FEV1 decline grows with age at entry. The companion FEV1/FVC ratio three-way interaction was -0.184% (P = 0.017), while FVC again showed nothing (-2.4 ml/s, P = 0.61). No standard error is printed for these three-way estimates, so no variability is recorded."
+    derived_from_assay: "LF:leng-ws-exposed-spirometry"
+    compared_measurement: "decline_rate"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-8.0"
+      unit:
+        id: "UCUM:mL/s"
+        name: "milliliter per second"
+    p_value: 0.038
+    statistical_test: "linear mixed effects model; three-way interaction among ever WS exposure, baseline age and time in cohort, adjusted for baseline age, smoking status, packyears, BMI, height, sex and ethnicity"
+    derivation: reported_in_paper
+
+  - id: "COMP:leng-ws-ratio-decline-age-interaction"
+    name: "Three-way interaction of wood smoke exposure, baseline age and time in cohort on FEV1/FVC ratio decline"
+    description: "Three-way interaction among WS exposure, baseline age and time in cohort on the FEV1/FVC ratio: -0.184% (P = 0.017), confirming that the WS-associated excess ratio decline grows with age at entry. No standard error is printed, so no variability is recorded."
+    derived_from_assay: "LF:leng-ws-exposed-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.184"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+    p_value: 0.017
+    statistical_test: "linear mixed effects model; three-way interaction among ever WS exposure, baseline age and time in cohort, adjusted for baseline age, smoking status, packyears, BMI, height, sex and ethnicity"
+    derivation: reported_in_paper
+
+  - id: "COMP:leng-ws-fev1-decline-excl-lung-cancer"
+    name: "Difference in annual FEV1 decline between ever and never wood smoke-exposed subjects, excluding the 72 incident lung cancer cases (sensitivity analysis)"
+    description: "Sensitivity analysis guarding against reverse causation from undiagnosed cancer: excluding the 72 incident lung cancer cases left 2300 subjects, in whom the WS-associated excess FEV1 decline was 4.6 (SE 2.0, P = 0.019) - if anything slightly larger than the 4.3 in the full cohort. UNIT CAVEAT: the paper prints this estimate as \"ml/year\" in the sensitivity text, while Table 2, the abstract and Fig. 1 all give the same FEV1 coefficient as ml/s per year (FEV1 itself is reported throughout this paper as a flow in L/s). The Table 2 unit is the one recorded here, so that this coefficient and its full-cohort sibling carry the same unit; the printed wording is flagged rather than silently reconciled. The companion FEV1/FVC ratio estimate was -0.097 (0.039) %/year, P = 0.012. A separate sensitivity analysis excluding the 96 subjects who died within 4.86 years of entry also left the estimates essentially unchanged."
+    derived_from_assay: "LF:leng-ws-exposed-spirometry"
+    compared_measurement: "decline_rate"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-4.6"
+      unit:
+        id: "UCUM:mL/s/a"
+        name: "milliliter per second per year"
+      variability:
+        variability_type: standard_error
+        value: "2.0"
+        unit:
+          id: "UCUM:mL/s/a"
+          name: "milliliter per second per year"
+    p_value: 0.019
+    statistical_test: "linear mixed effects model in the 2300 subjects remaining after excluding incident lung cancer cases; coefficient of the ever WS exposure x time-in-cohort interaction, adjusted for baseline age, smoking status, packyears, BMI, height, sex and ethnicity"
+    derivation: reported_in_paper
+
+  - id: "COMP:leng-ws-ratio-decline-excl-lung-cancer"
+    name: "Difference in annual FEV1/FVC ratio decline between ever and never wood smoke-exposed subjects, excluding the 72 incident lung cancer cases (sensitivity analysis)"
+    description: "Companion to the FEV1 sensitivity analysis: in the 2300 subjects remaining after excluding incident lung cancer cases the WS-associated excess FEV1/FVC ratio decline was 0.097 percentage points per year (SE 0.039, P = 0.012), close to the 0.093 in the full cohort."
+    derived_from_assay: "LF:leng-ws-exposed-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.097"
+      unit:
+        id: "UCUM:%/a"
+        name: "percent per year"
+      variability:
+        variability_type: standard_error
+        value: "0.039"
+        unit:
+          id: "UCUM:%/a"
+          name: "percent per year"
+    p_value: 0.012
+    statistical_test: "linear mixed effects model in the 2300 subjects remaining after excluding incident lung cancer cases; coefficient of the ever WS exposure x time-in-cohort interaction, adjusted for baseline age, smoking status, packyears, BMI, height, sex and ethnicity"
+    derivation: reported_in_paper
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS
+#
+# The paper's one quantitative KE-to-KE finding: baseline chronic mucous
+# hypersecretion (CMH) predicted faster subsequent lung function decline in the
+# same cohort. CMH is the clinical manifestation of airway mucin
+# hypersecretion, so it is mapped to KE:ke-mucin-hypersecretion; the KeyEvent
+# blocks are copied verbatim from origin/main.
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:leng-cmh-to-lung-function-decline"
+    name: "Chronic mucous hypersecretion is associated with more rapid subsequent lung function decline"
+    description: "Baseline chronic mucous hypersecretion (CMH, defined as self-reported cough productive of phlegm for at least 3 months per year for at least 2 consecutive years - the standard definition of chronic bronchitis) predicted faster decline of both FEV1 and FEV1/FVC ratio over follow-up in the same cohort. In the LME model adding a CMH x time-in-cohort interaction, CMH carried an excess decline of 5.4 ml/s per year for FEV1 (SE 2.0, P = 0.0061) and 0.097 percentage points per year for the FEV1/FVC ratio (SE 0.040, P = 0.014) - of the same order as the wood smoke effect itself. CMH was also commoner in the WS-exposed group (32.4% vs 23.5%, P < 0.0001), yet adding CMH x years to the model reduced the WS coefficient by less than 15% (from -4.3 to -4.0 ml/s per year), so in this cohort CMH is a parallel contributor rather than the pathway through which WS exposure acts. In the fully adjusted model carrying current smoking, airway obstruction and CMH interactions together, the CMH term fell to -3.1 (2.1) ml/s per year (P = 0.13) while airway obstruction dominated at -7.2 (2.0) (P = 0.0002). This is an observational association within one cohort, with no mechanistic measurement, hence evidence_support moderate. The authors separately note in vivo and in vitro evidence from Tesfaigzi's group for wood smoke-induced mucous cell hyperplasia, but that evidence is cited from other papers and is not recorded here."
+    upstream_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    relationship_type: "associated with"
+    evidence_support: moderate
+    evidence:
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "baseline airway obstruction and CMH were associated with a more rapid decline of FEV1 and FEV1/FVC ratio (Table 3)."
+        explanation: "States the association this relationship records: baseline chronic mucous hypersecretion predicted faster decline of FEV1 and FEV1/FVC ratio."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "CMH × years − 5.4 (2.0) − 0.097 (0.040)"
+        explanation: "Table 3 row giving the CMH x time-in-cohort interaction coefficients quoted in this relationship's description: -5.4 (SE 2.0) ml/s per year for FEV1 and -0.097 (0.040) %/year for the FEV1/FVC ratio."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "P value 0.0061 0.014"
+        explanation: "The P value row beneath the Table 3 CMH x years row, giving P = 0.0061 for FEV1 and P = 0.014 for the FEV1/FVC ratio."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Airway obstruction × years − 7.2 (2.0) − 0.279 (0.038)"
+        explanation: "Table 3 row from the fully adjusted model, showing airway obstruction dominating the decline when current smoking, airway obstruction and CMH interactions are modelled together - the comparison that keeps this relationship's evidence_support at moderate rather than strong."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "CMH (n, %) 222 (32.4) 398 (23.5)  < 0.0001†"
+        explanation: "Table 1 row showing CMH was commoner in the WS-exposed group, the confounding structure this relationship's description discusses."
+      - reference: "PMID:36076291"
+        reference_title: "Wood smoke exposure affects lung aging, quality of life, and all-cause mortality in New Mexican smokers."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Recent studies from Tesfaigzi’s group identified in vivo and in vitro evidence supporting WS-induced mucous cell hyperplasia which is more prominent in p53 arginine carriers than proline carriers"
+        explanation: "The authors' citation of external in vivo and in vitro evidence that wood smoke induces mucous cell hyperplasia, which motivates mapping CMH to the mucin hypersecretion key event; the mechanistic evidence itself belongs to the cited papers, not this one."
