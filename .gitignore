@@ -186,3 +186,6 @@ dmypy.json
 /tmp/
 /data/literature_search/raw_retrieval_*.csv
 /data/literature_search/candidates_*.csv
+
+# KB review site built by scripts/build_site.py (deployed by CI, never committed)
+_site/

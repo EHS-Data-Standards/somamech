@@ -1,0 +1,59 @@
+{% extends "base.html.j2" %}
+{% block title %}Key events · SOMA mechanisms KB{% endblock %}
+{% block content %}
+<div class="pagehead">
+  <h1>Key-event network</h1>
+  <p class="subtitle">
+    Key events and their relationships pooled across all {{ stats.publications }} extracted
+    papers, in the style of an adverse-outcome pathway: columns go from molecular initiating
+    events on the left to organism-level outcomes on the right. Click a node to jump to its
+    evidence; line style shows the strength of support recorded for each relationship.
+  </p>
+</div>
+
+<div class="network-wrap">
+  <div class="network-legend">
+    {% for lvl in levels_present %}
+    <span><span class="lvl-dot lvl-{{ lvl }}-bg"></span>{{ lvl }}</span>
+    {% endfor %}
+    <span><svg class="edge-sample" width="34" height="10"><line x1="0" y1="5" x2="34" y2="5" stroke="var(--muted)" stroke-width="2.5"/></svg>strong</span>
+    <span><svg class="edge-sample" width="34" height="10"><line x1="0" y1="5" x2="34" y2="5" stroke="var(--muted)" stroke-width="1.6"/></svg>moderate</span>
+    <span><svg class="edge-sample" width="34" height="10"><line x1="0" y1="5" x2="34" y2="5" stroke="var(--muted)" stroke-width="1.6" stroke-dasharray="5 4"/></svg>weak / not specified</span>
+  </div>
+  {{ network_svg }}
+</div>
+
+<h2 id="key-events-table">Key events</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Key event</th><th>Level</th><th>Supported by</th></tr>
+  {% for ke in key_events %}
+  <tr id="{{ ke.anchor }}">
+    <td><span class="lvl-dot lvl-{{ ke.level }}-bg"></span><b>{{ ke.name }}</b><div class="sub">{{ ke.id }}</div></td>
+    <td>{{ ke.level }}</td>
+    <td>
+      {% for p in ke.papers %}<a href="{{ root }}/publications/{{ p.slug }}.html">{{ p.short }}</a>{% if not loop.last %} · {% endif %}{% endfor %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+</div>
+
+<h2 id="kers-table">Relationships</h2>
+<div class="table-wrap">
+<table>
+  <tr><th>Upstream</th><th></th><th>Downstream</th><th>Support</th><th>Papers</th></tr>
+  {% for ker in kers %}
+  <tr>
+    <td><a href="#{{ ker.up_anchor }}"><span class="lvl-dot lvl-{{ ker.up_level }}-bg"></span>{{ ker.upstream_name }}</a></td>
+    <td class="sub">{{ ker.relationship_type }}</td>
+    <td><a href="#{{ ker.dn_anchor }}"><span class="lvl-dot lvl-{{ ker.dn_level }}-bg"></span>{{ ker.downstream_name }}</a></td>
+    <td>{{ ker.support|replace('_', ' ') }}</td>
+    <td>
+      {% for p in ker.papers %}<a href="{{ root }}/publications/{{ p.slug }}.html#kers">{{ p.short }}</a>{% if not loop.last %} · {% endif %}{% endfor %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}SOMA mechanisms KB{% endblock %}</title>
+<link rel="stylesheet" href="{{ root }}/assets/site.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="{{ root }}/index.html">SOMA mechanisms KB</a>
+    <nav class="site-nav">
+      <a href="{{ root }}/index.html" {% if active == 'publications' %}class="active"{% endif %}>Publications</a>
+      <a href="{{ root }}/key-events.html" {% if active == 'key-events' %}class="active"{% endif %}>Key events</a>
+      <a href="https://github.com/{{ repo }}">GitHub</a>
+      <a href="https://github.com/{{ repo }}/releases/download/workbook-latest/soma_extractions.xlsx">Workbook (xlsx)</a>
+    </nav>
+  </div>
+</header>
+<main>
+{% block content %}{% endblock %}
+</main>
+<footer class="site-footer">
+  <div class="inner">
+    Built from <a href="https://github.com/{{ repo }}/tree/{{ ref }}/kb/publications">kb/publications</a>
+    at <code>{{ version }}</code> on {{ build_date }} ·
+    structured evidence extracted from the published literature by the
+    <a href="https://github.com/{{ repo }}">somamech</a> pipeline and verified against each paper's text.
+    Every quote links back to its source publication.
+  </div>
+</footer>
+</body>
+</html>

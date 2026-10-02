@@ -353,3 +353,15 @@ query sql="" db="exports/soma.duckdb":
     set -euo pipefail
     [ -f "{{db}}" ] || just build-db "{{db}}"
     uv run python scripts/soma_query.py "{{db}}" "{{sql}}"
+
+# Build the static KB review site — one page per extracted paper plus the
+# pooled key-event network. Deployed to GitHub Pages from each release by
+# .github/workflows/deploy-kb-site.yaml; this recipe is the local preview.
+[group('exports')]
+gen-site out="_site" version="dev":
+    uv run python scripts/build_site.py --out {{out}} --version {{version}}
+
+# Build the KB site and serve it at http://localhost:8900 for review.
+[group('exports')]
+serve-site out="_site": (gen-site out)
+    uv run python -m http.server --directory {{out}} 8900
