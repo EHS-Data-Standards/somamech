@@ -46,6 +46,21 @@
 # (the PubMed abstract at the top of the cache entry, or artifact-free
 # sentences) it was preferred.
 #
+# EVIDENCE_SOURCE NOTE: because this is a review, nearly every quoted sentence
+# names the primary study behind it, and evidence_source classifies THAT study,
+# not the review doing the quoting. Checked against the reference list in the
+# cached text: Jin et al (2017) is mouse work ("fine particulate matter-induced
+# lung inflammation in mice") and the IL-1beta / EGFR-mutant AECII arm of Hill
+# et al (2023) is likewise murine, so those quotes are MODEL_ORGANISM; Liu et al
+# (2020, Beas-2B), Liu et al (2018, lung epithelial cells), Vogeley et al (2022),
+# Ye et al (2018) and Wang et al (2023, AhR-TMPRSS2-IL18) are cell-based, so
+# those are IN_VITRO. HUMAN_CLINICAL is kept for the epidemiology (Huang 2021,
+# Hill 2023 UK Biobank, Zhang 2022, Lin 2024, Sorensen 2003) and for the
+# review's own abstract and conclusion statements. OTHER is used for the two
+# general mechanism statements the review makes without attributing a primary
+# study (macrophage ROS release; the genomic/nongenomic AhR signaling
+# description, which cites another review).
+#
 # =============================================================================
 
 # =============================================================================
@@ -82,7 +97,7 @@ key_events:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: OTHER
         snippet: "Upon entry into the body, these toxic substances promote the release of reactive oxygen species (ROS) by macrophages."
         explanation: "Names the proximate mechanism the review gives for the oxidative stress key event: PM2.5-adsorbed heavy metals and PAHs drive macrophage ROS release."
 
@@ -106,7 +121,7 @@ key_events:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: IN_VITRO
         snippet: "downregulate Rad51, a key gene involved in homologous recombination (HR) repair of DNA double-strand breaks"
         explanation: "The review's second route to the DNA damage key event: besides generating lesions, PM2.5 suppresses their repair (Rad51 downregulation, homologous recombination), so lesions accumulate."
 
@@ -118,13 +133,13 @@ key_events:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: IN_VITRO
         snippet: "In addition, PM2.5 exposure induces aryl hydrocarbon receptor (AhR)-dependent transcription of transmembrane serine protease 2 (TMPRSS2) and interleukin-18 (IL-18), further promoting cancer progression in EGFR-mutant cells (Wang et al, 2023)."
         explanation: "States that PM2.5 exposure drives AhR-dependent transcription (TMPRSS2, IL-18), supporting AhR pathway activation as a key event in PM2.5-associated lung cancer."
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: OTHER
         snippet: "nongenomic AhR signaling activates pathways like EGFR through cytoplasmic protein interactions."
         explanation: "Describes the nongenomic arm of AhR signaling the review emphasizes, which is what links this key event to EGFR activation downstream."
 
@@ -136,7 +151,7 @@ key_events:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: IN_VITRO
         snippet: "PM2.5 also activates the EGFR in lung cancer cells, including those with wild-type EGFR (Wang et al, 2023)."
         explanation: "States that PM2.5 activates EGFR in lung cancer cells regardless of EGFR mutation status, supporting EGFR activation as a key event in this pathway."
       - reference: "PMID:39578555"
@@ -148,7 +163,7 @@ key_events:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: IN_VITRO
         snippet: "PAHs can induce wild-type EGFR activation via Src kinase triggered by AhR ligand interactions (Vogeley et al, 2022)."
         explanation: "Attributes wild-type EGFR activation to PAH components of PM2.5 acting through AhR ligand binding and Src, tying this key event to the upstream AhR key event."
 
@@ -160,13 +175,13 @@ key_events:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: MODEL_ORGANISM
         snippet: "PM2.5-induced lung inﬂammation is driven by the elevated ROS to activate pathways like the EGF-EGFR-protein kinase B (AKT)-nuclear factor kappa B (NF-κB) cascade, interleukin-1 β (IL-1β), and IL-18 (Jin et al, 2017)."
         explanation: "States that PM2.5-induced lung inflammation is ROS-driven and runs through the EGFR-AKT-NF-kB cascade and IL-1b/IL-18, supporting airway inflammation as a tissue-level key event downstream of oxidative stress."
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: IN_VITRO
         snippet: "PM2.5 exposure enhances NF- κB activity, which in turn drives the production of pro-in ﬂammatory cytokines like interleukin-6 (IL-6) and TNF- α (Liu et al, 2018)."
         explanation: "Names the pro-inflammatory cytokines (IL-6, TNF-a) the review attributes to PM2.5-enhanced NF-kB activity, the molecular content of this inflammation key event."
       - reference: "PMID:39578555"
@@ -184,13 +199,13 @@ key_events:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: MODEL_ORGANISM
         snippet: "In addition, PM2.5 exposure increases IL-1β release from macrophages, encouraging a progenitor-like state in EGFR-mutant alveolar type II cells, which are precursors to lung adenocarcinoma (Hill et al, 2023)."
         explanation: "States that PM2.5 raises macrophage IL-1b release and that this IL-1 program pushes EGFR-mutant alveolar type II cells into a progenitor-like, adenocarcinoma-precursor state."
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: IN_VITRO
         snippet: "PM2.5 exposure also signiﬁcantly induces IL-18 producti on to promote lung cancer progression (Wang et al, 2023)."
         explanation: "The IL-18 arm of the same IL-1 family inflammatory program, which the review links directly to lung cancer progression."
 
@@ -254,8 +269,12 @@ key_events:
 # evidence_support is read off the review's own wording: "leads to" / "is
 # driven by" statements are recorded as moderate (a review's synthesis of
 # primary evidence, not primary evidence itself), hedged wording ("may drive",
-# "suggested that", "encouraging") as weak. quantitative_understanding is low
-# throughout except where the review reports a dose-response for the link.
+# "suggested that", "encouraging") as weak. quantitative_understanding is
+# not_specified throughout, except KER:chen-oxidative-stress-dna-damage, the one
+# link for which the review reports any exposure-response figure (+11% lymphocyte
+# 8-oxodG per 10 ug/m3 PM2.5, from Sorensen et al 2003 as cited); even there it
+# is recorded as low rather than higher, because a single cited percentage from
+# another study is not a characterized response-response relationship.
 # =============================================================================
 
 key_event_relationships:
@@ -309,7 +328,7 @@ key_event_relationships:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: MODEL_ORGANISM
         snippet: "PM2.5-induced lung inﬂammation is driven by the elevated ROS to activate pathways like the EGF-EGFR-protein kinase B (AKT)-nuclear factor kappa B (NF-κB) cascade, interleukin-1 β (IL-1β), and IL-18 (Jin et al, 2017)."
         explanation: "States that elevated ROS is what drives PM2.5-induced lung inflammation, and names the pathways carrying the link."
       - reference: "PMID:39578555"
@@ -339,7 +358,7 @@ key_event_relationships:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: MODEL_ORGANISM
         snippet: "PM2.5-induced lung inﬂammation is driven by the elevated ROS to activate pathways like the EGF-EGFR-protein kinase B (AKT)-nuclear factor kappa B (NF-κB) cascade, interleukin-1 β (IL-1β), and IL-18 (Jin et al, 2017)."
         explanation: "Names elevated ROS as the activator of the EGF-EGFR-AKT-NF-kB cascade, the link recorded here."
 
@@ -363,13 +382,13 @@ key_event_relationships:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: IN_VITRO
         snippet: "AhR can activate EGFR through both traditional genomic signaling and nongenomi c pathways, promoting cancer cell proliferation and resistance to EGFR –TKIs by activating proto- oncogene tyrosine-protein kinase Src (Src) signaling (Ye et al, 2018)."
         explanation: "The review's explicit statement that AhR activates EGFR, via Src, in both genomic and nongenomic modes."
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: IN_VITRO
         snippet: "PAHs can induce wild-type EGFR activation via Src kinase triggered by AhR ligand interactions (Vogeley et al, 2022)."
         explanation: "Identifies the PM2.5-borne AhR ligands (PAHs) that trigger wild-type EGFR activation through Src, grounding this relationship in PM2.5 exposure."
 
@@ -417,7 +436,7 @@ key_event_relationships:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: MODEL_ORGANISM
         snippet: "PM2.5-induced lung inﬂammation is driven by the elevated ROS to activate pathways like the EGF-EGFR-protein kinase B (AKT)-nuclear factor kappa B (NF-κB) cascade, interleukin-1 β (IL-1β), and IL-18 (Jin et al, 2017)."
         explanation: "Lists IL-1b and IL-18 among the pathways producing PM2.5-induced lung inflammation, supporting the IL-1 program as upstream of airway inflammation."
 
@@ -441,13 +460,13 @@ key_event_relationships:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: MODEL_ORGANISM
         snippet: "In addition, PM2.5 exposure increases IL-1β release from macrophages, encouraging a progenitor-like state in EGFR-mutant alveolar type II cells, which are precursors to lung adenocarcinoma (Hill et al, 2023)."
         explanation: "Connects the IL-1 program to adenocarcinoma precursor cells, the route by which the review links IL-1 inflammation to the adverse outcome."
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: IN_VITRO
         snippet: "PM2.5 exposure also signiﬁcantly induces IL-18 producti on to promote lung cancer progression (Wang et al, 2023)."
         explanation: "The IL-18 arm of the same relationship, stated by the review as promoting lung cancer progression."
 
