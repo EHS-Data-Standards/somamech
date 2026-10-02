@@ -7,6 +7,16 @@ Download the generated model serializations:
 - [Python Dataclasses](artifacts/soma.py)
 - [Excel Spreadsheet](artifacts/soma.xlsx)
 
+## Pooled Corpus Data
+
+The full extraction corpus, rebuilt from `kb/publications/` on every site deploy:
+
+- [Pooled extraction workbook (`soma_extractions.xlsx`)](artifacts/soma_extractions.xlsx) —
+  one tab per entity type, one row per entity, from every extracted paper; see the
+  [Workbook Guide](workbook-guide.md)
+- [DuckDB database (`soma.duckdb`)](artifacts/soma.duckdb) — schema-complete relational
+  build of the same corpus, including the `evidence` table of supporting quotes
+
 ## Paper-Derived SOMA Data
 
 SOMA-conformant data extracted from published PM2.5 research papers. Each workbook contains

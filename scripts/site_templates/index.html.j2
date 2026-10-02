@@ -1,0 +1,77 @@
+{% extends "base.html.j2" %}
+{% block title %}Publications · SOMA mechanisms KB{% endblock %}
+{% block content %}
+<div class="pagehead">
+  <h1>Extracted publications</h1>
+  <p class="subtitle">
+    Each paper below has been extracted into a structured, schema-validated YAML record:
+    assays, exposure conditions, outcomes, and key-event relationships, every one backed by
+    exact quotes from the source text. Open a paper to review the evidence, or browse the
+    pooled <a href="{{ root }}/key-events.html">key-event network</a>.
+  </p>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="label">Publications</div><div class="value">{{ stats.publications }}</div></div>
+  <div class="stat"><div class="label">Assays</div><div class="value">{{ stats.assays }}</div></div>
+  <div class="stat"><div class="label">Evidence quotes</div><div class="value">{{ stats.evidence }}</div></div>
+  <div class="stat"><div class="label">Key events</div><div class="value">{{ stats.key_events }}</div></div>
+  <div class="stat"><div class="label">Relationships</div><div class="value">{{ stats.kers }}</div></div>
+</div>
+
+<div class="toolbar">
+  <input type="search" id="pub-search" placeholder="Search title, PMID, agent, key event…" aria-label="Search publications">
+  {% for sp in all_species %}
+  <button class="chip-btn" type="button" data-species="{{ sp|lower }}" aria-pressed="false">{{ sp }}</button>
+  {% endfor %}
+  <span class="result-count" id="pub-count">{{ publications|length }} papers</span>
+</div>
+
+<div class="pub-list" id="pub-list">
+{% for pub in publications %}
+  <article class="pub-card" data-search="{{ pub.search_text }}">
+    <h3><a href="{{ root }}/publications/{{ pub.slug }}.html">{{ pub.title }}</a></h3>
+    <div class="pub-meta">
+      {% if pub.pmid %}<a href="https://pubmed.ncbi.nlm.nih.gov/{{ pub.pmid }}/">PMID:{{ pub.pmid }}</a>{% endif %}
+      {% if pub.doi %}<a href="https://doi.org/{{ pub.doi }}">doi:{{ pub.doi }}</a>{% endif %}
+      <span>{{ pub.n_assays }} assays · {{ pub.n_evidence }} quotes · {{ pub.n_kers }} relationships</span>
+    </div>
+    <div class="chips">
+      {% for sp in pub.species %}<span class="chip">{{ sp }}</span>{% endfor %}
+      {% for agent in pub.agents %}<span class="chip">{{ agent }}</span>{% endfor %}
+      {% for sec in pub.sections %}<span class="chip">{{ sec.label }} <span class="n">{{ sec.entries|length }}</span></span>{% endfor %}
+    </div>
+  </article>
+{% endfor %}
+</div>
+
+<script>
+(function () {
+  var input = document.getElementById('pub-search');
+  var count = document.getElementById('pub-count');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.pub-card'));
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.chip-btn'));
+  function apply() {
+    var q = input.value.trim().toLowerCase();
+    var active = chips.filter(function (c) { return c.getAttribute('aria-pressed') === 'true'; })
+                      .map(function (c) { return c.dataset.species; });
+    var shown = 0;
+    cards.forEach(function (card) {
+      var hay = card.dataset.search;
+      var ok = (!q || hay.indexOf(q) !== -1) &&
+               (active.length === 0 || active.some(function (s) { return hay.indexOf(s) !== -1; }));
+      card.style.display = ok ? '' : 'none';
+      if (ok) shown++;
+    });
+    count.textContent = shown + (shown === 1 ? ' paper' : ' papers');
+  }
+  input.addEventListener('input', apply);
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () {
+      c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+      apply();
+    });
+  });
+})();
+</script>
+{% endblock %}

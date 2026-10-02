@@ -353,3 +353,23 @@ query sql="" db="exports/soma.duckdb":
     set -euo pipefail
     [ -f "{{db}}" ] || just build-db "{{db}}"
     uv run python scripts/soma_query.py "{{db}}" "{{sql}}"
+
+# Build the static KB review site — one page per extracted paper plus the
+# pooled key-event network. Deployed to GitHub Pages from each release by
+# .github/workflows/deploy-kb-site.yaml; this recipe is the local preview.
+[group('exports')]
+gen-site out="_site" version="dev":
+    uv run python scripts/build_site.py --out {{out}} --version {{version}}
+
+# Build the KB site and serve it at http://localhost:8900 for review.
+[group('exports')]
+serve-site out="_site": (gen-site out)
+    uv run python -m http.server --directory {{out}} 8900
+
+# Package the DataHarmonizer build and the MkDocs schema docs into one static
+# site. Shared by deploy-kb-site.yaml (which deploys it under /docs/ in the
+# Pages artifact) and deploy-docs.yaml (build-only validation), so the steps
+# live in one place. Assumes `just gen-project` and `just gen-doc` have run.
+[group('exports')]
+build-docs-site out="tmp/docs-site": build-dh
+    uv run mkdocs build -d {{out}}

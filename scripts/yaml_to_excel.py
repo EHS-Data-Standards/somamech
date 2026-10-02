@@ -4,6 +4,10 @@
 Reads SOMA Container YAML data and produces an Excel workbook with tabs
 for each entity type, styled consistently with the SOMA project conventions.
 
+Tab names and column lists are derived from the installed soma-schema at
+import time (see the "Schema-driven headers" section), so a slot added to
+the schema shows up in the workbook without editing this script.
+
 Usage:
     uv run python scripts/yaml_to_excel.py --input <yaml> --output <xlsx>
     uv run python scripts/yaml_to_excel.py --input <yaml> --output <xlsx> --template project/excel/soma.xlsx
@@ -11,14 +15,23 @@ Usage:
 
 import argparse
 import datetime
-import re
 import sys
+from importlib.resources import files as _pkg_files
 from pathlib import Path
 
 import openpyxl
 import yaml
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from soma_duckdb import (  # noqa: E402 - needs the sys.path line above
+    QUANTITY_CLASSES,
+    TERM_CLASSES,
+    is_entity,
+    load_schema,
+)
 
 # ---------------------------------------------------------------------------
 # Styling (matches generate_paper_excel.py)
@@ -42,6 +55,9 @@ TAB_COLORS = {
     "KeyEvent": "ED7D31",
     "CellularSystem": "4472C4",
     "InVivoSubject": "4472C4",
+    "PopulationSubject": "4472C4",
+    "ModelSystem": "4472C4",
+    "AdverseOutcomePathway": "ED7D31",
     "CFTRFunctionAssay": "C00000",
     "CFTRFunctionOutput": "C00000",
     "GeneExpressionAssay": "5B9BD5",
@@ -70,216 +86,122 @@ TAB_COLORS = {
 }
 
 # ---------------------------------------------------------------------------
-# Header definitions per tab (matching generate_paper_excel.py / scaffold)
+# Schema-driven headers
 # ---------------------------------------------------------------------------
+# Tab names and column lists come from the installed soma-schema, read with
+# the same SchemaView mapping rules as scripts/soma_duckdb.py:
+#   * QuantityValue slot   -> <slot>_value / <slot>_unit columns
+#   * QuantityRange slot   -> <slot>_min_value / <slot>_max_value / <slot>_unit
+#   * term reference slot  -> <slot> (label) + <slot>_id columns
+#   * entity reference     -> the referenced id ('; '-joined when multivalued)
+#   * plain scalar / enum  -> one column ('; '-joined when multivalued)
+# Two slots are deliberately not columns: `has_specified_output` (each output
+# record already gets its own Output-tab row) and `evidence` (quote-level
+# provenance with no natural key -- it lives in the YAML and in the DuckDB
+# `evidence` table, not in the spreadsheet view).
 
-HEADERS = {
-    "Protocol": [
-        "id", "name", "description", "protocol_type", "protocol_version",
-        "equipment_required", "primer_sequences", "antibodies_used",
-        "detection_method", "reference_gene",
-    ],
-    "ExposureCondition": [
-        "id", "name", "exposure_agent", "exposure_agent_id",
-        "exposure_concentration_value", "exposure_concentration_unit",
-        "exposure_duration_value", "exposure_duration_unit",
-    ],
-    "KeyEvent": [
-        "id", "name", "description", "biological_action",
-        "level_of_biological_organization",
-    ],
-    "CellularSystem": [
-        "id", "name", "description", "subject_type",
-        "cell_line", "cell_line_id", "primary_cell", "cell_type", "cell_type_id",
-        "anatomical_origin", "model_species", "model_species_id",
-        "cell_culture_growth_mode", "substrate_type",
-        "days_at_differentiation", "donor_info",
-    ],
-    "InVivoSubject": [
-        "id", "name", "description", "subject_type",
-        "model_species", "model_species_id",
-        "age_value", "age_unit", "sex",
-        "subject_characteristics", "disease_state",
-        "sample_type", "collection_site",
-    ],
-    "CFTRFunctionAssay": [
-        "id", "name", "description",
-        "stimulation_agent", "inhibitor_used",
-        "informs_on_key_event", "study_subject",
-        "has_exposure_condition", "follows_protocols",
-        "assay_date",
-    ],
-    "CFTRFunctionOutput": [
-        "id", "name", "description",
-        "cftr_chloride_secretion_value", "cftr_chloride_secretion_unit",
-        "cftr_forskolin_response_value", "cftr_forskolin_response_unit",
-        "inhibitor_sensitive_current_value", "inhibitor_sensitive_current_unit",
-        "source_assay",
-    ],
-    "GeneExpressionAssay": [
-        "id", "name", "description",
-        "target_gene", "gene_expression_method", "normalization_reference",
-        "informs_on_key_event", "study_subject",
-        "has_exposure_condition", "follows_protocols",
-        "assay_date",
-    ],
-    "GeneExpressionOutput": [
-        "id", "name", "description",
-        "mrna_level_value", "mrna_level_unit",
-        "protein_level_value", "protein_level_unit",
-        "percentage_positive_cells_value", "percentage_positive_cells_unit",
-        "source_assay",
-    ],
-    "GobletCellAssay": [
-        "id", "name", "description",
-        "informs_on_key_event", "study_subject",
-        "has_exposure_condition", "follows_protocols",
-        "assay_date",
-    ],
-    "GobletCellOutput": [
-        "id", "name", "description",
-        "goblet_cell_percentage_value", "goblet_cell_percentage_unit",
-        "muc5ac_mrna_expression_value", "muc5ac_mrna_expression_unit",
-        "muc5ac_protein_expression_value", "muc5ac_protein_expression_unit",
-        "muc5b_mrna_expression_value", "muc5b_mrna_expression_unit",
-        "muc5b_protein_expression_value", "muc5b_protein_expression_unit",
-        "mucin_secretion_rate_value", "mucin_secretion_rate_unit",
-        "source_assay",
-    ],
-    "BALFSputumAssay": [
-        "id", "name", "description",
-        "target_cell_type",
-        "informs_on_key_event", "study_subject",
-        "has_exposure_condition", "follows_protocols",
-        "assay_date",
-    ],
-    "BALFSputumOutput": [
-        "id", "name", "description",
-        "il6_concentration_value", "il6_concentration_unit",
-        "source_assay",
-    ],
-    "LungFunctionAssay": [
-        "id", "name", "description",
-        "reference_dataset",
-        "informs_on_key_event", "study_subject",
-        "has_exposure_condition", "follows_protocols",
-        "assay_date",
-    ],
-    "LungFunctionOutput": [
-        "id", "name", "description",
-        "fev1_value", "fev1_unit",
-        "fvc_value", "fvc_unit",
-        "total_lung_capacity_value", "total_lung_capacity_unit",
-        "lung_resistance_value", "lung_resistance_unit",
-        "source_assay",
-    ],
-    "FoxJExpressionAssay": [
-        "id", "name", "description",
-        "informs_on_key_event", "study_subject",
-        "has_exposure_condition", "follows_protocols",
-        "assay_date",
-    ],
-    "FoxJExpressionOutput": [
-        "id", "name", "description",
-        "foxj1_mrna_expression_value", "foxj1_mrna_expression_unit",
-        "foxj1_positive_cell_percentage_value", "foxj1_positive_cell_percentage_unit",
-        "source_assay",
-    ],
-    "CiliaryFunctionAssay": [
-        "id", "name", "description",
-        "informs_on_key_event", "study_subject",
-        "has_exposure_condition", "follows_protocols",
-        "assay_date",
-    ],
-    "CiliaryFunctionOutput": [
-        "id", "name", "description",
-        "cbf_value", "cbf_unit",
-        "source_assay",
-    ],
-    "ASLAssay": [
-        "id", "name", "description",
-        "informs_on_key_event", "study_subject",
-        "has_exposure_condition", "follows_protocols",
-        "assay_date",
-    ],
-    "ASLOutput": [
-        "id", "name", "description",
-        "asl_height_value", "asl_height_unit",
-        "source_assay",
-    ],
-    "MucociliaryClearanceAssay": [
-        "id", "name", "description",
-        "informs_on_key_event", "study_subject",
-        "has_exposure_condition", "follows_protocols",
-        "assay_date",
-    ],
-    "MucociliaryClearanceOutput": [
-        "id", "name", "description",
-        "transport_rate_value", "transport_rate_unit",
-        "source_assay",
-    ],
-    "OxidativeStressAssay": [
-        "id", "name", "description",
-        "informs_on_key_event", "study_subject",
-        "has_exposure_condition", "follows_protocols",
-        "assay_date",
-    ],
-    "OxidativeStressOutput": [
-        "id", "name", "description",
-        "ros_level_value", "ros_level_unit",
-        "source_assay",
-    ],
-    "EGFRSignalingAssay": [
-        "id", "name", "description",
-        "informs_on_key_event", "study_subject",
-        "has_exposure_condition", "follows_protocols",
-        "assay_date",
-    ],
-    "EGFRSignalingOutput": [
-        "id", "name", "description",
-        "egfr_phosphorylation_value", "egfr_phosphorylation_unit",
-        "source_assay",
-    ],
-    # Long-format tab: one row per (output record x measurement), so each
-    # experimental condition's response, uncertainty, and unit line up.
-    "Responses": [
-        "assay_id", "assay_type", "output_id", "experimental_group",
-        "exposure_condition", "measurement", "value", "unit",
-        "central_tendency", "variability", "sample_size",
-    ],
-    "ResponseComparison": [
-        "id", "name", "derived_from_assay", "compared_measurement",
-        "control_output", "treated_output", "change_type",
-        "change_direction", "change_value", "change_unit",
-        "p_value", "statistical_test", "derivation",
-    ],
-    "KeyEventRelationship": [
-        "id", "name", "upstream_event", "downstream_event",
-        "relationship_type", "evidence_support",
-    ],
+_SV = load_schema(str(_pkg_files("soma") / "schema" / "soma.yaml"))
+
+_SKIPPED_SLOTS = {"has_specified_output", "evidence"}
+_FRONT_COLUMNS = ("id", "name", "description")
+
+
+def _slot_specs(slot):
+    """(header, kind, slot_name) triples for one induced slot."""
+    rng = slot.range
+    n = slot.name
+    if slot.designates_type:
+        return [(n, "scalar", n)]
+    if rng == "QuantityRange":
+        return [
+            (f"{n}_min_value", "qty_min", n),
+            (f"{n}_max_value", "qty_max", n),
+            (f"{n}_unit", "qty_unit", n),
+        ]
+    if rng in QUANTITY_CLASSES:
+        base = n[: -len("_value")] if n.endswith("_value") else n
+        return [(f"{base}_value", "qty_value", n), (f"{base}_unit", "qty_unit", n)]
+    if rng in TERM_CLASSES:
+        if slot.multivalued:
+            return [(n, "term_list", n)]
+        return [(n, "term_label", n), (f"{n}_id", "term_id", n)]
+    if is_entity(_SV, rng):
+        if slot.multivalued:
+            return [(n, "ref_list", n)]
+        return [(n, "ref", n)]
+    return [(n, "scalar", n)]
+
+
+def _class_specs(class_names):
+    """Merged column specs for a tab pooling these classes (base class first),
+    with id/name/description pulled to the front."""
+    specs, seen = [], set()
+    for cls in class_names:
+        for s in _SV.class_induced_slots(cls):
+            if s.name in _SKIPPED_SLOTS:
+                continue
+            for spec in _slot_specs(s):
+                if spec[0] not in seen:
+                    seen.add(spec[0])
+                    specs.append(spec)
+    front = [sp for name in _FRONT_COLUMNS for sp in specs if sp[0] == name]
+    return front + [sp for sp in specs if sp[0] not in _FRONT_COLUMNS]
+
+
+# Concrete study-subject classes: each gets its own tab, rows routed by the
+# subject_type designator (so PopulationSubject cohorts no longer land on the
+# CellularSystem tab with the wrong columns).
+SUBJECT_TABS = tuple(
+    c for c in _SV.class_descendants("StudySubject") if c != "StudySubject"
+)
+
+# Tab -> schema classes pooled into it. The Protocol and KeyEvent tabs pool
+# the base class with its concrete subtypes (ImagingProtocol,
+# StainingProtocol, ..., MolecularInitiatingEvent), so subtype-specific slots
+# become columns too.
+_TAB_CLASSES = {
+    "Protocol": list(_SV.class_descendants("Protocol")),
+    "ExposureCondition": ["ExposureCondition"],
+    "KeyEvent": list(_SV.class_descendants("KeyEvent")),
+    "ResponseComparison": ["ResponseComparison"],
+    "KeyEventRelationship": ["KeyEventRelationship"],
+    "AdverseOutcomePathway": ["AdverseOutcomePathway"],
 }
+for _subj in SUBJECT_TABS:
+    _TAB_CLASSES[_subj] = [_subj]
 
-# Every per-condition output record carries its group role and the exposure
-# condition it was measured under; surface both on every Output tab.
-for _tab, _cols in HEADERS.items():
-    if _tab.endswith("Output") and "source_assay" in _cols:
-        _idx = _cols.index("source_assay")
-        _cols[_idx:_idx] = ["experimental_group", "measured_under"]
+# YAML collection key -> (assay tab name, output tab name), from the
+# Container's slots: every multivalued Container slot whose range class
+# declares has_specified_output is an assay collection.
+COLLECTION_MAP = {}
+for _s in _SV.class_induced_slots("Container"):
+    if _s.multivalued and _s.range in _SV.all_classes():
+        _hso = next(
+            (x for x in _SV.class_induced_slots(_s.range) if x.name == "has_specified_output"),
+            None,
+        )
+        if _hso is not None:
+            COLLECTION_MAP[_s.name] = (_s.range, _hso.range)
+            _TAB_CLASSES[_s.range] = [_s.range]
+            _TAB_CLASSES[_hso.range] = [_hso.range]
 
-# Mapping from YAML collection key -> (assay tab name, output tab name)
-COLLECTION_MAP = {
-    "cftr_assays": ("CFTRFunctionAssay", "CFTRFunctionOutput"),
-    "gene_expression_assays": ("GeneExpressionAssay", "GeneExpressionOutput"),
-    "goblet_cell_assays": ("GobletCellAssay", "GobletCellOutput"),
-    "balf_sputum_assays": ("BALFSputumAssay", "BALFSputumOutput"),
-    "lung_function_assays": ("LungFunctionAssay", "LungFunctionOutput"),
-    "foxj_assays": ("FoxJExpressionAssay", "FoxJExpressionOutput"),
-    "ciliary_function_assays": ("CiliaryFunctionAssay", "CiliaryFunctionOutput"),
-    "asl_assays": ("ASLAssay", "ASLOutput"),
-    "mcc_assays": ("MucociliaryClearanceAssay", "MucociliaryClearanceOutput"),
-    "oxidative_stress_assays": ("OxidativeStressAssay", "OxidativeStressOutput"),
-    "egfr_signaling_assays": ("EGFRSignalingAssay", "EGFRSignalingOutput"),
-}
+_TAB_SPECS = {tab: _class_specs(classes) for tab, classes in _TAB_CLASSES.items()}
+
+# Every output record also says which assay produced it; this column is
+# synthesized by the converters rather than declared on the schema class.
+for _assay_tab, _output_tab in COLLECTION_MAP.values():
+    _TAB_SPECS[_output_tab].append(("source_assay", "scalar", "source_assay"))
+
+HEADERS = {tab: [h for h, _, _ in specs] for tab, specs in _TAB_SPECS.items()}
+
+# Long-format tab: one row per (output record x measurement), so each
+# experimental condition's response, uncertainty, and unit line up.
+# Hand-shaped rather than schema-derived.
+HEADERS["Responses"] = [
+    "assay_id", "assay_type", "output_id", "experimental_group",
+    "exposure_condition", "measurement", "value", "unit",
+    "central_tendency", "variability", "sample_size",
+]
 
 
 # ---------------------------------------------------------------------------
@@ -508,23 +430,40 @@ def _collect_response_rows(data):
 
 
 def _collect_subjects(data):
-    """Collect unique study subjects, split into CellularSystem and InVivoSubject."""
-    cellular = {}
-    invivo = {}
+    """Collect unique study subjects, grouped by concrete class tab.
+
+    Routed by the subject_type designator; a subject with no (or an unknown)
+    subject_type keeps the historical default of CellularSystem.
+    """
+    groups = {tab: {} for tab in SUBJECT_TABS}
     for coll_key in COLLECTION_MAP:
         for assay in data.get(coll_key, []) or []:
             subj = assay.get("study_subject")
             if not subj or not isinstance(subj, dict):
                 continue
-            subj_id = subj.get("id", "")
-            subj_type = subj.get("subject_type", "")
-            if subj_type == "InVivoSubject":
-                if subj_id not in invivo:
-                    invivo[subj_id] = subj
-            else:
-                if subj_id not in cellular:
-                    cellular[subj_id] = subj
-    return list(cellular.values()), list(invivo.values())
+            tab = subj.get("subject_type", "")
+            if tab not in groups:
+                tab = "CellularSystem"
+            groups[tab].setdefault(subj.get("id", ""), subj)
+    return {tab: list(seen.values()) for tab, seen in groups.items()}
+
+
+def _collect_protocols(data):
+    """Top-level protocols plus protocol objects inlined on assays'
+    follows_protocols, deduplicated by id (first occurrence wins)."""
+    seen: dict = {}
+    for p in data.get("protocols", []) or []:
+        if isinstance(p, dict):
+            seen.setdefault(p.get("id", id(p)), p)
+    for coll_key in COLLECTION_MAP:
+        for assay in data.get(coll_key, []) or []:
+            protos = assay.get("follows_protocols", [])
+            if isinstance(protos, dict):
+                protos = [protos]
+            for p in protos or []:
+                if isinstance(p, dict):
+                    seen.setdefault(p.get("id", id(p)), p)
+    return list(seen.values())
 
 
 # ---------------------------------------------------------------------------
@@ -595,171 +534,122 @@ def _fmt_cell(value):
     return _join_multivalued(value)
 
 
+def _resolve_cell(record, kind, slot):
+    """One cell: the record's slot value rendered per its schema-derived kind."""
+    v = record.get(slot)
+    if v is None:
+        return ""
+    if kind == "qty_value":
+        return _fmt_value_unit(v)[0] if isinstance(v, dict) else _fmt_cell(v)
+    if kind == "qty_unit":
+        return _fmt_value_unit(v)[1] if isinstance(v, dict) else ""
+    if kind == "qty_min":
+        # min_value/max_value are themselves QuantityValue objects in the
+        # schema, so the bound may arrive as {'value': '4'} rather than 4
+        return _fmt_cell(_get_nested(v, "min_value")) if isinstance(v, dict) else _fmt_cell(v)
+    if kind == "qty_max":
+        return _fmt_cell(_get_nested(v, "max_value")) if isinstance(v, dict) else ""
+    if kind == "term_label":
+        if isinstance(v, dict):
+            return v.get("name") or v.get("id") or ""
+        return _fmt_cell(v)
+    if kind == "term_id":
+        return _get_nested(v, "id") if isinstance(v, dict) else ""
+    if kind == "ref":
+        # keep the referenced id so the column joins against the target tab;
+        # an inlined object with no id still shows its name
+        if isinstance(v, dict):
+            return v.get("id") or _fmt_id_name(v)
+        return _fmt_cell(v)
+    if kind == "ref_list":
+        return _fmt_list_refs(v)
+    if kind == "term_list":
+        if isinstance(v, list):
+            return "; ".join(
+                _fmt_id_name(x) if isinstance(x, dict) else str(x) for x in v
+            )
+        return _fmt_cell(v)
+    return _fmt_cell(v)
+
+
+def _row_for_tab(record, tab):
+    """Build one row for a schema-derived tab."""
+    return tuple(_resolve_cell(record, kind, slot) for _, kind, slot in _TAB_SPECS[tab])
+
+
+def _tab_for_headers(headers):
+    """Recover the tab a header list belongs to (same object or equal list)."""
+    for tab, cols in HEADERS.items():
+        if cols is headers or cols == headers:
+            return tab
+    return None
+
+
 def _protocol_row(p):
-    return (
-        p.get("id", ""),
-        p.get("name", ""),
-        p.get("description", ""),
-        p.get("protocol_type", ""),
-        p.get("protocol_version", ""),
-        _join_multivalued(p.get("equipment_required", [])),
-        _join_multivalued(p.get("primer_sequences", [])),
-        _join_multivalued(p.get("antibodies_used", [])),
-        p.get("detection_method", ""),
-        p.get("reference_gene", ""),
-    )
+    return _row_for_tab(p, "Protocol")
 
 
 def _exposure_row(ec):
-    agent = ec.get("exposure_agent", {})
-    conc = ec.get("exposure_concentration", {})
-    dur = ec.get("exposure_duration", {})
-    agent_name = agent.get("name", "") if isinstance(agent, dict) else str(agent)
-    agent_id = agent.get("id", "") if isinstance(agent, dict) else ""
-    conc_val, conc_unit = _fmt_value_unit(conc)
-    dur_val, dur_unit = _fmt_value_unit(dur)
-    return (
-        ec.get("id", ""),
-        ec.get("name", ""),
-        agent_name,
-        agent_id,
-        conc_val,
-        conc_unit,
-        dur_val,
-        dur_unit,
-    )
+    return _row_for_tab(ec, "ExposureCondition")
 
 
 def _key_event_row(ke):
-    return (
-        ke.get("id", ""),
-        ke.get("name", ""),
-        ke.get("description", ""),
-        ke.get("biological_action", ""),
-        ke.get("level_of_biological_organization", ""),
-    )
+    return _row_for_tab(ke, "KeyEvent")
+
+
+def _subject_row(subj, tab):
+    return _row_for_tab(subj, tab)
 
 
 def _cellular_system_row(subj):
-    ct = subj.get("cell_type", {})
-    cl = subj.get("cell_line", {})
-    pc = subj.get("primary_cell", {})
-    ao = subj.get("anatomical_origin", {})
-    sp = subj.get("model_species", {})
-    return (
-        subj.get("id", ""),
-        subj.get("name", ""),
-        subj.get("description", ""),
-        subj.get("subject_type", "CellularSystem"),
-        _get_nested(cl, "name"),
-        _get_nested(cl, "id"),
-        _get_nested(pc, "name"),
-        _get_nested(ct, "name"),
-        _get_nested(ct, "id"),
-        _fmt_id_name(ao),
-        _get_nested(sp, "name"),
-        _get_nested(sp, "id"),
-        subj.get("cell_culture_growth_mode", ""),
-        subj.get("substrate_type", ""),
-        subj.get("days_at_differentiation", ""),
-        subj.get("donor_info", ""),
-    )
+    return _row_for_tab(subj, "CellularSystem")
 
 
 def _invivo_subject_row(subj):
-    sp = subj.get("model_species", {})
-    age = subj.get("age", {})
-    age_val, age_unit = _fmt_value_unit(age)
-    return (
-        subj.get("id", ""),
-        subj.get("name", ""),
-        subj.get("description", ""),
-        subj.get("subject_type", "InVivoSubject"),
-        _get_nested(sp, "name"),
-        _get_nested(sp, "id"),
-        age_val,
-        age_unit,
-        subj.get("sex", ""),
-        subj.get("subject_characteristics", ""),
-        subj.get("disease_state", ""),
-        subj.get("sample_type", ""),
-        subj.get("collection_site", ""),
-    )
+    return _row_for_tab(subj, "InVivoSubject")
 
 
 def _response_comparison_row(rc):
-    cv_val, cv_unit = _fmt_value_unit(rc.get("change_value"))
-    return (
-        rc.get("id", ""),
-        rc.get("name", ""),
-        rc.get("derived_from_assay", ""),
-        rc.get("compared_measurement", ""),
-        rc.get("control_output", ""),
-        rc.get("treated_output", ""),
-        rc.get("change_type", ""),
-        rc.get("change_direction", ""),
-        cv_val,
-        cv_unit,
-        rc.get("p_value", ""),
-        rc.get("statistical_test", ""),
-        rc.get("derivation", ""),
-    )
+    return _row_for_tab(rc, "ResponseComparison")
 
 
 def _key_event_relationship_row(ker):
-    return (
-        ker.get("id", ""),
-        ker.get("name", ""),
-        _fmt_id_name(ker.get("upstream_event")),
-        _fmt_id_name(ker.get("downstream_event")),
-        ker.get("relationship_type", ""),
-        ker.get("evidence_support", ""),
-    )
+    return _row_for_tab(ker, "KeyEventRelationship")
+
+
+def _generic_row(record, headers):
+    """Header-name-driven fallback for a header list no schema tab owns."""
+    row = []
+    for h in headers:
+        if h.endswith("_value") and h not in record:
+            row.append(_get_nested(record, h[: -len("_value")], "value"))
+        elif h.endswith("_unit") and h not in record:
+            unit_obj = _get_nested(record, h[: -len("_unit")], "unit")
+            if isinstance(unit_obj, dict):
+                row.append(_fmt_id_name(unit_obj))
+            else:
+                row.append(str(unit_obj) if unit_obj else "")
+        elif h.endswith("_id") and h not in record:
+            row.append(_get_nested(record, h[: -len("_id")], "id"))
+        else:
+            row.append(_fmt_cell(record.get(h, "")))
+    return tuple(row)
 
 
 def _assay_row(assay, assay_headers):
-    """Build a generic assay row based on headers."""
-    row = []
-    for h in assay_headers:
-        if h == "informs_on_key_event":
-            row.append(_get_nested(assay, "informs_on_key_event", "id"))
-        elif h == "study_subject":
-            row.append(_get_nested(assay, "study_subject", "id"))
-        elif h == "has_exposure_condition":
-            conditions = assay.get("has_exposure_condition", [])
-            if isinstance(conditions, dict):
-                conditions = [conditions]
-            row.append(_fmt_list_refs(conditions))
-        elif h == "follows_protocols":
-            protos = assay.get("follows_protocols", [])
-            row.append(_fmt_list_refs(protos))
-        else:
-            row.append(_fmt_cell(assay.get(h, "")))
-    return tuple(row)
+    """Build an assay row for the tab the header list belongs to."""
+    tab = _tab_for_headers(assay_headers)
+    if tab is not None:
+        return _row_for_tab(assay, tab)
+    return _generic_row(assay, assay_headers)
 
 
 def _output_row(output, output_headers):
-    """Build a generic output row based on headers."""
-    row = []
-    for h in output_headers:
-        if h == "source_assay":
-            row.append(output.get("source_assay", ""))
-        elif h.endswith("_value"):
-            # e.g., cftr_chloride_secretion_value -> cftr_chloride_secretion.value
-            slot_name = h[:-6]  # remove '_value'
-            row.append(_get_nested(output, slot_name, "value"))
-        elif h.endswith("_unit"):
-            slot_name = h[:-5]  # remove '_unit'
-            unit_obj = _get_nested(output, slot_name, "unit")
-            if isinstance(unit_obj, dict):
-                name = unit_obj.get("name", "")
-                uid = unit_obj.get("id", "")
-                row.append(f"{name} ({uid})" if uid else name)
-            else:
-                row.append(str(unit_obj) if unit_obj else "")
-        else:
-            row.append(_fmt_cell(output.get(h, "")))
-    return tuple(row)
+    """Build an output row for the tab the header list belongs to."""
+    tab = _tab_for_headers(output_headers)
+    if tab is not None:
+        return _row_for_tab(output, tab)
+    return _generic_row(output, output_headers)
 
 
 # ---------------------------------------------------------------------------
@@ -799,8 +689,8 @@ def yaml_to_excel(input_path, output_path, template_path=None):
         ws.column_dimensions["A"].width = 25
         ws.column_dimensions["B"].width = 80
 
-    # --- Protocol tab ---
-    protocols = data.get("protocols", []) or []
+    # --- Protocol tab (top-level and inlined on assays) ---
+    protocols = _collect_protocols(data)
     if protocols:
         _make_sheet(
             wb, "Protocol", HEADERS["Protocol"],
@@ -826,20 +716,14 @@ def yaml_to_excel(input_path, output_path, template_path=None):
             tab_color=TAB_COLORS.get("KeyEvent"),
         )
 
-    # --- CellularSystem and InVivoSubject tabs ---
-    cellular, invivo = _collect_subjects(data)
-    if cellular:
-        _make_sheet(
-            wb, "CellularSystem", HEADERS["CellularSystem"],
-            [_cellular_system_row(s) for s in cellular],
-            tab_color=TAB_COLORS.get("CellularSystem"),
-        )
-    if invivo:
-        _make_sheet(
-            wb, "InVivoSubject", HEADERS["InVivoSubject"],
-            [_invivo_subject_row(s) for s in invivo],
-            tab_color=TAB_COLORS.get("InVivoSubject"),
-        )
+    # --- Study-subject tabs (one per concrete StudySubject class) ---
+    for subj_tab, subjects in _collect_subjects(data).items():
+        if subjects:
+            _make_sheet(
+                wb, subj_tab, HEADERS[subj_tab],
+                [_subject_row(s, subj_tab) for s in subjects],
+                tab_color=TAB_COLORS.get(subj_tab),
+            )
 
     # --- Assay + Output tabs ---
     for coll_key, (assay_tab, output_tab) in COLLECTION_MAP.items():
@@ -898,6 +782,15 @@ def yaml_to_excel(input_path, output_path, template_path=None):
             wb, "KeyEventRelationship", HEADERS["KeyEventRelationship"],
             [_key_event_relationship_row(ker) for ker in kers],
             tab_color=TAB_COLORS.get("KeyEventRelationship"),
+        )
+
+    # --- AdverseOutcomePathway tab ---
+    aops = data.get("adverse_outcome_pathways", []) or []
+    if aops:
+        _make_sheet(
+            wb, "AdverseOutcomePathway", HEADERS["AdverseOutcomePathway"],
+            [_row_for_tab(a, "AdverseOutcomePathway") for a in aops],
+            tab_color=TAB_COLORS.get("AdverseOutcomePathway"),
         )
 
     # Save
