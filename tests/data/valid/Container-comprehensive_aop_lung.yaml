@@ -570,7 +570,7 @@ goblet_cell_assays:
         mucus_viscosity:
           value: "185"
           unit:
-            id: "UO:0000019"
+            id: "UCUM:cP"
             name: "centipoise"
           central_tendency: mean
           sample_size: 6
@@ -758,7 +758,7 @@ ciliary_function_assays:
         exposure_concentration:
           value: "100"
           unit:
-            id: "UO:0000169"
+            id: "UO:0000170"
             name: "parts per billion"
         exposure_duration:
           value: "24"
@@ -921,7 +921,7 @@ mcc_assays:
         transport_rate:
           value: "52"
           unit:
-            id: "UO:0000103"
+            id: "UCUM:um/s"
             name: "micrometer per second"
           central_tendency: mean
           sample_size: 6
@@ -969,7 +969,7 @@ mcc_assays:
         transport_rate:
           value: "38"
           unit:
-            id: "UO:0000103"
+            id: "UCUM:um/s"
             name: "micrometer per second"
           central_tendency: mean
           sample_size: 6
@@ -1025,7 +1025,7 @@ mcc_assays:
         transport_rate:
           value: "18"
           unit:
-            id: "UO:0000103"
+            id: "UCUM:um/s"
             name: "micrometer per second"
           central_tendency: mean
           sample_size: 6
@@ -1129,13 +1129,14 @@ lung_function_assays:
     has_specified_output:
       - id: "LF:001-output-baseline"
         name: "Enrollment spirometry"
+        description: "FEV1 is expressed as percent of predicted."
         experimental_group: baseline
         measured_under: "EXPOSURE:aop-ambient-pm25-baseline"
         fev1:
           value: "78"
           unit:
             id: "UO:0000187"
-            name: "percent predicted"
+            name: "percent"
           central_tendency: single_value
           sample_size: 1
     has_exposure_condition:
@@ -1181,7 +1182,7 @@ lung_function_assays:
         bronchodilator_dose:
           value: "400"
           unit:
-            id: "UO:0000022"
+            id: "UO:0000023"
             name: "microgram"
 
   # FEV1 - Subject 1 follow-up
@@ -1191,13 +1192,14 @@ lung_function_assays:
     has_specified_output:
       - id: "LF:002-output-followup"
         name: "One-year follow-up spirometry"
+        description: "FEV1 is expressed as percent of predicted."
         experimental_group: treated
         measured_under: "EXPOSURE:aop-ambient-pm25-followup"
         fev1:
           value: "74"
           unit:
             id: "UO:0000187"
-            name: "percent predicted"
+            name: "percent"
           central_tendency: single_value
           sample_size: 1
     has_exposure_condition:
@@ -1245,8 +1247,8 @@ lung_function_assays:
         fev1_fvc_ratio:
           value: "0.68"
           unit:
-            id: "UO:0000196"
-            name: "ratio"
+            id: "UO:0000190"
+            name: "ratio unit"
           central_tendency: single_value
           sample_size: 1
     has_exposure_condition:
@@ -1292,7 +1294,7 @@ lung_function_assays:
         decline_rate:
           value: "65"
           unit:
-            id: "UO:0000098"
+            id: "UCUM:mL/a"
             name: "milliliter per year"
           central_tendency: single_value
           sample_size: 1
@@ -1437,7 +1439,7 @@ response_comparisons:
   # AO: lung function decline
   - id: "COMP:aop-fev1-1yr"
     name: "Change in FEV1 over 1 year of continued ambient PM2.5 exposure"
-    description: "Within-subject comparison: LF:001 is the enrollment measurement and LF:002 the 1-year follow-up for the same subject."
+    description: "Within-subject comparison: LF:001 is the enrollment measurement and LF:002 the 1-year follow-up for the same subject. The change is expressed in percent-of-predicted points (FEV1 percent predicted at follow-up minus at enrollment)."
     derived_from_assay: "LF:002"
     compared_measurement: "fev1"
     control_output: "LF:001-output-baseline"
@@ -1448,7 +1450,7 @@ response_comparisons:
       value: "-4"
       unit:
         id: "UO:0000187"
-        name: "percent predicted"
+        name: "percent"
     derivation: computed
 
 # =============================================================================

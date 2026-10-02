@@ -60,7 +60,7 @@ oxidative_stress_assays:
         malondialdehyde_level:
           value: "1.4"
           unit:
-            id: "UO:0000063"
+            id: "UCUM:nmol/mg"
             name: "nanomole per milligram protein"
           central_tendency: mean
           sample_size: 6
@@ -68,12 +68,12 @@ oxidative_stress_assays:
             variability_type: standard_deviation
             value: "0.3"
             unit:
-              id: "UO:0000063"
+              id: "UCUM:nmol/mg"
               name: "nanomole per milligram protein"
         protein_carbonyl_content:
           value: "0.9"
           unit:
-            id: "UO:0000063"
+            id: "UCUM:nmol/mg"
             name: "nanomole per milligram protein"
           central_tendency: mean
           sample_size: 6
@@ -81,13 +81,13 @@ oxidative_stress_assays:
           value: "0.95"
           unit:
             id: "UO:0000190"
-            name: "ratio"
+            name: "ratio unit"
           central_tendency: mean
           sample_size: 6
         eight_ohdg_level:
           value: "4.1"
           unit:
-            id: "UO:0000275"
+            id: "UCUM:ng/mg"
             name: "nanogram per milligram creatinine"
           central_tendency: mean
           sample_size: 6
@@ -143,7 +143,7 @@ oxidative_stress_assays:
         malondialdehyde_level:
           value: "3.2"
           unit:
-            id: "UO:0000063"
+            id: "UCUM:nmol/mg"
             name: "nanomole per milligram protein"
           central_tendency: mean
           sample_size: 6
@@ -151,12 +151,12 @@ oxidative_stress_assays:
             variability_type: standard_deviation
             value: "0.5"
             unit:
-              id: "UO:0000063"
+              id: "UCUM:nmol/mg"
               name: "nanomole per milligram protein"
         protein_carbonyl_content:
           value: "2.1"
           unit:
-            id: "UO:0000063"
+            id: "UCUM:nmol/mg"
             name: "nanomole per milligram protein"
           central_tendency: mean
           sample_size: 6
@@ -164,13 +164,13 @@ oxidative_stress_assays:
           value: "0.65"
           unit:
             id: "UO:0000190"
-            name: "ratio"
+            name: "ratio unit"
           central_tendency: mean
           sample_size: 6
         eight_ohdg_level:
           value: "12.5"
           unit:
-            id: "UO:0000275"
+            id: "UCUM:ng/mg"
             name: "nanogram per milligram creatinine"
           central_tendency: mean
           sample_size: 6
@@ -253,7 +253,7 @@ response_comparisons:
     change_value:
       value: "1.8"
       unit:
-        id: "UO:0000063"
+        id: "UCUM:nmol/mg"
         name: "nanomole per milligram protein"
     p_value: 0.003
     statistical_test: "two-sample t-test"

@@ -106,8 +106,10 @@ key_event_relationships:
     upstream_event:
       id: "KE:impaired-mcc"
       name: "Impaired mucociliary clearance"
+      biological_action: impaired
     downstream_event:
       id: "KE:ao-decreased-lung-function-2"
       name: "Decreased lung function"
+      biological_action: decreased
     relationship_type: "directly leads to"
     evidence_support: moderate

@@ -118,7 +118,7 @@ foxj_assays:
     informs_on_key_event:
       id: "KE:ke-altered-ciliogenesis"
       name: "Altered ciliogenesis"
-      biological_action: altered
+      biological_action: decreased
       level_of_biological_organization: cellular
     study_subject:
       subject_type: CellularSystem

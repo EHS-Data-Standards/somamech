@@ -20,7 +20,7 @@ mcc_assays:
         exposure_concentration:
           value: "200"
           unit:
-            id: "UO:0000169"
+            id: "UO:0000170"
             name: "parts per billion"
         exposure_duration:
           value: "4"
@@ -35,7 +35,7 @@ mcc_assays:
         transport_rate:
           value: "45.3"
           unit:
-            id: "UO:0000103"
+            id: "UCUM:um/s"
             name: "micrometer per second"
           central_tendency: mean
           sample_size: 5
@@ -43,7 +43,7 @@ mcc_assays:
             variability_type: standard_deviation
             value: "5.1"
             unit:
-              id: "UO:0000103"
+              id: "UCUM:um/s"
               name: "micrometer per second"
         transport_directionality: normal
         mucus_layer_thickness:
@@ -74,7 +74,7 @@ mcc_assays:
         transport_rate:
           value: "22.1"
           unit:
-            id: "UO:0000103"
+            id: "UCUM:um/s"
             name: "micrometer per second"
           central_tendency: mean
           sample_size: 5
@@ -82,7 +82,7 @@ mcc_assays:
             variability_type: standard_deviation
             value: "6.4"
             unit:
-              id: "UO:0000103"
+              id: "UCUM:um/s"
               name: "micrometer per second"
         transport_directionality: variable
         mucus_layer_thickness:
