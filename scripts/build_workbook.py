@@ -172,13 +172,13 @@ def collect(files: list[Path]):
             tabs.setdefault("Responses", []).append((source, row))
         for coll_key, (assay_tab, output_tab) in COLLECTION_MAP.items():
             for a in data.get(coll_key, []) or []:
-                add(assay_tab, source, a.get("id", ""), _assay_row(a, HEADERS.get(assay_tab, [])))
+                add(assay_tab, source, a.get("id", ""), _assay_row(a, assay_tab))
                 # has_specified_output is multivalued (a list of output
                 # records); _iter_outputs also accepts the legacy bare-dict form
                 for out in _iter_outputs(a):
                     out = dict(out)
                     out.setdefault("source_assay", a.get("id", ""))
-                    add(output_tab, source, out.get("id", ""), _output_row(out, HEADERS.get(output_tab, [])))
+                    add(output_tab, source, out.get("id", ""), _output_row(out, output_tab))
 
     return tabs, papers, errors
 
