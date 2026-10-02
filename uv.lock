@@ -4412,14 +4412,14 @@ wheels = [
 
 [[package]]
 name = "soma-schema"
-version = "0.2.3"
+version = "0.2.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "linkml-runtime" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/63/f7/991014894c35095332aed3c17e0fdddc0a93b2fa2de7728113112eebbb50/soma_schema-0.2.3.tar.gz", hash = "sha256:384c47c843dd08a1c4a9869b5fa0449a6a3d0579f1c77c431aa93a4e1784e855", size = 138792, upload-time = "2026-09-28T23:03:40.816Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f4/9a/7c6e25b4c5cc831511318075a77ac4845db9aaaf5c291ea502f12ccceac9/soma_schema-0.2.4.tar.gz", hash = "sha256:5efee93f620d1e8d2ef183cb3e5f5ffe735875ce63dcc5025bea6b24596ba65e", size = 139098, upload-time = "2026-10-01T21:18:31.552Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/74/62/f9d301aea224fe07e00cc2e13322ae9339f56c6c6ab51376b744dcc4d8b2/soma_schema-0.2.3-py3-none-any.whl", hash = "sha256:23234c02b877e7bad551c1171117690103d3f1a1d61458c93218b095f9fb6544", size = 88063, upload-time = "2026-09-28T23:03:39.58Z" },
+    { url = "https://files.pythonhosted.org/packages/50/82/2734bb0d53dfbba70704f5f7455a5f54c1d8c854af823a60839410b895a2/soma_schema-0.2.4-py3-none-any.whl", hash = "sha256:c5cf73f13b1b02d4e76a6a1d17b3920aed6a414bef55f2ceeb162f090f4d5f25", size = 88360, upload-time = "2026-10-01T21:18:30.218Z" },
 ]
 
 [[package]]
@@ -4447,7 +4447,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "linkml-runtime", specifier = ">=1.9.4" },
-    { name = "soma-schema", specifier = ">=0.2.3" },
+    { name = "soma-schema", specifier = ">=0.2.4" },
 ]
 
 [package.metadata.requires-dev]
