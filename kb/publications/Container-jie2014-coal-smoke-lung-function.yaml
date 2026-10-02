@@ -1,0 +1,793 @@
+# =============================================================================
+# Jie et al. (2014) - Relationship between pulmonary function and indoor air
+# pollution from coal combustion among adult residents in an inner-city area
+# of southwest China
+# =============================================================================
+#
+# Source: Braz J Med Biol Res. 2014;47(11):982-989
+# DOI: 10.1590/1414-431X20144084
+# PMID: 25296361
+#
+# Study design (HUMAN OBSERVATIONAL - not in vitro, not an animal experiment):
+#   - Cross-sectional study in the YA (Yanan) Road inner-city area of Zunyi
+#     city, Guizhou province, southwest China; 104 households, 231 adult
+#     participants (of 254 available)
+#   - 110 adults in coal-using households (exposure group) vs 121 adults in
+#     households using modern energy sources - kerosene, liquid petroleum, gas
+#     or electricity (control group). ALL participants were nonsmokers, aged
+#     18 years and older, resident in YA Road for more than 3 years
+#   - All respiratory measurements made during one winter (October 2011 to
+#     March 2012), the season when domestic coal use peaks
+#   - Spirometry (FVC, FEV1, FEV1/FVC, PEFR) with a portable electronic
+#     FGC-A++ spirometer against American Thoracic Society acceptance criteria
+#   - PM2.5 measured during cooking in 52 coal and 52 non-coal households with
+#     an LD-3K light-scattering digital dust monitor, in the kitchen, the
+#     living room and outdoors, reported as a RELATIVE concentration in counts
+#     per minute (cpm) rather than a mass concentration
+#
+# MODELLING NOTES:
+#   - Each fuel group is its own assay with its own InVivoSubject (the
+#     isara2016 / calderon2001 pattern), because the two cohorts differ in
+#     age, household size and infection history and merging them would lose
+#     which group a record describes. The response_comparisons therefore
+#     reference a control_output that lives on the companion non-coal assay,
+#     with derived_from_assay pointing at the coal-exposed group's assay.
+#   - UNIT OF EXPOSURE: the dust monitor reports a relative concentration in
+#     counts per minute, NOT ug/m3 ("To determine the cpm, the following
+#     equation was used: cpm = count value/measuring time (in min)"). There is
+#     no UO term for counts per minute, so the UCUM expression UCUM:1/min is
+#     used, following the repo convention for units UO does not cover. These
+#     cpm values are therefore NOT comparable with the mass concentrations
+#     recorded in the other PM2.5 papers in this knowledge base.
+#   - The exposure agent on both conditions is ENVO:01000415 "fine respirable
+#     suspended particulate matter": PM2.5 is the pollutant the study actually
+#     quantified, and it was measured in BOTH groups' homes, so both
+#     conditions carry an exposure_concentration. Which fuel produced it is
+#     recorded in each condition's name. exposure_duration is omitted on
+#     purpose - the authors state they could not assess it ("we cannot comment
+#     on the duration of exposure to coal smoke because we could not
+#     adequately assess cooking times in households").
+#   - PERCENT vs LITRES - a discrepancy in the source that is reproduced here
+#     rather than silently corrected. The abstract and Results text describe
+#     the multivariate coal coefficients as "a 31.7% decrease in FVC, a 42.0%
+#     decrease in FEV1, a 7.46% decrease in the FEV1/FVC ratio, and a 23.1%
+#     decrease in PEFR". Tables 2, 3 and 5 print those same numbers as
+#     absolute regression coefficients in the outcome's own unit: FVC -0.317 L
+#     (95%CI -0.396; -0.238), FEV1 -0.420 L (-0.525; -0.316), PEFR -0.231 L/s
+#     (-0.460; -0.002). The tabulated coefficients are recorded, as
+#     absolute_difference in litres and L/s, and the prose "%" framing is
+#     noted on each comparison. Only the FEV1/FVC coefficient (-7.463,
+#     Table 4) is genuinely a percentage, because the outcome itself is a
+#     percentage - and even there the paper's "7.46% decrease" is a
+#     difference in percentage points, not a relative decrease.
+#   - SLOPE MAGNITUDE - a second discrepancy in the source, also reproduced
+#     rather than corrected. Both the abstract and the Results text state "a
+#     2-L decrease in FVC and a 3-L decrease in FEV1, as well as an 8 L/s
+#     decrease in PEFR per 1 cpm PM2.5 exposure", but the tabulated kitchen
+#     PM2.5 coefficients are -0.002 L, -0.003 L and -0.008 L/s per cpm (i.e.
+#     2 mL, 3 mL and 8 mL/s, a thousandfold smaller). The tabulated
+#     coefficients are what is recorded; the paper's own wording is quoted as
+#     evidence and flagged in each comparison's description.
+#   - The four PM2.5 per-cpm coefficients are continuous-exposure regression
+#     slopes, so they carry no control_output / treated_output pair (the
+#     hart2018 pattern): no two output records exist for a per-unit slope to
+#     point at, and inventing group records would fabricate data.
+#   - P-VALUE DISCREPANCY in the source: Table 1 marks all four crude
+#     pulmonary function differences as P < 0.05, while the Results text calls
+#     the same comparisons "highly significant differences (P ,0.0001)". Both
+#     readings are quoted. Where the paper gives only a "<" threshold, the
+#     p_value slot is either omitted (P < 0.05) or set to the stated upper
+#     bound with that noted in the description (P < 0.0001), following the
+#     lkhagvadorj2020 convention.
+#   - Crude (unadjusted) group differences are not duplicated as separate
+#     comparison records: the two output records already hold both groups'
+#     means and SDs with their sample sizes, and the paper reports no crude
+#     difference, percent change or fold change for them (only a significance
+#     marker), so a crude comparison would add no value the outputs lack. The
+#     comparisons carry the multivariate-adjusted coefficients, which are the
+#     paper's headline estimates and the only ones with a magnitude and CI.
+#
+# FINDINGS WITH NO SOMA SLOT (recorded in prose per the extraction rules):
+#   - PM2.5 relative concentration by room and group (kitchen, living room,
+#     outdoors) is carried on the exposure conditions and in the assay
+#     descriptions; there is no assay class for an air-sampling measurement.
+#   - History of recurrent pulmonary tract infections: 30.9% (coal) vs 13.2%
+#     (non-coal), P < 0.05 - a covariate in the regression models, and the
+#     paper offers no measurement of inflammation or infection beyond
+#     self-reported history.
+#   - Environmental tobacco smoke exposure 32.7% vs 25.6% (P = 0.23) and
+#     number of rooms in the home 3.9 +/- 1.2 vs 4.4 +/- 0.9 (P < 0.05).
+#
+# WHAT THE PAPER DOES *NOT* CLAIM:
+#   No key_event_relationships are recorded. This is a cross-sectional
+#   association study with no mechanistic intermediate readouts: it measures
+#   an exposure index (PM2.5 cpm) and an adverse outcome (reduced ventilatory
+#   function), with nothing in between. The Discussion's remarks about
+#   oxidation reactions and inflammatory responses in the respiratory tract
+#   are attributed to other authors' work (references 19, 20), not to data in
+#   this paper, so they inform no key event here. The authors themselves note
+#   that "the cross-sectional design limited causal inference".
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:25296361"
+  reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+  doi: "10.1590/1414-431x20144084"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - protocol_type: SpirometryProtocol
+    id: "PROTOCOL:jie-spirometry-001"
+    name: "FGC-A++ portable spirometry against American Thoracic Society acceptance criteria"
+    description: "Lung function examined by measuring FVC, forced expiratory volume in 1 s (FEV1), FEV1/FVC and peak expiratory flow rate (PEFR) according to standard guidelines, using a portable electronic FGC-A++ spirometer (Anhui Institute of Electronic Science, China). Participants sat upright with both feet flat on the ground, were instructed to inhale completely, place the meter in the mouth and exhale with maximal force once the lips were sealed around the mouthpiece, with an investigator demonstrating the maneuver. Per American Thoracic Society guidelines, maneuvers were accepted only if back-extrapolated volume was low (<5% of the FVC and <0.15 L), both FVC and FEV1 were within 0.20 L of the best-effort FVC and FEV1, and little volume accumulated at the end of the effort. Each subject performed three expiratory maneuvers; analysis used the largest FVC, the largest FEV1, the ratio of the largest FEV1 to the largest FVC, and the largest PEFR."
+    spirometry_standard: "American Thoracic Society standardisation of spirometry (Miller et al. 2005)"
+    equipment_required:
+      - "Portable electronic FGC-A++ spirometer (Anhui Institute of Electronic Science, China)"
+
+  - id: "PROTOCOL:jie-pm25-monitoring-001"
+    name: "LD-3K light-scattering dust monitoring of PM2.5 relative concentration during cooking"
+    description: "PM2.5 concentrations inside and outside the households were measured during cooking with a digital dust monitor (LD-3K; Sibata Scientific Technology Inc., Japan), a portable light-scattering monitor with a laser diode as the light source that determines the relative concentration of PM2.5 from the intensity of the laser beam scattered by particles. The relative concentration is reported as counts per minute: cpm = count value / measuring time in minutes. All air sampling was done 1.2-1.5 m above the floor. Three measurements were taken 1 m from the centre of the cooking stove inside the kitchen, three from random sites inside the living room at least 3 m from the kitchen, and three outdoors at least 20 m from the household as environmental controls. Each measurement was maintained for over 1 min and three readings were averaged, with 1 min between the three readings in a room and 5 min between rooms."
+    equipment_required:
+      - "Digital dust monitor LD-3K (Sibata Scientific Technology Inc., Japan)"
+
+  - id: "PROTOCOL:jie-questionnaire-001"
+    name: "Sociodemographic and smoking questionnaire"
+    description: "Questionnaire administered at home after consent, used to assess sociodemographic factors and to identify smoking status (only nonsmokers were eligible), gender, history of recurrent respiratory tract infections, environmental tobacco smoke exposure (defined by the presence of a smoker in the household), number of persons living in the home and number of rooms in the home. Household cooking fuel source was identified for each household visited and used to assign the coal and non-coal categories."
+
+# =============================================================================
+# LUNG FUNCTION ASSAYS - spirometry per fuel group. Adults in coal-using
+# households are the exposure group; adults in the same inner-city area whose
+# households use modern energy sources are the control group. All participants
+# in both groups were nonsmokers.
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:jie-coal-exposed-spirometry"
+    name: "Spirometry - adult residents of coal-using households (coal-exposed group)"
+    description: "Ventilatory function in the 110 nonsmoking adults from coal-using households, measured during the winter of October 2011 to March 2012: FEV1 2.75 +/- 0.56 L, FVC 3.22 +/- 0.62 L, FEV1/FVC 83.13 +/- 3.95%, PEFR 6.00 +/- 0.90 L/s (Table 1). All four parameters were lower than in the 121 non-coal controls; Table 1 marks each difference P < 0.05 while the Results text calls the same comparisons highly significant at P < 0.0001. The PM2.5 relative concentration measured during cooking in these households was 569.5 +/- 50.1 cpm in the kitchen, 543.2 +/- 65.0 cpm in the living room and 416.2 +/- 5.9 cpm outdoors; the kitchen value was significantly higher than both the living room and outdoors (P < 0.0001). Cooking was mainly done indoors on an open-fire traditional stove in a small kitchen without effective ventilation, or in a kitchen adjacent to the living room, and most coal used by Zunyi households is a high-sulfur coal of approximately 3% sulfur content. This group also had a significantly higher prevalence of recurrent pulmonary tract infections (30.9% vs 13.2%, P < 0.05) and fewer rooms per home (3.9 +/- 1.2 vs 4.4 +/- 0.9, P < 0.05); environmental tobacco smoke exposure did not differ significantly (32.7% vs 25.6%, P = 0.23)."
+    evidence:
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1 (L) 2.75 ± 0.56 3.49 ± 0.77 ,0.05 FVC (L) 3.22 ± 0.62 3.87 ± 0.70 ,0.05 FEV1/FVC (%) 83.13 ± 3.95 91.63 ± 5.46 ,0.05 PEFR (L/s) 6.00 ± 0.90 6.80 ± 1.17 ,0.05"
+        explanation: "Table 1 rows giving the mean +/- SD of FEV1, FVC, FEV1/FVC and PEFR for the coal-exposed group (first column, recorded on this assay's output) and the non-coal group (second column, recorded on the companion control assay), with Table 1's P < 0.05 marker."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Coal (++) (n=110) Coal (– –) (n=121) P"
+        explanation: "Table 1 column header establishing that the coal-exposed column has n = 110 and the non-coal column n = 121, the sample sizes recorded on the two assays' outputs."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In a cross-sectional study of 104 households, pulmonary function measurements were assessed and compared in 110 coal users and 121 non-coal users (≥18 years old) who were all nonsmokers."
+        explanation: "States the study design, the two group sizes and the two eligibility facts carried on this assay's study_subject: adults 18 years and older, all nonsmokers."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "(P ,0.0001) were observed between coal-exposed and unexposed individuals, with mean values lower in those exposed to coal (Table 1)."
+        explanation: "The Results text's reading of the crude group differences in all four pulmonary function parameters, at P < 0.0001, and the direction of the difference; Table 1 marks the same comparisons P < 0.05, and both readings are noted in the description."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The indoor and outdoor PM2.5 relative concentrations during the cooking period in the coal-exposed and unexposed groups were 569.5±50.1 vs 477.0±58.5 cpm (kitchen), 543.2±65.0 vs 452.7±51.2 cpm (living room), and 416.2±5.9 vs 417.0±5.1 cpm (outdoors), respectively."
+        explanation: "Gives the kitchen PM2.5 relative concentration (569.5 +/- 50.1 cpm) recorded as this condition's exposure_concentration, together with the living room and outdoor values carried in the condition's name and the description."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "During coal combustion, the relative concentration of PM 2.5 in the kitchen was also significantly higher than in the living room and outdoors (P ,0.0001)."
+        explanation: "Supports the within-home gradient stated in this assay's description: the kitchen is the highest-exposure room during coal combustion."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Significant differences were present for the number of rooms in the home (P ,0.05) and for individuals who had recurrent pulmonary tract infections (30.9% in exposed vs 13.2% in unexposed groups, Table 1)."
+        explanation: "Supports the two significant baseline imbalances noted in this assay's description and study_subject: fewer rooms per home and a higher prevalence of recurrent pulmonary tract infections in the coal-exposed group."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Cooking is mainly done either indoors, with an open-fire traditional cooking stove in a small kitchen without effective ventilation, or in an open or closed kitchen adjacent to the living room within the house."
+        explanation: "Describes the exposure setting recorded in this assay's exposure condition and description: unventilated indoor combustion adjacent to living space."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "All respiratory measurements were performed during the winter (from October 2011 to March 2012)."
+        explanation: "Fixes the measurement season recorded in this assay's description and clinical_context, the period of heaviest domestic coal use."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Most of the coal used by Zunyi households is a high-sulfur coal with a sulfur content of approximately 3% (13)."
+        explanation: "Characterises the fuel behind the coal-smoke exposure recorded on this assay, noted in the description."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Third, we cannot comment on the duration of exposure to coal smoke because we could not adequately assess cooking times in households."
+        explanation: "Justifies omitting exposure_duration from this assay's coal-smoke condition: the study could not assess how long participants were exposed."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Our main finding was impaired pulmonary function in both adult males and females who used coal compared to non-users."
+        explanation: "The authors' own statement of the finding this assay and its companion record, and of the key event it informs (decreased lung function in coal users of both sexes)."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Second, when interpreting the results of this study, it is important to note that the cross-sectional design limited causal inference."
+        explanation: "Supports recording this paper as a cross-sectional association only, and the decision to record no key_event_relationships from it."
+      # -- Multivariate regression evidence. The coefficients below are carried
+      # -- by the response_comparisons, which have no evidence slot of their
+      # -- own, so the quotes supporting them live on this assay (the one each
+      # -- comparison's derived_from_assay points at).
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Multivariate linear regression analysis was used to assess the association between coal combustion and pulmonary function with other sociodemographic factors (e.g., age, gender, height, and exposure to tobacco smoke, etc.) as variable controls."
+        explanation: "Identifies the statistical_test recorded on every response comparison in this file: multivariate linear regression of pulmonary function on coal combustion with sociodemographic covariates."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In multivariate analysis, current exposure to coal smoke was associated with a 31.7% decrease in FVC, a 42.0% decrease in FEV₁, a 7.46% decrease in the FEV₁/FVC ratio, and a 23.1% decrease in PEFR in adult residents."
+        explanation: "The paper's prose framing of the four adjusted coal coefficients as percent decreases. Tables 2-5 print the same four numbers as absolute coefficients (-0.317 L, -0.420 L, -7.463 percentage points, -0.231 L/s), which is how the comparisons record them; this quote documents the discrepancy rather than resolving it."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Coal (yes vs no) – –0.317 – –0.396; ––0.238 ,0.0001"
+        explanation: "Table 2 row giving the adjusted FVC coefficient for coal use, -0.317 L (95%CI -0.396; -0.238), P < 0.0001, recorded on COMP:jie-fvc-coal-vs-noncoal."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Coal (yes vs no) – –0.420 – –0.525; ––0.316 ,0.0001"
+        explanation: "Table 3 row giving the adjusted FEV1 coefficient for coal use, -0.420 L (95%CI -0.525; -0.316), P < 0.0001, recorded on COMP:jie-fev1-coal-vs-noncoal."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Coal (yes vs no) – –7.463 – –9.797; ––5.129 ,0.0001"
+        explanation: "Table 4 row giving the adjusted FEV1/FVC coefficient for coal use, -7.463 percentage points (95%CI -9.797; -5.129), P < 0.0001, recorded on COMP:jie-fev1fvc-coal-vs-noncoal."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Coal (yes vs no) – –0.231 – –0.460; ––0.002 ,0.05"
+        explanation: "Table 5 row giving the adjusted PEFR coefficient for coal use, -0.231 L/s (95%CI -0.460; -0.002), P < 0.05, recorded on COMP:jie-pefr-coal-vs-noncoal; the P < 0.05 threshold is why that comparison carries no p_value."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In the multivariate models, we found that PM 2.5 relative concentrations in the kitchen showed a significant effect on FVC, FEV 1, and PEFR."
+        explanation: "Establishes which three of the four pulmonary function parameters the kitchen PM2.5 relative concentration significantly affected, and by omission why the FEV1/FVC slope is recorded as no_change."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Our models indicate that there was a 2-L decrease in FVC and a 3-L decrease in FEV1, as well as an 8 L/s decrease in PEFR per 1 cpm PM2.5 exposure among adult participants."
+        explanation: "The paper's prose framing of the three significant kitchen PM2.5 slopes. The tabulated coefficients are -0.002 L, -0.003 L and -0.008 L/s per cpm, a thousandfold smaller than the litre figures stated here; the comparisons record the tabulated values and this quote documents the discrepancy."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM2.5 relative concentration in kitchen (cpm) – –0.002 – –0.004; 0.000 ,0.05"
+        explanation: "Table 2 row giving the FVC coefficient per 1 cpm of kitchen PM2.5, -0.002 L (95%CI -0.004; 0.000), P < 0.05, recorded on COMP:jie-fvc-per-cpm-kitchen-pm25."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM2.5 relative concentration in kitchen (cpm) – –0.003 – –0.005; 0.000 ,0.05"
+        explanation: "Table 3 row giving the FEV1 coefficient per 1 cpm of kitchen PM2.5, -0.003 L (95%CI -0.005; 0.000), P < 0.05, recorded on COMP:jie-fev1-per-cpm-kitchen-pm25."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM2.5 relative concentration in kitchen (cpm) – –0.008 – –0.013; ––0.003 ,0.05"
+        explanation: "Table 5 row giving the PEFR coefficient per 1 cpm of kitchen PM2.5, -0.008 L/s (95%CI -0.013; -0.003), P < 0.05, recorded on COMP:jie-pefr-per-cpm-kitchen-pm25."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM2.5 relative concentration in kitchen (cpm) 0.008 – –0.044; 0.060 0.757"
+        explanation: "Table 4 row giving the null FEV1/FVC coefficient per 1 cpm of kitchen PM2.5, 0.008 percentage points (95%CI -0.044; 0.060), P = 0.757, recorded on COMP:jie-fev1fvc-per-cpm-kitchen-pm25."
+    has_exposure_condition:
+      - id: "EXPOSURE:jie-coal-smoke-indoor"
+        name: "Indoor air pollution from domestic coal combustion for cooking and heating, quantified as the PM2.5 relative concentration measured in the kitchen during cooking (living room 543.2 +/- 65.0 cpm; outdoors 416.2 +/- 5.9 cpm); exposure duration not assessable, as the authors could not determine cooking times"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "569.5"
+          unit:
+            id: "UCUM:1/min"
+            name: "counts per minute"
+          central_tendency: mean
+          sample_size: 52
+          variability:
+            variability_type: standard_deviation
+            value: "50.1"
+            unit:
+              id: "UCUM:1/min"
+              name: "counts per minute"
+    has_specified_output:
+      - id: "LF:jie-coal-exposed-spirometry-output-coal"
+        name: "Measured FEV1, FVC, FEV1/FVC and PEFR in adults from coal-using households"
+        experimental_group: treated
+        measured_under: "EXPOSURE:jie-coal-smoke-indoor"
+        fev1:
+          value: "2.75"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 110
+          variability:
+            variability_type: standard_deviation
+            value: "0.56"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fvc:
+          value: "3.22"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 110
+          variability:
+            variability_type: standard_deviation
+            value: "0.62"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fev1_fvc_ratio:
+          value: "83.13"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 110
+          variability:
+            variability_type: standard_deviation
+            value: "3.95"
+            unit:
+              id: "UO:0000187"
+              name: "percent"
+        peak_expiratory_flow:
+          value: "6.00"
+          unit:
+            id: "UCUM:L/s"
+            name: "liter per second"
+          central_tendency: mean
+          sample_size: 110
+          variability:
+            variability_type: standard_deviation
+            value: "0.90"
+            unit:
+              id: "UCUM:L/s"
+              name: "liter per second"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:jie-coal-users"
+      name: "Nonsmoking adult residents of coal-using households, YA Road, Zunyi city, Guizhou, China"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "43.7"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: mean
+        sample_size: 110
+        variability:
+          variability_type: standard_deviation
+          value: "12.5"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      subject_characteristics: "110 adults from the 52 coal-using households; 64.5% female, age range 20 to 74 years, mean height 163.7 +/- 6.6 cm, mean weight 61.1 +/- 7.1 kg. All were nonsmokers identified by questionnaire, aged 18 years and older, and had lived in YA Road for more than 3 years. Mean 4.4 +/- 1.2 persons and 3.9 +/- 1.2 rooms per home. 30.9% had a history of recurrent pulmonary tract infections and 32.7% had environmental tobacco smoke exposure (a smoker in the household). Age did not differ significantly from the control group (P = 0.08), nor did height (P = 0.23) or weight (P = 0.16); the number of rooms per home (P < 0.05) and the prevalence of recurrent pulmonary tract infections (P < 0.05) did, and household size was borderline (P = 0.053)."
+      clinical_context: "Cross-sectional study of adult residents of an inner-city area (YA Road) of Zunyi city, Guizhou province, southwest China - a traditional industrial city with abundant coal reserves and the heaviest acid-rain pollution in China - with all respiratory measurements made during the winter of October 2011 to March 2012"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:jie-spirometry-001"
+        name: "FGC-A++ portable spirometry against American Thoracic Society acceptance criteria"
+        spirometry_standard: "American Thoracic Society standardisation of spirometry (Miller et al. 2005)"
+      - id: "PROTOCOL:jie-pm25-monitoring-001"
+        name: "LD-3K light-scattering dust monitoring of PM2.5 relative concentration during cooking"
+      - id: "PROTOCOL:jie-questionnaire-001"
+        name: "Sociodemographic and smoking questionnaire"
+
+  - id: "LF:jie-noncoal-control-spirometry"
+    name: "Spirometry - adult residents of households using modern energy sources (control group)"
+    description: "Ventilatory function in the 121 nonsmoking adults from households using modern energy sources rather than coal: FEV1 3.49 +/- 0.77 L, FVC 3.87 +/- 0.70 L, FEV1/FVC 91.63 +/- 5.46%, PEFR 6.80 +/- 1.17 L/s (Table 1). These are the comparator values for the coal-exposed assay. The PM2.5 relative concentration measured during cooking in these households was 477.0 +/- 58.5 cpm in the kitchen, 452.7 +/- 51.2 cpm in the living room and 417.0 +/- 5.1 cpm outdoors; indoor values were significantly lower than in the coal-using homes (P < 0.0001), whereas the outdoor concentrations of the two groups did not differ (417.0 +/- 5.1 vs 416.2 +/- 5.9 cpm, P = 0.480) - the contrast between the groups is therefore an indoor one, not a difference in ambient air. These households had been drawn from the same inner-city area, where biomass fuels have largely been replaced by kerosene, liquid petroleum, gas or electricity while coal remains a major cooking and heating fuel."
+    evidence:
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1 (L) 2.75 ± 0.56 3.49 ± 0.77 ,0.05 FVC (L) 3.22 ± 0.62 3.87 ± 0.70 ,0.05 FEV1/FVC (%) 83.13 ± 3.95 91.63 ± 5.46 ,0.05 PEFR (L/s) 6.00 ± 0.90 6.80 ± 1.17 ,0.05"
+        explanation: "Table 1 rows; the second numeric column gives the non-coal control group's mean +/- SD for FEV1 (3.49 +/- 0.77 L), FVC (3.87 +/- 0.70 L), FEV1/FVC (91.63 +/- 5.46%) and PEFR (6.80 +/- 1.17 L/s), the values recorded on this assay's output."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM2.5 relative concentration in kitchen (cpm) 569.5 ± 50.1 477.0 ± 58.5 ,0.05 PM2.5 relative concentration in living room (cpm) 543.2 ± 65.0 452.7 ± 51.2 ,0.05 Outdoor PM 2.5 relative concentration (cpm) 416.2 ± 5.9 417.0 ± 5.1 =0.480"
+        explanation: "Table 1 rows giving the control group's kitchen PM2.5 relative concentration (477.0 +/- 58.5 cpm) recorded as this condition's exposure_concentration, and establishing that the outdoor concentrations of the two groups did not differ (P = 0.480)."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In the inner-city areas of Zunyi, biomass fuels have been widely replaced at home by cleaner energy sources, such as kerosene, liquid petroleum, gas, or electricity, but coal is still a major source of fuel for cooking and heating throughout the year, particularly in the winter."
+        explanation: "Identifies the modern energy sources that define this control condition and confirms that coal remains a major alternative fuel in the same inner-city area."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The individuals in the coal-exposed and unexposed groups were similar regarding demographic characteristics: 64.5% were female (exposed) vs 57.9% (unexposed), with age ranges of 20 to 74 (exposed) and 19 to 71 years (unexposed)"
+        explanation: "Gives the sex distribution and age range of both cohorts recorded on the two assays' study_subject records, and the authors' judgement that the groups were demographically similar."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Age (year) 43.7 ± 12.5 40.8 ± 12.4 =0.08"
+        explanation: "Table 1 row giving the mean age +/- SD of both cohorts (43.7 +/- 12.5 years coal-exposed, 40.8 +/- 12.4 years control) recorded on the two study_subject records, with the non-significant group difference."
+      - reference: "PMID:25296361"
+        reference_title: "Relationship between pulmonary function and indoor air pollution from coal combustion among adult residents in an inner-city area of southwest China."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM 2.5 relative concentration during cooking was measured in 52 households in the coal-exposed group and 52 households in the unexposed group."
+        explanation: "Gives the number of households behind each group's PM2.5 relative concentration, the sample_size recorded on both exposure conditions' concentrations."
+    has_exposure_condition:
+      - id: "COND:jie-noncoal-modern-fuel"
+        name: "Households using modern energy sources (kerosene, liquid petroleum, gas or electricity) instead of coal; control condition, with the PM2.5 relative concentration measured in the kitchen during cooking (living room 452.7 +/- 51.2 cpm; outdoors 417.0 +/- 5.1 cpm)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "477.0"
+          unit:
+            id: "UCUM:1/min"
+            name: "counts per minute"
+          central_tendency: mean
+          sample_size: 52
+          variability:
+            variability_type: standard_deviation
+            value: "58.5"
+            unit:
+              id: "UCUM:1/min"
+              name: "counts per minute"
+    has_specified_output:
+      - id: "LF:jie-noncoal-control-spirometry-output-control"
+        name: "Measured FEV1, FVC, FEV1/FVC and PEFR in adults from non-coal households"
+        experimental_group: control
+        measured_under: "COND:jie-noncoal-modern-fuel"
+        fev1:
+          value: "3.49"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 121
+          variability:
+            variability_type: standard_deviation
+            value: "0.77"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fvc:
+          value: "3.87"
+          unit:
+            id: "UO:0000099"
+            name: "liter"
+          central_tendency: mean
+          sample_size: 121
+          variability:
+            variability_type: standard_deviation
+            value: "0.70"
+            unit:
+              id: "UO:0000099"
+              name: "liter"
+        fev1_fvc_ratio:
+          value: "91.63"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 121
+          variability:
+            variability_type: standard_deviation
+            value: "5.46"
+            unit:
+              id: "UO:0000187"
+              name: "percent"
+        peak_expiratory_flow:
+          value: "6.80"
+          unit:
+            id: "UCUM:L/s"
+            name: "liter per second"
+          central_tendency: mean
+          sample_size: 121
+          variability:
+            variability_type: standard_deviation
+            value: "1.17"
+            unit:
+              id: "UCUM:L/s"
+              name: "liter per second"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:jie-noncoal-users"
+      name: "Nonsmoking adult residents of households using modern energy sources, YA Road, Zunyi city, Guizhou, China"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "40.8"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: mean
+        sample_size: 121
+        variability:
+          variability_type: standard_deviation
+          value: "12.4"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      subject_characteristics: "121 adults from the 52 households using modern energy sources, selected by simple random sampling from the people using modern energy sources in the same two residence communities; 57.9% female, age range 19 to 71 years, mean height 164.8 +/- 6.8 cm, mean weight 62.6 +/- 7.5 kg. All were nonsmokers identified by questionnaire, aged 18 years and older, and had lived in YA Road for more than 3 years. Mean 4.1 +/- 1.3 persons and 4.4 +/- 0.9 rooms per home. 13.2% had a history of recurrent pulmonary tract infections and 25.6% had environmental tobacco smoke exposure."
+      clinical_context: "Cross-sectional study of adult residents of an inner-city area (YA Road) of Zunyi city, Guizhou province, southwest China, with all respiratory measurements made during the winter of October 2011 to March 2012"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:jie-spirometry-001"
+        name: "FGC-A++ portable spirometry against American Thoracic Society acceptance criteria"
+        spirometry_standard: "American Thoracic Society standardisation of spirometry (Miller et al. 2005)"
+      - id: "PROTOCOL:jie-pm25-monitoring-001"
+        name: "LD-3K light-scattering dust monitoring of PM2.5 relative concentration during cooking"
+      - id: "PROTOCOL:jie-questionnaire-001"
+        name: "Sociodemographic and smoking questionnaire"
+
+# =============================================================================
+# RESPONSE COMPARISONS
+#
+# Two kinds of estimate, both from the paper's multivariate linear regression
+# models (Tables 2-5), both reported_in_paper:
+#
+#   1. COAL vs NON-COAL (four comparisons). The adjusted between-group
+#      coefficient for coal use, pointing at the two groups' output records.
+#      change_value is the signed coefficient exactly as its 95% CI is printed
+#      in the table. The paper's prose calls these "% decreases" while the
+#      tables print them in litres, L/s and percentage points - see the
+#      "PERCENT vs LITRES" note at the top of this file.
+#
+#   2. KITCHEN PM2.5 PER 1 cpm (four comparisons). Continuous-exposure
+#      regression slopes, so control_output and treated_output are omitted
+#      (the hart2018 pattern): no pair of output records exists for a per-unit
+#      slope to point at. The paper's prose states these as "2-L", "3-L" and
+#      "8 L/s" decreases while the tables print -0.002 L, -0.003 L and
+#      -0.008 L/s - see the "SLOPE MAGNITUDE" note at the top of this file.
+#
+# Models were adjusted for gender, age, weight, height, number of persons
+# living in a home, number of rooms in a home, history of recurrent
+# respiratory tract infections, environmental tobacco smoke exposure, and
+# PM2.5 relative concentrations in the kitchen, living room and outdoors.
+# Where the paper reports only "P < 0.0001", p_value carries that stated upper
+# bound and the description says so; where it reports only "P < 0.05",
+# p_value is omitted because the float slot cannot hold a threshold.
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:jie-fvc-coal-vs-noncoal"
+    name: "Adjusted difference in FVC for coal use vs no coal use"
+    description: "In the multivariate model, coal use was associated with an FVC coefficient of -0.317 L (95%CI -0.396; -0.238), P < 0.0001 (Table 2). The abstract and Results text describe this same number as 'a 31.7% decrease in FVC'; the tabulated coefficient is an absolute difference in litres, and it is recorded as such here. The paper reports only P < 0.0001, so the tabulated p_value 0.0001 is the stated upper bound. Crude group means were 3.22 +/- 0.62 L (coal) vs 3.87 +/- 0.70 L (non-coal); the control output lives on the non-coal assay."
+    derived_from_assay: "LF:jie-coal-exposed-spirometry"
+    compared_measurement: "fvc"
+    control_output: "LF:jie-noncoal-control-spirometry-output-control"
+    treated_output: "LF:jie-coal-exposed-spirometry-output-coal"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.317"
+      unit:
+        id: "UO:0000099"
+        name: "liter"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-0.396"
+        upper_bound: "-0.238"
+        unit:
+          id: "UO:0000099"
+          name: "liter"
+    p_value: 0.0001
+    statistical_test: "multivariate linear regression adjusted for gender, age, weight, height, number of persons living in a home, number of rooms in a home, history of recurrent respiratory tract infections, environmental tobacco smoke exposure, and PM2.5 relative concentrations in the kitchen, living room and outdoors"
+    derivation: reported_in_paper
+
+  - id: "COMP:jie-fev1-coal-vs-noncoal"
+    name: "Adjusted difference in FEV1 for coal use vs no coal use"
+    description: "In the multivariate model, coal use was associated with an FEV1 coefficient of -0.420 L (95%CI -0.525; -0.316), P < 0.0001 (Table 3). The abstract and Results text describe this same number as 'a 42.0% decrease in FEV1'; the tabulated coefficient is an absolute difference in litres, and it is recorded as such here. The paper reports only P < 0.0001, so the tabulated p_value 0.0001 is the stated upper bound. Crude group means were 2.75 +/- 0.56 L (coal) vs 3.49 +/- 0.77 L (non-coal); the control output lives on the non-coal assay."
+    derived_from_assay: "LF:jie-coal-exposed-spirometry"
+    compared_measurement: "fev1"
+    control_output: "LF:jie-noncoal-control-spirometry-output-control"
+    treated_output: "LF:jie-coal-exposed-spirometry-output-coal"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.420"
+      unit:
+        id: "UO:0000099"
+        name: "liter"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-0.525"
+        upper_bound: "-0.316"
+        unit:
+          id: "UO:0000099"
+          name: "liter"
+    p_value: 0.0001
+    statistical_test: "multivariate linear regression adjusted for gender, age, weight, height, number of persons living in a home, number of rooms in a home, history of recurrent respiratory tract infections, environmental tobacco smoke exposure, and PM2.5 relative concentrations in the kitchen, living room and outdoors"
+    derivation: reported_in_paper
+
+  - id: "COMP:jie-fev1fvc-coal-vs-noncoal"
+    name: "Adjusted difference in FEV1/FVC ratio for coal use vs no coal use"
+    description: "In the multivariate model, coal use was associated with an FEV1/FVC coefficient of -7.463 percentage points (95%CI -9.797; -5.129), P < 0.0001 (Table 4). The abstract describes this as 'a 7.46% decrease in the FEV1/FVC ratio'; because the outcome is itself a percentage, the coefficient is a difference in percentage points rather than a relative decrease. The paper reports only P < 0.0001, so the tabulated p_value 0.0001 is the stated upper bound. Crude group means were 83.13 +/- 3.95% (coal) vs 91.63 +/- 5.46% (non-coal); the control output lives on the non-coal assay."
+    derived_from_assay: "LF:jie-coal-exposed-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    control_output: "LF:jie-noncoal-control-spirometry-output-control"
+    treated_output: "LF:jie-coal-exposed-spirometry-output-coal"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-7.463"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-9.797"
+        upper_bound: "-5.129"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    p_value: 0.0001
+    statistical_test: "multivariate linear regression adjusted for gender, age, weight, height, number of persons living in a home, number of rooms in a home, history of recurrent respiratory tract infections, environmental tobacco smoke exposure, and PM2.5 relative concentrations in the kitchen, living room and outdoors"
+    derivation: reported_in_paper
+
+  - id: "COMP:jie-pefr-coal-vs-noncoal"
+    name: "Adjusted difference in PEFR for coal use vs no coal use"
+    description: "In the multivariate model, coal use was associated with a PEFR coefficient of -0.231 L/s (95%CI -0.460; -0.002), P < 0.05 (Table 5) - the only one of the four coal coefficients whose confidence interval comes close to zero. The abstract describes this same number as 'a 23.1% decrease in PEFR'; the tabulated coefficient is an absolute difference in L/s, and it is recorded as such here. The paper gives only the P < 0.05 threshold, so p_value is omitted. Crude group means were 6.00 +/- 0.90 L/s (coal) vs 6.80 +/- 1.17 L/s (non-coal); the control output lives on the non-coal assay."
+    derived_from_assay: "LF:jie-coal-exposed-spirometry"
+    compared_measurement: "peak_expiratory_flow"
+    control_output: "LF:jie-noncoal-control-spirometry-output-control"
+    treated_output: "LF:jie-coal-exposed-spirometry-output-coal"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.231"
+      unit:
+        id: "UCUM:L/s"
+        name: "liter per second"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-0.460"
+        upper_bound: "-0.002"
+        unit:
+          id: "UCUM:L/s"
+          name: "liter per second"
+    statistical_test: "multivariate linear regression adjusted for gender, age, weight, height, number of persons living in a home, number of rooms in a home, history of recurrent respiratory tract infections, environmental tobacco smoke exposure, and PM2.5 relative concentrations in the kitchen, living room and outdoors"
+    derivation: reported_in_paper
+
+  - id: "COMP:jie-fvc-per-cpm-kitchen-pm25"
+    name: "Change in FVC per 1 cpm increase in kitchen PM2.5 relative concentration"
+    description: "Each 1 cpm increase in the kitchen PM2.5 relative concentration was associated with an FVC coefficient of -0.002 L (95%CI -0.004; 0.000), P < 0.05 (Table 2). Note the discrepancy with the paper's own prose, which states 'a 2-L decrease in FVC ... per 1 cpm PM2.5 exposure': the tabulated coefficient is 0.002 L, i.e. about 2 mL per cpm, a thousandfold smaller than the stated litre figure. The tabulated value is recorded. The paper gives only the P < 0.05 threshold, so p_value is omitted. Continuous-exposure regression slope, so no control/treated output pair exists (see the section note)."
+    derived_from_assay: "LF:jie-coal-exposed-spirometry"
+    compared_measurement: "fvc"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.002"
+      unit:
+        id: "UO:0000099"
+        name: "liter"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-0.004"
+        upper_bound: "0.000"
+        unit:
+          id: "UO:0000099"
+          name: "liter"
+    statistical_test: "multivariate linear regression, coefficient per 1 count per minute of kitchen PM2.5 relative concentration, adjusted for gender, age, weight, height, number of persons living in a home, number of rooms in a home, history of recurrent respiratory tract infections, environmental tobacco smoke exposure, and PM2.5 relative concentrations in the living room and outdoors"
+    derivation: reported_in_paper
+
+  - id: "COMP:jie-fev1-per-cpm-kitchen-pm25"
+    name: "Change in FEV1 per 1 cpm increase in kitchen PM2.5 relative concentration"
+    description: "Each 1 cpm increase in the kitchen PM2.5 relative concentration was associated with an FEV1 coefficient of -0.003 L (95%CI -0.005; 0.000), P < 0.05 (Table 3). Note the discrepancy with the paper's own prose, which states 'a 3-L decrease in FEV1 ... per 1 cpm PM2.5 exposure': the tabulated coefficient is 0.003 L, i.e. about 3 mL per cpm. The tabulated value is recorded. The paper gives only the P < 0.05 threshold, so p_value is omitted. Continuous-exposure regression slope, so no control/treated output pair exists (see the section note)."
+    derived_from_assay: "LF:jie-coal-exposed-spirometry"
+    compared_measurement: "fev1"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.003"
+      unit:
+        id: "UO:0000099"
+        name: "liter"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-0.005"
+        upper_bound: "0.000"
+        unit:
+          id: "UO:0000099"
+          name: "liter"
+    statistical_test: "multivariate linear regression, coefficient per 1 count per minute of kitchen PM2.5 relative concentration, adjusted for gender, age, weight, height, number of persons living in a home, number of rooms in a home, history of recurrent respiratory tract infections, environmental tobacco smoke exposure, and PM2.5 relative concentrations in the living room and outdoors"
+    derivation: reported_in_paper
+
+  - id: "COMP:jie-pefr-per-cpm-kitchen-pm25"
+    name: "Change in PEFR per 1 cpm increase in kitchen PM2.5 relative concentration"
+    description: "Each 1 cpm increase in the kitchen PM2.5 relative concentration was associated with a PEFR coefficient of -0.008 L/s (95%CI -0.013; -0.003), P < 0.05 (Table 5) - the only one of the four kitchen PM2.5 coefficients whose confidence interval excludes zero on both sides. Note the discrepancy with the paper's own prose, which states 'an 8 L/s decrease in PEFR per 1 cpm PM2.5 exposure': the tabulated coefficient is 0.008 L/s, i.e. about 8 mL/s per cpm. The tabulated value is recorded. The paper gives only the P < 0.05 threshold, so p_value is omitted. Continuous-exposure regression slope, so no control/treated output pair exists (see the section note)."
+    derived_from_assay: "LF:jie-coal-exposed-spirometry"
+    compared_measurement: "peak_expiratory_flow"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.008"
+      unit:
+        id: "UCUM:L/s"
+        name: "liter per second"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-0.013"
+        upper_bound: "-0.003"
+        unit:
+          id: "UCUM:L/s"
+          name: "liter per second"
+    statistical_test: "multivariate linear regression, coefficient per 1 count per minute of kitchen PM2.5 relative concentration, adjusted for gender, age, weight, height, number of persons living in a home, number of rooms in a home, history of recurrent respiratory tract infections, environmental tobacco smoke exposure, and PM2.5 relative concentrations in the living room and outdoors"
+    derivation: reported_in_paper
+
+  - id: "COMP:jie-fev1fvc-per-cpm-kitchen-pm25"
+    name: "Change in FEV1/FVC ratio per 1 cpm increase in kitchen PM2.5 relative concentration"
+    description: "Each 1 cpm increase in the kitchen PM2.5 relative concentration was associated with an FEV1/FVC coefficient of 0.008 percentage points (95%CI -0.044; 0.060), P = 0.757 - a null result, recorded because it is the one pulmonary function parameter on which kitchen PM2.5 showed no significant effect, consistent with the paper's statement that the significant effects were on FVC, FEV1 and PEFR. The point estimate is positive, so change_direction is no_change rather than decreased. Continuous-exposure regression slope, so no control/treated output pair exists (see the section note)."
+    derived_from_assay: "LF:jie-coal-exposed-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: absolute_difference
+    change_direction: no_change
+    change_value:
+      value: "0.008"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-0.044"
+        upper_bound: "0.060"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    p_value: 0.757
+    statistical_test: "multivariate linear regression, coefficient per 1 count per minute of kitchen PM2.5 relative concentration, adjusted for gender, age, weight, height, number of persons living in a home, number of rooms in a home, history of recurrent respiratory tract infections, environmental tobacco smoke exposure, and PM2.5 relative concentrations in the living room and outdoors"
+    derivation: reported_in_paper
