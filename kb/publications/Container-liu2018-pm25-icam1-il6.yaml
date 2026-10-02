@@ -1,0 +1,2658 @@
+# =============================================================================
+# Liu et al. (2018) - PM2.5-induced oxidative stress increases intercellular
+# adhesion molecule-1 expression in lung epithelial cells through the
+# IL-6/AKT/STAT3/NF-kB-dependent pathway
+# =============================================================================
+#
+# Source: Part Fibre Toxicol. 2018;15:4
+# DOI: 10.1186/s12989-018-0240-x
+#
+# The committed reference cache for this PMID is full text (content_type:
+# full_text_pdf), so every evidence snippet below is quoted from the committed
+# copy - some from the PubMed abstract at the head of the file, some from the
+# PDF body text. No local-PDF-only quotes are used and no receipt is needed.
+#
+# Study design - three arms:
+#   1. In vitro: A549 cells (human lung type II alveolar epithelial line)
+#      exposed for 24 h to two fractions of NIST SRM1649b urban dust:
+#        - O-PMs = organic solvent (DMSO)-extractable fraction
+#        - W-PMs = water-soluble fraction
+#      Readouts: MTT viability (25-400 ug/ml, 24/48/72 h), DCFH-DA ROS,
+#      U937 monocyte adhesion, ICAM-1 by Western blot / flow cytometry /
+#      immunofluorescence, phospho-AKT / phospho-STAT3 / phospho-p65 and
+#      phospho-ERK / p38 / JNK by Western blot, p65 nuclear translocation,
+#      a 'human cytokine antibody array, IL-6 by Western blot and ELISA, and
+#      pharmacological / siRNA interventions: NAC 5 mM, BAY11-7082 10 uM
+#      (NF-kB), LY294002 10 uM (AKT), Stattic 10 uM (STAT3), SB203580 10 uM
+#      (p38), SP600125 10 uM (JNK), anti-ICAM-1 1 ug/ml, tocilizumab 20 ug/ml,
+#      sgp130Fc 5 ug/ml, p65 siRNA and IL-6 siRNA (1 uM).
+#   2. In vivo: male C57BL/6 wild-type (WT) and IL-6 knockout (KO) mice,
+#      8-12 weeks, 20-35 g, intratracheal instillation of 200-350 ug PMs per
+#      mouse in 100 ul sterile PBS, sacrificed at Day 7 or Day 14 (n = 6 per
+#      group). NAC 3-5 mg/mouse (150 mg/kg) intraperitoneally one day before
+#      PMs in a separate WT arm. Readouts: lung-tissue immunohistochemistry
+#      and Western blot for ICAM-1 and IL-6 (plus phospho-AKT/p65/STAT3), and
+#      plasma sICAM-1 and IL-6 by ELISA.
+#   3. Human: plasma from 8 COPD patients (all with a smoking history) and
+#      8 never-smoking healthy subjects, Taoyuan General Hospital
+#      (TYGH99025). Readouts: WBC, CRP, sICAM-1 and IL-6.
+#
+# NUMERIC VALUES - what is and is not recorded here:
+#   The only group-level magnitudes stated numerically anywhere in the running
+#   text are the O-PMs ICAM-1 Western blot fold changes (1.3 +/- 0.2 at
+#   25 ug/ml, 2.2 +/- 0.1 at 50 ug/ml, 2.7 +/- 0.2 at 100 ug/ml vs untreated
+#   control) and the statement that monocyte adhesion to O-PMs-treated cells
+#   was 2-times that to W-PMs-treated cells. Those are recorded, the first as
+#   output values plus response_comparisons entries. Every other result -
+#   ROS fluorescence, phosphorylation densitometry, IL-6 levels, mouse lung
+#   and plasma levels, human WBC/CRP/sICAM-1/IL-6 group levels - is reported
+#   only as figure panels, so per the extraction rules no magnitude is
+#   estimated and those output records carry only their experimental group,
+#   the condition they were measured under, and the reported direction.
+#   Table 1 does list per-individual sICAM-1 and IL-6 for all 16 human
+#   subjects, but the paper states no group mean or spread, and deriving one
+#   would be a computation rather than an extraction, so the human output
+#   records stay descriptive.
+#
+#   Spread type: the Statistical analysis section states "All data are
+#   expressed as the mean +/- SEM", so the ICAM-1 fold changes are recorded as
+#   standard_error. Note the Fig. 1d legend instead says "Values are the mean
+#   +/- SD of three independent experiments" for the adhesion assay - the
+#   paper is internally inconsistent on this point, and no value from Fig. 1d
+#   is recorded numerically here.
+#
+#   The ICAM-1 fold changes are expressed relative to untreated control, so
+#   the control output record is the normalization reference. No numeric value
+#   is written into it: 1.0 follows from the normalization rather than being a
+#   measurement the paper reports.
+#
+# KEY EVENTS - all four are reused verbatim from origin/main, none minted:
+#   KE:mie-oxidative-stress      (47 uses, unanimous wording)
+#   KE:ke-airway-inflammation    (50 uses, unanimous wording)
+#   KE:ke-pi3k-akt-activation    (12 uses, unanimous wording)
+#   KE:ke-systemic-inflammation  (12 uses, unanimous wording)
+#   ICAM-1 induction and monocyte adhesion are mapped to
+#   KE:ke-airway-inflammation rather than a new adhesion-molecule key event:
+#   the paper's own framing is that epithelial ICAM-1 mediates monocyte
+#   adherence and infiltration into inflammatory sites and pulmonary lesions,
+#   which is what that key event already covers.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:29329563"
+  reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+  doi: "10.1186/s12989-018-0240-x"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:liu-pm-extraction-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Preparation of water-soluble (W-PMs) and organic-extractable (O-PMs) fractions of SRM1649b"
+    description: "The particulate matter was NIST standard reference material 1649b (SRM1649b), composed of urban dust. 50 mg of PMs was dispersed in 1 ml of milli-Q water or in 1 ml of dimethyl sulfoxide (DMSO), shaken and ultra-sonicated for 2 h in an ultrasonic bath, then centrifuged at 13000 x g for 30 min; the supernatant was collected as the water-soluble (W-PMs) or organic-extractable (O-PMs) fraction. All extracts were stored at -20 C until biological analysis."
+    detection_method: "solvent extraction followed by ultrasonication and centrifugation"
+    equipment_required:
+      - "Ultrasonic bath"
+      - "Refrigerated centrifuge (13000 x g)"
+      - "NIST SRM1649b urban dust"
+
+  - id: "PROTOCOL:liu-mtt-001"
+    protocol_type: MolecularAssayProtocol
+    name: "MTT cytotoxicity assay in A549 cells"
+    description: "A549 cells seeded in 96-well plates at 1 x 10^4 cells per well in 100 ul medium, cultured 24 h, then treated with 0, 25, 50, 100, 200 or 400 ug/ml of PMs for 24, 48 or 72 h. 20 ul of MTT (1 mg/ml in PBS) added per well and incubated 2 h at 37 C, then 100 ul DMSO added and absorbance read at 570 nm on a microplate spectrophotometer (Thermo MK3). Data expressed as a percentage of the solvent control (0.1% DMSO), set to 100%. Experiments performed in triplicate and repeated 3 times."
+    detection_method: "MTT tetrazolium reduction, absorbance at 570 nm"
+    equipment_required:
+      - "Microplate spectrophotometer (Thermo MK3)"
+      - "MTT reagent"
+
+  - id: "PROTOCOL:liu-dcfhda-001"
+    protocol_type: ImagingProtocol
+    name: "DCFH-DA detection of intracellular ROS in A549 cells"
+    description: "Confluent A549 cells on 12-well plates treated with 50 or 100 ug/ml of W-PMs or O-PMs for 24 h, then 10 uM 2',7'-dichlorofluorescein-diacetate (DCFH-DA) added for 20 min at 37 C in the dark. Cells washed twice with ice-cold PBS. Fluorescence observed with a fluorescence microscope (excitation 488 nm, emission 519 nm) and analysed on a FACScan flow cytometer (Becton Dickinson)."
+    fluorescent_labeling: "2',7'-dichlorofluorescein-diacetate (DCFH-DA)"
+    fluorescent_tracer: "DCFH-DA"
+    equipment_required:
+      - "Fluorescence microscope (excitation 488 nm, emission 519 nm)"
+      - "FACScan flow cytometer (Becton Dickinson)"
+      - "DCFH-DA probe"
+
+  - id: "PROTOCOL:liu-flow-icam1-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Flow cytometry for ICAM-1 surface expression on A549 cells"
+    description: "A549 cells treated or untreated for 1 h with 10 uM Bay11-7082 (NF-kB inhibitor), LY294002 (AKT inhibitor), Stattic (STAT3 inhibitor), SB203580 (p38 inhibitor) or SP600125 (JNK inhibitor), then treated with 100 ug/ml O-PMs for 24 h and washed twice with PBS. After trypsinization, 10^5 suspended A549 cells incubated in 100 ul PBS containing 5 ul FITC-conjugated anti-human ICAM-1 antibody (Dako) or FITC-conjugated control IgG for 15 min, resuspended in 500 ul PBS and analysed on a FACScan flow cytometer. Experiments performed in triplicate and repeated 3 times."
+    detection_method: "flow cytometry with FITC-conjugated anti-ICAM-1"
+    antibodies_used:
+      - "FITC-conjugated anti-human ICAM-1 (Dako)"
+      - "FITC-conjugated control IgG (Dako)"
+    equipment_required:
+      - "FACScan flow cytometer"
+
+  - id: "PROTOCOL:liu-adhesion-001"
+    protocol_type: ImagingProtocol
+    name: "Epithelial cell-leukocyte (A549-U937) adhesion assay"
+    description: "A549 cells in 24-well plates untreated or pretreated for 1 h with 10 uM Bay11-7082, LY294002 or Stattic, 5 mM N-acetyl cysteine, 1 ug/ml anti-ICAM-1 antibody, or p65 siRNA, then treated with or without 100 ug/ml O-PMs for 24 h. U937 cells labelled for 1 h at 37 C with 10 mM BCECF/AM (Boehringer Mannheim) in DMSO and suspended in A549 culture medium. 10^6 labelled U937 cells added to 10^6 adherent PM-treated A549 cells and incubated 1 h; nonadherent cells removed by two gentle PBS washes and bound U937 cells counted by fluorescence microscopy."
+    fluorescent_labeling: "BCECF/AM"
+    fluorescent_tracer: "BCECF/AM"
+    equipment_required:
+      - "Fluorescence microscope"
+      - "BCECF/AM (Boehringer Mannheim)"
+
+  - id: "PROTOCOL:liu-cytokinearray-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Human cytokine antibody array on A549 conditioned media"
+    description: "A human cytokine antibody array (RayBiotech) used to identify cytokines secreted from A549 cells with or without O-PMs treatment, following the manufacturer's instructions. The signal intensity of each spot was analysed with ImageJ and normalized to the average of the positive control spots to determine the variation of the cytokines."
+    detection_method: "sandwich antibody array with densitometric spot quantification (ImageJ)"
+    normalization_method: "normalized to the average of the positive control spots"
+    equipment_required:
+      - "Human cytokine antibody array (RayBiotech)"
+      - "ImageJ densitometry"
+
+  - id: "PROTOCOL:liu-wb-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Western blot for ICAM-1, IL-6, MAPKs, AKT, STAT3 and p65"
+    description: "Cells harvested in lysis buffer (20 mM Tris-HCl, 150 mM NaCl, 1 mM EDTA, 1 mM EGTA, 1% Triton X-100, 1 mM phenylmethylsulfonyl fluoride) with protease and phosphatase inhibitor; lysates centrifuged 14000 x g for 30 min at 4 C. Cytoplasmic and nuclear fractions extracted with cytoplasmic extraction and NE-PER Nuclear reagents (Thermo Fisher Scientific). 20 ug of protein per lane resolved by SDS-PAGE and transferred to PVDF membranes (Pall), blocked 30 min at room temperature in 5% nonfat milk in Tris-buffered saline with 0.2% Tween 20. Membranes incubated overnight at 4 C with primary antibodies, then 1 h at room temperature with HRP-conjugated goat anti-rabbit IgG (Sigma, 1:2000) and detected by chemiluminescence (NEN). Images captured on a UVP BioSpectrum 600 system and band intensity quantified by densitometry. The same lysis and blotting procedure was applied to mouse lung tissue."
+    detection_method: "chemiluminescent immunoblot with densitometric quantification"
+    normalization_method: "GAPDH loading control; Lamin A, alpha-Tubulin and beta-actin used as fraction markers"
+    reference_gene: "GAPDH"
+    antibodies_used:
+      - "ICAM-1, phospho-STAT3, t-STAT3, IL-6 (Abcam, 1:5000)"
+      - "phospho-JNK, t-JNK (Cell Signaling Technology, 1:2000)"
+      - "phospho-ERK1/2, t-ERK1/2 (Cell Signaling Technology, 1:8000)"
+      - "phospho-p38, t-p38 (Santa Cruz Biotechnology, 1:8000)"
+      - "t-p65, phospho-p65 (Epitomics, 1:1000)"
+      - "Lamin A, alpha-Tubulin, beta-actin (Epitomics, 1:5000)"
+      - "GAPDH (Santa Cruz Biotechnology, 1:3000) loading control"
+      - "HRP-conjugated goat anti-rabbit IgG (Sigma, 1:2000)"
+    equipment_required:
+      - "SDS-PAGE apparatus"
+      - "UVP BioSpectrum 600 imaging system"
+      - "NE-PER nuclear and cytoplasmic extraction reagents"
+
+  - id: "PROTOCOL:liu-sirna-001"
+    protocol_type: MolecularAssayProtocol
+    name: "siRNA knockdown of p65 and IL-6 in A549 cells"
+    description: "Accell SMART pool siRNAs (Dharmacon) targeting p65 or IL-6. A 100 uM siRNA stock prepared in RNase-free water and stored at -20 C. A549 cells cultured in 6-well plates at 70-80% confluence for 24 h, then 1 uM of p65 or IL-6 siRNA added in Turbofect (Thermo Fisher Scientific). After 24 h of transfection cells were stimulated with 100 ug/ml O-PMs for 24 h. Knockdown of p65 confirmed in cell lysates by Western blot; knockdown of IL-6 confirmed in conditioned medium by ELISA."
+    detection_method: "Turbofect-mediated transient siRNA transfection, confirmed by Western blot (p65) and ELISA (IL-6)"
+    equipment_required:
+      - "Accell SMART pool siRNA against p65 and IL-6 (Dharmacon)"
+      - "Turbofect transfection reagent (Thermo Fisher Scientific)"
+
+  - id: "PROTOCOL:liu-elisa-sicam1-001"
+    protocol_type: MolecularAssayProtocol
+    name: "ELISA for soluble ICAM-1 in conditioned media and plasma"
+    description: "Conditioned media collected from A549 cells (2 x 10^5) with and without 100 ug/ml O-PMs for 24 h; plasma collected from mice and from patients. sICAM-1 determined with ELISA kits (R&D Systems) following the manufacturer's protocols. Absorbance read at 450 nm on an EL808 microplate absorbance reader (BioTek). Cell samples run in triplicate and repeated three times. Plasma was collected from 8 COPD patients and 8 healthy subjects, and from mice (six mice per group) at 7 and 14 days after PMs treatment."
+    detection_method: "sandwich ELISA, absorbance at 450 nm"
+    equipment_required:
+      - "sICAM-1 ELISA kit (R&D Systems)"
+      - "EL808 microplate absorbance reader (BioTek)"
+
+  - id: "PROTOCOL:liu-elisa-il6-001"
+    protocol_type: MolecularAssayProtocol
+    name: "ELISA for IL-6 in conditioned media and plasma"
+    description: "IL-6 determined by ELISA in A549 conditioned media and in mouse and human plasma. Human IL-6 kits from BioLegend and mouse IL-6 kits from R&D Systems, used according to the manufacturers' protocols, with absorbance read at 450 nm on an EL808 microplate absorbance reader (BioTek). Cell samples run in triplicate and repeated three times."
+    detection_method: "sandwich ELISA, absorbance at 450 nm"
+    equipment_required:
+      - "Human IL-6 ELISA kit (BioLegend)"
+      - "Mouse IL-6 ELISA kit (R&D Systems)"
+      - "EL808 microplate absorbance reader (BioTek)"
+
+  - id: "PROTOCOL:liu-if-icam1-001"
+    protocol_type: ImagingProtocol
+    name: "Immunofluorescent staining of ICAM-1 in A549 cells"
+    description: "A sterilized coverslip with 0.1% gelatin coating placed in a 24-well plate and A549 cells seeded at 1 x 10^5 cells/ml. Confluent cells treated with 100 ug/ml W-PMs or O-PMs for 24 h, washed with PBS, fixed with 4% formaldehyde for 15 min and permeabilized with 0.3% Triton X-100 for 1 min at room temperature. Blocked in PBS with 1% bovine serum albumin for 1 h, incubated with ICAM-1 antibody (1:500, Abcam) overnight at 4 C, washed, then DyLight 488-conjugated secondary antibody (1:1000, Abcam) for 1 h at room temperature. Counterstained with 1 ug/ml DAPI for 5 min and photographed by fluorescence microscopy."
+    fluorescent_labeling: "anti-ICAM-1 (Abcam, 1:500) with DyLight 488-conjugated secondary antibody (Abcam, 1:1000) and DAPI nuclear counterstain"
+    fluorescent_tracer: "DyLight 488"
+    equipment_required:
+      - "Fluorescence microscope"
+
+  - id: "PROTOCOL:liu-instillation-001"
+    protocol_type: Protocol
+    name: "Intratracheal instillation of PMs in WT and IL-6 KO mice"
+    description: "Procedures followed National Taiwan University animal care guidelines (ICCUC: 20160235) and the Guide for the Care and Use of Laboratory Animals, NIH publication No. 86-23 (revised 1985). Male C57BL/6 wild-type and IL-6 knockout mice, 8-12 weeks old, 20-35 g. Mice anesthetized with inhaled 2% isoflurane, necks shaved and sterilized with 75% alcohol, a vertical 5-mm incision made and the trachea exposed; the anterior tracheal wall between the second and third cartilage rings punctured with an insulin syringe at 45 degrees to avoid damaging the posterior wall. PMs thawed at room temperature and diluted in sterile PBS to 200-350 ug per 100 ul; a 100 ul suspension slowly instilled intratracheally followed by 100 ul of clean air (n = 6 per group). In a separate WT arm, 50 ul of NAC (3-5 mg/mouse, 150 mg/kg body weight) in PBS was injected intraperitoneally one day before PMs administration. Control mice received an equal volume of PBS. Forelegs held to keep the animal upright for 10 s, then the mice were rotated to help the solution enter the lungs and the skin incision was sutured. Mice were anesthetized with Zoletil/Xylazine (2 mg/kg + 5 mg/kg) and sacrificed at Day 7 or Day 14. Blood was collected for plasma sICAM-1 and IL-6; part of the lung was immersion-fixed in 4% buffered paraformaldehyde and paraffin-embedded for immunohistochemistry, and the remainder frozen in liquid nitrogen for protein isolation."
+    equipment_required:
+      - "Isoflurane anesthesia system"
+      - "Insulin syringe"
+
+  - id: "PROTOCOL:liu-ihc-001"
+    protocol_type: StainingProtocol
+    name: "Immunohistochemistry for ICAM-1 and IL-6 in mouse lung"
+    description: "5-um-thick lung sections incubated overnight at 4 C with ICAM-1 or IL-6 antibodies (1:100, Abcam), then with biotin-conjugated goat anti-rabbit IgG (1:200, Vector lab) for 1 h at room temperature. Sections stained with 3,3-diaminobenzidine tetrahydrochloride (DAB), counterstained with hematoxylin and examined by light microscopy."
+    staining_type: "DAB immunohistochemistry with hematoxylin counterstain"
+    detection_method: "light microscopy"
+    antibodies_used:
+      - "anti-ICAM-1 (Abcam, 1:100)"
+      - "anti-IL-6 (Abcam, 1:100)"
+      - "biotin-conjugated goat anti-rabbit IgG (Vector lab, 1:200)"
+    equipment_required:
+      - "Microtome"
+      - "Light microscope"
+
+  - id: "PROTOCOL:liu-tem-001"
+    protocol_type: ImagingProtocol
+    name: "Transmission electron microscopy of O-PMs-treated A549 cells"
+    description: "A549 cells treated with 100 ug/ml O-PMs for 24 h collected by centrifugation, washed with PBS, fixed with 2% glutaraldehyde and 2% paraformaldehyde in PBS for 1 min and post-fixed with 1% osmic acid for 30 min. Samples dehydrated in graded ethanol, washed with propylene oxide and embedded in epoxy resin. Ultrathin sections cut on a Reichert ultramicrotome, stained with lead citrate and uranyl acetate and examined in a HITACHI H-7100 at 100 kV."
+    equipment_required:
+      - "Reichert ultramicrotome"
+      - "HITACHI H-7100 transmission electron microscope"
+
+# =============================================================================
+# OXIDATIVE STRESS ASSAYS - intracellular ROS in A549 cells
+# =============================================================================
+
+oxidative_stress_assays:
+  - id: "OX:liu-a549-ros-opms-wpms"
+    name: "Intracellular ROS in A549 cells exposed to O-PMs or W-PMs (DCFH-DA)"
+    description: "DCFH-DA fluorescence in confluent A549 cells after 24 h exposure to 50 or 100 ug/ml of the organic-extractable (O-PMs) or water-soluble (W-PMs) fraction of SRM1649b, read by fluorescence microscopy and flow cytometry. Both fractions significantly increased ROS production over control, and O-PMs-induced ROS production was higher than that induced by W-PMs. Fluorescence is shown only as images and flow histograms in Fig. 1b, so no magnitude is recorded."
+    ros_probe_type: "DCFH-DA"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Cells treated with 50 or 100 μg/ml of PMs for 24 h significantly increased ROS production according to fluorescence microscopy and flow cytometry (Fig. 1b)."
+        explanation: "States the exposure levels, duration and direction of change this assay records for both PM fractions."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "O-PMs-induced ROS production was higher than that in W-PMs."
+        explanation: "States the fraction-to-fraction difference distinguishing the O-PMs output records from the W-PMs ones."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The cytotoxicity, reactive oxygen species (ROS) generation, and monocyte adherence to A549 cells were more severely affected by treatment with O-PMs (organic solvent-extractable fraction of SRM1649b) than with W-PMs (water-soluble fraction of SRM1649b)."
+        explanation: "The authors' own summary of the fraction comparison, and the definition of the O-PMs and W-PMs exposure conditions used throughout this file."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-a549-dmso-control-24h"
+        name: "0.1% DMSO solvent control, 24 h, no PMs"
+        exposure_agent:
+          id: "CHEBI:28262"
+          name: "dimethyl sulfoxide"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-wpms-50-24h"
+        name: "W-PMs (water-soluble fraction of SRM1649b) 50 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "50"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-wpms-100-24h"
+        name: "W-PMs (water-soluble fraction of SRM1649b) 100 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-50-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 50 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "50"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-100-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 100 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "OX:liu-a549-ros-opms-wpms-output-control"
+        name: "Solvent control A549 cells - ROS fluorescence"
+        description: "Reference condition (0.1% DMSO). Image and flow-histogram only; no value recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:liu-a549-dmso-control-24h"
+      - id: "OX:liu-a549-ros-opms-wpms-output-wpms50"
+        name: "W-PMs 50 ug/ml A549 cells - ROS fluorescence"
+        description: "ROS production significantly increased over control. Image and flow-histogram only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-wpms-50-24h"
+      - id: "OX:liu-a549-ros-opms-wpms-output-wpms100"
+        name: "W-PMs 100 ug/ml A549 cells - ROS fluorescence"
+        description: "ROS production significantly increased over control, but lower than the matched O-PMs condition. Image and flow-histogram only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-wpms-100-24h"
+      - id: "OX:liu-a549-ros-opms-wpms-output-opms50"
+        name: "O-PMs 50 ug/ml A549 cells - ROS fluorescence"
+        description: "ROS production significantly increased over control and higher than the matched W-PMs condition. Image and flow-histogram only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-50-24h"
+      - id: "OX:liu-a549-ros-opms-wpms-output-opms100"
+        name: "O-PMs 100 ug/ml A549 cells - ROS fluorescence"
+        description: "Highest ROS production of the series. Image and flow-histogram only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-100-24h"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:liu-a549-001"
+      name: "A549 human lung type II alveolar epithelial cell line"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+      culture_media:
+        id: "soma:liu-media-dmem"
+        name: "DMEM with 10% fetal bovine serum and 1% penicillin/streptomycin"
+        base_medium: "Dulbecco's Modified Eagle Medium (Life Technology)"
+      donor_info: "A549 cells (neoplastic transformation of human lung type II epithelial alveolar cells) purchased from American Type Culture Collection; grown in a humidified atmosphere of 95% air and 5% CO2 at 37 C."
+    follows_protocols:
+      - id: "PROTOCOL:liu-dcfhda-001"
+        protocol_type: ImagingProtocol
+        name: "DCFH-DA detection of intracellular ROS in A549 cells"
+      - id: "PROTOCOL:liu-pm-extraction-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Preparation of water-soluble (W-PMs) and organic-extractable (O-PMs) fractions of SRM1649b"
+
+  - id: "OX:liu-a549-ros-nac"
+    name: "Effect of N-acetyl cysteine on PMs-induced ROS in A549 cells"
+    description: "A549 cells pretreated with 5 mM N-acetyl cysteine (NAC) for 1 h and then treated with 100 ug/ml O-PMs or W-PMs for 24 h, with ROS measured by DCFH-DA fluorescence microscopy and flow cytometry. NAC pretreatment significantly decreased PMs-induced ROS production, establishing that the ROS signal is the antioxidant-reversible oxidative stress this key event describes. Values appear only in Fig. 1c; none recorded."
+    ros_probe_type: "DCFH-DA"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Pretreating A549 cells with N-acetyl cysteine (NAC), an antioxidant, attenuated O-PMs-induced ROS generation, the phosphorylation of the mentioned kinases, and the expression of ICAM-1."
+        explanation: "States the NAC effect on O-PMs-induced ROS generation that this assay records."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-a549-dmso-control-24h"
+        name: "0.1% DMSO solvent control, 24 h, no PMs"
+        exposure_agent:
+          id: "CHEBI:28262"
+          name: "dimethyl sulfoxide"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-100-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 100 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-wpms-100-24h"
+        name: "W-PMs (water-soluble fraction of SRM1649b) 100 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-nac-opms-100-24h"
+        name: "N-acetyl cysteine 5 mM for 1 h, then O-PMs 100 ug/ml for 24 h"
+        exposure_agent:
+          id: "CHEBI:28939"
+          name: "N-acetyl-L-cysteine"
+        exposure_concentration:
+          value: "5"
+          unit:
+            id: "UO:0000063"
+            name: "millimolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-nac-wpms-100-24h"
+        name: "N-acetyl cysteine 5 mM for 1 h, then W-PMs 100 ug/ml for 24 h"
+        exposure_agent:
+          id: "CHEBI:28939"
+          name: "N-acetyl-L-cysteine"
+        exposure_concentration:
+          value: "5"
+          unit:
+            id: "UO:0000063"
+            name: "millimolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "OX:liu-a549-ros-nac-output-control"
+        name: "Solvent control A549 cells - ROS fluorescence"
+        description: "Reference condition. Image-only; no value recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:liu-a549-dmso-control-24h"
+      - id: "OX:liu-a549-ros-nac-output-opms"
+        name: "O-PMs 100 ug/ml A549 cells - ROS fluorescence"
+        description: "Elevated ROS; the condition NAC was tested against. Image-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-100-24h"
+      - id: "OX:liu-a549-ros-nac-output-wpms"
+        name: "W-PMs 100 ug/ml A549 cells - ROS fluorescence"
+        description: "Elevated ROS; the condition NAC was tested against. Image-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-wpms-100-24h"
+      - id: "OX:liu-a549-ros-nac-output-nac-opms"
+        name: "NAC 5 mM + O-PMs 100 ug/ml A549 cells - ROS fluorescence"
+        description: "ROS production significantly decreased relative to O-PMs alone. Image-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-nac-opms-100-24h"
+      - id: "OX:liu-a549-ros-nac-output-nac-wpms"
+        name: "NAC 5 mM + W-PMs 100 ug/ml A549 cells - ROS fluorescence"
+        description: "ROS production significantly decreased relative to W-PMs alone. Image-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-nac-wpms-100-24h"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:liu-a549-001"
+      name: "A549 human lung type II alveolar epithelial cell line"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:liu-dcfhda-001"
+        protocol_type: ImagingProtocol
+        name: "DCFH-DA detection of intracellular ROS in A549 cells"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS
+#   In vitro A549: ICAM-1, IL-6, and the AKT/STAT3/NF-kB signalling axis
+#   In vivo mouse lung and plasma; human COPD plasma
+# =============================================================================
+
+gene_expression_assays:
+
+  # ---------------------------------------------------------------------------
+  # ICAM-1 induction - the paper's central in vitro endpoint
+  # ---------------------------------------------------------------------------
+
+  - id: "GE:liu-a549-icam1-opms-dose"
+    name: "ICAM-1 protein in A549 cells across an O-PMs dose series (Western blot)"
+    description: "A549 cells incubated with 0, 25, 50 or 100 ug/ml O-PMs for 24 h and ICAM-1 protein in cell lysates measured by Western blot with GAPDH as loading control. O-PMs significantly increased ICAM-1 expression in a dose-dependent manner, by 1.3 +/- 0.2 times the untreated control level at 25 ug/ml, 2.2 +/- 0.1 at 50 ug/ml and 2.7 +/- 0.2 at 100 ug/ml. These are the only group-level magnitudes stated numerically in the paper's running text and are recorded here as fold change relative to untreated control, with the spread type taken from the Statistical analysis section's declaration that all data are expressed as the mean +/- SEM. Significance was reported only as a threshold (p < 0.05 vs untreated cells), so no p_value is recorded. The result was consistent with the immunofluorescent images in Fig. 2c."
+    target_gene: "NCBIGene:3383"
+    gene_expression_method: "Western blot"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "(by 1.3 ± 0.2 times compared to untreated control levels at 25 μg/ml, 2.2 ± 0.1 at 50 μg/ml, 2.7 ± 0.2 at 100 μg/ml)"
+        explanation: "The source of every numeric value in this assay's output records: the per-dose ICAM-1 fold changes relative to untreated control."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "We observed a significant increase in ICAM-1 expression by O-PMs, but not W-PMs."
+        explanation: "States the direction and the fraction specificity of the ICAM-1 induction this assay records."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "All data are expressed as the mean ± SEM."
+        explanation: "The paper's declaration of its spread type, which is why the +/- figures above are recorded as standard_error."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-a549-untreated-24h"
+        name: "Untreated A549 cells, 24 h (normalization reference for fold change)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-25-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 25 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "25"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-50-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 50 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "50"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-100-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 100 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:liu-a549-icam1-opms-dose-output-control"
+        name: "Untreated A549 cells - ICAM-1 protein"
+        description: "Normalization reference for the fold changes in this assay. No numeric value is recorded: a control value of 1.0 follows from the normalization rather than being a measurement the paper reports."
+        experimental_group: control
+        measured_under: "EXPOSURE:liu-a549-untreated-24h"
+      - id: "GE:liu-a549-icam1-opms-dose-output-opms25"
+        name: "O-PMs 25 ug/ml A549 cells - ICAM-1 protein"
+        description: "Lowest dose of the series; significantly increased over untreated control (p < 0.05)."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-25-24h"
+        protein_level:
+          value: "1.3"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.2"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+      - id: "GE:liu-a549-icam1-opms-dose-output-opms50"
+        name: "O-PMs 50 ug/ml A549 cells - ICAM-1 protein"
+        description: "Middle dose of the series; significantly increased over untreated control and over O-PMs 25 ug/ml (p < 0.05)."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-50-24h"
+        protein_level:
+          value: "2.2"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.1"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+      - id: "GE:liu-a549-icam1-opms-dose-output-opms100"
+        name: "O-PMs 100 ug/ml A549 cells - ICAM-1 protein"
+        description: "Highest dose of the series; significantly increased over untreated control and over O-PMs 50 ug/ml (p < 0.05)."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-100-24h"
+        protein_level:
+          value: "2.7"
+          unit:
+            id: "STATO:0000169"
+            name: "fold change"
+          central_tendency: mean
+          variability:
+            variability_type: standard_error
+            value: "0.2"
+            unit:
+              id: "STATO:0000169"
+              name: "fold change"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:liu-a549-001"
+      name: "A549 human lung type II alveolar epithelial cell line"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:liu-wb-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for ICAM-1, IL-6, MAPKs, AKT, STAT3 and p65"
+      - id: "PROTOCOL:liu-if-icam1-001"
+        protocol_type: ImagingProtocol
+        name: "Immunofluorescent staining of ICAM-1 in A549 cells"
+
+  - id: "GE:liu-a549-icam1-wpms-dose"
+    name: "ICAM-1 protein in A549 cells across a W-PMs dose series (Western blot)"
+    description: "The water-soluble arm of the same experiment: A549 cells exposed to 0, 25, 50 or 100 ug/ml W-PMs for 24 h with ICAM-1 measured by Western blot. In contrast to O-PMs, W-PMs did not have any effect on ICAM-1 expression in the cell lysates, which is the negative result that makes the ICAM-1 induction specific to the organic-extractable fraction. Blots only in Fig. 2b; no value recorded."
+    target_gene: "NCBIGene:3383"
+    gene_expression_method: "Western blot"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In contrast, W-PMs did not have any effect on ICAM expression in the cell lysates (Fig. 2b)."
+        explanation: "States the null result this assay records for the water-soluble fraction."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-a549-untreated-24h"
+        name: "Untreated A549 cells, 24 h (normalization reference for fold change)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-wpms-25-24h"
+        name: "W-PMs (water-soluble fraction of SRM1649b) 25 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "25"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-wpms-50-24h"
+        name: "W-PMs (water-soluble fraction of SRM1649b) 50 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "50"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-wpms-100-24h"
+        name: "W-PMs (water-soluble fraction of SRM1649b) 100 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:liu-a549-icam1-wpms-dose-output-control"
+        name: "Untreated A549 cells - ICAM-1 protein"
+        description: "Reference condition for the W-PMs series. No value recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:liu-a549-untreated-24h"
+      - id: "GE:liu-a549-icam1-wpms-dose-output-wpms25"
+        name: "W-PMs 25 ug/ml A549 cells - ICAM-1 protein"
+        description: "No effect on ICAM-1 expression relative to untreated control. Blot only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-wpms-25-24h"
+      - id: "GE:liu-a549-icam1-wpms-dose-output-wpms50"
+        name: "W-PMs 50 ug/ml A549 cells - ICAM-1 protein"
+        description: "No effect on ICAM-1 expression relative to untreated control. Blot only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-wpms-50-24h"
+      - id: "GE:liu-a549-icam1-wpms-dose-output-wpms100"
+        name: "W-PMs 100 ug/ml A549 cells - ICAM-1 protein"
+        description: "No effect on ICAM-1 expression relative to untreated control. Blot only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-wpms-100-24h"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:liu-a549-001"
+      name: "A549 human lung type II alveolar epithelial cell line"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:liu-wb-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for ICAM-1, IL-6, MAPKs, AKT, STAT3 and p65"
+
+  - id: "GE:liu-a549-icam1-nac"
+    name: "Effect of N-acetyl cysteine on O-PMs-induced ICAM-1 in A549 cells"
+    description: "A549 cells pretreated with 5 mM NAC for 1 h and then treated with 100 ug/ml O-PMs for 24 h; total ICAM-1 measured by Western blot (Fig. 2d) and ICAM-1 surface expression by flow cytometry (Fig. 2e). NAC pretreatment attenuated the O-PMs-induced ICAM-1 expression in both readouts, placing ROS upstream of ICAM-1 induction. ICAM-1 antibody treatment also significantly decreased monocyte adhesion to O-PMs-treated epithelial cells, confirming the adhesion is ICAM-1-mediated. Values appear only in Fig. 2d-f; none recorded."
+    target_gene: "NCBIGene:3383"
+    gene_expression_method: "Western blot and flow cytometry for surface ICAM-1"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Pretreating A549 cells with N-acetyl cysteine (NAC), an antioxidant, attenuated O-PMs-induced ROS generation, the phosphorylation of the mentioned kinases, and the expression of ICAM-1."
+        explanation: "States the NAC effect on O-PMs-induced ICAM-1 expression that this assay records."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Furthermore, ICAM-1 antibody treatment significantly decreased the monocyte adhesion to O-PMs-treated epithelial cells (Fig. 2f )."
+        explanation: "Establishes that the monocyte adhesion recorded alongside this assay is mediated by the ICAM-1 whose expression it measures."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-a549-untreated-24h"
+        name: "Untreated A549 cells, 24 h (normalization reference for fold change)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-100-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 100 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-nac-opms-100-24h"
+        name: "N-acetyl cysteine 5 mM for 1 h, then O-PMs 100 ug/ml for 24 h"
+        exposure_agent:
+          id: "CHEBI:28939"
+          name: "N-acetyl-L-cysteine"
+        exposure_concentration:
+          value: "5"
+          unit:
+            id: "UO:0000063"
+            name: "millimolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:liu-a549-icam1-nac-output-control"
+        name: "Untreated A549 cells - ICAM-1 protein and surface expression"
+        description: "Reference condition. Blot and flow-histogram only; no value recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:liu-a549-untreated-24h"
+      - id: "GE:liu-a549-icam1-nac-output-opms"
+        name: "O-PMs 100 ug/ml A549 cells - ICAM-1 protein and surface expression"
+        description: "ICAM-1 increased in cell lysates and on the cell surface relative to untreated control. Blot and flow-histogram only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-100-24h"
+      - id: "GE:liu-a549-icam1-nac-output-nac-opms"
+        name: "NAC 5 mM + O-PMs 100 ug/ml A549 cells - ICAM-1 protein and surface expression"
+        description: "O-PMs-induced ICAM-1 attenuated in both the lysate and the surface readout. Blot and flow-histogram only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-nac-opms-100-24h"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:liu-a549-001"
+      name: "A549 human lung type II alveolar epithelial cell line"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:liu-wb-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for ICAM-1, IL-6, MAPKs, AKT, STAT3 and p65"
+      - id: "PROTOCOL:liu-flow-icam1-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Flow cytometry for ICAM-1 surface expression on A549 cells"
+      - id: "PROTOCOL:liu-adhesion-001"
+        protocol_type: ImagingProtocol
+        name: "Epithelial cell-leukocyte (A549-U937) adhesion assay"
+
+  # ---------------------------------------------------------------------------
+  # Monocyte adhesion - the functional consequence of epithelial ICAM-1
+  # ---------------------------------------------------------------------------
+
+  - id: "GE:liu-a549-u937-adhesion"
+    name: "U937 monocyte adhesion to PMs-treated A549 cells"
+    description: "BCECF/AM-labelled U937 monocytic cells incubated for 1 h with A549 monolayers pretreated for 24 h with 50 or 100 ug/ml O-PMs or W-PMs, with or without 1 h of 5 mM NAC, and bound cells counted by fluorescence microscopy. Control confluent A549 cells showed minimal binding; adhesion was significantly increased by PMs pretreatment, and the number of monocytes that adhered to O-PMs-treated cells was 2-times higher than to W-PMs-treated cells. NAC pretreatment significantly decreased the O-PMs-increased adhesion. The 2-fold O-PMs-over-W-PMs ratio is the only magnitude stated for this assay and is recorded as a response_comparisons entry rather than as an output value, because the paper gives no per-group bound-cell counts. Note that the Fig. 1d legend reports mean +/- SD of three independent experiments, unlike the mean +/- SEM declared in the Statistical analysis section."
+    target_gene: "NCBIGene:3383"
+    gene_expression_method: "fluorescence-microscopy counting of BCECF/AM-labelled adherent U937 cells"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "the number of monocytes that adhered to O-PMs-treated cells was 2-times higher than those treated with W-PMs"
+        explanation: "The source of the fold ratio recorded for this assay in response_comparisons."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Furthermore, NAC pretreatment significantly decreased O-PMs-increased monocyte adhesion (Fig. 1d)."
+        explanation: "States the NAC effect recorded in this assay's NAC output record, tying the adhesion increase to oxidative stress."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-a549-untreated-24h"
+        name: "Untreated A549 cells, 24 h (normalization reference for fold change)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-wpms-50-24h"
+        name: "W-PMs (water-soluble fraction of SRM1649b) 50 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "50"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-wpms-100-24h"
+        name: "W-PMs (water-soluble fraction of SRM1649b) 100 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-50-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 50 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "50"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-100-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 100 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-nac-opms-100-24h"
+        name: "N-acetyl cysteine 5 mM for 1 h, then O-PMs 100 ug/ml for 24 h"
+        exposure_agent:
+          id: "CHEBI:28939"
+          name: "N-acetyl-L-cysteine"
+        exposure_concentration:
+          value: "5"
+          unit:
+            id: "UO:0000063"
+            name: "millimolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:liu-a549-u937-adhesion-output-control"
+        name: "Untreated A549 cells - bound U937 cells"
+        description: "Control confluent A549 cells incubated with U937 cells for 1 h showed minimal binding. Counts reported only in Fig. 1d; none recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:liu-a549-untreated-24h"
+      - id: "GE:liu-a549-u937-adhesion-output-wpms50"
+        name: "W-PMs 50 ug/ml A549 cells - bound U937 cells"
+        description: "Adhesion significantly increased over control. Counts figure-only; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-wpms-50-24h"
+      - id: "GE:liu-a549-u937-adhesion-output-wpms100"
+        name: "W-PMs 100 ug/ml A549 cells - bound U937 cells"
+        description: "Adhesion significantly increased over control; the comparator for the 2-fold O-PMs-over-W-PMs ratio. Counts figure-only; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-wpms-100-24h"
+      - id: "GE:liu-a549-u937-adhesion-output-opms50"
+        name: "O-PMs 50 ug/ml A549 cells - bound U937 cells"
+        description: "Adhesion significantly increased over control and over the matched W-PMs condition. Counts figure-only; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-50-24h"
+      - id: "GE:liu-a549-u937-adhesion-output-opms100"
+        name: "O-PMs 100 ug/ml A549 cells - bound U937 cells"
+        description: "Highest adhesion of the series; 2-times the matched W-PMs condition. Counts figure-only; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-100-24h"
+      - id: "GE:liu-a549-u937-adhesion-output-nac-opms"
+        name: "NAC 5 mM + O-PMs 100 ug/ml A549 cells - bound U937 cells"
+        description: "O-PMs-increased monocyte adhesion significantly decreased by NAC pretreatment. Counts figure-only; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-nac-opms-100-24h"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:liu-a549-001"
+      name: "A549 human lung type II alveolar epithelial cell line"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+      donor_info: "A549 monolayers challenged with U937 human monocytic leukemia cells (CLO:0009450), also from American Type Culture Collection, cultured in RPMI 1640 with 10% FBS and 1% penicillin/streptomycin."
+    follows_protocols:
+      - id: "PROTOCOL:liu-adhesion-001"
+        protocol_type: ImagingProtocol
+        name: "Epithelial cell-leukocyte (A549-U937) adhesion assay"
+
+  # ---------------------------------------------------------------------------
+  # The AKT / STAT3 / NF-kB p65 signalling axis
+  # ---------------------------------------------------------------------------
+
+  - id: "GE:liu-a549-akt-stat3-p65-dose"
+    name: "Phosphorylation of AKT, STAT3 and p65 in A549 cells across an O-PMs dose series"
+    description: "Western blot of phospho- and total AKT, STAT3 and p65 in A549 lysates after 24 h exposure to 0, 25, 50 or 100 ug/ml O-PMs. The phosphorylation of AKT, STAT3 and p65 was significantly increased in a concentration-dependent manner, and the increase in p-p65 was more robust than that in p-AKT and p-STAT3. Pretreatment with 5 mM NAC for 1 h significantly attenuated the phosphorylation of all three, placing ROS upstream of the axis. Densitometry appears only in Fig. 3b-c; no value recorded."
+    target_gene: "NCBIGene:207"
+    gene_expression_method: "Western blot for phospho- and total AKT, STAT3 and p65"
+    normalization_reference: "total AKT, total STAT3 and total p65, with GAPDH loading control"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "O-PMs also induced the phosphorylation of AKT, p65, and STAT3."
+        explanation: "States the direction of change this assay records for all three phospho-proteins."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The expression of p-p65 was more robust than p-AKT and p-STAT3."
+        explanation: "The relative magnitude among the three phospho-proteins, recorded in this assay's output descriptions."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Pretreating A549 cells with N-acetyl cysteine (NAC), an antioxidant, attenuated O-PMs-induced ROS generation, the phosphorylation of the mentioned kinases, and the expression of ICAM-1."
+        explanation: "States the NAC effect on kinase phosphorylation recorded in this assay's NAC output record."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-a549-untreated-24h"
+        name: "Untreated A549 cells, 24 h (normalization reference for fold change)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-25-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 25 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "25"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-50-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 50 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "50"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-100-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 100 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-nac-opms-100-24h"
+        name: "N-acetyl cysteine 5 mM for 1 h, then O-PMs 100 ug/ml for 24 h"
+        exposure_agent:
+          id: "CHEBI:28939"
+          name: "N-acetyl-L-cysteine"
+        exposure_concentration:
+          value: "5"
+          unit:
+            id: "UO:0000063"
+            name: "millimolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:liu-a549-akt-stat3-p65-dose-output-control"
+        name: "Untreated A549 cells - p-AKT, p-STAT3, p-p65"
+        description: "Reference condition. Densitometry figure-only; no value recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:liu-a549-untreated-24h"
+      - id: "GE:liu-a549-akt-stat3-p65-dose-output-opms25"
+        name: "O-PMs 25 ug/ml A549 cells - p-AKT, p-STAT3, p-p65"
+        description: "Lowest dose of the concentration-dependent increase. Densitometry figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-25-24h"
+      - id: "GE:liu-a549-akt-stat3-p65-dose-output-opms50"
+        name: "O-PMs 50 ug/ml A549 cells - p-AKT, p-STAT3, p-p65"
+        description: "Middle dose of the concentration-dependent increase. Densitometry figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-50-24h"
+      - id: "GE:liu-a549-akt-stat3-p65-dose-output-opms100"
+        name: "O-PMs 100 ug/ml A549 cells - p-AKT, p-STAT3, p-p65"
+        description: "Highest dose; phosphorylation of all three significantly increased, with p-p65 the most robust. Densitometry figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-100-24h"
+      - id: "GE:liu-a549-akt-stat3-p65-dose-output-nac-opms"
+        name: "NAC 5 mM + O-PMs 100 ug/ml A549 cells - p-AKT, p-STAT3, p-p65"
+        description: "Phosphorylation of AKT, p65 and STAT3 significantly attenuated relative to O-PMs alone. Densitometry figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-nac-opms-100-24h"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:liu-a549-001"
+      name: "A549 human lung type II alveolar epithelial cell line"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:liu-wb-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for ICAM-1, IL-6, MAPKs, AKT, STAT3 and p65"
+
+  - id: "GE:liu-a549-mapk-dose"
+    name: "Phosphorylation of ERK, p38 and JNK in A549 cells across an O-PMs dose series"
+    description: "Western blot of phospho- and total ERK1/2, p38 and JNK in A549 lysates after 24 h exposure to 0, 25, 50 or 100 ug/ml O-PMs. O-PMs treatment did not induce phosphorylation of ERK, p38 or JNK, and the p38 inhibitor SB203580 and JNK inhibitor SP600125 did not block O-PMs-induced ICAM-1 expression. This negative MAPK result is what narrows the mechanism to the AKT/STAT3/NF-kB axis. Blots only in Fig. 3a; no value recorded."
+    target_gene: "NCBIGene:5594"
+    gene_expression_method: "Western blot for phospho- and total ERK1/2, p38 and JNK"
+    normalization_reference: "total ERK1/2, total p38 and total JNK, with GAPDH loading control"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "As shown in Fig. 3a, O-PMs treatment for 24 h did not induce phosphorylation of ERK, p38, and JNK."
+        explanation: "States the null result this assay records for all three MAPKs."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-a549-untreated-24h"
+        name: "Untreated A549 cells, 24 h (normalization reference for fold change)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-25-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 25 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "25"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-50-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 50 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "50"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-100-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 100 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:liu-a549-mapk-dose-output-control"
+        name: "Untreated A549 cells - p-ERK, p-p38, p-JNK"
+        description: "Reference condition. Blot only; no value recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:liu-a549-untreated-24h"
+      - id: "GE:liu-a549-mapk-dose-output-opms25"
+        name: "O-PMs 25 ug/ml A549 cells - p-ERK, p-p38, p-JNK"
+        description: "No induction of ERK, p38 or JNK phosphorylation. Blot only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-25-24h"
+      - id: "GE:liu-a549-mapk-dose-output-opms50"
+        name: "O-PMs 50 ug/ml A549 cells - p-ERK, p-p38, p-JNK"
+        description: "No induction of ERK, p38 or JNK phosphorylation. Blot only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-50-24h"
+      - id: "GE:liu-a549-mapk-dose-output-opms100"
+        name: "O-PMs 100 ug/ml A549 cells - p-ERK, p-p38, p-JNK"
+        description: "No induction of ERK, p38 or JNK phosphorylation even at the top dose. Blot only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-100-24h"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:liu-a549-001"
+      name: "A549 human lung type II alveolar epithelial cell line"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:liu-wb-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for ICAM-1, IL-6, MAPKs, AKT, STAT3 and p65"
+
+  - id: "GE:liu-a549-icam1-inhibitors"
+    name: "Pathway-inhibitor dependence of O-PMs-induced ICAM-1 and monocyte adhesion in A549 cells"
+    description: "A549 cells pretreated for 1 h with 10 uM BAY11-7082 (NF-kB), LY294002 (AKT), Stattic (STAT3), SB203580 (p38) or SP600125 (JNK), then treated with 100 ug/ml O-PMs for 24 h; ICAM-1 measured in lysates by Western blot and on the surface by flow cytometry, and U937 adhesion by fluorescence microscopy. The AKT, NF-kB and STAT3 inhibitors significantly down-regulated O-PMs-induced ICAM-1 expression and U937 adhesion, while the p38 and JNK inhibitors did not. Values appear only in Fig. 3d-e and Fig. 4d; none recorded."
+    target_gene: "NCBIGene:3383"
+    gene_expression_method: "Western blot and flow cytometry for surface ICAM-1, with fluorescence-microscopy adhesion counting"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Furthermore, an AKT inhibitor (LY294002), NF-κB inhibitor (BAY11-7082), and STAT3 inhibitor (Stattic) significantly down-regulated O-PMs-induced ICAM-1 expression as well as the adhesion of U937 cells to epithelial cells."
+        explanation: "States the inhibitor effects on both ICAM-1 expression and U937 adhesion that this assay records."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The adherence of U937 cells to O-PMs-treated A549 cells was also markedly inhibited by the introduction of LY294002, BAY11 –7082, Stattic or p65 siRNA (Fig. 4d)."
+        explanation: "Confirms the adhesion arm of this assay, including the p65 siRNA condition."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-a549-untreated-24h"
+        name: "Untreated A549 cells, 24 h (normalization reference for fold change)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-100-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 100 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-bay117082-opms-24h"
+        name: "BAY11-7082 (NF-kB inhibitor) 10 uM for 1 h, then O-PMs 100 ug/ml for 24 h"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-ly294002-opms-24h"
+        name: "LY294002 (AKT inhibitor) 10 uM for 1 h, then O-PMs 100 ug/ml for 24 h"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-stattic-opms-24h"
+        name: "Stattic (STAT3 inhibitor) 10 uM for 1 h, then O-PMs 100 ug/ml for 24 h"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-sb203580-opms-24h"
+        name: "SB203580 (p38 inhibitor) 10 uM for 1 h, then O-PMs 100 ug/ml for 24 h"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-sp600125-opms-24h"
+        name: "SP600125 (JNK inhibitor) 10 uM for 1 h, then O-PMs 100 ug/ml for 24 h"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:liu-a549-icam1-inhibitors-output-control"
+        name: "Untreated A549 cells - ICAM-1 and U937 adhesion"
+        description: "Reference condition. Figure-only; no value recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:liu-a549-untreated-24h"
+      - id: "GE:liu-a549-icam1-inhibitors-output-opms"
+        name: "O-PMs 100 ug/ml A549 cells - ICAM-1 and U937 adhesion"
+        description: "Induced condition against which each inhibitor was compared. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-100-24h"
+      - id: "GE:liu-a549-icam1-inhibitors-output-bay117082"
+        name: "BAY11-7082 + O-PMs A549 cells - ICAM-1 and U937 adhesion"
+        description: "ICAM-1 expression and U937 adhesion significantly down-regulated relative to O-PMs alone. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-bay117082-opms-24h"
+      - id: "GE:liu-a549-icam1-inhibitors-output-ly294002"
+        name: "LY294002 + O-PMs A549 cells - ICAM-1 and U937 adhesion"
+        description: "ICAM-1 expression and U937 adhesion significantly down-regulated relative to O-PMs alone. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-ly294002-opms-24h"
+      - id: "GE:liu-a549-icam1-inhibitors-output-stattic"
+        name: "Stattic + O-PMs A549 cells - ICAM-1 and U937 adhesion"
+        description: "ICAM-1 expression and U937 adhesion significantly down-regulated relative to O-PMs alone. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-stattic-opms-24h"
+      - id: "GE:liu-a549-icam1-inhibitors-output-sb203580"
+        name: "SB203580 + O-PMs A549 cells - ICAM-1"
+        description: "No down-regulation of O-PMs-induced ICAM-1; the p38 arm of the negative MAPK result. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-sb203580-opms-24h"
+      - id: "GE:liu-a549-icam1-inhibitors-output-sp600125"
+        name: "SP600125 + O-PMs A549 cells - ICAM-1"
+        description: "No down-regulation of O-PMs-induced ICAM-1; the JNK arm of the negative MAPK result. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-sp600125-opms-24h"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:liu-a549-001"
+      name: "A549 human lung type II alveolar epithelial cell line"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:liu-wb-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for ICAM-1, IL-6, MAPKs, AKT, STAT3 and p65"
+      - id: "PROTOCOL:liu-flow-icam1-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Flow cytometry for ICAM-1 surface expression on A549 cells"
+      - id: "PROTOCOL:liu-adhesion-001"
+        protocol_type: ImagingProtocol
+        name: "Epithelial cell-leukocyte (A549-U937) adhesion assay"
+
+  - id: "GE:liu-a549-p65-translocation"
+    name: "NF-kB p65 nuclear translocation in O-PMs-treated A549 cells"
+    description: "Western blot of NF-kB p65 in cytosolic and nuclear fractions of A549 cells treated with or without 100 ug/ml O-PMs for 24 h, with Lamin A and alpha-Tubulin as fraction markers. p65 expression in the nuclear portion was increased by O-PMs compared with control cells, but not in the cytosolic portion, demonstrating O-PMs-driven nuclear translocation. Blots only in Fig. 4a; no value recorded."
+    target_gene: "NCBIGene:5970"
+    gene_expression_method: "Western blot of nuclear and cytosolic fractions"
+    normalization_reference: "Lamin A (nuclear) and alpha-Tubulin (cytosolic) fraction markers"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The levels of p65 expression in nuclear portion were increased by O-PMs when compared with the control cells, but not in the cytosolic portion (Fig. 4a)."
+        explanation: "States the compartment-specific result this assay records."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-a549-untreated-24h"
+        name: "Untreated A549 cells, 24 h (normalization reference for fold change)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-100-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 100 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:liu-a549-p65-translocation-output-control"
+        name: "Untreated A549 cells - cytosolic and nuclear p65"
+        description: "Reference condition. Blot only; no value recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:liu-a549-untreated-24h"
+      - id: "GE:liu-a549-p65-translocation-output-opms"
+        name: "O-PMs 100 ug/ml A549 cells - cytosolic and nuclear p65"
+        description: "Nuclear p65 increased relative to control; cytosolic p65 unchanged. Blot only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-100-24h"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:liu-a549-001"
+      name: "A549 human lung type II alveolar epithelial cell line"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:liu-wb-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for ICAM-1, IL-6, MAPKs, AKT, STAT3 and p65"
+
+  - id: "GE:liu-a549-p65-sirna"
+    name: "p65 siRNA knockdown and O-PMs-induced ICAM-1, p-AKT and p-STAT3 in A549 cells"
+    description: "A549 cells transfected with 1 uM p65-specific siRNA for 24 h (knockdown confirmed by Western blot after 48 h of transfection across a siRNA concentration series) and then stimulated with 100 ug/ml O-PMs for 24 h. O-PMs-induced ICAM-1 expression and AKT and STAT3 phosphorylation were attenuated in the p65 siRNA-treated cells, and U937 adhesion was markedly inhibited. This places NF-kB p65 upstream of both ICAM-1 and the AKT/STAT3 phosphorylation. Blots only in Fig. 4b-d; no value recorded."
+    target_gene: "NCBIGene:5970"
+    gene_expression_method: "siRNA knockdown with Western blot readout"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Moreover, the levels of O-PMs-induced ICAM-1 expression as well as the AKT and STAT3 phosphorylation were attenuated in the p65 siRNA-treated A549 cells (Fig. 4c)."
+        explanation: "States the knockdown result this assay records for all three readouts."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-a549-untreated-24h"
+        name: "Untreated A549 cells, 24 h (normalization reference for fold change)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-100-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 100 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-p65sirna-opms-24h"
+        name: "p65 siRNA 1 uM for 24 h, then O-PMs 100 ug/ml for 24 h"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:liu-a549-p65-sirna-output-control"
+        name: "Untransfected untreated A549 cells - ICAM-1, p-AKT, p-STAT3"
+        description: "Reference condition. Blot only; no value recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:liu-a549-untreated-24h"
+      - id: "GE:liu-a549-p65-sirna-output-opms"
+        name: "O-PMs 100 ug/ml A549 cells - ICAM-1, p-AKT, p-STAT3"
+        description: "Induced condition against which the knockdown was compared. Blot only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-100-24h"
+      - id: "GE:liu-a549-p65-sirna-output-p65sirna-opms"
+        name: "p65 siRNA + O-PMs 100 ug/ml A549 cells - ICAM-1, p-AKT, p-STAT3"
+        description: "ICAM-1 expression and AKT and STAT3 phosphorylation attenuated relative to O-PMs alone; U937 adhesion markedly inhibited. Blot only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-p65sirna-opms-24h"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:liu-a549-001"
+      name: "A549 human lung type II alveolar epithelial cell line"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:liu-sirna-001"
+        protocol_type: MolecularAssayProtocol
+        name: "siRNA knockdown of p65 and IL-6 in A549 cells"
+      - id: "PROTOCOL:liu-wb-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for ICAM-1, IL-6, MAPKs, AKT, STAT3 and p65"
+
+  # ---------------------------------------------------------------------------
+  # IL-6 - the cytokine that links ROS to ICAM-1
+  # ---------------------------------------------------------------------------
+
+  - id: "GE:liu-a549-il6-dose"
+    name: "IL-6 expression and secretion in A549 cells across an O-PMs dose series"
+    description: "A human cytokine antibody array on conditioned media from A549 cells with or without 100 ug/ml O-PMs for 24 h identified IL-6 as the most significantly changed cytokine between treated and untreated cells. IL-6 was then measured in cell lysates by Western blot and in conditioned media by ELISA across 0-100 ug/ml O-PMs: 25-100 ug/ml O-PMs increased IL-6 expression and secretion. Values appear only in Fig. 5a-c and Additional file 1 Table S1; none recorded."
+    target_gene: "NCBIGene:3569"
+    gene_expression_method: "cytokine antibody array, Western blot and ELISA"
+    normalization_reference: "GAPDH (Western blot); positive control spots (antibody array)"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Interleukin-6 (IL-6) was the most significantly changed cytokine in O-PMs-treated A549 cells according to the analysis of the cytokine antibody array."
+        explanation: "States the antibody-array result that selected IL-6 as the cytokine this assay measures."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "As shown in Fig. 5b and c, 25 –100 μg/ml of O-PMs exerts an increase in IL-6 expression and secretion."
+        explanation: "States the dose range and the direction of change for both the expression and the secretion readouts recorded here."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-a549-untreated-24h"
+        name: "Untreated A549 cells, 24 h (normalization reference for fold change)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-25-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 25 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "25"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-50-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 50 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "50"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-100-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 100 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:liu-a549-il6-dose-output-control"
+        name: "Untreated A549 cells - IL-6 expression and secretion"
+        description: "Reference condition for both the lysate Western blot and the conditioned-media ELISA. Figure-only; no value recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:liu-a549-untreated-24h"
+      - id: "GE:liu-a549-il6-dose-output-opms25"
+        name: "O-PMs 25 ug/ml A549 cells - IL-6 expression and secretion"
+        description: "IL-6 expression and secretion increased over untreated control. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-25-24h"
+      - id: "GE:liu-a549-il6-dose-output-opms50"
+        name: "O-PMs 50 ug/ml A549 cells - IL-6 expression and secretion"
+        description: "IL-6 expression and secretion increased over untreated control. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-50-24h"
+      - id: "GE:liu-a549-il6-dose-output-opms100"
+        name: "O-PMs 100 ug/ml A549 cells - IL-6 expression and secretion"
+        description: "Top of the 25-100 ug/ml range over which IL-6 expression and secretion increased; also the condition used for the cytokine antibody array. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-100-24h"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:liu-a549-001"
+      name: "A549 human lung type II alveolar epithelial cell line"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:liu-cytokinearray-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Human cytokine antibody array on A549 conditioned media"
+      - id: "PROTOCOL:liu-wb-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for ICAM-1, IL-6, MAPKs, AKT, STAT3 and p65"
+      - id: "PROTOCOL:liu-elisa-il6-001"
+        protocol_type: MolecularAssayProtocol
+        name: "ELISA for IL-6 in conditioned media and plasma"
+
+  - id: "GE:liu-a549-il6-blockade"
+    name: "IL-6 receptor blockade and IL-6 knockdown versus O-PMs-induced ICAM-1 in A549 cells"
+    description: "A549 cells pretreated with the IL-6 receptor inhibitor tocilizumab (TCZ, 20 ug/ml), the IL-6 trans-signalling blocker sgp130Fc (5 ug/ml), or IL-6 siRNA (1 uM), then treated with 100 ug/ml O-PMs for 24 h. TCZ significantly reduced ICAM-1 secretion and expression and also reduced the phosphorylation of AKT, p65 and STAT3. IL-6 siRNA likewise attenuated O-PMs-induced ICAM-1 expression and AKT/p65/STAT3 phosphorylation. sgp130Fc, which blocks IL-6 trans-signalling without affecting classic signalling, did not affect ICAM-1 expression, indicating the effect runs through classic IL-6 signalling. Values appear only in Fig. 5c-e and Additional file 1 Fig. S1; none recorded."
+    target_gene: "NCBIGene:3569"
+    gene_expression_method: "Western blot and ELISA with receptor blockade and siRNA knockdown"
+    normalization_reference: "GAPDH"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The IL-6 receptor inhibitor tocilizumab (TCZ) and small interfering RNA for IL-6 significantly reduced ICAM-1 secretion and expression as well as the reduction of the AKT, p65, and STAT3 phosphorylation in O-PMs-treated A549 cells."
+        explanation: "States both intervention results this assay records: TCZ and IL-6 siRNA reduce ICAM-1 and the AKT/p65/STAT3 phosphorylation."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The IL-6 receptor inhibitor tocilizumab (TCZ) significantly reduced ICAM-1 secretion and expression in O-PMs-treated A549 cells (Fig. 5c and d)."
+        explanation: "The body-text statement of the TCZ effect on ICAM-1 secretion and expression recorded in the TCZ output record."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Furthermore, TCZ treatment also reduced the phosphorylation of AKT, p65, and STAT3 (Fig. 5d)."
+        explanation: "States the phosphorylation arm of the TCZ result, placing IL-6 upstream of the AKT/STAT3/NF-kB axis."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-a549-untreated-24h"
+        name: "Untreated A549 cells, 24 h (normalization reference for fold change)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-opms-100-24h"
+        name: "O-PMs (organic solvent-extractable fraction of SRM1649b) 100 ug/ml, 24 h"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "100"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-tcz-opms-24h"
+        name: "Tocilizumab (IL-6 receptor inhibitor) 20 ug/ml, then O-PMs 100 ug/ml for 24 h"
+        exposure_concentration:
+          value: "20"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-sgp130fc-opms-24h"
+        name: "sgp130Fc (IL-6 trans-signalling blocker) 5 ug/ml, then O-PMs 100 ug/ml for 24 h"
+        exposure_concentration:
+          value: "5"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-il6sirna-opms-24h"
+        name: "IL-6 siRNA 1 uM for 24 h, then O-PMs 100 ug/ml for 24 h"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000064"
+            name: "micromolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:liu-a549-il6-blockade-output-control"
+        name: "Untreated A549 cells - ICAM-1 and p-AKT/p-p65/p-STAT3"
+        description: "Reference condition. Figure-only; no value recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:liu-a549-untreated-24h"
+      - id: "GE:liu-a549-il6-blockade-output-opms"
+        name: "O-PMs 100 ug/ml A549 cells - ICAM-1 and p-AKT/p-p65/p-STAT3"
+        description: "Induced condition against which each IL-6 intervention was compared. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-opms-100-24h"
+      - id: "GE:liu-a549-il6-blockade-output-tcz"
+        name: "Tocilizumab + O-PMs A549 cells - ICAM-1 and p-AKT/p-p65/p-STAT3"
+        description: "ICAM-1 secretion and expression significantly reduced, and AKT, p65 and STAT3 phosphorylation reduced, relative to O-PMs alone. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-tcz-opms-24h"
+      - id: "GE:liu-a549-il6-blockade-output-sgp130fc"
+        name: "sgp130Fc + O-PMs A549 cells - ICAM-1"
+        description: "No effect on ICAM-1 expression, so IL-6 trans-signalling is not the route; the classic pathway is. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-sgp130fc-opms-24h"
+      - id: "GE:liu-a549-il6-blockade-output-il6sirna"
+        name: "IL-6 siRNA + O-PMs A549 cells - ICAM-1 and p-AKT/p-p65/p-STAT3"
+        description: "O-PMs-induced ICAM-1 expression and AKT, p65 and STAT3 phosphorylation attenuated relative to O-PMs alone. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-il6sirna-opms-24h"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:liu-a549-001"
+      name: "A549 human lung type II alveolar epithelial cell line"
+      cell_type:
+        id: "CL:0002063"
+        name: "pulmonary alveolar type 2 cell"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_line:
+        id: "CLO:0001601"
+        name: "A549 cell"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:liu-sirna-001"
+        protocol_type: MolecularAssayProtocol
+        name: "siRNA knockdown of p65 and IL-6 in A549 cells"
+      - id: "PROTOCOL:liu-wb-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for ICAM-1, IL-6, MAPKs, AKT, STAT3 and p65"
+      - id: "PROTOCOL:liu-elisa-il6-001"
+        protocol_type: MolecularAssayProtocol
+        name: "ELISA for IL-6 in conditioned media and plasma"
+
+  # ---------------------------------------------------------------------------
+  # In vivo: mouse lung tissue and plasma, WT versus IL-6 KO
+  # ---------------------------------------------------------------------------
+
+  - id: "GE:liu-mouse-lung-icam1-il6"
+    name: "ICAM-1 and IL-6 in lung tissue of PMs-instilled WT and IL-6 KO mice"
+    description: "WT and IL-6 KO C57BL/6 mice untreated or injected intratracheally with 200-350 ug PMs per mouse and examined at Day 7 and Day 14 (n = 6 per group). Lung tissues assessed by immunohistochemical staining and Western blot. PMs significantly induced ICAM-1 and IL-6 expression in lung tissues at Day 7 and Day 14 in WT mice, along with the phosphorylation of AKT, p65 and STAT3, whereas in IL-6 KO mice the expression of ICAM-1 and IL-6 was not obvious by immunohistochemistry. This is the in vivo genetic test that IL-6 is required for the PMs-induced ICAM-1 response. Values appear only in Fig. 6a-c; none recorded."
+    target_gene: "NCBIGene:15894"
+    gene_expression_method: "immunohistochemistry and Western blot"
+    normalization_reference: "GAPDH (Western blot)"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In addition, the intratracheal instillation of PMs significantly increased the levels of the ICAM-1 and IL-6 in lung tissues and plasma in WT mice, but not in IL-6 knockout mice."
+        explanation: "States the genotype-dependent lung-tissue result that is the core of this assay."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "PMs significantly induced ICAM-1 and IL-6 expression in lung tissues at Day 7 and Day 14."
+        explanation: "Gives the two timepoints at which the WT output records were measured."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "in IL-6 KO mice, the expression of ICAM-1 and IL-6 was not obvious according to immunohistochemical staining."
+        explanation: "States the IL-6 KO result recorded in this assay's knockout output records."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "PMs significantly induced the expression of ICAM-1 and IL-6 as well as the phosphorylation of AKT, p65, and STAT3 in lung tissues by Western blot (Fig. 6c)."
+        explanation: "Confirms that the same AKT/p65/STAT3 axis seen in A549 cells was activated in PMs-exposed lung tissue."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-mouse-pbs-control"
+        name: "Intratracheal sterile PBS (vehicle control), equal volume"
+      - id: "EXPOSURE:liu-mouse-pms-d7"
+        name: "Intratracheal PMs 200-350 ug/mouse in 100 ul sterile PBS, Day 7"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          # The paper gives a 200-350 ug/mouse range, not a single dose, so the
+          # bounds are recorded rather than a midpoint.
+          variability:
+            variability_type: range
+            lower_bound: "200"
+            upper_bound: "350"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        exposure_duration:
+          value: "7"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:liu-mouse-pms-d14"
+        name: "Intratracheal PMs 200-350 ug/mouse in 100 ul sterile PBS, Day 14"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          variability:
+            variability_type: range
+            lower_bound: "200"
+            upper_bound: "350"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        exposure_duration:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GE:liu-mouse-lung-icam1-il6-output-wt-control"
+        name: "WT mice, PBS control - lung ICAM-1 and IL-6"
+        description: "Reference group for the WT arm. Staining and blots only; no value recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:liu-mouse-pbs-control"
+      - id: "GE:liu-mouse-lung-icam1-il6-output-wt-d7"
+        name: "WT mice, PMs Day 7 - lung ICAM-1 and IL-6"
+        description: "ICAM-1 and IL-6 expression significantly induced, with increased phosphorylation of AKT, p65 and STAT3. Staining and blots only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-mouse-pms-d7"
+      - id: "GE:liu-mouse-lung-icam1-il6-output-wt-d14"
+        name: "WT mice, PMs Day 14 - lung ICAM-1 and IL-6"
+        description: "ICAM-1 and IL-6 expression significantly induced at the later timepoint as well. Staining and blots only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-mouse-pms-d14"
+      - id: "GE:liu-mouse-lung-icam1-il6-output-ko-d7"
+        name: "IL-6 KO mice, PMs Day 7 - lung ICAM-1 and IL-6"
+        description: "Expression of ICAM-1 and IL-6 not obvious by immunohistochemical staining, in contrast to WT. Staining only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-mouse-pms-d7"
+      - id: "GE:liu-mouse-lung-icam1-il6-output-ko-d14"
+        name: "IL-6 KO mice, PMs Day 14 - lung ICAM-1 and IL-6"
+        description: "Expression of ICAM-1 and IL-6 not obvious by immunohistochemical staining at the later timepoint either. Staining only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-mouse-pms-d14"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:liu-mouse-wt-il6ko"
+      name: "C57BL/6 wild-type and IL-6 knockout mice given intratracheal PMs"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      age:
+        # The paper states an 8-12 week range, not a single age.
+        variability:
+          variability_type: range
+          lower_bound: "8"
+          upper_bound: "12"
+        unit:
+          id: "UO:0000034"
+          name: "week"
+      sex: "male"
+      sample_type: biopsy
+      collection_site: "lung"
+      subject_characteristics: "Male C57BL/6 wild type (WT) mice and IL-6 knockout (KO) mice from National Taiwan University, 8-12 weeks old, 20-35 g, n = 6 per group. PMs (200-350 ug/mouse in 100 ul sterile PBS) instilled intratracheally under 2% isoflurane; controls received an equal volume of PBS. Sacrificed at Day 7 or Day 14."
+      clinical_context: "Procedures approved under National Taiwan University animal care guidelines (ICCUC: 20160235)"
+    follows_protocols:
+      - id: "PROTOCOL:liu-instillation-001"
+        protocol_type: Protocol
+        name: "Intratracheal instillation of PMs in WT and IL-6 KO mice"
+      - id: "PROTOCOL:liu-ihc-001"
+        protocol_type: StainingProtocol
+        name: "Immunohistochemistry for ICAM-1 and IL-6 in mouse lung"
+      - id: "PROTOCOL:liu-wb-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for ICAM-1, IL-6, MAPKs, AKT, STAT3 and p65"
+
+  - id: "GE:liu-mouse-lung-nac"
+    name: "Effect of N-acetyl cysteine on PMs-induced ICAM-1 and IL-6 in mouse lung"
+    description: "WT mice (n = 6) given NAC 3-5 mg/mouse (150 mg/kg body weight) intraperitoneally one day before intratracheal instillation of 200-350 ug PMs per mouse, assessed at Day 7. Pre-administration of NAC significantly attenuated PMs-induced ICAM-1 and IL-6 expression in lung tissues by immunohistochemical staining, and attenuated the expression of ICAM-1 and IL-6 as well as the phosphorylation of AKT, p65 and STAT3 by Western blot. This reproduces in vivo the ROS dependence established in A549 cells. Values appear only in Fig. 6f-g; none recorded."
+    target_gene: "NCBIGene:15894"
+    gene_expression_method: "immunohistochemistry and Western blot"
+    normalization_reference: "GAPDH (Western blot)"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Pre-administration of NAC attenuated those PMs-induced adverse effects in WT mice."
+        explanation: "The authors' summary of the in vivo NAC result this assay records."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Furthermore, NAC attenuated PMs-induced the expression of ICAM-1 and IL-6 as well as the phosphorylation of AKT, p65, and STAT3 by Western blot (Fig. 6g)."
+        explanation: "Names the specific lung-tissue readouts attenuated by NAC that this assay's output records describe."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-mouse-pbs-control"
+        name: "Intratracheal sterile PBS (vehicle control), equal volume"
+      - id: "EXPOSURE:liu-mouse-pms-d7"
+        name: "Intratracheal PMs 200-350 ug/mouse in 100 ul sterile PBS, Day 7"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          variability:
+            variability_type: range
+            lower_bound: "200"
+            upper_bound: "350"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        exposure_duration:
+          value: "7"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:liu-mouse-nac-pms-d7"
+        name: "N-acetyl cysteine 150 mg/kg intraperitoneally one day before intratracheal PMs, Day 7"
+        exposure_agent:
+          id: "CHEBI:28939"
+          name: "N-acetyl-L-cysteine"
+        exposure_concentration:
+          value: "150"
+          unit:
+            id: "UO:0000308"
+            name: "milligram per kilogram"
+        exposure_duration:
+          value: "7"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GE:liu-mouse-lung-nac-output-control"
+        name: "WT mice, PBS control - lung ICAM-1 and IL-6"
+        description: "Reference group. Staining and blots only; no value recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:liu-mouse-pbs-control"
+      - id: "GE:liu-mouse-lung-nac-output-pms"
+        name: "WT mice, PMs Day 7 - lung ICAM-1 and IL-6"
+        description: "Induced condition against which the NAC arm was compared. Staining and blots only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-mouse-pms-d7"
+      - id: "GE:liu-mouse-lung-nac-output-nac-pms"
+        name: "WT mice, NAC + PMs Day 7 - lung ICAM-1 and IL-6"
+        description: "PMs-induced ICAM-1 and IL-6 expression significantly attenuated by immunohistochemistry, and ICAM-1, IL-6 and the phosphorylation of AKT, p65 and STAT3 attenuated by Western blot. Staining and blots only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-mouse-nac-pms-d7"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:liu-mouse-wt-nac"
+      name: "C57BL/6 wild-type mice given NAC before intratracheal PMs"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      sample_type: biopsy
+      collection_site: "lung"
+      subject_characteristics: "WT mice (n = 6) treated with NAC 3-5 mg/mouse (150 mg/kg body weight) in 50 ul PBS intraperitoneally one day before PM intratracheal instillation (200-350 ug/mouse)."
+    follows_protocols:
+      - id: "PROTOCOL:liu-instillation-001"
+        protocol_type: Protocol
+        name: "Intratracheal instillation of PMs in WT and IL-6 KO mice"
+      - id: "PROTOCOL:liu-ihc-001"
+        protocol_type: StainingProtocol
+        name: "Immunohistochemistry for ICAM-1 and IL-6 in mouse lung"
+      - id: "PROTOCOL:liu-wb-001"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for ICAM-1, IL-6, MAPKs, AKT, STAT3 and p65"
+
+  - id: "GE:liu-mouse-plasma-sicam1-il6"
+    name: "Plasma sICAM-1 and IL-6 in PMs-instilled WT and IL-6 KO mice (ELISA)"
+    description: "Plasma sICAM-1 and IL-6 measured by ELISA in WT and IL-6 KO mice at Day 7 and Day 14 after intratracheal PMs (n = 6 per group). Plasma concentrations of sICAM-1 and IL-6 were higher in the WT mice, with or without PMs treatment, than in the IL-6 KO mice at both timepoints, and NAC attenuated the release of PMs-induced sICAM-1 and IL-6 in plasma. This is the systemic compartment of the same response measured in lung tissue. Values appear only in Fig. 6d-e and 6h-i; none recorded."
+    target_gene: "NCBIGene:15894"
+    gene_expression_method: "ELISA"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Plasma concentrations of sICAM-1 and IL-6 were higher in the WT mice with or without PMs treatment compared with those in the IL-6 KO mice at Day 7 and Day 14 (Fig. 6d and e)."
+        explanation: "States the genotype comparison and the two timepoints this assay records."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Moreover, NAC attenuated the release of PMs-induced sICAM-1 and IL-6 in plasma (Fig. 6h and i)."
+        explanation: "States the NAC effect on the plasma markers recorded in this assay's NAC output record."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-mouse-pbs-control"
+        name: "Intratracheal sterile PBS (vehicle control), equal volume"
+      - id: "EXPOSURE:liu-mouse-pms-d7"
+        name: "Intratracheal PMs 200-350 ug/mouse in 100 ul sterile PBS, Day 7"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          variability:
+            variability_type: range
+            lower_bound: "200"
+            upper_bound: "350"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        exposure_duration:
+          value: "7"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:liu-mouse-pms-d14"
+        name: "Intratracheal PMs 200-350 ug/mouse in 100 ul sterile PBS, Day 14"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          variability:
+            variability_type: range
+            lower_bound: "200"
+            upper_bound: "350"
+          unit:
+            id: "UO:0000023"
+            name: "microgram"
+        exposure_duration:
+          value: "14"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      - id: "EXPOSURE:liu-mouse-nac-pms-d7"
+        name: "N-acetyl cysteine 150 mg/kg intraperitoneally one day before intratracheal PMs, Day 7"
+        exposure_agent:
+          id: "CHEBI:28939"
+          name: "N-acetyl-L-cysteine"
+        exposure_concentration:
+          value: "150"
+          unit:
+            id: "UO:0000308"
+            name: "milligram per kilogram"
+        exposure_duration:
+          value: "7"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+    has_specified_output:
+      - id: "GE:liu-mouse-plasma-sicam1-il6-output-wt-control"
+        name: "WT mice, PBS control - plasma sICAM-1 and IL-6"
+        description: "Day 0 reference for the WT arm. Figure-only; no value recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:liu-mouse-pbs-control"
+      - id: "GE:liu-mouse-plasma-sicam1-il6-output-wt-d7"
+        name: "WT mice, PMs Day 7 - plasma sICAM-1 and IL-6"
+        description: "Plasma sICAM-1 and IL-6 increased relative to Day 0 and higher than the matched IL-6 KO group. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-mouse-pms-d7"
+      - id: "GE:liu-mouse-plasma-sicam1-il6-output-wt-d14"
+        name: "WT mice, PMs Day 14 - plasma sICAM-1 and IL-6"
+        description: "Plasma sICAM-1 and IL-6 remained higher than the matched IL-6 KO group. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-mouse-pms-d14"
+      - id: "GE:liu-mouse-plasma-sicam1-il6-output-ko-d7"
+        name: "IL-6 KO mice, PMs Day 7 - plasma sICAM-1 and IL-6"
+        description: "Lower than the matched WT group. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-mouse-pms-d7"
+      - id: "GE:liu-mouse-plasma-sicam1-il6-output-ko-d14"
+        name: "IL-6 KO mice, PMs Day 14 - plasma sICAM-1 and IL-6"
+        description: "Lower than the matched WT group. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-mouse-pms-d14"
+      - id: "GE:liu-mouse-plasma-sicam1-il6-output-nac-pms"
+        name: "WT mice, NAC + PMs Day 7 - plasma sICAM-1 and IL-6"
+        description: "Release of PMs-induced sICAM-1 and IL-6 in plasma attenuated by NAC. Figure-only; no value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-mouse-nac-pms-d7"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-systemic-inflammation"
+      name: "Increased systemic inflammation"
+      biological_action: increased
+      level_of_biological_organization: organism
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:liu-mouse-plasma"
+      name: "C57BL/6 wild-type and IL-6 knockout mice, plasma"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      sex: "male"
+      sample_type: blood
+      collection_site: "plasma"
+      subject_characteristics: "Plasma collected from mice (six mice per group) 7 days and 14 days after PMs treatment. Blood collected in heparinized tubes and centrifuged at 3000 rpm for 15 min."
+    follows_protocols:
+      - id: "PROTOCOL:liu-instillation-001"
+        protocol_type: Protocol
+        name: "Intratracheal instillation of PMs in WT and IL-6 KO mice"
+      - id: "PROTOCOL:liu-elisa-sicam1-001"
+        protocol_type: MolecularAssayProtocol
+        name: "ELISA for soluble ICAM-1 in conditioned media and plasma"
+      - id: "PROTOCOL:liu-elisa-il6-001"
+        protocol_type: MolecularAssayProtocol
+        name: "ELISA for IL-6 in conditioned media and plasma"
+
+  # ---------------------------------------------------------------------------
+  # Human: plasma markers in COPD patients versus healthy subjects
+  # ---------------------------------------------------------------------------
+
+  - id: "GE:liu-human-copd-plasma"
+    name: "Plasma sICAM-1, IL-6, WBC and CRP in COPD patients versus healthy subjects"
+    description: "Plasma from 8 COPD patients with a smoking history and 8 never-smoking healthy subjects with normal pulmonary function, assayed for sICAM-1 and IL-6 by ELISA alongside white blood cell count and C-reactive protein. COPD patients had higher plasma levels of sICAM-1 and IL-6 than healthy subjects, consistent with the animal model, and plasma WBC and CRP also showed a highly statistically significant increase. Table 1 lists sICAM-1 and IL-6 for each of the 16 individuals, but the paper reports no group mean or spread for either marker and the group-level results appear only as Fig. 7a-d, so no numeric value is recorded here rather than deriving one from the individual rows."
+    target_gene: "NCBIGene:3383"
+    gene_expression_method: "ELISA, with clinical haematology for WBC and CRP"
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Furthermore, patients with chronic obstructive pulmonary disease (COPD) had higher plasma levels of ICAM-1 and IL-6 compared to healthy subjects."
+        explanation: "States the group difference in plasma ICAM-1 and IL-6 that this assay records."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Consistent with the results from the animal model, the plasma levels of sICAM-1 and IL-6 were significantly high in plasma from COPD patients."
+        explanation: "Confirms the direction and significance of the sICAM-1 and IL-6 difference, and ties the human arm to the mouse arm."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The plasma levels of WBC and CRP also showed a highly statistically significant increase in COPD patients compared to the healthy subjects (Fig. 7a and b)."
+        explanation: "States the WBC and CRP arm of this assay, the general inflammatory markers measured alongside sICAM-1 and IL-6."
+    has_exposure_condition:
+      - id: "EXPOSURE:liu-human-never-smoker"
+        name: "Never-smoking healthy subjects with normal pulmonary function (reference group)"
+      - id: "EXPOSURE:liu-human-copd-smoking"
+        name: "COPD patients with a smoking history (ex-smokers 12-38 pack-years and active smokers 30-33 pack-years)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+    has_specified_output:
+      - id: "GE:liu-human-copd-plasma-output-healthy"
+        name: "Healthy never-smoking subjects - plasma sICAM-1, IL-6, WBC and CRP"
+        description: "Reference group (n = 8). Table 1 lists each subject's sICAM-1 and IL-6, and all eight healthy subjects had an IL-6 value of 0. Group-level results appear only in Fig. 7a-d; no group value recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:liu-human-never-smoker"
+      - id: "GE:liu-human-copd-plasma-output-copd"
+        name: "COPD patients - plasma sICAM-1, IL-6, WBC and CRP"
+        description: "All four markers higher than in the healthy subjects (p < 0.05 vs healthy subjects for sICAM-1 and IL-6; WBC and CRP described as a highly statistically significant increase). Group-level results appear only in Fig. 7a-d; no group value recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-human-copd-smoking"
+    assay_date: "2018-01-01"
+    informs_on_key_event:
+      id: "KE:ke-systemic-inflammation"
+      name: "Increased systemic inflammation"
+      biological_action: increased
+      level_of_biological_organization: organism
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:liu-human-copd"
+      name: "COPD patients and healthy subjects, Taoyuan General Hospital"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        # Median age of the COPD group, with the range the paper reports.
+        value: "77"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: median
+        sample_size: 8
+        variability:
+          variability_type: range
+          lower_bound: "49"
+          upper_bound: "88"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      sex: "seven males and one female in the COPD group; six males and two females among the healthy subjects"
+      disease_state: "chronic obstructive pulmonary disease with a smoking history; healthy comparison subjects were never-smokers with normal pulmonary function"
+      sample_type: blood
+      collection_site: "plasma"
+      subject_characteristics: "8 COPD patients (median age 77 years, range 49-88; all with a smoking history) and 8 healthy subjects with normal pulmonary function (median age 68 years, range 51-82; none had ever been smokers). Blood collected in sterile heparinized tubes, centrifuged at 1000 x g for 10 min and stored at -80 C."
+      clinical_context: "Written informed consent obtained from each individual; protocol conformed to the 1975 Declaration of Helsinki and was approved by the Ethics Committee of Taoyuan General Hospital (TYGH99025)"
+    follows_protocols:
+      - id: "PROTOCOL:liu-elisa-sicam1-001"
+        protocol_type: MolecularAssayProtocol
+        name: "ELISA for soluble ICAM-1 in conditioned media and plasma"
+      - id: "PROTOCOL:liu-elisa-il6-001"
+        protocol_type: MolecularAssayProtocol
+        name: "ELISA for IL-6 in conditioned media and plasma"
+
+# =============================================================================
+# RESPONSE COMPARISONS - changes vs control stated numerically by the paper
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:liu-icam1-opms25"
+    name: "ICAM-1 fold change, O-PMs 25 ug/ml vs untreated control"
+    description: "Reported directly in the Results text as a fold change relative to untreated control levels. Significance is given only as a threshold (p < 0.05 vs untreated cells), so no p_value is recorded."
+    derived_from_assay: "GE:liu-a549-icam1-opms-dose"
+    compared_measurement: "protein_level"
+    control_output: "GE:liu-a549-icam1-opms-dose-output-control"
+    treated_output: "GE:liu-a549-icam1-opms-dose-output-opms25"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "1.3"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "0.2"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu-icam1-opms50"
+    name: "ICAM-1 fold change, O-PMs 50 ug/ml vs untreated control"
+    description: "Reported directly in the Results text as a fold change relative to untreated control levels. Significance is given only as a threshold (p < 0.05 vs untreated cells and vs O-PMs 25 ug/ml), so no p_value is recorded."
+    derived_from_assay: "GE:liu-a549-icam1-opms-dose"
+    compared_measurement: "protein_level"
+    control_output: "GE:liu-a549-icam1-opms-dose-output-control"
+    treated_output: "GE:liu-a549-icam1-opms-dose-output-opms50"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "2.2"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "0.1"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu-icam1-opms100"
+    name: "ICAM-1 fold change, O-PMs 100 ug/ml vs untreated control"
+    description: "Reported directly in the Results text as a fold change relative to untreated control levels, the top of a dose-dependent series. Significance is given only as a threshold (p < 0.05 vs untreated cells and vs O-PMs 50 ug/ml), so no p_value is recorded."
+    derived_from_assay: "GE:liu-a549-icam1-opms-dose"
+    compared_measurement: "protein_level"
+    control_output: "GE:liu-a549-icam1-opms-dose-output-control"
+    treated_output: "GE:liu-a549-icam1-opms-dose-output-opms100"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "2.7"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+      central_tendency: mean
+      variability:
+        variability_type: standard_error
+        value: "0.2"
+        unit:
+          id: "STATO:0000169"
+          name: "fold change"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu-u937-adhesion-opms-vs-wpms"
+    name: "U937 monocyte adhesion, O-PMs-treated vs W-PMs-treated A549 cells"
+    description: "The paper states that the number of monocytes adhering to O-PMs-treated cells was 2-times higher than to W-PMs-treated cells. This comparison is fraction-vs-fraction rather than treated-vs-untreated: control_output here is the W-PMs 100 ug/ml record, which is the comparator the paper used, not an unexposed control. No per-group bound-cell counts are reported, so the ratio is recorded only at this analysis layer."
+    derived_from_assay: "GE:liu-a549-u937-adhesion"
+    compared_measurement: "protein_level"
+    control_output: "GE:liu-a549-u937-adhesion-output-wpms100"
+    treated_output: "GE:liu-a549-u937-adhesion-output-opms100"
+    change_type: fold_change
+    change_direction: increased
+    change_value:
+      value: "2"
+      unit:
+        id: "STATO:0000169"
+        name: "fold change"
+    derivation: reported_in_paper
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:liu-oxidative-stress-to-pi3k-akt"
+    name: "Increased oxidative stress leads to PI3K/AKT pathway activation"
+    description: "Tested directly rather than assumed: 24 h of O-PMs raised DCFH-DA ROS and, in the same cells, raised phospho-AKT, phospho-STAT3 and phospho-p65 in a concentration-dependent manner, and 1 h of 5 mM NAC before the exposure attenuated both the ROS and all three phosphorylation events. An antioxidant arm that removes the upstream event and abolishes the downstream one is the strongest design available in a single in vitro study, but the exposure is a complex particulate extract and no ROS-donor arm was run in the other direction, so support is recorded as moderate rather than strong."
+    upstream_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Pretreating A549 cells with N-acetyl cysteine (NAC), an antioxidant, attenuated O-PMs-induced ROS generation, the phosphorylation of the mentioned kinases, and the expression of ICAM-1."
+        explanation: "The antioxidant intervention that removes the upstream event and the downstream phosphorylation together, which is the evidence for this edge."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "O-PMs also induced the phosphorylation of AKT, p65, and STAT3."
+        explanation: "States the downstream event of this relationship."
+
+  - id: "KER:liu-pi3k-akt-to-airway-inflammation"
+    name: "PI3K/AKT pathway activation leads to airway inflammation"
+    description: "The pathway dependence was established pharmacologically and genetically: LY294002 (AKT), BAY11-7082 (NF-kB) and Stattic (STAT3) each significantly down-regulated O-PMs-induced ICAM-1 expression and U937 monocyte adhesion, p65 siRNA attenuated ICAM-1 together with AKT and STAT3 phosphorylation, and p65 translocated to the nucleus on exposure. The p38 and JNK inhibitors did not, which rules out the parallel MAPK route. Three independent inhibitors plus a knockdown converging on the same endpoint is strong in vitro evidence; it is recorded as moderate because the inflammation endpoint here is epithelial ICAM-1 and monocyte adherence in culture rather than inflammation in an intact airway."
+    upstream_event:
+      id: "KE:ke-pi3k-akt-activation"
+      name: "PI3K/AKT pathway activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Furthermore, an AKT inhibitor (LY294002), NF-κB inhibitor (BAY11-7082), and STAT3 inhibitor (Stattic) significantly down-regulated O-PMs-induced ICAM-1 expression as well as the adhesion of U937 cells to epithelial cells."
+        explanation: "The three-inhibitor result that makes the downstream ICAM-1 and adhesion endpoints dependent on the upstream AKT/STAT3/NF-kB activation."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Moreover, the levels of O-PMs-induced ICAM-1 expression as well as the AKT and STAT3 phosphorylation were attenuated in the p65 siRNA-treated A549 cells (Fig. 4c)."
+        explanation: "The genetic knockdown corroborating the pharmacological result for the same edge."
+
+  - id: "KER:liu-oxidative-stress-to-airway-inflammation"
+    name: "Increased oxidative stress leads to airway inflammation"
+    description: "The paper's overall conclusion, and the edge its title names: PMs-induced ROS contribute to ICAM-1 expression through IL-6/AKT/STAT3/NF-kB. Supported in both directions of intervention and in both compartments - NAC lowered ROS, ICAM-1 and monocyte adhesion in A549 cells, and pre-administration of NAC attenuated PMs-induced ICAM-1 and IL-6 in mouse lung. Recorded as indirect because the authors place IL-6 and the kinase cascade between the two events rather than treating the link as immediate."
+    upstream_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    relationship_type: "indirectly leads to"
+    evidence_support: moderate
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "These results suggest that PMs increase ICAM-1 expression in pulmonary epithelial cells in vitro and in vivo through the IL-6/AKT/STAT3/NF-κB signaling pathway."
+        explanation: "The authors' own statement of this edge and of the intermediates that make it indirect."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Pre-administration of NAC attenuated those PMs-induced adverse effects in WT mice."
+        explanation: "The in vivo antioxidant arm supporting the same edge in intact lung rather than only in culture."
+
+  - id: "KER:liu-airway-inflammation-to-systemic-inflammation"
+    name: "Airway inflammation is accompanied by increased systemic inflammation"
+    description: "The same intratracheal exposure that raised ICAM-1 and IL-6 in mouse lung tissue also raised plasma sICAM-1 and IL-6, and NAC lowered both compartments together; in the human arm, COPD patients had higher plasma sICAM-1, IL-6, WBC and CRP than healthy subjects. The airway and systemic compartments were measured in parallel and nothing tests which drives which, and the human arm is cross-sectional with eight subjects per group, so this is recorded as an association with weak support."
+    upstream_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    downstream_event:
+      id: "KE:ke-systemic-inflammation"
+      name: "Increased systemic inflammation"
+      biological_action: increased
+      level_of_biological_organization: organism
+    relationship_type: "associated with"
+    evidence_support: weak
+    evidence:
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In addition, the intratracheal instillation of PMs significantly increased the levels of the ICAM-1 and IL-6 in lung tissues and plasma in WT mice, but not in IL-6 knockout mice."
+        explanation: "Reports the airway (lung tissue) and systemic (plasma) compartments rising together in the same animals, which is the parallel measurement behind this association."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Furthermore, patients with chronic obstructive pulmonary disease (COPD) had higher plasma levels of ICAM-1 and IL-6 compared to healthy subjects."
+        explanation: "The human cross-sectional observation of the systemic side of this association."
