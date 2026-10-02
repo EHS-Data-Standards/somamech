@@ -3,14 +3,11 @@
   "kb_file": "kb/publications/Container-jiao2022-pm25-muc5ac.yaml",
   "content_type_in_committed_cache": "abstract_only",
   "verified_with": "just verify-snippets (linkml-reference-validator, committed + local cache)",
-  "verified_date": "2026-09-28",
+  "verified_date": "2026-10-01",
   "snippet_sha256": [
-    "3e808b1d145dd3417487e7ff99fec9b62b7082d0725fd6339323b9e959917d38",
-    "6f4f55b42d802e7e807e55897355af79348deed7aa8442fd97364c517fd4f32f",
-    "78ce80be8c2c74c73916548ce334335c9a00b28a2feed68b610bd5f85d92f7d2",
-    "8245605433f60fd557480d1e80c944ce59ada99444aacf110b4c6ab9028b06e7",
-    "bf67be6330edbcc2d99e28a1c8099faf4bc1b485a07a5e7aac5a0d3b14f2abac",
-    "cfed077e0fc5cd2bbd0d16f5c7cb450640c87007942ad023066ef5e5120d8dbb",
-    "e07b10bf4e56f3cd657d7ab5259c26d46284dea1f6f563655a4ad0eca1b58e19"
+    "4e9bbd85f240a0b19fccf0fb1ca5313811f33407804dafac2786d5e6eb9f1ff7",
+    "5a493031faa29174a6e7ac86d727889cd8e98bae7b49b157d6320a528595e6b5",
+    "80009cebd523f983d0ef02ca1624f1829e0ad2b3ff89d38a3bc76d340715c8a8",
+    "e6cef60bd31d89c499e929821c4d3d1a3428f1aab096a97ea5ef211324e1d451"
   ]
 }
