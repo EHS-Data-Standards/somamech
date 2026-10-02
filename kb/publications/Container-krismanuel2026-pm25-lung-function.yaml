@@ -339,6 +339,12 @@ lung_function_assays:
         evidence_source: HUMAN_CLINICAL
         snippet: "PM2.5 vs FEV₁/FVC_z −0.136 (p = 0.176) −0.073 (p = 0.467) Not statistically significant"
         explanation: "The Table 5 row recorded on this comparison, giving both null coefficients and their p-values."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The observed effect sizes for (FEV1_z) and (FVC_z) indicate a substantial clinical impact, corresponding to large Cohen’s values of 1.21 and 1.02, respectively."
+        explanation: "The Discussion's statement of the two effect sizes. It disagrees with the Results, which assign Cohen's d = 1.21 to FVC_z; here 1.21 is assigned to FEV1_z and FVC_z is given 1.02. The discrepancy is flagged in COMP:krismanuel-fvcz-group-difference, which records the Results figure."
     has_exposure_condition:
       - id: "EXPOSURE:krismanuel-pm25-pangalengan-low"
         name: "Low-exposure area: at least ten continuous years of residence in Pangalengan, Bandung Regency (validated ambient PM2.5 10 ug/m3, AQI 43, PM10 17 ug/m3)"
@@ -519,15 +525,37 @@ lung_function_assays:
 #     output records above, so control_output and treated_output are omitted on
 #     those three: pointing them at the unadjusted group records would
 #     misrepresent an adjusted coefficient as a raw group difference.
+#   - CORRELATIONS CARRY NO change_type / change_value. The three PM2.5-vs-
+#     z-score correlations are bivariate associations across all 101 pooled
+#     participants, not changes between a control and a treated group.
+#     ChangeTypeEnum has no correlation form, and a Pearson r is none of
+#     absolute_difference, percent_change, fold_change or ratio ("ratio of
+#     treated to control"), so putting the coefficient in change_value would
+#     make the structured row assert a treated/control ratio the paper never
+#     reported - and the workbook and site builders read the fields, not the
+#     prose. Both slots are optional, so they are left off and each
+#     coefficient lives in the comparison's description and statistical_test.
+#     (A correlation member of ChangeTypeEnum would be a soma-schema change,
+#     out of scope here.)
+#   - change_type is likewise left off wherever there is no change_value:
+#     declaring a change form for an absent value asserts more than the paper
+#     does. That applies to the two unadjusted comparisons whose difference
+#     estimates the paper never prints (FEV1_z, and the null FEV1/FVC_z).
 #   - p_value carries 0.001 where the paper prints "p < 0.001" (the schema
 #     slot is a float and cannot hold an inequality); each description states
 #     the printed form.
+#   - EXPOSURE DURATION IS A FLOOR, NOT A DURATION. Both ExposureConditions
+#     carry exposure_duration 10 years because the eligibility criterion was
+#     "at least ten continuous years" of residence. The real per-participant
+#     durations are unknown and are all >= 10 y, so 10 is a lower bound; the
+#     schema has no way to express ">=", and each condition's name states the
+#     criterion in words.
 # =============================================================================
 
 response_comparisons:
   - id: "COMP:krismanuel-fvcz-group-difference"
     name: "Unadjusted FVC_z difference between the high- and low-exposure groups"
-    description: "Independent-samples t-test on FVC_z (both groups normally distributed, Shapiro-Wilk p = 0.054 and p = 0.989; variances homogeneous, Levene's p = 0.051): a highly significant difference, printed as p < 0.001. The paper states the Mean Difference (mu1 - mu2) as +1.2111 z-score units with Mean 1 = -1.2409 (low exposure) and Mean 2 = -2.4520 (high exposure), a large effect (Cohen's d = 1.21) - the average FVC_z in the lower-exposure group was 1.21 standard deviations higher than in the higher-exposure group. Recorded here as -1.2111, the same magnitude oriented as treated (high exposure) minus control (low exposure); see the section note on the sign convention."
+    description: "Independent-samples t-test on FVC_z (both groups normally distributed, Shapiro-Wilk p = 0.054 and p = 0.989; variances homogeneous, Levene's p = 0.051): a highly significant difference, printed as p < 0.001. The paper states the Mean Difference (mu1 - mu2) as +1.2111 z-score units with Mean 1 = -1.2409 (low exposure) and Mean 2 = -2.4520 (high exposure), a large effect (Cohen's d = 1.21) - the average FVC_z in the lower-exposure group was 1.21 standard deviations higher than in the higher-exposure group. A SECOND INTERNAL DISCREPANCY: the Results assign d = 1.21 to FVC_z, while the Discussion states the effect sizes for FEV1_z and FVC_z as 1.21 and 1.02 respectively, reassigning 1.21 to FEV1_z and giving FVC_z 1.02. The Results figure is recorded here because it is stated in the same sentence as the FVC_z mean difference it belongs to; both passages are quoted as evidence on the assay. Recorded here as -1.2111, the same magnitude oriented as treated (high exposure) minus control (low exposure); see the section note on the sign convention."
     derived_from_assay: "LF:krismanuel-gli-zscore-spirometry"
     compared_measurement: "fvc"
     control_output: "LF:krismanuel-gli-zscore-spirometry-output-low-exposure"
@@ -545,12 +573,11 @@ response_comparisons:
 
   - id: "COMP:krismanuel-fev1z-group-difference"
     name: "Unadjusted FEV1_z difference between the high- and low-exposure groups"
-    description: "Mann-Whitney U test on FEV1_z, used because group 1 violated normality (p = 0.001) and variances were unequal (Levene's p < 0.001): a highly significant difference, printed as p < 0.001. The lower-exposure group had the higher distribution (mean rank 64.63; mean -0.45) and the higher-exposure group the lower (mean rank 39.14; mean -1.89), a mean rank difference of +25.49. The paper does not print a mean difference in z-score units for FEV1_z, and computing one here would be a calculation the paper does not make, so no change_value is recorded - the comparison stands on the two group means on the output records, with the test and its p-value. The high-exposure mean falls below the clinical threshold of -1.645."
+    description: "Mann-Whitney U test on FEV1_z, used because group 1 violated normality (p = 0.001) and variances were unequal (Levene's p < 0.001): a highly significant difference, printed as p < 0.001. The lower-exposure group had the higher distribution (mean rank 64.63; mean -0.45) and the higher-exposure group the lower (mean rank 39.14; mean -1.89), a mean rank difference of +25.49. The paper does not print a mean difference in z-score units for FEV1_z, and computing one here would be a calculation the paper does not make, so neither change_value nor change_type is recorded - declaring a change form for a value that is not there would assert more than the paper does, so the comparison stands on the two group means on the output records, with the test and its p-value. The high-exposure mean falls below the clinical threshold of -1.645."
     derived_from_assay: "LF:krismanuel-gli-zscore-spirometry"
     compared_measurement: "fev1"
     control_output: "LF:krismanuel-gli-zscore-spirometry-output-low-exposure"
     treated_output: "LF:krismanuel-gli-zscore-spirometry-output-high-exposure"
-    change_type: absolute_difference
     change_direction: decreased
     p_value: 0.001
     statistical_test: "Mann-Whitney U test (two-tailed, alpha = 0.01), used because of non-normality in group 1 and unequal variances; paper prints p < 0.001"
@@ -558,12 +585,11 @@ response_comparisons:
 
   - id: "COMP:krismanuel-fev1fvcz-group-difference"
     name: "Unadjusted FEV1/FVC_z comparison between the high- and low-exposure groups (null result)"
-    description: "Mann-Whitney U test on the FEV1/FVC_z ratio showed no statistically significant difference (p = 0.464), with similar rank distributions (mean rank 53.29 low-exposure vs 49.01 high-exposure) and both group means (+1.96 and +1.57) far above the obstruction threshold (LLN = -1.645). This null result is the load-bearing negative finding of the paper: it is what makes the volume deficit non-obstructive rather than obstructive. No change_value is recorded because the paper reports no difference estimate for this ratio, only the null test."
+    description: "Mann-Whitney U test on the FEV1/FVC_z ratio showed no statistically significant difference (p = 0.464), with similar rank distributions (mean rank 53.29 low-exposure vs 49.01 high-exposure) and both group means (+1.96 and +1.57) far above the obstruction threshold (LLN = -1.645). This null result is the load-bearing negative finding of the paper: it is what makes the volume deficit non-obstructive rather than obstructive. Neither change_value nor change_type is recorded: the paper reports no difference estimate for this ratio, only the null test."
     derived_from_assay: "LF:krismanuel-gli-zscore-spirometry"
     compared_measurement: "fev1_fvc_ratio"
     control_output: "LF:krismanuel-gli-zscore-spirometry-output-low-exposure"
     treated_output: "LF:krismanuel-gli-zscore-spirometry-output-high-exposure"
-    change_type: absolute_difference
     change_direction: no_change
     p_value: 0.464
     statistical_test: "Mann-Whitney U test (two-tailed, alpha = 0.01)"
@@ -619,48 +645,30 @@ response_comparisons:
 
   - id: "COMP:krismanuel-pm25-fev1z-correlation"
     name: "Bivariate correlation between area-level PM2.5 exposure and FEV1_z"
-    description: "Ambient PM2.5 exposure showed a significant moderate negative correlation with FEV1_z (Pearson r = -0.469, p < 0.001; Spearman rho = -0.436, p < 0.001). Recorded as a ratio-type change because a correlation coefficient is a dimensionless association measure, not a group difference: change_value carries the Pearson r. The companion FVC_z correlation is recorded separately. PM2.5 was NOT significantly correlated with FEV1/FVC_z (Pearson r = -0.136, p = 0.176), consistent with every other analysis of the ratio in this paper."
+    description: "Ambient PM2.5 exposure showed a significant moderate negative correlation with FEV1_z (Pearson r = -0.469, p < 0.001; Spearman rho = -0.436, p < 0.001). No change_type or change_value is recorded: ChangeTypeEnum has no correlation form, and a Pearson r is not a difference, percent change, fold change or treated/control ratio between the two output records, so the coefficient is kept in this description and in statistical_test rather than asserted as a change form the paper never reported. The companion FVC_z correlation is recorded separately. PM2.5 was NOT significantly correlated with FEV1/FVC_z (Pearson r = -0.136, p = 0.176), consistent with every other analysis of the ratio in this paper."
     derived_from_assay: "LF:krismanuel-gli-zscore-spirometry"
     compared_measurement: "fev1"
-    change_type: ratio
     change_direction: decreased
-    change_value:
-      value: "-0.469"
-      unit:
-        id: "UCUM:1"
-        name: "Pearson correlation coefficient (dimensionless)"
     p_value: 0.001
     statistical_test: "Pearson correlation (alpha = 0.01, two-tailed); paper prints p < 0.001, with Spearman rho = -0.436, p < 0.001 as the non-parametric companion"
     derivation: reported_in_paper
 
   - id: "COMP:krismanuel-pm25-fvcz-correlation"
     name: "Bivariate correlation between area-level PM2.5 exposure and FVC_z"
-    description: "Area-level PM2.5 exposure was significantly and moderately negatively correlated with FVC_z. NOTE A DISCREPANCY INSIDE THE PAPER: Table 5 gives Pearson r = -0.442 (p < 0.001) with Spearman rho = -0.415 (p < 0.001), while the Results text for the same correlation prints r = -0.462. The Table 5 value is recorded here because the table is the reported correlation matrix and its Pearson and Spearman pair are internally consistent; the text's -0.462 appears once and is not reproduced elsewhere. Recorded as a ratio-type change for the same reason as the FEV1_z correlation."
+    description: "Area-level PM2.5 exposure was significantly and moderately negatively correlated with FVC_z. NOTE A DISCREPANCY INSIDE THE PAPER: Table 5 gives Pearson r = -0.442 (p < 0.001) with Spearman rho = -0.415 (p < 0.001), while the Results text for the same correlation prints r = -0.462. The Table 5 value is recorded here because the table is the reported correlation matrix and its Pearson and Spearman pair are internally consistent; the text's -0.462 appears once and is not reproduced elsewhere. No change_type or change_value is recorded, for the same reason as the FEV1_z correlation: the enum has no correlation form, so the coefficient stays in this description and in statistical_test."
     derived_from_assay: "LF:krismanuel-gli-zscore-spirometry"
     compared_measurement: "fvc"
-    change_type: ratio
     change_direction: decreased
-    change_value:
-      value: "-0.442"
-      unit:
-        id: "UCUM:1"
-        name: "Pearson correlation coefficient (dimensionless)"
     p_value: 0.001
     statistical_test: "Pearson correlation (alpha = 0.01, two-tailed); paper prints p < 0.001, with Spearman rho = -0.415, p < 0.001 as the non-parametric companion"
     derivation: reported_in_paper
 
   - id: "COMP:krismanuel-pm25-fev1fvcz-correlation"
     name: "Bivariate correlation between area-level PM2.5 exposure and FEV1/FVC_z (null)"
-    description: "PM2.5 exposure was not statistically significantly correlated with the FEV1/FVC_z ratio (Pearson r = -0.136, p = 0.176; Spearman rho = -0.073, p = 0.467), evaluated against the study's alpha of 0.01. Recorded to keep the null ratio result explicit alongside the two significant volume correlations."
+    description: "PM2.5 exposure was not statistically significantly correlated with the FEV1/FVC_z ratio (Pearson r = -0.136, p = 0.176; Spearman rho = -0.073, p = 0.467), evaluated against the study's alpha of 0.01. Recorded to keep the null ratio result explicit alongside the two significant volume correlations. No change_type or change_value, for the same reason as the other two correlations."
     derived_from_assay: "LF:krismanuel-gli-zscore-spirometry"
     compared_measurement: "fev1_fvc_ratio"
-    change_type: ratio
     change_direction: no_change
-    change_value:
-      value: "-0.136"
-      unit:
-        id: "UCUM:1"
-        name: "Pearson correlation coefficient (dimensionless)"
     p_value: 0.176
     statistical_test: "Pearson correlation (alpha = 0.01, two-tailed), not significant; Spearman rho = -0.073, p = 0.467"
     derivation: reported_in_paper
