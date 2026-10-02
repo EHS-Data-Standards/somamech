@@ -27,7 +27,7 @@ The workbook is generated, not hand-maintained. Rebuild it any time with
 
 | Tab | Question it answers |
 | --- | --- |
-| Metadata | Which papers are in here (title, PMID, year)? |
+| Papers | Which papers are in here (PMID, title, DOI, source file, assay count)? |
 | ExposureCondition | What was applied: agent (e.g. PM2.5), concentration, duration, timing |
 | CellularSystem / InVivoSubject / PopulationSubject | Who or what was exposed: cell cultures, lab animals, or human cohorts (with cohort size, age range, inclusion criteria) |
 | KeyEvent | The biological events the field tracks, e.g. "oxidative stress", "mucus hypersecretion" |
@@ -37,8 +37,8 @@ The workbook is generated, not hand-maintained. Rebuild it any time with
 | **Responses** | Every measured number in one long table — the main tab for modeling |
 | ResponseComparison | Exposed-vs-control changes: direction, size, p-value |
 
-A practical path: skim Metadata, then work almost entirely out of Responses,
-ExposureCondition, the two subject tabs, and KeyEventRelationship.
+A practical path: skim Papers, then work almost entirely out of Responses,
+ExposureCondition, the three subject tabs, and KeyEventRelationship.
 
 ## Pulling variables for a synthetic population
 
@@ -50,7 +50,7 @@ Think of each simulated individual as a row you assemble from three kinds of var
    define who is in your population. Human cohort rows are the most direct template;
    mouse and cell-culture rows tell you mechanism, not population structure.
 2. **Exposure variables** — from `ExposureCondition`: agent, concentration (with units),
-   duration, and route. These are the knobs you will turn in a scenario.
+   duration, and timing post exposure. These are the knobs you will turn in a scenario.
 3. **Response variables** — from `Responses`: the measured endpoints (FEV1, FVC, ciliary
    beat frequency, MUC5AC expression, IL-6/IL-8 levels, chloride secretion, and so on),
    each with value, unit, variability, and sample size.
@@ -87,7 +87,9 @@ import pandas as pd
 
 resp = pd.read_excel("exports/soma_extractions.xlsx", sheet_name="Responses")
 expo = pd.read_excel("exports/soma_extractions.xlsx", sheet_name="ExposureCondition")
-df = resp.merge(expo, left_on="exposure_condition", right_on="id")
+# both sheets carry id/name columns, so suffix the exposure copies
+df = resp.merge(expo, left_on="exposure_condition", right_on="id",
+                suffixes=("", "_exposure"))
 ```
 
 ## Modeling a scenario change (example: a wildfire)
