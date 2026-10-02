@@ -47,6 +47,7 @@ from yaml_to_excel import (  # noqa: E402 - reuse the per-paper converter's piec
     _collect_exposure_conditions,
     _collect_key_events,
     _collect_protocols,
+    _collect_response_rows,
     _collect_subjects,
     _exposure_row,
     _key_event_relationship_row,
@@ -165,6 +166,10 @@ def collect(files: list[Path]):
         for aop in data.get("adverse_outcome_pathways", []) or []:
             add("AdverseOutcomePathway", source, aop.get("id", ""),
                 _row_for_tab(aop, "AdverseOutcomePathway"))
+        # Long-format Responses rows carry no entity id of their own, so they
+        # bypass the ID rules and are appended directly.
+        for row in _collect_response_rows(data):
+            tabs.setdefault("Responses", []).append((source, row))
         for coll_key, (assay_tab, output_tab) in COLLECTION_MAP.items():
             for a in data.get(coll_key, []) or []:
                 add(assay_tab, source, a.get("id", ""), _assay_row(a, HEADERS.get(assay_tab, [])))
@@ -196,6 +201,7 @@ def write_workbook(tabs, papers, output_path: Path):
         "ExposureCondition",
         "KeyEvent",
         *SUBJECT_TABS,
+        "Responses",
         "ResponseComparison",
         "KeyEventRelationship",
         "AdverseOutcomePathway",

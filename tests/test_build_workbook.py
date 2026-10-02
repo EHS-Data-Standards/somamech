@@ -140,6 +140,13 @@ def test_whole_corpus_writes_to_excel(tmp_path):
     assert result.returncode == 0, result.stdout + result.stderr
     assert out.exists()
 
+    # The long-format dose-response table must be pooled too: it has no
+    # entity ids, so for a while only the per-paper converter emitted it
+    # and the pooled workbook silently went out without one.
+    wb = openpyxl.load_workbook(out, read_only=True)
+    assert "Responses" in wb.sheetnames, wb.sheetnames
+    assert wb["Responses"].max_row > 1, "Responses tab is empty"
+
 
 def test_inlined_object_slot_is_flattened_rather_than_crashing(tmp_path):
     """target_cell_type is a CellTypeReference, so it arrives as {id, name}."""
