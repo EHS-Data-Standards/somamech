@@ -88,7 +88,9 @@ site: gen-project gen-doc build-dh
 # Deploy documentation site to Github Pages
 [group('deployment')]
 deploy: site
-  mkd-gh-deploy
+  @echo "gh-pages is no longer served. The site deploys from the 'Deploy KB site'"
+  @echo "workflow (on release, or via 'Run workflow'); build locally with:"
+  @echo "  just gen-site && just build-docs-site _site/docs"
 
 # Run all tests
 [group('model development')]
@@ -115,7 +117,7 @@ gen-doc: _gen-yaml _copy-examples
 # Build DataHarmonizer and integrate with docs
 [group('model development')]
 build-dh:
-  npm install
+  npm ci
   npm run build
   cp -r dist/assets docs/
   cp dist/index.html docs/harmonizer.html

@@ -45,7 +45,10 @@
     --lvl-tissue: #199e70;
     --lvl-organ: #c98500;
     --lvl-organism: #d55181;
+    /* population green and unspecified gray are mode-invariant by design in
+       the reference palette (both clear 3:1 on the dark surface). */
     --lvl-population: #008300;
+    --lvl-unspecified: #898781;
     --chip-bg: #272725;
     --code-bg: #272725;
   }

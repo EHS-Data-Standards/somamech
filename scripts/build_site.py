@@ -53,6 +53,8 @@ ASSAY_KNOWN_KEYS = {
 PROTOCOL_KNOWN_KEYS = {"id", "name", "description", "protocol_type", "equipment_required"}
 KEY_EVENT_KNOWN_KEYS = {"id", "name", "description", "evidence", "biological_action",
                         "level_of_biological_organization"}
+OUTPUT_KNOWN_KEYS = {"id", "name", "description", "experimental_group", "measured_under",
+                     "evidence"}
 
 
 def slugify(value: str) -> str:
@@ -194,15 +196,19 @@ def aggregate(pubs: list[dict]):
                 "up_anchor": slugify(up["id"]), "dn_anchor": slugify(dn["id"]),
                 "up_level": normalize_level(up.get("level_of_biological_organization")),
                 "dn_level": normalize_level(dn.get("level_of_biological_organization")),
-                "relationship_type": ker.get("relationship_type") or "leads to",
+                "types_seen": set(),
                 "support": ker.get("evidence_support") or "not_specified",
                 "papers": {},
             })
+            entry["types_seen"].add(ker.get("relationship_type") or "leads to")
             entry["papers"][pub["slug"]] = {"slug": pub["slug"], "short": pub["short"]}
             if SUPPORT_RANK.get(ker.get("evidence_support"), 0) > SUPPORT_RANK.get(entry["support"], 0):
                 entry["support"] = ker["evidence_support"]
     for entry in kers.values():
         entry["papers"] = list(entry["papers"].values())
+        # Papers may legitimately record the same edge with different
+        # relationship types; show all of them rather than the first seen.
+        entry["relationship_type"] = " / ".join(sorted(entry.pop("types_seen")))
 
     def level_key(ke):
         return (LEVEL_ORDER.index(ke["level"]) if ke["level"] in LEVEL_ORDER else len(LEVEL_ORDER),
@@ -375,7 +381,8 @@ def build_site(kb_dir: Path, out_dir: Path, version: str) -> int:
         (out_dir / "publications" / f"{pub['slug']}.html").write_text(pub_template.render(
             root="..", active="publications", pub=pub,
             assay_known_keys=ASSAY_KNOWN_KEYS, protocol_known_keys=PROTOCOL_KNOWN_KEYS,
-            key_event_known_keys=KEY_EVENT_KNOWN_KEYS, known_levels=LEVEL_ORDER,
+            key_event_known_keys=KEY_EVENT_KNOWN_KEYS, output_known_keys=OUTPUT_KNOWN_KEYS,
+            known_levels=LEVEL_ORDER,
             **common))
 
     print(f"Site built: {len(pubs)} publications, {stats['assays']} assays, "

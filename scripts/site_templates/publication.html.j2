@@ -10,8 +10,27 @@
 {% macro quantity(q) -%}
   {%- if q is mapping -%}
     {{ q.value }}{% if q.unit %}&nbsp;{{ q.unit.name or q.unit.id }}{% endif %}
-    {%- if q.variability %} ({{ q.variability.variability_type|replace('_', ' ') }}: {{ q.variability.lower_bound }} to {{ q.variability.upper_bound }}){% endif %}
+    {%- if q.central_tendency or q.variability or q.sample_size %} (
+      {%- if q.central_tendency %}{{ q.central_tendency|replace('_', ' ') }}{% endif %}
+      {%- if q.variability %}{% if q.central_tendency %}; {% endif %}{{ q.variability.variability_type|replace('_', ' ') }}
+        {%- if q.variability.value %} ±{{ q.variability.value }}{% else %} {{ q.variability.lower_bound }} to {{ q.variability.upper_bound }}{% endif %}
+        {%- if q.variability.unit %} {{ q.variability.unit.name or q.variability.unit.id }}{% endif %}
+      {%- endif %}
+      {%- if q.sample_size %}; n={{ q.sample_size }}{% endif %})
+    {%- endif %}
   {%- elif q is not none -%}{{ q }}{%- endif -%}
+{%- endmacro %}
+
+{% macro measurement_chips(item, skip) -%}
+  {%- for k, v in item.items() if k not in skip -%}
+    {%- if v is mapping %}
+    <span class="chip"><b>{{ k|replace('_', ' ') }}:</b> {{ quantity(v) }}</span>
+    {%- elif v is string or v is number or v is boolean %}
+    <span class="chip"><b>{{ k|replace('_', ' ') }}:</b> {{ v }}</span>
+    {%- elif v is sequence and v %}
+    <span class="chip"><b>{{ k|replace('_', ' ') }}:</b> {{ v|join('; ') }}</span>
+    {%- endif %}
+  {%- endfor %}
 {%- endmacro %}
 
 {% macro extras(item, skip) -%}
@@ -137,7 +156,12 @@
     <tr>
       <td>{% if o.experimental_group %}<span class="badge">{{ o.experimental_group }}</span>{% endif %}</td>
       <td>{{ o.name }}<div class="sub">{{ o.id }}{% if o.measured_under %} · under {{ o.measured_under }}{% endif %}</div></td>
-      <td>{{ o.description or '' }}</td>
+      <td>
+        {{ o.description or '' }}
+        {% set chips = measurement_chips(o, output_known_keys) %}
+        {% if chips|trim %}<div class="kv">{{ chips }}</div>{% endif %}
+        {% if o.evidence %}{{ evidence_list(o.evidence) }}{% endif %}
+      </td>
     </tr>
     {% endfor %}
   </table></div>

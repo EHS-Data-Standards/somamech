@@ -80,6 +80,24 @@ key_events:
   - id: "KE:test-future-enum-level"
     name: "Future enum value"
     level_of_biological_organization: some_future_level
+
+synthetic_assays:
+  - id: "SYN:test-output-evidence"
+    name: "Synthetic assay for output-level rendering"
+    has_specified_output:
+      - id: "SYN:test-output-1"
+        name: "Treated output"
+        experimental_group: treated
+        fev1:
+          value: "2.5"
+          unit: {id: "UO:0000095", name: "liter"}
+          central_tendency: mean
+          variability: {variability_type: standard_deviation, value: "0.3"}
+          sample_size: 12
+        evidence:
+          - reference: "PMID:38880065"
+            supports: SUPPORT
+            snippet: "An output-level quote that must render."
 """)
     out = tmp_path / "site"
     result = run("--kb-dir", str(kb), "--out", str(out))
@@ -94,6 +112,10 @@ key_events:
     network = (out / "key-events.html").read_text()
     assert "population" in network              # column/level rendered
     assert "Future enum value" in network       # unknown level degraded, not crashed
+
+    # output-level evidence and structured quantities render in the Outputs table
+    assert "An output-level quote that must render." in page
+    assert "2.5" in page and "±0.3" in page and "n=12" in page
 
 
 def test_version_is_stamped_into_footer_and_source_links(tmp_path):
