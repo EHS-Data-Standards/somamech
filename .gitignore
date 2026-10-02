@@ -15,8 +15,10 @@ docs/assets/
 # docs copied from src/docs by justfile _copy-docs
 /docs/about.md
 /docs/artifacts.md
+/docs/claude-code-skills.md
 /docs/examples.md
 /docs/index.md
+/docs/workbook-guide.md
 # linkml-run-examples output (not useful to have in git in its current form)
 /examples/output/
 
