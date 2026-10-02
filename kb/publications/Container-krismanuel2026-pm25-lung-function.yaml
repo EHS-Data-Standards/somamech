@@ -1,0 +1,666 @@
+# =============================================================================
+# Krismanuel & Tjhin (2026) - Precision public health: A natural experiment on
+# chronic high-contrast PM2.5 exposure and pulmonary function among older adults
+# =============================================================================
+#
+# Source: PLoS One. 2026;21(5):e0349025
+# DOI: 10.1371/journal.pone.0349025
+# PMID: 42133592
+#
+# Study design (HUMAN OBSERVATIONAL - natural experiment, two-group
+# cross-sectional comparison with a decadal residency filter; not in vitro,
+# not an animal experiment):
+#   - 101 non-smoking older adults (65-80 y, normal BMI 18.5-22.9 kg/m2) in
+#     Indonesia, recruited from community health posts (Posbindu) and measured
+#     on 31 May 2025 and 14 June 2025
+#   - Two contrasting residential areas, each validated by 24-h on-site
+#     monitoring: Kedoya (Jakarta) at PM2.5 57 ug/m3 as the high-exposure site
+#     and Pangalengan (Bandung Regency) at PM2.5 10 ug/m3 as the low-exposure
+#     site. 54 participants from Kedoya, 47 from Pangalengan.
+#   - Every participant had held permanent residence at that address for at
+#     least ten continuous years - the "decadal filter" that gives this design
+#     its quasi-longitudinal character and its temporal precedence
+#   - Spirometry per ATS/ERS 2019 with internal BTPS compensation (the two
+#     sites differ in altitude); raw FEV1, FVC and FEV1/FVC converted to
+#     GLI-2012 Southeast Asian-adjusted z-scores
+#
+# WHAT THE EXPOSURE CONTRAST IS, AND WHAT IT IS NOT:
+#   The exposure is assigned at the AREA level - residence in Kedoya vs
+#   Pangalengan - as an ecological proxy for a decade of ambient PM2.5. There
+#   is no personal exposure monitoring and no cumulative dose model, which the
+#   authors state plainly as a limitation. The low-exposure (Pangalengan) group
+#   is the reference group, recorded here as experimental_group: control; it is
+#   a lower-exposure comparison population, NOT an unexposed control, and its
+#   own PM2.5 concentration (10 ug/m3) is modelled as its own
+#   ExposureCondition.
+#
+# HOW THE MEASUREMENTS ARE RECORDED:
+#   The paper's headline outcomes are GLI-2012 z-scores, which are
+#   dimensionless (units of standard deviations of the reference population),
+#   so fev1, fvc and fev1_fvc_ratio carry UCUM:1. The absolute (actual)
+#   FEV1/FVC values in litres are reported only as significance verdicts
+#   (FEV1_actual p < 0.001, FVC_actual p = 0.002, FEV1/FVC_actual p = 0.687) -
+#   no group means in litres appear anywhere in the text or the reproduced
+#   tables, so none are recorded. Group-level z-score means come from the
+#   Results; the FEV1_z group means are reported alongside Mann-Whitney mean
+#   ranks and no SD is given for them, so no variability is recorded on the
+#   FEV1_z or FEV1/FVC_z values. FVC_z group means likewise appear without
+#   their SDs.
+#
+# Key findings recorded here:
+#   - FEV1_z: -0.45 (low exposure) vs -1.89 (high exposure), Mann-Whitney
+#     p < 0.001; the high-exposure mean falls below the LLN of -1.645
+#   - FVC_z: -1.2409 vs -2.4520, t-test p < 0.001, mean difference 1.2111
+#     z-score units, Cohen's d = 1.21
+#   - FEV1/FVC_z: +1.96 vs +1.57, Mann-Whitney p = 0.464 - no difference, and
+#     both groups well above the obstruction threshold
+#   - Adjusted multivariable regression: exposure group was the ONLY
+#     significant predictor, B = -1.434 for FEV1_z and B = -1.145 for FVC_z
+#     (both p < 0.001); for FEV1/FVC_z, B = -0.560, p = 0.071 (not significant,
+#     and the whole model was not significant: p = 0.082)
+#   - Pattern = reduced lung volumes with a preserved ratio, i.e. a subclinical
+#     non-obstructive (restrictive-like) deficit, not airflow obstruction
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:42133592"
+  reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+  doi: "10.1371/journal.pone.0349025"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - protocol_type: SpirometryProtocol
+    id: "PROTOCOL:krismanuel-spirometry-001"
+    name: "Portable digital spirometry with internal BTPS compensation and GLI-2012 Southeast Asian z-score conversion"
+    description: "Pulmonary function was measured with a portable digital spirometer (volume accuracy 3%, flow range 0-16 L/s, calibrated before each session) in strict accordance with ATS/ERS standards, with participants seated. Maneuvers were repeated until at least two consistent best results were obtained, with the difference between maneuvers not exceeding 150 mL. Because the coastal Jakarta site and the highland Bandung site differ in temperature and atmospheric pressure, the spirometer carried an internal BTPS (Body Temperature, Ambient Pressure, Saturated with water vapor) sensor that automatically adjusted measured lung volumes to ambient conditions at each site. Raw FEV1, FVC and FEV1/FVC were then converted to z-scores using the Global Lung Initiative (GLI) 2012 Southeast Asian-adjusted reference equations. All spirometry technicians were blinded to participants' exposure status. The final analytical sample was established after strict adherence to the ATS/ERS 2019 quality standards."
+    spirometry_standard: "American Thoracic Society / European Respiratory Society (ATS/ERS) standards; ATS/ERS 2019 quality standards for spirometry acceptance"
+    equipment_required:
+      - "Portable digital spirometer (volume accuracy 3%, flow range 0-16 L/s) with internal BTPS sensor"
+
+  - id: "PROTOCOL:krismanuel-exposure-assessment-001"
+    name: "Two-stage hybrid area-level PM2.5 exposure assessment (macro-level mapping plus 24-h ground-truthing)"
+    description: "A two-tiered exposure assessment combined macro-level secondary data with micro-level direct sampling. Stage 1 (macro-level mapping) reviewed longitudinal ambient PM2.5 records from government-operated air quality monitoring stations across the Jakarta and Bandung metropolitan areas to identify the regions with the highest and lowest historical levels. Stage 2 (micro-level direct measurement) validated neighbourhood-level conditions at six preliminary locations (three in Jakarta, three in Bandung) using calibrated sensors over 24-hour sampling periods, performed by an independent certified air quality monitoring company, to minimise ecological fallacy. Kedoya (Jakarta) was confirmed as the highest-exposure site and Pangalengan (Bandung Regency) as the lowest-exposure site; all participants were recruited from the single administrative sub-district (kelurahan) immediately surrounding the validated sites. Participants were then assigned to exposure categories by an area-level proxy reflecting the validated chronic ambient conditions of their primary residence. NOTE: this is an ecological exposure proxy - there was no individual personal exposure monitoring, cumulative dose modelling, indoor air quality assessment, or time-activity analysis."
+    equipment_required:
+      - "Calibrated ambient PM2.5/PM10 sensors operated over 24-hour sampling periods by an independent certified air quality monitoring company"
+      - "Government-operated air quality monitoring stations (Jakarta and Bandung metropolitan areas)"
+
+  - id: "PROTOCOL:krismanuel-screening-001"
+    name: "Multi-layered 'ultrapure' cohort screening with a 10-year residency filter and frequency matching"
+    description: "A sampling frame of 245 candidates was built from community health post (Posbindu) registries and pre-screened on age (65-80 y), never-smoking status and the 10-year stable residency requirement. Stratified random sampling invited 60 candidates per site (n = 120); 123 individuals attended the clinical phase (68 Kedoya, 55 Pangalengan) for one-day screening comprising structured interviews, physical examination and electrocardiography. Inclusion: age 65-80 y, at least ten continuous years of permanent residence at the current address, willingness and physical ability to perform standardized spirometry, and BMI within the WHO Asian normal range (18.5-22.9 kg/m2, applied to exclude the restrictive effect of obesity on lung expansion). Exclusions: current or former active smoking or significant daily passive smoke exposure; chronic respiratory disease (COPD, pulmonary fibrosis, uncontrolled asthma, prior pulmonary tuberculosis); acute respiratory infection within the preceding four weeks; severe cardiovascular or systemic disease; lung cancer; neuromuscular or cognitive impairment; significant occupational exposure to industrial dust, biomass smoke or chemical irritants; and communication barriers such as illiteracy. Frequency matching on age, gender, education and occupation was then applied. Of the 123 screened, 22 were excluded: 14 for clinical abnormalities found at screening, 3 for invalid spirometry not meeting ATS/ERS 2019 quality standards, and 5 by the frequency matching procedure. Enumerators and clinical staff were blinded to exposure status."
+
+# =============================================================================
+# LUNG FUNCTION ASSAY - GLI-2012 z-score spirometry in two populations with a
+# decade of contrasting ambient PM2.5 exposure.
+#
+# One assay with two output records, one per residential exposure group, each
+# pointing at its own validated area-level ExposureCondition. Group differences
+# and the adjusted regression coefficients are in response_comparisons below.
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:krismanuel-gli-zscore-spirometry"
+    name: "GLI-2012 z-score spirometry in older adults after a decade of residence in high- vs low-PM2.5 areas"
+    description: "Natural-experiment spirometry in 101 rigorously screened, non-smoking, normal-BMI older adults (65-80 y) who had each lived at the same address for at least ten continuous years: 54 in high-exposure Kedoya (Jakarta, validated PM2.5 57 ug/m3) and 47 in low-exposure Pangalengan (Bandung Regency, validated PM2.5 10 ug/m3). FEV1, FVC and FEV1/FVC were measured per ATS/ERS with internal BTPS compensation and expressed as GLI-2012 Southeast Asian-adjusted z-scores. The high-exposure group showed markedly lower FEV1_z (mean -1.89 vs -0.45, Mann-Whitney p < 0.001) and FVC_z (mean -2.4520 vs -1.2409, t-test p < 0.001, mean difference 1.2111 z-score units, Cohen's d = 1.21), while FEV1/FVC_z did not differ (+1.57 vs +1.96, p = 0.464) and both groups stayed well above the obstruction threshold. The high-exposure FEV1_z mean falls below the Lower Limit of Normal (z = -1.645), so the shift is into the impaired range. The same pattern held for the absolute (actual) parameters as significance verdicts: FEV1_actual significantly lower (p < 0.001), FVC_actual significantly different (p = 0.002), FEV1/FVC_actual not different (p = 0.687); no group means in litres are reported anywhere in the paper, so none are recorded here. The combination of reduced volumes with a preserved ratio is a subclinical non-obstructive (restrictive-like) deficit rather than airflow obstruction, in a cohort selected to be free of known respiratory disease. Exposure was assigned ecologically at the area level, which the authors note cannot capture within-area variability or individual exposure trajectories."
+    reference_dataset: "Global Lung Initiative (GLI) 2012 Southeast Asian-adjusted reference equations"
+    evidence:
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We conducted a natural experiment involving 101 non-smoking older adults (65-80 years; normal BMI) in Indonesia."
+        explanation: "States the study design, cohort size and the age and BMI restriction recorded on this assay's study_subject."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "This design compared populations with ≥10-year residency in contrasting environments: high-exposure urban (Kedoya) and low-exposure rural (Pangalengan)."
+        explanation: "States the two-group area-level exposure contrast and the decadal residency filter that define the two ExposureConditions on this assay."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Participants were included if they were aged between 65 and 80 years and had maintained permanent residence at their current address for at least ten continuous years."
+        explanation: "States the age window and the ten-year residency requirement recorded as the exposure_duration on both ExposureConditions."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "the final analytical sample consisted of 101 participants (54 from the higher-exposure area and 47 \nfrom the lower-exposure area)."
+        explanation: "States the two per-group sample sizes recorded on this assay's output records (54 high-exposure, 47 low-exposure)."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Kedoya in Jakarta area was selected as the highest-exposure area"
+        explanation: "Confirms Kedoya as the high-exposure site, the area-level proxy behind EXPOSURE:krismanuel-pm25-kedoya-high."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Jakarta Kedoya 219 57 156"
+        explanation: "The Table 1 row for the high-exposure site: AQI 219, PM2.5 57 ug/m3, PM10 156 ug/m3 - the validated concentration recorded on EXPOSURE:krismanuel-pm25-kedoya-high."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Bandung Pangalengan 43 10 17"
+        explanation: "The Table 1 row for the low-exposure site: AQI 43, PM2.5 10 ug/m3, PM10 17 ug/m3 - the validated concentration recorded on EXPOSURE:krismanuel-pm25-pangalengan-low."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "calibrated sensors over 24-hour sampling periods by an independent certified air quality monitoring company."
+        explanation: "Documents the 24-hour ground-truthing measurement that produced the Table 1 PM2.5 concentrations recorded on both ExposureConditions."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Pulmonary function was measured using a portable digital spirometer in strict accordance with the American Thoracic Society (ATS) and European Respiratory Society (ERS) standards"
+        explanation: "Documents the spirometry method and standard recorded in PROTOCOL:krismanuel-spirometry-001."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "the spirome-\nter was equipped with an internal BTPS (Body Temperature, Ambient Pressure, Saturated with water vapor) sensor."
+        explanation: "Documents the BTPS compensation that makes the two sites' volumes comparable despite their altitude difference."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "raw lung function values were converted into z-scores using the Global Lung Initiative (GLI) 2012 Southeast Asian-adjusted reference equations to account for ethnic-specific lung morphology."
+        explanation: "States the reference_dataset recorded on this assay and why every measurement here is a dimensionless z-score rather than a volume."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "After strictly adhering to the ATS/ERS 2019 quality standards"
+        explanation: "States the ATS/ERS 2019 quality screen applied to spirometry before a participant entered the analytical sample, recorded in the spirometry and screening protocols."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Participants were classified based on the Lower Limit of Normal (LLN), defined as a z-score threshold of −1.645."
+        explanation: "States the impairment threshold against which the high-exposure group's FEV1_z mean of -1.89 is read as impaired."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Participants residing in the higher exposure area exhibited lower mean FEV1_z-scores and FVC_z-scores compared with those living in the lower-exposure area."
+        explanation: "The headline direction of effect across this assay's two output records."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The mean FEV1_actual was significantly lower in the high-exposure group (Independent -test, p < 0.001)."
+        explanation: "Supports the description's statement about the absolute FEV1; the paper gives only this significance verdict and no group means in litres, so no actual-volume value is recorded."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The median FVC_actual also showed a statistically significant difference (Mann-Whitney U test, p = 0.002)."
+        explanation: "Supports the description's statement about the absolute FVC; again a verdict only, with no group medians in litres reported."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Correspondingly, no significant difference was detected in the median FEV1/FVC_actual (p = 0.687)."
+        explanation: "Supports the description's statement that the absolute ratio did not differ, mirroring the null FEV1/FVC_z result."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Individuals were excluded if they were current or former active smokers or had significant daily exposure to passive smoking."
+        explanation: "Documents the smoking exclusion recorded in subject_characteristics and in PROTOCOL:krismanuel-screening-001, which is what allows the lung-function deficit to be attributed to ambient PM2.5 rather than tobacco."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Mean age in the low-exposure group (Group 1) was 71.32 years vs 71.52 years in the high exposure group (Group 2)."
+        explanation: "States the two group mean ages recorded in subject_characteristics; no pooled cohort mean age is reported, so the age slot is left unset."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The Pangalengan group con-\nsisted of 37 older adults women and 10 older adults men, while the Kedoya group comprised 47 older adults women \nand 7 older adults men."
+        explanation: "States the sex composition of each group recorded in subject_characteristics."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Overall, these findings indicate that long-term exposure to elevated PM2.5 levels is significantly associated with reduced \nlung volumes (FEV1_z and FVC_z) but not with evidence of obstructive impairment (indicated by the FEV1/FVC_z ratio) in \nthis older adults population."
+        explanation: "The authors' summary conclusion linking the decadal PM2.5 exposure recorded on this assay to the decreased-lung-function key event."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "pattern—characterized by concurrent reductions in FEV1_z and FVC_z with a preserved ratio—indicates a non-"
+        explanation: "The authors' interpretation of the pattern across this assay's two output records as non-obstructive rather than obstructive; quoted up to the line-broken word 'non-obstructive'."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Due to the violation of the normality assumption in group 1 (p = 0.001) and unequal vari-\nances (Levene’s p < 0.001), the Mann-Whitney U test was performed."
+        explanation: "States why the non-parametric test recorded here was used for FEV1_z."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The test revealed a highly statistically significant difference (p < 0.001)."
+        explanation: "States the printed p < 0.001 recorded on this comparison."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "the higher-exposure group (Mean Rank = 39.14; Mean = −1.89), with a Mean Rank difference of +25.49."
+        explanation: "States the mean rank difference of +25.49 and the high-exposure group mean quoted in this comparison's description."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "the Mann-Whitney U test for the FEV1/FVC_z ratio showed no statistically significant difference between the two groups (p = 0.464)"
+        explanation: "States the test and the p = 0.464 recorded on this comparison."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Notably, both the lower-exposure group (+1.96) and the higher-exposure group (+1.57) maintained mean values well above the clinical threshold for obstruction"
+        explanation: "States that both group means stay above the obstruction threshold, the basis for reading this null result as preserved airway patency."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In this adjusted model, residence in the high-exposure area emerged as the only significant driver of lower FEV1_z (Unstandardized Coefficient B=−1.434, p < 0.001)."
+        explanation: "States the adjusted coefficient of -1.434 and its p-value recorded on this comparison."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The overall model for FEV1_z was statistically significant (F(6,94)=7.189, p < 0.001), explaining approximately 31.5% \nof the variance in FEV1_z (R2 = 0.315)."
+        explanation: "States the model fit statistics quoted in this comparison's description."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Multivariable regression confirmed exposure group was the only independent predictor for FEV1_z (β = -1.42, p < 0.001) and FVC_z (β = -1.14, p < 0.001), after adjusting for covariates."
+        explanation: "The abstract's rounded statement of the same two adjusted coefficients. The values recorded in this file are the Results-section figures (-1.434 and -1.145); the abstract rounds them to -1.42 and -1.14."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The PM2.5 exposure group was the sole significant predictor (Unstandardized Coefficient B = −1.145, p < 0.001), demonstrating that the impact of higher exposure on reduced lung volume remains robust after adjustment."
+        explanation: "States the adjusted FVC_z coefficient of -1.145 and its p-value recorded on this comparison."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "the model for FVC_z was also statistically significant (F(6,94)=5.475, p < 0.001), accounting for 25.9% of \nthe variance (R2 = 0.259)."
+        explanation: "States the model fit statistics quoted in this comparison's description."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "no predictor variable, including PM2.5 expo-\nsure (B=−0.560, p = 0.071), showed a statistically significant association with the FEV1/FVC_z ratio after adjustment."
+        explanation: "States the null adjusted coefficient of -0.560 and its p = 0.071 recorded on this comparison."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In contrast, the model for FEV1/FVC_z was not statistically significant (F(6,94)=1.943, p = 0.082), accounting for only 11.0% of the variance (R2 = 0.110)."
+        explanation: "States that the whole FEV1/FVC_z model was not significant, the context for recording this coefficient as a null result."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Ambient PM2.5 exposure demon-\nstrated a significant and moderate negative correlation with both FEV1_z (Pearson r=−0.469, p < 0.001)"
+        explanation: "States the Pearson r of -0.469 for PM2.5 against FEV1_z recorded on this comparison."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM2.5 vs FEV₁_z −0.469 (p < 0.001) −0.436 (p < 0.001) Significant and moderate negative correlation"
+        explanation: "The Table 5 row for this correlation, giving both the Pearson and Spearman coefficients quoted in the description."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM2.5 vs FVC_z −0.442 (p < 0.001) −0.415 (p < 0.001) Significant and moderate negative correlation"
+        explanation: "The Table 5 row recorded on this comparison, giving the Pearson r of -0.442 and Spearman rho of -0.415."
+      - reference: "PMID:42133592"
+        reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "PM2.5 vs FEV₁/FVC_z −0.136 (p = 0.176) −0.073 (p = 0.467) Not statistically significant"
+        explanation: "The Table 5 row recorded on this comparison, giving both null coefficients and their p-values."
+    has_exposure_condition:
+      - id: "EXPOSURE:krismanuel-pm25-pangalengan-low"
+        name: "Low-exposure area: at least ten continuous years of residence in Pangalengan, Bandung Regency (validated ambient PM2.5 10 ug/m3, AQI 43, PM10 17 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: single_value
+        exposure_duration:
+          value: "10"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      - id: "EXPOSURE:krismanuel-pm25-kedoya-high"
+        name: "High-exposure area: at least ten continuous years of residence in Kedoya, Jakarta (validated ambient PM2.5 57 ug/m3, AQI 219, PM10 156 ug/m3)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "57"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: single_value
+        exposure_duration:
+          value: "10"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+    has_specified_output:
+      - id: "LF:krismanuel-gli-zscore-spirometry-output-low-exposure"
+        name: "GLI-2012 z-scores in the low-exposure Pangalengan group (n = 47), the reference population"
+        description: "Reference group for the contrast: lower-exposure, not unexposed. Mean FEV1_z -0.45 (reported alongside a Mann-Whitney mean rank of 64.63) and mean FVC_z -1.2409 both remain within or near the normal range, and mean FEV1/FVC_z +1.96 is far above the obstruction threshold. The paper reports these group means without their standard deviations, so no variability is recorded."
+        experimental_group: control
+        measured_under: "EXPOSURE:krismanuel-pm25-pangalengan-low"
+        evidence:
+          - reference: "PMID:42133592"
+            reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "The lower-exposure group showed a higher distribution (Mean Rank = 64.63; Mean = −0.45)"
+            explanation: "States the low-exposure group's FEV1_z mean of -0.45 recorded on this output."
+          - reference: "PMID:42133592"
+            reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "The Mean Difference (μ1−μ2) was calculated as +1.2111 z-score units (Mean 1 = −1.2409; Mean 2 = −2.4520)"
+            explanation: "States the low-exposure group's FVC_z mean of -1.2409 (Mean 1) recorded on this output, alongside the high-exposure mean."
+          - reference: "PMID:42133592"
+            reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "Notably, both the lower-exposure group (+1.96) and the higher-exposure group (+1.57) maintained mean values well above the clinical threshold for obstruction"
+            explanation: "States the low-exposure group's FEV1/FVC_z mean of +1.96 recorded on this output."
+          - reference: "PMID:42133592"
+            reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "while the lower-exposure group remained within the normal range, the mean of the higher-exposure group fell below the clinical threshold of −1.645, indicating a systematic shift toward impaired lung function."
+            explanation: "Confirms that this group's FEV1_z mean stays within the normal range, in contrast to the high-exposure output record."
+        fev1:
+          value: "-0.45"
+          unit:
+            id: "UCUM:1"
+            name: "GLI-2012 z-score (dimensionless)"
+          central_tendency: mean
+          sample_size: 47
+        fvc:
+          value: "-1.2409"
+          unit:
+            id: "UCUM:1"
+            name: "GLI-2012 z-score (dimensionless)"
+          central_tendency: mean
+          sample_size: 47
+        fev1_fvc_ratio:
+          value: "1.96"
+          unit:
+            id: "UCUM:1"
+            name: "GLI-2012 z-score (dimensionless)"
+          central_tendency: mean
+          sample_size: 47
+      - id: "LF:krismanuel-gli-zscore-spirometry-output-high-exposure"
+        name: "GLI-2012 z-scores in the high-exposure Kedoya group (n = 54)"
+        description: "After a decade of residence at the validated 57 ug/m3 site: mean FEV1_z -1.89 (Mann-Whitney mean rank 39.14), which falls below the Lower Limit of Normal of -1.645, and mean FVC_z -2.4520, lower still. Mean FEV1/FVC_z +1.57 nevertheless remains far above the obstruction threshold, so the deficit is in volumes, not in the ratio. The paper reports these group means without their standard deviations, so no variability is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:krismanuel-pm25-kedoya-high"
+        evidence:
+          - reference: "PMID:42133592"
+            reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "the higher-exposure group (Mean Rank = 39.14; Mean = −1.89), with a Mean Rank difference of +25.49."
+            explanation: "States the high-exposure group's FEV1_z mean of -1.89 recorded on this output."
+          - reference: "PMID:42133592"
+            reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "The Mean Difference (μ1−μ2) was calculated as +1.2111 z-score units (Mean 1 = −1.2409; Mean 2 = −2.4520)"
+            explanation: "States the high-exposure group's FVC_z mean of -2.4520 (Mean 2) recorded on this output."
+          - reference: "PMID:42133592"
+            reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "Notably, both the lower-exposure group (+1.96) and the higher-exposure group (+1.57) maintained mean values well above the clinical threshold for obstruction"
+            explanation: "States the high-exposure group's FEV1/FVC_z mean of +1.57 recorded on this output, and that it stays above the obstruction threshold."
+          - reference: "PMID:42133592"
+            reference_title: "Precision public health: A natural experiment on chronic high-contrast PM2.5 exposure and pulmonary function among older adults."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "while the lower-exposure group remained within the normal range, the mean of the higher-exposure group fell below the clinical threshold of −1.645, indicating a systematic shift toward impaired lung function."
+            explanation: "States that this group's FEV1_z mean of -1.89 falls below the Lower Limit of Normal - the clinical reading of this output record."
+        fev1:
+          value: "-1.89"
+          unit:
+            id: "UCUM:1"
+            name: "GLI-2012 z-score (dimensionless)"
+          central_tendency: mean
+          sample_size: 54
+        fvc:
+          value: "-2.4520"
+          unit:
+            id: "UCUM:1"
+            name: "GLI-2012 z-score (dimensionless)"
+          central_tendency: mean
+          sample_size: 54
+        fev1_fvc_ratio:
+          value: "1.57"
+          unit:
+            id: "UCUM:1"
+            name: "GLI-2012 z-score (dimensionless)"
+          central_tendency: mean
+          sample_size: 54
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:krismanuel-older-adults"
+      name: "Non-smoking older adults with at least ten years' residence in high- (Kedoya) or low-PM2.5 (Pangalengan) areas of Indonesia"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      sex: "both sexes, predominantly female: Pangalengan 37 women and 10 men (78.72% female), Kedoya 47 women and 7 men (87.04% female); the gender distribution did not differ between groups (chi-square p = 0.265)"
+      disease_state: "apparently healthy; screened free of chronic respiratory disease (COPD, pulmonary fibrosis, uncontrolled asthma, prior pulmonary tuberculosis), recent acute respiratory infection, severe cardiovascular or systemic disease, and lung cancer"
+      subject_characteristics: "101 participants aged 65-80 y: 54 from high-exposure Kedoya, 47 from low-exposure Pangalengan. Group mean ages 71.32 y (SD 2.59) in the low-exposure group and 71.52 y (SD 3.57) in the high-exposure group, not significantly different (mean difference -0.199 y; t = -0.317, p = 0.747); no pooled cohort mean age is reported. All within the WHO Asian normal BMI range (18.5-22.9 kg/m2): mean 20.74 kg/m2 (SD 0.80) low-exposure vs 20.80 kg/m2 (SD 0.70) high-exposure, not significantly different (t = -0.441, p = 0.661). Mean height 147.53 cm (SD 7.21) vs 151.30 cm (SD 6.04) - the one baseline variable that did differ (Welch/Brown-Forsythe p = 0.006), and height was therefore carried as a covariate. Ethnicity recorded as Southeast Asian in both groups. All never-smokers with no significant passive-smoke exposure and no significant occupational exposure to industrial dust, biomass smoke or chemical irritants. Education predominantly low (72.34% vs 70.37% not attending school or elementary only); occupation was 100% in the lowest ordinal category (unemployed, labourer, farmer or small trader) in both groups. Baseline vital signs comparable: median respiratory rate 19.0 breaths/min in both groups (p = 0.032), median oxygen saturation 96.0% (p = 0.947). Frequency matching on age, gender, education and occupation balanced the groups."
+      clinical_context: "Natural experiment with a quasi-longitudinal decadal residency filter, Indonesia; data collected 31 May 2025 and 14 June 2025 at community health posts (Posbindu) in two administrative sub-districts (kelurahan) immediately surrounding validated monitoring sites - Kedoya (Jakarta, high exposure) and Pangalengan (Bandung Regency, low exposure). Ethical approval 007/KER/FK/04/2025, Faculty of Medicine, Universitas Trisakti; reported per STROBE. Enumerators, clinical examiners and spirometry technicians were blinded to exposure status. Exposure is an area-level ecological proxy, not personal monitoring."
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:krismanuel-spirometry-001"
+        name: "Portable digital spirometry with internal BTPS compensation and GLI-2012 Southeast Asian z-score conversion"
+        spirometry_standard: "American Thoracic Society / European Respiratory Society (ATS/ERS) standards; ATS/ERS 2019 quality standards for spirometry acceptance"
+      - id: "PROTOCOL:krismanuel-exposure-assessment-001"
+        name: "Two-stage hybrid area-level PM2.5 exposure assessment (macro-level mapping plus 24-h ground-truthing)"
+      - id: "PROTOCOL:krismanuel-screening-001"
+        name: "Multi-layered 'ultrapure' cohort screening with a 10-year residency filter and frequency matching"
+
+# =============================================================================
+# RESPONSE COMPARISONS - the paper's reported group differences and adjusted
+# regression coefficients.
+#
+# MODELLING NOTES:
+#   - SIGN CONVENTION. The paper reports the FVC_z group difference as
+#     mu1 - mu2 = +1.2111, i.e. LOW-exposure minus HIGH-exposure. The schema's
+#     control/treated pairing is the other way round (control = low-exposure
+#     reference, treated = high-exposure), so change_value is recorded as
+#     -1.2111: the same reported magnitude, oriented as treated minus control.
+#     This is a documented sign convention, not a recomputation - no arithmetic
+#     beyond negation was performed, and every magnitude is as printed.
+#   - The three adjusted coefficients (B) come from multivariable linear
+#     regression of each z-score on exposure group, adjusted for age, gender,
+#     education, height and BMI. They are NOT differences between the two
+#     output records above, so control_output and treated_output are omitted on
+#     those three: pointing them at the unadjusted group records would
+#     misrepresent an adjusted coefficient as a raw group difference.
+#   - p_value carries 0.001 where the paper prints "p < 0.001" (the schema
+#     slot is a float and cannot hold an inequality); each description states
+#     the printed form.
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:krismanuel-fvcz-group-difference"
+    name: "Unadjusted FVC_z difference between the high- and low-exposure groups"
+    description: "Independent-samples t-test on FVC_z (both groups normally distributed, Shapiro-Wilk p = 0.054 and p = 0.989; variances homogeneous, Levene's p = 0.051): a highly significant difference, printed as p < 0.001. The paper states the Mean Difference (mu1 - mu2) as +1.2111 z-score units with Mean 1 = -1.2409 (low exposure) and Mean 2 = -2.4520 (high exposure), a large effect (Cohen's d = 1.21) - the average FVC_z in the lower-exposure group was 1.21 standard deviations higher than in the higher-exposure group. Recorded here as -1.2111, the same magnitude oriented as treated (high exposure) minus control (low exposure); see the section note on the sign convention."
+    derived_from_assay: "LF:krismanuel-gli-zscore-spirometry"
+    compared_measurement: "fvc"
+    control_output: "LF:krismanuel-gli-zscore-spirometry-output-low-exposure"
+    treated_output: "LF:krismanuel-gli-zscore-spirometry-output-high-exposure"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-1.2111"
+      unit:
+        id: "UCUM:1"
+        name: "GLI-2012 z-score (dimensionless)"
+    p_value: 0.001
+    statistical_test: "Independent samples t-test (two-tailed, alpha = 0.01); paper prints p < 0.001, Cohen's d = 1.21"
+    derivation: reported_in_paper
+
+  - id: "COMP:krismanuel-fev1z-group-difference"
+    name: "Unadjusted FEV1_z difference between the high- and low-exposure groups"
+    description: "Mann-Whitney U test on FEV1_z, used because group 1 violated normality (p = 0.001) and variances were unequal (Levene's p < 0.001): a highly significant difference, printed as p < 0.001. The lower-exposure group had the higher distribution (mean rank 64.63; mean -0.45) and the higher-exposure group the lower (mean rank 39.14; mean -1.89), a mean rank difference of +25.49. The paper does not print a mean difference in z-score units for FEV1_z, and computing one here would be a calculation the paper does not make, so no change_value is recorded - the comparison stands on the two group means on the output records, with the test and its p-value. The high-exposure mean falls below the clinical threshold of -1.645."
+    derived_from_assay: "LF:krismanuel-gli-zscore-spirometry"
+    compared_measurement: "fev1"
+    control_output: "LF:krismanuel-gli-zscore-spirometry-output-low-exposure"
+    treated_output: "LF:krismanuel-gli-zscore-spirometry-output-high-exposure"
+    change_type: absolute_difference
+    change_direction: decreased
+    p_value: 0.001
+    statistical_test: "Mann-Whitney U test (two-tailed, alpha = 0.01), used because of non-normality in group 1 and unequal variances; paper prints p < 0.001"
+    derivation: reported_in_paper
+
+  - id: "COMP:krismanuel-fev1fvcz-group-difference"
+    name: "Unadjusted FEV1/FVC_z comparison between the high- and low-exposure groups (null result)"
+    description: "Mann-Whitney U test on the FEV1/FVC_z ratio showed no statistically significant difference (p = 0.464), with similar rank distributions (mean rank 53.29 low-exposure vs 49.01 high-exposure) and both group means (+1.96 and +1.57) far above the obstruction threshold (LLN = -1.645). This null result is the load-bearing negative finding of the paper: it is what makes the volume deficit non-obstructive rather than obstructive. No change_value is recorded because the paper reports no difference estimate for this ratio, only the null test."
+    derived_from_assay: "LF:krismanuel-gli-zscore-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    control_output: "LF:krismanuel-gli-zscore-spirometry-output-low-exposure"
+    treated_output: "LF:krismanuel-gli-zscore-spirometry-output-high-exposure"
+    change_type: absolute_difference
+    change_direction: no_change
+    p_value: 0.464
+    statistical_test: "Mann-Whitney U test (two-tailed, alpha = 0.01)"
+    derivation: reported_in_paper
+
+  - id: "COMP:krismanuel-fev1z-adjusted-beta"
+    name: "Adjusted effect of high-exposure residence on FEV1_z (multivariable linear regression)"
+    description: "In the adjusted multivariable linear regression model for FEV1_z (overall model F(6,94) = 7.189, p < 0.001, R2 = 0.315, i.e. about 31.5% of the variance), residence in the high-exposure area was the only significant predictor: unstandardized coefficient B = -1.434, printed p < 0.001. After controlling for age, gender, education, height and BMI, participants in the high-PM2.5 area had an FEV1_z score 1.434 units lower than those in the low-PM2.5 area. BMI showed a positive association (B = 0.443, p = 0.015) but did not meet the study's stringent 0.01 threshold. Model diagnostics: maximum Cook's distance 0.149, VIF below 1.6. This is an adjusted model coefficient, so no control/treated output pair is referenced (see the section note)."
+    derived_from_assay: "LF:krismanuel-gli-zscore-spirometry"
+    compared_measurement: "fev1"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-1.434"
+      unit:
+        id: "UCUM:1"
+        name: "GLI-2012 z-score (dimensionless)"
+    p_value: 0.001
+    statistical_test: "Multivariable linear regression (unstandardized B), adjusted for age, gender, education, height and BMI; alpha = 0.01; paper prints p < 0.001"
+    derivation: reported_in_paper
+
+  - id: "COMP:krismanuel-fvcz-adjusted-beta"
+    name: "Adjusted effect of high-exposure residence on FVC_z (multivariable linear regression)"
+    description: "In the adjusted multivariable linear regression model for FVC_z (overall model F(6,94) = 5.475, p < 0.001, R2 = 0.259, i.e. about 25.9% of the variance), the PM2.5 exposure group was the sole significant predictor: unstandardized coefficient B = -1.145, printed p < 0.001 - showing that the effect of higher exposure on reduced lung volume remains robust after adjustment. This is an adjusted model coefficient, so no control/treated output pair is referenced (see the section note)."
+    derived_from_assay: "LF:krismanuel-gli-zscore-spirometry"
+    compared_measurement: "fvc"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-1.145"
+      unit:
+        id: "UCUM:1"
+        name: "GLI-2012 z-score (dimensionless)"
+    p_value: 0.001
+    statistical_test: "Multivariable linear regression (unstandardized B), adjusted for age, gender, education, height and BMI; alpha = 0.01; paper prints p < 0.001"
+    derivation: reported_in_paper
+
+  - id: "COMP:krismanuel-fev1fvcz-adjusted-beta"
+    name: "Adjusted effect of high-exposure residence on FEV1/FVC_z (multivariable linear regression, null)"
+    description: "The adjusted model for FEV1/FVC_z was not statistically significant overall (F(6,94) = 1.943, p = 0.082, R2 = 0.110) and no predictor reached significance, including PM2.5 exposure (B = -0.560, p = 0.071). Recorded as a null adjusted coefficient: the change_value is the printed B, but with p = 0.071 against the study's alpha of 0.01 the direction is not established, so change_direction is no_change. This is an adjusted model coefficient, so no control/treated output pair is referenced (see the section note)."
+    derived_from_assay: "LF:krismanuel-gli-zscore-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: absolute_difference
+    change_direction: no_change
+    change_value:
+      value: "-0.560"
+      unit:
+        id: "UCUM:1"
+        name: "GLI-2012 z-score (dimensionless)"
+    p_value: 0.071
+    statistical_test: "Multivariable linear regression (unstandardized B), adjusted for age, gender, education, height and BMI; alpha = 0.01, so this coefficient is not significant and the overall model (p = 0.082) is not significant either"
+    derivation: reported_in_paper
+
+  - id: "COMP:krismanuel-pm25-fev1z-correlation"
+    name: "Bivariate correlation between area-level PM2.5 exposure and FEV1_z"
+    description: "Ambient PM2.5 exposure showed a significant moderate negative correlation with FEV1_z (Pearson r = -0.469, p < 0.001; Spearman rho = -0.436, p < 0.001). Recorded as a ratio-type change because a correlation coefficient is a dimensionless association measure, not a group difference: change_value carries the Pearson r. The companion FVC_z correlation is recorded separately. PM2.5 was NOT significantly correlated with FEV1/FVC_z (Pearson r = -0.136, p = 0.176), consistent with every other analysis of the ratio in this paper."
+    derived_from_assay: "LF:krismanuel-gli-zscore-spirometry"
+    compared_measurement: "fev1"
+    change_type: ratio
+    change_direction: decreased
+    change_value:
+      value: "-0.469"
+      unit:
+        id: "UCUM:1"
+        name: "Pearson correlation coefficient (dimensionless)"
+    p_value: 0.001
+    statistical_test: "Pearson correlation (alpha = 0.01, two-tailed); paper prints p < 0.001, with Spearman rho = -0.436, p < 0.001 as the non-parametric companion"
+    derivation: reported_in_paper
+
+  - id: "COMP:krismanuel-pm25-fvcz-correlation"
+    name: "Bivariate correlation between area-level PM2.5 exposure and FVC_z"
+    description: "Area-level PM2.5 exposure was significantly and moderately negatively correlated with FVC_z. NOTE A DISCREPANCY INSIDE THE PAPER: Table 5 gives Pearson r = -0.442 (p < 0.001) with Spearman rho = -0.415 (p < 0.001), while the Results text for the same correlation prints r = -0.462. The Table 5 value is recorded here because the table is the reported correlation matrix and its Pearson and Spearman pair are internally consistent; the text's -0.462 appears once and is not reproduced elsewhere. Recorded as a ratio-type change for the same reason as the FEV1_z correlation."
+    derived_from_assay: "LF:krismanuel-gli-zscore-spirometry"
+    compared_measurement: "fvc"
+    change_type: ratio
+    change_direction: decreased
+    change_value:
+      value: "-0.442"
+      unit:
+        id: "UCUM:1"
+        name: "Pearson correlation coefficient (dimensionless)"
+    p_value: 0.001
+    statistical_test: "Pearson correlation (alpha = 0.01, two-tailed); paper prints p < 0.001, with Spearman rho = -0.415, p < 0.001 as the non-parametric companion"
+    derivation: reported_in_paper
+
+  - id: "COMP:krismanuel-pm25-fev1fvcz-correlation"
+    name: "Bivariate correlation between area-level PM2.5 exposure and FEV1/FVC_z (null)"
+    description: "PM2.5 exposure was not statistically significantly correlated with the FEV1/FVC_z ratio (Pearson r = -0.136, p = 0.176; Spearman rho = -0.073, p = 0.467), evaluated against the study's alpha of 0.01. Recorded to keep the null ratio result explicit alongside the two significant volume correlations."
+    derived_from_assay: "LF:krismanuel-gli-zscore-spirometry"
+    compared_measurement: "fev1_fvc_ratio"
+    change_type: ratio
+    change_direction: no_change
+    change_value:
+      value: "-0.136"
+      unit:
+        id: "UCUM:1"
+        name: "Pearson correlation coefficient (dimensionless)"
+    p_value: 0.176
+    statistical_test: "Pearson correlation (alpha = 0.01, two-tailed), not significant; Spearman rho = -0.073, p = 0.467"
+    derivation: reported_in_paper
