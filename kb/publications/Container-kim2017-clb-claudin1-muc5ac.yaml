@@ -1,0 +1,1760 @@
+# =============================================================================
+# Kim et al. (2017) - Airborne particulate matter increases MUC5AC expression
+# by downregulating Claudin-1 expression in human airway cells
+# =============================================================================
+#
+# Source: BMB Rep. 2017;50(10):516-521
+# DOI: 10.5483/bmbrep.2017.50.10.100
+#
+# Study design (in vitro only):
+#   - Normal human bronchial/nasal epithelial cells (the paper writes
+#     "normal human bronchial epithelial (NHNE) cells" and then refers to
+#     them as NHNE throughout; the inconsistency is the paper's own) for the
+#     cytokine array, IL-6 Western blot/ELISA and the MUC5AC/MUC1 qRT-PCR of
+#     Fig. 1
+#   - NCI-H292 human lung mucoepidermoid carcinoma cells for every
+#     mechanistic arm (Figs. 2-4); the paper states the NHNE results were
+#     reproduced in NCI-H292 cells and that primary cells had technical
+#     limitations
+#   - Exposure agent is CLB 2.0: carboxyl latex beads (Thermo Fisher C37278),
+#     carboxyl charge-stabilized hydrophobic polystyrene microspheres with
+#     sizes from 0.02 to 2.0 um, used as a defined surrogate for airborne
+#     particulate matter because PM2.5 composition is variable. Recorded with
+#     exposure_agent CHEBI:53276 (poly(styrene)), not an ENVO particulate
+#     matter term, because the material actually applied was polystyrene
+#     beads and not collected PM.
+#   - Concentrations/durations from the figure legends: CLB 2.0 10 mg/ml;
+#     recombinant IL-6 30 ng/ml; N-acetyl-cysteine (NAC) 1 mM with 1 h
+#     pretreatment; 4 h for IL-6 secretion, 24 h for mucin/Claudin-1
+#     readouts, 5 min for ROS, 15 min for ERK1/2 phosphorylation
+#   - Genetic manipulation: wild-type overexpression constructs and
+#     target-specific siRNA for IL-6, Claudin-1 and ERK1/2
+#   - Statistics: mean +/- S.D. of at least three independent experiments,
+#     Wilcoxon Mann-Whitney test, significance reported only as P < 0.05
+#
+# Key findings:
+#   - CLB 2.0 induced dose- and time-dependent extracellular IL-6 secretion,
+#     peaking at 4 h
+#   - Cotreatment with CLB 2.0 and IL-6 increased MUC5AC and decreased MUC1
+#     mRNA relative to CLB 2.0 alone
+#   - Claudin-1 protein was inhibited by CLB 2.0 and further inhibited by
+#     CLB 2.0 + IL-6; ZO-1 and E-cadherin were NOT changed (null result)
+#   - Claudin-1 overexpression suppressed MUC5AC and raised MUC1; siRNA
+#     Claudin-1 did the reverse
+#   - ROS peaked 5 min after CLB 2.0 and did not affect cell viability; NAC
+#     restored Claudin-1 and lowered IL-6 and MUC5AC while raising MUC1
+#   - ERK1/2 (not p38, not JNK) was phosphorylated, maximal at 15 min, in a
+#     ROS-dependent way; wild-type ERK1/2 suppressed Claudin-1 and MUC1 and
+#     raised MUC5AC, siRNA-ERK1/2 did the reverse
+#
+# Provenance of numbers: this paper reports NO numeric measurement values in
+# its text - every quantitative result is a figure panel (cytokine array
+# spots, Western blots, bar charts) with no values or densitometry tabulated.
+# Per the extraction rule against deriving values from figures, the output
+# records therefore carry no measurement slots; they record the experimental
+# group, the exposure condition it was measured under, and the direction of
+# the effect as the paper states it. For the same reason there is no
+# response_comparisons section: the paper states directions but never a
+# magnitude, and a change value must not be invented or computed here.
+# Concentrations, durations and reagent identities come from the Materials
+# and Methods section and the figure legends, which do state them.
+#
+# Every snippet below is verbatim from the committed full text in
+# references_cache/PMID_28946937.md (content_type: full_text_pdf).
+#
+# KEY EVENT NOTE: KE:ke-erk-activation is newly minted by this file. The
+# corpus had no ERK/MAPK key event (the existing KE:ke1-egfr-activation is
+# EGFR-specific and this paper involves no EGFR), and ERK1/2 is the switch
+# molecule the paper's central claim rests on. The block is kept to the four
+# minimal fields so the next paper can reuse it verbatim.
+#
+# =============================================================================
+
+source_publication:
+  reference: "PMID:28946937"
+  reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+  doi: "10.5483/bmbrep.2017.50.10.100"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:kim-cytokine-array"
+    protocol_type: MolecularAssayProtocol
+    name: "Human cytokine array of conditioned medium"
+    description: "Cytokine assay performed with a Human Cytokine Array Panel A kit (R&D Systems) according to the manufacturer's instructions. Serum-starved cells were treated with CLB2 for 4 h; after treatment the supernatant was assayed according to the kit instructions. Run on cell culture medium in a dose-dependent manner and as a time course. Results are reported as array spot panels with no tabulated signal intensities."
+    detection_method: "membrane-based sandwich immunoassay (cytokine array)"
+    equipment_required:
+      - "Human Cytokine Array Panel A kit (R&D Systems)"
+
+  - id: "PROTOCOL:kim-elisa-il6"
+    protocol_type: MolecularAssayProtocol
+    name: "ELISA for IL-6 in cell supernatant"
+    description: "Cells were treated with CLB 2.0 for 4 h and their supernatants were collected; IL-6 levels in the cell supernatants were measured by ELISA. The ELISA kit and the purified IL-6 cytokine used as standard/treatment were purchased from R&D Systems. Results are reported as bar charts without tabulated concentrations."
+    detection_method: "sandwich ELISA"
+    equipment_required:
+      - "IL-6 ELISA kit (R&D Systems)"
+
+  - id: "PROTOCOL:kim-wb-il6"
+    protocol_type: MolecularAssayProtocol
+    name: "Western blot for IL-6"
+    description: "After treatment of the cells with CLB 2.0 for 4 h, total cell lysates were analyzed by Western blot analysis with specific anti-IL-6 antibody. No densitometry values are reported; the blots are shown as figure panels only."
+    detection_method: "immunoblot with specific anti-IL-6 antibody"
+    antibodies_used:
+      - "anti-IL-6 (specific antibody; supplier not stated in the paper)"
+
+  - id: "PROTOCOL:kim-wb-tj"
+    protocol_type: MolecularAssayProtocol
+    name: "Western blot for tight junction proteins Claudin-1, ZO-1 and E-cadherin"
+    description: "After the cells were treated with CLB 2.0 (10 mg/ml) or CLB 2.0 and IL-6 (30 ng/ml) for 24 h, Western blot analysis was performed with specific Claudin-1, ZO-1 and E-cadherin antibodies. Tubulin was used as the loading control. Blots are shown as figure panels with no densitometry values."
+    detection_method: "immunoblot"
+    normalization_method: "tubulin loading control"
+    antibodies_used:
+      - "anti-Claudin-1"
+      - "anti-ZO-1"
+      - "anti-E-cadherin"
+      - "anti-tubulin (loading control)"
+
+  - id: "PROTOCOL:kim-wb-mapk"
+    protocol_type: MolecularAssayProtocol
+    name: "Western blot for MAPK phosphorylation (ERK1/2, p38, JNK)"
+    description: "Cells were treated with CLB 2.0 in a time-dependent manner and Western blots were performed with phospho-specific antibodies to detect MAPK activation (ERK1/2, p38 and JNK). Tubulin was used as the loading control. For the ROS-dependence arm, cells were treated with CLB 2.0 (10 mg/ml) or CLB 2.0 and NAC (1 mM; pretreatment for one hour) for 15 min before blotting for ERK1/2 phosphorylation. Blots are shown as figure panels with no densitometry values."
+    detection_method: "immunoblot with phospho-specific antibodies"
+    normalization_method: "tubulin loading control"
+    antibodies_used:
+      - "anti-phospho-ERK1/2"
+      - "anti-phospho-p38"
+      - "anti-phospho-JNK"
+      - "anti-tubulin (loading control)"
+
+  - id: "PROTOCOL:kim-qpcr-muc5ac"
+    protocol_type: MolecularAssayProtocol
+    name: "Real-time PCR for MUC5AC"
+    description: "Real-time PCR performed using a BioRad iQ iCycler Detection System (BioRad Laboratories; Hercules, CA) with iQ SYBR Green Supermix. Reactions were performed in a total volume of 20 ul, including 10 ul 2x SYBR Green PCR Master Mix, 300 nM of each primer, and 1 ul of the previously reverse-transcribed cDNA template. Total RNA was collected 24 h after treatment. The paper does not publish the MUC5AC primer sequences or the reference gene."
+    detection_method: "SYBR Green real-time PCR"
+    equipment_required:
+      - "BioRad iQ iCycler Detection System (BioRad Laboratories)"
+      - "iQ SYBR Green Supermix"
+
+  - id: "PROTOCOL:kim-qpcr-muc1"
+    protocol_type: MolecularAssayProtocol
+    name: "Real-time PCR for MUC1"
+    description: "Real-time PCR performed using a BioRad iQ iCycler Detection System (BioRad Laboratories; Hercules, CA) with iQ SYBR Green Supermix. Reactions were performed in a total volume of 20 ul, including 10 ul 2x SYBR Green PCR Master Mix, 300 nM of each primer, and 1 ul of the previously reverse-transcribed cDNA template. Total RNA was collected 24 h after treatment. The paper does not publish the MUC1 primer sequences or the reference gene."
+    detection_method: "SYBR Green real-time PCR"
+    equipment_required:
+      - "BioRad iQ iCycler Detection System (BioRad Laboratories)"
+      - "iQ SYBR Green Supermix"
+
+  - id: "PROTOCOL:kim-ros-flow"
+    protocol_type: MolecularAssayProtocol
+    name: "Intracellular ROS measurement by DCF flow cytometry"
+    description: "Cells were pre-incubated in the presence of DCFH-DA (50 uM) for 30 min and then exposed to CLB 2.0 for the indicated times. Cell-associated DCF fluorescence levels were analyzed by flow cytometry. For the IL-6 cotreatment arm the cells were treated with CLB 2.0 (10 mg/ml) or CLB 2.0 and IL-6 (30 ng/ml) for 5 min before flow cytometry. Results are reported as bar charts with no tabulated fluorescence values."
+    detection_method: "flow cytometry of DCF fluorescence"
+    equipment_required:
+      - "flow cytometer"
+      - "DCFH-DA probe"
+
+  - id: "PROTOCOL:kim-viability-cck8"
+    protocol_type: MolecularAssayProtocol
+    name: "Cell proliferation / viability assay (CCK-8)"
+    description: "Cells were pre-incubated in the presence of N-acetyl-cysteine (NAC) for 1 h in a dose-dependent manner and then treated with CLB 2.0 for 1 h. Cell proliferation assay was performed with CCK-8 (Dojindo; Rockville, MD)."
+    detection_method: "CCK-8 colorimetric viability assay"
+    equipment_required:
+      - "CCK-8 kit (Dojindo)"
+      - "microplate absorbance reader"
+
+  - id: "PROTOCOL:kim-transfection"
+    protocol_type: MolecularAssayProtocol
+    name: "Transient transfection with wild-type constructs or target-specific siRNA"
+    description: "Cells were transfected with either a construct driving the expression of the wild-type protein or an siRNA specific for the same target, then treated with CLB 2.0 (10 mg/ml) before harvest. Used for IL-6 (4 h before lysis, Claudin-1 blot), Claudin-1 (24 h before qRT-PCR for MUC5AC and MUC1) and ERK1/2 (24 h before qRT-PCR for MUC5AC and MUC1). The paper does not state the transfection reagent, vector backbone or siRNA sequences."
+
+# =============================================================================
+# OXIDATIVE STRESS ASSAYS - ROS production by CLB 2.0
+# =============================================================================
+
+oxidative_stress_assays:
+  - id: "OX:kim-clb20-ros-h292"
+    name: "Intracellular ROS production after CLB 2.0 in NCI-H292 cells"
+    description: "DCF flow cytometry time course in NCI-H292 cells exposed to CLB 2.0. ROS production peaked at 5 min and had already declined by 10 min, and it did not affect cell viability (CCK-8, NAC dose series). Cotreatment of CLB 2.0 with IL-6 (30 ng/ml) raised ROS production well above CLB 2.0 alone. The paper reports these panels as bar charts only (Fig. 3A-C) with no fluorescence values or fold changes, so no measurement slots are filled."
+    ros_probe_type: "2',7'-dichlorofluorescein diacetate (DCFH-DA), 50 uM, 30 min pre-incubation; cell-associated DCF fluorescence read by flow cytometry"
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "ROS production picked at 5 min and then decreased at 10 min (Fig. 3A)."
+        explanation: "States the ROS time course - a peak at 5 min falling by 10 min - that this assay's two treated output records capture."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In addition, ROS production was unaffected cell viability (Fig. 3B)."
+        explanation: "States that the ROS burst did not compromise viability, so the downstream effects recorded elsewhere in this file are not a cytotoxicity artefact."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Moreover, cotreatment of CLB 2.0 and IL-6 increases the ROS production much more than CLB 2.0 alone (Fig. 3C)."
+        explanation: "States the amplification of ROS production by added IL-6 recorded in the CLB 2.0 + IL-6 output record."
+    has_exposure_condition:
+      - id: "EXPOSURE:kim-untreated-control"
+        name: "Untreated cells, no CLB 2.0 (control)"
+      - id: "EXPOSURE:kim-clb20-10mg-5min"
+        name: "CLB 2.0 10 mg/ml for 5 minutes"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+      - id: "EXPOSURE:kim-clb20-10mg-10min"
+        name: "CLB 2.0 10 mg/ml for 10 minutes"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "10"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+      - id: "EXPOSURE:kim-clb20-il6-5min"
+        name: "CLB 2.0 10 mg/ml with IL-6 30 ng/ml for 5 minutes"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "5"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    has_specified_output:
+      - id: "OX:kim-clb20-ros-h292-output-control"
+        name: "Baseline DCF fluorescence, untreated cells"
+        description: "Untreated lane used as the reference for the DCF flow cytometry panels. No fluorescence value is reported in the paper."
+        experimental_group: control
+        measured_under: "EXPOSURE:kim-untreated-control"
+      - id: "OX:kim-clb20-ros-h292-output-clb20-5min"
+        name: "DCF fluorescence 5 minutes after CLB 2.0"
+        description: "ROS production peaked at 5 min after CLB 2.0 treatment. Reported as a bar chart only (Fig. 3A); the paper gives no fluorescence value or fold change, so reactive_oxygen_species is left unfilled."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-10mg-5min"
+      - id: "OX:kim-clb20-ros-h292-output-clb20-10min"
+        name: "DCF fluorescence 10 minutes after CLB 2.0"
+        description: "ROS production had decreased again by 10 min after CLB 2.0 treatment. Reported as a bar chart only (Fig. 3A), so no value is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-10mg-10min"
+      - id: "OX:kim-clb20-ros-h292-output-clb20-il6-5min"
+        name: "DCF fluorescence 5 minutes after CLB 2.0 plus IL-6"
+        description: "Cotreatment of CLB 2.0 and IL-6 increased ROS production much more than CLB 2.0 alone. Reported as a bar chart only (Fig. 3C), so no value is recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-il6-5min"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:kim-h292-001"
+      name: "NCI-H292 human lung mucoepidermoid carcinoma cell line"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:kim-ros-flow"
+        protocol_type: MolecularAssayProtocol
+        name: "Intracellular ROS measurement by DCF flow cytometry"
+      - id: "PROTOCOL:kim-viability-cck8"
+        protocol_type: MolecularAssayProtocol
+        name: "Cell proliferation / viability assay (CCK-8)"
+
+# =============================================================================
+# GOBLET CELL / MUCIN ASSAYS - MUC5AC mRNA
+# =============================================================================
+
+goblet_cell_assays:
+  # ---------------------------------------------------------------------------
+  # MUC5AC mRNA: CLB 2.0 alone vs CLB 2.0 + IL-6 (Fig. 1D)
+  # ---------------------------------------------------------------------------
+  - id: "GCM:kim-muc5ac-mrna-il6-24h"
+    name: "MUC5AC mRNA after CLB 2.0 with and without IL-6"
+    description: "qRT-PCR for MUC5AC transcript 24 h after treatment with CLB 2.0 (10 mg/ml), IL-6 (30 ng/ml), or both. MUC5AC gene expression increased significantly with the cotreatment of CLB 2.0 and IL-6 compared with CLB 2.0 alone, establishing that the IL-6 the cells secrete amplifies the mucin response rather than merely accompanying it. Reported as a bar chart (Fig. 1D) with significance marked only as P < 0.05; no fold-change values are tabulated, so muc5ac_mrna_expression is left unfilled."
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Interestingly, MUC5AC gene expression increased significantly by the cotreatment of CLB 2.0 and IL-6 compared to CLB 2.0 alone (Fig. 1D), but the MUC1 gene expression dramatically decreased by the cotreatment of CLB 2.0 and IL-6 (Fig. 1E)."
+        explanation: "States the direction of the MUC5AC change in each of this assay's treated output records, and the opposite MUC1 behaviour recorded in GE:kim-muc1-mrna-il6-24h."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Specifically, IL-6 upregulates CLB2.0-induced MUC5AC and MUC1 expression."
+        explanation: "The abstract's summary of the IL-6 effect on CLB 2.0-induced mucin expression that this assay measures."
+    has_exposure_condition:
+      - id: "EXPOSURE:kim-untreated-24h"
+        name: "Untreated cells, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-10mg-24h"
+        name: "CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-il6-30ng-24h"
+        name: "Recombinant IL-6 30 ng/ml for 24 hours"
+        exposure_concentration:
+          value: "30"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-il6-24h"
+        name: "CLB 2.0 10 mg/ml with IL-6 30 ng/ml for 24 hours"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GCM:kim-muc5ac-mrna-il6-24h-output-control"
+        name: "MUC5AC mRNA, untreated control"
+        description: "Untreated cells, the reference condition for the Fig. 1D bar chart. No value reported."
+        experimental_group: control
+        measured_under: "EXPOSURE:kim-untreated-24h"
+      - id: "GCM:kim-muc5ac-mrna-il6-24h-output-clb20"
+        name: "MUC5AC mRNA, CLB 2.0 alone"
+        description: "CLB 2.0 alone raised MUC5AC mRNA above control (marked P < 0.05 vs control in Fig. 1D). No fold-change value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-10mg-24h"
+      - id: "GCM:kim-muc5ac-mrna-il6-24h-output-il6"
+        name: "MUC5AC mRNA, IL-6 alone"
+        description: "IL-6 alone arm of Fig. 1D. No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-il6-30ng-24h"
+      - id: "GCM:kim-muc5ac-mrna-il6-24h-output-clb20-il6"
+        name: "MUC5AC mRNA, CLB 2.0 plus IL-6"
+        description: "MUC5AC gene expression increased significantly with the cotreatment of CLB 2.0 and IL-6 compared with CLB 2.0 alone (marked P < 0.05 vs CLB 2.0 only). No fold-change value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-il6-24h"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:kim-nhne-001"
+      name: "Normal human bronchial/nasal epithelial (NHNE) cells"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+      donor_info: "Primary normal human airway epithelial cells. The paper introduces them as 'normal human bronchial epithelial (NHNE) cells' and uses the abbreviation NHNE thereafter without resolving the bronchial/nasal inconsistency; no donor characteristics, passage or culture medium are given."
+    follows_protocols:
+      - id: "PROTOCOL:kim-qpcr-muc5ac"
+        protocol_type: MolecularAssayProtocol
+        name: "Real-time PCR for MUC5AC"
+
+  # ---------------------------------------------------------------------------
+  # MUC5AC mRNA: Claudin-1 gain and loss of function (Fig. 2C)
+  # ---------------------------------------------------------------------------
+  - id: "GCM:kim-muc5ac-mrna-claudin1-h292-24h"
+    name: "MUC5AC mRNA under Claudin-1 overexpression or knockdown, NCI-H292 cells"
+    description: "NCI-H292 cells transfected with a wild-type Claudin-1 construct or Claudin-1-specific siRNA, then treated with CLB 2.0 (10 mg/ml) for 24 h before qRT-PCR for MUC5AC. Ectopic Claudin-1 dramatically inhibited MUC5AC gene expression while siRNA-Claudin-1 increased the CLB 2.0-induced MUC5AC, placing Claudin-1 as a negative regulator of the mucin response. This is the paper's central result: the loss of Claudin-1 caused by CLB 2.0 is itself what permits MUC5AC to rise. Reported as a bar chart (Fig. 2C) with significance marked only as P < 0.05; no fold-change values are tabulated."
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Interestingly, ectopic overexpressed Claudin-1 dramatically inhibited MUC5AC gene expression, but siRNA-Claudin 1 increased the CLB2.0-induced MUC5AC gene expression."
+        explanation: "States both directions recorded by this assay's Claudin-1 overexpression and Claudin-1 siRNA output records."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "While the overexpression of claudin-1 decreased CLB2.0-induced MUC5AC expression, it increased the expression of the anti-inflammatory mucin, MUC1."
+        explanation: "The abstract's statement of the same gain-of-function result, and of the reciprocal MUC1 effect recorded in GE:kim-muc1-mrna-claudin1-h292-24h."
+    has_exposure_condition:
+      - id: "EXPOSURE:kim-untreated-24h"
+        name: "Untreated cells, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-10mg-24h"
+        name: "CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-claudin1-wt-24h"
+        name: "Wild-type Claudin-1 overexpression, then CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-claudin1-sirna-24h"
+        name: "Claudin-1 siRNA knockdown, then CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GCM:kim-muc5ac-mrna-claudin1-h292-24h-output-control"
+        name: "MUC5AC mRNA, untransfected untreated control"
+        description: "Reference condition for the Fig. 2C bar chart. No value reported."
+        experimental_group: control
+        measured_under: "EXPOSURE:kim-untreated-24h"
+      - id: "GCM:kim-muc5ac-mrna-claudin1-h292-24h-output-clb20"
+        name: "MUC5AC mRNA, CLB 2.0 alone"
+        description: "CLB 2.0 alone raised MUC5AC mRNA (marked P < 0.05 vs control). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-10mg-24h"
+      - id: "GCM:kim-muc5ac-mrna-claudin1-h292-24h-output-claudin1-wt"
+        name: "MUC5AC mRNA, wild-type Claudin-1 plus CLB 2.0"
+        description: "Ectopic overexpressed Claudin-1 dramatically inhibited MUC5AC gene expression relative to CLB 2.0-treated cells (marked P < 0.05 vs CLB 2.0). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-claudin1-wt-24h"
+      - id: "GCM:kim-muc5ac-mrna-claudin1-h292-24h-output-claudin1-sirna"
+        name: "MUC5AC mRNA, Claudin-1 siRNA plus CLB 2.0"
+        description: "siRNA-Claudin-1 increased the CLB 2.0-induced MUC5AC gene expression above CLB 2.0 alone (marked P < 0.05 vs CLB 2.0/wild-type Claudin-1). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-claudin1-sirna-24h"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:kim-h292-001"
+      name: "NCI-H292 human lung mucoepidermoid carcinoma cell line"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:kim-transfection"
+        protocol_type: MolecularAssayProtocol
+        name: "Transient transfection with wild-type constructs or target-specific siRNA"
+      - id: "PROTOCOL:kim-qpcr-muc5ac"
+        protocol_type: MolecularAssayProtocol
+        name: "Real-time PCR for MUC5AC"
+
+  # ---------------------------------------------------------------------------
+  # MUC5AC mRNA: ROS scavenging with NAC (Fig. 3D)
+  # ---------------------------------------------------------------------------
+  - id: "GCM:kim-muc5ac-mrna-nac-h292-24h"
+    name: "MUC5AC mRNA with the ROS scavenger NAC, NCI-H292 cells"
+    description: "NCI-H292 cells pretreated 1 h with N-acetyl-cysteine (1 mM) and then treated with CLB 2.0 (10 mg/ml) for 24 h before qRT-PCR for MUC5AC. Inhibiting ROS production decreased MUC5AC gene expression (while restoring Claudin-1 and raising MUC1), making the mucin induction ROS-dependent. Reported as a bar chart (Fig. 3D, lower panel) with significance marked only as P < 0.05; no fold-change values are tabulated."
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Inhibition of ROS production increased Claudin-1 expression, but decreased IL-6 and MUC5AC gene expression."
+        explanation: "States that NAC decreased MUC5AC gene expression, the direction recorded in this assay's NAC output record."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The ROS scavenger N-acetylcysteine inhibited CLB2.0-induced IL-6 secretion, thereby decreasing the CLB2.0-induced MUC5AC expression, whereas CLB2.0-induced MUC1 expression increased."
+        explanation: "The abstract's statement of the NAC effect on CLB 2.0-induced MUC5AC that this assay records."
+    has_exposure_condition:
+      - id: "EXPOSURE:kim-untreated-24h"
+        name: "Untreated cells, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-10mg-24h"
+        name: "CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-nac-clb20-24h"
+        name: "NAC 1 mM pretreatment for 1 hour, then CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:28939"
+          name: "N-acetyl-L-cysteine"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000063"
+            name: "millimolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GCM:kim-muc5ac-mrna-nac-h292-24h-output-control"
+        name: "MUC5AC mRNA, untreated control"
+        description: "Reference condition for the Fig. 3D bar chart. No value reported."
+        experimental_group: control
+        measured_under: "EXPOSURE:kim-untreated-24h"
+      - id: "GCM:kim-muc5ac-mrna-nac-h292-24h-output-clb20"
+        name: "MUC5AC mRNA, CLB 2.0 alone"
+        description: "CLB 2.0 alone raised MUC5AC mRNA (marked P < 0.05 vs control). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-10mg-24h"
+      - id: "GCM:kim-muc5ac-mrna-nac-h292-24h-output-nac-clb20"
+        name: "MUC5AC mRNA, NAC plus CLB 2.0"
+        description: "Inhibition of ROS production with NAC decreased MUC5AC gene expression relative to CLB 2.0 alone (marked P < 0.05 vs CLB 2.0-treated cells). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-nac-clb20-24h"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:kim-h292-001"
+      name: "NCI-H292 human lung mucoepidermoid carcinoma cell line"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:kim-qpcr-muc5ac"
+        protocol_type: MolecularAssayProtocol
+        name: "Real-time PCR for MUC5AC"
+
+  # ---------------------------------------------------------------------------
+  # MUC5AC mRNA: ERK1/2 gain and loss of function (Fig. 4C)
+  # ---------------------------------------------------------------------------
+  - id: "GCM:kim-muc5ac-mrna-erk-h292-24h"
+    name: "MUC5AC mRNA under ERK1/2 overexpression or knockdown, NCI-H292 cells"
+    description: "NCI-H292 cells transfected with a wild-type ERK1/2 construct or ERK1/2-specific siRNA, then treated with CLB 2.0 (10 mg/ml) for 24 h before qRT-PCR for MUC5AC. Wild-type ERK1/2 increased MUC5AC gene expression while siRNA-ERK1/2 dramatically decreased it, which is why the paper casts ERK1/2 as the switch between an inflamed state and homeostasis. Reported as a bar chart (Fig. 4C) with significance marked only as P < 0.05; no fold-change values are tabulated."
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Interestingly, the treatment with wild-type ERK1/2 inhibited CLB2.0-induced Claudin-1 and MUC1 expression, but increased MUC5AC gene expression."
+        explanation: "States the MUC5AC increase under ERK1/2 overexpression recorded in this assay's wild-type ERK1/2 output record."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "However, siRNA-ERK1/2 significantly increased CLB2.0-induced Claudin-1 and MUC1 expression and dramatically decreased MUC5AC gene expression (Fig. 4C)."
+        explanation: "States the MUC5AC decrease under ERK1/2 knockdown recorded in this assay's siRNA output record."
+    has_exposure_condition:
+      - id: "EXPOSURE:kim-untreated-24h"
+        name: "Untreated cells, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-10mg-24h"
+        name: "CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-erk-wt-24h"
+        name: "Wild-type ERK1/2 overexpression, then CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-erk-sirna-24h"
+        name: "ERK1/2 siRNA knockdown, then CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GCM:kim-muc5ac-mrna-erk-h292-24h-output-control"
+        name: "MUC5AC mRNA, untransfected untreated control"
+        description: "Reference condition for the Fig. 4C bar chart. No value reported."
+        experimental_group: control
+        measured_under: "EXPOSURE:kim-untreated-24h"
+      - id: "GCM:kim-muc5ac-mrna-erk-h292-24h-output-clb20"
+        name: "MUC5AC mRNA, CLB 2.0 alone"
+        description: "CLB 2.0 alone raised MUC5AC mRNA (marked P < 0.05 vs control). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-10mg-24h"
+      - id: "GCM:kim-muc5ac-mrna-erk-h292-24h-output-erk-wt"
+        name: "MUC5AC mRNA, wild-type ERK1/2 plus CLB 2.0"
+        description: "Treatment with wild-type ERK1/2 increased MUC5AC gene expression (marked P < 0.05 vs CLB 2.0-treated cells). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-erk-wt-24h"
+      - id: "GCM:kim-muc5ac-mrna-erk-h292-24h-output-erk-sirna"
+        name: "MUC5AC mRNA, ERK1/2 siRNA plus CLB 2.0"
+        description: "siRNA-ERK1/2 dramatically decreased MUC5AC gene expression (marked P < 0.05 vs CLB 2.0/wild-type ERK1/2-treated cells). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-erk-sirna-24h"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:kim-h292-001"
+      name: "NCI-H292 human lung mucoepidermoid carcinoma cell line"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:kim-transfection"
+        protocol_type: MolecularAssayProtocol
+        name: "Transient transfection with wild-type constructs or target-specific siRNA"
+      - id: "PROTOCOL:kim-qpcr-muc5ac"
+        protocol_type: MolecularAssayProtocol
+        name: "Real-time PCR for MUC5AC"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS - IL-6, Claudin-1, MUC1 and ERK1/2
+# =============================================================================
+
+gene_expression_assays:
+  # ---------------------------------------------------------------------------
+  # IL-6 secretion after CLB 2.0 (Fig. 1A-C)
+  # ---------------------------------------------------------------------------
+  - id: "GE:kim-il6-secretion-4h"
+    name: "IL-6 secretion and overproduction after CLB 2.0"
+    description: "Cytokine array of conditioned medium, IL-6 Western blot of total cell lysates and IL-6 ELISA of supernatants, all 4 h after CLB 2.0. Of the cytokines and chemokines on the array, IL-6 secretion rose dramatically and dose-dependently, reaching its maximum at 4 h, and the Western blot and ELISA confirmed both secretion and overproduction in a time-dependent manner. Reported as array panels, blots and bar charts (Fig. 1A-C) with significance marked only as P < 0.05 and values described as means +/- SDs of three technical replicates from a single experiment; no concentrations are tabulated, so protein_level is left unfilled."
+    target_gene: "NCBIGene:3569"
+    gene_expression_method: "cytokine array, Western blot and ELISA for IL-6"
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "The secretion of IL-6 increased dramatically in the cells in a dose-dependent manner (Fig. 1A, upper panel)."
+        explanation: "States the dose-dependent rise in IL-6 secretion recorded in this assay's CLB 2.0 output record."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In addition, the extracellular secretion of IL-6 reached its maximum level after 4 h of treatment with CLB2.0 (Fig. 1A, lower panel)."
+        explanation: "Fixes the 4 h timepoint used as this assay's exposure duration."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "CLB 2.0 did induce IL-6 secretion and overproduction in a time-dependent manner."
+        explanation: "The Western blot and ELISA confirmation of IL-6 secretion and overproduction that this assay records."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "CLB2.0, a constituent of PM, induces secretion of multiple cytokines and chemokines that regulate airway inflammation."
+        explanation: "The abstract's framing of CLB 2.0-induced cytokine secretion as the inflammatory key event this assay informs on."
+    has_exposure_condition:
+      - id: "EXPOSURE:kim-untreated-4h"
+        name: "Untreated cells, 4 hours (control)"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-10mg-4h"
+        name: "CLB 2.0 10 mg/ml for 4 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "4"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:kim-il6-secretion-4h-output-control"
+        name: "IL-6, untreated control"
+        description: "Serum-starved untreated cells, the reference condition for the array, blot and ELISA panels. No value reported."
+        experimental_group: control
+        measured_under: "EXPOSURE:kim-untreated-4h"
+      - id: "GE:kim-il6-secretion-4h-output-clb20"
+        name: "IL-6, CLB 2.0 for 4 hours"
+        description: "IL-6 secretion increased dramatically and dose-dependently, with maximal extracellular IL-6 after 4 h, and the Western blot and ELISA showed time-dependent secretion and overproduction (marked P < 0.05 vs control). Values are described as means +/- SDs of three technical replicates from a single experiment, but no concentration is reported, so no measurement slot is filled."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-10mg-4h"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:kim-nhne-001"
+      name: "Normal human bronchial/nasal epithelial (NHNE) cells"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+      donor_info: "Primary normal human airway epithelial cells. The paper introduces them as 'normal human bronchial epithelial (NHNE) cells' and uses the abbreviation NHNE thereafter without resolving the bronchial/nasal inconsistency; no donor characteristics, passage or culture medium are given."
+    follows_protocols:
+      - id: "PROTOCOL:kim-cytokine-array"
+        protocol_type: MolecularAssayProtocol
+        name: "Human cytokine array of conditioned medium"
+      - id: "PROTOCOL:kim-wb-il6"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for IL-6"
+      - id: "PROTOCOL:kim-elisa-il6"
+        protocol_type: MolecularAssayProtocol
+        name: "ELISA for IL-6 in cell supernatant"
+
+  # ---------------------------------------------------------------------------
+  # IL-6 is ROS-dependent: NAC blocks it (Fig. 3D)
+  # ---------------------------------------------------------------------------
+  - id: "GE:kim-il6-nac-h292"
+    name: "IL-6 expression with the ROS scavenger NAC, NCI-H292 cells"
+    description: "NCI-H292 cells pretreated 1 h with N-acetyl-cysteine (1 mM) and then treated with CLB 2.0 (10 mg/ml) for 24 h. Inhibiting ROS production decreased IL-6 expression, so the ROS burst is upstream of the cytokine rather than a consequence of it. Reported as a Western blot and bar chart (Fig. 3D) with no tabulated values."
+    target_gene: "NCBIGene:3569"
+    gene_expression_method: "Western blot and real-time PCR"
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Inhibition of ROS production increased Claudin-1 expression, but decreased IL-6 and MUC5AC gene expression."
+        explanation: "States that NAC decreased IL-6 expression, the direction recorded in this assay's NAC output record."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "CLB2.0-induced IL-6 secretion was mediated by ROS."
+        explanation: "The abstract's statement that CLB 2.0-induced IL-6 secretion is ROS-mediated, which is what this NAC experiment establishes."
+    has_exposure_condition:
+      - id: "EXPOSURE:kim-untreated-24h"
+        name: "Untreated cells, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-10mg-24h"
+        name: "CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-nac-clb20-24h"
+        name: "NAC 1 mM pretreatment for 1 hour, then CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:28939"
+          name: "N-acetyl-L-cysteine"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000063"
+            name: "millimolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:kim-il6-nac-h292-output-control"
+        name: "IL-6, untreated control"
+        description: "Reference condition for the Fig. 3D panels. No value reported."
+        experimental_group: control
+        measured_under: "EXPOSURE:kim-untreated-24h"
+      - id: "GE:kim-il6-nac-h292-output-clb20"
+        name: "IL-6, CLB 2.0 alone"
+        description: "CLB 2.0 alone raised IL-6 (marked P < 0.05 vs control). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-10mg-24h"
+      - id: "GE:kim-il6-nac-h292-output-nac-clb20"
+        name: "IL-6, NAC plus CLB 2.0"
+        description: "Inhibition of ROS production with NAC decreased IL-6 expression relative to CLB 2.0 alone (marked P < 0.05 vs CLB 2.0-treated cells). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-nac-clb20-24h"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:kim-h292-001"
+      name: "NCI-H292 human lung mucoepidermoid carcinoma cell line"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:kim-wb-il6"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for IL-6"
+
+  # ---------------------------------------------------------------------------
+  # Claudin-1 protein: CLB 2.0 and CLB 2.0 + IL-6 (Fig. 2A, 2B)
+  # NULL RESULT for ZO-1 and E-cadherin
+  # ---------------------------------------------------------------------------
+  - id: "GE:kim-claudin1-h292-24h"
+    name: "Claudin-1, ZO-1 and E-cadherin protein after CLB 2.0 with and without IL-6, NCI-H292 cells"
+    description: "Western blot of tight junction proteins in NCI-H292 cells treated with CLB 2.0 (10 mg/ml) or CLB 2.0 plus IL-6 (30 ng/ml) for 24 h, with tubulin as loading control. Claudin-1 was inhibited by CLB 2.0 and the cotreatment inhibited it dramatically further. NULL RESULT: ZO-1 and E-cadherin were not changed by either treatment, so the effect is specific to Claudin-1 among the three tight junction proteins examined. A companion transfection arm (Fig. 2B) showed recombinant IL-6 with CLB 2.0 completely diminished Claudin-1 while siRNA-IL-6 only partially inhibited it, placing secreted IL-6 as a required co-factor. Blots are figure panels with no densitometry values, so protein_level is left unfilled."
+    target_gene: "NCBIGene:9076"
+    gene_expression_method: "Western blot"
+    normalization_reference: "tubulin"
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Claudin-1 expression was inhibited by CLB 2.0, and the cotreatment of CLB2.0 and IL-6 dramatically inhibited Claudin-1 expression, but not ZO-1 and E-cadherin expression (Fig. 2A)."
+        explanation: "States both the Claudin-1 decrease in each treated output record and the ZO-1 / E-cadherin null result this assay records."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "IL-6 and CLB2.0 completely diminished Claudin-1 expression, whereas siRNA-IL-6 partially inhibited Claudin-1 expression, suggesting that both CLB2.0 and secreted IL-6 could completely decrease Claudin-1 expression (Fig. 2B)."
+        explanation: "The IL-6 overexpression and knockdown arm showing that secreted IL-6 is required for the full Claudin-1 loss described in this assay. Quoted from mid-sentence because the committed full text breaks the preceding words ('Both recombinant') across a page boundary with figure captions in between."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Interestingly, of the tight junction proteins examined, claudin-1 expression was inhibited by CLB2.0."
+        explanation: "The abstract's statement that Claudin-1 alone among the tight junction proteins was inhibited, matching the null result for ZO-1 and E-cadherin."
+    has_exposure_condition:
+      - id: "EXPOSURE:kim-untreated-24h"
+        name: "Untreated cells, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-10mg-24h"
+        name: "CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-il6-24h"
+        name: "CLB 2.0 10 mg/ml with IL-6 30 ng/ml for 24 hours"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:kim-claudin1-h292-24h-output-control"
+        name: "Claudin-1, ZO-1 and E-cadherin, untreated control"
+        description: "Untreated lane used as the reference for the Claudin-1, ZO-1 and E-cadherin blots, normalized to tubulin. No densitometry value reported."
+        experimental_group: control
+        measured_under: "EXPOSURE:kim-untreated-24h"
+      - id: "GE:kim-claudin1-h292-24h-output-clb20"
+        name: "Claudin-1 decreased by CLB 2.0; ZO-1 and E-cadherin unchanged"
+        description: "Claudin-1 expression was inhibited by CLB 2.0. ZO-1 and E-cadherin expression were not changed - a null result recorded here rather than omitted, because it is what makes the Claudin-1 effect specific. No densitometry value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-10mg-24h"
+      - id: "GE:kim-claudin1-h292-24h-output-clb20-il6"
+        name: "Claudin-1 further decreased by CLB 2.0 plus IL-6"
+        description: "The cotreatment of CLB 2.0 and IL-6 dramatically inhibited Claudin-1 expression beyond CLB 2.0 alone, while ZO-1 and E-cadherin remained unchanged. No densitometry value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-il6-24h"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:kim-h292-001"
+      name: "NCI-H292 human lung mucoepidermoid carcinoma cell line"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:kim-wb-tj"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for tight junction proteins Claudin-1, ZO-1 and E-cadherin"
+      - id: "PROTOCOL:kim-transfection"
+        protocol_type: MolecularAssayProtocol
+        name: "Transient transfection with wild-type constructs or target-specific siRNA"
+
+  # ---------------------------------------------------------------------------
+  # Claudin-1 protein restored by NAC (Fig. 3D) and by ERK1/2 knockdown (Fig. 4C)
+  # ---------------------------------------------------------------------------
+  - id: "GE:kim-claudin1-nac-erk-h292"
+    name: "Claudin-1 expression under ROS scavenging and ERK1/2 manipulation, NCI-H292 cells"
+    description: "Two rescue arms for the Claudin-1 loss. Pretreating NCI-H292 cells 1 h with N-acetyl-cysteine (1 mM) before CLB 2.0 increased Claudin-1 expression, and siRNA-ERK1/2 significantly increased CLB 2.0-induced Claudin-1 while wild-type ERK1/2 inhibited it. Together these place the Claudin-1 loss downstream of ROS and of ERK1/2. Reported as Western blots and bar charts (Figs. 3D and 4C) with no tabulated values."
+    target_gene: "NCBIGene:9076"
+    gene_expression_method: "Western blot and real-time PCR"
+    normalization_reference: "tubulin"
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Inhibition of ROS production increased Claudin-1 expression, but decreased IL-6 and MUC5AC gene expression."
+        explanation: "States that scavenging ROS with NAC restored Claudin-1, the direction recorded in this assay's NAC output record."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "However, siRNA-ERK1/2 significantly increased CLB2.0-induced Claudin-1 and MUC1 expression and dramatically decreased MUC5AC gene expression (Fig. 4C)."
+        explanation: "States the Claudin-1 rise under ERK1/2 knockdown recorded in this assay's siRNA output record."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Interestingly, the treatment with wild-type ERK1/2 inhibited CLB2.0-induced Claudin-1 and MUC1 expression, but increased MUC5AC gene expression."
+        explanation: "States the Claudin-1 suppression under ERK1/2 overexpression recorded in this assay's wild-type output record."
+    has_exposure_condition:
+      - id: "EXPOSURE:kim-clb20-10mg-24h"
+        name: "CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-nac-clb20-24h"
+        name: "NAC 1 mM pretreatment for 1 hour, then CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:28939"
+          name: "N-acetyl-L-cysteine"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000063"
+            name: "millimolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-erk-wt-24h"
+        name: "Wild-type ERK1/2 overexpression, then CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-erk-sirna-24h"
+        name: "ERK1/2 siRNA knockdown, then CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:kim-claudin1-nac-erk-h292-output-clb20"
+        name: "Claudin-1, CLB 2.0 alone (baseline for both rescue arms)"
+        description: "CLB 2.0-treated cells, the comparison condition against which NAC and the ERK1/2 manipulations are read. No value reported."
+        experimental_group: baseline
+        measured_under: "EXPOSURE:kim-clb20-10mg-24h"
+      - id: "GE:kim-claudin1-nac-erk-h292-output-nac-clb20"
+        name: "Claudin-1 restored by NAC"
+        description: "Inhibition of ROS production increased Claudin-1 expression relative to CLB 2.0 alone (marked P < 0.05 vs CLB 2.0-treated cells). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-nac-clb20-24h"
+      - id: "GE:kim-claudin1-nac-erk-h292-output-erk-wt"
+        name: "Claudin-1 suppressed by wild-type ERK1/2"
+        description: "Treatment with wild-type ERK1/2 inhibited CLB 2.0-induced Claudin-1 expression. No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-erk-wt-24h"
+      - id: "GE:kim-claudin1-nac-erk-h292-output-erk-sirna"
+        name: "Claudin-1 restored by ERK1/2 knockdown"
+        description: "siRNA-ERK1/2 significantly increased CLB 2.0-induced Claudin-1 expression (marked P < 0.05 vs CLB 2.0/wild-type ERK1/2-treated cells). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-erk-sirna-24h"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:kim-h292-001"
+      name: "NCI-H292 human lung mucoepidermoid carcinoma cell line"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:kim-wb-tj"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for tight junction proteins Claudin-1, ZO-1 and E-cadherin"
+      - id: "PROTOCOL:kim-transfection"
+        protocol_type: MolecularAssayProtocol
+        name: "Transient transfection with wild-type constructs or target-specific siRNA"
+
+  # ---------------------------------------------------------------------------
+  # MUC1 mRNA, the anti-inflammatory mucin: CLB 2.0 + IL-6 (Fig. 1E)
+  # ---------------------------------------------------------------------------
+  - id: "GE:kim-muc1-mrna-il6-24h"
+    name: "MUC1 mRNA after CLB 2.0 with and without IL-6"
+    description: "qRT-PCR for MUC1 transcript 24 h after CLB 2.0 (10 mg/ml), IL-6 (30 ng/ml) or both. MUC1 gene expression decreased dramatically with the cotreatment of CLB 2.0 and IL-6. The paper treats MUC1 as the anti-inflammatory mucin that maintains homeostasis, the counterweight to inflammatory MUC5AC, which is why its fall marks a shift towards the inflamed state; the assay is therefore recorded against the airway inflammation key event rather than against mucin hypersecretion. Reported as a bar chart (Fig. 1E) with significance marked only as P < 0.05; no fold-change values are tabulated."
+    target_gene: "NCBIGene:4582"
+    gene_expression_method: "real-time PCR (SYBR Green)"
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Interestingly, MUC5AC gene expression increased significantly by the cotreatment of CLB 2.0 and IL-6 compared to CLB 2.0 alone (Fig. 1D), but the MUC1 gene expression dramatically decreased by the cotreatment of CLB 2.0 and IL-6 (Fig. 1E)."
+        explanation: "States the MUC1 decrease under CLB 2.0 plus IL-6 recorded in this assay's cotreatment output record."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "MUC5AC was known to the inflammatory mucin, but MUC1 was recognized as anti-inflammatory mucin (17-20)."
+        explanation: "The paper's framing of MUC1 as the anti-inflammatory mucin, which is why this assay informs on the airway inflammation key event."
+    has_exposure_condition:
+      - id: "EXPOSURE:kim-untreated-24h"
+        name: "Untreated cells, 24 hours (control)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-10mg-24h"
+        name: "CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-il6-30ng-24h"
+        name: "Recombinant IL-6 30 ng/ml for 24 hours"
+        exposure_concentration:
+          value: "30"
+          unit:
+            id: "UO:0000275"
+            name: "nanogram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-il6-24h"
+        name: "CLB 2.0 10 mg/ml with IL-6 30 ng/ml for 24 hours"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:kim-muc1-mrna-il6-24h-output-control"
+        name: "MUC1 mRNA, untreated control"
+        description: "Reference condition for the Fig. 1E bar chart. No value reported."
+        experimental_group: control
+        measured_under: "EXPOSURE:kim-untreated-24h"
+      - id: "GE:kim-muc1-mrna-il6-24h-output-clb20"
+        name: "MUC1 mRNA, CLB 2.0 alone"
+        description: "CLB 2.0 alone arm of Fig. 1E. No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-10mg-24h"
+      - id: "GE:kim-muc1-mrna-il6-24h-output-il6"
+        name: "MUC1 mRNA, IL-6 alone"
+        description: "IL-6 alone arm of Fig. 1E. No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-il6-30ng-24h"
+      - id: "GE:kim-muc1-mrna-il6-24h-output-clb20-il6"
+        name: "MUC1 mRNA, CLB 2.0 plus IL-6"
+        description: "MUC1 gene expression decreased dramatically with the cotreatment of CLB 2.0 and IL-6 (marked P < 0.05 vs CLB 2.0 only). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-il6-24h"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:kim-nhne-001"
+      name: "Normal human bronchial/nasal epithelial (NHNE) cells"
+      cell_type:
+        id: "CL:0002328"
+        name: "bronchial epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0002185"
+        name: "bronchus"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+      donor_info: "Primary normal human airway epithelial cells. The paper introduces them as 'normal human bronchial epithelial (NHNE) cells' and uses the abbreviation NHNE thereafter without resolving the bronchial/nasal inconsistency; no donor characteristics, passage or culture medium are given."
+    follows_protocols:
+      - id: "PROTOCOL:kim-qpcr-muc1"
+        protocol_type: MolecularAssayProtocol
+        name: "Real-time PCR for MUC1"
+
+  # ---------------------------------------------------------------------------
+  # MUC1 mRNA: Claudin-1, NAC and ERK1/2 all raise it (Figs. 2C, 3D, 4C)
+  # ---------------------------------------------------------------------------
+  - id: "GE:kim-muc1-mrna-rescue-h292-24h"
+    name: "MUC1 mRNA under Claudin-1 overexpression, ROS scavenging and ERK1/2 knockdown, NCI-H292 cells"
+    description: "Three arms that all raise the anti-inflammatory mucin MUC1 in NCI-H292 cells treated with CLB 2.0 (10 mg/ml) for 24 h: overexpressed Claudin-1 increased CLB 2.0-induced MUC1 (and siRNA-Claudin-1 decreased it significantly), NAC pretreatment increased MUC1, and siRNA-ERK1/2 significantly increased MUC1 while wild-type ERK1/2 inhibited it. The paper reads this as Claudin-1 and the suppression of ROS/ERK1/2 restoring homeostasis rather than inflammation. Reported as bar charts (Figs. 2C, 3D, 4C) with no tabulated values."
+    target_gene: "NCBIGene:4582"
+    gene_expression_method: "real-time PCR (SYBR Green)"
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "In addition, the overexpressed Claudin-1 increased CLB2.0-induced MUC1 gene expression"
+        explanation: "States the MUC1 rise under Claudin-1 overexpression recorded in this assay's Claudin-1 output record. Quoted as a sentence fragment because the committed full text breaks the following words across a hyphenated line wrap ('siRNA- Claudin-1')."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Interestingly, the cotreatment of CLB 2.0 and NAC increased MUC1 gene expression."
+        explanation: "States the MUC1 rise under ROS scavenging recorded in this assay's NAC output record."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "However, siRNA-ERK1/2 significantly increased CLB2.0-induced Claudin-1 and MUC1 expression and dramatically decreased MUC5AC gene expression (Fig. 4C)."
+        explanation: "States the MUC1 rise under ERK1/2 knockdown recorded in this assay's siRNA output record."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "While the overexpression of claudin-1 decreased CLB2.0-induced MUC5AC expression, it increased the expression of the anti-inflammatory mucin, MUC1."
+        explanation: "The abstract's statement of the Claudin-1 gain-of-function effect on MUC1 that this assay records."
+    has_exposure_condition:
+      - id: "EXPOSURE:kim-clb20-10mg-24h"
+        name: "CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-claudin1-wt-24h"
+        name: "Wild-type Claudin-1 overexpression, then CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-claudin1-sirna-24h"
+        name: "Claudin-1 siRNA knockdown, then CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-nac-clb20-24h"
+        name: "NAC 1 mM pretreatment for 1 hour, then CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:28939"
+          name: "N-acetyl-L-cysteine"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000063"
+            name: "millimolar"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-erk-wt-24h"
+        name: "Wild-type ERK1/2 overexpression, then CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:kim-clb20-erk-sirna-24h"
+        name: "ERK1/2 siRNA knockdown, then CLB 2.0 10 mg/ml for 24 hours"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "GE:kim-muc1-mrna-rescue-h292-24h-output-clb20"
+        name: "MUC1 mRNA, CLB 2.0 alone (baseline for all three arms)"
+        description: "CLB 2.0-treated cells, the comparison condition against which the Claudin-1, NAC and ERK1/2 manipulations are read. No value reported."
+        experimental_group: baseline
+        measured_under: "EXPOSURE:kim-clb20-10mg-24h"
+      - id: "GE:kim-muc1-mrna-rescue-h292-24h-output-claudin1-wt"
+        name: "MUC1 mRNA increased by wild-type Claudin-1"
+        description: "The overexpressed Claudin-1 increased CLB 2.0-induced MUC1 gene expression (marked P < 0.05 vs CLB 2.0-treated cells). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-claudin1-wt-24h"
+      - id: "GE:kim-muc1-mrna-rescue-h292-24h-output-claudin1-sirna"
+        name: "MUC1 mRNA decreased by Claudin-1 knockdown"
+        description: "siRNA-Claudin-1 decreased MUC1 gene expression significantly (marked P < 0.05 vs CLB 2.0/wild-type Claudin-1-treated cells). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-claudin1-sirna-24h"
+      - id: "GE:kim-muc1-mrna-rescue-h292-24h-output-nac-clb20"
+        name: "MUC1 mRNA increased by NAC"
+        description: "The cotreatment of CLB 2.0 and NAC increased MUC1 gene expression (marked P < 0.05 vs CLB 2.0-treated cells). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-nac-clb20-24h"
+      - id: "GE:kim-muc1-mrna-rescue-h292-24h-output-erk-wt"
+        name: "MUC1 mRNA suppressed by wild-type ERK1/2"
+        description: "Treatment with wild-type ERK1/2 inhibited CLB 2.0-induced MUC1 expression. No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-erk-wt-24h"
+      - id: "GE:kim-muc1-mrna-rescue-h292-24h-output-erk-sirna"
+        name: "MUC1 mRNA increased by ERK1/2 knockdown"
+        description: "siRNA-ERK1/2 significantly increased CLB 2.0-induced MUC1 expression (marked P < 0.05 vs CLB 2.0/wild-type ERK1/2-treated cells). No value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-erk-sirna-24h"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:kim-h292-001"
+      name: "NCI-H292 human lung mucoepidermoid carcinoma cell line"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:kim-transfection"
+        protocol_type: MolecularAssayProtocol
+        name: "Transient transfection with wild-type constructs or target-specific siRNA"
+      - id: "PROTOCOL:kim-qpcr-muc1"
+        protocol_type: MolecularAssayProtocol
+        name: "Real-time PCR for MUC1"
+
+  # ---------------------------------------------------------------------------
+  # ERK1/2 phosphorylation (Fig. 4A, 4B). NULL RESULT for p38 and JNK.
+  # ---------------------------------------------------------------------------
+  - id: "GE:kim-erk-phospho-h292"
+    name: "ERK1/2, p38 and JNK phosphorylation after CLB 2.0, NCI-H292 cells"
+    description: "Western blot time course with phospho-specific antibodies in NCI-H292 cells treated with CLB 2.0. ERK1/2 phosphorylation reached a maximum at 15 min and had decreased by 30 min. NULL RESULT: p38 and JNK MAPKs were not phosphorylated, so the response is ERK-specific among the three MAPKs examined. NAC (1 mM, 1 h pretreatment) dramatically decreased the CLB 2.0-induced ERK1/2 activation, placing ERK1/2 downstream of the ROS burst. target_gene records MAPK3 (ERK1); the phospho-specific antibody detects both ERK1 and ERK2 and the paper reports them together as ERK1/2. Blots are figure panels with no densitometry values, so protein_level is left unfilled."
+    target_gene: "NCBIGene:5595"
+    gene_expression_method: "Western blot with phospho-specific antibodies"
+    normalization_reference: "tubulin"
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "CLB2.0 activated the ERK1/2 MAPK via a ROS-dependent pathway."
+        explanation: "The abstract's statement of the ROS-dependent ERK1/2 activation this assay measures."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "NAC dramatically decreased CLB2.0-induced ERK1/2 activation, suggesting that ROS might be critical for CLB 2.0-induced ERK1/2 activation."
+        explanation: "States the NAC result recorded in this assay's NAC output record, which is what makes the activation ROS-dependent."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "of ERK1/2 by CLB2.0 reached a maximum at 15 min and decreased at 30 min after the CLB 2.0 treatment, but not p38 and JNK MAPKs (Fig. 4A)."
+        explanation: "States the 15 min peak and the p38 / JNK null result recorded in this assay's output records. Quoted from mid-sentence because the committed full text breaks the preceding word across a hyphenated line wrap ('phos- phorylation')."
+    has_exposure_condition:
+      - id: "EXPOSURE:kim-untreated-control"
+        name: "Untreated cells, no CLB 2.0 (control)"
+      - id: "EXPOSURE:kim-clb20-10mg-15min"
+        name: "CLB 2.0 10 mg/ml for 15 minutes"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "15"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+      - id: "EXPOSURE:kim-clb20-10mg-30min"
+        name: "CLB 2.0 10 mg/ml for 30 minutes"
+        exposure_agent:
+          id: "CHEBI:53276"
+          name: "poly(styrene)"
+        exposure_concentration:
+          value: "10"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+        exposure_duration:
+          value: "30"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+      - id: "EXPOSURE:kim-nac-clb20-15min"
+        name: "NAC 1 mM pretreatment for 1 hour, then CLB 2.0 10 mg/ml for 15 minutes"
+        exposure_agent:
+          id: "CHEBI:28939"
+          name: "N-acetyl-L-cysteine"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000063"
+            name: "millimolar"
+        exposure_duration:
+          value: "15"
+          unit:
+            id: "UO:0000031"
+            name: "minute"
+    has_specified_output:
+      - id: "GE:kim-erk-phospho-h292-output-control"
+        name: "Basal ERK1/2, p38 and JNK phosphorylation, untreated control"
+        description: "Untreated lane used as the reference for the phospho-MAPK blots, normalized to tubulin. No densitometry value reported."
+        experimental_group: control
+        measured_under: "EXPOSURE:kim-untreated-control"
+      - id: "GE:kim-erk-phospho-h292-output-clb20-15min"
+        name: "p-ERK1/2 maximal 15 minutes after CLB 2.0; p38 and JNK unchanged"
+        description: "Phosphorylation of ERK1/2 by CLB 2.0 reached a maximum at 15 min. p38 and JNK MAPKs were not phosphorylated - a null result recorded here rather than omitted, because it is what makes the response ERK-specific. No densitometry value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-10mg-15min"
+      - id: "GE:kim-erk-phospho-h292-output-clb20-30min"
+        name: "p-ERK1/2 declining 30 minutes after CLB 2.0"
+        description: "ERK1/2 phosphorylation had decreased by 30 min after the CLB 2.0 treatment. No densitometry value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-clb20-10mg-30min"
+      - id: "GE:kim-erk-phospho-h292-output-nac-clb20-15min"
+        name: "p-ERK1/2 blocked by NAC"
+        description: "NAC dramatically decreased CLB 2.0-induced ERK1/2 activation at 15 min, showing that ROS is critical for the activation. No densitometry value reported."
+        experimental_group: treated
+        measured_under: "EXPOSURE:kim-nac-clb20-15min"
+    informs_on_key_event:
+      id: "KE:ke-erk-activation"
+      name: "ERK1/2 activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:kim-h292-001"
+      name: "NCI-H292 human lung mucoepidermoid carcinoma cell line"
+      cell_type:
+        id: "CL:0000082"
+        name: "epithelial cell of lung"
+      anatomical_origin:
+        id: "UBERON:0002048"
+        name: "lung"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
+    follows_protocols:
+      - id: "PROTOCOL:kim-wb-mapk"
+        protocol_type: MolecularAssayProtocol
+        name: "Western blot for MAPK phosphorylation (ERK1/2, p38, JNK)"
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS
+#
+# The pathway the paper assembles:
+#   CLB 2.0 -> ROS -> IL-6 secretion and ERK1/2 activation
+#           -> Claudin-1 downregulation -> MUC5AC up / MUC1 down
+#
+# Each link below is supported by an inhibitor or genetic reversal, which is
+# why the evidence_support is strong rather than correlational.
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:kim-ros-to-inflammation"
+    name: "Increased oxidative stress leads to airway inflammation via IL-6 secretion"
+    upstream_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    relationship_type: "directly leads to"
+    evidence_support: strong
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "These results suggest that ROS production is not only critical for the inhibition of Claudin-1 and the activation of MUC5AC gene expression in response to CLB2.0, but also essential for CLB 2.0-induced secretion extraracellularly of IL-6."
+        explanation: "The paper's own conclusion that ROS production is essential for CLB 2.0-induced IL-6 secretion, which is the causal direction this relationship asserts. (The spelling 'extraracellularly' is the paper's.)"
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "CLB2.0-induced IL-6 secretion was mediated by ROS."
+        explanation: "The abstract's one-line statement of the same link."
+
+  - id: "KER:kim-ros-to-erk"
+    name: "Increased oxidative stress leads to ERK1/2 activation"
+    upstream_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-erk-activation"
+      name: "ERK1/2 activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    relationship_type: "directly leads to"
+    evidence_support: strong
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "NAC dramatically decreased CLB2.0-induced ERK1/2 activation, suggesting that ROS might be critical for CLB 2.0-induced ERK1/2 activation."
+        explanation: "Scavenger reversal: removing ROS with NAC abolished the ERK1/2 activation, which is the causal link this relationship asserts."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "CLB2.0 activated the ERK1/2 MAPK via a ROS-dependent pathway."
+        explanation: "The abstract's statement that the ERK1/2 activation runs through a ROS-dependent pathway."
+
+  - id: "KER:kim-inflammation-to-barrier"
+    name: "Airway inflammation leads to loss of epithelial barrier integrity via Claudin-1 downregulation"
+    upstream_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    downstream_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: strong
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "IL-6 and CLB2.0 completely diminished Claudin-1 expression, whereas siRNA-IL-6 partially inhibited Claudin-1 expression, suggesting that both CLB2.0 and secreted IL-6 could completely decrease Claudin-1 expression (Fig. 2B)."
+        explanation: "Knockdown reversal: silencing the inflammatory cytokine IL-6 blunted the Claudin-1 loss, which is the causal link this relationship asserts."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Claudin-1 expression was inhibited by CLB 2.0, and the cotreatment of CLB2.0 and IL-6 dramatically inhibited Claudin-1 expression, but not ZO-1 and E-cadherin expression (Fig. 2A)."
+        explanation: "Adding IL-6 deepened the Claudin-1 loss, the dose-wise counterpart to the knockdown result."
+
+  - id: "KER:kim-erk-to-barrier"
+    name: "ERK1/2 activation leads to loss of epithelial barrier integrity via Claudin-1 downregulation"
+    upstream_event:
+      id: "KE:ke-erk-activation"
+      name: "ERK1/2 activation"
+      biological_action: activated
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: strong
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "ERK1/2 downregulated the claudin-1 and MUC1 expressions, whereas it dramatically increased CLB2.0-induced MUC5AC expression."
+        explanation: "The abstract's statement that ERK1/2 downregulates Claudin-1, which is the causal direction this relationship asserts."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "However, siRNA-ERK1/2 significantly increased CLB2.0-induced Claudin-1 and MUC1 expression and dramatically decreased MUC5AC gene expression (Fig. 4C)."
+        explanation: "Knockdown reversal: silencing ERK1/2 restored Claudin-1, the bidirectional evidence that makes this link strong."
+
+  - id: "KER:kim-barrier-to-mucin"
+    name: "Loss of epithelial barrier integrity leads to mucin hypersecretion"
+    upstream_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    downstream_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: strong
+    evidence:
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Interestingly, ectopic overexpressed Claudin-1 dramatically inhibited MUC5AC gene expression, but siRNA-Claudin 1 increased the CLB2.0-induced MUC5AC gene expression."
+        explanation: "Bidirectional genetic evidence: restoring Claudin-1 suppressed MUC5AC and removing it raised MUC5AC further, which is the causal link this relationship asserts."
+      - reference: "PMID:28946937"
+        reference_title: "Airborne particulate matter increases MUC5AC expression by downregulating Claudin-1 expression in human airway cells."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Our data also suggest that secreted IL-6 regulates CLB2.0-induced MUC5AC and MUC1 expression via ROS-mediated downregulation of claudin-1 expression to maintain mucus homeostasis in the airway."
+        explanation: "The paper's own summary routing the mucin response through the downregulation of Claudin-1."
