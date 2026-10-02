@@ -178,7 +178,7 @@ def test_assay_row_never_yields_a_non_scalar():
         "id": "ASSAY:x",
         "target_cell_type": {"id": "CL:0000771", "name": "eosinophil"},
     }
-    row = y2e._assay_row(assay, y2e.HEADERS["BALFSputumAssay"])
+    row = y2e._assay_row(assay, "BALFSputumAssay")
     assert all(isinstance(c, (str, int, float, bool, type(None))) for c in row), row
     # term references flatten to a label cell plus an _id cell
     assert "eosinophil" in row

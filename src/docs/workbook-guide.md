@@ -87,7 +87,9 @@ import pandas as pd
 
 resp = pd.read_excel("exports/soma_extractions.xlsx", sheet_name="Responses")
 expo = pd.read_excel("exports/soma_extractions.xlsx", sheet_name="ExposureCondition")
-df = resp.merge(expo, left_on="exposure_condition", right_on="id")
+# both sheets carry id/name columns, so suffix the exposure copies
+df = resp.merge(expo, left_on="exposure_condition", right_on="id",
+                suffixes=("", "_exposure"))
 ```
 
 ## Modeling a scenario change (example: a wildfire)

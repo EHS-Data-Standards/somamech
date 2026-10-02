@@ -399,10 +399,12 @@ def _collect_key_events(data):
     return list(seen.values())
 
 
-# Output-record keys that are not measurement slots
-_NON_MEASUREMENT_KEYS = {
-    "id", "name", "description", "experimental_group", "measured_under",
-    "source_assay",
+# Measurement slots per output tab, from the schema (QuantityValue-ranged):
+# what the long-format Responses tab iterates, so it can't drift from the
+# schema the way a hand-maintained exclusion list could.
+_MEASUREMENT_SLOTS = {
+    tab: [slot for _, kind, slot in specs if kind == "qty_value"]
+    for tab, specs in _TAB_SPECS.items()
 }
 
 
@@ -420,11 +422,12 @@ def _collect_response_rows(data):
     """One row per (output record x measurement): the long-format table with
     each condition's response value, uncertainty, and unit side by side."""
     rows = []
-    for coll_key, (assay_tab, _output_tab) in COLLECTION_MAP.items():
+    for coll_key, (assay_tab, output_tab) in COLLECTION_MAP.items():
         for assay in data.get(coll_key, []) or []:
             for out in _iter_outputs(assay):
-                for slot, mv in out.items():
-                    if slot in _NON_MEASUREMENT_KEYS or not isinstance(mv, dict):
+                for slot in _MEASUREMENT_SLOTS[output_tab]:
+                    mv = out.get(slot)
+                    if not isinstance(mv, dict):
                         continue
                     if "value" not in mv and "unit" not in mv:
                         continue
@@ -461,6 +464,12 @@ def _collect_subjects(data):
                 continue
             tab = subj.get("subject_type", "")
             if tab not in groups:
+                if tab:
+                    print(
+                        f"WARNING: unknown subject_type '{tab}' on "
+                        f"{subj.get('id', '<no id>')} — routed to CellularSystem",
+                        file=sys.stderr,
+                    )
                 tab = "CellularSystem"
             groups[tab].setdefault(subj.get("id", ""), subj)
     return {tab: list(seen.values()) for tab, seen in groups.items()}
@@ -595,14 +604,6 @@ def _row_for_tab(record, tab):
     return tuple(_resolve_cell(record, kind, slot) for _, kind, slot in _TAB_SPECS[tab])
 
 
-def _tab_for_headers(headers):
-    """Recover the tab a header list belongs to (same object or equal list)."""
-    for tab, cols in HEADERS.items():
-        if cols is headers or cols == headers:
-            return tab
-    return None
-
-
 def _protocol_row(p):
     return _row_for_tab(p, "Protocol")
 
@@ -635,39 +636,18 @@ def _key_event_relationship_row(ker):
     return _row_for_tab(ker, "KeyEventRelationship")
 
 
-def _generic_row(record, headers):
-    """Header-name-driven fallback for a header list no schema tab owns."""
-    row = []
-    for h in headers:
-        if h.endswith("_value") and h not in record:
-            row.append(_get_nested(record, h[: -len("_value")], "value"))
-        elif h.endswith("_unit") and h not in record:
-            unit_obj = _get_nested(record, h[: -len("_unit")], "unit")
-            if isinstance(unit_obj, dict):
-                row.append(_fmt_id_name(unit_obj))
-            else:
-                row.append(str(unit_obj) if unit_obj else "")
-        elif h.endswith("_id") and h not in record:
-            row.append(_get_nested(record, h[: -len("_id")], "id"))
-        else:
-            row.append(_fmt_cell(record.get(h, "")))
-    return tuple(row)
+def _assay_row(assay, tab):
+    """Build an assay row for the named tab.
+
+    Takes the tab name rather than a header list: several assay classes
+    currently induce identical header lists, so a list cannot name its tab.
+    """
+    return _row_for_tab(assay, tab)
 
 
-def _assay_row(assay, assay_headers):
-    """Build an assay row for the tab the header list belongs to."""
-    tab = _tab_for_headers(assay_headers)
-    if tab is not None:
-        return _row_for_tab(assay, tab)
-    return _generic_row(assay, assay_headers)
-
-
-def _output_row(output, output_headers):
-    """Build an output row for the tab the header list belongs to."""
-    tab = _tab_for_headers(output_headers)
-    if tab is not None:
-        return _row_for_tab(output, tab)
-    return _generic_row(output, output_headers)
+def _output_row(output, tab):
+    """Build an output row for the named tab (see _assay_row)."""
+    return _row_for_tab(output, tab)
 
 
 # ---------------------------------------------------------------------------
@@ -753,7 +733,7 @@ def yaml_to_excel(input_path, output_path, template_path=None):
         output_headers = HEADERS.get(output_tab, [])
 
         # Build assay rows
-        assay_rows = [_assay_row(a, assay_headers) for a in assays]
+        assay_rows = [_assay_row(a, assay_tab) for a in assays]
         _make_sheet(
             wb, assay_tab, assay_headers, assay_rows,
             tab_color=TAB_COLORS.get(assay_tab),
@@ -768,7 +748,7 @@ def yaml_to_excel(input_path, output_path, template_path=None):
                 out_with_ref = dict(out)
                 if "source_assay" not in out_with_ref:
                     out_with_ref["source_assay"] = a.get("id", "")
-                output_rows.append(_output_row(out_with_ref, output_headers))
+                output_rows.append(_output_row(out_with_ref, output_tab))
 
         if output_rows:
             _make_sheet(
