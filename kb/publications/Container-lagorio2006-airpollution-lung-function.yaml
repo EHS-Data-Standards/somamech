@@ -1,0 +1,1580 @@
+# =============================================================================
+# Lagorio et al. (2006) - Air pollution and lung function among susceptible
+# adult subjects: a panel study
+# =============================================================================
+#
+# Source: Environ Health. 2006;5:11
+# DOI: 10.1186/1476-069X-5-11
+# PMID: 16674831
+#
+# Study design (HUMAN OBSERVATIONAL — time-series panel study; not in vitro,
+# not an animal experiment):
+#   - Rome, Italy, 1999; two one-month surveys (24 May to 24 June, spring; and
+#     18 November to 22 December, winter), 67 study days in total
+#   - 29 outpatients of the Catholic University Hospital (UCSC) in three
+#     diagnostic panels: COPD (n=11), mild intermittent asthma (n=11) and
+#     ischemic heart disease (IHD, n=7), all living within 2 km of one of six
+#     air monitoring stations
+#   - Subjects were scheduled for supervised spirometry every three days (at
+#     home for the COPD and IHD panels, at the Pneumology Clinic for the
+#     asthmatics); 449 spirometries in all (COPD 171, asthma 108, IHD 170).
+#     FVC and FEV1 are expressed as a percentage of subject-specific predicted
+#     values
+#   - Exhaled nitric oxide was measured in the asthmatic panel only
+#     (107 measurements)
+#   - Exposure: 24 h ambient PM2.5 and PM10-2.5 collected on dichotomous
+#     samplers at two sites and analysed gravimetrically; eight metals in the
+#     PM fractions by atomic absorption spectrometry; NO2, CO, O3 and SO2 from
+#     the regional air-quality monitoring network
+#
+# IMPORTANT — WHAT THE EXPOSURE CONTRAST ACTUALLY IS:
+#   This is a continuous-exposure panel study. There is NO unexposed control
+#   group and no two-group contrast anywhere in the paper: every headline
+#   number is a generalized estimating equations (GEE) regression coefficient
+#   — the change in a lung function index (% of predicted) per 10 ug/m3
+#   increase in a pollutant (per 1 mg/m3 for CO), at a 24 h lag or averaged
+#   over the previous 48 or 72 h. Those reported-in-paper effect estimates are
+#   recorded below as response_comparisons WITHOUT control_output /
+#   treated_output references, because no pair of output records exists for
+#   them to point at. Each panel contributes ONE output record: the group
+#   average of the lung function indices over the survey periods (Table 1),
+#   marked experimental_group: baseline and measured under the shared ambient
+#   exposure condition.
+#
+#   The metal effect estimates (Zn, Fe, Ni on FVC and FEV1, per interquartile
+#   range increase) are presented ONLY as dots and bars in Figures 2 and 3 —
+#   the paper prints no numeric coefficients for them. Per the extraction
+#   rules, no figure-derived values are recorded; the metal findings appear as
+#   qualitative statements in descriptions, backed by quotes.
+#
+# Key findings recorded here:
+#   - COPD panel: FVC fell with ambient PM2.5 (-0.80 %predicted per 10 ug/m3
+#     at 24 h, p=0.027; -0.89 at 48 h, p=0.031; -1.10 at 72 h, p=0.044) and
+#     with PM10 (-0.66, -0.75, -0.94; p=0.027/0.032/0.045)
+#   - COPD panel: FEV1 fell with PM2.5 and PM10 only at the 72 h cumulative
+#     lag (-1.06, p=0.032; -0.87, p=0.040) and with NO2 at 24 h and 48 h
+#     (-1.16, p=0.005; -1.38, p=0.005)
+#   - Asthma panel: FEV1 fell with NO2 at all three lags (-1.10, p=0.002;
+#     -1.28, p=0.001; -1.17, p=0.007); no effect of fine particles
+#   - IHD panel: no association between any pollutant and lung function
+#   - Zn (and, less consistently, Fe and Ni) from the PM2.5 fraction were
+#     associated with FVC and FEV1 decrements in the COPD panel (figures only)
+#   - Exhaled NO in the asthmatics showed no clear association with any
+#     pollutant
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:16674831"
+  reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+  doi: "10.1186/1476-069X-5-11"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - protocol_type: SpirometryProtocol
+    id: "PROTOCOL:lagorio-spirometry-001"
+    name: "Supervised spirometry for FVC and FEV1, expressed as percentage of predicted"
+    description: "Forced vital capacity (FVC) and forced expiratory volume in 1 second (FEV1) were measured by spirometry. Spirometries were supervised and done with the subject in a sitting position and wearing a nose-clip, following the suggestions of the American Thoracic Society (Standardization of Spirometry, 1994 update). Spirometries were always done in the afternoon (between 4 pm and 8 pm), at least 6 hours after a possible inhalation of short-acting bronchodilators. A heated Fleish tube n. 3 portable spirometer (Biomedin, Italy) was used in the COPD and IHD panels, and a light bell Stead-Wells spirometer (Biomedin, Italy) in the asthmatic group. Between-instrument reproducibility, for both FVC and FEV1, was within 30 ml, and calibration procedures were regularly performed. Pulmonary function indices used in the analyses are expressed as the percentage of the predicted values based on the subject-specific sex, age, height and weight (Quanjer et al. 1993). Subjects were scheduled to be examined three days apart, at home for the COPD and IHD panels or at the Pneumology Clinic of the UCSC for the asthmatic panel. No bronchodilator was administered as part of the testing protocol."
+    spirometry_standard: "American Thoracic Society, Standardization of Spirometry, 1994 Update (Am J Respir Crit Care Med 1995;152:1107-1136)"
+    equipment_required:
+      - "Heated Fleish tube n. 3 portable spirometer (Biomedin, Italy) — COPD and IHD panels"
+      - "Light bell Stead-Wells spirometer (Biomedin, Italy) — asthmatic panel"
+
+  - id: "PROTOCOL:lagorio-exhaled-no-001"
+    name: "Measurement of nitric oxide in exhaled breath (asthmatic panel only)"
+    description: "Only amongst asthmatics, concentrations of nitric oxide (NO) in exhaled breath — an indicator of bronchial inflammation — were determined using the analyzer model 280 (Sievers Instruments, USA). Subjects were breathing NOx free air prior to this test. Asthmatics were also asked to fill in a brief daily questionnaire collecting information about the occurrence of asthma attacks and beta-2 agonist inhalations."
+    equipment_required:
+      - "Nitric oxide analyzer model 280 (Sievers Instruments, USA)"
+
+  - id: "PROTOCOL:lagorio-pm-sampling-001"
+    name: "24 h dichotomous sampling of ambient PM2.5 and PM10-2.5 at two Rome sites"
+    description: "Because PM2.5 was not routinely measured by the Rome air-quality monitoring network, 24 h concentrations of PM10-2.5 and PM2.5 were measured for this survey at two fixed monitoring sites, Villa Ada and Istituto Superiore di Sanita (ISS), about 3.5 km apart and considered representative of low and high traffic areas respectively. Air samples were collected by means of dichotomous samplers (Graseby Andersen, model SA 241) operating at 16.7 L/min with an omni-directional aerosol inlet; this sampler has been designated as reference for PM10 by US EPA. Sampling was carried out from 3 pm to 3 pm of the following day, in order to match the spirometry time schedule. Sixty-two 24 hour samples were collected, with 5 missing observations at the beginning of the winter survey. The dust on the couple of sequential polytetrafluoroethylene (PTFE) filters (polymethylpentane ringed, 2.0 um pore size, 37 mm diameter; Gelman, USA) was gravimetrically analyzed to obtain average daily concentrations of PM2.5 and PM10-2.5. PM10 concentrations were calculated by adding the concentrations of the sampled fine and coarse fractions. The averages of PM concentrations measured at the two locations were used in the statistical analyses."
+    equipment_required:
+      - "Dichotomous sampler (Graseby Andersen, model SA 241), 16.7 L/min, omni-directional aerosol inlet"
+      - "Sequential PTFE filters (polymethylpentane ringed, 2.0 um pore size, 37 mm diameter; Gelman, USA)"
+
+  - id: "PROTOCOL:lagorio-metals-aas-001"
+    name: "Atomic absorption spectrometry of eight metals in the PM fractions"
+    description: "In the PM10-2.5 and PM2.5 samples, the content of selected metals (cadmium, chromium, iron, nickel, lead, platinum, vanadium and zinc) was determined by atomic absorption spectrometry (AAS). The concentrations used in the analysis were calculated as the ratio of the metal amount in each PM sample to the air volume collected during the sampling. Six of the eight metals examined were more represented in the fine than in the coarse fraction of outdoor PM, so only metal concentrations from the PM2.5 fraction are reported."
+    equipment_required:
+      - "Atomic absorption spectrometer"
+
+  - id: "PROTOCOL:lagorio-gaseous-monitoring-001"
+    name: "Regional network monitoring of NO2, CO, O3 and SO2, and daily city means"
+    description: "The Department of Environment of the Latium Region provided hourly concentrations of nitrogen dioxide (NO2), carbon monoxide (CO), ozone (O3) and sulphur dioxide (SO2) recorded at the fixed sites for air-quality monitoring in Rome, which are equipped with continuous inlet samplers. NO2 is determined by chemiluminescence, CO by IR absorption, O3 by UV absorption, and SO2 by UV fluorescence. Daily city means were computed as 24 h values from 3 pm to 3 pm of the following day, based on data from varying type and number of sites: five fixed sites for NO2 and CO (Magna Grecia, Fermi, Libia in densely populated central areas; Preneste and Villa Ada as background), two background sites for O3 (Preneste and Villa Ada), and one urban plus one background site for SO2 (Fermi and Villa Ada). Mean daily temperature, barometric pressure and relative humidity came from the Rome weather station (Collegio Romano). SO2 was not considered further in the analyses because its 24 h concentrations were low and showed little variability in both seasons; barometric pressure was excluded from the regression models because of its negligible daily variability."
+    equipment_required:
+      - "Regional air-quality monitoring network, Rome (continuous inlet samplers)"
+      - "Rome weather station, Collegio Romano - Ufficio Centrale di Ecologia Agricola"
+
+  - id: "PROTOCOL:lagorio-gee-analysis-001"
+    name: "Generalized estimating equations (GEE) for panel data with 24, 48 and 72 h exposure windows"
+    description: "The relationships between respiratory function indices and concentrations of air pollutants were analyzed using generalized estimating equations (GEE) for panel data, with an autoregressive correlation matrix of lag 1 to account for correlations between repeated measures on the same subject. STATA release 8.0 (XTGEE, with the 'force' option to allow unequally spaced observations) was used. All linear models included the within-subject between-period effect, using the dichotomous season variable (spring and winter). For the COPD and IHD panels, terms for daily mean temperature, relative humidity and day of the week (weekday/weekend) were included; for the asthmatic panel, temperature and humidity were included along with beta-2 agonist use (yes/no), but not weekday/weekend, because only 8 of 108 spirometries were done on Saturday and none on Sunday. A temperature-squared term gave no model improvement and was dropped. The daily variability of pulmonary function was examined with respect to the mean pollutant concentrations of the previous 24 hours and to the cumulative exposures over the previous 48 and 72 hours. Results are reported as changes in percentage of predicted values per 10 ug/m3 increase in pollutant concentrations (per 1 mg/m3 for CO), and, for metals, per interquartile range of increasing concentrations. Missing observations in exposure or outcome variables were not replaced with estimates."
+
+# =============================================================================
+# LUNG FUNCTION ASSAY 1 — COPD PANEL
+#
+# 11 COPD outpatients, 171 spirometries. This is the panel in which the
+# paper's positive findings sit: FVC and FEV1 decrements with ambient PM2.5,
+# PM10 and NO2, and (figures only) with Zn, Fe and Ni from the PM2.5 fraction.
+# The full ambient exposure characterization (PM fractions, eight metals, and
+# the gaseous pollutants) is attached here.
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:lagorio-copd-spirometry"
+    name: "Supervised spirometry in the COPD panel with 24 h ambient PM, metal and gaseous pollutant exposure assessment"
+    description: "Time-series panel spirometry in 11 COPD outpatients in Rome over two one-month surveys in 1999 (spring and winter), yielding 171 spirometries. Group averages over the survey periods: FVC 63 +/- 10 % of predicted and FEV1 45 +/- 10 % of predicted (the lowest of the three panels, as expected from the eligibility criterion of FEV1/FVC below 60%). The average number of repeated observations was 15 per subject (range 1 to 32). Associations with ambient pollutants are recorded in response_comparisons: FVC fell significantly with PM2.5 and PM10 at the 24 h lag and at the 48 h and 72 h cumulative exposures, while FEV1 fell with PM2.5 and PM10 only once 72 hours of exposure had accumulated, and with NO2 at the 24 h and 48 h windows. No association was seen for coarse particles (PM10-2.5), CO or O3 at any lag. Zinc concentrations in the PM2.5 fraction were associated with FVC and FEV1 decrements at the 24 h lag and at the 48 h and 72 h cumulative lags, with similar but less consistent associations for iron and nickel; those metal coefficients are presented only as regression coefficients and 95% confidence intervals plotted in Figures 2 and 3, so no numeric metal effect estimate is recorded here."
+    evidence:
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We conducted a time-series panel study of subjects with chronic obstructive pulmonary disease (COPD), asthma, and ischemic heart disease (IHD) to evaluate whether daily levels of air pollutants have a measurable impact on the lung function of adult subjects with pre-existing lung or heart diseases."
+        explanation: "States the study design and question behind all three lung function assays in this file."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Twenty-nine patients with COPD, asthma, or IHD underwent repeated lung function tests by supervised spirometry in two one-month surveys."
+        explanation: "States the total cohort and the repeated-measures supervised-spirometry design recorded on this assay and its two siblings."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Twenty-nine patients with COPD (7 men and 4 women), asthma (5 men and 6 women) or IHD (6 men and 1 woman) gave their written informed consent"
+        explanation: "States the per-panel sample sizes and sex composition recorded on the three study_subject records: 11 COPD, 11 asthma, 7 IHD."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The time period of interest co nsisted of 67 days in total, from 24 May to 24 June and from 18 November to 22 December 1999."
+        explanation: "States the two survey periods recorded in clinical_context and on the shared ambient exposure condition. Quoted with the word-internal space ('co nsisted') exactly as the cached PDF text layer renders it."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "were measured by spirometry. Spirometries were supervised, and done with the subject in a sitting position and wearing a nose-clip"
+        explanation: "Documents the supervised spirometry method recorded in PROTOCOL:lagorio-spirometry-001."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Pulmonary function indices used in the analyses are expressed as the percentage of the predicted values based on the subject- specific sex, age, height and weight"
+        explanation: "States that FVC and FEV1 are recorded as a percentage of predicted, which is the unit used on every lung function value in this file. Quoted with the space after 'subject-' exactly as the cached PDF text layer renders it."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Table 1 describes the characteristics of subjects at entry and the group-distribution of the outcome variables. As expected on the basis of the eligibility criteria, asthmatics were younger than COPD and IHD patients, and the group average values of FVC and FEV1 were sensibly lower among COPD cases compared to both IHD and asthmatic"
+        explanation: "Introduces Table 1, the source of the group averages recorded on the three output records, and states the qualitative pattern they show."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Overall, the 29 study subjects underwent a total of 449 spirometries. Due to dropouts, a variable number of observations per case was available."
+        explanation: "States the 449 spirometries that the per-panel observation counts (171 COPD, 108 asthma, 170 IHD) sum to."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The average number of repeated observations was 15 in the COPD panel (ranging from 1 to 32 per subject), 24 in the IHD panel (from 12 to 32 per case)"
+        explanation: "States the per-subject repeat counts quoted in this assay's and the IHD assay's descriptions."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Age (years) Male 7 67 11 5 33 15 6 63 11 F e m a l e 46 57 64 8 1 016 4- Total 11 67 9.1 11 41 14 7 64 10"
+        explanation: "The Table 1 age block, source of the three study_subject ages (COPD 67 +/- 9.1 y, n=11; asthma 41 +/- 14 y, n=11; IHD 64 +/- 10 y, n=7) read off the labelled Total row. The Female row is garbled by the PDF text layer and is not used; the quote reproduces the cached text exactly, garbling included."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FVC (% predicted) Male 108 63 10 38 113 11 139 81 10 Female 63 61 9 70 116 12 31 80 4 Total 171 63 10 108 115 12 170 81 9"
+        explanation: "The Table 1 FVC block. The Total row gives the three panels' FVC group averages and observation counts recorded on the output records: COPD 171 obs, 63 +/- 10 % predicted; asthma 108 obs, 115 +/- 12; IHD 170 obs, 81 +/- 9."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1 (% predicted) Male 108 45 10 38 94 13 139 84 10 Female 63 47 10 70 96 18 31 84 5 Total 171 45 10 108 95 16 170 84 10"
+        explanation: "The Table 1 FEV1 block. The Total row gives the three panels' FEV1 group averages and observation counts recorded on the output records: COPD 171 obs, 45 +/- 10 % predicted; asthma 108 obs, 95 +/- 16; IHD 170 obs, 84 +/- 10."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Daily samples of coarse (PM10-2.5) and fine (PM2.5) particulate matter were collected by means of dichotomous samplers, and the dust was gravimetrically analyzed."
+        explanation: "Documents the dichotomous sampling and gravimetric analysis behind the PM2.5 and PM10-2.5 exposure conditions."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "of dichotomous samplers (Graseby Andersen, model SA 241) operating at 16.7 L/min, with an omni-directional aerosol inlet."
+        explanation: "Names the sampler model and flow rate recorded in PROTOCOL:lagorio-pm-sampling-001."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Sixty-two 24 hour samples"
+        explanation: "States the 62 PM samples recorded as sample_size on the PM2.5, PM10-2.5 and PM10 exposure conditions. The sentence continues 'were collected, with 5 missing observations at the begin-' across a hyphenated line break in the cached text, so only the sample count is quoted."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In the PM10–2.5 and PM2.5 samples, the content of selected metals (cadmium – Cd, chromium – Cr, iron – Fe, nickel – Ni, lead – Pb, platinum – Pt, vanadium-V, and zinc – Zn) was determined by atomic absorption spectrometry (AAS)."
+        explanation: "Documents the eight metals and the AAS method behind the metal exposure conditions on this assay."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Ambient concentrations of nitrogen dioxide (NO2), carbon monoxide (CO), ozone (O3), and sulphur dioxide (SO2) were obtained from the regional air-quality monitoring network."
+        explanation: "Documents the source of the gaseous pollutant exposure conditions."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In terms of relative concentrations, six out of 8 metals examined were more represented in the fine than in the coarse fraction of outdoor PM"
+        explanation: "Explains why the recorded metal concentrations are those of the PM2.5 fraction."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "in outdoor PM 2.5 samples, whereas Pt, Cd, V, Cr and Ni were only present in traces."
+        explanation: "States that platinum, cadmium, vanadium, chromium and nickel were present only in traces, which is noted on those exposure conditions."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Table 2: Concentrations of PM, metals from PM2.5, gaseous pollutants, and climatic conditions (1999 spring and winter) Variable Unit Spring Winter Overall Obs Mean SD GMean IQR Obs Mean SD GMean IQR Mean SD GMean Min Max IQR PM2.5* µg/m3 32 18.2 5.0 17.4 8.1 30 36.7 24.1 27.8 40.9 27.2 19.4 21.8 4.5 100 22.7 PM10–2.5 * µg/m3 32 18.7 7.4 17.4 9.0 30 12.3 5.4 11.0 8.3 15.6 7.2 14.0 3.4 39.6 7.1 PM10 * µg/m3 32 36.9 10.8 35.4 13.1 30 49.0 28.1 40.2 45.3 42.8 21.8 37.6 7.9 123 26.9"
+        explanation: "Table 2's header and PM rows. The Overall columns give the PM concentrations recorded on the exposure conditions: PM2.5 27.2 +/- 19.4 ug/m3 (IQR 22.7), PM10-2.5 15.6 +/- 7.2 (IQR 7.1), PM10 42.8 +/- 21.8 (IQR 26.9)."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Fe ng/m3 30 339 180 303 212 30 227 132 190 208 283 167 240 54.1 893 202 Ni ng/m3 30 5.1 4.7 3.6 4.2 30 4.6 8.0 2.7 2.5 4.8 6.5 3.1 1.0 42.3 2.8"
+        explanation: "Table 2 rows for iron and nickel in PM2.5. The Overall columns give Fe 283 +/- 167 ng/m3 (IQR 202) and Ni 4.8 +/- 6.5 ng/m3 (IQR 2.8), recorded on their exposure conditions."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Zn ng/m3 30 28.7 13.0 26.4 15.1 30 63.0 38.2 51.4 58.0 45.8 33.1 36.8 13.9 159 32.9 NO2 † µg/m3 32 76.1 13.6 75.0 17.5 35 65.5 13.3 64.0 14.6 70.6 14.4 69.0 27.6 102 20.9 CO† mg/m3 32 2.1 0.3 2.1 0.50 34 12.3 4.9 11.5 6.1 7.4 6.2 5.0 1.6 28.9 10.5 O3 ‡ µg/m3 32 70.9 12.5 69.8 16.9 34 16.0 8.1 14.3 10.0 42.6 29.5 30.8 6.6 95.3 58.7"
+        explanation: "Table 2 rows for zinc and the gaseous pollutants. The Overall columns give Zn 45.8 +/- 33.1 ng/m3 (IQR 32.9), NO2 70.6 +/- 14.4 ug/m3 (IQR 20.9), CO 7.4 +/- 6.2 mg/m3 (IQR 10.5) and O3 42.6 +/- 29.5 ug/m3 (IQR 58.7), recorded on their exposure conditions."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The relationships between respiratory function indices and concentrations of air pollutants were analyzed using generalized estimating equations (GEE) for panel data"
+        explanation: "Documents the GEE analysis recorded in PROTOCOL:lagorio-gee-analysis-001 and named as the statistical_test on every response comparison."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "All the linear models included the within-subject between-period effect, using the dichotomous season variable (spring and winter)."
+        explanation: "Documents the season adjustment common to all three panels' models."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The daily variability of pulmonary function was examined with respect to the mean pollutant concentrations of the previous 24 hours and to the cumulative exposures over the previous 48 and"
+        explanation: "States the three exposure windows (24 h, 48 h, 72 h) that the response comparisons are indexed by. The sentence continues '72 hours.' on the next cached line."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In order to assess the relative effects of metals, we report changes in lung function per interquartile range of increasing concentrations."
+        explanation: "States that the metal effect estimates are scaled per interquartile range, which is why the IQRs from Table 2 are recorded on the metal exposure conditions."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We observed a negative association between ambient PM2.5 and PM10 and respiratory function (FVC and FEV 1) in the COPD panel"
+        explanation: "The authors' statement of the headline COPD finding recorded in the PM2.5 and PM10 response comparisons."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "effect on FEV1 appeared only when 72 hours of exposure were accumulated. A FEV 1 reduction was also seen with increasing NO2 concentrations during the previous 24 and 48 hours."
+        explanation: "States the lag structure of the COPD FEV1 findings: particles only at the 72 h cumulative window, NO2 at 24 h and 48 h."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Table 4: Variations in respiratory function per unit increase of air pollutant concentrations in the three panels PM2.5 PM10–2.5 PM10 NO2 CO O 3 Pollutant increase 10 µg/m3 10 µg/m3 10 µg/m3 10 µg/m3 1 mg/m3 10 µg/m3"
+        explanation: "Table 4's header: it fixes the column order (PM2.5, PM10-2.5, PM10, NO2, CO, O3) and the per-unit scaling (10 ug/m3, or 1 mg/m3 for CO) used to read every response comparison in this file."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "*Regression coefficient from GEE models for panel data controlling for repeated individual observations, temperature, relative humidity, and day of the week (COPD and IHD panels) or β-2 stimulant inhalation (asthma panel), representing the change in lung function index (% of predicted) per unit increase of pollutant concentration."
+        explanation: "Table 4's footnote: states what each coefficient is and the covariates adjusted for, recorded as statistical_test on every response comparison."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "COPD 24 h † -0.80 0.36 0.027 -1.32 1.06 0.210 -0.66 0.30 0.027 -0.72 0.49 0.139 -0.14 0.15 0.353 0.01 0.57 0.983 FVC (%) 48 h ‡ -0.89 0.41 0.031 -1.46 1.31 0.265 -0.75 0.35 0.032 -0.43 0.58 0.463 -0.13 0.18 0.497 0.18 0.65 0.783 72 h§ -1.10 0.55 0.044 -1.38 1.53 0.367 -0.94 0.47 0.045 -0.10 0.70 0.886 0.15 0.23 0.508 -0.03 0.86 0.977"
+        explanation: "The Table 4 COPD/FVC block (24 h, 48 h, 72 h rows). Reading the columns in the header's order gives the six COPD FVC coefficients recorded in response_comparisons: PM2.5 -0.80 (SE 0.36, p=0.027), -0.89 (0.41, 0.031), -1.10 (0.55, 0.044); PM10 -0.66 (0.30, 0.027), -0.75 (0.35, 0.032), -0.94 (0.47, 0.045)."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "24 h† -0.47 0.33 0.149 -0.59 0.95 0.532 -0.37 0.27 0.167 -1.16 0.41 0.005 -0.05 0.13 0.725 -0.20 0.50 0.687 FEV1(%) 48 h ‡ -0.69 0.37 0.061 -1.01 1.19 0.396 -0.58 0.31 0.067 -1.38 0.49 0.005 -0.12 0.16 0.467 0.31 0.56 0.578 72 h§ -1.06 0.50 0.032 -0.90 1.42 0.524 -0.87 0.43 0.040 -0.94 0.60 0.117 -0.03 0.20 0.900 0.68 0.74 0.363"
+        explanation: "The Table 4 COPD/FEV1 block, immediately following the COPD/FVC block. It gives the four COPD FEV1 coefficients recorded in response_comparisons: NO2 -1.16 (SE 0.41, p=0.005) at 24 h and -1.38 (0.49, 0.005) at 48 h; PM2.5 -1.06 (0.50, 0.032) and PM10 -0.87 (0.43, 0.040) at 72 h."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In the COPD panel, Zn concentrations were associated with FVC and FEV 1 decrements at single 24 h lag and at cumulative 48 h and 72 h lags (Figures 2 and 3)."
+        explanation: "States the zinc finding quoted in this assay's description. The coefficients themselves appear only in Figures 2 and 3, so none are recorded as values."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "COPD panel: changes in FVC per interquartile increase of selected metals from PM2.5 samples during the previous 24, 48 or 72 hours"
+        explanation: "Figure 2's title, confirming that the FVC-versus-metals coefficients exist only as a figure."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "COPD panel: changes in FEV1 per interquartile increase of selected metals from PM2.5 samples during the previous 24, 48 or 72 hours"
+        explanation: "Figure 3's title, confirming that the FEV1-versus-metals coefficients exist only as a figure."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "*Regression coefficients β (dots) and 95% confidence intervals (bars) from GEE models for panel data controlling for repeated individual observations, temperature, relative humidity, and day of the week, representing changes in FVC (% of predicted) per interquartile range increase of metal concentration (see Table 2 for the IQR values)."
+        explanation: "Figure 2's caption: states explicitly that the metal effect estimates are plotted as dots and bars, which is why this extraction records no numeric metal coefficient."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Decrements in lung function indices (FVC and/or FEV1) associated with increasing concentrations of PM2.5, NO2 and some metals (especially zinc and iron) were observed in COPD cases."
+        explanation: "The authors' summary of the COPD finding, linking this assay to the decreased-lung-function key event."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Eligibility for the COPD panel included age from 50 to 80 years"
+        explanation: "States the COPD panel's age eligibility criterion recorded in subject_characteristics."
+    has_exposure_condition:
+      - id: "COND:lagorio-ambient-rome-1999"
+        name: "Ambient air pollution in Rome during the two 1999 survey periods (24 May to 24 June and 18 November to 22 December); continuous day-to-day exposure with no unexposed comparison group"
+      - id: "EXPOSURE:lagorio-pm25-24h"
+        name: "Ambient fine particulate matter (PM2.5), 24 h average of two Rome sites (Villa Ada and ISS). Overall across both surveys: mean 27.2 +/- 19.4 ug/m3, geometric mean 21.8, range 4.5 to 100, interquartile range 22.7 ug/m3 (Table 2, Overall columns). Concentrations were higher and more variable in winter (36.7 +/- 24.1) than in spring (18.2 +/- 5.0)."
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "27.2"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: mean
+          sample_size: 62
+          variability:
+            variability_type: standard_deviation
+            value: "19.4"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-pm10-2.5-24h"
+        name: "Ambient coarse particulate matter (PM10-2.5), 24 h average of two Rome sites. Overall across both surveys: mean 15.6 +/- 7.2 ug/m3, geometric mean 14.0, range 3.4 to 39.6, interquartile range 7.1 ug/m3 (Table 2, Overall columns). Unlike PM2.5, the coarse fraction was higher in spring (18.7 +/- 7.4) than in winter (12.3 +/- 5.4)."
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "15.6"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: mean
+          sample_size: 62
+          variability:
+            variability_type: standard_deviation
+            value: "7.2"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-pm10-24h"
+        name: "Ambient PM10, 24 h average of two Rome sites (sum of the sampled fine and coarse fractions). Overall across both surveys: mean 42.8 +/- 21.8 ug/m3, geometric mean 37.6, range 7.9 to 123, interquartile range 26.9 ug/m3 (Table 2, Overall columns). PM10 was not measured directly: concentrations were calculated by adding the concentrations of the sampled fine and coarse fractions."
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "42.8"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: mean
+          sample_size: 62
+          variability:
+            variability_type: standard_deviation
+            value: "21.8"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-no2-24h"
+        name: "Ambient nitrogen dioxide (NO2), 24 h city mean from five fixed monitoring sites. Overall across both surveys: mean 70.6 +/- 14.4 ug/m3, geometric mean 69.0, range 27.6 to 102, interquartile range 20.9 ug/m3 (Table 2, Overall columns). The 24 h NO2 city means did not show statistically significant differences by season."
+        exposure_agent:
+          id: "CHEBI:33101"
+          name: "nitrogen dioxide"
+        exposure_concentration:
+          value: "70.6"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "14.4"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-co-24h"
+        name: "Ambient carbon monoxide (CO), 24 h city mean from five fixed monitoring sites. Overall across both surveys: mean 7.4 +/- 6.2 mg/m3, geometric mean 5.0, range 1.6 to 28.9, interquartile range 10.5 mg/m3 (Table 2, Overall columns). Daily variability was much higher in winter (12.3 +/- 4.9) than in spring (2.1 +/- 0.3). In Table 4 the CO effect estimates are scaled per 1 mg/m3, not per 10 ug/m3."
+        exposure_agent:
+          id: "CHEBI:17245"
+          name: "carbon monoxide"
+        exposure_concentration:
+          value: "7.4"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "6.2"
+            unit:
+              id: "UCUM:mg/m3"
+              name: "milligram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-o3-24h"
+        name: "Ambient ozone (O3), 24 h mean from two background monitoring sites. Overall across both surveys: mean 42.6 +/- 29.5 ug/m3, geometric mean 30.8, range 6.6 to 95.3, interquartile range 58.7 ug/m3 (Table 2, Overall columns). Outdoor O3 was higher and more variable in spring (70.9 +/- 12.5) than in winter (16.0 +/- 8.1) and never exceeded 100 ug/m3."
+        exposure_agent:
+          id: "CHEBI:25812"
+          name: "ozone"
+        exposure_concentration:
+          value: "42.6"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "29.5"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-zn-pm25-24h"
+        name: "Zinc in the ambient PM2.5 fraction, 24 h average (atomic absorption spectrometry). Overall across both surveys: mean 45.8 +/- 33.1 ng/m3, geometric mean 36.8, range 13.9 to 159, interquartile range 32.9 ng/m3 (Table 2, Overall columns). Zinc was one of the three metals present in sizeable concentrations in outdoor PM2.5, and the metal most consistently associated with FVC and FEV1 decrements in the COPD panel. Metal effect estimates in Figures 2 and 3 are scaled per this interquartile range."
+        exposure_agent:
+          id: "CHEBI:27363"
+          name: "zinc atom"
+        exposure_concentration:
+          value: "45.8"
+          unit:
+            id: "UCUM:ng/m3"
+            name: "nanogram per cubic meter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "33.1"
+            unit:
+              id: "UCUM:ng/m3"
+              name: "nanogram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-fe-pm25-24h"
+        name: "Iron in the ambient PM2.5 fraction, 24 h average (atomic absorption spectrometry). Overall across both surveys: mean 283 +/- 167 ng/m3, geometric mean 240, range 54.1 to 893, interquartile range 202 ng/m3 (Table 2, Overall columns). Iron was the most abundant of the measured metals and, with zinc, is named by the authors as having a potential role via oxidative stress."
+        exposure_agent:
+          id: "CHEBI:18248"
+          name: "iron atom"
+        exposure_concentration:
+          value: "283"
+          unit:
+            id: "UCUM:ng/m3"
+            name: "nanogram per cubic meter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "167"
+            unit:
+              id: "UCUM:ng/m3"
+              name: "nanogram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-ni-pm25-24h"
+        name: "Nickel in the ambient PM2.5 fraction, 24 h average (atomic absorption spectrometry). Overall across both surveys: mean 4.8 +/- 6.5 ng/m3, geometric mean 3.1, range 1.0 to 42.3, interquartile range 2.8 ng/m3 (Table 2, Overall columns). Nickel was present only in traces, but its associations with lung function were similar in size to those of zinc, if less consistent."
+        exposure_agent:
+          id: "CHEBI:28112"
+          name: "nickel atom"
+        exposure_concentration:
+          value: "4.8"
+          unit:
+            id: "UCUM:ng/m3"
+            name: "nanogram per cubic meter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "6.5"
+            unit:
+              id: "UCUM:ng/m3"
+              name: "nanogram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "LF:lagorio-copd-spirometry-output-panel-average"
+        name: "COPD panel group average of FVC and FEV1 over the two 1999 survey periods (171 spirometries from 11 patients). Group average of the lung function indices across the survey periods, as printed in the Total column of Table 1. This is the only output record for the panel: the air pollution exposures are continuous day-to-day covariates rather than assigned groups, so there is no control record to pair it with. The effect estimates appear in response_comparisons."
+        experimental_group: baseline
+        measured_under: "COND:lagorio-ambient-rome-1999"
+        evidence:
+          - reference: "PMID:16674831"
+            reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "FVC (% predicted) Male 108 63 10 38 113 11 139 81 10 Female 63 61 9 70 116 12 31 80 4 Total 171 63 10 108 115 12 170 81 9"
+            explanation: "Table 1's FVC block: the COPD columns of the Total row give 171 observations, mean 63, SD 10 (% of predicted)."
+          - reference: "PMID:16674831"
+            reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "FEV1 (% predicted) Male 108 45 10 38 94 13 139 84 10 Female 63 47 10 70 96 18 31 84 5 Total 171 45 10 108 95 16 170 84 10"
+            explanation: "Table 1's FEV1 block: the COPD columns of the Total row give 171 observations, mean 45, SD 10 (% of predicted)."
+        fvc:
+          value: "63"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 171
+          variability:
+            variability_type: standard_deviation
+            value: "10"
+            unit:
+              id: "UO:0000187"
+              name: "percent"
+        fev1:
+          value: "45"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 171
+          variability:
+            variability_type: standard_deviation
+            value: "10"
+            unit:
+              id: "UO:0000187"
+              name: "percent"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lagorio-copd-panel"
+      name: "COPD panel: 11 COPD outpatients of the Catholic University Hospital, Rome"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "67"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: mean
+        sample_size: 11
+        variability:
+          variability_type: standard_deviation
+          value: "9.1"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      disease_state: "chronic obstructive pulmonary disease (COPD)"
+      subject_characteristics: "11 patients (7 men, 4 women), mean age 67 +/- 9.1 y, mean BMI 26 +/- 5 kg/m2. Eligibility: age 50 to 80 years, FEV1/FVC below 60%, partial oxygen pressure at arterial blood oximetry 60-70 mmHg, normal carboxyhemoglobin and acid-base balance, no concomitant IHD, no need of oxygen therapy or breathing apparatus, no pacemaker, no cardiac arrhythmias, diabetes, Parkinson disease or chronic alcohol abuse, and no use of psycho-chemical drugs or long-acting bronchodilators (occasional short-acting bronchodilators allowed). All were sustained quitters who had given up smoking at least 1 year before enrollment; none used bronchodilators during the survey periods. All lived in census tracts less than 2 km from one of the six air monitoring stations."
+      clinical_context: "Time-series panel study in Rome, Italy; two one-month surveys in 1999 (24 May to 24 June and 18 November to 22 December), examinations scheduled three days apart at the subject's home, 171 spirometries, average 15 repeated observations per subject (range 1 to 32)"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:lagorio-spirometry-001"
+        name: "Supervised spirometry for FVC and FEV1, expressed as percentage of predicted"
+        spirometry_standard: "American Thoracic Society, Standardization of Spirometry, 1994 Update (Am J Respir Crit Care Med 1995;152:1107-1136)"
+      - id: "PROTOCOL:lagorio-pm-sampling-001"
+        name: "24 h dichotomous sampling of ambient PM2.5 and PM10-2.5 at two Rome sites"
+      - id: "PROTOCOL:lagorio-metals-aas-001"
+        name: "Atomic absorption spectrometry of eight metals in the PM fractions"
+      - id: "PROTOCOL:lagorio-gaseous-monitoring-001"
+        name: "Regional network monitoring of NO2, CO, O3 and SO2, and daily city means"
+      - id: "PROTOCOL:lagorio-gee-analysis-001"
+        name: "Generalized estimating equations (GEE) for panel data with 24, 48 and 72 h exposure windows"
+
+# =============================================================================
+# LUNG FUNCTION ASSAY 2 — ASTHMA PANEL
+#
+# 11 young, mild intermittent asthmatics, 108 spirometries plus 107 exhaled
+# nitric oxide measurements. NO2 was the only pollutant associated with lung
+# function here; fine particles were not.
+# =============================================================================
+
+  - id: "LF:lagorio-asthma-spirometry"
+    name: "Supervised spirometry and exhaled nitric oxide in the mild intermittent asthma panel with ambient pollutant exposure assessment"
+    description: "Time-series panel spirometry in 11 never-smoking adults with mild intermittent asthma, examined at the Pneumology Clinic of the UCSC over the same two 1999 survey periods, yielding 108 spirometries. Group averages over the survey periods: FVC 115 +/- 12 % of predicted and FEV1 95 +/- 16 % of predicted - the best lung function of the three panels, as expected from the mild disease stage. The average number of repeated observations was 9 per person (range 6 to 18). Nitric oxide in exhaled breath, an indicator of bronchial inflammation, was measured in this panel only: 107 measurements, group average 50 +/- 34 ppb; overall there was no clear association of the various pollutants with this biological marker of inflammation. FEV1 fell with increasing NO2 at the 24 h lag and at the 48 h and 72 h cumulative exposures (recorded in response_comparisons); no association was found with PM2.5, coarse particles, PM10, CO or O3, and no statistically significant negative association between metal concentrations and lung function indices was observed in this panel (data not shown in the paper). The authors note that the absent O3 effect may reflect the good clinical condition of these asthmatics, the relatively low O3 levels, or lack of power, and that NO2 is difficult to credit as directly responsible given its low intrinsic toxicity - it may instead be a marker of the traffic combustion mixture, in particular of ultra fine particles."
+    evidence:
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Admittance to the asthmatic panel was allowed to subjects aged 18 to 64 years, positive at the bronchial reactivity test by hypertonic saline solution, with disease in the mild intermittent stage"
+        explanation: "States the asthma panel's eligibility criteria recorded in subject_characteristics."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FVC (% predicted) Male 108 63 10 38 113 11 139 81 10 Female 63 61 9 70 116 12 31 80 4 Total 171 63 10 108 115 12 170 81 9"
+        explanation: "Table 1's FVC block: the asthma columns of the Total row give 108 observations, mean 115, SD 12 (% of predicted)."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1 (% predicted) Male 108 45 10 38 94 13 139 84 10 Female 63 47 10 70 96 18 31 84 5 Total 171 45 10 108 95 16 170 84 10"
+        explanation: "Table 1's FEV1 block: the asthma columns of the Total row give 108 observations, mean 95, SD 16 (% of predicted)."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "NO in exhaled breath (ppb) Male 37 66 40 Female 70 42 27 Total 107 50 34"
+        explanation: "Table 1's exhaled nitric oxide block, reported for the asthma panel only: the Total row gives 107 measurements, mean 50, SD 34 ppb, recorded as feno on this assay's output."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Only amongst asthmatics we determined concentrations of nitric oxide (NO) in exhaled breath, an indicator of bronchial inflammation"
+        explanation: "Documents that exhaled NO was measured in this panel only, and what it indicates."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In the group of asthmatics, a total of 107 measurements of NO concentrations in exhaled breath were performed."
+        explanation: "Confirms the 107 exhaled NO measurements recorded as the sample size for feno."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Among the asthmatics, NO2 was associated with a decrease in FEV1."
+        explanation: "The authors' statement of this panel's only positive finding, recorded in the three asthma NO2 response comparisons."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "24 h† -0.30 0.34 0.372 -0.67 0.89 0.448 -0.28 0.28 0.317 -1.10 0.35 0.002 -0.05 0.14 0.704 -0.41 0.50 0.421 FEV1(%) 48 h ‡ -0.36 0.39 0.347 -1.19 1.07 0.265 -0.40 0.34 0.239 -1.28 0.37 0.001 -0.16 0.15 0.292 -0.01 0.51 0.983 72 h§ -0.40 0.46 0.384 -0.51 1.26 0.689 -0.40 0.43 0.351 -1.17 0.44 0.007 -0.28 0.18 0.126 0.46 0.60 0.449"
+        explanation: "The Table 4 asthma/FEV1 block. Reading the NO2 columns in the header's order gives the three asthma coefficients recorded in response_comparisons: -1.10 (SE 0.35, p=0.002) at 24 h, -1.28 (0.37, 0.001) at 48 h and -1.17 (0.44, 0.007) at 72 h. Every PM2.5, PM10-2.5, PM10, CO and O3 coefficient in the same block has p above 0.05."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The respiratory function of the relatively young and mild asthmatics included in this study seems to worsen when ambient levels of NO2 increase."
+        explanation: "The authors' conclusion linking this assay to the decreased-lung-function key event."
+    has_exposure_condition:
+      - id: "COND:lagorio-ambient-rome-1999"
+        name: "Ambient air pollution in Rome during the two 1999 survey periods (24 May to 24 June and 18 November to 22 December); continuous day-to-day exposure with no unexposed comparison group"
+      - id: "EXPOSURE:lagorio-pm25-24h"
+        name: "Ambient fine particulate matter (PM2.5), 24 h average of two Rome sites (Villa Ada and ISS). Overall across both surveys: mean 27.2 +/- 19.4 ug/m3, geometric mean 21.8, range 4.5 to 100, interquartile range 22.7 ug/m3 (Table 2, Overall columns). Concentrations were higher and more variable in winter (36.7 +/- 24.1) than in spring (18.2 +/- 5.0)."
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "27.2"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: mean
+          sample_size: 62
+          variability:
+            variability_type: standard_deviation
+            value: "19.4"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-pm10-2.5-24h"
+        name: "Ambient coarse particulate matter (PM10-2.5), 24 h average of two Rome sites. Overall across both surveys: mean 15.6 +/- 7.2 ug/m3, geometric mean 14.0, range 3.4 to 39.6, interquartile range 7.1 ug/m3 (Table 2, Overall columns). Unlike PM2.5, the coarse fraction was higher in spring (18.7 +/- 7.4) than in winter (12.3 +/- 5.4)."
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "15.6"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: mean
+          sample_size: 62
+          variability:
+            variability_type: standard_deviation
+            value: "7.2"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-pm10-24h"
+        name: "Ambient PM10, 24 h average of two Rome sites (sum of the sampled fine and coarse fractions). Overall across both surveys: mean 42.8 +/- 21.8 ug/m3, geometric mean 37.6, range 7.9 to 123, interquartile range 26.9 ug/m3 (Table 2, Overall columns). PM10 was not measured directly: concentrations were calculated by adding the concentrations of the sampled fine and coarse fractions."
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "42.8"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: mean
+          sample_size: 62
+          variability:
+            variability_type: standard_deviation
+            value: "21.8"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-no2-24h"
+        name: "Ambient nitrogen dioxide (NO2), 24 h city mean from five fixed monitoring sites. Overall across both surveys: mean 70.6 +/- 14.4 ug/m3, geometric mean 69.0, range 27.6 to 102, interquartile range 20.9 ug/m3 (Table 2, Overall columns). The 24 h NO2 city means did not show statistically significant differences by season."
+        exposure_agent:
+          id: "CHEBI:33101"
+          name: "nitrogen dioxide"
+        exposure_concentration:
+          value: "70.6"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "14.4"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-co-24h"
+        name: "Ambient carbon monoxide (CO), 24 h city mean from five fixed monitoring sites. Overall across both surveys: mean 7.4 +/- 6.2 mg/m3, geometric mean 5.0, range 1.6 to 28.9, interquartile range 10.5 mg/m3 (Table 2, Overall columns). Daily variability was much higher in winter (12.3 +/- 4.9) than in spring (2.1 +/- 0.3). In Table 4 the CO effect estimates are scaled per 1 mg/m3, not per 10 ug/m3."
+        exposure_agent:
+          id: "CHEBI:17245"
+          name: "carbon monoxide"
+        exposure_concentration:
+          value: "7.4"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "6.2"
+            unit:
+              id: "UCUM:mg/m3"
+              name: "milligram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-o3-24h"
+        name: "Ambient ozone (O3), 24 h mean from two background monitoring sites. Overall across both surveys: mean 42.6 +/- 29.5 ug/m3, geometric mean 30.8, range 6.6 to 95.3, interquartile range 58.7 ug/m3 (Table 2, Overall columns). Outdoor O3 was higher and more variable in spring (70.9 +/- 12.5) than in winter (16.0 +/- 8.1) and never exceeded 100 ug/m3."
+        exposure_agent:
+          id: "CHEBI:25812"
+          name: "ozone"
+        exposure_concentration:
+          value: "42.6"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "29.5"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "LF:lagorio-asthma-spirometry-output-panel-average"
+        name: "Asthma panel group average of FVC, FEV1 and exhaled nitric oxide over the two 1999 survey periods (108 spirometries and 107 NO measurements from 11 subjects). Group average of the lung function indices and of exhaled nitric oxide across the survey periods, as printed in the Total column of Table 1. The air pollution exposures are continuous day-to-day covariates rather than assigned groups, so this is the panel's only output record; the effect estimates appear in response_comparisons."
+        experimental_group: baseline
+        measured_under: "COND:lagorio-ambient-rome-1999"
+        evidence:
+          - reference: "PMID:16674831"
+            reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "FVC (% predicted) Male 108 63 10 38 113 11 139 81 10 Female 63 61 9 70 116 12 31 80 4 Total 171 63 10 108 115 12 170 81 9"
+            explanation: "Table 1's FVC block: the asthma columns of the Total row give 108 observations, mean 115, SD 12 (% of predicted)."
+          - reference: "PMID:16674831"
+            reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "FEV1 (% predicted) Male 108 45 10 38 94 13 139 84 10 Female 63 47 10 70 96 18 31 84 5 Total 171 45 10 108 95 16 170 84 10"
+            explanation: "Table 1's FEV1 block: the asthma columns of the Total row give 108 observations, mean 95, SD 16 (% of predicted)."
+          - reference: "PMID:16674831"
+            reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "NO in exhaled breath (ppb) Male 37 66 40 Female 70 42 27 Total 107 50 34"
+            explanation: "Table 1's exhaled NO block: the Total row gives 107 measurements, mean 50, SD 34 ppb, recorded as feno."
+        fvc:
+          value: "115"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 108
+          variability:
+            variability_type: standard_deviation
+            value: "12"
+            unit:
+              id: "UO:0000187"
+              name: "percent"
+        fev1:
+          value: "95"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 108
+          variability:
+            variability_type: standard_deviation
+            value: "16"
+            unit:
+              id: "UO:0000187"
+              name: "percent"
+        feno:
+          value: "50"
+          unit:
+            id: "UO:0000170"
+            name: "parts per billion"
+          central_tendency: mean
+          sample_size: 107
+          variability:
+            variability_type: standard_deviation
+            value: "34"
+            unit:
+              id: "UO:0000170"
+              name: "parts per billion"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lagorio-asthma-panel"
+      name: "Asthma panel: 11 never-smoking adults with mild intermittent asthma, Catholic University Hospital, Rome"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "41"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: mean
+        sample_size: 11
+        variability:
+          variability_type: standard_deviation
+          value: "14"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      disease_state: "mild intermittent asthma"
+      subject_characteristics: "11 subjects (5 men, 6 women), mean age 41 +/- 14 y, mean BMI 24 +/- 3 kg/m2 - the youngest of the three panels. Eligibility: aged 18 to 64 years, positive at the bronchial reactivity test by hypertonic saline solution, disease in the mild intermittent stage. Occasional use of beta-adrenergic stimulants was allowed, but not steroids or other asthma-preventive drugs, either before or during the study periods. Participation was restricted to never smokers; 7 of the 11 reported beta-2 stimulant inhalations on one or more clinical monitoring days. All lived in census tracts less than 2 km from one of the six air monitoring stations."
+      clinical_context: "Time-series panel study in Rome, Italy; two one-month surveys in 1999 (24 May to 24 June and 18 November to 22 December), examinations scheduled three days apart at the Pneumology Clinic of the UCSC, 108 spirometries, average 9 repeated observations per person (range 6 to 18); a brief daily questionnaire recorded asthma attacks and beta-2 agonist inhalations"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:lagorio-spirometry-001"
+        name: "Supervised spirometry for FVC and FEV1, expressed as percentage of predicted"
+        spirometry_standard: "American Thoracic Society, Standardization of Spirometry, 1994 Update (Am J Respir Crit Care Med 1995;152:1107-1136)"
+      - id: "PROTOCOL:lagorio-exhaled-no-001"
+        name: "Measurement of nitric oxide in exhaled breath (asthmatic panel only)"
+      - id: "PROTOCOL:lagorio-pm-sampling-001"
+        name: "24 h dichotomous sampling of ambient PM2.5 and PM10-2.5 at two Rome sites"
+      - id: "PROTOCOL:lagorio-gaseous-monitoring-001"
+        name: "Regional network monitoring of NO2, CO, O3 and SO2, and daily city means"
+      - id: "PROTOCOL:lagorio-gee-analysis-001"
+        name: "Generalized estimating equations (GEE) for panel data with 24, 48 and 72 h exposure windows"
+
+# =============================================================================
+# LUNG FUNCTION ASSAY 3 — IHD PANEL (the negative control panel)
+#
+# 7 patients with ischemic heart disease and no pre-existing lung impairment,
+# 170 spirometries. No pollutant was associated with lung function here. The
+# authors treat this null result as evidence that the COPD and asthma findings
+# are not chance products of multiple testing.
+# =============================================================================
+
+  - id: "LF:lagorio-ihd-spirometry"
+    name: "Supervised spirometry in the ischemic heart disease panel with ambient pollutant exposure assessment"
+    description: "Time-series panel spirometry in 7 patients with stable angina or previous myocardial infarction and no concomitant COPD, examined at home over the same two 1999 survey periods, yielding 170 spirometries. Group averages over the survey periods: FVC 81 +/- 9 % of predicted and FEV1 84 +/- 10 % of predicted. The average number of repeated observations was 24 per case (range 12 to 32). No association between respiratory function indices and average concentrations of any of the pollutants was observed in this panel, at any single lag or as cumulative exposure over 48 or 72 h, and no statistically significant negative association between metal concentrations and lung function was found either (data not shown in the paper). No numeric effect estimate from this panel reaches statistical significance, so no response comparison is recorded for it; the record is kept because the authors treat this null, in subjects with no pre-existing lung impairment, as a strength of the study - evidence that the COPD and asthma associations are not chance findings arising from the number of relationships examined."
+    evidence:
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Participation in the IHD panel was restricted to subjects aged 40 to 64 years"
+        explanation: "States the IHD panel's age eligibility criterion recorded in subject_characteristics."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FVC (% predicted) Male 108 63 10 38 113 11 139 81 10 Female 63 61 9 70 116 12 31 80 4 Total 171 63 10 108 115 12 170 81 9"
+        explanation: "Table 1's FVC block: the IHD columns of the Total row give 170 observations, mean 81, SD 9 (% of predicted)."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1 (% predicted) Male 108 45 10 38 94 13 139 84 10 Female 63 47 10 70 96 18 31 84 5 Total 171 45 10 108 95 16 170 84 10"
+        explanation: "Table 1's FEV1 block: the IHD columns of the Total row give 170 observations, mean 84, SD 10 (% of predicted)."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "(Table 4). No association between respiratory function indices and average concentrations of any of the pollutants (neither at various lags, nor as cumulative exposure over 48 or 72 h) was observed among IHD patients (Table 4)."
+        explanation: "States this panel's null result, which is why no response comparison is recorded for it."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "No association between average ambient concentrations of any air pollutant and lung function was observed among IHD cases."
+        explanation: "The authors' summary of the same null result."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "This study suggests that the short-term negative impact of exposure to air pollutants on respiratory volume and flow is limited to individuals with already impaired respiratory function."
+        explanation: "The authors' conclusion, which rests on contrasting this panel's null with the COPD and asthma findings."
+      - reference: "PMID:16674831"
+        reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The average number of repeated observations was 15 in the COPD panel (ranging from 1 to 32 per subject), 24 in the IHD panel (from 12 to 32 per case)"
+        explanation: "States the 24 repeated observations per IHD case quoted in this assay's description."
+    has_exposure_condition:
+      - id: "COND:lagorio-ambient-rome-1999"
+        name: "Ambient air pollution in Rome during the two 1999 survey periods (24 May to 24 June and 18 November to 22 December); continuous day-to-day exposure with no unexposed comparison group"
+      - id: "EXPOSURE:lagorio-pm25-24h"
+        name: "Ambient fine particulate matter (PM2.5), 24 h average of two Rome sites (Villa Ada and ISS). Overall across both surveys: mean 27.2 +/- 19.4 ug/m3, geometric mean 21.8, range 4.5 to 100, interquartile range 22.7 ug/m3 (Table 2, Overall columns). Concentrations were higher and more variable in winter (36.7 +/- 24.1) than in spring (18.2 +/- 5.0)."
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "27.2"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: mean
+          sample_size: 62
+          variability:
+            variability_type: standard_deviation
+            value: "19.4"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-pm10-2.5-24h"
+        name: "Ambient coarse particulate matter (PM10-2.5), 24 h average of two Rome sites. Overall across both surveys: mean 15.6 +/- 7.2 ug/m3, geometric mean 14.0, range 3.4 to 39.6, interquartile range 7.1 ug/m3 (Table 2, Overall columns). Unlike PM2.5, the coarse fraction was higher in spring (18.7 +/- 7.4) than in winter (12.3 +/- 5.4)."
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "15.6"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: mean
+          sample_size: 62
+          variability:
+            variability_type: standard_deviation
+            value: "7.2"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-pm10-24h"
+        name: "Ambient PM10, 24 h average of two Rome sites (sum of the sampled fine and coarse fractions). Overall across both surveys: mean 42.8 +/- 21.8 ug/m3, geometric mean 37.6, range 7.9 to 123, interquartile range 26.9 ug/m3 (Table 2, Overall columns). PM10 was not measured directly: concentrations were calculated by adding the concentrations of the sampled fine and coarse fractions."
+        exposure_agent:
+          id: "ENVO:01000405"
+          name: "respirable suspended particulate matter"
+        exposure_concentration:
+          value: "42.8"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: mean
+          sample_size: 62
+          variability:
+            variability_type: standard_deviation
+            value: "21.8"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-no2-24h"
+        name: "Ambient nitrogen dioxide (NO2), 24 h city mean from five fixed monitoring sites. Overall across both surveys: mean 70.6 +/- 14.4 ug/m3, geometric mean 69.0, range 27.6 to 102, interquartile range 20.9 ug/m3 (Table 2, Overall columns). The 24 h NO2 city means did not show statistically significant differences by season."
+        exposure_agent:
+          id: "CHEBI:33101"
+          name: "nitrogen dioxide"
+        exposure_concentration:
+          value: "70.6"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "14.4"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-co-24h"
+        name: "Ambient carbon monoxide (CO), 24 h city mean from five fixed monitoring sites. Overall across both surveys: mean 7.4 +/- 6.2 mg/m3, geometric mean 5.0, range 1.6 to 28.9, interquartile range 10.5 mg/m3 (Table 2, Overall columns). Daily variability was much higher in winter (12.3 +/- 4.9) than in spring (2.1 +/- 0.3). In Table 4 the CO effect estimates are scaled per 1 mg/m3, not per 10 ug/m3."
+        exposure_agent:
+          id: "CHEBI:17245"
+          name: "carbon monoxide"
+        exposure_concentration:
+          value: "7.4"
+          unit:
+            id: "UCUM:mg/m3"
+            name: "milligram per cubic meter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "6.2"
+            unit:
+              id: "UCUM:mg/m3"
+              name: "milligram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:lagorio-o3-24h"
+        name: "Ambient ozone (O3), 24 h mean from two background monitoring sites. Overall across both surveys: mean 42.6 +/- 29.5 ug/m3, geometric mean 30.8, range 6.6 to 95.3, interquartile range 58.7 ug/m3 (Table 2, Overall columns). Outdoor O3 was higher and more variable in spring (70.9 +/- 12.5) than in winter (16.0 +/- 8.1) and never exceeded 100 ug/m3."
+        exposure_agent:
+          id: "CHEBI:25812"
+          name: "ozone"
+        exposure_concentration:
+          value: "42.6"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+          central_tendency: mean
+          variability:
+            variability_type: standard_deviation
+            value: "29.5"
+            unit:
+              id: "UCUM:ug/m3"
+              name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    has_specified_output:
+      - id: "LF:lagorio-ihd-spirometry-output-panel-average"
+        name: "IHD panel group average of FVC and FEV1 over the two 1999 survey periods (170 spirometries from 7 patients). Group average of the lung function indices across the survey periods, as printed in the Total column of Table 1. No pollutant was associated with these indices in this panel, so no response comparison is derived from this record."
+        experimental_group: baseline
+        measured_under: "COND:lagorio-ambient-rome-1999"
+        evidence:
+          - reference: "PMID:16674831"
+            reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "FVC (% predicted) Male 108 63 10 38 113 11 139 81 10 Female 63 61 9 70 116 12 31 80 4 Total 171 63 10 108 115 12 170 81 9"
+            explanation: "Table 1's FVC block: the IHD columns of the Total row give 170 observations, mean 81, SD 9 (% of predicted)."
+          - reference: "PMID:16674831"
+            reference_title: "Air pollution and lung function among susceptible adult subjects: a panel study."
+            supports: SUPPORT
+            evidence_source: HUMAN_CLINICAL
+            snippet: "FEV1 (% predicted) Male 108 45 10 38 94 13 139 84 10 Female 63 47 10 70 96 18 31 84 5 Total 171 45 10 108 95 16 170 84 10"
+            explanation: "Table 1's FEV1 block: the IHD columns of the Total row give 170 observations, mean 84, SD 10 (% of predicted)."
+        fvc:
+          value: "81"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 170
+          variability:
+            variability_type: standard_deviation
+            value: "9"
+            unit:
+              id: "UO:0000187"
+              name: "percent"
+        fev1:
+          value: "84"
+          unit:
+            id: "UO:0000187"
+            name: "percent"
+          central_tendency: mean
+          sample_size: 170
+          variability:
+            variability_type: standard_deviation
+            value: "10"
+            unit:
+              id: "UO:0000187"
+              name: "percent"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:lagorio-ihd-panel"
+      name: "IHD panel: 7 patients with ischemic heart disease and no concomitant COPD, Catholic University Hospital, Rome"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      age:
+        value: "64"
+        unit:
+          id: "UO:0000036"
+          name: "year"
+        central_tendency: mean
+        sample_size: 7
+        variability:
+          variability_type: standard_deviation
+          value: "10"
+          unit:
+            id: "UO:0000036"
+            name: "year"
+      disease_state: "ischemic heart disease (IHD), with stable angina or previous myocardial infarction; no concomitant COPD"
+      subject_characteristics: "7 patients (6 men, 1 woman), mean age 64 +/- 10 y, mean BMI 26 +/- 3 kg/m2. Eligibility: aged 40 to 64 years, stable angina or myocardial infarction at least 1 year prior to recruitment, no concomitant COPD, no use of calcium channel blockers, no pacemaker, no atrial fibrillation (other arrhythmias admitted), diabetes, Parkinson disease or chronic alcohol abuse, and no use of psycho-chemical drugs. All were regularly treated with aspirin, statins and nitrates, and none used bronchodilators during the survey periods. The five male patients were sustained quitters (having stopped smoking at least 1 year before enrollment) and the single female participant was a never smoker. All lived in census tracts less than 2 km from one of the six air monitoring stations."
+      clinical_context: "Time-series panel study in Rome, Italy; two one-month surveys in 1999 (24 May to 24 June and 18 November to 22 December), examinations scheduled three days apart at the subject's home, 170 spirometries, average 24 repeated observations per case (range 12 to 32)"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:lagorio-spirometry-001"
+        name: "Supervised spirometry for FVC and FEV1, expressed as percentage of predicted"
+        spirometry_standard: "American Thoracic Society, Standardization of Spirometry, 1994 Update (Am J Respir Crit Care Med 1995;152:1107-1136)"
+      - id: "PROTOCOL:lagorio-pm-sampling-001"
+        name: "24 h dichotomous sampling of ambient PM2.5 and PM10-2.5 at two Rome sites"
+      - id: "PROTOCOL:lagorio-gaseous-monitoring-001"
+        name: "Regional network monitoring of NO2, CO, O3 and SO2, and daily city means"
+      - id: "PROTOCOL:lagorio-gee-analysis-001"
+        name: "Generalized estimating equations (GEE) for panel data with 24, 48 and 72 h exposure windows"
+
+# =============================================================================
+# RESPONSE COMPARISONS — the paper's reported GEE effect estimates (Table 4).
+#
+# MODELLING NOTE: these are GEE regression coefficients for panel data — the
+# change in a lung function index (% of predicted) per 10 ug/m3 increase in a
+# pollutant (per 1 mg/m3 for CO), at the 24 h lag or averaged over the
+# previous 48 or 72 hours. There is no control group and no treated group, so
+# control_output and treated_output are deliberately omitted: no pair of
+# output records exists for a continuous-exposure coefficient to point at, and
+# fabricating group records would invent data the paper does not contain.
+# change_value carries the signed beta exactly as Table 4 prints it, with the
+# printed SE as its variability and the printed p-value.
+#
+# Models controlled for repeated individual observations, temperature,
+# relative humidity and day of the week (COPD and IHD panels) or beta-2
+# stimulant inhalation (asthma panel), and all included the within-subject
+# between-period (season) effect.
+#
+# ONLY the coefficients with p < 0.05 are recorded. Table 4's remaining cells
+# (coarse particles, CO and O3 in every panel; all IHD cells; PM in the asthma
+# panel) are non-significant and are described qualitatively on the assays.
+# The metal effect estimates are NOT recorded at all: they appear only as dots
+# and bars in Figures 2 and 3, and no figure-derived value may be extracted.
+# =============================================================================
+
+response_comparisons:
+  # --- COPD panel, FVC ---
+  - id: "COMP:lagorio-copd-pm25-fvc-24h"
+    name: "Change in FVC per 10 ug/m3 increase in ambient PM2.5 during the previous 24 hours, COPD panel"
+    description: "GEE coefficient from Table 4: FVC fell by 0.80 percentage points of predicted (SE 0.36, p=0.027) per 10 ug/m3 increase in PM2.5 concentration during the previous 24 hours. Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:lagorio-copd-spirometry"
+    compared_measurement: "fvc"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.80"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      variability:
+        variability_type: standard_error
+        value: "0.36"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    p_value: 0.027
+    statistical_test: "generalized estimating equations (GEE) for panel data, autoregressive correlation matrix of lag 1, controlling for repeated individual observations, temperature, relative humidity, day of the week and season; scaled per 10 ug/m3 of pollutant"
+    derivation: reported_in_paper
+
+  - id: "COMP:lagorio-copd-pm25-fvc-48h"
+    name: "Change in FVC per 10 ug/m3 increase in ambient PM2.5 averaged over the previous 48 hours, COPD panel"
+    description: "GEE coefficient from Table 4: FVC fell by 0.89 percentage points of predicted (SE 0.41, p=0.031) per 10 ug/m3 increase in the average PM2.5 concentration over the previous 48 hours. Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:lagorio-copd-spirometry"
+    compared_measurement: "fvc"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.89"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      variability:
+        variability_type: standard_error
+        value: "0.41"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    p_value: 0.031
+    statistical_test: "generalized estimating equations (GEE) for panel data, autoregressive correlation matrix of lag 1, controlling for repeated individual observations, temperature, relative humidity, day of the week and season; scaled per 10 ug/m3 of pollutant"
+    derivation: reported_in_paper
+
+  - id: "COMP:lagorio-copd-pm25-fvc-72h"
+    name: "Change in FVC per 10 ug/m3 increase in ambient PM2.5 averaged over the previous 72 hours, COPD panel"
+    description: "GEE coefficient from Table 4: FVC fell by 1.10 percentage points of predicted (SE 0.55, p=0.044) per 10 ug/m3 increase in the average PM2.5 concentration over the previous 72 hours - the largest of the three PM2.5-FVC estimates. Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:lagorio-copd-spirometry"
+    compared_measurement: "fvc"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-1.10"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      variability:
+        variability_type: standard_error
+        value: "0.55"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    p_value: 0.044
+    statistical_test: "generalized estimating equations (GEE) for panel data, autoregressive correlation matrix of lag 1, controlling for repeated individual observations, temperature, relative humidity, day of the week and season; scaled per 10 ug/m3 of pollutant"
+    derivation: reported_in_paper
+
+  - id: "COMP:lagorio-copd-pm10-fvc-24h"
+    name: "Change in FVC per 10 ug/m3 increase in ambient PM10 during the previous 24 hours, COPD panel"
+    description: "GEE coefficient from Table 4: FVC fell by 0.66 percentage points of predicted (SE 0.30, p=0.027) per 10 ug/m3 increase in PM10 concentration during the previous 24 hours. The corresponding coarse-fraction (PM10-2.5) coefficient at the same lag is larger but far less precise and not significant (-1.32, SE 1.06, p=0.210), which is the basis of the authors' attribution of the effect to the fine fraction. Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:lagorio-copd-spirometry"
+    compared_measurement: "fvc"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.66"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      variability:
+        variability_type: standard_error
+        value: "0.30"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    p_value: 0.027
+    statistical_test: "generalized estimating equations (GEE) for panel data, autoregressive correlation matrix of lag 1, controlling for repeated individual observations, temperature, relative humidity, day of the week and season; scaled per 10 ug/m3 of pollutant"
+    derivation: reported_in_paper
+
+  - id: "COMP:lagorio-copd-pm10-fvc-48h"
+    name: "Change in FVC per 10 ug/m3 increase in ambient PM10 averaged over the previous 48 hours, COPD panel"
+    description: "GEE coefficient from Table 4: FVC fell by 0.75 percentage points of predicted (SE 0.35, p=0.032) per 10 ug/m3 increase in the average PM10 concentration over the previous 48 hours. Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:lagorio-copd-spirometry"
+    compared_measurement: "fvc"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.75"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      variability:
+        variability_type: standard_error
+        value: "0.35"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    p_value: 0.032
+    statistical_test: "generalized estimating equations (GEE) for panel data, autoregressive correlation matrix of lag 1, controlling for repeated individual observations, temperature, relative humidity, day of the week and season; scaled per 10 ug/m3 of pollutant"
+    derivation: reported_in_paper
+
+  - id: "COMP:lagorio-copd-pm10-fvc-72h"
+    name: "Change in FVC per 10 ug/m3 increase in ambient PM10 averaged over the previous 72 hours, COPD panel"
+    description: "GEE coefficient from Table 4: FVC fell by 0.94 percentage points of predicted (SE 0.47, p=0.045) per 10 ug/m3 increase in the average PM10 concentration over the previous 72 hours. Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:lagorio-copd-spirometry"
+    compared_measurement: "fvc"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.94"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      variability:
+        variability_type: standard_error
+        value: "0.47"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    p_value: 0.045
+    statistical_test: "generalized estimating equations (GEE) for panel data, autoregressive correlation matrix of lag 1, controlling for repeated individual observations, temperature, relative humidity, day of the week and season; scaled per 10 ug/m3 of pollutant"
+    derivation: reported_in_paper
+
+  # --- COPD panel, FEV1 ---
+  - id: "COMP:lagorio-copd-no2-fev1-24h"
+    name: "Change in FEV1 per 10 ug/m3 increase in ambient NO2 during the previous 24 hours, COPD panel"
+    description: "GEE coefficient from Table 4: FEV1 fell by 1.16 percentage points of predicted (SE 0.41, p=0.005) per 10 ug/m3 increase in NO2 concentration during the previous 24 hours. Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:lagorio-copd-spirometry"
+    compared_measurement: "fev1"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-1.16"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      variability:
+        variability_type: standard_error
+        value: "0.41"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    p_value: 0.005
+    statistical_test: "generalized estimating equations (GEE) for panel data, autoregressive correlation matrix of lag 1, controlling for repeated individual observations, temperature, relative humidity, day of the week and season; scaled per 10 ug/m3 of pollutant"
+    derivation: reported_in_paper
+
+  - id: "COMP:lagorio-copd-no2-fev1-48h"
+    name: "Change in FEV1 per 10 ug/m3 increase in ambient NO2 averaged over the previous 48 hours, COPD panel"
+    description: "GEE coefficient from Table 4: FEV1 fell by 1.38 percentage points of predicted (SE 0.49, p=0.005) per 10 ug/m3 increase in the average NO2 concentration over the previous 48 hours - the largest NO2 effect in the COPD panel. The 72 h estimate (-0.94, SE 0.60) is not significant (p=0.117). Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:lagorio-copd-spirometry"
+    compared_measurement: "fev1"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-1.38"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      variability:
+        variability_type: standard_error
+        value: "0.49"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    p_value: 0.005
+    statistical_test: "generalized estimating equations (GEE) for panel data, autoregressive correlation matrix of lag 1, controlling for repeated individual observations, temperature, relative humidity, day of the week and season; scaled per 10 ug/m3 of pollutant"
+    derivation: reported_in_paper
+
+  - id: "COMP:lagorio-copd-pm25-fev1-72h"
+    name: "Change in FEV1 per 10 ug/m3 increase in ambient PM2.5 averaged over the previous 72 hours, COPD panel"
+    description: "GEE coefficient from Table 4: FEV1 fell by 1.06 percentage points of predicted (SE 0.50, p=0.032) per 10 ug/m3 increase in the average PM2.5 concentration over the previous 72 hours. This is the only significant PM2.5-FEV1 estimate: the 24 h (-0.47, SE 0.33, p=0.149) and 48 h (-0.69, SE 0.37, p=0.061) coefficients are not significant, which is what the authors mean by the FEV1 effect appearing only once 72 hours of exposure have accumulated. Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:lagorio-copd-spirometry"
+    compared_measurement: "fev1"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-1.06"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      variability:
+        variability_type: standard_error
+        value: "0.50"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    p_value: 0.032
+    statistical_test: "generalized estimating equations (GEE) for panel data, autoregressive correlation matrix of lag 1, controlling for repeated individual observations, temperature, relative humidity, day of the week and season; scaled per 10 ug/m3 of pollutant"
+    derivation: reported_in_paper
+
+  - id: "COMP:lagorio-copd-pm10-fev1-72h"
+    name: "Change in FEV1 per 10 ug/m3 increase in ambient PM10 averaged over the previous 72 hours, COPD panel"
+    description: "GEE coefficient from Table 4: FEV1 fell by 0.87 percentage points of predicted (SE 0.43, p=0.040) per 10 ug/m3 increase in the average PM10 concentration over the previous 72 hours. As with PM2.5, only the 72 h cumulative window is significant. Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:lagorio-copd-spirometry"
+    compared_measurement: "fev1"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-0.87"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      variability:
+        variability_type: standard_error
+        value: "0.43"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    p_value: 0.040
+    statistical_test: "generalized estimating equations (GEE) for panel data, autoregressive correlation matrix of lag 1, controlling for repeated individual observations, temperature, relative humidity, day of the week and season; scaled per 10 ug/m3 of pollutant"
+    derivation: reported_in_paper
+
+  # --- Asthma panel, FEV1 ---
+  - id: "COMP:lagorio-asthma-no2-fev1-24h"
+    name: "Change in FEV1 per 10 ug/m3 increase in ambient NO2 during the previous 24 hours, asthma panel"
+    description: "GEE coefficient from Table 4: FEV1 fell by 1.10 percentage points of predicted (SE 0.35, p=0.002) per 10 ug/m3 increase in NO2 concentration during the previous 24 hours. Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:lagorio-asthma-spirometry"
+    compared_measurement: "fev1"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-1.10"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      variability:
+        variability_type: standard_error
+        value: "0.35"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    p_value: 0.002
+    statistical_test: "generalized estimating equations (GEE) for panel data, autoregressive correlation matrix of lag 1, controlling for repeated individual observations, temperature, relative humidity, beta-2 stimulant inhalation and season; scaled per 10 ug/m3 of pollutant"
+    derivation: reported_in_paper
+
+  - id: "COMP:lagorio-asthma-no2-fev1-48h"
+    name: "Change in FEV1 per 10 ug/m3 increase in ambient NO2 averaged over the previous 48 hours, asthma panel"
+    description: "GEE coefficient from Table 4: FEV1 fell by 1.28 percentage points of predicted (SE 0.37, p=0.001) per 10 ug/m3 increase in the average NO2 concentration over the previous 48 hours - the strongest association in the asthma panel. Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:lagorio-asthma-spirometry"
+    compared_measurement: "fev1"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-1.28"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      variability:
+        variability_type: standard_error
+        value: "0.37"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    p_value: 0.001
+    statistical_test: "generalized estimating equations (GEE) for panel data, autoregressive correlation matrix of lag 1, controlling for repeated individual observations, temperature, relative humidity, beta-2 stimulant inhalation and season; scaled per 10 ug/m3 of pollutant"
+    derivation: reported_in_paper
+
+  - id: "COMP:lagorio-asthma-no2-fev1-72h"
+    name: "Change in FEV1 per 10 ug/m3 increase in ambient NO2 averaged over the previous 72 hours, asthma panel"
+    description: "GEE coefficient from Table 4: FEV1 fell by 1.17 percentage points of predicted (SE 0.44, p=0.007) per 10 ug/m3 increase in the average NO2 concentration over the previous 72 hours. Unlike the COPD panel, the asthma panel shows a significant NO2 effect at all three exposure windows. Continuous-exposure regression coefficient; no control/treated output pair exists (see section note)."
+    derived_from_assay: "LF:lagorio-asthma-spirometry"
+    compared_measurement: "fev1"
+    change_type: absolute_difference
+    change_direction: decreased
+    change_value:
+      value: "-1.17"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      variability:
+        variability_type: standard_error
+        value: "0.44"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    p_value: 0.007
+    statistical_test: "generalized estimating equations (GEE) for panel data, autoregressive correlation matrix of lag 1, controlling for repeated individual observations, temperature, relative humidity, beta-2 stimulant inhalation and season; scaled per 10 ug/m3 of pollutant"
+    derivation: reported_in_paper
+
+# =============================================================================
+# KEY EVENT RELATIONSHIP
+#
+# The paper does not measure oxidative stress: it proposes it as the mechanism
+# linking the transition metals in fine PM to the observed lung function
+# decrements, citing the metals' water solubility and its established link to
+# oxidative damage. The relationship is therefore recorded with weak evidence
+# support — hypothesised by the authors and supported by cited prior work,
+# not demonstrated by any measurement in this study.
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:lagorio-oxidative-stress-to-decreased-lung-function"
+    name: "Oxidative stress induced by transition metals in fine particulate matter leads to decreased lung function"
+    description: "The authors attribute the fine-PM and metal associations with FVC and FEV1 decrements in COPD patients to oxidative stress: the ability of particulate matter to induce oxidative stress in the airways is cited as an important biological mechanism, zinc and iron are given a potential role via oxidative stress, and the two metals' high water solubility is noted as having been directly related to oxidative damage. No oxidative stress marker was measured in this study, so the link is hypothesised rather than demonstrated here."
+    upstream_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    relationship_type: "indirectly leads to"
+    evidence_support: weak
