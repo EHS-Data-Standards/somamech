@@ -375,7 +375,7 @@ balf_sputum_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
-      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; n = 4-8 per time point, data as mean +/- SD"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; data as mean +/- SD. Group sizes differ per endpoint and are stated in each assay description - BALF and serum CC16 n = 4-7 per time point (Fig. 2), BALF total protein n = 4-8 per time point (Fig. 3), lung mRNA n = 3-6 per group (Fig. 4) - so no single n is carried on this shared subject record"
       sample_type: balf
       sample_collection_method: "Airways lavaged five times with 0.8 ml PBS; cell-free BALF assayed in duplicate"
       collection_site: "whole lung bronchoalveolar lavage"
@@ -535,7 +535,7 @@ balf_sputum_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
-      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; n = 4-8 per time point, data as mean +/- SD"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; data as mean +/- SD. Group sizes differ per endpoint and are stated in each assay description - BALF and serum CC16 n = 4-7 per time point (Fig. 2), BALF total protein n = 4-8 per time point (Fig. 3), lung mRNA n = 3-6 per group (Fig. 4) - so no single n is carried on this shared subject record"
       sample_type: balf
       sample_collection_method: "Airways lavaged five times with 0.8 ml PBS; 400 cells per sample counted on Diff-Quick stained cytospins"
       collection_site: "whole lung bronchoalveolar lavage"
@@ -755,7 +755,7 @@ gene_expression_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
-      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; n = 4-8 per time point, data as mean +/- SD"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; data as mean +/- SD. Group sizes differ per endpoint and are stated in each assay description - BALF and serum CC16 n = 4-7 per time point (Fig. 2), BALF total protein n = 4-8 per time point (Fig. 3), lung mRNA n = 3-6 per group (Fig. 4) - so no single n is carried on this shared subject record"
       sample_type: balf
       sample_collection_method: "Airways lavaged five times with 0.8 ml PBS; cell-free BALF assayed in duplicate for CC16"
       collection_site: "whole lung bronchoalveolar lavage"
@@ -958,7 +958,7 @@ gene_expression_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
-      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; n = 4-8 per time point, data as mean +/- SD"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; data as mean +/- SD. Group sizes differ per endpoint and are stated in each assay description - BALF and serum CC16 n = 4-7 per time point (Fig. 2), BALF total protein n = 4-8 per time point (Fig. 3), lung mRNA n = 3-6 per group (Fig. 4) - so no single n is carried on this shared subject record"
       sample_type: blood
       sample_collection_method: "Blood taken from the retro orbital plexus before BAL and centrifuged; serum aliquots stored at -80 C and assayed in duplicate"
       collection_site: "retro orbital plexus"
@@ -1163,7 +1163,7 @@ gene_expression_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
-      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; n = 4-8 per time point, data as mean +/- SD"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; data as mean +/- SD. Group sizes differ per endpoint and are stated in each assay description - BALF and serum CC16 n = 4-7 per time point (Fig. 2), BALF total protein n = 4-8 per time point (Fig. 3), lung mRNA n = 3-6 per group (Fig. 4) - so no single n is carried on this shared subject record"
       sample_type: biopsy
       sample_collection_method: "Lungs snap frozen in liquid nitrogen and stored at -80 C; total RNA isolated from total lung tissue with the RNeasy Mini kit"
       collection_site: "whole lung"
@@ -1360,7 +1360,7 @@ gene_expression_assays:
         id: "NCBITaxon:10090"
         name: "Mus musculus"
       disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
-      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; n = 4-8 per time point, data as mean +/- SD"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; data as mean +/- SD. Group sizes differ per endpoint and are stated in each assay description - BALF and serum CC16 n = 4-7 per time point (Fig. 2), BALF total protein n = 4-8 per time point (Fig. 3), lung mRNA n = 3-6 per group (Fig. 4) - so no single n is carried on this shared subject record"
       sample_type: biopsy
       sample_collection_method: "Lungs snap frozen in liquid nitrogen and stored at -80 C; total RNA isolated from total lung tissue with the RNeasy Mini kit"
       collection_site: "whole lung"
@@ -1393,6 +1393,13 @@ goblet_cell_assays:
       which the authors attribute to predominant ultrafine particle deposition
       in smaller airways. NAC significantly decreased it. Values are plotted
       only, so no numeric measurements are recorded here.
+      NOTE a tension inside the paper itself: the results text calls the
+      allergen-only (S/OVA) effect significant while citing both the small-
+      and large-airway panels, whereas the discussion narrows it to
+      significant only in the large airways. The S/OVA output record is kept
+      here because the results text covers the small airways, but the
+      discussion's narrower reading is quoted on the companion large-airway
+      assay and should be read alongside this one.
     evidence:
       - reference: "PMID:20420656"
         reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
