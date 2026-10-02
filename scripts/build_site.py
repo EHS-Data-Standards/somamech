@@ -49,8 +49,14 @@ def slugify(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", str(value).lower()).strip("-")
 
 
+ACRONYMS = {"mcc", "balf", "asl", "cftr", "egfr", "foxj", "ros"}
+
+
 def section_label(key: str) -> str:
-    return key.replace("_", " ").capitalize()
+    words = [w.upper() if w in ACRONYMS else w for w in key.split("_")]
+    if words and words[0] not in {w.upper() for w in ACRONYMS}:
+        words[0] = words[0].capitalize()
+    return " ".join(words)
 
 
 def short_label(slug: str) -> str:
