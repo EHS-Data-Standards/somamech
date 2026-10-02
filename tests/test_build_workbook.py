@@ -165,8 +165,11 @@ balf_sputum_assays:
 
     ws = openpyxl.load_workbook(out)["BALFSputumAssay"]
     header = [c.value for c in ws[1]]
+    # term references flatten to a label column plus an _id column
     col = header.index("target_cell_type") + 1
-    assert ws.cell(2, col).value == "eosinophil (CL:0000771)"
+    assert ws.cell(2, col).value == "eosinophil"
+    id_col = header.index("target_cell_type_id") + 1
+    assert ws.cell(2, id_col).value == "CL:0000771"
 
 
 def test_review_only_paper_contributes_key_events_and_relationships(tmp_path):

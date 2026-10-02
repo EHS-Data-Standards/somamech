@@ -43,6 +43,7 @@ nav:
   - Schema: elements/index.md
   - Data Harmonizer: harmonizer.html
   - Examples: examples.md
+  - Workbook Guide: workbook-guide.md
   - Artifacts: artifacts.md
   - Claude Code Skills: claude-code-skills.md
   - About: about.md
