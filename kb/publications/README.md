@@ -21,6 +21,9 @@ from ALL papers, each row's first column naming the paper it came from.
   is a generated product and is never committed or hand-edited).
 - CI rebuilds and publishes it after every merge to main: download the
   current copy from the repo's **workbook-latest** release.
+- The KB review site serves its own copy at the site root
+  (`soma_extractions.xlsx`), built from the same tagged tree as the deployed
+  pages, so the site's download always matches what the site shows.
 - `just check-entity-ids` (part of `just qc`) enforces the pooling rules:
   KeyEvent IDs are shared vocabulary across papers; every other ID belongs
   to exactly one paper.
