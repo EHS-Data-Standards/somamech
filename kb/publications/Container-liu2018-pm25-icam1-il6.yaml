@@ -36,6 +36,15 @@
 #   3. Human: plasma from 8 COPD patients (all with a smoking history) and
 #      8 never-smoking healthy subjects, Taoyuan General Hospital
 #      (TYGH99025). Readouts: WBC, CRP, sICAM-1 and IL-6.
+#      This cohort's exposure is recorded as cigarette smoke (ENVO:01000838),
+#      NOT PM2.5: the paper enrolled long-term smokers with COPD explicitly
+#      "instead of PMs-inhaled humans" because blood from ambient-PMs-induced
+#      COPD patients is hard to collect, and Table 1 documents pack-years and
+#      nothing else. The authors' remark that one cigarette is equivalent to
+#      a daily ambient PM2.5 concentration of 667 ug/m3 is a third-party
+#      estimate cited as rationale, not a measurement in these 8 subjects.
+#      The arm corroborates the mouse sICAM-1/IL-6 signature in human COPD;
+#      it is not itself a PM2.5 exposure measurement.
 #
 # NUMERIC VALUES - what is and is not recorded here:
 #   The only group-level magnitudes stated numerically anywhere in the running
@@ -945,7 +954,7 @@ gene_expression_assays:
 
   - id: "GE:liu-a549-u937-adhesion"
     name: "U937 monocyte adhesion to PMs-treated A549 cells"
-    description: "BCECF/AM-labelled U937 monocytic cells incubated for 1 h with A549 monolayers pretreated for 24 h with 50 or 100 ug/ml O-PMs or W-PMs, with or without 1 h of 5 mM NAC, and bound cells counted by fluorescence microscopy. Control confluent A549 cells showed minimal binding; adhesion was significantly increased by PMs pretreatment, and the number of monocytes that adhered to O-PMs-treated cells was 2-times higher than to W-PMs-treated cells. NAC pretreatment significantly decreased the O-PMs-increased adhesion. The 2-fold O-PMs-over-W-PMs ratio is the only magnitude stated for this assay and is recorded as a response_comparisons entry rather than as an output value, because the paper gives no per-group bound-cell counts. Note that the Fig. 1d legend reports mean +/- SD of three independent experiments, unlike the mean +/- SEM declared in the Statistical analysis section."
+    description: "BCECF/AM-labelled U937 monocytic cells incubated for 1 h with A549 monolayers pretreated for 24 h with 50 or 100 ug/ml O-PMs or W-PMs, with or without 1 h of 5 mM NAC, and bound cells counted by fluorescence microscopy. Control confluent A549 cells showed minimal binding; adhesion was significantly increased by PMs pretreatment, and the number of monocytes that adhered to O-PMs-treated cells was 2-times higher than to W-PMs-treated cells. NAC pretreatment significantly decreased the O-PMs-increased adhesion, and co-treatment with 1 ug/ml anti-ICAM-1 antibody (against an anti-IgG isotype control) also significantly decreased it, which is what establishes the adhesion as ICAM-1-mediated. The 2-fold O-PMs-over-W-PMs ratio is the only magnitude stated for this assay and is recorded as a response_comparisons entry rather than as an output value, because the paper gives no per-group bound-cell counts. Note that the Fig. 1d legend reports mean +/- SD of three independent experiments, unlike the mean +/- SEM declared in the Statistical analysis section."
     target_gene: "NCBIGene:3383"
     gene_expression_method: "fluorescence-microscopy counting of BCECF/AM-labelled adherent U937 cells"
     evidence:
@@ -961,6 +970,12 @@ gene_expression_assays:
         evidence_source: IN_VITRO
         snippet: "Furthermore, NAC pretreatment significantly decreased O-PMs-increased monocyte adhesion (Fig. 1d)."
         explanation: "States the NAC effect recorded in this assay's NAC output record, tying the adhesion increase to oxidative stress."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: IN_VITRO
+        snippet: "Furthermore, ICAM-1 antibody treatment significantly decreased the monocyte adhesion to O-PMs-treated epithelial cells (Fig. 2f )."
+        explanation: "States the antibody-blockade result recorded in this assay's anti-ICAM-1 output record, which establishes that the adhesion measured here is ICAM-1-mediated."
     has_exposure_condition:
       - id: "EXPOSURE:liu-a549-untreated-24h"
         name: "Untreated A549 cells, 24 h (normalization reference for fold change)"
@@ -1044,6 +1059,25 @@ gene_expression_assays:
           unit:
             id: "UO:0000032"
             name: "hour"
+      - id: "EXPOSURE:liu-a549-antiicam1-opms-24h"
+        name: "Anti-ICAM-1 antibody 1 ug/ml co-treated with O-PMs 100 ug/ml for 24 h"
+        exposure_concentration:
+          value: "1"
+          unit:
+            id: "UO:0000274"
+            name: "microgram per milliliter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu-a549-antiigg-opms-24h"
+        name: "Control anti-IgG antibody co-treated with O-PMs 100 ug/ml for 24 h (isotype control for the ICAM-1 blockade)"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
     has_specified_output:
       - id: "GE:liu-a549-u937-adhesion-output-control"
         name: "Untreated A549 cells - bound U937 cells"
@@ -1075,6 +1109,16 @@ gene_expression_assays:
         description: "O-PMs-increased monocyte adhesion significantly decreased by NAC pretreatment. Counts figure-only; none recorded."
         experimental_group: treated
         measured_under: "EXPOSURE:liu-a549-nac-opms-100-24h"
+      - id: "GE:liu-a549-u937-adhesion-output-antiicam1-opms"
+        name: "Anti-ICAM-1 antibody + O-PMs 100 ug/ml A549 cells - bound U937 cells"
+        description: "Monocyte adhesion to O-PMs-treated epithelial cells significantly decreased by ICAM-1 antibody treatment. This is the blockade that establishes the adhesion is ICAM-1-mediated rather than a general consequence of particle exposure. Counts figure-only; none recorded."
+        experimental_group: treated
+        measured_under: "EXPOSURE:liu-a549-antiicam1-opms-24h"
+      - id: "GE:liu-a549-u937-adhesion-output-antiigg-opms"
+        name: "Anti-IgG isotype control + O-PMs 100 ug/ml A549 cells - bound U937 cells"
+        description: "Isotype control for the ICAM-1 blockade, co-treated with O-PMs. Counts figure-only; none recorded."
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:liu-a549-antiigg-opms-24h"
     assay_date: "2018-01-01"
     informs_on_key_event:
       id: "KE:ke-airway-inflammation"
@@ -2363,7 +2407,7 @@ gene_expression_assays:
 
   - id: "GE:liu-human-copd-plasma"
     name: "Plasma sICAM-1, IL-6, WBC and CRP in COPD patients versus healthy subjects"
-    description: "Plasma from 8 COPD patients with a smoking history and 8 never-smoking healthy subjects with normal pulmonary function, assayed for sICAM-1 and IL-6 by ELISA alongside white blood cell count and C-reactive protein. COPD patients had higher plasma levels of sICAM-1 and IL-6 than healthy subjects, consistent with the animal model, and plasma WBC and CRP also showed a highly statistically significant increase. Table 1 lists sICAM-1 and IL-6 for each of the 16 individuals, but the paper reports no group mean or spread for either marker and the group-level results appear only as Fig. 7a-d, so no numeric value is recorded here rather than deriving one from the individual rows."
+    description: "Plasma from 8 COPD patients with a smoking history and 8 never-smoking healthy subjects with normal pulmonary function, assayed for sICAM-1 and IL-6 by ELISA alongside white blood cell count and C-reactive protein. COPD patients had higher plasma levels of sICAM-1 and IL-6 than healthy subjects, consistent with the animal model, and plasma WBC and CRP also showed a highly statistically significant increase. Table 1 lists sICAM-1 and IL-6 for each of the 16 individuals, but the paper reports no group mean or spread for either marker and the group-level results appear only as Fig. 7a-d, so no numeric value is recorded here rather than deriving one from the individual rows. IMPORTANT - this cohort was NOT exposed to ambient PM2.5: the paper enrolled long-term smokers with COPD explicitly in place of PMs-inhaled humans, so the exposure recorded for it is cigarette smoke. The arm therefore corroborates that the sICAM-1/IL-6 signature seen in PMs-treated mice is also present in human COPD, but it is not itself a PM2.5 exposure measurement."
     target_gene: "NCBIGene:3383"
     gene_expression_method: "ELISA, with clinical haematology for WBC and CRP"
     evidence:
@@ -2385,14 +2429,29 @@ gene_expression_assays:
         evidence_source: HUMAN_CLINICAL
         snippet: "The plasma levels of WBC and CRP also showed a highly statistically significant increase in COPD patients compared to the healthy subjects (Fig. 7a and b)."
         explanation: "States the WBC and CRP arm of this assay, the general inflammatory markers measured alongside sICAM-1 and IL-6."
+      - reference: "PMID:29329563"
+        reference_title: "PM(2.5)-induced oxidative stress increases intercellular adhesion molecule-1 expression in lung epithelial cells through the IL-6/AKT/STAT3/NF-κB-dependent pathway."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "So patients who had a long-term smoking history ( ≥10 pack-years) and were diagnosed with COPD instead of PMs-inhaled humans were enrolled into the current study."
+        explanation: "Establishes that this cohort's documented exposure is cigarette smoking rather than ambient PM2.5, which is why the exposure condition records ENVO:01000838 smoke rather than particulate matter."
     has_exposure_condition:
       - id: "EXPOSURE:liu-human-never-smoker"
         name: "Never-smoking healthy subjects with normal pulmonary function (reference group)"
+      # The documented exposure for this cohort is cigarette smoking, not
+      # PM2.5. The paper is explicit that it enrolled smokers with COPD
+      # "instead of PMs-inhaled humans" because blood from ambient-PMs-induced
+      # COPD patients is hard to collect, and Table 1 records pack-years and
+      # nothing else. The authors' remark that smoking one cigarette is
+      # equivalent to a daily ambient PM2.5 concentration of 667 ug/m3 is a
+      # third-party estimate cited as rationale, not a measurement in these
+      # eight subjects, so the agent here is smoke (matching the precedent in
+      # Container-isara2016) rather than particulate matter.
       - id: "EXPOSURE:liu-human-copd-smoking"
-        name: "COPD patients with a smoking history (ex-smokers 12-38 pack-years and active smokers 30-33 pack-years)"
+        name: "Cigarette smoking (ex-smokers 12-38 pack-years and active smokers 30-33 pack-years; enrollment required a long-term history of at least 10 pack-years)"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000838"
+          name: "smoke"
     has_specified_output:
       - id: "GE:liu-human-copd-plasma-output-healthy"
         name: "Healthy never-smoking subjects - plasma sICAM-1, IL-6, WBC and CRP"
@@ -2522,9 +2581,8 @@ response_comparisons:
 
   - id: "COMP:liu-u937-adhesion-opms-vs-wpms"
     name: "U937 monocyte adhesion, O-PMs-treated vs W-PMs-treated A549 cells"
-    description: "The paper states that the number of monocytes adhering to O-PMs-treated cells was 2-times higher than to W-PMs-treated cells. This comparison is fraction-vs-fraction rather than treated-vs-untreated: control_output here is the W-PMs 100 ug/ml record, which is the comparator the paper used, not an unexposed control. No per-group bound-cell counts are reported, so the ratio is recorded only at this analysis layer."
+    description: "The paper states that the number of monocytes adhering to O-PMs-treated cells was 2-times higher than to W-PMs-treated cells. Two things about this entry are unusual and deliberate. First, the comparison is fraction-vs-fraction rather than treated-vs-untreated: control_output here is the W-PMs 100 ug/ml record, which is the comparator the paper used, not an unexposed control. Second, compared_measurement is omitted: the measured quantity is a count of bound U937 cells, which has no named measurement slot on GeneExpressionOutput, and neither referenced output record carries a measurement slot at all, so naming one would point at a field that does not exist. No per-group bound-cell counts are reported, so the ratio is recorded only at this analysis layer."
     derived_from_assay: "GE:liu-a549-u937-adhesion"
-    compared_measurement: "protein_level"
     control_output: "GE:liu-a549-u937-adhesion-output-wpms100"
     treated_output: "GE:liu-a549-u937-adhesion-output-opms100"
     change_type: fold_change
