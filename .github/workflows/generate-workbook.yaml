@@ -2,9 +2,13 @@
 # every per-paper YAML in kb/publications/. Runs after each merge to main
 # (never on PRs, so extraction diffs stay readable) and on demand.
 #
-# The current workbook is available two ways:
-#   * the "workbook-latest" release on this repo (stable download URL)
+# The current workbook is available three ways:
+#   * the "workbook-latest" release on this repo (stable download URL,
+#     tracks main)
 #   * this workflow run's uploaded artifact
+#   * the KB review site serves a copy at its root, rebuilt by
+#     deploy-kb-site.yaml from the released tree so it matches the
+#     deployed pages (may lag main between releases)
 ---
 name: Generate pooled workbook
 
