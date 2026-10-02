@@ -3,7 +3,9 @@
 # airway inflammation, and oxidative stress in asthmatic children"
 # =============================================================================
 #
-# Source: Environ Health Perspect. 2009;117(4):668-674
+# Source: Environ Health Perspect (2009) — the journal and year the cache
+#   entry's frontmatter records. Volume, issue and page numbers are not in the
+#   retrievable text and are deliberately not stated here.
 # DOI: 10.1289/ehp11813
 # PMID: 19440509
 #
@@ -109,11 +111,17 @@ protocols:
     quality_control_criteria: "Three acceptable flow-volume loops attempted from a maximum of eight forced vital capacity manoeuvres, with two loops agreeing within 0.20 L for FVC and FEV1 and within 0.20 L/sec for FEF25-75%; the value assigned to the child was the largest acceptable value within 200 mL of a second value. Spirometers were calibrated daily and results adjusted for temperature and barometric pressure."
     institution: "Health Canada, with testing conducted at elementary schools in Windsor, Ontario, Canada"
 
-  - protocol_type: SpirometryProtocol
+  # Typed as a MolecularAssayProtocol, not a SpirometryProtocol: FeNO is an
+  # analyte measured by chemiluminescence in exhaled gas, not a spirometry
+  # manoeuvre. That lets detection_method carry the chemiluminescence method;
+  # the ATS/ERS guideline the measurement follows is stated in the description
+  # and quality_control_criteria instead of in spirometry_standard, which this
+  # protocol class does not have.
+  - protocol_type: MolecularAssayProtocol
     id: "PROTOCOL:liu2009-feno-001"
     name: "Single-breath on-line fractional exhaled nitric oxide at 0.05 L/sec"
+    detection_method: "chemiluminescence (Eco Physics CLD AL MED analyzer), single-breath on-line measurement at an exhalation flow rate of 0.05 L/sec per American Thoracic Society and European Respiratory Society Guidelines (American Thoracic Society 2005)"
     description: "Single-breath on-line measures of FeNO carried out according to American Thoracic Society and European Respiratory Society Guidelines (American Thoracic Society 2005) using an Eco Physics CLD AL MED chemiluminescence analyzer (Eco Medics AG, Duernten, Switzerland). Before performing a slow vital capacity manoeuvre over at least 6 sec at 0.05 L/sec, subjects took three tidal volume breaths through a DENOX 88 (Eco Medics AG, Duernten, Switzerland) containing an NOx absorber cartridge that scrubs ambient air to between 0 and 1.5 ppb. The test was repeated a maximum of eight times in an attempt to obtain at least two acceptable plateau FeNO values within 10%, and the value assigned to the subject was the mean of those two values. FeNO statistics were calculated with spiroWare 88 software (Eco Medics AG, Duernten, Switzerland). The authors note in the discussion that the single 0.05 L/sec flow rate may not capture lower-airway inflammation, citing a study in which wood smoke raised FeNO measured at 0.27 L/sec but not at 0.05 L/sec — a stated limitation of this protocol, not a result of this study."
-    spirometry_standard: "American Thoracic Society and European Respiratory Society Guidelines (American Thoracic Society 2005)"
     equipment_required:
       - "Eco Physics CLD AL MED chemiluminescence analyzer (Eco Medics AG, Duernten, Switzerland)"
       - "DENOX 88 NOx absorber cartridge (Eco Medics AG, Duernten, Switzerland)"
@@ -492,46 +500,31 @@ lung_function_assays:
         exposure_agent:
           id: "ENVO:00002005"
           name: "air"
-      - id: "EXPOSURE:liu2009-so2-3day"
-        name: "Interquartile-range increase of 5.4 ppb in the 3-day average ambient sulfur dioxide concentration"
+      # The FeNO associations come from the single-pollutant model (Table 4),
+      # whose averaging window the retrievable text never states — it reports
+      # 3-day persistence only for FEF25-75% and TBARS. These conditions
+      # therefore carry NO exposure_duration: claiming the 3-day window here
+      # would assert a window the paper does not.
+      - id: "EXPOSURE:liu2009-so2-window-unstated"
+        name: "Interquartile-range increase in ambient sulfur dioxide, averaging window not stated in the retrievable text"
         exposure_agent:
           id: "CHEBI:18422"
           name: "sulfur dioxide"
-        exposure_duration:
-          value: "72"
-          unit:
-            id: "UO:0000032"
-            name: "hour"
-      - id: "EXPOSURE:liu2009-no2-3day"
-        name: "Interquartile-range increase of 6.8 ppb in the 3-day average ambient nitrogen dioxide concentration"
+      - id: "EXPOSURE:liu2009-no2-window-unstated"
+        name: "Interquartile-range increase in ambient nitrogen dioxide, averaging window not stated in the retrievable text"
         exposure_agent:
           id: "CHEBI:33101"
           name: "nitrogen dioxide"
-        exposure_duration:
-          value: "72"
-          unit:
-            id: "UO:0000032"
-            name: "hour"
-      - id: "EXPOSURE:liu2009-pm25-3day"
-        name: "Interquartile-range increase of 5.4 microgram per cubic metre in the 3-day average ambient PM2.5 concentration"
+      - id: "EXPOSURE:liu2009-pm25-window-unstated"
+        name: "Interquartile-range increase in ambient PM2.5, averaging window not stated in the retrievable text"
         exposure_agent:
           id: "ENVO:01000415"
           name: "fine respirable suspended particulate matter"
-        exposure_duration:
-          value: "72"
-          unit:
-            id: "UO:0000032"
-            name: "hour"
-      - id: "EXPOSURE:liu2009-o3-3day"
-        name: "Interquartile-range increase of 5.3 ppb in the 3-day average ambient ozone concentration"
+      - id: "EXPOSURE:liu2009-o3-window-unstated"
+        name: "Interquartile-range increase in ambient ozone, averaging window not stated in the retrievable text"
         exposure_agent:
           id: "CHEBI:25812"
           name: "ozone"
-        exposure_duration:
-          value: "72"
-          unit:
-            id: "UO:0000032"
-            name: "hour"
     informs_on_key_event:
       id: "KE:ke-airway-inflammation"
       name: "Airway inflammation"
@@ -550,7 +543,7 @@ lung_function_assays:
       clinical_context: "School-based longitudinal panel study, October to December 2005, Windsor, Ontario, Canada; approved by the Research Ethics Board of Health Canada with written parental informed consent."
       collection_site: "elementary schools in Windsor, Ontario, Canada"
     follows_protocols:
-      - protocol_type: SpirometryProtocol
+      - protocol_type: MolecularAssayProtocol
         id: "PROTOCOL:liu2009-feno-001"
         name: "Single-breath on-line fractional exhaled nitric oxide at 0.05 L/sec"
       - id: "PROTOCOL:liu2009-ambient-monitoring-001"
@@ -801,36 +794,25 @@ oxidative_stress_assays:
           unit:
             id: "UO:0000033"
             name: "day"
-      - id: "EXPOSURE:liu2009-no2-3day"
-        name: "Interquartile-range increase of 6.8 ppb in the 3-day average ambient nitrogen dioxide concentration"
+      # The paper names the window only for the SO2 association ("same-day
+      # SO2"). For NO2, PM2.5 and O3 it states only that 8-isoprostane was
+      # "not associated with other pollutants", with no window, so these three
+      # conditions carry NO exposure_duration rather than asserting one.
+      - id: "EXPOSURE:liu2009-no2-window-unstated"
+        name: "Interquartile-range increase in ambient nitrogen dioxide, averaging window not stated in the retrievable text"
         exposure_agent:
           id: "CHEBI:33101"
           name: "nitrogen dioxide"
-        exposure_duration:
-          value: "72"
-          unit:
-            id: "UO:0000032"
-            name: "hour"
-      - id: "EXPOSURE:liu2009-pm25-3day"
-        name: "Interquartile-range increase of 5.4 microgram per cubic metre in the 3-day average ambient PM2.5 concentration"
+      - id: "EXPOSURE:liu2009-pm25-window-unstated"
+        name: "Interquartile-range increase in ambient PM2.5, averaging window not stated in the retrievable text"
         exposure_agent:
           id: "ENVO:01000415"
           name: "fine respirable suspended particulate matter"
-        exposure_duration:
-          value: "72"
-          unit:
-            id: "UO:0000032"
-            name: "hour"
-      - id: "EXPOSURE:liu2009-o3-3day"
-        name: "Interquartile-range increase of 5.3 ppb in the 3-day average ambient ozone concentration"
+      - id: "EXPOSURE:liu2009-o3-window-unstated"
+        name: "Interquartile-range increase in ambient ozone, averaging window not stated in the retrievable text"
         exposure_agent:
           id: "CHEBI:25812"
           name: "ozone"
-        exposure_duration:
-          value: "72"
-          unit:
-            id: "UO:0000032"
-            name: "hour"
     informs_on_key_event:
       id: "KE:mie-oxidative-stress"
       name: "Increased oxidative stress"
@@ -879,6 +861,14 @@ oxidative_stress_assays:
 # by. change_direction follows that threshold, so an estimate the paper does
 # not call significant is recorded as no_change even where the paper describes
 # a directional trend; each description says so.
+#
+# sample_size on each change_value is the number of OBSERVATIONS behind the
+# model fit, not the number of children: 691 spirometry test results, 672 FeNO
+# test results and 616 breath samples, all from the same 182 children measured
+# repeatedly over 4 weeks. That follows the repeated-measures convention
+# already used on main (Container-intpanis2017 records 5404 clinical visits
+# from 2449 participants the same way). The subject count is in each assay's
+# study_subject and subject_characteristics.
 # =============================================================================
 
 response_comparisons:
@@ -887,7 +877,7 @@ response_comparisons:
 
   - id: "COMP:liu2009-so2-3day-fef2575"
     name: "FEF25-75% change per interquartile-range increase in 3-day average SO2"
-    description: "Percent change in forced expiratory flow between 25% and 75% of forced vital capacity per interquartile-range increase of 5.4 ppb in the 3-day average ambient sulfur dioxide concentration, from a mixed-effects regression model with random slopes and intercepts, adjusted for daily temperature, relative humidity, testing period and daily use of inhaled corticosteroids and short-acting beta-agonist. The 95% confidence interval excludes zero, so this estimate is significant under the paper's stated p <= 0.05 criterion; no per-estimate p-value is printed in the retrievable text, so p_value is omitted rather than invented. The authors note that the SO2 lung function estimates were sensitive to including PM2.5 in the model, so part of this effect may be confounded by PM2.5. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    description: "Percent change in forced expiratory flow between 25% and 75% of forced vital capacity per interquartile-range increase of 5.4 ppb in the 3-day average ambient sulfur dioxide concentration, from a mixed-effects regression model with random slopes and intercepts, adjusted for daily temperature, relative humidity, testing period and daily use of inhaled corticosteroids and short-acting beta-agonist. The 95% confidence interval excludes zero, so this estimate is significant under the paper's stated p <= 0.05 criterion; no per-estimate p-value is printed in the retrievable text, so p_value is omitted rather than invented. NOTE a tension in the source: the abstract prints this interval as excluding zero, but the Results sentence on Table 4 names only NO2 and PM2.5 as having a statistically significant FEF25-75% association, not SO2. The two statements concern different model columns — the abstract's is the 3-day average recorded here, Table 4's is the single-pollutant model — and both are quoted on the assay; change_direction follows the abstract's printed interval for the 3-day window. The authors note that the SO2 lung function estimates were sensitive to including PM2.5 in the model, so part of this effect may be confounded by PM2.5. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
     derived_from_assay: "LF:liu2009-spirometry-cohort"
     compared_measurement: "fef25_75"
     change_type: percent_change
