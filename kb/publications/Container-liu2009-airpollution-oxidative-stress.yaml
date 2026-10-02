@@ -1,0 +1,1233 @@
+# =============================================================================
+# Liu et al. (2009) — "Acute effects of air pollution on pulmonary function,
+# airway inflammation, and oxidative stress in asthmatic children"
+# =============================================================================
+#
+# Source: Environ Health Perspect (2009) — the journal and year the cache
+#   entry's frontmatter records. Volume, issue and page numbers are not in the
+#   retrievable text and are deliberately not stated here.
+# DOI: 10.1289/ehp11813
+# PMID: 19440509
+#
+# Study design (HUMAN PANEL STUDY — not in vitro, not an animal experiment):
+#   - Longitudinal repeated-measures (panel) study of 182 asthmatic children
+#     aged 9-14 from nonsmoking households in Windsor, Ontario, Canada,
+#     followed for 4 weeks between October and December 2005. Children were
+#     studied in two test periods: 11 October - 11 November (95 children) and
+#     14 November - 9 December 2005 (87 children).
+#   - Exposure: daily ambient SO2, NO2, O3 and PM2.5 from the National Air
+#     Pollution Surveillance network of Environment Canada, averaged over the
+#     two monitoring stations representing Windsor and over a 24-hr period;
+#     multiday moving averages were also tested.
+#   - Outcomes, measured once a week at the children's schools: spirometry
+#     (FEV1, FEF25-75%), fractional exhaled nitric oxide (FeNO), and three
+#     breath-condensate markers — TBARS and 8-isoprostane (oxidative stress)
+#     and IL-6 (inflammation). 691 spirometry results, 672 FeNO results and
+#     616 breath samples in all.
+#
+# IMPORTANT — WHAT THE EXPOSURE CONTRAST ACTUALLY IS:
+#   There is NO unexposed arm and no control group. Every child breathed the
+#   same ambient air; what varies is the day-to-day pollutant level. The
+#   paper's results are therefore REGRESSION ESTIMATES from mixed-effects
+#   models — the percent change in an end point per interquartile-range
+#   increase in a pollutant — not differences between groups. That is
+#   modelled here as:
+#     * FOUR assays, one per end point family, because informs_on_key_event is
+#       single-valued and these end points inform on three different key
+#       events: spirometry -> decreased lung function, FeNO -> airway
+#       inflammation, TBARS and 8-isoprostane -> increased oxidative stress
+#     * the pollutant metrics as ExposureConditions on each assay
+#     * every estimate as a response_comparison with control_output and
+#       treated_output DELIBERATELY OMITTED, because no such pair of groups
+#       exists. Which pollutant and which averaging window each comparison
+#       belongs to is in its id, name and description.
+#
+# IMPORTANT — NO ABSOLUTE MEASUREMENT VALUES ARE RECORDED:
+#   has_specified_output is omitted on all four assays. The paper reports its
+#   cohort characteristics, pollutant concentrations and end-point levels in
+#   Tables 1-4 and Figures 2-3, none of whose cells are present in the
+#   retrievable full text; the narrative gives only the regression estimates.
+#   Per the extraction rules, a slot with no reported value is omitted rather
+#   than guessed, so the absolute FEV1, FEF25-75%, FeNO, TBARS and
+#   8-isoprostane levels appear nowhere in this file. Everything quantitative
+#   here lives in response_comparisons.
+#
+# IMPORTANT — THE IQR INCREMENTS ARE NOT EXPOSURE CONCENTRATIONS:
+#   The only numeric exposure figures in the retrievable text are the
+#   interquartile-range *increases* against which the percent changes are
+#   expressed (3-day average SO2 5.4 ppb, NO2 6.8 ppb, PM2.5 5.4 ug/m3,
+#   O3 5.3 ppb). Those are increments of a distribution, not levels the
+#   children were exposed to, so they are NOT recorded in
+#   exposure_concentration; they are stated in each condition's name and in
+#   every comparison's description. Table 2's actual daily concentrations are
+#   not in the retrievable text.
+#
+# SOURCE INCONSISTENCY recorded as printed (never silently corrected):
+#   The abstract states "FeNO, 8-isoprostane, and IL-6 were not associated
+#   with air pollutants" and "O3 (5.3 ppb) was not associated with health end
+#   points", while the Results section reports that "FeNO had a statistically
+#   significant negative association with O3" and that "8-Iso-prostane was
+#   significantly positively associated with same-day SO2". The Results
+#   statements are the more specific ones and are what the comparisons below
+#   record; the abstract's blanket null statements are quoted alongside them
+#   and flagged in each affected comparison's description.
+#   Separately, the ICS interaction sentence prints "FEV25-75%", a label that
+#   exists nowhere else in the paper and is evidently a typographical error
+#   for FEF25-75%; it is quoted as printed and flagged, not corrected.
+#
+# Key findings recorded here:
+#   - Per IQR increase in 3-day average SO2, NO2 and PM2.5: FEF25-75% fell
+#     3.1%, 2.8% and 3.0% respectively, and TBARS in breath condensate rose
+#     36.2%, 21.8% and 24.8% respectively
+#   - O3 was not associated with any end point except a counterintuitive
+#     negative association with FeNO
+#   - FeNO and IL-6 showed no adverse association with air pollution; IL-6 was
+#     detectable in only 2 of 616 breath samples, so no IL-6 assay is recorded
+#   - Risk estimates were larger in children not taking inhaled corticosteroids
+#   - FEF25-75% and TBARS moved coherently with a similar lag structure, which
+#     is the single key event relationship this paper supports
+#
+# Every KeyEvent block below is copied byte-for-byte from the wording already
+# on main (shared vocabulary — never re-authored here).
+# =============================================================================
+
+source_publication:
+  reference: "PMID:19440509"
+  reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+  doi: "10.1289/ehp11813"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - protocol_type: SpirometryProtocol
+    id: "PROTOCOL:liu2009-spirometry-001"
+    name: "KoKo spirometry in asthmatic schoolchildren per American Thoracic Society criteria"
+    description: "Spirometry performed according to American Thoracic Society criteria (American Thoracic Society 1995) by registered respiratory technologists visiting the children's schools once a week, on the same day of the week for each child. KoKo Spirometers (Ferraris CardioRespiratory; Pulmonary Data Services, Inc. Louiseville, CO, USA) were calibrated daily and results adjusted for temperature and barometric pressure. A maximum of eight forced vital capacity manoeuvres were carried out in an attempt to achieve three acceptable flow-volume loops, two of them within 0.20 L for FVC and FEV1 and within 0.20 L/sec for FEF25-75%. The value assigned to each child was the largest acceptable value within 200 mL of a second value. No bronchodilator was administered as part of the test, so the bronchodilator slots are omitted; the children were not asked to alter their use of asthma medications during the study, and daily use of inhaled corticosteroids and short-acting beta-agonist was instead carried into the models as a covariate."
+    spirometry_standard: "American Thoracic Society criteria (American Thoracic Society 1995)"
+    equipment_required:
+      - "KoKo Spirometer (Ferraris CardioRespiratory; Pulmonary Data Services, Inc. Louiseville, CO, USA)"
+    quality_control_criteria: "Three acceptable flow-volume loops attempted from a maximum of eight forced vital capacity manoeuvres, with two loops agreeing within 0.20 L for FVC and FEV1 and within 0.20 L/sec for FEF25-75%; the value assigned to the child was the largest acceptable value within 200 mL of a second value. Spirometers were calibrated daily and results adjusted for temperature and barometric pressure."
+    institution: "Health Canada, with testing conducted at elementary schools in Windsor, Ontario, Canada"
+
+  # Typed as a MolecularAssayProtocol, not a SpirometryProtocol: FeNO is an
+  # analyte measured by chemiluminescence in exhaled gas, not a spirometry
+  # manoeuvre. That lets detection_method carry the chemiluminescence method;
+  # the ATS/ERS guideline the measurement follows is stated in the description
+  # and quality_control_criteria instead of in spirometry_standard, which this
+  # protocol class does not have.
+  - protocol_type: MolecularAssayProtocol
+    id: "PROTOCOL:liu2009-feno-001"
+    name: "Single-breath on-line fractional exhaled nitric oxide at 0.05 L/sec"
+    detection_method: "chemiluminescence (Eco Physics CLD AL MED analyzer), single-breath on-line measurement at an exhalation flow rate of 0.05 L/sec per American Thoracic Society and European Respiratory Society Guidelines (American Thoracic Society 2005)"
+    description: "Single-breath on-line measures of FeNO carried out according to American Thoracic Society and European Respiratory Society Guidelines (American Thoracic Society 2005) using an Eco Physics CLD AL MED chemiluminescence analyzer (Eco Medics AG, Duernten, Switzerland). Before performing a slow vital capacity manoeuvre over at least 6 sec at 0.05 L/sec, subjects took three tidal volume breaths through a DENOX 88 (Eco Medics AG, Duernten, Switzerland) containing an NOx absorber cartridge that scrubs ambient air to between 0 and 1.5 ppb. The test was repeated a maximum of eight times in an attempt to obtain at least two acceptable plateau FeNO values within 10%, and the value assigned to the subject was the mean of those two values. FeNO statistics were calculated with spiroWare 88 software (Eco Medics AG, Duernten, Switzerland). The authors note in the discussion that the single 0.05 L/sec flow rate may not capture lower-airway inflammation, citing a study in which wood smoke raised FeNO measured at 0.27 L/sec but not at 0.05 L/sec — a stated limitation of this protocol, not a result of this study."
+    equipment_required:
+      - "Eco Physics CLD AL MED chemiluminescence analyzer (Eco Medics AG, Duernten, Switzerland)"
+      - "DENOX 88 NOx absorber cartridge (Eco Medics AG, Duernten, Switzerland)"
+      - "spiroWare 88 software (Eco Medics AG, Duernten, Switzerland)"
+    quality_control_criteria: "At least two acceptable plateau FeNO values agreeing within 10%, from a maximum of eight repeats; ambient air scrubbed to between 0 and 1.5 ppb through an NOx absorber cartridge before the manoeuvre."
+    institution: "Health Canada, with testing conducted at elementary schools in Windsor, Ontario, Canada"
+
+  - id: "PROTOCOL:liu2009-ebc-collection-001"
+    name: "Exhaled breath condensate collection by RTube with amylase contamination control"
+    description: "Exhaled breath condensate collected using an RTube (Respiratory Research Inc., Charlottesville, VA, USA). Participants sat and breathed at tidal volumes orally into a mouthpiece attached to a cold condenser for 10 min, yielding approximately 1 mL of condensate, which was transferred into a microtube and stored at -20 C and then -80 C until use. Saliva contamination was assessed by measuring alpha-amylase activity in breath condensate with an assay kit (Pointe Scientific, MI, USA) following the increase in absorbance at 405 nm as the artificial substrate 2-chloro-p-nitrophenyl-alpha-d-maltotrioside is hydrolyzed. Amylase was measured in 25% of breath samples; the median concentration was 0.60 unit/L with a 95th percentile of 1.46 unit/L, none of the samples approached the reported salivary amylase concentration of 1,250 unit/L, and saliva contamination was estimated at less than 0.1%, so interference of breath analysis by saliva was judged negligible. 616 breath samples were collected in total. This collection protocol feeds both breath-condensate assays in this file."
+    equipment_required:
+      - "RTube breath condensate collector (Respiratory Research Inc., Charlottesville, VA, USA)"
+      - "alpha-amylase assay kit (Pointe Scientific, MI, USA)"
+    quality_control_criteria: "Saliva contamination screened by alpha-amylase activity in 25% of samples: median 0.60 unit/L, 95th percentile 1.46 unit/L, no sample near the reported salivary amylase concentration of 1,250 unit/L; estimated saliva contamination below 0.1%."
+    institution: "Health Canada"
+
+  - protocol_type: MolecularAssayProtocol
+    id: "PROTOCOL:liu2009-tbars-001"
+    name: "Thiobarbituric acid reactive substances in breath condensate by fluorescence"
+    description: "TBARS determined in duplicate by a fluorescence method adapted from Yagi (1982), with malonaldehyde bis-(dimethyl acetal) (Aldrich Chemical Co., Milwaukee, WI, USA) used to construct the standard curve. To reduce background interference at the very low TBARS levels present in exhaled breath condensate, all glassware was washed in soap-free detergent then rinsed with distilled water and ethanol before use. Butanol (OmniSolv, 99.95%; EM Science, Darmstadt, Germany) was used for extraction; the n-butanol extract was transferred to a Whatman glass bottom microplate (Whatman, NJ, USA) pre-washed with ethanol, and fluorescence was measured at 530 nm/590 nm excitation/emission with a Cytofluor 2350 reader (Millipore, Billerica, MA, USA). The detection limit was 0.02 uM (three times the standard deviation above the blank) and the within-run coefficient of variation was 8%. Because more than 99% of samples gave a value above zero and most were above the detection limit, data points below the detection limit were given no special treatment."
+    detection_method: "fluorescence at 530 nm/590 nm excitation/emission after n-butanol extraction (thiobarbituric acid reaction, method adapted from Yagi 1982)"
+    equipment_required:
+      - "Cytofluor 2350 fluorescence reader (Millipore, Billerica, MA, USA)"
+      - "Whatman glass bottom microplate (Whatman, NJ, USA)"
+    quality_control_criteria: "Detection limit 0.02 uM, taken as three times the standard deviation above the blank; within-run coefficient of variation 8%; all glassware washed in soap-free detergent and rinsed with distilled water and ethanol to suppress background interference."
+    replicate_requirements: 2
+    sub_protocols:
+      - id: "PROTOCOL:liu2009-ebc-collection-001"
+        name: "Exhaled breath condensate collection by RTube with amylase contamination control"
+    institution: "Health Canada"
+
+  - protocol_type: MolecularAssayProtocol
+    id: "PROTOCOL:liu2009-8isoprostane-eia-001"
+    name: "8-Isoprostane in breath condensate by colorimetric enzyme immunoassay"
+    description: "8-Isoprostane concentrations in breath condensate measured with a colorimetric enzyme immunoassay kit (Cayman Chemical, Ann Arbor, MI, USA), in triplicate. A modified standard curve was established for concentrations between 0.975 and 62.5 pg/mL, and 8-isoprostane was detectable down to 0.975 pg/mL (three times the standard deviation above the blank), with a within-run coefficient of variation of 5%. As a cross-check, 8-isoprostane was also measured on 8 random samples by radioimmunoassay following Montuschi et al. (2003): the Pearson correlation coefficient between the two methods was 0.744 (p = 0.055), with a mean positive bias of approximately 35% in favour of the radioimmunoassay, which the authors attribute to variation in antibody avidity and specificity and to extrapolation from calibration curves at the very low levels typical of breath condensate. The authors conclude that TBARS may be a more sensitive biomarker than 8-isoprostane in breath condensate for acute air-pollution exposures."
+    detection_method: "colorimetric enzyme immunoassay (Cayman Chemical), cross-checked against radioimmunoassay on 8 random samples"
+    equipment_required:
+      - "colorimetric enzyme immunoassay kit for 8-isoprostane (Cayman Chemical, Ann Arbor, MI, USA)"
+    quality_control_criteria: "Modified standard curve from 0.975 to 62.5 pg/mL; detection limit 0.975 pg/mL, taken as three times the standard deviation above the blank; within-run coefficient of variation 5%; method agreement against radioimmunoassay on 8 random samples gave a Pearson correlation coefficient of 0.744 (p = 0.055) with a mean positive bias of about 35% in favour of the radioimmunoassay."
+    replicate_requirements: 3
+    sub_protocols:
+      - id: "PROTOCOL:liu2009-ebc-collection-001"
+        name: "Exhaled breath condensate collection by RTube with amylase contamination control"
+    institution: "Health Canada"
+
+  - id: "PROTOCOL:liu2009-ambient-monitoring-001"
+    name: "Daily ambient SO2, NO2, O3 and PM2.5 from the National Air Pollution Surveillance network"
+    description: "Hourly measures of PM2.5, sulfur dioxide, nitrogen dioxide and ozone obtained from the National Air Pollution Surveillance network of Environment Canada. Two monitoring stations represented Windsor, both located upwind of the prevailing winds; 180 of the 182 participating children lived within a 10-km radius of the air monitoring sites, one lived 12 km away and another 17 km away. Values from the two monitors were averaged. SO2 was measured using ultraviolet fluorescence and the electrical conductivity from changes in chemical composition of a bromine solution, NO2 using chemiluminescence, O3 using ultraviolet absorbance, and PM2.5 using a tapered element oscillating microbalance monitor. Pollutant concentrations were averaged over a 24-hr period, and multiday moving averages were tested in the models to examine potentially delayed response. Daily temperature and relative humidity were correlated with some pollutants and were carried into the models as covariates, as was the testing period, to reduce the impact of seasonality."
+    equipment_required:
+      - "ultraviolet fluorescence and bromine-solution electrical conductivity analyser (SO2)"
+      - "chemiluminescence analyser (NO2)"
+      - "ultraviolet absorbance analyser (O3)"
+      - "tapered element oscillating microbalance monitor (PM2.5)"
+    institution: "National Air Pollution Surveillance network, Environment Canada; two monitoring stations representing Windsor, Ontario"
+
+# =============================================================================
+# LUNG FUNCTION ASSAY — weekly spirometry.
+#
+# Carries no output record: the paper's absolute FEV1 and FEF25-75% values are
+# in Table 1 and Table 4, neither of whose cells are in the retrievable full
+# text. The findings are regression estimates and live in
+# response_comparisons, keyed to this assay by derived_from_assay.
+#
+# exposure_duration on the pollutant conditions encodes the AVERAGING WINDOW of
+# the model's exposure metric (72 h for the 3-day moving average the abstract's
+# headline estimates use), not a duration the paper reports as an exposure
+# time. Read 72 h as "3-day moving average".
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:liu2009-spirometry-cohort"
+    name: "Weekly spirometry in 182 asthmatic children aged 9-14 under ambient air pollution"
+    description: "Weekly spirometry (FEV1 and FEF25-75%) in 182 asthmatic children aged 9-14 from nonsmoking households in Windsor, Ontario, over 4 weeks in October-December 2005, giving 691 spirometry test results, analysed against daily ambient SO2, NO2, O3 and PM2.5. Seven children had 5 measurement days, 142 had 4, 27 had 3 and 6 had 2; there were 39 measurement days in all and no air monitoring day was missing. Associations were estimated with mixed-effects regression models assuming random slopes and random intercepts and accounting for intraindividual correlation, adjusted for daily temperature, relative humidity, testing period and the daily use of inhaled corticosteroids and short-acting beta-agonist; results were expressed as percent change per interquartile-range increase in a pollutant, with p <= 0.05 taken as significant. Because subjects served as their own control, age, race, family income and family asthma history were not adjusted for, and day-of-week was not adjusted for because testing was kept on the same weekday for each child. FEV1 and FEF25-75% both trended negative against all four pollutants, but only FEF25-75% reached significance; the significant FEF25-75% associations persisted for at least 3 days, and the risk estimates were larger for 3-day averages than for shorter terms. Two-pollutant models left the PM2.5 and O3 estimates largely unchanged but did shift those for SO2 and NO2, which the authors read as PM2.5 having confounded some of the SO2 and NO2 effect on pulmonary function. Stratifying by inhaled corticosteroid use (only 37% of the children used them) showed significant FEV1 and FEF25-75% risk estimates among children not taking them; those stratified estimates are reported only in Figure 2 and carry no numbers in the retrievable text, so no comparison records them. No absolute lung function value is recorded on this assay because Tables 1 and 4 are not in the retrievable full text."
+    evidence:
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We studied 182 children with asthma, 9-14 years of age, for 4 weeks."
+        explanation: "States the cohort size, age range and follow-up duration of the panel whose spirometry this assay records."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "A total of 182 asthmatic children participated in the study, for a total of 691 spirometry test results, 672 FeNO test results, and 616 breath samples."
+        explanation: "Gives the 691 spirometry test results behind this assay, and the FeNO and breath-sample counts behind the other three assays in this file."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Spirometry was performed according to American Thoracic Society criteria (American Thoracic Society 1995)."
+        explanation: "States the spirometry standard recorded on this assay's spirometry protocol."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "A maximum of eight forced vital capacity (FVC) maneuvers were carried out in an attempt to achieve three acceptable flow-volume loops and two being within 0.20 L for FVC and forced expiratory volume in one second (FEV1), and within 0.20 L/sec for the mean forced expiratory flow between 25% and 75% of the FVC (FEF25–75%)."
+        explanation: "States the acceptability criteria recorded as the spirometry protocol's quality_control_criteria, and defines FEF25-75% as the mean forced expiratory flow between 25% and 75% of FVC."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Once a week, registered respiratory technologists visited the children’s schools, and conducted tests of spirometry and FeNO and collected exhaled breath condensate on study participants. These tests were run on the same day of the week for each child."
+        explanation: "States the weekly, same-weekday testing schedule at the children's schools that all four assays in this file share, and which is why the models do not adjust for day-of-week."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Daily ambient concentrations of sulfur dioxide, nitrogen dioxide, ozone, and particulate matter < or = 2.5 microm in aerodynamic diameter (PM(2.5)) were monitored from two stations."
+        explanation: "Names the four pollutants recorded as exposure conditions on this assay and the two monitoring stations behind them."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Pollutant concentrations were averaged over a 24-hr period."
+        explanation: "States the daily averaging of the pollutant metric that the exposure conditions' averaging windows are built from."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We used mixed-effects regression models to account for repeated measures and to analyze the associations between pollutants and health end points, assuming random slope and random intercepts, and accounting for intraindividual correlation using S-PLUS (version 6.1; Insightful Corporation, Seattle, WA, USA)."
+        explanation: "States the statistical model named as statistical_test on every response comparison in this file."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Results were expressed as percent change in FEV1, FEF25–75%, FeNO, TBARS and 8-isoprostane per increase in inter-quartile-range concentration of a pollutant. A two-tailed value of p ≤ 0.05 was considered statistically significant."
+        explanation: "States that every estimate in this paper is a percent change per interquartile-range increase — which is why every comparison below uses change_type percent_change — and gives the p <= 0.05 significance threshold against which each change_direction is judged."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Interquartile-range increases in 3-day average SO2 (5.4 ppb), NO2 (6.8 ppb), and PM(2.5) (5.4 microg/m3) were associated with decreases in forced expiratory flow between 25% and 75% of forced vital capacity, with changes being -3.1% [95% confidence interval (CI), -5.8 to -0.3], -2.8% (95% CI, -4.8 to -0.8), and -3.0% (95% CI, -4.7 to -1.2), respectively."
+        explanation: "States the three headline FEF25-75% estimates recorded as response comparisons, with their 95% confidence intervals, and the interquartile-range increments they are expressed per."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FEV1 and FEF25–75% exhibited a consistent trend of negative associations with all four pollutants, with FEF25–75% having a statistically significant association with NO2 and PM2.5."
+        explanation: "States the FEV1 trend recorded as four no_change comparisons: negative in direction against all four pollutants but, unlike FEF25-75%, never statistically significant."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The significant associations for FEF25–75% persisted for at least 3 days."
+        explanation: "Supports attaching the FEF25-75% comparisons to the 3-day averaging window: the significant associations held over at least that window."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The risk estimates were larger for pollutant concentrations averaged over 3 days than over a shorter term."
+        explanation: "States why the 3-day average is the window the headline estimates are reported for, which is the window the FEF25-75% and TBARS comparisons record."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "O3 (5.3 ppb) was not associated with health end points."
+        explanation: "States the ozone null result recorded as no_change comparisons on this assay and on the oxidative stress assays, and gives the ozone interquartile-range increment of 5.3 ppb."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Clinically FEF25–75% has been considered to be sensitive in detecting small airway dysfunction (Lebecque et al. 1993)."
+        explanation: "Supports reading the FEF25-75% decrement as small airway dysfunction, which is how this assay's findings connect to the decreased-lung-function adverse outcome."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Results from our study demonstrate a significant decrement in small airway function and an increase in airway oxidative stress in asthmatic children in association with SO2, NO2, and PM2.5 in ambient air."
+        explanation: "States the authors' overall conclusion, which is what links this assay to the decreased-lung-function adverse outcome and the breath-condensate assays to increased oxidative stress."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The associations between pulmonary function decrements and SO2 and NO2 were sensitive to the inclusion of PM2.5 in models, suggesting that PM2.5 may have confounded some of the effects of SO2 and NO2."
+        explanation: "Supports the description's caveat that the SO2 and NO2 lung function estimates recorded here may be partly confounded by PM2.5, while the PM2.5 and O3 estimates were not sensitive to co-pollutant adjustment."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Among children not taking ICS, risk estimates for pollutants were statistically significant with respect to FEV1, FEF25–75%, and TBARS."
+        explanation: "States the inhaled-corticosteroid stratified finding described on this assay: among children not using ICS the FEV1, FEF25-75% and TBARS estimates were significant. The stratified estimates themselves appear only in Figure 2 and carry no numbers in the retrievable text, so no comparison records them."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Risk estimates appear to be larger in children not taking corticosteroids than in children taking corticosteroids."
+        explanation: "States the direction of the corticosteroid effect modification that this assay's description records."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "For example, the product term for SO2 and ICS was positively associated with TBARS (p = 0.04), but negatively associated with FEV1 (p < 0.01), FEV25–75% (p = 0.02), and 8-isoprostane (p = 0.01), indicating that the use of ICS was a significant effect modifier."
+        explanation: "Gives the interaction p-values that establish inhaled corticosteroid use as an effect modifier. Quoted as printed: the label 'FEV25–75%' appears nowhere else in the paper and is evidently a typographical error for FEF25-75%, which is noted rather than corrected."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In the present study only 37% of children used ICS, which could result in a reduced statistical power to detect associations with pollutants in this group."
+        explanation: "Gives the proportion of children using inhaled corticosteroids (37%) recorded in this assay's description and in subject_characteristics, and the power limitation the authors attach to the stratified analysis."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Since subjects served as their own control, we did not adjust for factors which remained constant during the study period such as age, race, family income, and family asthma history."
+        explanation: "Supports modelling this study without a control output record: each child is their own control across repeated measures, so there is no unexposed group to pair against, and it states which covariates were deliberately left out of the models."
+    # exposure_duration below encodes the AVERAGING WINDOW of the exposure
+    # metric: 72 h is the 3-day moving average the headline estimates use,
+    # built from concentrations "averaged over a 24-hr period". The paper
+    # never prints "72 h" as an exposure time. The IQR increments in the
+    # condition names are the increments the percent changes are expressed
+    # per, NOT concentrations the children were exposed to, which is why
+    # exposure_concentration is omitted throughout.
+    has_exposure_condition:
+      - id: "COND:liu2009-ambient-air"
+        name: "Ambient urban air in Windsor, Ontario, October-December 2005 (the whole cohort; no unexposed comparison group exists)"
+        exposure_agent:
+          id: "ENVO:00002005"
+          name: "air"
+      - id: "EXPOSURE:liu2009-so2-3day"
+        name: "Interquartile-range increase of 5.4 ppb in the 3-day average ambient sulfur dioxide concentration"
+        exposure_agent:
+          id: "CHEBI:18422"
+          name: "sulfur dioxide"
+        exposure_duration:
+          value: "72"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu2009-no2-3day"
+        name: "Interquartile-range increase of 6.8 ppb in the 3-day average ambient nitrogen dioxide concentration"
+        exposure_agent:
+          id: "CHEBI:33101"
+          name: "nitrogen dioxide"
+        exposure_duration:
+          value: "72"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu2009-pm25-3day"
+        name: "Interquartile-range increase of 5.4 microgram per cubic metre in the 3-day average ambient PM2.5 concentration"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "72"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu2009-o3-3day"
+        name: "Interquartile-range increase of 5.3 ppb in the 3-day average ambient ozone concentration"
+        exposure_agent:
+          id: "CHEBI:25812"
+          name: "ozone"
+        exposure_duration:
+          value: "72"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:liu2009-asthmatic-children"
+      name: "Panel of 182 asthmatic children aged 9-14 in Windsor, Ontario"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      sex: "both"
+      disease_state: "doctor-diagnosed asthma"
+      subject_characteristics: "182 children with doctor-diagnosed asthma, 9 to 14 years of age, from nonsmoking households, identified from a questionnaire survey of grades one to eight of elementary schoolchildren in Windsor, Ontario; parental report of asthma was confirmed by telephone along with the absence of tobacco smoking in the household. Only 37% of the children used inhaled corticosteroids during the study period. Parents were not advised to alter their children's daily activity or use of asthma medications, and daily use of inhaled corticosteroids and short-acting beta-agonist was carried into the models as a covariate. Seven children had 5 measurement days, 142 had 4, 27 had 3 and 6 had 2. 180 of the 182 children lived within a 10-km radius of the air monitoring sites, one 12 km and another 17 km away. No numeric age, sex or anthropometric value is recorded here because the cohort characteristics are reported only in Table 1, which is not in the retrievable full text; the 9-14 year range is the only age figure the narrative states. Information on family income and family asthma history was extracted from the survey questionnaire but was not adjusted for, since each child served as their own control."
+      clinical_context: "School-based longitudinal panel study conducted between October and December of 2005 in Windsor, Ontario, Canada, with children studied in two test periods: 11 October to 11 November 2005 (95 children) and 14 November to 9 December 2005 (87 children). Testing period was carried into the models as an indicator variable to reduce the impact of seasonality. The study protocol was approved by the Research Ethics Board of Health Canada and a parent of each child gave written informed consent."
+      collection_site: "elementary schools in Windsor, Ontario, Canada"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:liu2009-spirometry-001"
+        name: "KoKo spirometry in asthmatic schoolchildren per American Thoracic Society criteria"
+      - id: "PROTOCOL:liu2009-ambient-monitoring-001"
+        name: "Daily ambient SO2, NO2, O3 and PM2.5 from the National Air Pollution Surveillance network"
+
+  # ---------------------------------------------------------------------------
+  # FeNO — a separate assay from the spirometry above, because
+  # informs_on_key_event is single-valued and FeNO is the paper's airway
+  # INFLAMMATION marker, not a lung function parameter. The feno slot lives on
+  # LungFunctionOutput, which is why this is a lung_function_assay.
+  # ---------------------------------------------------------------------------
+
+  - id: "LF:liu2009-feno-cohort"
+    name: "Weekly fractional exhaled nitric oxide in 182 asthmatic children under ambient air pollution"
+    description: "Weekly single-breath on-line FeNO at 0.05 L/sec in the same panel of 182 asthmatic children, giving 672 FeNO test results, analysed against daily ambient SO2, NO2, O3 and PM2.5 in the same mixed-effects models. FeNO data were log-transformed to fit a normal distribution. FeNO trended positive against SO2, NO2 and PM2.5 without reaching significance, and had a statistically significant NEGATIVE association with O3 — a result the authors call counterintuitive, note survived adjustment for co-pollutants and study period, and leave unexplained. Including two pollutants in the models did not markedly change the FeNO results, so the per-pollutant estimates were independent of co-pollutants. Risk estimates for FeNO were not very different between children taking and not taking inhaled corticosteroids (reported as data not shown). The authors offer three readings of the null inflammation result: insufficient sample size, inflammation in the lower airways not being captured by FeNO at a flow rate of 0.05 L/sec, or a baseline state of airway inflammation in these asthmatic children that overwhelmed the effect of air pollution at the low exposure concentrations studied. IL-6 was also measured in breath condensate by ELISA (R&D Systems, Minneapolis, MN, USA) in duplicate with a detection limit of 0.48 pg/mL, but only 2 of 616 samples had detectable levels and no further analysis was conducted, so no IL-6 assay is recorded in this file. No absolute FeNO value is recorded because Tables 1 and 4 are not in the retrievable full text."
+    evidence:
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Single-breath on-line measures of FeNO were carried out according to American Thoracic Society and European Respiratory Society Guidelines (American Thoracic Society 2005) using an Eco Physics CLD AL MED chemiluminescence analyzer (Eco Medics AG, Duernten, Switzerland)."
+        explanation: "States the FeNO standard and instrument recorded on this assay's protocol."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The test was repeated a maximum of eight times in an attempt to obtain at least two acceptable plateau FeNO values within 10%. The value assigned to the subject was the mean of the two values."
+        explanation: "States the FeNO acceptability criteria recorded as the protocol's quality_control_criteria."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In recent years, some researchers have used fractional exhaled nitric oxide (FeNO) to investigate the relationship between exposure to air pollutants and airway inflammation (Delfino et al. 2006; Mar et al. 2005)."
+        explanation: "Supports treating FeNO as this paper's airway inflammation marker, which is why this assay informs on the airway inflammation key event rather than on decreased lung function."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Data for FeNO, TBARS, and 8-isoprostane were log-transformed to fit a normal distribution."
+        explanation: "States the log transformation applied to the FeNO, TBARS and 8-isoprostane end points before modelling, which is why their estimates are percent changes."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FeNO had a trend of positive associations with SO2, NO2, and PM2.5, but the associations were not statistically significant. FeNO had a statistically significant negative association with O3."
+        explanation: "States all four FeNO comparisons recorded below: a non-significant positive trend against SO2, NO2 and PM2.5, and a significant negative association with O3."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "FeNO, 8-isoprostane, and IL-6 were not associated with air pollutants."
+        explanation: "The abstract's blanket null statement for FeNO, 8-isoprostane and IL-6. It is quoted here because it contradicts the Results section, which reports a significant negative FeNO-O3 association and a significant positive 8-isoprostane-SO2 association; the more specific Results statements are what the comparisons record, and the discrepancy is flagged in each affected comparison's description."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The negative association between O3 concentration and FeNO is counterintuitive, because laboratory studies have shown that O3 at high concentrations (200–400 ppb) caused inflammation in the airways of human subjects (Balmes et al. 1996; Frampton et al. 1997). In the present study, adjusting for co-pollutants and study periods in the models did not change the results. A sound interpretation for this result remains to be found at this point in time."
+        explanation: "Records the authors' own assessment of the significant negative FeNO-O3 association: counterintuitive, robust to co-pollutant and study-period adjustment, and unexplained. This is why that comparison is recorded as decreased with the authors' caveat rather than read as an anti-inflammatory effect of ozone."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Unlike previously published studies (Delfino et al. 2006; Mar et al. 2005), in our study we did not find statistically significant adverse changes in inflammatory marker FeNO associated with air pollution, and the level of IL-6 in breath condensate was too low to be detectable."
+        explanation: "States the overall null inflammation finding this assay records, and that IL-6 was below detection — the reason no IL-6 assay appears in this file."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "One interpretation for the results of inflammation markers was that we might need a larger sample size to detect significant changes in airway inflammation. Another possible explanation might be that the inflammation in lower airways of the children was not captured by FeNO measured at a flow rate of 0.05 L/sec"
+        explanation: "Gives two of the three explanations the authors offer for the null inflammation result, both recorded in this assay's description."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Alternatively, this group of asthmatic children might have been in such a state of airway inflammation that it overwhelmed the effects of air pollution, particularly when exposure concentrations were lower than those in other studies (Delfino et al. 2006; Mar et al. 2005)."
+        explanation: "Gives the third explanation the authors offer for the null inflammation result: pre-existing airway inflammation in an asthmatic cohort may have masked a pollution effect at these low exposure concentrations."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We determined the level of interleukin-6 (IL-6) using an ELISA kit from R&D Systems (Minneapolis, MN, USA). We conducted the ELISA assays in duplicate by following manufacturer’s instructions accompanying the kit. The detection limit was 0.48 pg/mL."
+        explanation: "Documents the IL-6 ELISA described in this assay's description. No IL-6 assay is recorded in this file because the measurement yielded no analysable data."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "In 616 breath samples, only 2 samples had detectable IL-6 levels. We therefore did not conduct further analysis on IL-6."
+        explanation: "States why no IL-6 assay or output appears in this file: IL-6 was detectable in 2 of 616 breath samples and the authors ran no further analysis on it."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "For FeNO and TBARS, including two pollutants in models did not markedly change the regression results, suggesting that the results of each pollutant were independent of other pollutants."
+        explanation: "Supports the description's statement that the FeNO and TBARS per-pollutant estimates were independent of co-pollutants, in contrast to the lung function estimates for SO2 and NO2."
+    has_exposure_condition:
+      - id: "COND:liu2009-ambient-air"
+        name: "Ambient urban air in Windsor, Ontario, October-December 2005 (the whole cohort; no unexposed comparison group exists)"
+        exposure_agent:
+          id: "ENVO:00002005"
+          name: "air"
+      # The FeNO associations come from the single-pollutant model (Table 4),
+      # whose averaging window the retrievable text never states — it reports
+      # 3-day persistence only for FEF25-75% and TBARS. These conditions
+      # therefore carry NO exposure_duration: claiming the 3-day window here
+      # would assert a window the paper does not.
+      - id: "EXPOSURE:liu2009-so2-window-unstated"
+        name: "Interquartile-range increase in ambient sulfur dioxide, averaging window not stated in the retrievable text"
+        exposure_agent:
+          id: "CHEBI:18422"
+          name: "sulfur dioxide"
+      - id: "EXPOSURE:liu2009-no2-window-unstated"
+        name: "Interquartile-range increase in ambient nitrogen dioxide, averaging window not stated in the retrievable text"
+        exposure_agent:
+          id: "CHEBI:33101"
+          name: "nitrogen dioxide"
+      - id: "EXPOSURE:liu2009-pm25-window-unstated"
+        name: "Interquartile-range increase in ambient PM2.5, averaging window not stated in the retrievable text"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+      - id: "EXPOSURE:liu2009-o3-window-unstated"
+        name: "Interquartile-range increase in ambient ozone, averaging window not stated in the retrievable text"
+        exposure_agent:
+          id: "CHEBI:25812"
+          name: "ozone"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:liu2009-asthmatic-children"
+      name: "Panel of 182 asthmatic children aged 9-14 in Windsor, Ontario"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      sex: "both"
+      disease_state: "doctor-diagnosed asthma"
+      subject_characteristics: "182 children with doctor-diagnosed asthma, 9 to 14 years of age, from nonsmoking households in Windsor, Ontario; 672 FeNO test results. Only 37% used inhaled corticosteroids during the study period. See the spirometry assay's subject record for the full cohort description; no numeric age or anthropometric value is recorded because Table 1 is not in the retrievable full text."
+      clinical_context: "School-based longitudinal panel study, October to December 2005, Windsor, Ontario, Canada; approved by the Research Ethics Board of Health Canada with written parental informed consent."
+      collection_site: "elementary schools in Windsor, Ontario, Canada"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:liu2009-feno-001"
+        name: "Single-breath on-line fractional exhaled nitric oxide at 0.05 L/sec"
+      - id: "PROTOCOL:liu2009-ambient-monitoring-001"
+        name: "Daily ambient SO2, NO2, O3 and PM2.5 from the National Air Pollution Surveillance network"
+
+# =============================================================================
+# OXIDATIVE STRESS ASSAYS — the two breath-condensate markers.
+#
+# Split into two assays because they are two different protocols with
+# different sensitivities and they gave OPPOSITE answers: TBARS tracked
+# SO2, NO2 and PM2.5, while 8-isoprostane responded only to same-day SO2.
+# That contrast is the paper's own methodological conclusion, so collapsing
+# them into one assay would erase it.
+#
+# Neither carries an output record: the absolute TBARS and 8-isoprostane
+# levels are in Tables 1 and 4, which are not in the retrievable full text.
+# =============================================================================
+
+oxidative_stress_assays:
+  - id: "OX:liu2009-tbars-ebc"
+    name: "Thiobarbituric acid reactive substances in exhaled breath condensate of asthmatic children"
+    description: "TBARS in exhaled breath condensate, measured weekly in duplicate by fluorescence in the same panel of 182 asthmatic children (616 breath samples), analysed against daily ambient SO2, NO2, O3 and PM2.5 in mixed-effects models with log-transformed outcomes. TBARS rose significantly with SO2, NO2 and PM2.5 but not with O3, and the associations persisted for at least 3 days, with the headline estimates expressed per interquartile-range increase in the 3-day average. Two-pollutant models did not markedly change the TBARS results, so each pollutant's estimate was independent of the others. Among children not taking inhaled corticosteroids the TBARS estimates were significant, and the product term for SO2 and inhaled corticosteroid use was positively associated with TBARS (p = 0.04). The authors argue that TBARS, being derived from oxidative degradation of a broader range of substances than 8-isoprostane, may be the more sensitive breath-condensate biomarker of air-pollution-related oxidative stress in asthmatic children, especially for acute exposures. Because more than 99% of samples gave a value above zero and most were above the 0.02 uM detection limit, values below the detection limit were given no special treatment. No absolute TBARS value is recorded because Tables 1 and 4 are not in the retrievable full text."
+    ros_probe_type: "thiobarbituric acid reactive substances (TBARS) by fluorescence, with malonaldehyde bis-(dimethyl acetal) as the standard"
+    evidence:
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Once a week we measured spirometry and fractional exhaled nitric oxide (FeNO), and determined thiobarbituric acid reactive substances (TBARS) and 8-isoprostane--two oxidative stress markers--and interleukin-6 (IL-6) in breath condensate."
+        explanation: "Names TBARS and 8-isoprostane as the paper's two oxidative stress markers in breath condensate, which is why these two assays inform on the increased-oxidative-stress key event."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Thiobarbituric acid reactive substances (TBARS) were determined in duplicate by a fluorescence method adapted from Yagi (1982)."
+        explanation: "States the TBARS detection method and duplicate replication recorded on this assay's protocol."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The detection limit was 0.02 μM (three times the standard deviation above the blank). The within-run coefficient of variation was 8%."
+        explanation: "Gives the TBARS detection limit and within-run coefficient of variation recorded as the protocol's quality_control_criteria."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Exhaled breath condensate was collected using an RTube (Respiratory Research Inc., Charlottesville, VA, USA). Participants sat and breathed at tidal volumes orally into a mouthpiece attached to a cold condenser, for 10 min. Approximately 1 mL of breath condensate was collected."
+        explanation: "States the breath condensate collection method shared by both oxidative stress assays, recorded as the sub-protocol on each."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "SO2, NO2, and PM(2.5) were associated with increases in TBARS, with changes being 36.2% (95% CI, 15.7 to 57.2), 21.8% (95% CI, 8.2 to 36.0), and 24.8% (95% CI, 10.8 to 39.4), respectively."
+        explanation: "States the three headline TBARS estimates recorded as response comparisons, with their 95% confidence intervals, per interquartile-range increase in the 3-day average of each pollutant."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "TBARS was significantly positively associated with SO2, NO2, and PM2.5, but not with O3. The associations for TBARS persisted for at least 3 days."
+        explanation: "Confirms the direction and significance of the three positive TBARS associations and states the ozone null result recorded as the fourth TBARS comparison, as well as the 3-day persistence that justifies the 3-day averaging window."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "The level of reactive oxygen species in the airways can be determined by assaying concentrations of oxidative stress markers in breath condensate (Horvath et al. 2005)."
+        explanation: "States the premise that makes a breath-condensate marker a read-out for airway oxidative stress, which is why this assay informs on the increased-oxidative-stress key event."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "TBARS are a group of low-molecular-weight chemicals that are formed during the decomposition of lipid peroxidation products (Halliwell and Chirico 1993), and thus are often used as an index of lipid peroxidation and oxidative stress (Kodavanti et al. 2000; Rhoden et al. 2004; Walter et al. 2004)."
+        explanation: "Supports recording TBARS against the lipid_peroxidation measurement slot: the paper itself identifies TBARS as an index of lipid peroxidation."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Because TBARS are derived from oxidative degradation of a broader range of biological substances including lipids and sugars than is 8-isoprostane (Halliwell and Gutteridge 1981; Janero 1990), and because we observed an increase in TBARS but not 8-isoprostane in breath samples in relation to elevated air pollutants, it appears that TBARS may be a more sensitive biomarker than 8-iso-prostane in breath condensate as a useful tool for investigating air pollution-related oxidative stress among asthmatic children, especially for acute exposures."
+        explanation: "States the authors' methodological conclusion that TBARS is the more sensitive of the two markers, which is why the two breath-condensate markers are kept as separate assays rather than merged."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Because > 99% of the samples gave a value > 0 for TBARS and 8-isoprostane, and most of them were above the detection limit, data points below the detection limit were not given special treatment."
+        explanation: "States how values below the detection limit were handled in both breath-condensate assays, which bears on how the percent-change estimates should be read."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "TBARS in breath condensate may be a useful tool for investigating air pollution-related oxidative stress among asthmatic children."
+        explanation: "States the authors' concluding endorsement of the marker this assay records."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Air pollution may increase airway oxidative stress and decrease small airway function of asthmatic children. Inhaled corticosteroids may reduce oxidative stress and improve airway function."
+        explanation: "States the paper's overall conclusion, which links this assay to the increased-oxidative-stress key event and underpins the key event relationship recorded below."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We measured the concentration of amylase in 25% of breath samples to determine saliva contamination. The median amylase concentration was 0.60 unit/L, with the 95th percentile being 1.46 unit/L."
+        explanation: "Gives the saliva-contamination control figures recorded on the breath condensate collection protocol, which is what makes the breath-condensate marker values interpretable."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "We estimated that saliva contamination was likely < 0.1%, and therefore interference of breath analysis by saliva was negligible."
+        explanation: "States the authors' conclusion that saliva interference was negligible, the quality-control claim recorded on the collection protocol."
+    has_exposure_condition:
+      - id: "COND:liu2009-ambient-air"
+        name: "Ambient urban air in Windsor, Ontario, October-December 2005 (the whole cohort; no unexposed comparison group exists)"
+        exposure_agent:
+          id: "ENVO:00002005"
+          name: "air"
+      - id: "EXPOSURE:liu2009-so2-3day"
+        name: "Interquartile-range increase of 5.4 ppb in the 3-day average ambient sulfur dioxide concentration"
+        exposure_agent:
+          id: "CHEBI:18422"
+          name: "sulfur dioxide"
+        exposure_duration:
+          value: "72"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu2009-no2-3day"
+        name: "Interquartile-range increase of 6.8 ppb in the 3-day average ambient nitrogen dioxide concentration"
+        exposure_agent:
+          id: "CHEBI:33101"
+          name: "nitrogen dioxide"
+        exposure_duration:
+          value: "72"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu2009-pm25-3day"
+        name: "Interquartile-range increase of 5.4 microgram per cubic metre in the 3-day average ambient PM2.5 concentration"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_duration:
+          value: "72"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:liu2009-o3-3day"
+        name: "Interquartile-range increase of 5.3 ppb in the 3-day average ambient ozone concentration"
+        exposure_agent:
+          id: "CHEBI:25812"
+          name: "ozone"
+        exposure_duration:
+          value: "72"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:liu2009-asthmatic-children-ebc"
+      name: "Panel of 182 asthmatic children aged 9-14 in Windsor, Ontario — breath condensate samples"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      sex: "both"
+      disease_state: "doctor-diagnosed asthma"
+      sample_type: exhaled_breath_condensate
+      sample_collection_method: "Exhaled breath condensate collected weekly with an RTube (Respiratory Research Inc.): seated tidal-volume oral breathing into a mouthpiece attached to a cold condenser for 10 min, yielding approximately 1 mL, transferred to a microtube and stored at -20 C then -80 C until use; 616 breath samples in all"
+      subject_characteristics: "182 children with doctor-diagnosed asthma, 9 to 14 years of age, from nonsmoking households in Windsor, Ontario; 616 breath samples. Only 37% used inhaled corticosteroids during the study period. See the spirometry assay's subject record for the full cohort description; no numeric age or anthropometric value is recorded because Table 1 is not in the retrievable full text."
+      clinical_context: "School-based longitudinal panel study, October to December 2005, Windsor, Ontario, Canada; approved by the Research Ethics Board of Health Canada with written parental informed consent."
+      collection_site: "elementary schools in Windsor, Ontario, Canada"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:liu2009-tbars-001"
+        name: "Thiobarbituric acid reactive substances in breath condensate by fluorescence"
+      - id: "PROTOCOL:liu2009-ebc-collection-001"
+        name: "Exhaled breath condensate collection by RTube with amylase contamination control"
+      - id: "PROTOCOL:liu2009-ambient-monitoring-001"
+        name: "Daily ambient SO2, NO2, O3 and PM2.5 from the National Air Pollution Surveillance network"
+
+  - id: "OX:liu2009-8isoprostane-ebc"
+    name: "8-Isoprostane in exhaled breath condensate of asthmatic children"
+    description: "8-Isoprostane in exhaled breath condensate, measured weekly in triplicate by colorimetric enzyme immunoassay in the same panel of 182 asthmatic children (616 breath samples), analysed against daily ambient SO2, NO2, O3 and PM2.5 in the same mixed-effects models with log-transformed outcomes. Unlike TBARS, 8-isoprostane responded only to same-day SO2, with no association against the other pollutants; the abstract states more broadly that 8-isoprostane was not associated with air pollutants, a discrepancy flagged on the affected comparisons. The product term for SO2 and inhaled corticosteroid use was negatively associated with 8-isoprostane (p = 0.01), and risk estimates for 8-isoprostane were not very different between children taking and not taking inhaled corticosteroids (reported as data not shown). The assay's limits bear on the null result: the detection limit was 0.975 pg/mL and method comparison against radioimmunoassay on 8 random samples gave a Pearson correlation of 0.744 (p = 0.055) with a mean positive bias of about 35% in favour of the radioimmunoassay, and the authors leave open whether a more sensitive and specific immunoassay would improve 8-isoprostane as a breath-condensate biomarker. No absolute 8-isoprostane value is recorded because Tables 1 and 4 are not in the retrievable full text."
+    ros_probe_type: "8-isoprostane by colorimetric enzyme immunoassay (Cayman Chemical), cross-checked by radioimmunoassay"
+    evidence:
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "A colorimetric enzyme immunoassay kit (Cayman Chemical, Ann Arbor, MI, USA) was used to measure 8-isoprostane concentrations in breath condensate. The assays were done in triplicate."
+        explanation: "States the 8-isoprostane detection method and triplicate replication recorded on this assay's protocol."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "A modified standard curve for 8-isoprostane was established for concentrations between 0.975 and 62.5 pg/mL. We were able to detect 8-isoprostane at a concentration as low as 0.975 pg/mL (three times the standard deviation above the blank). The within-run coefficient of variation was 5%."
+        explanation: "Gives the standard curve range, detection limit and within-run coefficient of variation recorded as this protocol's quality_control_criteria."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Pearson correlation coefficient for results from two methods was 0.744 (p = 0.055), with a mean positive bias of approximately 35% in favor of the radioimmunoassay."
+        explanation: "Gives the method-comparison statistics against radioimmunoassay recorded on this protocol, which the authors use to qualify the sensitivity of the 8-isoprostane measurement."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "8-Iso-prostane was significantly positively associated with same-day SO2, but not associated with other pollutants."
+        explanation: "States all four 8-isoprostane comparisons recorded below: a significant positive association with same-day SO2 and no association with NO2, PM2.5 or O3. This Results statement is the more specific one and is what the comparisons record, against the abstract's blanket claim that 8-isoprostane was not associated with air pollutants."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "8-Isoprostane is a prostaglandin F2α–like compound produced by free radicals via the nonenzymatic peroxidation of arachidonic acid in membrane phospholipids (Morrow et al. 1990)."
+        explanation: "States what 8-isoprostane measures, supporting its use as an oxidative stress marker and this assay's link to the increased-oxidative-stress key event."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "It remains to be seen whether immunoassays with significantly higher sensitivity and specificity can improve the efficacy of 8-isoprostane as a biomarker of oxidative stress in exhaled breath condensate."
+        explanation: "Records the authors' own caveat that the largely null 8-isoprostane result may reflect assay sensitivity rather than an absence of effect, which is why the three no_change comparisons carry that qualification."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Montuschi et al. (2002) exposed healthy nonsmoking adults to high concentration of O3 (400 ppb) and clean air for 2 hr on separate occasions in a laboratory setting, and reported that exposure to O3 led to a significant increase in 8-isoprostane concentrations in breath condensate."
+        explanation: "Background from another study, quoted to mark the contrast with this paper's own null 8-isoprostane-ozone result at ambient concentrations. The figures in it are not this paper's measurements and are recorded nowhere in this file."
+    has_exposure_condition:
+      - id: "COND:liu2009-ambient-air"
+        name: "Ambient urban air in Windsor, Ontario, October-December 2005 (the whole cohort; no unexposed comparison group exists)"
+        exposure_agent:
+          id: "ENVO:00002005"
+          name: "air"
+      - id: "EXPOSURE:liu2009-so2-sameday"
+        name: "Interquartile-range increase in the same-day 24-hr average ambient sulfur dioxide concentration (increment not stated for this window in the retrievable text)"
+        exposure_agent:
+          id: "CHEBI:18422"
+          name: "sulfur dioxide"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+        timing_post_exposure:
+          value: "0"
+          unit:
+            id: "UO:0000033"
+            name: "day"
+      # The paper names the window only for the SO2 association ("same-day
+      # SO2"). For NO2, PM2.5 and O3 it states only that 8-isoprostane was
+      # "not associated with other pollutants", with no window, so these three
+      # conditions carry NO exposure_duration rather than asserting one.
+      - id: "EXPOSURE:liu2009-no2-window-unstated"
+        name: "Interquartile-range increase in ambient nitrogen dioxide, averaging window not stated in the retrievable text"
+        exposure_agent:
+          id: "CHEBI:33101"
+          name: "nitrogen dioxide"
+      - id: "EXPOSURE:liu2009-pm25-window-unstated"
+        name: "Interquartile-range increase in ambient PM2.5, averaging window not stated in the retrievable text"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+      - id: "EXPOSURE:liu2009-o3-window-unstated"
+        name: "Interquartile-range increase in ambient ozone, averaging window not stated in the retrievable text"
+        exposure_agent:
+          id: "CHEBI:25812"
+          name: "ozone"
+    informs_on_key_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:liu2009-asthmatic-children-ebc"
+      name: "Panel of 182 asthmatic children aged 9-14 in Windsor, Ontario — breath condensate samples"
+      model_species:
+        id: "NCBITaxon:9606"
+        name: "Homo sapiens"
+      sex: "both"
+      disease_state: "doctor-diagnosed asthma"
+      sample_type: exhaled_breath_condensate
+      sample_collection_method: "Exhaled breath condensate collected weekly with an RTube (Respiratory Research Inc.): seated tidal-volume oral breathing into a mouthpiece attached to a cold condenser for 10 min, yielding approximately 1 mL, transferred to a microtube and stored at -20 C then -80 C until use; 616 breath samples in all"
+      subject_characteristics: "182 children with doctor-diagnosed asthma, 9 to 14 years of age, from nonsmoking households in Windsor, Ontario; 616 breath samples. Only 37% used inhaled corticosteroids during the study period. See the spirometry assay's subject record for the full cohort description; no numeric age or anthropometric value is recorded because Table 1 is not in the retrievable full text."
+      clinical_context: "School-based longitudinal panel study, October to December 2005, Windsor, Ontario, Canada; approved by the Research Ethics Board of Health Canada with written parental informed consent."
+      collection_site: "elementary schools in Windsor, Ontario, Canada"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:liu2009-8isoprostane-eia-001"
+        name: "8-Isoprostane in breath condensate by colorimetric enzyme immunoassay"
+      - id: "PROTOCOL:liu2009-ebc-collection-001"
+        name: "Exhaled breath condensate collection by RTube with amylase contamination control"
+      - id: "PROTOCOL:liu2009-ambient-monitoring-001"
+        name: "Daily ambient SO2, NO2, O3 and PM2.5 from the National Air Pollution Surveillance network"
+
+# =============================================================================
+# RESPONSE COMPARISONS
+#
+# Every estimate is a percent change in an end point per interquartile-range
+# increase in one pollutant, from a mixed-effects regression model. These are
+# regression estimates across a continuously exposed cohort, NOT differences
+# between a control group and a treated group, so control_output and
+# treated_output are omitted throughout: this panel has no unexposed arm and
+# each child served as their own control.
+#
+# change_value is recorded only where the paper prints a number. Where the
+# paper states a direction and a significance verdict without a figure (the
+# FEV1 trend, the FeNO associations, the 8-isoprostane associations, the ozone
+# nulls), change_value is omitted rather than computed or guessed.
+#
+# p_value is omitted throughout: the paper prints no per-estimate p-values in
+# the retrievable text, only the p <= 0.05 threshold it judges significance
+# by. change_direction follows that threshold, so an estimate the paper does
+# not call significant is recorded as no_change even where the paper describes
+# a directional trend; each description says so.
+#
+# sample_size on each change_value is the number of OBSERVATIONS behind the
+# model fit, not the number of children: 691 spirometry test results, 672 FeNO
+# test results and 616 breath samples, all from the same 182 children measured
+# repeatedly over 4 weeks. That follows the repeated-measures convention
+# already used on main (Container-intpanis2017 records 5404 clinical visits
+# from 2449 participants the same way). The subject count is in each assay's
+# study_subject and subject_characteristics.
+# =============================================================================
+
+response_comparisons:
+
+  # --- FEF25-75%: the paper's significant lung function finding -------------
+
+  - id: "COMP:liu2009-so2-3day-fef2575"
+    name: "FEF25-75% change per interquartile-range increase in 3-day average SO2"
+    description: "Percent change in forced expiratory flow between 25% and 75% of forced vital capacity per interquartile-range increase of 5.4 ppb in the 3-day average ambient sulfur dioxide concentration, from a mixed-effects regression model with random slopes and intercepts, adjusted for daily temperature, relative humidity, testing period and daily use of inhaled corticosteroids and short-acting beta-agonist. The 95% confidence interval excludes zero, so this estimate is significant under the paper's stated p <= 0.05 criterion; no per-estimate p-value is printed in the retrievable text, so p_value is omitted rather than invented. NOTE a tension in the source: the abstract prints this interval as excluding zero, but the Results sentence on Table 4 names only NO2 and PM2.5 as having a statistically significant FEF25-75% association, not SO2. The two statements concern different model columns — the abstract's is the 3-day average recorded here, Table 4's is the single-pollutant model — and both are quoted on the assay; change_direction follows the abstract's printed interval for the 3-day window. The authors note that the SO2 lung function estimates were sensitive to including PM2.5 in the model, so part of this effect may be confounded by PM2.5. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "LF:liu2009-spirometry-cohort"
+    compared_measurement: "fef25_75"
+    change_type: percent_change
+    change_direction: decreased
+    change_value:
+      value: "-3.1"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      central_tendency: single_value
+      sample_size: 691
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-5.8"
+        upper_bound: "-0.3"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu2009-no2-3day-fef2575"
+    name: "FEF25-75% change per interquartile-range increase in 3-day average NO2"
+    description: "Percent change in forced expiratory flow between 25% and 75% of forced vital capacity per interquartile-range increase of 6.8 ppb in the 3-day average ambient nitrogen dioxide concentration, from the same mixed-effects regression model. The 95% confidence interval excludes zero, so this estimate is significant under the paper's stated p <= 0.05 criterion; no per-estimate p-value is printed in the retrievable text, so p_value is omitted. The Results section separately confirms that FEF25-75% had a statistically significant association with NO2. The authors note that the NO2 lung function estimates were sensitive to including PM2.5 in the model, so part of this effect may be confounded by PM2.5. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "LF:liu2009-spirometry-cohort"
+    compared_measurement: "fef25_75"
+    change_type: percent_change
+    change_direction: decreased
+    change_value:
+      value: "-2.8"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      central_tendency: single_value
+      sample_size: 691
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-4.8"
+        upper_bound: "-0.8"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu2009-pm25-3day-fef2575"
+    name: "FEF25-75% change per interquartile-range increase in 3-day average PM2.5"
+    description: "Percent change in forced expiratory flow between 25% and 75% of forced vital capacity per interquartile-range increase of 5.4 microgram per cubic metre in the 3-day average ambient PM2.5 concentration, from the same mixed-effects regression model. The 95% confidence interval excludes zero, so this estimate is significant under the paper's stated p <= 0.05 criterion; no per-estimate p-value is printed in the retrievable text, so p_value is omitted. The Results section separately confirms that FEF25-75% had a statistically significant association with PM2.5, and the authors note that the PM2.5 estimates were NOT sensitive to co-pollutant adjustment, unlike those for SO2 and NO2. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "LF:liu2009-spirometry-cohort"
+    compared_measurement: "fef25_75"
+    change_type: percent_change
+    change_direction: decreased
+    change_value:
+      value: "-3.0"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      central_tendency: single_value
+      sample_size: 691
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "-4.7"
+        upper_bound: "-1.2"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu2009-o3-fef2575"
+    name: "FEF25-75% change per interquartile-range increase in ambient ozone"
+    description: "Ozone, at an interquartile-range increase of 5.3 ppb, was not associated with any health end point, FEF25-75% included: the abstract states this directly and the Discussion adds that no consistent adverse effect of O3 was found. The paper prints no point estimate, confidence interval or p-value for the ozone FEF25-75% association in the retrievable text, so change_value and p_value are both omitted rather than computed or guessed, and change_direction is no_change. Table 4's trend statement does place FEF25-75% among the end points trending negative against all four pollutants, but ozone did not reach the paper's p <= 0.05 threshold. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "LF:liu2009-spirometry-cohort"
+    compared_measurement: "fef25_75"
+    change_type: percent_change
+    change_direction: no_change
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  # --- FEV1: a negative trend that never reached significance ---------------
+
+  - id: "COMP:liu2009-so2-fev1"
+    name: "FEV1 change per interquartile-range increase in ambient SO2"
+    description: "FEV1 trended negative against SO2 in the single-pollutant model but, unlike FEF25-75%, did not reach statistical significance in the full cohort, so change_direction is no_change although the trend the paper describes is downward. The paper prints no FEV1 point estimate, confidence interval or p-value for this association in the retrievable text (Table 4's cells are not in it), so change_value and p_value are omitted rather than computed. FEV1 estimates did reach significance in the subgroup of children not taking inhaled corticosteroids, but those stratified estimates appear only in Figure 2 and carry no numbers in the retrievable text, so they are not recorded as comparisons. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "LF:liu2009-spirometry-cohort"
+    compared_measurement: "fev1"
+    change_type: percent_change
+    change_direction: no_change
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu2009-no2-fev1"
+    name: "FEV1 change per interquartile-range increase in ambient NO2"
+    description: "FEV1 trended negative against NO2 in the single-pollutant model but did not reach statistical significance in the full cohort, so change_direction is no_change although the trend the paper describes is downward. The paper prints no FEV1 point estimate, confidence interval or p-value for this association in the retrievable text, so change_value and p_value are omitted rather than computed. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "LF:liu2009-spirometry-cohort"
+    compared_measurement: "fev1"
+    change_type: percent_change
+    change_direction: no_change
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu2009-pm25-fev1"
+    name: "FEV1 change per interquartile-range increase in ambient PM2.5"
+    description: "FEV1 trended negative against PM2.5 in the single-pollutant model but did not reach statistical significance in the full cohort, so change_direction is no_change although the trend the paper describes is downward. The paper prints no FEV1 point estimate, confidence interval or p-value for this association in the retrievable text, so change_value and p_value are omitted rather than computed. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "LF:liu2009-spirometry-cohort"
+    compared_measurement: "fev1"
+    change_type: percent_change
+    change_direction: no_change
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu2009-o3-fev1"
+    name: "FEV1 change per interquartile-range increase in ambient ozone"
+    description: "FEV1 trended negative against ozone in the single-pollutant model but did not reach statistical significance, and the abstract states that ozone was not associated with health end points, so change_direction is no_change. The paper prints no FEV1 point estimate, confidence interval or p-value for this association in the retrievable text, so change_value and p_value are omitted rather than computed. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "LF:liu2009-spirometry-cohort"
+    compared_measurement: "fev1"
+    change_type: percent_change
+    change_direction: no_change
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  # --- TBARS: the paper's significant oxidative stress finding --------------
+
+  - id: "COMP:liu2009-so2-3day-tbars"
+    name: "TBARS change per interquartile-range increase in 3-day average SO2"
+    description: "Percent change in thiobarbituric acid reactive substances in exhaled breath condensate per interquartile-range increase of 5.4 ppb in the 3-day average ambient sulfur dioxide concentration, from a mixed-effects regression model on log-transformed TBARS. The 95% confidence interval excludes zero, so this estimate is significant under the paper's stated p <= 0.05 criterion, and the Results section confirms TBARS was significantly positively associated with SO2; no per-estimate p-value is printed in the retrievable text, so p_value is omitted. The largest of the three TBARS estimates. Including a second pollutant in the model did not markedly change the TBARS results, so this estimate is independent of co-pollutants. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "OX:liu2009-tbars-ebc"
+    compared_measurement: "lipid_peroxidation"
+    change_type: percent_change
+    change_direction: increased
+    change_value:
+      value: "36.2"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      central_tendency: single_value
+      sample_size: 616
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "15.7"
+        upper_bound: "57.2"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation, on log-transformed TBARS (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu2009-no2-3day-tbars"
+    name: "TBARS change per interquartile-range increase in 3-day average NO2"
+    description: "Percent change in thiobarbituric acid reactive substances in exhaled breath condensate per interquartile-range increase of 6.8 ppb in the 3-day average ambient nitrogen dioxide concentration, from the same mixed-effects regression model on log-transformed TBARS. The 95% confidence interval excludes zero, so this estimate is significant under the paper's stated p <= 0.05 criterion, and the Results section confirms TBARS was significantly positively associated with NO2; no per-estimate p-value is printed in the retrievable text, so p_value is omitted. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "OX:liu2009-tbars-ebc"
+    compared_measurement: "lipid_peroxidation"
+    change_type: percent_change
+    change_direction: increased
+    change_value:
+      value: "21.8"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      central_tendency: single_value
+      sample_size: 616
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "8.2"
+        upper_bound: "36.0"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation, on log-transformed TBARS (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu2009-pm25-3day-tbars"
+    name: "TBARS change per interquartile-range increase in 3-day average PM2.5"
+    description: "Percent change in thiobarbituric acid reactive substances in exhaled breath condensate per interquartile-range increase of 5.4 microgram per cubic metre in the 3-day average ambient PM2.5 concentration, from the same mixed-effects regression model on log-transformed TBARS. The 95% confidence interval excludes zero, so this estimate is significant under the paper's stated p <= 0.05 criterion, and the Results section confirms TBARS was significantly positively associated with PM2.5; no per-estimate p-value is printed in the retrievable text, so p_value is omitted. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "OX:liu2009-tbars-ebc"
+    compared_measurement: "lipid_peroxidation"
+    change_type: percent_change
+    change_direction: increased
+    change_value:
+      value: "24.8"
+      unit:
+        id: "UO:0000187"
+        name: "percent"
+      central_tendency: single_value
+      sample_size: 616
+      variability:
+        variability_type: confidence_interval_95
+        lower_bound: "10.8"
+        upper_bound: "39.4"
+        unit:
+          id: "UO:0000187"
+          name: "percent"
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation, on log-transformed TBARS (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu2009-o3-tbars"
+    name: "TBARS change per interquartile-range increase in ambient ozone"
+    description: "TBARS was not significantly associated with ozone: the Results section states the association held for SO2, NO2 and PM2.5 but not for O3, and the abstract states that ozone was not associated with health end points. The paper prints no point estimate, confidence interval or p-value for this association in the retrievable text, so change_value and p_value are omitted and change_direction is no_change. Note a tension the authors acknowledge elsewhere: the Discussion reports that O3 showed a positive association with TBARS in Figure 3's two-pollutant models while being negatively associated with FeNO in Table 4; no number is given for either, so neither is recorded as a value here. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "OX:liu2009-tbars-ebc"
+    compared_measurement: "lipid_peroxidation"
+    change_type: percent_change
+    change_direction: no_change
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation, on log-transformed TBARS (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  # --- 8-isoprostane: responded only to same-day SO2 -----------------------
+
+  - id: "COMP:liu2009-so2-sameday-8isoprostane"
+    name: "8-Isoprostane change per interquartile-range increase in same-day SO2"
+    description: "8-Isoprostane in exhaled breath condensate was significantly positively associated with same-day sulfur dioxide, the only pollutant and window for which it responded. The paper prints no point estimate, confidence interval or p-value for this association in the retrievable text, so change_value and p_value are omitted rather than computed; change_direction is increased because the paper calls the association significantly positive. SOURCE INCONSISTENCY: the abstract states that 8-isoprostane was not associated with air pollutants, contradicting this Results statement. The more specific Results statement is recorded here and both are quoted on the assay. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "OX:liu2009-8isoprostane-ebc"
+    compared_measurement: "eight_isoprostane_level"
+    change_type: percent_change
+    change_direction: increased
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation, on log-transformed 8-isoprostane (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu2009-no2-8isoprostane"
+    name: "8-Isoprostane change per interquartile-range increase in ambient NO2"
+    description: "8-Isoprostane was not associated with nitrogen dioxide: the Results section reports an association with same-day SO2 only, and not with other pollutants. No point estimate, confidence interval or p-value is printed in the retrievable text, so change_value and p_value are omitted and change_direction is no_change. The authors qualify this null: 8-isoprostane is derived from a narrower range of substrates than TBARS, the immunoassay's detection limit was 0.975 pg/mL, and they leave open whether a more sensitive and specific immunoassay would change the result. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "OX:liu2009-8isoprostane-ebc"
+    compared_measurement: "eight_isoprostane_level"
+    change_type: percent_change
+    change_direction: no_change
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation, on log-transformed 8-isoprostane (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu2009-pm25-8isoprostane"
+    name: "8-Isoprostane change per interquartile-range increase in ambient PM2.5"
+    description: "8-Isoprostane was not associated with PM2.5: the Results section reports an association with same-day SO2 only, and not with other pollutants. No point estimate, confidence interval or p-value is printed in the retrievable text, so change_value and p_value are omitted and change_direction is no_change. This is the contrast the authors build their methodological conclusion on: TBARS rose with PM2.5 while 8-isoprostane did not, which they read as TBARS being the more sensitive breath-condensate biomarker for acute exposures. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "OX:liu2009-8isoprostane-ebc"
+    compared_measurement: "eight_isoprostane_level"
+    change_type: percent_change
+    change_direction: no_change
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation, on log-transformed 8-isoprostane (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu2009-o3-8isoprostane"
+    name: "8-Isoprostane change per interquartile-range increase in ambient ozone"
+    description: "8-Isoprostane was not associated with ozone: the Results section reports an association with same-day SO2 only, and the abstract states that ozone was not associated with health end points. No point estimate, confidence interval or p-value is printed in the retrievable text, so change_value and p_value are omitted and change_direction is no_change. The authors contrast this null with a chamber study in which 2 hr at 400 ppb O3 raised breath-condensate 8-isoprostane in healthy adults — roughly two orders of magnitude above this study's ambient ozone levels. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "OX:liu2009-8isoprostane-ebc"
+    compared_measurement: "eight_isoprostane_level"
+    change_type: percent_change
+    change_direction: no_change
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation, on log-transformed 8-isoprostane (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  # --- FeNO: no adverse association, and a counterintuitive ozone result ----
+
+  - id: "COMP:liu2009-so2-feno"
+    name: "FeNO change per interquartile-range increase in ambient SO2"
+    description: "FeNO trended positive against sulfur dioxide but the association was not statistically significant, so change_direction is no_change although the trend the paper describes is upward. No point estimate, confidence interval or p-value is printed in the retrievable text, so change_value and p_value are omitted. The authors offer three readings of the null: insufficient sample size, FeNO at 0.05 L/sec not capturing lower-airway inflammation, or pre-existing airway inflammation in an asthmatic cohort masking a pollution effect at these low exposure concentrations. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "LF:liu2009-feno-cohort"
+    compared_measurement: "feno"
+    change_type: percent_change
+    change_direction: no_change
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation, on log-transformed FeNO (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu2009-no2-feno"
+    name: "FeNO change per interquartile-range increase in ambient NO2"
+    description: "FeNO trended positive against nitrogen dioxide but the association was not statistically significant, so change_direction is no_change although the trend the paper describes is upward. No point estimate, confidence interval or p-value is printed in the retrievable text, so change_value and p_value are omitted. Including a second pollutant in the model did not markedly change the FeNO results, so this estimate is independent of co-pollutants. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "LF:liu2009-feno-cohort"
+    compared_measurement: "feno"
+    change_type: percent_change
+    change_direction: no_change
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation, on log-transformed FeNO (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu2009-pm25-feno"
+    name: "FeNO change per interquartile-range increase in ambient PM2.5"
+    description: "FeNO trended positive against PM2.5 but the association was not statistically significant, so change_direction is no_change although the trend the paper describes is upward. No point estimate, confidence interval or p-value is printed in the retrievable text, so change_value and p_value are omitted. This is the paper's key dissociation: PM2.5 raised the oxidative stress marker TBARS and lowered FEF25-75% while leaving the inflammation marker FeNO unmoved. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "LF:liu2009-feno-cohort"
+    compared_measurement: "feno"
+    change_type: percent_change
+    change_direction: no_change
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation, on log-transformed FeNO (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+  - id: "COMP:liu2009-o3-feno"
+    name: "FeNO change per interquartile-range increase in ambient ozone"
+    description: "FeNO had a statistically significant NEGATIVE association with ozone — the opposite direction from an inflammatory effect. No point estimate, confidence interval or p-value is printed in the retrievable text, so change_value and p_value are omitted; change_direction is decreased because the paper calls the association statistically significant and negative. The authors call this result counterintuitive, note it survived adjustment for co-pollutants and study periods, and state that a sound interpretation remains to be found, so it should NOT be read as evidence that ozone reduces airway inflammation. SOURCE INCONSISTENCY: the abstract states both that O3 was not associated with health end points and that FeNO was not associated with air pollutants, contradicting this Results statement; the more specific Results statement is recorded here and both are quoted on the assay. A regression estimate across a continuously exposed cohort, not a contrast between a control and a treated group: control_output and treated_output are deliberately omitted."
+    derived_from_assay: "LF:liu2009-feno-cohort"
+    compared_measurement: "feno"
+    change_type: percent_change
+    change_direction: decreased
+    statistical_test: "mixed-effects regression model with random slopes and random intercepts accounting for intraindividual correlation, on log-transformed FeNO (S-PLUS version 6.1)"
+    derivation: reported_in_paper
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS
+#
+# ONE relationship only, and it is a coherence claim rather than a
+# demonstrated mechanism. The authors observed that FEF25-75% fell and TBARS
+# rose in response to the same three pollutants with a similar lag structure,
+# and read that as "a coherent outcome for small airway function and
+# oxidative stress". They did not test mediation, did not vary oxidative
+# stress experimentally, and this is an observational panel with no unexposed
+# arm — so relationship_type is "associated with" and evidence_support is
+# weak.
+#
+# NO relationship is recorded from oxidative stress to airway inflammation:
+# the paper's inflammation markers were null (FeNO showed no adverse
+# association, IL-6 was undetectable in 614 of 616 samples), so this paper
+# supplies no evidence for that link. The statement that "oxidative stress
+# often occurs along with tissue inflammation" is background the authors cite
+# from other publications, not a finding of this study, and is not recorded.
+#
+# Every KeyEvent block below is copied byte-for-byte from the wording already
+# on main.
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:liu2009-oxidative-stress-to-lung-function"
+    name: "Increased oxidative stress is associated with decreased lung function"
+    description: "Adverse changes in FEF25-75% tracked the increases in breath-condensate TBARS across the same three pollutants (SO2, NO2 and PM2.5) with a similar lag structure, which the authors read as a coherent outcome for small airway function and oxidative stress. This is a coherence-of-response argument in an observational panel with no unexposed arm: the two end points respond to the same exposures over the same window, but no mediation analysis was performed, oxidative stress was never manipulated, and the authors make no causal claim. Direction and causality are therefore not established, which is why the relationship is recorded as an association with weak support. The authors further report that inhaled corticosteroids, which are thought to reduce airway inflammation and oxidative stress, appeared to blunt both the TBARS and the lung function responses — consistent with the two moving together, but again observational."
+    upstream_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    relationship_type: "associated with"
+    evidence_support: weak
+    evidence:
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Adverse changes in FEF25–75% were consistent with those of TBARS in response to SO2, NO2, and PM2.5 with a similar lag structure, suggesting a coherent outcome for small airway function and oxidative stress."
+        explanation: "The paper's own statement of this relationship: the lung function decrement and the oxidative stress increase responded to the same three pollutants over a similar lag, which the authors call a coherent outcome. It is a coherence claim, not a demonstrated mechanism, which is why relationship_type is 'associated with' and evidence_support is weak."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "Air pollution may increase airway oxidative stress and decrease small airway function of asthmatic children. Inhaled corticosteroids may reduce oxidative stress and improve airway function."
+        explanation: "The paper's conclusion names both key events in this relationship as consequences of air pollution, and the authors' hedged 'may' is part of why the support is recorded as weak."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "ICS are thought to reduce inflammation and oxidative stress in airways (Baraldi et al. 2003; Khor et al. 2007). Children with asthma exacerbation have reduced 8-isoprostane in breath condensate after ICS treatment (Baraldi et al. 2003). In the present study, we found that ICS seems to be able to reduce some of the adverse effects of air pollutants, as the risk estimates appear to be larger for the children who did not take ICS during the study period."
+        explanation: "Supports the description's secondary argument: an intervention thought to reduce airway oxidative stress appeared to blunt both the oxidative stress and the lung function responses, which is consistent with the two key events moving together. The authors' 'seems to be able' and the reliance on an unmanipulated subgroup comparison are why this does not raise the evidence above weak."
+      - reference: "PMID:19440509"
+        reference_title: "Acute effects of air pollution on pulmonary function, airway inflammation, and oxidative stress in asthmatic children."
+        supports: SUPPORT
+        evidence_source: HUMAN_CLINICAL
+        snippet: "When a large number of regression models are run on a data set, some statistically significant associations may occur by chance. To reduce the possibility of spurious relationships due to multiple comparisons, we limited sensitivity analyses to those that consistently demonstrated statistical significance in base models, and considered only results showing a consistent pattern as actual effects."
+        explanation: "States the authors' own multiple-comparisons caveat and the consistency-of-pattern criterion they relied on instead of a formal correction. It is the methodological basis of the coherence argument behind this relationship, and part of why the support is recorded as weak."
