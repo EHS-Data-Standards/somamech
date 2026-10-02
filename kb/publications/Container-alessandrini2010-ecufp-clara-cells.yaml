@@ -1,0 +1,2662 @@
+# =============================================================================
+# Alessandrini et al. (2010) - Effects of ultrafine particles-induced
+# oxidative stress on Clara cells in allergic lung inflammation
+# =============================================================================
+#
+# Source: Particle and Fibre Toxicology 2010, 7:11
+# DOI: 10.1186/1743-8977-7-11
+#
+# Study design (all in vivo, mouse):
+#   - Five to seven-week-old Balb/c mice
+#   - OVA/alum sensitization i.p. on days 0, 7, 14, 28, 42, 56; OVA aerosol
+#     challenge (20 min, 1% LPS-depleted OVA) on day 70
+#   - Elemental carbon ultrafine particles (EC-UFP), spark-generated,
+#     507 ug/m3 for 24 h, inhaled immediately before allergen challenge
+#   - N-acetylcysteine (NAC) 250 mg/kg i.p. twice (shortly before and close
+#     to mid EC-UFP exposure) as the antioxidant intervention
+#   - Nine groups: untreated baseline, NS/UFP, NS/NAC/UFP, S/UFP,
+#     S/NAC/UFP, S/OVA, S/NAC/OVA, S/UFP/OVA, S/NAC/UFP/OVA
+#   - BAL at 0, 1 or 7 days after OVA challenge / end of EC-UFP exposure
+#
+# NUMERIC VALUES: this paper reports essentially all of its endpoints as
+# plots (Fig. 2 BALF/serum CC16, Fig. 3 BALF total protein, Fig. 4 CC16 and
+# TNF-alpha mRNA, Fig. 5 PAS volume density) or in an additional file (BAL
+# cells, cytokines, airway hyperresponsiveness). Per the extraction rules no
+# figure-derived measurement is invented here, so the output records carry
+# experimental_group and measured_under but NO numeric values; the direction
+# and significance of every effect is carried in response_comparisons and in
+# the assay descriptions, each backed by a verbatim quote. The only numbers
+# stated in the text are the exposure characterisation, the NAC dose, the
+# group sizes and the sensitization titres, and those are recorded where a
+# slot exists for them.
+#
+# The paper's mechanistic claim rests on NAC reversibility rather than on a
+# direct oxidative stress measurement - no ROS, GSH or isoprostane endpoint
+# was measured in THIS study (the isoprostane data belong to the authors'
+# earlier paper), so no OxidativeStressAssay is recorded. Oxidative stress
+# appears only as the upstream key event of the key_event_relationships.
+#
+# =============================================================================
+
+# =============================================================================
+# SOURCE PUBLICATION
+# =============================================================================
+
+source_publication:
+  reference: "PMID:20420656"
+  reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+  doi: "10.1186/1743-8977-7-11"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:alessandrini-bal-protein-001"
+    name: "Bronchoalveolar lavage with BALF total protein and cytokine ELISA"
+    description: >-
+      Airways lavaged five times with 0.8 ml PBS. Aliquots of cell-free BAL
+      fluid assayed in duplicate for total protein by Coomassie Protein Assay
+      (Pierce Chemical Co.) and for IL-5, IFN-gamma and IL-13 by two site
+      ELISAs using antibodies from BD Biosciences (IL-5, IFN-gamma) and
+      BioSource (IL-13). BAL performed at 0, 1 or 7 days after OVA challenge
+      or after termination of EC-UFP exposure, n = 4 per time point; BALF
+      stored at -80 C after centrifugation.
+    equipment_required:
+      - "Coomassie Protein Assay (Pierce Chemical Co.)"
+      - "Two site ELISA kits (BD Biosciences; BioSource)"
+
+  - id: "PROTOCOL:alessandrini-bal-diffcount-001"
+    name: "Differential BAL cell count on Diff-Quick stained cytospins"
+    description: >-
+      Viability and yield of BAL cells quantified via trypan blue exclusion in
+      a hemocytometer. Differential BAL cell count of 400 cells per sample
+      performed on cytospins (600 rpm for 10 min) fixed and stained with Diff-
+      Quick (Dade Behring).
+    equipment_required:
+      - "Hemocytometer"
+      - "Cytospin centrifuge"
+      - "Diff-Quick stain (Dade Behring, Marburg, Germany)"
+
+  - id: "PROTOCOL:alessandrini-cc16-immunoassay-001"
+    name: "Automated latex immunoassay for CC16 in BALF and serum"
+    description: >-
+      Cell-free BALF and serum aliquots assayed in duplicate for CC16 by an
+      automated latex immunoassay using a polyclonal rabbit antibody raised
+      against rat CC16 and applicable to both rat and mouse CC16 analysis.
+      Before BAL, blood samples were taken from the retro orbital plexus and
+      centrifuged; serum aliquots stored at -80 C.
+    equipment_required:
+      - "Automated latex immunoassay analyser"
+      - "Polyclonal rabbit anti-rat CC16 antibody"
+
+  - id: "PROTOCOL:alessandrini-qpcr-cc16-001"
+    name: "TaqMan real-time RT-PCR for CC16 in whole lung homogenate"
+    description: >-
+      Lungs retrieved 1 day after EC-UFP exposure / allergen challenge,
+      homogenized, total RNA isolated with the RNeasy Mini kit (Qiagen) and
+      first strand cDNA synthesised with the iScript cDNA synthesis kit
+      (BioRad). Quantitative PCR with TaqMan Gene Expression Assay
+      Mm01230908_m1 for CC16 and TaqMan Universal PCR Master Mix on an
+      ABIprism7000 Sequence Detection System (Applied Biosystems). Expression
+      normalised to the housekeeping gene 18S (Hs99999901_s1) and to the mean
+      of the untreated group by the delta-delta-CT method. One protocol id per
+      target gene because each target uses its own TaqMan assay.
+    equipment_required:
+      - "ABIprism7000 Sequence Detection System (Applied Biosystems, Darmstadt, Germany)"
+      - "TaqMan Gene Expression Assay Mm01230908_m1"
+      - "RNeasy Mini kit (Qiagen GmbH); iScript cDNA synthesis kit (BioRad)"
+
+  - id: "PROTOCOL:alessandrini-qpcr-tnfa-001"
+    name: "TaqMan real-time RT-PCR for TNF-alpha in whole lung homogenate"
+    description: >-
+      Lungs retrieved 1 day after EC-UFP exposure / allergen challenge,
+      homogenized, total RNA isolated with the RNeasy Mini kit (Qiagen) and
+      first strand cDNA synthesised with the iScript cDNA synthesis kit
+      (BioRad). Quantitative PCR with TaqMan Gene Expression Assay
+      Mm00443258_m1 for TNF-alpha and TaqMan Universal PCR Master Mix on an
+      ABIprism7000 Sequence Detection System (Applied Biosystems). Expression
+      normalised to the housekeeping gene 18S (Hs99999901_s1) and to the mean
+      of the untreated group by the delta-delta-CT method. One protocol id per
+      target gene because each target uses its own TaqMan assay.
+    equipment_required:
+      - "ABIprism7000 Sequence Detection System (Applied Biosystems, Darmstadt, Germany)"
+      - "TaqMan Gene Expression Assay Mm00443258_m1"
+      - "RNeasy Mini kit (Qiagen GmbH); iScript cDNA synthesis kit (BioRad)"
+
+  - id: "PROTOCOL:alessandrini-pas-morphometry-001"
+    name: "PAS staining and morphometrical analysis of volume density of PAS positive material"
+    description: >-
+      Lungs removed after BAL and fixed in 10% buffered formalin; left lobe
+      used for histopathology. After paraffin embedding, 3.5 um sections
+      stained with hematoxylin-eosin and periodic acid Schiff. Volume density
+      of PAS positive material determined with the double square lattice test
+      system E80 and the Optimas software package in cross sections of small
+      (circumference <= 800 um) and large (circumference > 800 um) airways.
+      Data expressed as percentage of PAS positive material per total
+      epithelial cells; lungs retrieved 7 days after OVA challenge / EC-UFP
+      inhalation, n = 6-12 per group.
+    equipment_required:
+      - "Double square lattice test system E80"
+      - "Optimas software package (Washington, USA)"
+      - "Periodic acid Schiff and hematoxylin-eosin stains"
+    quality_control_criteria: "Volume density scored separately in small (circumference <= 800 um) and large (circumference > 800 um) airway cross sections"
+
+  - id: "PROTOCOL:alessandrini-em-001"
+    name: "Transmission and scanning electron microscopy of bronchiolar epithelium"
+    description: >-
+      Lungs fixed by intratracheal perfusion with 2.5% glutaraldehyde in 0.1 M
+      cacodylate buffer (pH 7.4), n = 2 per time point per group. For TEM
+      peripheral and central sections of the right lung were minced, for SEM
+      the left lung was cut longitudinally; all samples fixed a further 4-7
+      days in glutaraldehyde and postfixed in 1% osmiumtetroxide. TEM: EMbed
+      812 embedding, semithin 500 nm sections stained with Richardson solution
+      to select the region, then ultrathin sections on formvar-coated 75-mesh
+      nickel grids double-stained with uranyl acetate and lead citrate,
+      observed at 80 kV (JEOL 1210). SEM: cacodylate rinses, ascending ethanol
+      dehydration, critical point drying, sputter-coating with 10 nm gold,
+      examined at 15 kV (JEOL 6300). Analysis focussed on the small airways at
+      the one week time point.
+    equipment_required:
+      - "JEOL 1210 transmission electron microscope (Tokyo, Japan), 80 kV"
+      - "JEOL 6300 scanning electron microscope (Tokyo, Japan), 15 kV"
+      - "EMbed 812 (Science Services); uranyl acetate and lead citrate"
+    quality_control_criteria: "Semithin Richardson-stained sections used to select the portion suitable for electron microscopy; small airways only, one week time point"
+
+  - id: "PROTOCOL:alessandrini-plethysmography-001"
+    name: "Unrestrained whole body plethysmography for enhanced pause (PenH)"
+    description: >-
+      Lung function tests performed 24 h after allergen challenge in
+      unrestrained animals using whole body plethysmography (Buxco
+      Electronics). The enhanced pause (PenH) determined before and after
+      methacholine exposure was applied as an index of airway
+      hyperresponsiveness. Methacholine doses M1-M5: 10 mg/ml nebulized for 1,
+      2 and 4 minutes, then 40 mg/ml for 2 and 4 minutes, with a 3 min
+      recording interval after each level; the mean of the PenH values of the
+      2nd and 3rd min was used to quantify airway hyperresponsiveness. n = 5-7
+      per group.
+    equipment_required:
+      - "Buxco Electronics whole body plethysmograph (Sharon, Connecticut, USA)"
+      - "Methacholine aerosol, 10 mg/ml and 40 mg/ml"
+
+# =============================================================================
+# BALF/SPUTUM ASSAYS - airway inflammation and lung/blood barrier leakage
+# =============================================================================
+
+balf_sputum_assays:
+  - id: "BALF:alessandrini-total-protein"
+    name: "BALF total protein concentration - EC-UFP inhalation before allergen challenge, with and without NAC"
+    description: >-
+      Figure 3, Coomassie protein assay on cell-free BALF, mean +/- SD, n =
+      4-8 per time point, one-way ANOVA with post-hoc Scheffe test, at 0, 1
+      and 7 days. OVA challenge alone raised BALF total protein above the
+      untreated baseline and NAC significantly reduced that rise. EC-UFP
+      inhalation before OVA challenge produced a further increase at the 7 day
+      time point (S/UFP/OVA), which NAC significantly reduced. The non-
+      challenged groups (NS/UFP, S/UFP, with and without NAC) showed no
+      induction of protein levels at all, so the particle effect on barrier
+      leakage required the allergic challenge. Values are plotted only, so no
+      numeric measurements are recorded here.
+    evidence:
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In sensitized mice, OVA challenge alone caused an increase in BALF total protein concentration compared to control, which was significantly reduced by NAC treatment (Fig. 3b)."
+        explanation: "Supports the S/OVA vs untreated difference and the NAC effect in S/NAC/OVA that this assay's output records stand for."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "A further increase of BALF total protein was detected in sensitized mice exposed to EC-UFP inhalation prior to OVA challenge (S/UFP/OVA) at the 7 days time point (Fig. 3b)."
+        explanation: "The particle-plus-allergen increase in BALF total protein recorded by the S/UFP/OVA output record."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "NAC significantly reduced BALF total protein concentrations (S/NAC/UFP/OVA) at the 7 days time point."
+        explanation: "Supports the reversal recorded by the S/NAC/UFP/OVA output record and the corresponding response comparison."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "No induction of protein levels were observed in any of the non-challenged groups (NS/UFP, S/UFP, with and without NAC treatment, Fig. 3a)."
+        explanation: "The explicit null result carried by the four non-challenged output records of this assay."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Untreated mice served as baseline controls (dotted line). Data presented as mean ± SD (n = 4-8/time point)."
+        explanation: "Fixes the baseline group, the central tendency and the group sizes stated for this figure."
+    has_specified_output:
+      - id: "BALF:alessandrini-total-protein-output-untreated"
+        name: "BALF total protein - untreated baseline"
+        experimental_group: baseline
+        measured_under: "EXPOSURE:alessandrini-untreated"
+      - id: "BALF:alessandrini-total-protein-output-ns-ufp"
+        name: "BALF total protein - NS/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-ufp"
+      - id: "BALF:alessandrini-total-protein-output-ns-nac-ufp"
+        name: "BALF total protein - NS/NAC/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-nac-ufp"
+      - id: "BALF:alessandrini-total-protein-output-s-ufp"
+        name: "BALF total protein - S/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp"
+      - id: "BALF:alessandrini-total-protein-output-s-nac-ufp"
+        name: "BALF total protein - S/NAC/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ufp"
+      - id: "BALF:alessandrini-total-protein-output-s-ova"
+        name: "BALF total protein - S/OVA"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:alessandrini-s-ova"
+      - id: "BALF:alessandrini-total-protein-output-s-nac-ova"
+        name: "BALF total protein - S/NAC/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ova"
+      - id: "BALF:alessandrini-total-protein-output-s-ufp-ova"
+        name: "BALF total protein - S/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp-ova"
+      - id: "BALF:alessandrini-total-protein-output-s-nac-ufp-ova"
+        name: "BALF total protein - S/NAC/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+    has_exposure_condition:
+      - id: "EXPOSURE:alessandrini-untreated"
+        name: "Untreated baseline control - no sensitization, no EC-UFP inhalation, no OVA challenge (n = 8)"
+      - id: "EXPOSURE:alessandrini-ns-ufp"
+        name: "Non sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h (NS/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-ns-nac-ufp"
+        name: "Non sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h (NS/NAC/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ufp"
+        name: "OVA-sensitized, non challenged mice exposed to EC-UFP, 507 ug/m3 for 24 h (S/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-nac-ufp"
+        name: "OVA-sensitized, non challenged mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h (S/NAC/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ova"
+        name: "OVA-sensitized and OVA-challenged mice exposed to filtered air (S/OVA)"
+      - id: "EXPOSURE:alessandrini-s-nac-ova"
+        name: "OVA-sensitized and OVA-challenged mice treated with NAC, exposed to filtered air (S/NAC/OVA)"
+      - id: "EXPOSURE:alessandrini-s-ufp-ova"
+        name: "OVA-sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+        name: "OVA-sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/NAC/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:alessandrini-mouse-balf"
+      name: "Balb/c mouse bronchoalveolar lavage fluid"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; data as mean +/- SD. Group sizes differ per endpoint and are stated in each assay description - BALF and serum CC16 n = 4-7 per time point (Fig. 2), BALF total protein n = 4-8 per time point (Fig. 3), lung mRNA n = 3-6 per group (Fig. 4) - so no single n is carried on this shared subject record"
+      sample_type: balf
+      sample_collection_method: "Airways lavaged five times with 0.8 ml PBS; cell-free BALF assayed in duplicate"
+      collection_site: "whole lung bronchoalveolar lavage"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:alessandrini-bal-protein-001"
+        name: "Bronchoalveolar lavage with BALF total protein and cytokine ELISA"
+        detection_method: "Coomassie Protein Assay (Pierce Chemical Co.), duplicate measurement"
+
+  - id: "BALF:alessandrini-inflammation"
+    name: "BAL inflammatory infiltrate and BALF cytokines IL-5, IL-13 and IFN-gamma - EC-UFP inhalation before allergen challenge, with and without NAC"
+    description: >-
+      Differential BAL cell count and two site ELISAs for IL-5, IL-13 and IFN-
+      gamma, reported in the paper's additional file 1 (functional
+      characterization of the mouse model) rather than in a main figure, mean
+      +/- SD, one-way ANOVA with post-hoc Scheffe test. EC-UFP inhalation
+      before OVA challenge significantly increased the BAL inflammatory
+      infiltrate and BALF IL-5 and IL-13 at 7 days compared with the filtered-
+      air allergic control, and NAC significantly reduced that augmentation;
+      NAC reduced inflammation in S/OVA only non-significantly. Non sensitized
+      mice exposed to EC-UFP developed no inflammatory infiltrate and no
+      cytokine release at all, and IFN-gamma was unchanged in every group.
+      IL-5 and IL-13 have no named measurement slot in this schema and no
+      values are tabulated in the fetched text, so no numeric measurements are
+      recorded here.
+    evidence:
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In sensitized mice, EC-UFP inhalation prior to OVA challenge (S/UFP/OVA) caused a significant increase of BAL inflammatory infiltrate and BALF cytokines IL-5 and IL-13 7 days after OVA challenge, compared with sensitized and challenged mice exposed to filtered air (S/OVA); NAC treatment significantly reduced EC-UFP-induced augmentation of lung allergic inflammation (S/NAC/UFP/OVA)"
+        explanation: "Carries both the S/UFP/OVA increase and the S/NAC/UFP/OVA reversal that the treated output records of this assay stand for."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Non sensitized mice exposed to EC-UFP did not develop an inflammatory infiltrate and showed no cytokine release (NS/UFP, see additional file 1: functional characterization of the mouse model)."
+        explanation: "The null result recorded by the NS/UFP output record: particles alone did not inflame a non-allergic lung."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "No significant alterations in the IFN-γ concentration were observed in any of the groups"
+        explanation: "Supports the unchanged IFN-gamma noted in this assay's description across every output record."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Differential BAL cell count (400 cells/sample) was performed on cytospins (600 rpm for 10 min) fixed and stained with Diff-Quick"
+        explanation: "Documents how the inflammatory infiltrate behind these output records was counted."
+    has_specified_output:
+      - id: "BALF:alessandrini-inflammation-output-untreated"
+        name: "BAL inflammatory infiltrate and cytokines - untreated baseline"
+        experimental_group: baseline
+        measured_under: "EXPOSURE:alessandrini-untreated"
+      - id: "BALF:alessandrini-inflammation-output-ns-ufp"
+        name: "BAL inflammatory infiltrate and cytokines - NS/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-ufp"
+      - id: "BALF:alessandrini-inflammation-output-s-ufp"
+        name: "BAL inflammatory infiltrate and cytokines - S/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp"
+      - id: "BALF:alessandrini-inflammation-output-s-ova"
+        name: "BAL inflammatory infiltrate and cytokines - S/OVA"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:alessandrini-s-ova"
+      - id: "BALF:alessandrini-inflammation-output-s-nac-ova"
+        name: "BAL inflammatory infiltrate and cytokines - S/NAC/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ova"
+      - id: "BALF:alessandrini-inflammation-output-s-ufp-ova"
+        name: "BAL inflammatory infiltrate and cytokines - S/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp-ova"
+      - id: "BALF:alessandrini-inflammation-output-s-nac-ufp-ova"
+        name: "BAL inflammatory infiltrate and cytokines - S/NAC/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+    has_exposure_condition:
+      - id: "EXPOSURE:alessandrini-untreated"
+        name: "Untreated baseline control - no sensitization, no EC-UFP inhalation, no OVA challenge (n = 8)"
+      - id: "EXPOSURE:alessandrini-ns-ufp"
+        name: "Non sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h (NS/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ufp"
+        name: "OVA-sensitized, non challenged mice exposed to EC-UFP, 507 ug/m3 for 24 h (S/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ova"
+        name: "OVA-sensitized and OVA-challenged mice exposed to filtered air (S/OVA)"
+      - id: "EXPOSURE:alessandrini-s-nac-ova"
+        name: "OVA-sensitized and OVA-challenged mice treated with NAC, exposed to filtered air (S/NAC/OVA)"
+      - id: "EXPOSURE:alessandrini-s-ufp-ova"
+        name: "OVA-sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+        name: "OVA-sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/NAC/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:alessandrini-mouse-balf"
+      name: "Balb/c mouse bronchoalveolar lavage fluid"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; data as mean +/- SD. Group sizes differ per endpoint and are stated in each assay description - BALF and serum CC16 n = 4-7 per time point (Fig. 2), BALF total protein n = 4-8 per time point (Fig. 3), lung mRNA n = 3-6 per group (Fig. 4) - so no single n is carried on this shared subject record"
+      sample_type: balf
+      sample_collection_method: "Airways lavaged five times with 0.8 ml PBS; 400 cells per sample counted on Diff-Quick stained cytospins"
+      collection_site: "whole lung bronchoalveolar lavage"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:alessandrini-bal-diffcount-001"
+        name: "Differential BAL cell count on Diff-Quick stained cytospins"
+        staining_type: "Diff-Quick"
+        detection_method: "Light microscopic differential count of 400 cells per sample"
+
+# =============================================================================
+# GENE EXPRESSION ASSAYS - CC16 protein (BALF and serum) and CC16 /
+# TNF-alpha mRNA in whole lung homogenate
+# =============================================================================
+
+gene_expression_assays:
+  - id: "GE:alessandrini-cc16-protein-balf"
+    name: "CC16 protein concentration in BALF - EC-UFP inhalation before allergen challenge, with and without NAC"
+    description: >-
+      Figure 2a and 2b, upper panels: CC16 (Clara cell protein, the main
+      secretory product of bronchiolar Clara cells) measured by automated
+      latex immunoassay in cell-free BALF at 0, 1 and 7 days, mean +/- SD, n =
+      4-7 per time point, one-way ANOVA with Least Significant Difference
+      test. EC-UFP for 24 h significantly DECREASED BALF CC16 at the 1-day
+      time point in both non sensitized and sensitized mice, and NAC abrogated
+      that decrease; by one week BALF CC16 had almost returned to the control
+      level. In sensitized mice EC-UFP before allergen challenge gave a
+      biphasic response - an initial significant reduction followed by a
+      significant INCREASE at 7 days above untreated, NS/UFP, S/UFP and S/OVA
+      - which NAC significantly reduced. OVA challenge alone caused a
+      transitional reduction at 1 day that NAC only minimally reduced. Values
+      are plotted only, so no numeric measurements are recorded here; the
+      direction of each effect is carried in response_comparisons.
+    target_gene: "CC16 (Clara cell protein, secretoglobin family 1A member 1)"
+    gene_expression_method: "Automated latex immunoassay for CC16 protein"
+    evidence:
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Non sensitized and sensitized mice exposed to EC-UFP for 24 h (NS/UFP, S/UFP) showed a significant decrease in CC16 in BALF at 1-day time point (Fig. 2a, upper panel)."
+        explanation: "The EC-UFP-alone decrease in BALF CC16 recorded by the NS/UFP and S/UFP output records."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "EC-UFP-induced decrease in BALF CC16 concentrations were abrogated by NAC treatment (NS/NAC/UFP; S/NAC/UFP)."
+        explanation: "The NAC reversal recorded by the NS/NAC/UFP and S/NAC/UFP output records - the paper's basis for an oxidative-stress mechanism."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "One week after EC-UFP inhalation, BALF CC16 concentrations almost reached the control level."
+        explanation: "Establishes that the particle-only BALF CC16 decrease was transient, which the assay description records."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Sensitized mice exposed to EC-UFP inhalation prior to allergen challenge showed an initial significant reduction in BALF CC16, followed by a significant increase in CC16 BALF content at the 7-day time point compared to untreated animals"
+        explanation: "The biphasic S/UFP/OVA response carried by that output record and by the two corresponding response comparisons."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "NAC minimally reduced OVA-induced CC16 alterations (S/NAC/OVA)."
+        explanation: "Supports the weak NAC effect recorded by the S/NAC/OVA output record, in contrast to its strong effect in the particle-exposed groups."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Untreated mice served as baseline controls (dotted line). Data presented as mean ± SD (n = 4-7/time point). *p < 0.05, **p < 0.01 vs untreated;"
+        explanation: "Fixes the baseline group, central tendency, group sizes and significance thresholds for this figure."
+    has_specified_output:
+      - id: "GE:alessandrini-cc16-protein-balf-output-untreated"
+        name: "BALF CC16 - untreated baseline"
+        experimental_group: baseline
+        measured_under: "EXPOSURE:alessandrini-untreated"
+      - id: "GE:alessandrini-cc16-protein-balf-output-ns-ufp"
+        name: "BALF CC16 - NS/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-ufp"
+      - id: "GE:alessandrini-cc16-protein-balf-output-ns-nac-ufp"
+        name: "BALF CC16 - NS/NAC/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-nac-ufp"
+      - id: "GE:alessandrini-cc16-protein-balf-output-s-ufp"
+        name: "BALF CC16 - S/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp"
+      - id: "GE:alessandrini-cc16-protein-balf-output-s-nac-ufp"
+        name: "BALF CC16 - S/NAC/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ufp"
+      - id: "GE:alessandrini-cc16-protein-balf-output-s-ova"
+        name: "BALF CC16 - S/OVA"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:alessandrini-s-ova"
+      - id: "GE:alessandrini-cc16-protein-balf-output-s-nac-ova"
+        name: "BALF CC16 - S/NAC/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ova"
+      - id: "GE:alessandrini-cc16-protein-balf-output-s-ufp-ova"
+        name: "BALF CC16 - S/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp-ova"
+      - id: "GE:alessandrini-cc16-protein-balf-output-s-nac-ufp-ova"
+        name: "BALF CC16 - S/NAC/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+    has_exposure_condition:
+      - id: "EXPOSURE:alessandrini-untreated"
+        name: "Untreated baseline control - no sensitization, no EC-UFP inhalation, no OVA challenge (n = 8)"
+      - id: "EXPOSURE:alessandrini-ns-ufp"
+        name: "Non sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h (NS/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-ns-nac-ufp"
+        name: "Non sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h (NS/NAC/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ufp"
+        name: "OVA-sensitized, non challenged mice exposed to EC-UFP, 507 ug/m3 for 24 h (S/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-nac-ufp"
+        name: "OVA-sensitized, non challenged mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h (S/NAC/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ova"
+        name: "OVA-sensitized and OVA-challenged mice exposed to filtered air (S/OVA)"
+      - id: "EXPOSURE:alessandrini-s-nac-ova"
+        name: "OVA-sensitized and OVA-challenged mice treated with NAC, exposed to filtered air (S/NAC/OVA)"
+      - id: "EXPOSURE:alessandrini-s-ufp-ova"
+        name: "OVA-sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+        name: "OVA-sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/NAC/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-club-cell-loss"
+      name: "Club cell marker loss"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:alessandrini-mouse-balf"
+      name: "Balb/c mouse bronchoalveolar lavage fluid"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; data as mean +/- SD. Group sizes differ per endpoint and are stated in each assay description - BALF and serum CC16 n = 4-7 per time point (Fig. 2), BALF total protein n = 4-8 per time point (Fig. 3), lung mRNA n = 3-6 per group (Fig. 4) - so no single n is carried on this shared subject record"
+      sample_type: balf
+      sample_collection_method: "Airways lavaged five times with 0.8 ml PBS; cell-free BALF assayed in duplicate for CC16"
+      collection_site: "whole lung bronchoalveolar lavage"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:alessandrini-cc16-immunoassay-001"
+        name: "Automated latex immunoassay for CC16 in BALF and serum"
+        detection_method: "Automated latex immunoassay with a polyclonal rabbit anti-rat CC16 antibody"
+        antibodies_used:
+          - "Polyclonal rabbit antibody raised against rat CC16, applicable to rat and mouse CC16"
+
+  - id: "GE:alessandrini-cc16-protein-serum"
+    name: "CC16 protein concentration in serum - EC-UFP inhalation before allergen challenge, with and without NAC"
+    description: >-
+      Figure 2a and 2b, bottom panels: serum CC16 by automated latex
+      immunoassay on blood taken from the retro orbital plexus before BAL,
+      mean +/- SD, n = 4-7 per time point, one-way ANOVA with Least
+      Significant Difference test. In contrast to the BALF response, serum
+      CC16 INCREASED significantly after EC-UFP in both non sensitized and
+      sensitized mice and was still raised one week after inhalation; in
+      sensitized mice EC-UFP before allergen challenge increased serum CC16
+      further, and NAC significantly reduced that increase. NAC reduced serum
+      CC16 in sensitized EC-UFP-exposed mice at the 7 day time point but had
+      no effect in S/OVA. Because CC16 is a marker of alveolo-capillary
+      barrier permeability, the opposite directions in BALF and serum are read
+      by the authors as increased leakage across the lung/blood barrier, which
+      is why this assay informs on the epithelial barrier key event. Values
+      are plotted only, so no numeric measurements are recorded here.
+    target_gene: "CC16 (Clara cell protein, secretoglobin family 1A member 1)"
+    gene_expression_method: "Automated latex immunoassay for CC16 protein"
+    evidence:
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In contrast to BALF CC16 concentrations, serum CC16 concentrations increased significantly following exposure to EC-UFP in both non sensitized and sensitized mice (Fig. 2a, bottom panel)."
+        explanation: "The serum CC16 increase after EC-UFP recorded by the NS/UFP and S/UFP output records, and the BALF/serum divergence stated in the description."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In sensitized mice, inhalation of EC-UFP prior to OVA challenge caused most significant alterations of BALF and serum CC16 concentration, BALF total protein and TNF-α relative expression compared to relevant controls"
+        explanation: "Establishes S/UFP/OVA as the group with the largest serum CC16 alteration, which is what that output record stands for."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Our results showed that sensitized and challenged mice exposed to EC-UFP prior to allergen challenge showed a transient decrease, followed by a late increase of CC16 in BALF"
+        explanation: "The authors' own summary of the biphasic BALF course that the divergent serum course is contrasted with here."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "BALF total protein concentration was also most increased in this group, confirming that the exudative response caused by the increased airway permeability plays an important role."
+        explanation: "Ties the serum CC16 rise to increased airway permeability, the key event this assay is mapped to."
+    has_specified_output:
+      - id: "GE:alessandrini-cc16-protein-serum-output-untreated"
+        name: "Serum CC16 - untreated baseline"
+        experimental_group: baseline
+        measured_under: "EXPOSURE:alessandrini-untreated"
+      - id: "GE:alessandrini-cc16-protein-serum-output-ns-ufp"
+        name: "Serum CC16 - NS/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-ufp"
+      - id: "GE:alessandrini-cc16-protein-serum-output-ns-nac-ufp"
+        name: "Serum CC16 - NS/NAC/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-nac-ufp"
+      - id: "GE:alessandrini-cc16-protein-serum-output-s-ufp"
+        name: "Serum CC16 - S/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp"
+      - id: "GE:alessandrini-cc16-protein-serum-output-s-nac-ufp"
+        name: "Serum CC16 - S/NAC/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ufp"
+      - id: "GE:alessandrini-cc16-protein-serum-output-s-ova"
+        name: "Serum CC16 - S/OVA"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:alessandrini-s-ova"
+      - id: "GE:alessandrini-cc16-protein-serum-output-s-nac-ova"
+        name: "Serum CC16 - S/NAC/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ova"
+      - id: "GE:alessandrini-cc16-protein-serum-output-s-ufp-ova"
+        name: "Serum CC16 - S/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp-ova"
+      - id: "GE:alessandrini-cc16-protein-serum-output-s-nac-ufp-ova"
+        name: "Serum CC16 - S/NAC/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+    has_exposure_condition:
+      - id: "EXPOSURE:alessandrini-untreated"
+        name: "Untreated baseline control - no sensitization, no EC-UFP inhalation, no OVA challenge (n = 8)"
+      - id: "EXPOSURE:alessandrini-ns-ufp"
+        name: "Non sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h (NS/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-ns-nac-ufp"
+        name: "Non sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h (NS/NAC/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ufp"
+        name: "OVA-sensitized, non challenged mice exposed to EC-UFP, 507 ug/m3 for 24 h (S/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-nac-ufp"
+        name: "OVA-sensitized, non challenged mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h (S/NAC/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ova"
+        name: "OVA-sensitized and OVA-challenged mice exposed to filtered air (S/OVA)"
+      - id: "EXPOSURE:alessandrini-s-nac-ova"
+        name: "OVA-sensitized and OVA-challenged mice treated with NAC, exposed to filtered air (S/NAC/OVA)"
+      - id: "EXPOSURE:alessandrini-s-ufp-ova"
+        name: "OVA-sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+        name: "OVA-sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/NAC/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:alessandrini-mouse-serum"
+      name: "Balb/c mouse serum"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; data as mean +/- SD. Group sizes differ per endpoint and are stated in each assay description - BALF and serum CC16 n = 4-7 per time point (Fig. 2), BALF total protein n = 4-8 per time point (Fig. 3), lung mRNA n = 3-6 per group (Fig. 4) - so no single n is carried on this shared subject record"
+      sample_type: blood
+      sample_collection_method: "Blood taken from the retro orbital plexus before BAL and centrifuged; serum aliquots stored at -80 C and assayed in duplicate"
+      collection_site: "retro orbital plexus"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:alessandrini-cc16-immunoassay-001"
+        name: "Automated latex immunoassay for CC16 in BALF and serum"
+        detection_method: "Automated latex immunoassay with a polyclonal rabbit anti-rat CC16 antibody"
+        antibodies_used:
+          - "Polyclonal rabbit antibody raised against rat CC16, applicable to rat and mouse CC16"
+
+  - id: "GE:alessandrini-cc16-mrna-lung"
+    name: "CC16 relative mRNA expression in whole lung homogenate - EC-UFP inhalation before allergen challenge, with and without NAC"
+    description: >-
+      Figure 4a and 4b, upper panels: TaqMan real-time RT-PCR for CC16 in lung
+      homogenates retrieved 24 h after EC-UFP / filtered air exposure,
+      normalised to 18S and to the untreated group by the delta-delta-CT
+      method, mean +/- SD, n = 3-6 per group, one-way ANOVA with Least
+      Significant Difference test. EC-UFP exposure alone INCREASED CC16 mRNA
+      in both non sensitized and sensitized mice, which the authors read as
+      increased intracellular storage of CC16 protein. Allergen challenge
+      alone had no significant effect on CC16 mRNA. EC-UFP before allergen
+      challenge raised CC16 mRNA similarly to NS/UFP and S/UFP. NAC moderately
+      reduced CC16 mRNA in non challenged animals but FAILED to reduce the EC-
+      UFP-induced increase in sensitized and challenged animals - the authors'
+      reason for proposing post-transcriptional regulation of CC16 by NAC.
+      Note that this assay is mapped to the club cell marker key event, whose
+      canonical wording is a decrease; the direction actually observed here is
+      an increase and is recorded in the response_comparisons. Values are
+      plotted only, so no numeric measurements are recorded here.
+    target_gene: "CC16 (TaqMan assay Mm01230908_m1)"
+    gene_expression_method: "TaqMan real-time RT-PCR, delta-delta-CT"
+    normalization_reference: "18S (Hs99999901_s1) and the mean of the untreated group"
+    evidence:
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In sensitized and non sensitized mice EC-UFP exposure alone induced an increase in CC16 and TNF-α relative mRNA expression compared to untreated mice (Fig. 4a, upper and bottom panel respectively)."
+        explanation: "The particle-only CC16 mRNA increase recorded by the NS/UFP and S/UFP output records."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "alone had no significant effects on relative CC16 mRNA expression, but significantly increased TNF-α expression"
+        explanation: "The null CC16 mRNA result for allergen challenge alone, carried by the S/OVA output record."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "prior to allergen challenge increased CC16 mRNA expression similarly to NS/UFP and S/UFP (S/UFP/OVA, Fig. 4b, upper panel), whereas it significantly increased TNF-α expression compared to all other groups"
+        explanation: "Records that CC16 mRNA in S/UFP/OVA rose no further than with particles alone, unlike TNF-alpha - the dissociation this assay pair documents."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "animals NAC failed to reduce EC-UFP-induced increase in CC16 expression, but strongly reduced EC-UFP-induced increase in TNF-α mRNA expression"
+        explanation: "The NAC-resistant CC16 mRNA increase recorded by the S/NAC/UFP/OVA output record."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "NAC moderately reduced CC16 and TNF-α mRNA expression in non challenged animals (NS/NAC/UFP, Fig. 4a, striped bars)."
+        explanation: "The partial NAC effect recorded by the NS/NAC/UFP output record."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "implying that the regulation of CC16 by NAC may function at the post-transcriptional level."
+        explanation: "The authors' interpretation of the NAC-resistant mRNA response, noted in this assay's description."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The lungs were retrieved 24 h after EC-UFP/filtered air exposure. Data presented as mean ± SD (n = 3-6/group)."
+        explanation: "Fixes the sampling time, central tendency and group sizes for the mRNA figure."
+    has_specified_output:
+      - id: "GE:alessandrini-cc16-mrna-lung-output-untreated"
+        name: "Lung CC16 mRNA - untreated baseline"
+        experimental_group: baseline
+        measured_under: "EXPOSURE:alessandrini-untreated"
+      - id: "GE:alessandrini-cc16-mrna-lung-output-ns-ufp"
+        name: "Lung CC16 mRNA - NS/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-ufp"
+      - id: "GE:alessandrini-cc16-mrna-lung-output-ns-nac-ufp"
+        name: "Lung CC16 mRNA - NS/NAC/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-nac-ufp"
+      - id: "GE:alessandrini-cc16-mrna-lung-output-s-ufp"
+        name: "Lung CC16 mRNA - S/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp"
+      - id: "GE:alessandrini-cc16-mrna-lung-output-s-ova"
+        name: "Lung CC16 mRNA - S/OVA"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:alessandrini-s-ova"
+      - id: "GE:alessandrini-cc16-mrna-lung-output-s-nac-ova"
+        name: "Lung CC16 mRNA - S/NAC/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ova"
+      - id: "GE:alessandrini-cc16-mrna-lung-output-s-ufp-ova"
+        name: "Lung CC16 mRNA - S/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp-ova"
+      - id: "GE:alessandrini-cc16-mrna-lung-output-s-nac-ufp-ova"
+        name: "Lung CC16 mRNA - S/NAC/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+    has_exposure_condition:
+      - id: "EXPOSURE:alessandrini-untreated"
+        name: "Untreated baseline control - no sensitization, no EC-UFP inhalation, no OVA challenge (n = 8)"
+      - id: "EXPOSURE:alessandrini-ns-ufp"
+        name: "Non sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h (NS/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-ns-nac-ufp"
+        name: "Non sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h (NS/NAC/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ufp"
+        name: "OVA-sensitized, non challenged mice exposed to EC-UFP, 507 ug/m3 for 24 h (S/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ova"
+        name: "OVA-sensitized and OVA-challenged mice exposed to filtered air (S/OVA)"
+      - id: "EXPOSURE:alessandrini-s-nac-ova"
+        name: "OVA-sensitized and OVA-challenged mice treated with NAC, exposed to filtered air (S/NAC/OVA)"
+      - id: "EXPOSURE:alessandrini-s-ufp-ova"
+        name: "OVA-sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+        name: "OVA-sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/NAC/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-club-cell-loss"
+      name: "Club cell marker loss"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:alessandrini-mouse-lung-homogenate"
+      name: "Balb/c mouse whole lung homogenate"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; data as mean +/- SD. Group sizes differ per endpoint and are stated in each assay description - BALF and serum CC16 n = 4-7 per time point (Fig. 2), BALF total protein n = 4-8 per time point (Fig. 3), lung mRNA n = 3-6 per group (Fig. 4) - so no single n is carried on this shared subject record"
+      sample_type: biopsy
+      sample_collection_method: "Lungs snap frozen in liquid nitrogen and stored at -80 C; total RNA isolated from total lung tissue with the RNeasy Mini kit"
+      collection_site: "whole lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:alessandrini-qpcr-cc16-001"
+        name: "TaqMan real-time RT-PCR for CC16 in whole lung homogenate"
+        detection_method: "TaqMan real-time RT-PCR (assay Mm01230908_m1)"
+        reference_gene: "18S (Hs99999901_s1)"
+        platform: "ABIprism7000 Sequence Detection System"
+
+  - id: "GE:alessandrini-tnfa-mrna-lung"
+    name: "TNF-alpha relative mRNA expression in whole lung homogenate - EC-UFP inhalation before allergen challenge, with and without NAC"
+    description: >-
+      Figure 4a and 4b, bottom panels: TaqMan real-time RT-PCR for TNF-alpha
+      in lung homogenates retrieved 24 h after EC-UFP / filtered air exposure,
+      normalised to 18S and to the untreated group by the delta-delta-CT
+      method, mean +/- SD, n = 3-6 per group, one-way ANOVA with Least
+      Significant Difference test. EC-UFP alone increased TNF-alpha mRNA;
+      allergen challenge alone also increased it significantly; and EC-UFP
+      before allergen challenge increased it significantly compared with ALL
+      other groups, which the authors describe as a synergistic effect of
+      allergic inflammation and particle inhalation. Unlike CC16 mRNA, the
+      TNF-alpha increase was strongly reduced by NAC - the clearest evidence
+      in the paper that this arm is oxidative-stress dependent. TNF-alpha is
+      relevant here because it is both pro-inflammatory and a known stimulator
+      of CC16 production. Values are plotted only, so no numeric measurements
+      are recorded here.
+    target_gene: "TNF-alpha (TaqMan assay Mm00443258_m1)"
+    gene_expression_method: "TaqMan real-time RT-PCR, delta-delta-CT"
+    normalization_reference: "18S (Hs99999901_s1) and the mean of the untreated group"
+    evidence:
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In sensitized and non sensitized mice EC-UFP exposure alone induced an increase in CC16 and TNF-α relative mRNA expression compared to untreated mice (Fig. 4a, upper and bottom panel respectively)."
+        explanation: "The particle-only TNF-alpha mRNA increase recorded by the NS/UFP and S/UFP output records."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "prior to allergen challenge increased CC16 mRNA expression similarly to NS/UFP and S/UFP (S/UFP/OVA, Fig. 4b, upper panel), whereas it significantly increased TNF-α expression compared to all other groups"
+        explanation: "The S/UFP/OVA TNF-alpha increase above every other group, which that output record and its response comparison carry."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "animals NAC failed to reduce EC-UFP-induced increase in CC16 expression, but strongly reduced EC-UFP-induced increase in TNF-α mRNA expression"
+        explanation: "The strong NAC reversal recorded by the S/NAC/UFP/OVA output record of this assay."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "At the mRNA level, NAC failed to reduce EC-UFP-induced alterations of CC16, but reduced EC-UFP-induced TNF-α relative expression"
+        explanation: "The paper's own section heading stating the CC16 / TNF-alpha dissociation under NAC."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "the antioxidant strategy reduced TNF-α mRNA expression in whole lung homogenate."
+        explanation: "Confirms in the discussion that the antioxidant lowered lung TNF-alpha mRNA, the basis for the oxidative stress key event relationship."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The lungs were retrieved 24 h after EC-UFP/filtered air exposure. Data presented as mean ± SD (n = 3-6/group)."
+        explanation: "Fixes the sampling time, central tendency and group sizes for the mRNA figure."
+    has_specified_output:
+      - id: "GE:alessandrini-tnfa-mrna-lung-output-untreated"
+        name: "Lung TNF-alpha mRNA - untreated baseline"
+        experimental_group: baseline
+        measured_under: "EXPOSURE:alessandrini-untreated"
+      - id: "GE:alessandrini-tnfa-mrna-lung-output-ns-ufp"
+        name: "Lung TNF-alpha mRNA - NS/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-ufp"
+      - id: "GE:alessandrini-tnfa-mrna-lung-output-ns-nac-ufp"
+        name: "Lung TNF-alpha mRNA - NS/NAC/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-nac-ufp"
+      - id: "GE:alessandrini-tnfa-mrna-lung-output-s-ufp"
+        name: "Lung TNF-alpha mRNA - S/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp"
+      - id: "GE:alessandrini-tnfa-mrna-lung-output-s-ova"
+        name: "Lung TNF-alpha mRNA - S/OVA"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:alessandrini-s-ova"
+      - id: "GE:alessandrini-tnfa-mrna-lung-output-s-nac-ova"
+        name: "Lung TNF-alpha mRNA - S/NAC/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ova"
+      - id: "GE:alessandrini-tnfa-mrna-lung-output-s-ufp-ova"
+        name: "Lung TNF-alpha mRNA - S/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp-ova"
+      - id: "GE:alessandrini-tnfa-mrna-lung-output-s-nac-ufp-ova"
+        name: "Lung TNF-alpha mRNA - S/NAC/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+    has_exposure_condition:
+      - id: "EXPOSURE:alessandrini-untreated"
+        name: "Untreated baseline control - no sensitization, no EC-UFP inhalation, no OVA challenge (n = 8)"
+      - id: "EXPOSURE:alessandrini-ns-ufp"
+        name: "Non sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h (NS/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-ns-nac-ufp"
+        name: "Non sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h (NS/NAC/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ufp"
+        name: "OVA-sensitized, non challenged mice exposed to EC-UFP, 507 ug/m3 for 24 h (S/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ova"
+        name: "OVA-sensitized and OVA-challenged mice exposed to filtered air (S/OVA)"
+      - id: "EXPOSURE:alessandrini-s-nac-ova"
+        name: "OVA-sensitized and OVA-challenged mice treated with NAC, exposed to filtered air (S/NAC/OVA)"
+      - id: "EXPOSURE:alessandrini-s-ufp-ova"
+        name: "OVA-sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+        name: "OVA-sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/NAC/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:alessandrini-mouse-lung-homogenate"
+      name: "Balb/c mouse whole lung homogenate"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); OVA/alum sensitized groups had OVA-specific IgE 24.2 +/- 1.8 vs 0.1 +/- 0.01 ug/ml and OVA-specific IgG1 1392.6 +/- 182.6 vs <0.1 ug/ml compared to non-sensitized controls; data as mean +/- SD. Group sizes differ per endpoint and are stated in each assay description - BALF and serum CC16 n = 4-7 per time point (Fig. 2), BALF total protein n = 4-8 per time point (Fig. 3), lung mRNA n = 3-6 per group (Fig. 4) - so no single n is carried on this shared subject record"
+      sample_type: biopsy
+      sample_collection_method: "Lungs snap frozen in liquid nitrogen and stored at -80 C; total RNA isolated from total lung tissue with the RNeasy Mini kit"
+      collection_site: "whole lung"
+    follows_protocols:
+      - protocol_type: MolecularAssayProtocol
+        id: "PROTOCOL:alessandrini-qpcr-tnfa-001"
+        name: "TaqMan real-time RT-PCR for TNF-alpha in whole lung homogenate"
+        detection_method: "TaqMan real-time RT-PCR (assay Mm00443258_m1)"
+        reference_gene: "18S (Hs99999901_s1)"
+        platform: "ABIprism7000 Sequence Detection System"
+
+# =============================================================================
+# GOBLET CELL ASSAYS - PAS morphometry by airway size, and the TEM/SEM
+# ultrastructure of Clara (club) cells
+# =============================================================================
+
+goblet_cell_assays:
+  - id: "GCM:alessandrini-pas-small-airways"
+    name: "Volume density of PAS positive material in small airways (circumference <= 800 um) - EC-UFP inhalation before allergen challenge, with and without NAC"
+    description: >-
+      Figure 5a: morphometrical analysis of the volume density of PAS positive
+      material in cross sections of small airways (circumference <= 800 um), 7
+      days after OVA challenge / EC-UFP inhalation, expressed as percentage of
+      PAS positive material per total epithelial cells, n = 6-12 per group,
+      one-way ANOVA with post-hoc Scheffe test. NS/UFP showed no PAS positive
+      material at all. Allergen challenge alone (S/OVA) produced significant
+      goblet cell metaplasia and mucus hypersecretion. EC-UFP before allergen
+      challenge INCREASED goblet cell metaplasia and mucus hypersecretion in
+      the small airways - the airway-size-specific finding of this paper,
+      which the authors attribute to predominant ultrafine particle deposition
+      in smaller airways. NAC significantly decreased it. Values are plotted
+      only, so no numeric measurements are recorded here.
+      NOTE a tension inside the paper itself: the results text calls the
+      allergen-only (S/OVA) effect significant while citing both the small-
+      and large-airway panels, whereas the discussion narrows it to
+      significant only in the large airways. The S/OVA output record is kept
+      here because the results text covers the small airways, but the
+      discussion's narrower reading is quoted on the companion large-airway
+      assay and should be read alongside this one.
+    evidence:
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Interestingly, sensitized and challenged mice exposed to EC-UFP prior to challenge showed increased goblet cell metaplasia induced by EC-UFP exposure only in the small airways, in contrast to large airways."
+        explanation: "States the small-airway-specific increase that this assay's S/UFP/OVA output record carries."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In sensitized animals allergen challenge alone had a significant effect on goblet cell metaplasia and mucus hypersecretion (Fig. 5a, b, d)."
+        explanation: "Supports the S/OVA output record, the allergic control against which the particle effect is read."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "NAC strongly reduced EC-UFP-induced mucus hypersecretion in allergic animals"
+        explanation: "The paper's section heading for the NAC reversal recorded by the S/NAC/UFP/OVA output record."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The data are expressed as percentage of PAS positive material/total epithelial cells."
+        explanation: "Defines the quantity the output records of this assay refer to."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "n = 6-12/group. **p < 0.01 vs NS/UFP; ##p < 0.01 vs S/UFP/OVA."
+        explanation: "Fixes the group sizes and the two reference groups the figure's significance markers are against."
+    has_specified_output:
+      - id: "GCM:alessandrini-pas-small-airways-output-ns-ufp"
+        name: "PAS positive volume density, small airways - NS/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-ufp"
+      - id: "GCM:alessandrini-pas-small-airways-output-s-ova"
+        name: "PAS positive volume density, small airways - S/OVA"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:alessandrini-s-ova"
+      - id: "GCM:alessandrini-pas-small-airways-output-s-ufp-ova"
+        name: "PAS positive volume density, small airways - S/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp-ova"
+      - id: "GCM:alessandrini-pas-small-airways-output-s-nac-ufp-ova"
+        name: "PAS positive volume density, small airways - S/NAC/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+    has_exposure_condition:
+      - id: "EXPOSURE:alessandrini-ns-ufp"
+        name: "Non sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h (NS/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ova"
+        name: "OVA-sensitized and OVA-challenged mice exposed to filtered air (S/OVA)"
+      - id: "EXPOSURE:alessandrini-s-ufp-ova"
+        name: "OVA-sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+        name: "OVA-sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/NAC/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:alessandrini-mouse-lung-histology"
+      name: "Balb/c mouse lung histological sections"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); lungs retrieved 7 days after OVA challenge / EC-UFP inhalation, n = 6-12 per group, data as mean +/- SD"
+      sample_type: biopsy
+      sample_collection_method: "Lungs fixed in 10% buffered formalin after BAL, paraffin embedded, 3.5 um sections stained with hematoxylin-eosin and periodic acid Schiff"
+      collection_site: "small airways (circumference <= 800 um), left lung lobe"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:alessandrini-pas-morphometry-001"
+        name: "PAS staining and morphometrical analysis of volume density of PAS positive material"
+        staining_type: "Periodic acid Schiff (PAS) and hematoxylin-eosin"
+        detection_method: "Morphometrical volume density with the double square lattice test system E80 and Optimas software"
+        normalization_method: "Percentage of PAS positive material per total epithelial cells"
+
+  - id: "GCM:alessandrini-pas-large-airways"
+    name: "Volume density of PAS positive material in large airways (circumference > 800 um) - EC-UFP inhalation before allergen challenge, with and without NAC"
+    description: >-
+      Figure 5b: the same morphometrical analysis in cross sections of large
+      airways (circumference > 800 um), 7 days after OVA challenge / EC-UFP
+      inhalation, expressed as percentage of PAS positive material per total
+      epithelial cells, n = 6-12 per group, one-way ANOVA with post-hoc
+      Scheffe test. The allergen-driven metaplasia of Clara cells into mucous
+      cells was significant in the large airways, but EC-UFP exposure before
+      allergen challenge did NOT increase it further here - the mirror of the
+      small-airway result. NAC significantly decreased goblet cell metaplasia
+      and mucus hypersecretion in the large bronchi as well. Values are
+      plotted only, so no numeric measurements are recorded here.
+    evidence:
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In the morphometrical analysis of PAS positive material we showed that this phenomenon was significant only in the large airways."
+        explanation: "States that the allergen-driven mucous cell metaplasia reached significance in the large airways, which the S/OVA output record carries."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Interestingly, sensitized and challenged mice exposed to EC-UFP prior to challenge showed increased goblet cell metaplasia induced by EC-UFP exposure only in the small airways, in contrast to large airways."
+        explanation: "The explicit null result for the large airways recorded by this assay's S/UFP/OVA output record."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "NAC strongly reduced EC-UFP-induced mucus hypersecretion in allergic animals"
+        explanation: "The paper's section heading for the NAC reversal recorded by the S/NAC/UFP/OVA output record."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The data are expressed as percentage of PAS positive material/total epithelial cells."
+        explanation: "Defines the quantity the output records of this assay refer to."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "n = 6-12/group. **p < 0.01 vs NS/UFP; ##p < 0.01 vs S/UFP/OVA."
+        explanation: "Fixes the group sizes and the two reference groups the figure's significance markers are against."
+    has_specified_output:
+      - id: "GCM:alessandrini-pas-large-airways-output-ns-ufp"
+        name: "PAS positive volume density, large airways - NS/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-ufp"
+      - id: "GCM:alessandrini-pas-large-airways-output-s-ova"
+        name: "PAS positive volume density, large airways - S/OVA"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:alessandrini-s-ova"
+      - id: "GCM:alessandrini-pas-large-airways-output-s-ufp-ova"
+        name: "PAS positive volume density, large airways - S/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp-ova"
+      - id: "GCM:alessandrini-pas-large-airways-output-s-nac-ufp-ova"
+        name: "PAS positive volume density, large airways - S/NAC/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+    has_exposure_condition:
+      - id: "EXPOSURE:alessandrini-ns-ufp"
+        name: "Non sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h (NS/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ova"
+        name: "OVA-sensitized and OVA-challenged mice exposed to filtered air (S/OVA)"
+      - id: "EXPOSURE:alessandrini-s-ufp-ova"
+        name: "OVA-sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+        name: "OVA-sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/NAC/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke2-goblet-hyperplasia"
+      name: "Goblet cell hyperplasia"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:alessandrini-mouse-lung-histology"
+      name: "Balb/c mouse lung histological sections"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); lungs retrieved 7 days after OVA challenge / EC-UFP inhalation, n = 6-12 per group, data as mean +/- SD"
+      sample_type: biopsy
+      sample_collection_method: "Lungs fixed in 10% buffered formalin after BAL, paraffin embedded, 3.5 um sections stained with hematoxylin-eosin and periodic acid Schiff"
+      collection_site: "large airways (circumference > 800 um), left lung lobe"
+    follows_protocols:
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:alessandrini-pas-morphometry-001"
+        name: "PAS staining and morphometrical analysis of volume density of PAS positive material"
+        staining_type: "Periodic acid Schiff (PAS) and hematoxylin-eosin"
+        detection_method: "Morphometrical volume density with the double square lattice test system E80 and Optimas software"
+        normalization_method: "Percentage of PAS positive material per total epithelial cells"
+
+  - id: "GCM:alessandrini-em-goblet-metaplasia"
+    name: "TEM/SEM goblet cell metaplasia and Clara cell ultrastructural damage - EC-UFP inhalation before allergen challenge, with and without NAC"
+    description: >-
+      Figures 6 and 7: transmission and scanning electron microscopy of the
+      small airways at the one week time point, n = 2 per time point per
+      group. This is a QUALITATIVE ultrastructural assessment, so the output
+      records carry no numeric values at all. In untreated mice Clara cells
+      were cuboidal with dense homogenous secretory granules near the apex and
+      no goblet cells were detectable. In S/OVA the bronchioli featured goblet
+      cell metaplasia: the dense secretory granules converted to mucus
+      containing vesicles, with signs of partial necrosis. In S/UFP/OVA the
+      damage was most profound - more pronounced goblet cell metaplasia than
+      S/OVA, areas with no rudiments of secretory granules left, smooth
+      endoplasmic reticulum and dimorphic mitochondria entirely displaced by
+      mucous vesicles, widening of intercellular spaces, detachment of the
+      epithelium and necrosis. NAC treatment extensively reduced these
+      alterations: over broad ranges of bronchioli Clara cells displayed
+      normal features and necrosis appeared to a strikingly lesser degree. No
+      particles were ever detected inside Clara cells, so the authors read the
+      damage as an indirect particle effect mediated by inflammatory mediators
+      in the lung lining fluid.
+    evidence:
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In S/OVA mice, the bronchioli featured goblet cell metaplasia: the dense homogenous secretory granules of the Clara cells converted to mucus containing vesicles, some of them containing dark residues of the secret"
+        explanation: "The allergen-driven metaplasia recorded by the S/OVA output record of this assay."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Electron miscroscopy shows most dramatic alterations of Clara cell ultrastructure in this group, characterized by extreme hyperplasia, metaplasia with complete loss of secretory granules and necrosis."
+        explanation: "The authors' summary of the S/UFP/OVA ultrastructure, which that output record stands for (the typo 'miscroscopy' is as printed)."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In some areas no rudiments of the secretory granules could be detected"
+        explanation: "The complete secretory granule loss in S/UFP/OVA that distinguishes it from the allergen-only group."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Widening of the intercellular spaces and detachment of the epithelium were frequently observed (Fig. 6, S/UFP/OVA, arrows)."
+        explanation: "The epithelial detachment in S/UFP/OVA, the ultrastructural counterpart of the raised BALF total protein in the same group."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Over broad ranges of bronchioli Clara cells displayed normal features. Necrosis appeared to a striking less degree."
+        explanation: "The NAC rescue recorded by the S/NAC/UFP/OVA output record."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Following EC-UFP exposure, no particles could be detected within Clara cells. EC-UFP inhalation alone induced alterations in the morphology of Clara cells."
+        explanation: "Establishes that the Clara cell changes were not caused by particles inside the cells, as noted in this assay's description."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In the analysis of the samples performed by SEM and TEM, we focussed on the small airways (circumference ≤ 800 μm), one week time point."
+        explanation: "Fixes the airway segment and time point these output records refer to."
+    has_specified_output:
+      - id: "GCM:alessandrini-em-goblet-metaplasia-output-untreated"
+        name: "Bronchiolar ultrastructure - untreated baseline"
+        experimental_group: baseline
+        measured_under: "EXPOSURE:alessandrini-untreated"
+      - id: "GCM:alessandrini-em-goblet-metaplasia-output-ns-ufp"
+        name: "Bronchiolar ultrastructure - NS/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-ufp"
+      - id: "GCM:alessandrini-em-goblet-metaplasia-output-ns-nac-ufp"
+        name: "Bronchiolar ultrastructure - NS/NAC/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-nac-ufp"
+      - id: "GCM:alessandrini-em-goblet-metaplasia-output-s-ufp"
+        name: "Bronchiolar ultrastructure - S/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp"
+      - id: "GCM:alessandrini-em-goblet-metaplasia-output-s-nac-ufp"
+        name: "Bronchiolar ultrastructure - S/NAC/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ufp"
+      - id: "GCM:alessandrini-em-goblet-metaplasia-output-s-ova"
+        name: "Bronchiolar ultrastructure - S/OVA"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:alessandrini-s-ova"
+      - id: "GCM:alessandrini-em-goblet-metaplasia-output-s-ufp-ova"
+        name: "Bronchiolar ultrastructure - S/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp-ova"
+      - id: "GCM:alessandrini-em-goblet-metaplasia-output-s-nac-ufp-ova"
+        name: "Bronchiolar ultrastructure - S/NAC/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+    has_exposure_condition:
+      - id: "EXPOSURE:alessandrini-untreated"
+        name: "Untreated baseline control - no sensitization, no EC-UFP inhalation, no OVA challenge (n = 8)"
+      - id: "EXPOSURE:alessandrini-ns-ufp"
+        name: "Non sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h (NS/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-ns-nac-ufp"
+        name: "Non sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h (NS/NAC/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ufp"
+        name: "OVA-sensitized, non challenged mice exposed to EC-UFP, 507 ug/m3 for 24 h (S/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-nac-ufp"
+        name: "OVA-sensitized, non challenged mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h (S/NAC/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ova"
+        name: "OVA-sensitized and OVA-challenged mice exposed to filtered air (S/OVA)"
+      - id: "EXPOSURE:alessandrini-s-ufp-ova"
+        name: "OVA-sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+        name: "OVA-sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/NAC/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-mucus-metaplasia"
+      name: "Mucus secretory program activation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:alessandrini-mouse-lung-em"
+      name: "Balb/c mouse bronchiolar epithelium for electron microscopy"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); n = 2 per time point per group for electron microscopy; analysis focussed on the small airways (circumference <= 800 um) at the one week time point"
+      sample_type: biopsy
+      sample_collection_method: "Lungs fixed by intratracheal perfusion with 2.5% glutaraldehyde in 0.1 M cacodylate buffer (pH 7.4); right lung minced for TEM, left lung cut longitudinally for SEM"
+      collection_site: "small airways (circumference <= 800 um), peripheral and central lung"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:alessandrini-em-001"
+        name: "Transmission and scanning electron microscopy of bronchiolar epithelium"
+
+  - id: "GCM:alessandrini-em-clara-hyperplasia"
+    name: "TEM/SEM Clara cell hyperplasia after EC-UFP inhalation alone, with and without NAC"
+    description: >-
+      Figures 6 and 7, the non-challenged arm: EC-UFP inhalation alone induced
+      hyperplasia and proliferation of the Clara cells of the bronchioli, so
+      that ciliated cells seemed reduced in number and appeared constricted,
+      and in sensitized non-challenged mice clusters of 3 or 4 Clara cells
+      formed. Crucially this happened WITHOUT goblet cell metaplasia, which
+      the authors call surprising for such relatively inert particles - it is
+      the finding that separates the particle-only response from the particle-
+      plus-allergen response recorded in the companion EM assay. NAC reduced
+      these morphological alterations to a great extent: no clusters were
+      found and the Clara cell surface displayed the typical dome-shaped
+      apical projections as in untreated mice. Qualitative ultrastructural
+      assessment, n = 2 per time point per group, so no numeric values are
+      recorded.
+    evidence:
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In TEM as well as in SEM the Clara cells of the bronchioli exhibited hyperplasia and proliferation"
+        explanation: "The hyperplasia and proliferation after EC-UFP alone that the NS/UFP and S/UFP output records carry."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Surprisingly, we showed hyperplasia of Clara cells (but no goblet cell metaplasia) following inhalation of relatively inert particles, such as EC-UFP"
+        explanation: "States that the particle-only response was hyperplasia WITHOUT metaplasia, the distinction this assay exists to record."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In non sensitized mice EC-UFP inhalation caused alterations in CC16 concentration, both at protein and mRNA level, and induced Clara cell hyperplasia."
+        explanation: "The abstract's statement of Clara cell hyperplasia in non sensitized mice, matching the NS/UFP output record."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "NAC strongly reduced EC-UFP-induced morphological alterations in Clara Cells"
+        explanation: "The paper's section heading for the NAC reversal recorded by the NS/NAC/UFP and S/NAC/UFP output records."
+    has_specified_output:
+      - id: "GCM:alessandrini-em-clara-hyperplasia-output-untreated"
+        name: "Clara cell hyperplasia - untreated baseline"
+        experimental_group: baseline
+        measured_under: "EXPOSURE:alessandrini-untreated"
+      - id: "GCM:alessandrini-em-clara-hyperplasia-output-ns-ufp"
+        name: "Clara cell hyperplasia - NS/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-ufp"
+      - id: "GCM:alessandrini-em-clara-hyperplasia-output-ns-nac-ufp"
+        name: "Clara cell hyperplasia - NS/NAC/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-ns-nac-ufp"
+      - id: "GCM:alessandrini-em-clara-hyperplasia-output-s-ufp"
+        name: "Clara cell hyperplasia - S/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp"
+      - id: "GCM:alessandrini-em-clara-hyperplasia-output-s-nac-ufp"
+        name: "Clara cell hyperplasia - S/NAC/UFP"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ufp"
+    has_exposure_condition:
+      - id: "EXPOSURE:alessandrini-untreated"
+        name: "Untreated baseline control - no sensitization, no EC-UFP inhalation, no OVA challenge (n = 8)"
+      - id: "EXPOSURE:alessandrini-ns-ufp"
+        name: "Non sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h (NS/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-ns-nac-ufp"
+        name: "Non sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h (NS/NAC/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-ufp"
+        name: "OVA-sensitized, non challenged mice exposed to EC-UFP, 507 ug/m3 for 24 h (S/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-nac-ufp"
+        name: "OVA-sensitized, non challenged mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h (S/NAC/UFP)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ke-increased-proliferation"
+      name: "Increased cell proliferation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:alessandrini-mouse-lung-em"
+      name: "Balb/c mouse bronchiolar epithelium for electron microscopy"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); n = 2 per time point per group for electron microscopy; analysis focussed on the small airways (circumference <= 800 um) at the one week time point"
+      sample_type: biopsy
+      sample_collection_method: "Lungs fixed by intratracheal perfusion with 2.5% glutaraldehyde in 0.1 M cacodylate buffer (pH 7.4); right lung minced for TEM, left lung cut longitudinally for SEM"
+      collection_site: "small airways (circumference <= 800 um), peripheral and central lung"
+    follows_protocols:
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:alessandrini-em-001"
+        name: "Transmission and scanning electron microscopy of bronchiolar epithelium"
+
+# =============================================================================
+# LUNG FUNCTION ASSAY - airway hyperresponsiveness (PenH)
+# =============================================================================
+
+lung_function_assays:
+  - id: "LF:alessandrini-penh-methacholine"
+    name: "Airway hyperresponsiveness to methacholine (enhanced pause, PenH) - EC-UFP inhalation before allergen challenge, with and without NAC"
+    description: >-
+      Unrestrained whole body plethysmography 24 h after allergen challenge, n
+      = 5-7 per group, enhanced pause (PenH) before and after five
+      methacholine levels (10 mg/ml for 1, 2 and 4 min, then 40 mg/ml for 2
+      and 4 min) as the index of airway hyperresponsiveness, one-way ANOVA
+      with Least Significant Difference test. PenH rose significantly with
+      increasing methacholine concentration in sensitized mice exposed to EC-
+      UFP before OVA challenge compared with untreated mice, and the increase
+      over the filtered-air allergic control was close to significant. NAC
+      reduced the EC-UFP-dependent increase in airway hyperresponsiveness. The
+      PenH traces live in the paper's additional file 1 rather than a main
+      figure and no values are tabulated in the fetched text, so no numeric
+      measurements are recorded here; PenH also has no named measurement slot
+      in this schema.
+    evidence:
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "NAC reduced EC-UFP-induced airway hyperresponsiveness"
+        explanation: "The paper's own results heading for this endpoint: particles raised airway hyperresponsiveness and the antioxidant lowered it, which is what the S/UFP/OVA and S/NAC/UFP/OVA output records carry."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "For whole body plethysmography, the 'enhanced pause' (PenH) determined before and after methacholine exposure was applied as an index of airway hyperresponsiveness (AHR), as previously described"
+        explanation: "Defines the quantity these output records refer to and why the assay is mapped to the decreased-lung-function adverse outcome."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Lung function tests were performed 24 h after allergen challenge in unrestrained animals using whole body plethysmography"
+        explanation: "Fixes the timing and the unrestrained plethysmography method behind these output records."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "NAC had minor effects on lung CC16 concentrations of sensitized and challenged mice maybe because our model reproduces a mild allergic inflammation of the lung, as shown by the data on inflammatory cells, cytokines and airway hyperresponsiveness"
+        explanation: "The authors' caveat that this model is a mild allergic inflammation, which bounds how much the airway hyperresponsiveness result can carry."
+    has_specified_output:
+      - id: "LF:alessandrini-penh-methacholine-output-untreated"
+        name: "PenH airway hyperresponsiveness - untreated baseline"
+        experimental_group: baseline
+        measured_under: "EXPOSURE:alessandrini-untreated"
+      - id: "LF:alessandrini-penh-methacholine-output-s-ova"
+        name: "PenH airway hyperresponsiveness - S/OVA"
+        experimental_group: vehicle_control
+        measured_under: "EXPOSURE:alessandrini-s-ova"
+      - id: "LF:alessandrini-penh-methacholine-output-s-ufp-ova"
+        name: "PenH airway hyperresponsiveness - S/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-ufp-ova"
+      - id: "LF:alessandrini-penh-methacholine-output-s-nac-ufp-ova"
+        name: "PenH airway hyperresponsiveness - S/NAC/UFP/OVA"
+        experimental_group: treated
+        measured_under: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+    has_exposure_condition:
+      - id: "EXPOSURE:alessandrini-untreated"
+        name: "Untreated baseline control - no sensitization, no EC-UFP inhalation, no OVA challenge (n = 8)"
+      - id: "EXPOSURE:alessandrini-s-ova"
+        name: "OVA-sensitized and OVA-challenged mice exposed to filtered air (S/OVA)"
+      - id: "EXPOSURE:alessandrini-s-ufp-ova"
+        name: "OVA-sensitized mice exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+      - id: "EXPOSURE:alessandrini-s-nac-ufp-ova"
+        name: "OVA-sensitized mice treated with NAC and exposed to EC-UFP, 507 ug/m3 for 24 h, 24 h prior to OVA challenge (S/NAC/UFP/OVA)"
+        exposure_agent:
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "507"
+          unit:
+            id: "UCUM:ug/m3"
+            name: "microgram per cubic meter"
+        exposure_duration:
+          value: "24"
+          unit:
+            id: "UO:0000032"
+            name: "hour"
+    informs_on_key_event:
+      id: "KE:ao-decreased-lung-function"
+      name: "Decreased lung function"
+      biological_action: decreased
+      level_of_biological_organization: organ
+    study_subject:
+      subject_type: InVivoSubject
+      id: "SUBJECT:alessandrini-mouse-plethysmography"
+      name: "Unrestrained Balb/c mouse in whole body plethysmograph"
+      model_species:
+        id: "NCBITaxon:10090"
+        name: "Mus musculus"
+      disease_state: "OVA/alum-induced experimental allergic lung inflammation (non sensitized groups are non-allergic)"
+      subject_characteristics: "Five to seven-week-old Balb/c mice (Charles River, Sulzfeld, Germany); unrestrained, measured 24 h after OVA challenge, n = 5-7 per group"
+    follows_protocols:
+      - protocol_type: SpirometryProtocol
+        id: "PROTOCOL:alessandrini-plethysmography-001"
+        name: "Unrestrained whole body plethysmography for enhanced pause (PenH)"
+        spirometry_standard: "Enhanced pause (PenH) as an index of airway hyperresponsiveness"
+        bronchodilator_agent: "methacholine challenge (bronchoconstrictor, M1-M5)"
+        plethysmography_method: "Unrestrained whole body plethysmography (Buxco Electronics)"
+
+# =============================================================================
+# RESPONSE COMPARISONS - every change the paper states, with the direction
+# it states. No change_value or change_type is recorded anywhere: the paper
+# reports directions and significance markers off plots, never a magnitude,
+# and nothing is computed here. Airway hyperresponsiveness (PenH) has no
+# named measurement slot, so its direction is carried in the assay
+# description and evidence instead of a comparison record.
+# =============================================================================
+
+response_comparisons:
+  - id: "COMP:alessandrini-cc16-balf-ns-ufp"
+    name: "BALF CC16, NS/UFP vs untreated baseline - decreased"
+    description: >-
+      Figure 2a upper panel. EC-UFP inhalation alone for 24 h significantly
+      decreased BALF CC16 at the 1-day time point in non sensitized mice.
+      Marked p < 0.05 or p < 0.01 vs untreated off the plot; no magnitude is
+      stated, so none is recorded.
+    derived_from_assay: "GE:alessandrini-cc16-protein-balf"
+    compared_measurement: "protein_level"
+    control_output: "GE:alessandrini-cc16-protein-balf-output-untreated"
+    treated_output: "GE:alessandrini-cc16-protein-balf-output-ns-ufp"
+    change_direction: decreased
+    statistical_test: "One-way ANOVA with Least Significant Difference (LSD) test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-cc16-balf-s-ufp"
+    name: "BALF CC16, S/UFP vs untreated baseline - decreased"
+    description: >-
+      Figure 2a upper panel. The same significant 1-day decrease in BALF CC16
+      occurred in sensitized but non-challenged mice, so allergic
+      sensitization was not required for it.
+    derived_from_assay: "GE:alessandrini-cc16-protein-balf"
+    compared_measurement: "protein_level"
+    control_output: "GE:alessandrini-cc16-protein-balf-output-untreated"
+    treated_output: "GE:alessandrini-cc16-protein-balf-output-s-ufp"
+    change_direction: decreased
+    statistical_test: "One-way ANOVA with Least Significant Difference (LSD) test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-cc16-balf-ns-nac-ufp"
+    name: "BALF CC16, NS/NAC/UFP vs untreated baseline - no change"
+    description: >-
+      Figure 2a upper panel. NAC abrogated the EC-UFP-induced BALF CC16
+      decrease, so the NAC-treated particle-exposed group no longer differed
+      from the untreated baseline. This NAC reversibility is the paper's
+      evidence that the CC16 response is oxidative-stress driven.
+    derived_from_assay: "GE:alessandrini-cc16-protein-balf"
+    compared_measurement: "protein_level"
+    control_output: "GE:alessandrini-cc16-protein-balf-output-untreated"
+    treated_output: "GE:alessandrini-cc16-protein-balf-output-ns-nac-ufp"
+    change_direction: no_change
+    statistical_test: "One-way ANOVA with Least Significant Difference (LSD) test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-cc16-balf-s-ufp-ova"
+    name: "BALF CC16 at 7 days, S/UFP/OVA vs untreated baseline - increased"
+    description: >-
+      Figure 2b upper panel. In sensitized mice, EC-UFP before allergen
+      challenge gave a biphasic course: an initial significant reduction and
+      then a significant INCREASE in BALF CC16 at the 7-day time point above
+      untreated animals, NS/UFP, S/UFP and S/OVA. The record here is for the
+      late increase; the early reduction is stated in the same sentence and in
+      the assay description.
+    derived_from_assay: "GE:alessandrini-cc16-protein-balf"
+    compared_measurement: "protein_level"
+    control_output: "GE:alessandrini-cc16-protein-balf-output-untreated"
+    treated_output: "GE:alessandrini-cc16-protein-balf-output-s-ufp-ova"
+    change_direction: increased
+    statistical_test: "One-way ANOVA with Least Significant Difference (LSD) test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-cc16-serum-ns-ufp"
+    name: "Serum CC16, NS/UFP vs untreated baseline - increased"
+    description: >-
+      Figure 2a bottom panel. Serum CC16 increased significantly after EC-UFP
+      inhalation in non sensitized mice and was still detectable one week
+      later - the opposite direction to BALF CC16 in the same animals, which
+      the authors read as leakage across the air/blood barrier.
+    derived_from_assay: "GE:alessandrini-cc16-protein-serum"
+    compared_measurement: "protein_level"
+    control_output: "GE:alessandrini-cc16-protein-serum-output-untreated"
+    treated_output: "GE:alessandrini-cc16-protein-serum-output-ns-ufp"
+    change_direction: increased
+    statistical_test: "One-way ANOVA with Least Significant Difference (LSD) test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-cc16-serum-s-ufp-ova"
+    name: "Serum CC16, S/UFP/OVA vs untreated baseline - increased"
+    description: >-
+      Figure 2b bottom panel. S/UFP/OVA showed the most significant serum CC16
+      alteration of any group; NAC significantly reduced it (S/NAC/UFP/OVA).
+    derived_from_assay: "GE:alessandrini-cc16-protein-serum"
+    compared_measurement: "protein_level"
+    control_output: "GE:alessandrini-cc16-protein-serum-output-untreated"
+    treated_output: "GE:alessandrini-cc16-protein-serum-output-s-ufp-ova"
+    change_direction: increased
+    statistical_test: "One-way ANOVA with Least Significant Difference (LSD) test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-protein-s-ova"
+    name: "BALF total protein, S/OVA vs untreated baseline - increased"
+    description: >-
+      Figure 3b. Allergen challenge alone raised BALF total protein above the
+      untreated baseline; NAC significantly reduced that rise (S/NAC/OVA).
+    derived_from_assay: "BALF:alessandrini-total-protein"
+    compared_measurement: "total_protein_concentration"
+    control_output: "BALF:alessandrini-total-protein-output-untreated"
+    treated_output: "BALF:alessandrini-total-protein-output-s-ova"
+    change_direction: increased
+    statistical_test: "One-way ANOVA with post-hoc Scheffe test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-protein-s-ufp-ova"
+    name: "BALF total protein at 7 days, S/UFP/OVA vs S/OVA - increased"
+    description: >-
+      Figure 3b. EC-UFP inhalation before OVA challenge produced a further
+      increase of BALF total protein over the filtered-air allergic control at
+      the 7 days time point - the exudative response the authors attribute to
+      increased airway permeability.
+    derived_from_assay: "BALF:alessandrini-total-protein"
+    compared_measurement: "total_protein_concentration"
+    control_output: "BALF:alessandrini-total-protein-output-s-ova"
+    treated_output: "BALF:alessandrini-total-protein-output-s-ufp-ova"
+    change_direction: increased
+    statistical_test: "One-way ANOVA with post-hoc Scheffe test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-protein-s-nac-ufp-ova"
+    name: "BALF total protein at 7 days, S/NAC/UFP/OVA vs S/UFP/OVA - decreased"
+    description: >-
+      Figure 3b. NAC significantly reduced BALF total protein concentrations
+      at the 7 days time point, so the particle-driven barrier leakage is
+      oxidative-stress dependent.
+    derived_from_assay: "BALF:alessandrini-total-protein"
+    compared_measurement: "total_protein_concentration"
+    control_output: "BALF:alessandrini-total-protein-output-s-ufp-ova"
+    treated_output: "BALF:alessandrini-total-protein-output-s-nac-ufp-ova"
+    change_direction: decreased
+    statistical_test: "One-way ANOVA with post-hoc Scheffe test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-protein-ns-ufp"
+    name: "BALF total protein, NS/UFP vs untreated baseline - no change"
+    description: >-
+      Figure 3a. NULL RESULT: no induction of protein levels was observed in
+      any of the non-challenged groups, with or without NAC. EC-UFP alone did
+      not open the lung/blood barrier - the allergic challenge was required.
+    derived_from_assay: "BALF:alessandrini-total-protein"
+    compared_measurement: "total_protein_concentration"
+    control_output: "BALF:alessandrini-total-protein-output-untreated"
+    treated_output: "BALF:alessandrini-total-protein-output-ns-ufp"
+    change_direction: no_change
+    statistical_test: "One-way ANOVA with post-hoc Scheffe test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-cc16-mrna-ns-ufp"
+    name: "Lung CC16 mRNA, NS/UFP vs untreated baseline - increased"
+    description: >-
+      Figure 4a upper panel. EC-UFP exposure alone increased CC16 relative
+      mRNA expression in non sensitized mice. Note the direction: the BALF
+      CC16 protein fell at the same time point while its mRNA rose, which the
+      authors interpret as increased intracellular storage of CC16 protein.
+    derived_from_assay: "GE:alessandrini-cc16-mrna-lung"
+    compared_measurement: "mrna_level"
+    control_output: "GE:alessandrini-cc16-mrna-lung-output-untreated"
+    treated_output: "GE:alessandrini-cc16-mrna-lung-output-ns-ufp"
+    change_direction: increased
+    statistical_test: "One-way ANOVA with Least Significant Difference (LSD) test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-cc16-mrna-s-ova"
+    name: "Lung CC16 mRNA, S/OVA vs untreated baseline - no change"
+    description: >-
+      Figure 4b upper panel. NULL RESULT: allergen challenge alone had no
+      significant effect on relative CC16 mRNA expression, although it did
+      significantly increase TNF-alpha in the same animals.
+    derived_from_assay: "GE:alessandrini-cc16-mrna-lung"
+    compared_measurement: "mrna_level"
+    control_output: "GE:alessandrini-cc16-mrna-lung-output-untreated"
+    treated_output: "GE:alessandrini-cc16-mrna-lung-output-s-ova"
+    change_direction: no_change
+    statistical_test: "One-way ANOVA with Least Significant Difference (LSD) test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-cc16-mrna-s-nac-ufp-ova"
+    name: "Lung CC16 mRNA, S/NAC/UFP/OVA vs S/UFP/OVA - no change"
+    description: >-
+      Figure 4b upper panel. NULL RESULT for the antioxidant: in sensitized
+      and challenged animals NAC FAILED to reduce the EC-UFP-induced increase
+      in CC16 mRNA, in contrast to its strong effect on TNF-alpha mRNA in the
+      very same samples. This dissociation is why the authors propose post-
+      transcriptional regulation of CC16 by NAC.
+    derived_from_assay: "GE:alessandrini-cc16-mrna-lung"
+    compared_measurement: "mrna_level"
+    control_output: "GE:alessandrini-cc16-mrna-lung-output-s-ufp-ova"
+    treated_output: "GE:alessandrini-cc16-mrna-lung-output-s-nac-ufp-ova"
+    change_direction: no_change
+    statistical_test: "One-way ANOVA with Least Significant Difference (LSD) test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-tnfa-mrna-ns-ufp"
+    name: "Lung TNF-alpha mRNA, NS/UFP vs untreated baseline - increased"
+    description: >-
+      Figure 4a bottom panel. EC-UFP exposure alone increased TNF-alpha
+      relative mRNA expression in non sensitized mice, i.e. the particles
+      engaged a pro-inflammatory transcriptional response even without
+      allergen.
+    derived_from_assay: "GE:alessandrini-tnfa-mrna-lung"
+    compared_measurement: "mrna_level"
+    control_output: "GE:alessandrini-tnfa-mrna-lung-output-untreated"
+    treated_output: "GE:alessandrini-tnfa-mrna-lung-output-ns-ufp"
+    change_direction: increased
+    statistical_test: "One-way ANOVA with Least Significant Difference (LSD) test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-tnfa-mrna-s-ufp-ova"
+    name: "Lung TNF-alpha mRNA, S/UFP/OVA vs S/OVA - increased"
+    description: >-
+      Figure 4b bottom panel. EC-UFP before allergen challenge increased TNF-
+      alpha mRNA significantly compared with ALL other groups, including the
+      filtered-air allergic control - the synergistic effect of allergic
+      inflammation and particle inhalation on lung TNF-alpha that the
+      discussion describes.
+    derived_from_assay: "GE:alessandrini-tnfa-mrna-lung"
+    compared_measurement: "mrna_level"
+    control_output: "GE:alessandrini-tnfa-mrna-lung-output-s-ova"
+    treated_output: "GE:alessandrini-tnfa-mrna-lung-output-s-ufp-ova"
+    change_direction: increased
+    statistical_test: "One-way ANOVA with Least Significant Difference (LSD) test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-tnfa-mrna-s-nac-ufp-ova"
+    name: "Lung TNF-alpha mRNA, S/NAC/UFP/OVA vs S/UFP/OVA - decreased"
+    description: >-
+      Figure 4b bottom panel. NAC strongly reduced the EC-UFP-induced increase
+      in TNF-alpha mRNA expression. Paired with the unchanged CC16 mRNA under
+      NAC, this is the cleanest oxidative-stress-dependent endpoint in the
+      paper.
+    derived_from_assay: "GE:alessandrini-tnfa-mrna-lung"
+    compared_measurement: "mrna_level"
+    control_output: "GE:alessandrini-tnfa-mrna-lung-output-s-ufp-ova"
+    treated_output: "GE:alessandrini-tnfa-mrna-lung-output-s-nac-ufp-ova"
+    change_direction: decreased
+    statistical_test: "One-way ANOVA with Least Significant Difference (LSD) test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-pas-small-s-ova"
+    name: "PAS positive volume density in small airways, S/OVA vs NS/UFP - increased"
+    description: >-
+      Figure 5a. Allergen challenge alone had a significant effect on goblet
+      cell metaplasia and mucus hypersecretion, against an NS/UFP group that
+      showed no PAS positive material at all. NS/UFP is the reference group
+      the figure's significance markers are against, which is why it is the
+      control output here.
+    derived_from_assay: "GCM:alessandrini-pas-small-airways"
+    compared_measurement: "goblet_cell_percentage"
+    control_output: "GCM:alessandrini-pas-small-airways-output-ns-ufp"
+    treated_output: "GCM:alessandrini-pas-small-airways-output-s-ova"
+    change_direction: increased
+    statistical_test: "One-way ANOVA with post-hoc Scheffe test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-pas-small-s-ufp-ova"
+    name: "PAS positive volume density in small airways, S/UFP/OVA vs S/OVA - increased"
+    description: >-
+      Figure 5a. EC-UFP exposure before allergen challenge increased goblet
+      cell metaplasia and mucus hypersecretion in the SMALL airways over the
+      filtered-air allergic control. The authors explain the airway-size
+      specificity by predominant ultrafine particle deposition in smaller
+      airways.
+    derived_from_assay: "GCM:alessandrini-pas-small-airways"
+    compared_measurement: "goblet_cell_percentage"
+    control_output: "GCM:alessandrini-pas-small-airways-output-s-ova"
+    treated_output: "GCM:alessandrini-pas-small-airways-output-s-ufp-ova"
+    change_direction: increased
+    statistical_test: "One-way ANOVA with post-hoc Scheffe test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-pas-small-s-nac-ufp-ova"
+    name: "PAS positive volume density in small airways, S/NAC/UFP/OVA vs S/UFP/OVA - decreased"
+    description: >-
+      Figure 5a. NAC treatment prior to and during EC-UFP inhalation
+      significantly decreased goblet cell metaplasia and mucus hypersecretion
+      in the small airways, marked ## p < 0.01 vs S/UFP/OVA.
+    derived_from_assay: "GCM:alessandrini-pas-small-airways"
+    compared_measurement: "goblet_cell_percentage"
+    control_output: "GCM:alessandrini-pas-small-airways-output-s-ufp-ova"
+    treated_output: "GCM:alessandrini-pas-small-airways-output-s-nac-ufp-ova"
+    change_direction: decreased
+    statistical_test: "One-way ANOVA with post-hoc Scheffe test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-pas-large-s-ufp-ova"
+    name: "PAS positive volume density in large airways, S/UFP/OVA vs S/OVA - no change"
+    description: >-
+      Figure 5b. NULL RESULT and the mirror of the small-airway finding: the
+      EC-UFP-induced increase in goblet cell metaplasia occurred only in the
+      small airways, in contrast to the large airways, where the allergen-
+      driven metaplasia was already significant on its own.
+    derived_from_assay: "GCM:alessandrini-pas-large-airways"
+    compared_measurement: "goblet_cell_percentage"
+    control_output: "GCM:alessandrini-pas-large-airways-output-s-ova"
+    treated_output: "GCM:alessandrini-pas-large-airways-output-s-ufp-ova"
+    change_direction: no_change
+    statistical_test: "One-way ANOVA with post-hoc Scheffe test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-inflammation-s-ufp-ova"
+    name: "BAL inflammatory infiltrate, S/UFP/OVA vs S/OVA - increased"
+    description: >-
+      Additional file 1. EC-UFP inhalation before OVA challenge significantly
+      increased the BAL inflammatory infiltrate (and BALF IL-5 and IL-13) 7
+      days after challenge, compared with sensitized and challenged mice
+      exposed to filtered air.
+    derived_from_assay: "BALF:alessandrini-inflammation"
+    compared_measurement: "total_cell_count"
+    control_output: "BALF:alessandrini-inflammation-output-s-ova"
+    treated_output: "BALF:alessandrini-inflammation-output-s-ufp-ova"
+    change_direction: increased
+    statistical_test: "One-way ANOVA with post-hoc Scheffe test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-inflammation-s-nac-ufp-ova"
+    name: "BAL inflammatory infiltrate, S/NAC/UFP/OVA vs S/UFP/OVA - decreased"
+    description: >-
+      Additional file 1. NAC treatment significantly reduced the EC-UFP-
+      induced augmentation of lung allergic inflammation; by contrast NAC
+      reduced inflammation in S/OVA only non-significantly, so the antioxidant
+      acted on the particle-driven component.
+    derived_from_assay: "BALF:alessandrini-inflammation"
+    compared_measurement: "total_cell_count"
+    control_output: "BALF:alessandrini-inflammation-output-s-ufp-ova"
+    treated_output: "BALF:alessandrini-inflammation-output-s-nac-ufp-ova"
+    change_direction: decreased
+    statistical_test: "One-way ANOVA with post-hoc Scheffe test"
+    derivation: reported_in_paper
+
+  - id: "COMP:alessandrini-inflammation-ns-ufp"
+    name: "BAL inflammatory infiltrate, NS/UFP vs untreated baseline - no change"
+    description: >-
+      Additional file 1. NULL RESULT: non sensitized mice exposed to EC-UFP
+      did not develop an inflammatory infiltrate and showed no cytokine
+      release. The particles only aggravated inflammation in an already
+      allergic lung.
+    derived_from_assay: "BALF:alessandrini-inflammation"
+    compared_measurement: "total_cell_count"
+    control_output: "BALF:alessandrini-inflammation-output-untreated"
+    treated_output: "BALF:alessandrini-inflammation-output-ns-ufp"
+    change_direction: no_change
+    statistical_test: "One-way ANOVA with post-hoc Scheffe test"
+    derivation: reported_in_paper
+
+# =============================================================================
+# KEY EVENT RELATIONSHIPS - all four rest on the same experimental logic:
+# the antioxidant NAC, given only around the particle exposure, reversed the
+# downstream event. No oxidative stress marker was measured in this study,
+# so the upstream event is inferred from NAC reversibility rather than
+# observed, which is why none is recorded as strong.
+# =============================================================================
+
+key_event_relationships:
+  - id: "KER:alessandrini-oxstress-to-mucus-metaplasia"
+    name: "EC-UFP-induced oxidative stress leads to mucus secretory program activation in the small airways"
+    description: >-
+      The antioxidant NAC, administered only before and during the EC-UFP
+      exposure, limited goblet cell metaplasia and protected Clara cell
+      ultrastructure, and the PAS morphometry showed the same reversal in the
+      small airways. Support is moderate rather than strong because no
+      oxidative stress marker was measured in this study - the upstream event
+      is inferred from NAC reversibility - and quantitative understanding is
+      low because the endpoints are plotted volume densities and qualitative
+      ultrastructure with no dose-response.
+    upstream_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-mucus-metaplasia"
+      name: "Mucus secretory program activation"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "We show that oxidative stress plays an important role, since NAC treatment is able to limit goblet cell metaplasia and protect Clara cell ultrastructure."
+        explanation: "The authors' own statement of this upstream-to-downstream link, resting on the NAC reversal of both metaplasia and ultrastructural damage."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "NAC strongly reduced EC-UFP-induced mucus hypersecretion in allergic animals"
+        explanation: "The results heading for the morphometric half of the same reversal, which the PAS assays record group by group."
+
+  - id: "KER:alessandrini-oxstress-to-club-cell-loss"
+    name: "EC-UFP-induced oxidative stress leads to loss of the club (Clara) cell marker CC16"
+    description: >-
+      The paper's central claim. EC-UFP inhalation altered CC16 at both
+      protein and mRNA level and damaged Clara cell morphology, and NAC
+      strongly reduced both the functional and the morphological alterations.
+      Support is moderate, not strong, for two reasons: no oxidative stress
+      marker was measured here, and the antioxidant did NOT reverse every arm
+      - NAC failed to reduce the EC-UFP-induced CC16 mRNA increase in
+      sensitized and challenged animals, which the authors read as post-
+      transcriptional regulation. Quantitative understanding is low: all CC16
+      values are plotted.
+    upstream_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-club-cell-loss"
+      name: "Club cell marker loss"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Our findings demonstrate that oxidative stress plays an important role in EC-UFP-induced augmentation of functional and morphological alterations of Clara cells in allergic lung inflammation."
+        explanation: "The paper's conclusion, stating exactly this upstream-to-downstream relationship."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "NAC strongly reduced both functional and morphological alterations of Clara cells."
+        explanation: "The experimental basis for the link: the antioxidant reversed the club cell changes, which is what makes the upstream event inferable."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "EC-UFP-induced decrease in BALF CC16 concentrations were abrogated by NAC treatment (NS/NAC/UFP; S/NAC/UFP)."
+        explanation: "The specific NAC-reversible CC16 endpoint behind this relationship."
+
+  - id: "KER:alessandrini-oxstress-to-airway-inflammation"
+    name: "EC-UFP-induced oxidative stress leads to augmented airway inflammation in the allergic lung"
+    description: >-
+      EC-UFP inhalation before allergen challenge increased the BAL
+      inflammatory infiltrate, BALF IL-5 and IL-13, and lung TNF-alpha mRNA
+      above the filtered-air allergic control, and NAC significantly reduced
+      that augmentation at both the cellular and the TNF-alpha mRNA level. The
+      TNF-alpha arm is the best-supported one in the paper because NAC
+      reversed it strongly, in contrast to CC16 mRNA. Support is moderate
+      because the upstream oxidative stress event is inferred from NAC
+      reversibility and the inflammatory endpoints are reported in an
+      additional file rather than quantified in the text.
+    upstream_event:
+      id: "KE:mie-oxidative-stress"
+      name: "Increased oxidative stress"
+      biological_action: increased
+      level_of_biological_organization: molecular
+    downstream_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    relationship_type: "directly leads to"
+    evidence_support: moderate
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "In sensitized mice, EC-UFP inhalation prior to OVA challenge (S/UFP/OVA) caused a significant increase of BAL inflammatory infiltrate and BALF cytokines IL-5 and IL-13 7 days after OVA challenge, compared with sensitized and challenged mice exposed to filtered air (S/OVA); NAC treatment significantly reduced EC-UFP-induced augmentation of lung allergic inflammation (S/NAC/UFP/OVA)"
+        explanation: "Both halves of the link in one sentence: the particle-driven increase in airway inflammation and its reversal by the antioxidant."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "the antioxidant strategy reduced TNF-α mRNA expression in whole lung homogenate."
+        explanation: "The molecular arm of the same reversal, measured by the TNF-alpha mRNA assay."
+
+  - id: "KER:alessandrini-inflammation-to-epithelial-barrier"
+    name: "Augmented airway inflammation leads to increased lung/blood barrier permeability"
+    description: >-
+      BALF total protein was highest in the group with the strongest
+      inflammation (S/UFP/OVA) and the authors read this as an exudative
+      response caused by increased airway permeability; serum CC16 rose while
+      BALF CC16 fell in the same animals, the classic signature of leakage
+      across the alveolo-capillary barrier. Recorded as indirect with weak
+      support: no barrier measurement independent of the leaked proteins was
+      made - no transepithelial resistance, no tracer flux - so inflammation
+      and permeability are correlated here rather than shown to be sequential.
+      Importantly, the non-challenged particle-exposed groups showed no
+      protein induction at all, which is consistent with inflammation being
+      required.
+    upstream_event:
+      id: "KE:ke-airway-inflammation"
+      name: "Airway inflammation"
+      biological_action: increased
+      level_of_biological_organization: tissue
+    downstream_event:
+      id: "KE:ke-epithelial-barrier"
+      name: "Altered epithelial barrier integrity"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    relationship_type: "indirectly leads to"
+    evidence_support: weak
+    quantitative_understanding: low
+    evidence:
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "BALF total protein concentration was also most increased in this group, confirming that the exudative response caused by the increased airway permeability plays an important role."
+        explanation: "The authors' statement tying the inflamed, particle-exposed group to increased airway permeability, which is this relationship."
+      - reference: "PMID:20420656"
+        reference_title: "Effects of ultrafine particles-induced oxidative stress on Clara cells in allergic lung inflammation."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "No induction of protein levels were observed in any of the non-challenged groups (NS/UFP, S/UFP, with and without NAC treatment, Fig. 3a)."
+        explanation: "The control that makes the link directional: without the allergic challenge, and therefore without the inflammation, there was no barrier leakage."
+
