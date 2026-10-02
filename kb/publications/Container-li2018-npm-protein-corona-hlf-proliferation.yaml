@@ -51,11 +51,22 @@
 # reported as fluorescence-intensity or ELISA bar charts (Figs 5-8) with no
 # numbers in the running text, and figure-derived values are not estimated.
 # The MTT cell viabilities ARE stated numerically in the text; because the
-# schema has no proliferation or viability assay slot, they are recorded as
-# the quantitative_understanding of the key event relationship below and
-# quoted verbatim in its evidence, rather than being filed under an assay
-# type they do not belong to. Exposure concentrations and durations are
-# stated numerically in the Methods and are recorded as such.
+# schema has no proliferation or viability assay slot, they are recorded in
+# the `description` of the key event relationship below and quoted verbatim
+# in its evidence, rather than being filed under an assay type they do not
+# belong to. (`quantitative_understanding` cannot hold them - it is an enum
+# of high/moderate/low/not_specified.) Exposure concentrations and durations
+# are stated numerically in the Methods and are recorded as such.
+#
+# The exposure agent is ENVO:01000416 (ultrafine respirable suspended
+# particulate matter) rather than ENVO:01000415 (fine, i.e. PM2.5): the
+# Methods filter the suspension to < 1 um "to remove larger particles",
+# naked NPM averages ~50 nm, and the nanoscale-versus-bulk-PM2.5 distinction
+# is the paper's entire point. The fit is not exact - AFM put most particles
+# in the "ten to hundreds of nanometres" range and the corona complexes
+# measured 100-200 nm, so the upper tail of what was dosed exceeds the
+# ultrafine cut-off - but filing these arms as bulk PM2.5 would pool them
+# with genuine PM2.5 exposures and lose the distinction entirely.
 #
 # Key events are copied verbatim from origin/main. Both were unanimous:
 #   KE:mie-oxidative-stress    "Increased oxidative stress"  (47 occurrences)
@@ -178,8 +189,8 @@ oxidative_stress_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc5"
         name: "NPM-protein corona at 5 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "5"
           unit:
@@ -193,8 +204,8 @@ oxidative_stress_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc10"
         name: "NPM-protein corona at 10 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "10"
           unit:
@@ -208,8 +219,8 @@ oxidative_stress_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc20"
         name: "NPM-protein corona at 20 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "20"
           unit:
@@ -304,8 +315,8 @@ oxidative_stress_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc20"
         name: "NPM-protein corona at 20 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "20"
           unit:
@@ -422,8 +433,8 @@ oxidative_stress_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc5"
         name: "NPM-protein corona at 5 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "5"
           unit:
@@ -437,8 +448,8 @@ oxidative_stress_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc10"
         name: "NPM-protein corona at 10 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "10"
           unit:
@@ -452,8 +463,8 @@ oxidative_stress_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc20"
         name: "NPM-protein corona at 20 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "20"
           unit:
@@ -586,8 +597,8 @@ oxidative_stress_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc5"
         name: "NPM-protein corona at 5 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "5"
           unit:
@@ -601,8 +612,8 @@ oxidative_stress_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc10"
         name: "NPM-protein corona at 10 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "10"
           unit:
@@ -616,8 +627,8 @@ oxidative_stress_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc20"
         name: "NPM-protein corona at 20 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "20"
           unit:
@@ -744,8 +755,8 @@ oxidative_stress_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc5"
         name: "NPM-protein corona at 5 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "5"
           unit:
@@ -759,8 +770,8 @@ oxidative_stress_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc10"
         name: "NPM-protein corona at 10 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "10"
           unit:
@@ -774,8 +785,8 @@ oxidative_stress_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc20"
         name: "NPM-protein corona at 20 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "20"
           unit:
@@ -922,8 +933,8 @@ gene_expression_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc5"
         name: "NPM-protein corona at 5 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "5"
           unit:
@@ -937,8 +948,8 @@ gene_expression_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc10"
         name: "NPM-protein corona at 10 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "10"
           unit:
@@ -952,8 +963,8 @@ gene_expression_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc20"
         name: "NPM-protein corona at 20 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "20"
           unit:
@@ -1046,8 +1057,8 @@ gene_expression_assays:
       - id: "EXPOSURE:li2018-3dhlf-npc20"
         name: "NPM-protein corona at 20 ug/ml NPM in the 3D fibrin construct, three days"
         exposure_agent:
-          id: "ENVO:01000415"
-          name: "fine respirable suspended particulate matter"
+          id: "ENVO:01000416"
+          name: "ultrafine respirable suspended particulate matter"
         exposure_concentration:
           value: "20"
           unit:
@@ -1188,8 +1199,9 @@ key_events:
 # type in vitro, the final link to fibrosis is explicitly a "may", and no
 # direct alpha-SMA knockdown was performed.
 #
-# quantitative_understanding carries the MTT cell viabilities, which are the
+# The `description` below carries the MTT cell viabilities, which are the
 # only numbers the paper states in text for the proliferation endpoint.
+# `quantitative_understanding` is an enum and holds only the grade.
 # =============================================================================
 
 key_event_relationships:
@@ -1208,9 +1220,11 @@ key_event_relationships:
     description: "Dose-response by MTT after three days of exposure in the 3D fibrin construct: cell viabilities of 103%, 109% and 113% of control at NPM-protein corona concentrations of 5, 10 and 20 ug/ml NPM, with the 20 ug/ml group significant versus control at p < 0.01. The specificity controls were flat: naked NPM at 20 ug/ml gave 104% and pure serum 105%, so neither component alone reproduced the effect. Vitamin C co-treatment lowered viability relative to the 20 ug/ml corona group, and TGF-beta1 2 ng/ml reproduced the whole response. No numeric values are available for the intervening ROS or alpha-SMA steps, which are reported as fluorescence bar charts only, so the quantitative chain stops at the proliferation endpoint."
     relationship_type: "indirectly leads to"
     evidence_support: moderate
-    # low, not moderate: the paper quantifies only the downstream endpoint.
-    # Neither the ROS rise nor the alpha-SMA rise has a numeric value, so no
-    # response-response relationship between the two key events can be stated.
+    # quantitative_understanding is low (this grades the quantitation of the
+    # edge, not the strength of the evidence above): the paper quantifies only
+    # the downstream endpoint. Neither the ROS rise nor the alpha-SMA rise has
+    # a numeric value, so no response-response relationship between the two
+    # key events can be stated.
     quantitative_understanding: low
     evidence:
       - reference: "PMID:29386584"
@@ -1260,7 +1274,7 @@ key_event_relationships:
         supports: SUPPORT
         evidence_source: IN_VITRO
         snippet: "The cell viabilities were 103%, 109% and 113%, respectively."
-        explanation: "The numeric dose-response recorded in quantitative_understanding, for the corona at 5, 10 and 20 ug/ml NPM."
+        explanation: "The numeric dose-response recorded in this relationship's description, for the corona at 5, 10 and 20 ug/ml NPM."
       - reference: "PMID:29386584"
         reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
         supports: SUPPORT
@@ -1320,7 +1334,7 @@ key_event_relationships:
         supports: SUPPORT
         evidence_source: IN_VITRO
         snippet: "Cell proliferation was measured using an MTT kit (Nanjing Jiancheng, China)."
-        explanation: "The method behind the viability percentages in quantitative_understanding, recorded in the MTT protocol."
+        explanation: "The method behind the viability percentages in this relationship's description, recorded in the MTT protocol."
       - reference: "PMID:29386584"
         reference_title: "Protein corona of airborne nanoscale PM2.5 induces aberrant proliferation of human lung fibroblasts based on a 3D organotypic culture."
         supports: SUPPORT
