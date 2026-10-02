@@ -1,0 +1,250 @@
+{% extends "base.html.j2" %}
+{% block title %}{{ pub.title }} · SOMA mechanisms KB{% endblock %}
+
+{% macro term_chip(term) -%}
+  {%- if term -%}
+    <span class="chip" title="{{ term.id }}">{{ term.name or term.id }} <span class="n">{{ term.id }}</span></span>
+  {%- endif -%}
+{%- endmacro %}
+
+{% macro quantity(q) -%}
+  {%- if q is mapping -%}
+    {{ q.value }}{% if q.unit %}&nbsp;{{ q.unit.name or q.unit.id }}{% endif %}
+    {%- if q.central_tendency or q.variability or q.sample_size %} (
+      {%- if q.central_tendency %}{{ q.central_tendency|replace('_', ' ') }}{% endif %}
+      {%- if q.variability %}{% if q.central_tendency %}; {% endif %}{{ q.variability.variability_type|replace('_', ' ') }}
+        {%- if q.variability.value %} ±{{ q.variability.value }}{% else %} {{ q.variability.lower_bound }} to {{ q.variability.upper_bound }}{% endif %}
+        {%- if q.variability.unit %} {{ q.variability.unit.name or q.variability.unit.id }}{% endif %}
+      {%- endif %}
+      {%- if q.sample_size %}; n={{ q.sample_size }}{% endif %})
+    {%- endif %}
+  {%- elif q is not none -%}{{ q }}{%- endif -%}
+{%- endmacro %}
+
+{% macro measurement_chips(item, skip) -%}
+  {%- for k, v in item.items() if k not in skip -%}
+    {%- if v is mapping %}
+    <span class="chip"><b>{{ k|replace('_', ' ') }}:</b> {{ quantity(v) }}</span>
+    {%- elif v is string or v is number or v is boolean %}
+    <span class="chip"><b>{{ k|replace('_', ' ') }}:</b> {{ v }}</span>
+    {%- elif v is sequence and v %}
+    <span class="chip"><b>{{ k|replace('_', ' ') }}:</b> {{ v|join('; ') }}</span>
+    {%- endif %}
+  {%- endfor %}
+{%- endmacro %}
+
+{% macro extras(item, skip) -%}
+  {%- set found = [] -%}
+  {%- for k, v in item.items() if k not in skip and (v is string or v is number or v is boolean) -%}
+    {%- if found.append(1) -%}{%- endif -%}
+  {%- endfor -%}
+  {% if found %}
+  <div class="kv">
+    {% for k, v in item.items() if k not in skip and (v is string or v is number or v is boolean) %}
+    <span class="chip"><b>{{ k|replace('_', ' ') }}:</b> {{ v }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+{%- endmacro %}
+
+{% macro evidence_list(evs) -%}
+  {% for ev in evs %}
+  <div class="evidence-item">
+    <blockquote class="snippet">{{ ev.snippet }}</blockquote>
+    <div>
+      {% if ev.supports %}<span class="badge {{ 'support' if ev.supports == 'SUPPORT' else 'refute' if ev.supports in ('REFUTE', 'CONTRADICTS') else '' }}">{{ ev.supports }}</span>{% endif %}
+      {% if ev.evidence_source %}<span class="badge">{{ ev.evidence_source|replace('_', ' ') }}</span>{% endif %}
+      {% if ev.reference and ev.reference.startswith('PMID:') %}<a href="https://pubmed.ncbi.nlm.nih.gov/{{ ev.reference[5:] }}/" class="badge">{{ ev.reference }}</a>{% endif %}
+    </div>
+    {% if ev.explanation %}<p class="why">{{ ev.explanation }}</p>{% endif %}
+  </div>
+  {% endfor %}
+{%- endmacro %}
+
+{% macro ke_chip(ke) -%}
+  {%- if ke -%}
+  <a class="chip" href="{{ root }}/key-events.html#{{ ke.id|slugify }}">
+    <span class="lvl-dot lvl-{{ ke.level_of_biological_organization if ke.level_of_biological_organization in known_levels else 'unspecified' }}-bg"></span>{{ ke.name }}
+    {%- if ke.biological_action %} <span class="n">({{ ke.biological_action }})</span>{% endif -%}
+  </a>
+  {%- endif -%}
+{%- endmacro %}
+
+{% block content %}
+<div class="pagehead">
+  <h1>{{ pub.title }}</h1>
+  <div class="links">
+    {% if pub.pmid %}<a href="https://pubmed.ncbi.nlm.nih.gov/{{ pub.pmid }}/">PubMed PMID:{{ pub.pmid }}</a>{% endif %}
+    {% if pub.doi %}<a href="https://doi.org/{{ pub.doi }}">doi:{{ pub.doi }}</a>{% endif %}
+    <a href="https://github.com/{{ repo }}/blob/{{ ref }}/kb/publications/{{ pub.file }}">Source YAML on GitHub</a>
+  </div>
+  <div class="chips" style="margin-top: 10px">
+    {% for sp in pub.species %}<span class="chip">{{ sp }}</span>{% endfor %}
+    {% for agent in pub.agents %}<span class="chip">{{ agent }}</span>{% endfor %}
+  </div>
+</div>
+
+<nav class="toc">
+  {% if pub.subjects %}<a href="#subjects">Study subjects</a>{% endif %}
+  {% for sec in pub.sections %}<a href="#{{ sec.key }}">{{ sec.label }} ({{ sec.entries|length }})</a>{% endfor %}
+  {% if pub.response_comparisons %}<a href="#comparisons">Response comparisons ({{ pub.response_comparisons|length }})</a>{% endif %}
+  {% if pub.key_events %}<a href="#key-events">Key events ({{ pub.key_events|length }})</a>{% endif %}
+  {% if pub.key_event_relationships %}<a href="#kers">Key-event relationships ({{ pub.key_event_relationships|length }})</a>{% endif %}
+  {% if pub.protocols %}<a href="#protocols">Protocols ({{ pub.protocols|length }})</a>{% endif %}
+</nav>
+
+{% if pub.subjects %}
+<h2 id="subjects">Study subjects</h2>
+{% for s in pub.subjects %}
+<div class="block" id="subj-{{ s.id|slugify }}">
+  <span class="entity-id">{{ s.id }}</span>
+  <h3>{{ s.name }}</h3>
+  <div class="kv">
+    {% if s.subject_type %}<span class="chip"><b>type:</b> {{ s.subject_type }}</span>{% endif %}
+    {% if s.model_species %}{{ term_chip(s.model_species) }}{% endif %}
+    {% if s.cell_type %}{{ term_chip(s.cell_type) }}{% endif %}
+    {% if s.sex %}<span class="chip"><b>sex:</b> {{ s.sex }}</span>{% endif %}
+    {% if s.age %}<span class="chip"><b>age:</b> {{ quantity(s.age) }}</span>{% endif %}
+  </div>
+  {% if s.subject_characteristics %}<p class="desc">{{ s.subject_characteristics }}</p>{% endif %}
+  {% if s.clinical_context %}<p class="desc">{{ s.clinical_context }}</p>{% endif %}
+</div>
+{% endfor %}
+{% endif %}
+
+{% for sec in pub.sections %}
+<h2 id="{{ sec.key }}">{{ sec.label }}</h2>
+{% for a in sec.entries %}
+<div class="block">
+  <span class="entity-id">{{ a.id }}</span>
+  <h3>{{ a.name }}</h3>
+  {% if a.description %}<p class="desc">{{ a.description }}</p>{% endif %}
+  {{ extras(a, assay_known_keys) }}
+
+  {% if a.informs_on_key_event %}
+  <div class="kv"><span class="chip"><b>informs key event:</b></span> {{ ke_chip(a.informs_on_key_event) }}</div>
+  {% endif %}
+
+  {% if a.study_subject or a.follows_protocols or a.assay_date %}
+  <div class="kv">
+    {% if a.study_subject %}<a class="chip" href="#subj-{{ a.study_subject.id|slugify }}"><b>subject:</b> {{ a.study_subject.name }}</a>{% endif %}
+    {% for fp in a.follows_protocols or [] %}<a class="chip" href="#prot-{{ fp.id|slugify }}"><b>protocol:</b> {{ fp.name or fp.id }}</a>{% endfor %}
+    {% if a.assay_date %}<span class="chip"><b>assay date:</b> {{ a.assay_date }}</span>{% endif %}
+  </div>
+  {% endif %}
+
+  {% if a.has_exposure_condition %}
+  <h4>Exposure conditions</h4>
+  <div class="table-wrap"><table>
+    <tr><th>Condition</th><th>Agent</th><th>Concentration</th><th>Duration</th></tr>
+    {% for e in a.has_exposure_condition %}
+    <tr>
+      <td>{{ e.name }}<div class="sub">{{ e.id }}</div></td>
+      <td>{% if e.exposure_agent %}{{ e.exposure_agent.name }}<div class="sub">{{ e.exposure_agent.id }}</div>{% else %}—{% endif %}</td>
+      <td>{% if e.exposure_concentration %}{{ quantity(e.exposure_concentration) }}{% else %}—{% endif %}</td>
+      <td>{% if e.exposure_duration %}{{ quantity(e.exposure_duration) }}{% else %}—{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table></div>
+  {% endif %}
+
+  {% if a.has_specified_output %}
+  <h4>Outputs</h4>
+  <div class="table-wrap"><table>
+    <tr><th>Group</th><th>Output</th><th>Description</th></tr>
+    {% for o in a.has_specified_output %}
+    <tr>
+      <td>{% if o.experimental_group %}<span class="badge">{{ o.experimental_group }}</span>{% endif %}</td>
+      <td>{{ o.name }}<div class="sub">{{ o.id }}{% if o.measured_under %} · under {{ o.measured_under }}{% endif %}</div></td>
+      <td>
+        {{ o.description or '' }}
+        {% set chips = measurement_chips(o, output_known_keys) %}
+        {% if chips|trim %}<div class="kv">{{ chips }}</div>{% endif %}
+        {% if o.evidence %}{{ evidence_list(o.evidence) }}{% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table></div>
+  {% endif %}
+
+  {% if a.evidence %}
+  <h4>Evidence</h4>
+  {{ evidence_list(a.evidence) }}
+  {% endif %}
+</div>
+{% endfor %}
+{% endfor %}
+
+{% if pub.response_comparisons %}
+<h2 id="comparisons">Response comparisons</h2>
+{% for c in pub.response_comparisons %}
+<div class="block">
+  <span class="entity-id">{{ c.id }}</span>
+  <h3>{{ c.name }}</h3>
+  {% if c.description %}<p class="desc">{{ c.description }}</p>{% endif %}
+  <div class="kv">
+    {% if c.compared_measurement %}<span class="chip"><b>measurement:</b> {{ c.compared_measurement }}</span>{% endif %}
+    {% if c.change_direction %}<span class="chip"><b>direction:</b> {{ c.change_direction }}</span>{% endif %}
+    {% if c.change_type %}<span class="chip"><b>type:</b> {{ c.change_type|replace('_', ' ') }}</span>{% endif %}
+    {% if c.change_value %}<span class="chip"><b>value:</b> {{ quantity(c.change_value) }}</span>{% endif %}
+    {% if c.derivation %}<span class="chip"><b>derivation:</b> {{ c.derivation|replace('_', ' ') }}</span>{% endif %}
+    {% if c.derived_from_assay %}<span class="chip"><b>from assay:</b> {{ c.derived_from_assay }}</span>{% endif %}
+  </div>
+  {% if c.statistical_test %}<p class="desc"><b>Statistical test:</b> {{ c.statistical_test }}</p>{% endif %}
+  {% if c.evidence %}{{ evidence_list(c.evidence) }}{% endif %}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if pub.key_events %}
+<h2 id="key-events">Key events</h2>
+{% for ke in pub.key_events %}
+<div class="block">
+  <span class="entity-id">{{ ke.id }}</span>
+  <h3><span class="lvl-dot lvl-{{ ke.level_of_biological_organization if ke.level_of_biological_organization in known_levels else 'unspecified' }}-bg"></span>{{ ke.name }}</h3>
+  <div class="kv">
+    {% if ke.level_of_biological_organization %}<span class="chip"><b>level:</b> {{ ke.level_of_biological_organization }}</span>{% endif %}
+    {% if ke.biological_action %}<span class="chip"><b>action:</b> {{ ke.biological_action }}</span>{% endif %}
+    <a class="chip" href="{{ root }}/key-events.html#{{ ke.id|slugify }}">view in pooled network</a>
+  </div>
+  {% if ke.description %}<p class="desc">{{ ke.description }}</p>{% endif %}
+  {{ extras(ke, key_event_known_keys) }}
+  {% if ke.evidence %}{{ evidence_list(ke.evidence) }}{% endif %}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if pub.key_event_relationships %}
+<h2 id="kers">Key-event relationships</h2>
+{% for ker in pub.key_event_relationships %}
+<div class="block">
+  <span class="entity-id">{{ ker.id }}</span>
+  <h3>{{ ker.name }}</h3>
+  <div class="kv">
+    {{ ke_chip(ker.upstream_event) }}
+    <span class="chip">→ {{ ker.relationship_type or 'leads to' }} →</span>
+    {{ ke_chip(ker.downstream_event) }}
+    {% if ker.evidence_support %}<span class="badge">{{ ker.evidence_support|replace('_', ' ') }} support</span>{% endif %}
+  </div>
+  {% if ker.description %}<p class="desc">{{ ker.description }}</p>{% endif %}
+  {% if ker.evidence %}{{ evidence_list(ker.evidence) }}{% endif %}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if pub.protocols %}
+<h2 id="protocols">Protocols</h2>
+{% for p in pub.protocols %}
+<div class="block" id="prot-{{ p.id|slugify }}">
+  <span class="entity-id">{{ p.id }}</span>
+  <h3>{{ p.name }}</h3>
+  {% if p.protocol_type %}<div class="kv"><span class="chip"><b>type:</b> {{ p.protocol_type }}</span></div>{% endif %}
+  {% if p.description %}<p class="desc">{{ p.description }}</p>{% endif %}
+  {{ extras(p, protocol_known_keys) }}
+  {% if p.equipment_required %}
+  <p class="desc"><b>Equipment:</b> {{ p.equipment_required|join('; ') }}</p>
+  {% endif %}
+</div>
+{% endfor %}
+{% endif %}
+{% endblock %}

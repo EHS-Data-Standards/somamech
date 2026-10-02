@@ -1,5 +1,15 @@
+# Validate that the schema docs still build. The actual deployment happens in
+# deploy-kb-site.yaml, which packages the MkDocs site under /docs/ inside the
+# single Pages artifact whenever a release is published — Pages (source:
+# "GitHub Actions") serves one artifact per deployment, so a second deploying
+# workflow would just overwrite the site. This workflow exists to catch a
+# broken docs build on main instead of at release time.
+#
+# (It previously ran `mkdocs gh-deploy`, but the gh-pages branch is no longer
+# what Pages serves, and the build had been failing since the soma-schema
+# PyPI split moved the generated datamodel out of src/.)
 ---
-name: Deploy docs
+name: Validate docs build
 on:  # yamllint disable-line rule:truthy
   push:
     branches: [main]
@@ -10,26 +20,15 @@ permissions: {}
 jobs:
   build-docs:
     runs-on: ubuntu-latest
-
-    # Grant GITHUB_TOKEN the permissions required to make a gh-pages deployment
     permissions:
-      contents: write  # to let mkdocs write the new docs
-      pages: write     # to deploy to Pages
-      id-token: write  # allow to generate an OpenID Connect (OIDC) token
+      contents: read
 
     steps:
       # https://github.com/actions/checkout
       - name: Checkout
         uses: actions/checkout@v7.0.1
         with:
-          fetch-depth: 0  # otherwise, you will fail to push refs to dest repo
-
-      - name: Configure git for the bot
-        # Gives the bot that commits to gh-pages a name & email address
-        # so that the commits have an author in the commit log.
-        run: |
-          git config user.name github-actions[bot]
-          git config user.email github-actions[bot]@users.noreply.github.com
+          persist-credentials: false
 
       # https://github.com/astral-sh/setup-uv
       - name: Install uv
@@ -39,18 +38,12 @@ jobs:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
 
-      # https://github.com/actions/setup-python
-      - name: Set up Python
-        uses: actions/setup-python@v7.0.0
-        with:
-          python-version: 3.13
-
       - name: Install just
         run: |
           uv tool install rust-just
 
       - name: Install Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v7.0.0
         with:
           node-version: 18
 
@@ -65,15 +58,8 @@ jobs:
       - name: Generate project artifacts
         run: just gen-project
 
-      - name: Build DataHarmonizer and documentation
-        run: |
-          just gen-doc
-          npm install
-          npm run build
-          cp -r dist/assets docs/
-          cp dist/index.html docs/harmonizer.html
-          sed -i 's|"/assets/|"assets/|g' docs/harmonizer.html
-          mkdir -p docs/schemas
-          uv run gen-linkml --materialize-patterns --materialize-attributes "$(uv run python -c 'from importlib.resources import files; print(files("soma")/"schema"/"soma.yaml")')" > docs/schemas/soma.json
-          cp menu.json docs/
-          uv run mkdocs gh-deploy
+      - name: Generate schema documentation
+        run: just gen-doc
+
+      - name: Build schema docs site (DataHarmonizer + MkDocs)
+        run: just build-docs-site

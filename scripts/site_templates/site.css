@@ -1,0 +1,217 @@
+/* SOMA mechanisms KB review site.
+ * Design tokens follow the repo's data-viz reference palette: light/dark
+ * surfaces, ink roles, and the fixed categorical slot order used for the
+ * biological-organization levels on the key-event network.
+ */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --hairline: #e1e0d9;
+  --border: rgba(11, 11, 11, 0.10);
+  --accent: #2a78d6;
+  --good: #006300;
+  --critical: #d03b3b;
+  --warning-bg: #fdf3dc;
+  --lvl-molecular: #2a78d6;
+  --lvl-cellular: #eb6834;
+  --lvl-tissue: #1baf7a;
+  --lvl-organ: #eda100;
+  --lvl-organism: #e87ba4;
+  --lvl-population: #008300;
+  --lvl-unspecified: #898781;
+  --chip-bg: #f0efec;
+  --code-bg: #f0efec;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface: #1a1a19;
+    --ink: #ffffff;
+    --ink-2: #c3c2b7;
+    --muted: #898781;
+    --hairline: #2c2c2a;
+    --border: rgba(255, 255, 255, 0.10);
+    --accent: #3987e5;
+    --good: #0ca30c;
+    --critical: #e66767;
+    --warning-bg: #332b14;
+    --lvl-molecular: #3987e5;
+    --lvl-cellular: #d95926;
+    --lvl-tissue: #199e70;
+    --lvl-organ: #c98500;
+    --lvl-organism: #d55181;
+    /* population green and unspecified gray are mode-invariant by design in
+       the reference palette (both clear 3:1 on the dark surface). */
+    --lvl-population: #008300;
+    --lvl-unspecified: #898781;
+    --chip-bg: #272725;
+    --code-bg: #272725;
+  }
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; font-size: 0.86em; }
+
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--hairline);
+  position: sticky; top: 0; z-index: 20;
+}
+.site-header .inner {
+  max-width: 1100px; margin: 0 auto; padding: 10px 16px;
+  display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap;
+}
+.brand { font-weight: 700; font-size: 1.05rem; color: var(--ink); }
+.brand:hover { text-decoration: none; }
+.site-nav { display: flex; gap: 16px; font-size: 0.92rem; }
+.site-nav a { color: var(--ink-2); }
+.site-nav a.active { color: var(--accent); font-weight: 600; }
+
+main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 64px; }
+
+.site-footer {
+  border-top: 1px solid var(--hairline);
+  color: var(--muted); font-size: 0.85rem;
+}
+.site-footer .inner { max-width: 1100px; margin: 0 auto; padding: 16px; }
+
+h1 { font-size: 1.5rem; margin: 0 0 4px; }
+h2 { font-size: 1.2rem; margin: 2.2em 0 0.6em; border-bottom: 1px solid var(--hairline); padding-bottom: 6px; }
+h3 { font-size: 1.02rem; margin: 1.6em 0 0.5em; }
+.subtitle { color: var(--ink-2); margin: 0 0 20px; max-width: 72ch; }
+
+/* Stat tiles */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin: 20px 0 28px; }
+.stat {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 16px;
+}
+.stat .label { font-size: 0.78rem; color: var(--ink-2); text-transform: uppercase; letter-spacing: 0.04em; }
+.stat .value { font-size: 1.9rem; font-weight: 700; line-height: 1.2; }
+
+/* Search + filters */
+.toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 18px; }
+.toolbar input[type="search"] {
+  flex: 1 1 260px; padding: 8px 12px; font: inherit;
+  border: 1px solid var(--hairline); border-radius: 8px;
+  background: var(--surface); color: var(--ink);
+}
+.toolbar .chip-btn {
+  font: inherit; font-size: 0.85rem; cursor: pointer;
+  border: 1px solid var(--hairline); border-radius: 999px;
+  background: var(--surface); color: var(--ink-2); padding: 5px 12px;
+}
+.toolbar .chip-btn[aria-pressed="true"] {
+  border-color: var(--accent); color: var(--accent); font-weight: 600;
+}
+.result-count { color: var(--muted); font-size: 0.85rem; margin-left: auto; }
+
+/* Publication cards */
+.pub-list { display: grid; gap: 14px; }
+.pub-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 18px;
+}
+.pub-card h3 { margin: 0 0 2px; font-size: 1.02rem; }
+.pub-meta { color: var(--muted); font-size: 0.84rem; margin-bottom: 8px; display: flex; gap: 12px; flex-wrap: wrap; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  background: var(--chip-bg); color: var(--ink-2);
+  border-radius: 999px; padding: 2px 10px; font-size: 0.78rem; white-space: nowrap;
+}
+.chip .n { color: var(--muted); }
+
+/* Detail page */
+.pagehead { margin-bottom: 8px; }
+.pagehead .links { display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.9rem; margin-top: 6px; }
+.toc {
+  font-size: 0.88rem; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 16px; margin: 16px 0 8px;
+  display: flex; flex-wrap: wrap; gap: 4px 16px;
+}
+.toc a { color: var(--ink-2); }
+
+.block {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 18px; margin: 12px 0;
+}
+.block > h3 { margin-top: 0; }
+.block .entity-id { color: var(--muted); font-size: 0.8rem; float: right; margin-left: 12px; }
+.desc { color: var(--ink-2); max-width: 85ch; }
+.kv { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.kv .chip b { color: var(--ink); font-weight: 600; }
+
+blockquote.snippet {
+  margin: 10px 0 4px; padding: 8px 14px;
+  border-left: 3px solid var(--accent);
+  background: var(--chip-bg); border-radius: 0 8px 8px 0;
+  font-style: italic; color: var(--ink);
+}
+.evidence-item { margin: 12px 0; }
+.evidence-item .why { color: var(--ink-2); font-size: 0.9rem; margin: 2px 0 0; }
+.badge {
+  display: inline-block; border-radius: 4px; padding: 1px 7px;
+  font-size: 0.74rem; font-weight: 600; letter-spacing: 0.03em;
+  border: 1px solid var(--hairline); color: var(--ink-2); background: var(--surface);
+}
+.badge.support { color: var(--good); border-color: var(--good); }
+.badge.refute { color: var(--critical); border-color: var(--critical); }
+
+table { border-collapse: collapse; width: 100%; font-size: 0.88rem; }
+.table-wrap { overflow-x: auto; }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--hairline); vertical-align: top; }
+th { color: var(--ink-2); font-weight: 600; font-size: 0.8rem; }
+td .sub { color: var(--muted); font-size: 0.82rem; }
+
+/* Key-event level dots and legend */
+.lvl-dot {
+  display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+  margin-right: 6px; vertical-align: baseline;
+}
+.lvl-molecular-bg { background: var(--lvl-molecular); }
+.lvl-cellular-bg { background: var(--lvl-cellular); }
+.lvl-tissue-bg { background: var(--lvl-tissue); }
+.lvl-organ-bg { background: var(--lvl-organ); }
+.lvl-organism-bg { background: var(--lvl-organism); }
+.lvl-population-bg { background: var(--lvl-population); }
+.lvl-unspecified-bg { background: var(--lvl-unspecified); }
+
+.network-wrap {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px; overflow-x: auto; margin: 14px 0;
+}
+.network-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 0.82rem; color: var(--ink-2); padding: 6px 8px 2px; }
+.network-legend .edge-sample { vertical-align: middle; margin-right: 6px; }
+svg .ke-node rect { fill: var(--surface); stroke-width: 1.5; }
+svg .ke-node text { fill: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+svg .ke-node:hover rect { stroke-width: 3; }
+svg .ker-edge { fill: none; stroke: var(--muted); }
+svg .col-label { fill: var(--ink-2); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+svg .arrowhead { fill: var(--muted); }
+
+.note {
+  background: var(--warning-bg); border: 1px solid var(--hairline);
+  border-radius: 8px; padding: 8px 14px; font-size: 0.88rem; color: var(--ink-2);
+}
+
+@media (max-width: 640px) {
+  body { font-size: 14px; }
+  .stat .value { font-size: 1.5rem; }
+  .block, .pub-card { padding: 12px; }
+}

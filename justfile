@@ -88,7 +88,9 @@ site: gen-project gen-doc build-dh
 # Deploy documentation site to Github Pages
 [group('deployment')]
 deploy: site
-  mkd-gh-deploy
+  @echo "gh-pages is no longer served. The site deploys from the 'Deploy KB site'"
+  @echo "workflow (on release, or via 'Run workflow'); build locally with:"
+  @echo "  just gen-site && just build-docs-site _site/docs"
 
 # Run all tests
 [group('model development')]
@@ -115,7 +117,7 @@ gen-doc: _gen-yaml _copy-examples
 # Build DataHarmonizer and integrate with docs
 [group('model development')]
 build-dh:
-  npm install
+  npm ci
   npm run build
   cp -r dist/assets docs/
   cp dist/index.html docs/harmonizer.html
@@ -292,8 +294,10 @@ _copy-artifacts:
   @echo "Copying generated artifacts to docs..."
   -mkdir -p docs/artifacts
   cp {{dest}}/jsonschema/{{schema_name}}.schema.json docs/artifacts/
-  cp {{pymodel}}/{{schema_name}}_pydantic.py docs/artifacts/
-  cp {{pymodel}}/{{schema_name}}.py docs/artifacts/
+  # The generated datamodel ships inside the installed soma-schema package
+  # (there is no {{pymodel}} directory in this repo since the PyPI split).
+  cp "$(uv run python -c 'from importlib.resources import files; print(files("{{schema_name}}") / "datamodel" / "{{schema_name}}_pydantic.py")')" docs/artifacts/
+  cp "$(uv run python -c 'from importlib.resources import files; print(files("{{schema_name}}") / "datamodel" / "{{schema_name}}.py")')" docs/artifacts/
   cp {{dest}}/excel/{{schema_name}}.xlsx docs/artifacts/
   @echo "Copying paper-derived SOMA data workbooks..."
   -cp {{src}}/docs/Montgomery2020_PM25_Mucociliary_SOMA.xlsx docs/artifacts/
