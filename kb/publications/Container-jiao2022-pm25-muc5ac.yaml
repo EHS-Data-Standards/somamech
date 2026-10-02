@@ -180,15 +180,38 @@ protocols:
       - "anti-beta-tubulin IV (Sigma-Aldrich)"
       - "anti-MUC5AC (Abcam)"
 
-  - id: "PROTOCOL:jiao-elisa-001"
+  - id: "PROTOCOL:jiao-elisa-hbegf"
     protocol_type: MolecularAssayProtocol
-    name: "ELISA for EGFR ligand protein (HB-EGF, TGF-alpha, AREG)"
-    description: "ALI cultures treated with PM2.5 for 24 h assayed with commercial ELISA kits (Cloud Clone Corp., Wuhan) for HB-EGF, TGF-alpha and AREG. Absorbance read at 450 nm. Protein concentration of each culture determined by Bradford assay. EREG protein was also assayed but fell below the kit's detection range, so no EREG protein assay record exists."
+    name: "ELISA for HB-EGF protein"
+    description: "ALI cultures treated with PM2.5 for 24 h assayed with a commercial HB-EGF ELISA kit (Cloud Clone Corp., Wuhan). Absorbance read at 450 nm. Protein concentration of each culture determined by Bradford assay."
     detection_method: "colorimetric ELISA, absorbance read at 450 nm"
     normalization_method: "pg per mg total cell culture protein (Bradford assay)"
+    platform: "HB-EGF ELISA kit (Cloud Clone Corp., Wuhan)"
     equipment_required:
       - "ELISA plate reader (450 nm)"
-      - "HB-EGF / TGF-alpha / AREG ELISA kits (Cloud Clone Corp., Wuhan)"
+      - "HB-EGF ELISA kit (Cloud Clone Corp., Wuhan)"
+
+  - id: "PROTOCOL:jiao-elisa-areg"
+    protocol_type: MolecularAssayProtocol
+    name: "ELISA for AREG protein"
+    description: "ALI cultures treated with PM2.5 for 24 h assayed with a commercial AREG ELISA kit (Cloud Clone Corp., Wuhan). Absorbance read at 450 nm. Protein concentration of each culture determined by Bradford assay."
+    detection_method: "colorimetric ELISA, absorbance read at 450 nm"
+    normalization_method: "pg per mg total cell culture protein (Bradford assay)"
+    platform: "AREG ELISA kit (Cloud Clone Corp., Wuhan)"
+    equipment_required:
+      - "ELISA plate reader (450 nm)"
+      - "AREG ELISA kit (Cloud Clone Corp., Wuhan)"
+
+  - id: "PROTOCOL:jiao-elisa-tgfa"
+    protocol_type: MolecularAssayProtocol
+    name: "ELISA for TGF-alpha protein"
+    description: "ALI cultures treated with PM2.5 for 24 h assayed with a commercial TGF-alpha ELISA kit (Cloud Clone Corp., Wuhan). Absorbance read at 450 nm. Protein concentration of each culture determined by Bradford assay."
+    detection_method: "colorimetric ELISA, absorbance read at 450 nm"
+    normalization_method: "pg per mg total cell culture protein (Bradford assay)"
+    platform: "TGF-alpha ELISA kit (Cloud Clone Corp., Wuhan)"
+    equipment_required:
+      - "ELISA plate reader (450 nm)"
+      - "TGF-alpha ELISA kit (Cloud Clone Corp., Wuhan)"
 
   - id: "PROTOCOL:jiao-wb-001"
     protocol_type: MolecularAssayProtocol
@@ -1620,8 +1643,9 @@ gene_expression_assays:
 
   # ---------------------------------------------------------------------------
   # EGFR LIGAND PROTEIN (ELISA, Fig. 4) - the protein-level counterpart of the
-  # ligand mRNA assays above, and the only assays that follow
-  # PROTOCOL:jiao-elisa-001.
+  # ligand mRNA assays above, and the only assays that follow the per-ligand
+  # PROTOCOL:jiao-elisa-* protocols (one per kit, matching the jiao-qpcr-*
+  # convention).
   #
   # Two things to know before reading these six records:
   #   1. The paper reports the ELISA data graphically only (Fig. 4; y-axes in
@@ -1635,8 +1659,9 @@ gene_expression_assays:
   #      That is why these are separate assays rather than extra outputs on
   #      the mRNA assays above.
   #
-  # EREG protein was assayed by the same ELISA but fell below the kit's
-  # detection range, so it gets no assay record (see PROTOCOL:jiao-elisa-001).
+  # EREG protein was assayed by the same kind of ELISA (Cloud Clone Corp.) but
+  # fell below the kit's detection range, so it gets no assay record and no
+  # ELISA protocol of its own.
   # ---------------------------------------------------------------------------
   - id: "GE:jiao-hbegf-protein-control-24h"
     name: "HB-EGF protein (ELISA) - control-subject HNECs, PM2.5 24 h"
@@ -1707,11 +1732,27 @@ gene_expression_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Control subjects undergoing paranasal sinus surgery for non-inflammatory conditions; middle turbinate or uncinate process mucosa"
+      culture_media:
+        id: "soma:jiao-media-ali"
+        name: "Bronchial epithelial growth medium:DMEM (1:1) with all-trans retinoic acid"
+        base_medium: "Bronchial epithelial growth medium:DMEM (1:1)"
+        supplements:
+          - id: "soma:jiao-supp-atra"
+            name: "All-trans retinoic acid"
+            supplement_type: growth_factor
+            concentration:
+              value: "50"
+              unit:
+                id: "UO:0000065"
+                name: "nanomolar"
     follows_protocols:
       - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-elisa-001"
+        id: "PROTOCOL:jiao-elisa-hbegf"
         name: "ELISA for HB-EGF protein"
         detection_method: "colorimetric ELISA, absorbance read at 450 nm"
         normalization_method: "pg per mg total cell culture protein (Bradford assay)"
@@ -1786,11 +1827,14 @@ gene_expression_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Patients with chronic rhinosinusitis with nasal polyps (EPOS 2012 criteria); nasal polyp tissue. Comorbid allergic rhinitis or asthma excluded"
     follows_protocols:
       - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-elisa-001"
+        id: "PROTOCOL:jiao-elisa-hbegf"
         name: "ELISA for HB-EGF protein"
         detection_method: "colorimetric ELISA, absorbance read at 450 nm"
         normalization_method: "pg per mg total cell culture protein (Bradford assay)"
@@ -1865,11 +1909,27 @@ gene_expression_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Control subjects undergoing paranasal sinus surgery for non-inflammatory conditions; middle turbinate or uncinate process mucosa"
+      culture_media:
+        id: "soma:jiao-media-ali"
+        name: "Bronchial epithelial growth medium:DMEM (1:1) with all-trans retinoic acid"
+        base_medium: "Bronchial epithelial growth medium:DMEM (1:1)"
+        supplements:
+          - id: "soma:jiao-supp-atra"
+            name: "All-trans retinoic acid"
+            supplement_type: growth_factor
+            concentration:
+              value: "50"
+              unit:
+                id: "UO:0000065"
+                name: "nanomolar"
     follows_protocols:
       - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-elisa-001"
+        id: "PROTOCOL:jiao-elisa-areg"
         name: "ELISA for AREG protein"
         detection_method: "colorimetric ELISA, absorbance read at 450 nm"
         normalization_method: "pg per mg total cell culture protein (Bradford assay)"
@@ -1944,11 +2004,14 @@ gene_expression_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Patients with chronic rhinosinusitis with nasal polyps (EPOS 2012 criteria); nasal polyp tissue. Comorbid allergic rhinitis or asthma excluded"
     follows_protocols:
       - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-elisa-001"
+        id: "PROTOCOL:jiao-elisa-areg"
         name: "ELISA for AREG protein"
         detection_method: "colorimetric ELISA, absorbance read at 450 nm"
         normalization_method: "pg per mg total cell culture protein (Bradford assay)"
@@ -2029,11 +2092,27 @@ gene_expression_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Control subjects undergoing paranasal sinus surgery for non-inflammatory conditions; middle turbinate or uncinate process mucosa"
+      culture_media:
+        id: "soma:jiao-media-ali"
+        name: "Bronchial epithelial growth medium:DMEM (1:1) with all-trans retinoic acid"
+        base_medium: "Bronchial epithelial growth medium:DMEM (1:1)"
+        supplements:
+          - id: "soma:jiao-supp-atra"
+            name: "All-trans retinoic acid"
+            supplement_type: growth_factor
+            concentration:
+              value: "50"
+              unit:
+                id: "UO:0000065"
+                name: "nanomolar"
     follows_protocols:
       - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-elisa-001"
+        id: "PROTOCOL:jiao-elisa-tgfa"
         name: "ELISA for TGF-alpha protein"
         detection_method: "colorimetric ELISA, absorbance read at 450 nm"
         normalization_method: "pg per mg total cell culture protein (Bradford assay)"
@@ -2108,11 +2187,14 @@ gene_expression_assays:
       model_species:
         id: "NCBITaxon:9606"
         name: "Homo sapiens"
+      cell_culture_growth_mode: adherent
       substrate_type: transwell_insert
+      coating: "human placental collagen"
       days_at_differentiation: 14
+      donor_info: "Patients with chronic rhinosinusitis with nasal polyps (EPOS 2012 criteria); nasal polyp tissue. Comorbid allergic rhinitis or asthma excluded"
     follows_protocols:
       - protocol_type: MolecularAssayProtocol
-        id: "PROTOCOL:jiao-elisa-001"
+        id: "PROTOCOL:jiao-elisa-tgfa"
         name: "ELISA for TGF-alpha protein"
         detection_method: "colorimetric ELISA, absorbance read at 450 nm"
         normalization_method: "pg per mg total cell culture protein (Bradford assay)"
