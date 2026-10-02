@@ -302,6 +302,11 @@ _copy-artifacts:
   @echo "Copying paper-derived SOMA data workbooks..."
   -cp {{src}}/docs/Montgomery2020_PM25_Mucociliary_SOMA.xlsx docs/artifacts/
   -cp {{src}}/docs/Liu2024_PM25_CFTR_SOMA.xlsx docs/artifacts/
+  @echo "Building pooled corpus data (workbook + DuckDB) for the site..."
+  -uv run python scripts/build_workbook.py --output exports/soma_extractions.xlsx
+  -uv run python scripts/build_duckdb.py --output exports/soma.duckdb
+  -cp exports/soma_extractions.xlsx docs/artifacts/
+  -cp exports/soma.duckdb docs/artifacts/
   @echo "Artifacts copied successfully!"
 
 # ============== Include project-specific recipes ==============

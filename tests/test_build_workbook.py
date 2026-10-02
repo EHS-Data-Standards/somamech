@@ -140,6 +140,13 @@ def test_whole_corpus_writes_to_excel(tmp_path):
     assert result.returncode == 0, result.stdout + result.stderr
     assert out.exists()
 
+    # The long-format dose-response table must be pooled too: it has no
+    # entity ids, so for a while only the per-paper converter emitted it
+    # and the pooled workbook silently went out without one.
+    wb = openpyxl.load_workbook(out, read_only=True)
+    assert "Responses" in wb.sheetnames, wb.sheetnames
+    assert wb["Responses"].max_row > 1, "Responses tab is empty"
+
 
 def test_inlined_object_slot_is_flattened_rather_than_crashing(tmp_path):
     """target_cell_type is a CellTypeReference, so it arrives as {id, name}."""
@@ -165,8 +172,11 @@ balf_sputum_assays:
 
     ws = openpyxl.load_workbook(out)["BALFSputumAssay"]
     header = [c.value for c in ws[1]]
+    # term references flatten to a label column plus an _id column
     col = header.index("target_cell_type") + 1
-    assert ws.cell(2, col).value == "eosinophil (CL:0000771)"
+    assert ws.cell(2, col).value == "eosinophil"
+    id_col = header.index("target_cell_type_id") + 1
+    assert ws.cell(2, id_col).value == "CL:0000771"
 
 
 def test_review_only_paper_contributes_key_events_and_relationships(tmp_path):

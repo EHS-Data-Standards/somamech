@@ -180,7 +180,9 @@ def test_assay_row_never_yields_a_non_scalar():
     }
     row = y2e._assay_row(assay, y2e.HEADERS["BALFSputumAssay"])
     assert all(isinstance(c, (str, int, float, bool, type(None))) for c in row), row
-    assert "eosinophil (CL:0000771)" in row
+    # term references flatten to a label cell plus an _id cell
+    assert "eosinophil" in row
+    assert "CL:0000771" in row
 
 
 @pytest.mark.parametrize(
