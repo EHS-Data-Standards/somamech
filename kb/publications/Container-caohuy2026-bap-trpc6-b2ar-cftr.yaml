@@ -61,7 +61,7 @@
 #   KE:ke-increased-intracellular-calcium    - the increase direction; the
 #       existing KE:ke-decreased-intracellular-calcium encodes the opposite
 #       direction in both its id and its name, so it cannot be reused here.
-#   KE:ke-mirna-dysregulation                - the five suppressed microRNAs
+#   KE:ke-decreased-mirna-expression         - the five suppressed microRNAs
 # Reused verbatim from origin/main: KE:ke-airway-inflammation,
 # KE:ke-decreased-cftr, KE:mie-oxidative-stress, KE:ke-pi3k-akt-activation.
 #
@@ -2657,7 +2657,7 @@ gene_expression_assays:
         experimental_group: treated
         measured_under: "EXPOSURE:caohuy-bap-graded-24h"
     informs_on_key_event:
-      id: "KE:ke-mirna-dysregulation"
+      id: "KE:ke-decreased-mirna-expression"
       name: "Decreased microRNA expression"
       biological_action: decreased
       level_of_biological_organization: molecular
@@ -3254,7 +3254,7 @@ key_event_relationships:
     name: "Decreased microRNA expression leads to increased TRPC6 expression"
     description: "An epigenetic contribution the paper proposes rather than tests: miR-26a-5p targets TRPC6 mRNA, so the B[a]P-dependent loss of miR-26a-5p can itself raise TRPC6 expression, adding to the rise caused by loss of inhibitory CFTR. The paper states as a limitation that it has not experimentally tested the proposed mechanisms of action of the five reduced microRNAs, so this relationship is recorded as weakly supported."
     upstream_event:
-      id: "KE:ke-mirna-dysregulation"
+      id: "KE:ke-decreased-mirna-expression"
       name: "Decreased microRNA expression"
       biological_action: decreased
       level_of_biological_organization: molecular
