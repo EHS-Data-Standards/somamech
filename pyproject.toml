@@ -17,7 +17,7 @@ dynamic = ["version"]
 dependencies = [
   "linkml-runtime >=1.9.4",
   # SOMA LinkML schema + generated datamodel (import name: soma)
-  "soma-schema >=0.2.3",
+  "soma-schema >=0.2.4",
 ]
 
 # Knowledge base and pipeline, not an installable library
