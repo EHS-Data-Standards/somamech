@@ -1,0 +1,559 @@
+# =============================================================================
+# Carvalho-Oliveira et al. (2015) — "Chemical composition modulates the
+# adverse effects of particles on the mucociliary epithelium."
+# Clinics (Sao Paulo) 70(10). PMID:26598085. DOI 10.6061/clinics/2015(10)09
+# =============================================================================
+#
+# Cached reference content_type: full_text_html. The payload retrieved by
+# `just fetch-reference` is the structured abstract (OBJECTIVE / METHOD /
+# RESULTS / CONCLUSION) plus publisher landing-page boilerplate; the article
+# body was not part of it. Every snippet below is therefore quoted from the
+# structured abstract, which is the copy committed to references_cache/ and
+# the copy CI resolves quotes against.
+#
+# Study design:
+#   Ex vivo frog palate preparations immersed in one of four solutions:
+#     - amphibian Ringer's solution (control)
+#     - total suspended particles (TSP), 0.1 mg/mL — collected from the
+#       electrostatic precipitator of a steel mill
+#     - urban ambient PM2.5, 0.1 mg/mL ("PM0.1")
+#     - urban ambient PM2.5, 3.0 mg/mL ("PM3.0")
+#   Three mucociliary endpoints were quantified by morphometry: mucociliary
+#   transport, ciliary beating frequency, and the amount of acid and neutral
+#   mucous in epithelial cells. Particle composition was characterised by
+#   X-ray fluorescence and gas chromatography/mass spectrometry.
+#
+# What is and is not recorded here:
+#   - The abstract reports every outcome QUALITATIVELY — a direction of
+#     change, never a number. So the output records below carry
+#     experimental_group and measured_under but NO QuantityValues, and the
+#     directions are recorded at the analysis layer in response_comparisons
+#     with change_direction and derivation: reported_in_paper, with no
+#     change_value. This follows the pattern already on main for
+#     direction-only results (e.g. Container-lindner2018-cbnp-allergic-asthma).
+#   - The exposure concentrations ARE quantitative and are recorded as such.
+#   - The paper also reports that PM2.5 reduced EPITHELIUM THICKNESS. No
+#     assay output class in the schema carries an epithelial-thickness slot
+#     (mucus_layer_thickness is the mucus layer, not the epithelium), so that
+#     finding is recorded in the mucus assay's description and in a quoted
+#     evidence snippet, but not as a response_comparison — inventing a
+#     compared_measurement string that is not a real output slot would break
+#     consumers keyed on slot names.
+#   - The paper asserts no key-event-to-key-event causal link in its own
+#     voice, so there is no key_event_relationships section.
+#
+# Every `informs_on_key_event:` block below is copied byte-for-byte from the
+# wording already on origin/main (shared vocabulary — never re-authored).
+# Variant counts at time of extraction: KE:ke3-impaired-mcc, KE:ke-decreased-cbf
+# and KE:ke-mucin-hypersecretion were each unanimous across kb/ and
+# tests/data/valid/.
+#
+# Note on KE:ke-mucin-hypersecretion: this paper reports a DECREASE in
+# epithelial mucous, while the shared key event node is worded "Mucin
+# hypersecretion" / increased. The node is the AOP vocabulary term the assay
+# informs on, not a claim about this paper's direction; the direction this
+# paper found is carried by the response_comparisons entries. The block is
+# reused verbatim rather than re-worded, per the extraction rules.
+# =============================================================================
+
+source_publication:
+  reference: "PMID:26598085"
+  reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
+  doi: "10.6061/clinics/2015(10)09"
+
+# =============================================================================
+# PROTOCOLS
+# =============================================================================
+
+protocols:
+  - id: "PROTOCOL:carvalho-frog-palate-exposure-001"
+    protocol_type: Protocol
+    name: "Frog palate preparation and immersion exposure to particle suspensions"
+    description: >-
+      Ex vivo frog palate preparations were immersed in one of four solutions:
+      total suspended particles at 0.1 mg/mL, urban ambient particulate matter
+      of 2.5 micrometres at 0.1 mg/mL (PM0.1) or 3.0 mg/mL (PM3.0), or
+      amphibian Ringer's solution as the control. Immersion times, replicate
+      counts and preparation details are not reported in the cached reference
+      and are therefore not recorded.
+
+  - id: "PROTOCOL:carvalho-mct-morphometry-001"
+    protocol_type: ImagingProtocol
+    name: "Morphometric quantification of mucociliary transport on the frog palate"
+    description: >-
+      Mucociliary transport was quantified through morphometry of frog palate
+      preparations. Acquisition parameters and the transport-rate units are not
+      reported in the cached reference.
+
+  - id: "PROTOCOL:carvalho-cbf-morphometry-001"
+    protocol_type: ImagingProtocol
+    name: "Morphometric quantification of ciliary beating frequency on the frog palate"
+    description: >-
+      Ciliary beating frequency was quantified through morphometry of frog
+      palate preparations, measured repeatedly over the course of exposure —
+      the paper reports the effect of total suspended particles as present at
+      all times during exposure. Sampling schedule and frequency units are not
+      reported in the cached reference.
+
+  - id: "PROTOCOL:carvalho-mucous-morphometry-001"
+    protocol_type: StainingProtocol
+    name: "Morphometric quantification of acid and neutral mucous in epithelial cells"
+    description: >-
+      The amount of acid and neutral mucous in epithelial cells was quantified
+      through morphometry of frog palate preparations. The abstract does not
+      name the histochemical stains used (acid and neutral mucins are
+      conventionally distinguished by Alcian blue and periodic acid-Schiff, but
+      the cached reference does not state this, so no stain is recorded).
+
+  - id: "PROTOCOL:carvalho-particle-composition-001"
+    protocol_type: MolecularAssayProtocol
+    name: "Particle chemical composition by X-ray fluorescence and GC/MS"
+    description: >-
+      Particle chemical compositions were determined by X-ray fluorescence and
+      gas chromatography/mass spectrometry. Total suspended particles showed a
+      predominance of Fe and no organic compounds; the PM2.5 sample contained
+      predominant amounts of S, Fe and Si and, to a lesser extent, Cu, Ni, V,
+      Zn and organic compounds. The abstract reports no elemental
+      concentrations, so no measurements are recorded from this protocol.
+
+# =============================================================================
+# MUCOCILIARY CLEARANCE ASSAYS
+# =============================================================================
+
+mcc_assays:
+  - id: "MCC:carvalho-frog-palate-transport"
+    name: "Mucociliary transport on frog palate after immersion in TSP or PM2.5"
+    description: >-
+      Mucociliary transport quantified by morphometry of frog palate
+      preparations immersed in total suspended particles (0.1 mg/mL), PM2.5 at
+      0.1 mg/mL or 3.0 mg/mL, or amphibian Ringer's solution as control.
+      Exposure to total suspended particles and to PM2.5 at 3.0 mg/mL
+      decreased mucociliary transport. The abstract states the direction only
+      and gives no transport rates, so the output records below carry no
+      QuantityValues; the directions are in response_comparisons. The abstract
+      makes no statement about transport under PM2.5 at 0.1 mg/mL, so that
+      condition has an output record but no comparison — an unstated result is
+      not a null result.
+    has_exposure_condition:
+      - id: "EXPOSURE:carvalho-ringer-control"
+        name: "Amphibian Ringer's solution (control)"
+      - id: "EXPOSURE:carvalho-tsp-0p1-mgml"
+        name: "Total suspended particles, 0.1 mg/mL"
+        exposure_agent:
+          id: "ENVO:01000060"
+          name: "particulate environmental material"
+        exposure_concentration:
+          value: "0.1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+      - id: "EXPOSURE:carvalho-pm25-0p1-mgml"
+        name: "Urban ambient PM2.5, 0.1 mg/mL (PM0.1)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "0.1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+      - id: "EXPOSURE:carvalho-pm25-3p0-mgml"
+        name: "Urban ambient PM2.5, 3.0 mg/mL (PM3.0)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "3.0"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+    has_specified_output:
+      - id: "MCC:carvalho-frog-palate-transport-output-control"
+        name: "Mucociliary transport - amphibian Ringer's control"
+        experimental_group: control
+        measured_under: "EXPOSURE:carvalho-ringer-control"
+      - id: "MCC:carvalho-frog-palate-transport-output-tsp"
+        name: "Mucociliary transport - total suspended particles 0.1 mg/mL"
+        experimental_group: treated
+        measured_under: "EXPOSURE:carvalho-tsp-0p1-mgml"
+      - id: "MCC:carvalho-frog-palate-transport-output-pm0p1"
+        name: "Mucociliary transport - PM2.5 0.1 mg/mL"
+        experimental_group: treated
+        measured_under: "EXPOSURE:carvalho-pm25-0p1-mgml"
+      - id: "MCC:carvalho-frog-palate-transport-output-pm3p0"
+        name: "Mucociliary transport - PM2.5 3.0 mg/mL"
+        experimental_group: treated
+        measured_under: "EXPOSURE:carvalho-pm25-3p0-mgml"
+    informs_on_key_event:
+      id: "KE:ke3-impaired-mcc"
+      name: "Impaired mucociliary clearance"
+      biological_action: impaired
+      level_of_biological_organization: tissue
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:carvalho-frog-palate-001"
+      name: "Frog palate mucociliary epithelium preparation"
+      model_species:
+        id: "NCBITaxon:8342"
+        name: "Anura"
+      cell_type:
+        id: "CL:0000066"
+        name: "epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0005019"
+        name: "mucosa of palate"
+    follows_protocols:
+      - protocol_type: Protocol
+        id: "PROTOCOL:carvalho-frog-palate-exposure-001"
+        name: "Frog palate preparation and immersion exposure to particle suspensions"
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:carvalho-mct-morphometry-001"
+        name: "Morphometric quantification of mucociliary transport on the frog palate"
+    evidence:
+      - reference: "PMID:26598085"
+        reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Exposure to total suspended particles and PM3.0 decreased mucociliary transport."
+        explanation: "The result this assay records: mucociliary transport fell under total suspended particles and under PM2.5 at 3.0 mg/mL, with no value reported."
+      - reference: "PMID:26598085"
+        reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Mucociliary function was quantified by mucociliary transport, ciliary beating frequency and the amount of acid and neutral mucous in epithelial cells through morphometry of frog palate preparations."
+        explanation: "Names mucociliary transport as a morphometry endpoint on frog palate preparations, establishing this assay's measurement and its study subject."
+      - reference: "PMID:26598085"
+        reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "The palates were immersed in one of the following solutions: total suspended particles (0.1 mg/mL), particulate matter 2.5 \xB5m 0.1 mg/mL (PM0.1) or 3.0 mg/mL (PM3.0) and amphibian Ringer's solution (control)."
+        explanation: "Supplies the four exposure conditions and their concentrations recorded in has_exposure_condition, including the Ringer's solution control."
+
+# =============================================================================
+# CILIARY FUNCTION ASSAYS
+# =============================================================================
+
+ciliary_function_assays:
+  - id: "CILIARY:carvalho-frog-palate-cbf"
+    name: "Ciliary beating frequency on frog palate after immersion in TSP or PM2.5"
+    description: >-
+      Ciliary beating frequency quantified by morphometry of the same frog
+      palate preparations. Total suspended particles diminished beating
+      frequency at all times during exposure, whereas PM2.5 did not elicit
+      changes at either concentration. No frequency values are reported in the
+      cached reference, so the output records carry no QuantityValues; the
+      directions, including the two null results for PM2.5, are recorded in
+      response_comparisons.
+    airway_region: "frog palate mucociliary epithelium (ex vivo)"
+    has_exposure_condition:
+      - id: "EXPOSURE:carvalho-ringer-control"
+        name: "Amphibian Ringer's solution (control)"
+      - id: "EXPOSURE:carvalho-tsp-0p1-mgml"
+        name: "Total suspended particles, 0.1 mg/mL"
+        exposure_agent:
+          id: "ENVO:01000060"
+          name: "particulate environmental material"
+        exposure_concentration:
+          value: "0.1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+      - id: "EXPOSURE:carvalho-pm25-0p1-mgml"
+        name: "Urban ambient PM2.5, 0.1 mg/mL (PM0.1)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "0.1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+      - id: "EXPOSURE:carvalho-pm25-3p0-mgml"
+        name: "Urban ambient PM2.5, 3.0 mg/mL (PM3.0)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "3.0"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+    has_specified_output:
+      - id: "CILIARY:carvalho-frog-palate-cbf-output-control"
+        name: "Ciliary beating frequency - amphibian Ringer's control"
+        experimental_group: control
+        measured_under: "EXPOSURE:carvalho-ringer-control"
+      - id: "CILIARY:carvalho-frog-palate-cbf-output-tsp"
+        name: "Ciliary beating frequency - total suspended particles 0.1 mg/mL"
+        experimental_group: treated
+        measured_under: "EXPOSURE:carvalho-tsp-0p1-mgml"
+      - id: "CILIARY:carvalho-frog-palate-cbf-output-pm0p1"
+        name: "Ciliary beating frequency - PM2.5 0.1 mg/mL"
+        experimental_group: treated
+        measured_under: "EXPOSURE:carvalho-pm25-0p1-mgml"
+      - id: "CILIARY:carvalho-frog-palate-cbf-output-pm3p0"
+        name: "Ciliary beating frequency - PM2.5 3.0 mg/mL"
+        experimental_group: treated
+        measured_under: "EXPOSURE:carvalho-pm25-3p0-mgml"
+    informs_on_key_event:
+      id: "KE:ke-decreased-cbf"
+      name: "Decreased ciliary beat frequency"
+      biological_action: decreased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:carvalho-frog-palate-001"
+      name: "Frog palate mucociliary epithelium preparation"
+      model_species:
+        id: "NCBITaxon:8342"
+        name: "Anura"
+      cell_type:
+        id: "CL:0000066"
+        name: "epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0005019"
+        name: "mucosa of palate"
+    follows_protocols:
+      - protocol_type: Protocol
+        id: "PROTOCOL:carvalho-frog-palate-exposure-001"
+        name: "Frog palate preparation and immersion exposure to particle suspensions"
+      - protocol_type: ImagingProtocol
+        id: "PROTOCOL:carvalho-cbf-morphometry-001"
+        name: "Morphometric quantification of ciliary beating frequency on the frog palate"
+    evidence:
+      - reference: "PMID:26598085"
+        reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Ciliary beating frequency was diminished by total suspended particles at all times during exposure, while particulate matter of 2.5 \xB5m did not elicit changes."
+        explanation: "The complete beating-frequency result this assay records: a decrease under total suspended particles at all exposure times, and no change under PM2.5."
+      - reference: "PMID:26598085"
+        reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "We compared the adverse effects of two types of real ambient particles; i.e., total suspended particles from an electrostatic precipitator of a steel mill and fine air particles from an urban ambient particulate matter of 2.5 \xB5m, on mucociliary clearance."
+        explanation: "Identifies the two exposure agents compared in this assay — steel-mill electrostatic-precipitator total suspended particles and urban ambient PM2.5."
+
+# =============================================================================
+# GOBLET CELL / MUCUS ASSAYS
+# =============================================================================
+
+goblet_cell_assays:
+  - id: "GOBLET:carvalho-frog-palate-mucous"
+    name: "Epithelial acid and neutral mucous content on frog palate after TSP or PM2.5"
+    description: >-
+      Amount of acid and neutral mucous in epithelial cells, quantified by
+      morphometry of the same frog palate preparations. PM2.5 reduced
+      epithelial mucous, while total suspended particles behaved similarly to
+      the control group. The same sentence reports that PM2.5 also reduced
+      EPITHELIUM THICKNESS; no assay output class in the schema has an
+      epithelial-thickness slot, so that finding is kept here in the
+      description and in the quoted evidence rather than being forced into a
+      measurement slot. No mucous quantities are reported in the cached
+      reference, so the output records carry no QuantityValues.
+    has_exposure_condition:
+      - id: "EXPOSURE:carvalho-ringer-control"
+        name: "Amphibian Ringer's solution (control)"
+      - id: "EXPOSURE:carvalho-tsp-0p1-mgml"
+        name: "Total suspended particles, 0.1 mg/mL"
+        exposure_agent:
+          id: "ENVO:01000060"
+          name: "particulate environmental material"
+        exposure_concentration:
+          value: "0.1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+      - id: "EXPOSURE:carvalho-pm25-0p1-mgml"
+        name: "Urban ambient PM2.5, 0.1 mg/mL (PM0.1)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "0.1"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+      - id: "EXPOSURE:carvalho-pm25-3p0-mgml"
+        name: "Urban ambient PM2.5, 3.0 mg/mL (PM3.0)"
+        exposure_agent:
+          id: "ENVO:01000415"
+          name: "fine respirable suspended particulate matter"
+        exposure_concentration:
+          value: "3.0"
+          unit:
+            id: "UO:0000176"
+            name: "milligram per milliliter"
+    has_specified_output:
+      - id: "GOBLET:carvalho-frog-palate-mucous-output-control"
+        name: "Epithelial mucous content - amphibian Ringer's control"
+        experimental_group: control
+        measured_under: "EXPOSURE:carvalho-ringer-control"
+      - id: "GOBLET:carvalho-frog-palate-mucous-output-tsp"
+        name: "Epithelial mucous content - total suspended particles 0.1 mg/mL"
+        experimental_group: treated
+        measured_under: "EXPOSURE:carvalho-tsp-0p1-mgml"
+      - id: "GOBLET:carvalho-frog-palate-mucous-output-pm0p1"
+        name: "Epithelial mucous content - PM2.5 0.1 mg/mL"
+        experimental_group: treated
+        measured_under: "EXPOSURE:carvalho-pm25-0p1-mgml"
+      - id: "GOBLET:carvalho-frog-palate-mucous-output-pm3p0"
+        name: "Epithelial mucous content - PM2.5 3.0 mg/mL"
+        experimental_group: treated
+        measured_under: "EXPOSURE:carvalho-pm25-3p0-mgml"
+    informs_on_key_event:
+      id: "KE:ke-mucin-hypersecretion"
+      name: "Mucin hypersecretion"
+      biological_action: increased
+      level_of_biological_organization: cellular
+    study_subject:
+      subject_type: CellularSystem
+      id: "soma:carvalho-frog-palate-001"
+      name: "Frog palate mucociliary epithelium preparation"
+      model_species:
+        id: "NCBITaxon:8342"
+        name: "Anura"
+      cell_type:
+        id: "CL:0000066"
+        name: "epithelial cell"
+      anatomical_origin:
+        id: "UBERON:0005019"
+        name: "mucosa of palate"
+    follows_protocols:
+      - protocol_type: Protocol
+        id: "PROTOCOL:carvalho-frog-palate-exposure-001"
+        name: "Frog palate preparation and immersion exposure to particle suspensions"
+      - protocol_type: StainingProtocol
+        id: "PROTOCOL:carvalho-mucous-morphometry-001"
+        name: "Morphometric quantification of acid and neutral mucous in epithelial cells"
+    evidence:
+      - reference: "PMID:26598085"
+        reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "Particulate matter of 2.5 \xB5m reduced epithelial mucous and epithelium thickness, while total suspended particles behaved similarly to the control group."
+        explanation: "The complete mucous result this assay records: PM2.5 lowered epithelial mucous content (and epithelium thickness), while total suspended particles did not differ from control."
+      - reference: "PMID:26598085"
+        reference_title: "Chemical composition modulates the adverse effects of particles on the mucociliary epithelium."
+        supports: SUPPORT
+        evidence_source: MODEL_ORGANISM
+        snippet: "the amount of acid and neutral mucous in epithelial cells through morphometry of frog palate preparations"
+        explanation: "Names the measurement behind this assay — acid and neutral mucous content of epithelial cells, read out by morphometry."
+
+# =============================================================================
+# RESPONSE COMPARISONS — directions the paper states, no values reported
+# =============================================================================
+
+response_comparisons:
+
+  # --- Mucociliary transport ------------------------------------------------
+
+  - id: "COMP:carvalho-mct-tsp"
+    name: "Mucociliary transport, total suspended particles vs Ringer's control"
+    description: >-
+      The paper states that exposure to total suspended particles decreased
+      mucociliary transport. No effect size, statistic or p-value is reported
+      in the cached reference, so only the direction is recorded.
+    derived_from_assay: "MCC:carvalho-frog-palate-transport"
+    compared_measurement: "transport_rate"
+    control_output: "MCC:carvalho-frog-palate-transport-output-control"
+    treated_output: "MCC:carvalho-frog-palate-transport-output-tsp"
+    change_direction: decreased
+    derivation: reported_in_paper
+
+  - id: "COMP:carvalho-mct-pm3p0"
+    name: "Mucociliary transport, PM2.5 at 3.0 mg/mL vs Ringer's control"
+    description: >-
+      The paper states that exposure to PM3.0 — urban ambient PM2.5 at
+      3.0 mg/mL — decreased mucociliary transport. Direction only; no effect
+      size or p-value is reported.
+    derived_from_assay: "MCC:carvalho-frog-palate-transport"
+    compared_measurement: "transport_rate"
+    control_output: "MCC:carvalho-frog-palate-transport-output-control"
+    treated_output: "MCC:carvalho-frog-palate-transport-output-pm3p0"
+    change_direction: decreased
+    derivation: reported_in_paper
+
+  # --- Ciliary beating frequency -------------------------------------------
+
+  - id: "COMP:carvalho-cbf-tsp"
+    name: "Ciliary beating frequency, total suspended particles vs Ringer's control"
+    description: >-
+      Ciliary beating frequency was diminished by total suspended particles,
+      and the paper states the effect was present at all times during
+      exposure. Direction only; no frequency values or p-values are reported.
+    derived_from_assay: "CILIARY:carvalho-frog-palate-cbf"
+    compared_measurement: "beat_frequency_hz"
+    control_output: "CILIARY:carvalho-frog-palate-cbf-output-control"
+    treated_output: "CILIARY:carvalho-frog-palate-cbf-output-tsp"
+    change_direction: decreased
+    derivation: reported_in_paper
+
+  - id: "COMP:carvalho-cbf-pm0p1"
+    name: "Ciliary beating frequency, PM2.5 at 0.1 mg/mL vs Ringer's control"
+    description: >-
+      NULL RESULT. The paper reports that particulate matter of 2.5 micrometres
+      did not elicit changes in ciliary beating frequency; the statement is
+      made for PM2.5 without distinguishing the two concentrations, so it is
+      recorded for both. Direction only.
+    derived_from_assay: "CILIARY:carvalho-frog-palate-cbf"
+    compared_measurement: "beat_frequency_hz"
+    control_output: "CILIARY:carvalho-frog-palate-cbf-output-control"
+    treated_output: "CILIARY:carvalho-frog-palate-cbf-output-pm0p1"
+    change_direction: no_change
+    derivation: reported_in_paper
+
+  - id: "COMP:carvalho-cbf-pm3p0"
+    name: "Ciliary beating frequency, PM2.5 at 3.0 mg/mL vs Ringer's control"
+    description: >-
+      NULL RESULT. As for PM0.1: the paper reports no change in ciliary beating
+      frequency under particulate matter of 2.5 micrometres, stated for PM2.5
+      as a whole rather than per concentration. Direction only.
+    derived_from_assay: "CILIARY:carvalho-frog-palate-cbf"
+    compared_measurement: "beat_frequency_hz"
+    control_output: "CILIARY:carvalho-frog-palate-cbf-output-control"
+    treated_output: "CILIARY:carvalho-frog-palate-cbf-output-pm3p0"
+    change_direction: no_change
+    derivation: reported_in_paper
+
+  # --- Epithelial mucous content -------------------------------------------
+
+  - id: "COMP:carvalho-mucous-pm0p1"
+    name: "Epithelial mucous content, PM2.5 at 0.1 mg/mL vs Ringer's control"
+    description: >-
+      PM2.5 reduced epithelial mucous. The paper states this for particulate
+      matter of 2.5 micrometres without distinguishing the two
+      concentrations, so it is recorded for both. Direction only; no mucous
+      quantities or p-values are reported.
+    derived_from_assay: "GOBLET:carvalho-frog-palate-mucous"
+    compared_measurement: "mucin_protein_concentration"
+    control_output: "GOBLET:carvalho-frog-palate-mucous-output-control"
+    treated_output: "GOBLET:carvalho-frog-palate-mucous-output-pm0p1"
+    change_direction: decreased
+    derivation: reported_in_paper
+
+  - id: "COMP:carvalho-mucous-pm3p0"
+    name: "Epithelial mucous content, PM2.5 at 3.0 mg/mL vs Ringer's control"
+    description: >-
+      As for PM0.1: PM2.5 reduced epithelial mucous, stated for particulate
+      matter of 2.5 micrometres as a whole rather than per concentration.
+      Direction only.
+    derived_from_assay: "GOBLET:carvalho-frog-palate-mucous"
+    compared_measurement: "mucin_protein_concentration"
+    control_output: "GOBLET:carvalho-frog-palate-mucous-output-control"
+    treated_output: "GOBLET:carvalho-frog-palate-mucous-output-pm3p0"
+    change_direction: decreased
+    derivation: reported_in_paper
+
+  - id: "COMP:carvalho-mucous-tsp"
+    name: "Epithelial mucous content, total suspended particles vs Ringer's control"
+    description: >-
+      NULL RESULT. Total suspended particles behaved similarly to the control
+      group for epithelial mucous — the contrast with PM2.5 that the paper's
+      title and conclusion rest on. Direction only.
+    derived_from_assay: "GOBLET:carvalho-frog-palate-mucous"
+    compared_measurement: "mucin_protein_concentration"
+    control_output: "GOBLET:carvalho-frog-palate-mucous-output-control"
+    treated_output: "GOBLET:carvalho-frog-palate-mucous-output-tsp"
+    change_direction: no_change
+    derivation: reported_in_paper
