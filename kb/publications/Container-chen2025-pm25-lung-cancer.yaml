@@ -56,10 +56,13 @@
 # Ye et al (2018) and Wang et al (2023, AhR-TMPRSS2-IL18) are cell-based, so
 # those are IN_VITRO. HUMAN_CLINICAL is kept for the epidemiology (Huang 2021,
 # Hill 2023 UK Biobank, Zhang 2022, Lin 2024, Sorensen 2003) and for the
-# review's own abstract and conclusion statements. OTHER is used for the two
-# general mechanism statements the review makes without attributing a primary
-# study (macrophage ROS release; the genomic/nongenomic AhR signaling
-# description, which cites another review).
+# review's own abstract and conclusion statements. OTHER is used for the body
+# text's general mechanism statements, which the review either leaves uncited
+# (macrophage ROS release; the chronic inflammatory microenvironment) or cites
+# to other reviews rather than to primary work (oxidative stress leading to DNA
+# damage and tissue inflammation, cited to Thangavel 2022 and Valavanidis 2013;
+# the genomic/nongenomic AhR signaling description, cited to Rothhammer and
+# Quintana 2019).
 #
 # =============================================================================
 
@@ -109,7 +112,7 @@ key_events:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: OTHER
         snippet: "The oxidative stress induced by ROS leads to DNA damage and tissue in ﬂammation, which trigger abnormal gene expression and increase the risk of cancer development"
         explanation: "States DNA damage as a measurable consequence of PM2.5-driven oxidative stress, supporting it as a molecular-level key event."
       - reference: "PMID:39578555"
@@ -187,7 +190,7 @@ key_events:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: OTHER
         snippet: "This chronic in ﬂammatory state creates a microenvironment conducive to DNA damage, cell proliferation, and apoptosis resistance, all of which contribute to tumorigenesis."
         explanation: "The review's statement that the chronic inflammatory state is itself tumorigenic, which is what makes airway inflammation a key event on the path to the adverse outcome rather than a side effect."
 
@@ -298,7 +301,7 @@ key_event_relationships:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: OTHER
         snippet: "The oxidative stress induced by ROS leads to DNA damage and tissue in ﬂammation, which trigger abnormal gene expression and increase the risk of cancer development"
         explanation: "The review's direct causal statement that oxidative stress leads to DNA damage."
       - reference: "PMID:39578555"
@@ -334,7 +337,7 @@ key_event_relationships:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: OTHER
         snippet: "The oxidative stress induced by ROS leads to DNA damage and tissue in ﬂammation, which trigger abnormal gene expression and increase the risk of cancer development"
         explanation: "The same sentence that carries the DNA-damage link also states oxidative stress leads to tissue inflammation."
 
@@ -496,7 +499,7 @@ key_event_relationships:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: OTHER
         snippet: "The oxidative stress induced by ROS leads to DNA damage and tissue in ﬂammation, which trigger abnormal gene expression and increase the risk of cancer development"
         explanation: "States that DNA damage triggers abnormal gene expression and increases cancer risk, the mechanism behind this relationship."
 
@@ -550,7 +553,7 @@ key_event_relationships:
       - reference: "PMID:39578555"
         reference_title: "The role of PM2.5 exposure in lung cancer: mechanisms, genetic factors, and clinical implications."
         supports: SUPPORT
-        evidence_source: HUMAN_CLINICAL
+        evidence_source: OTHER
         snippet: "This chronic in ﬂammatory state creates a microenvironment conducive to DNA damage, cell proliferation, and apoptosis resistance, all of which contribute to tumorigenesis."
         explanation: "The review's statement that chronic inflammation contributes to tumorigenesis through DNA damage, proliferation and apoptosis resistance."
       - reference: "PMID:39578555"
