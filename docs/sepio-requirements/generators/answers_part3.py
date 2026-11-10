@@ -174,7 +174,7 @@ _eint = {
         expl="Yes, and the project requires the flat form to be preserved for most of its claims. "
              "A single EvidenceItem object carries the evidence content and the interpretation "
              "together: reference and reference_title identify the source, snippet holds the "
-             "verbatim passage, article_section and figure_reference locate it in the publication, "
+             "verbatim passage, evidence_source records the kind of study it came from, "
              "and supports plus explanation record the judgement about it. There is no separate "
              "interpretation object and no provenance tracked separately for the interpretation. "
              "This is an intentional implementation preference, not an accident: the extraction "

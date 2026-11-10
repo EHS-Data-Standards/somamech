@@ -50,7 +50,7 @@ template).
 
 | ID | Source | Version / retrieval |
 |---|---|---|
-| **S01** | `somamech:kb/publications/*.yaml` — 41 Container files | commit `d8f40d9`, branch `main`, retrieved 2026-11-05 |
+| **S01** | `somamech:kb/publications/*.yaml` — 40 Container files | commit `d8f40d9`, branch `main`, retrieved 2026-11-05 |
 | **S02** | `soma:src/soma/schema/*.yaml` — `soma`, `evidence`, `assay_base`, `aop_framework`, `assay_microschemas`, `publication_stub` | `soma-schema` 0.2.4 (pinned, installed release) |
 
 **S02 is an explicitly designated canonical companion artifact.** The YAML data files cannot be
@@ -80,6 +80,14 @@ today, outside the canonical data:
   `scripts/generate_ontology_mappings.py` — grounding and term-validation tooling
 - **S12** git history and pull-request records — agent, date and reviewing human per file
 
+**`EXPLICIT_FUTURE_REQUIREMENT`**:
+
+- **S13** `soma` repository `main` branch, commit `45b4af56` "Add figure and section provenance to
+  evidence and outputs" — adds `article_section` and `figure_reference` slots to `EvidenceItem`
+  *after* the pinned 0.2.4 release. Built, unreleased, and used by no canonical file, so it supports
+  desired state only. This is the sole basis for the two evidence item types whose current-state
+  answer is `N` and desired-state answer is `Y`.
+
 **`DOCUMENTED_MODEL_INTENT`**:
 
 - **S09** `scripts/build_site.py` and `scripts/site_templates/` — which evidence fields the project
@@ -101,8 +109,11 @@ No source was used that the selected scope does not permit.
 1. SOMA uses three claim representation structures, not one. Measurement, key-event, assay-method
    and exposure claims are **implicit slot/values and nested objects on parent records**; comparison
    claims (`ResponseComparison`) and key-event-relationship claims (`KeyEventRelationship`) are
-   **genuinely reified first-class objects** with their own identifiers and their own evidence lists.
-   No graph-edge representation exists in the canonical data.
+   **genuinely reified first-class objects** with their own identifiers. No graph-edge representation
+   exists in the canonical data. Note an asymmetry between the two reified types: only
+   `KeyEventRelationship` carries an evidence list. `ResponseComparison` has no evidence slot at all,
+   and no response comparison in the corpus has evidence attached — a reified claim with no evidence
+   attachment point, whose support is reachable only indirectly through `derived_from_assay`.
 2. Where claims are reified, they carry structured proposition semantics **directly on the claim
    object** using project-specific field names (`upstream_event` / `relationship_type` /
    `downstream_event`; `compared_measurement` / `change_direction` / `change_value`). There is no
@@ -113,13 +124,14 @@ No source was used that the selected scope does not permit.
 **Evidence.**
 
 4. The project's unit of evidence is the **verbatim quoted source passage**. One `EvidenceItem`
-   holds the quote, the cited publication and title, the article section, the figure or table label,
-   the direction of support, and a curator explanation — evidence content and evidence
-   interpretation fused in a single flat object, with no grouping of items into arguments.
+   holds the quote, the cited publication and title, the kind of study it reports, the direction of
+   support, and a curator explanation — evidence content and evidence interpretation fused in a
+   single flat object, with no grouping of items into arguments. It records no structured locus
+   within the publication: where a quote came from survives only as prose inside `explanation`.
 5. That flat form is an **intentional implementation preference** and the project requires it
    preserved for five of its six claim types: the extraction agents emit it, the validators check
    it, and the DuckDB builder, pooled workbook and review site all read it.
-6. Nine of twenty inventoried evidence item types are represented; eleven are not. The project
+6. Seven of twenty inventoried evidence item types are represented today and nine are wanted; the project
    extracts from publication text and figures, so it represents no datasets, no external database
    records, no structured prior claims, no computational predictions and no images.
 7. Statistical metrics are **structured content**, not merely quoted text: p-values, test names,
@@ -143,7 +155,7 @@ No source was used that the selected scope does not permit.
 
 12. **The canonical data contains no provenance beyond the cited publication.** `Container` has
     exactly one provenance slot, `source_publication`. There is no agent, date, model, method or
-    version field anywhere in 41 files. This produces the dominant pattern of this review: current
+    version field anywhere in 40 files. This produces the dominant pattern of this review: current
     provenance answers are 8 `Y` / 34 `N` / 1 `M`, while desired answers are 24 `Y` / 9 `N` / 10 `M`.
 13. Evidence-*item* provenance — how the source study produced the measurements — is by contrast
     well represented: typed protocols with published standards followed, detection and normalisation
@@ -221,6 +233,16 @@ Listed in descending order of value.
 
 - **No conflicts were found between the canonical data (S01) and the schema (S02).** CI enforces
   their agreement, and direct inspection confirmed it.
+- **One real conflict, and it caused an error in an earlier draft of this submission.** The `soma`
+  repository's `main` branch is ahead of the pinned `soma-schema` 0.2.4 release that `somamech`
+  depends on: commit `45b4af56` adds `article_section` and `figure_reference` to `EvidenceItem` on
+  `main`, and neither is in the release or in any of the 40 canonical files. An earlier draft read
+  the schema from a working copy of `main` and consequently marked `EI.COMPOSITE.DATA_TABLE` and
+  `EI.COMPOSITE.FIGURE` as currently represented, and illustrated them with field values no record
+  contains. Per the scope statement the **released** schema controls current state, so both rows are
+  now `N`/`Y` with the unreleased slots cited as S13 desired-state support. This is recorded here
+  rather than quietly fixed, because the same trap will catch any reviewer who reads a project's
+  schema from a development checkout.
 - **The principal risk in this review was scope leakage, not conflict.** S05, S06, S07 and S12
   describe real, enforced capabilities that are absent from the canonical data. Every one of them
   was recorded as desired-state support only; none was allowed to raise an F1 answer. This was
@@ -286,7 +308,11 @@ Summarised here; actionable proposals are in the accompanying feedback log.
    statement about how the asserted value was arrived at, which makes
    `PROV.ASSERTION.METHOD_TYPES` an F1 `Y`. An alternative reading treats it as a property of the
    value rather than of the assertion; flagged in that row.
-7. **No agent or model identifier was invented** for the desired-state provenance block. The rows
+7. **"Canonical companion schema" means the released version, not the working tree.** Current-state
+   answers were taken from `soma-schema` 0.2.4 as released and pinned, and checked against actual
+   records; capabilities present only on the `soma` `main` branch were treated as desired-state
+   support (S13). See §7 for the error this prevented on a second pass.
+8. **No agent or model identifier was invented** for the desired-state provenance block. The rows
    describe what must be representable, not a specific value.
 
 ## 11. Project observations suggesting improvements to the forms or guidance

@@ -27,11 +27,15 @@ _rows = {
               "counts and MUC5AC/MUC5B expression; BALF and sputum differential cell counts and "
               "cytokine concentrations; spirometry (FVC, FEV1, FEV1/FVC); target-gene mRNA levels "
               "as delta-Ct or fold change.",
-        ex="Evidence item (E01): snippet \"FEV1/FVC (measured) 90.06+/-6.19 84.32+/-3.86 0.00\", "
-           "article_section: table, figure_reference: \"Table 3\", supports: SUPPORT, "
-           "evidence_source: HUMAN_CLINICAL. Separately structured value (E02): fvc: {value: "
-           "\"2.92\", unit: {id: UO:0000099, name: liter}, central_tendency: mean, sample_size: 33, "
-           "variability: {variability_type: standard_deviation, value: \"0.58\"}}.",
+        ex="Evidence item (E01), all six fields as they appear in the file: reference: "
+           "\"PMID:41469766\", reference_title: \"Seasonal impact of PM(2.5) ...\", supports: "
+           "SUPPORT, evidence_source: HUMAN_CLINICAL, snippet: \"FEV1/FVC (measured) 90.06+/-6.19 "
+           "84.32+/-3.86 0.00\", explanation: \"Table 3 row giving the measured FEV1/FVC values this "
+           "assay records for the monsoon and spring visits, with the paired t-test p-value.\" "
+           "Note that the table the quote came from is named only inside the explanation prose. "
+           "Separately structured value (E02): fvc: {value: \"2.92\", unit: {id: UO:0000099, name: "
+           "liter}, central_tendency: mean, sample_size: 33, variability: {variability_type: "
+           "standard_deviation, value: \"0.58\"}}.",
         expl="This is the project's core evidence type, and it is represented at two levels at "
              "once, which the modelling group should not conflate. (a) The verbatim quoted passage "
              "reporting the measurement is stored as free text in an evidence item and is machine-"
@@ -42,7 +46,7 @@ _rows = {
              "value agrees with the quote it sits beside — a gap the project is aware of. "
              "Where a value exists only in a figure, project extraction rules forbid estimating it, "
              "so the output record carries its experimental group, exposure condition and a "
-             "described direction but no quantity value, and the figure is named instead "
+             "described direction but no quantity value, and the figure is named in prose "
              "(see EI.COMPOSITE.FIGURE). See also EI.CUSTOM.001, which records the quoted passage "
              "as the project's unit of evidence representation.",
         ct="C001; C002; C003; C004",
@@ -107,26 +111,35 @@ _rows = {
     ),
     # ---------------------------------------------------- Composite Evidence Items
     6: dict(  # EI.COMPOSITE.DATA_TABLE
-        f1="Y", f2="Y",
+        f1="N", f2="Y",
         loc="LOCAL;EXTERNAL",
         form="STRUCTURED_METADATA",
         addr="NO",
-        attrs="The table label exactly as the publication prints it; the article-section type "
-              "indicating that the quote came from a table rather than narrative prose.",
+        attrs="DESIRED: the table label exactly as the publication prints it, and the "
+              "article-section type indicating that the quote came from a table rather than from "
+              "narrative prose.",
         kinds="Publication tables reporting group means with dispersion and p-values across "
               "exposure conditions or study visits; tables of participant characteristics; "
               "tables of regression estimates with confidence intervals.",
-        ex="figure_reference: \"Table 3\" with article_section: table, on the evidence item quoting "
-           "\"FEV1/FVC (measured) 90.06+/-6.19 84.32+/-3.86 0.00\" (E01).",
-        expl="A publication table is referenced but not represented. The reference is a "
-             "paper-local label string, not a resolvable identifier, and no table structure or "
-             "content is stored — the relevant row is instead quoted verbatim in the evidence item "
-             "and the individual values are structured separately as measurements. Recording that "
-             "a quote came from a table rather than from narrative prose is a deliberate and "
-             "load-bearing distinction in this project: the schema states that a value quoted from "
-             "Results carries more weight than one quoted from a Methods sentence about how a "
-             "reagent was stored (S02). The table is therefore addressable only as part of its "
-             "evidence item, not independently.",
+        ex="Current state, prose only: the evidence item quoting \"FEV1/FVC (measured) "
+           "90.06+/-6.19 84.32+/-3.86 0.00\" names its table inside its explanation text — \"Table 3 "
+           "row giving the measured FEV1/FVC values ...\" — and in no other field (E01). "
+           "Desired (ILLUSTRATIVE, from S13): a figure_reference field carrying \"Table 3\" and an "
+           "article_section field carrying `table`.",
+        expl="Current state: a publication table is named only inside free-text explanation and "
+             "description prose, where it cannot be queried. Direct inspection of all 40 canonical "
+             "files returns zero occurrences of any structured table or section field, and the "
+             "pinned schema release does not define one (S01, S02). So this is N, not Y. "
+             "Desired-state support: EXPLICIT_FUTURE_REQUIREMENT — S13 (soma repository main "
+             "branch, commit 45b4af56 'Add figure and section provenance to evidence and outputs', "
+             "which adds `article_section` and `figure_reference` slots to EvidenceItem after the "
+             "pinned 0.2.4 release and is not yet adopted by any canonical file). "
+             "The project regards the distinction as load-bearing rather than cosmetic: that "
+             "unreleased slot's own documentation states that a value quoted from Results carries "
+             "more weight than one quoted from a Methods sentence about how a reagent was stored. "
+             "No table structure or content would be stored; the relevant row is quoted verbatim in "
+             "the evidence item and the individual values are structured separately as "
+             "measurements, so the table is addressable only as part of its evidence item.",
         ct="C001; C002",
     ),
     7: dict(  # EI.COMPOSITE.DATASET
@@ -139,29 +152,38 @@ _rows = {
         ct="",
     ),
     8: dict(  # EI.COMPOSITE.FIGURE
-        f1="Y", f2="Y",
+        f1="N", f2="Y",
         loc="LOCAL;EXTERNAL",
         form="STRUCTURED_METADATA",
         addr="NO",
-        attrs="The figure label exactly as the publication prints it, including panel where the "
-              "paper gives one (for example \"Figure 3B\"); the article-section type distinguishing "
-              "a quote taken from a figure caption from one taken from narrative prose.",
+        attrs="DESIRED: the figure label exactly as the publication prints it, including panel "
+              "where the paper gives one (for example \"Figure 3B\"), and the article-section type "
+              "distinguishing a quote taken from a figure caption from one taken from narrative "
+              "prose.",
         kinds="Figures reporting molecular readouts for which the publication gives no numeric "
               "values in the running text — RT-qPCR delta-Ct plots, ELISA bar charts, gel "
               "zymography band intensities, flow-cytometry apoptosis frequencies, "
               "immunocytochemistry mean fluorescence intensities.",
-        ex="In kb/publications/Container-ghosh2025-pm25-egfr-pi3k-akt.yaml every molecular readout "
-           "is reported in Figures 2-4 only, with no numbers in the running text; those output "
-           "records therefore carry their experimental group, their exposure condition and a "
-           "described direction, with the figure named and no quantity value recorded.",
-        expl="This is the project's explicit mechanism for a value it deliberately refuses to "
-             "estimate. The schema instructs that the figure reference be recorded whenever a "
-             "quantitative result lives in a figure or chart, even when no exact value could be "
-             "read from it, so that a reviewer knows exactly where to look (S02). The figure is "
-             "referenced by its printed label and is not stored, so it is addressable only through "
-             "the evidence item that cites it. A resolvable per-figure identifier is not currently "
-             "required, but it would be the natural way to make a figure independently addressable "
-             "if the project later wants to assert that a specific figure supports a claim.",
+        ex="Current state, prose only: in Container-ghosh2025-pm25-egfr-pi3k-akt.yaml every "
+           "molecular readout is reported in Figures 2-4 with no numbers in the running text, and "
+           "the file's modelling notes say so in a YAML comment — \"shown in Figs. 2-4 ONLY, with "
+           "no numbers in the running text ... those output records carry their experimental group, "
+           "the exposure condition ... but no QuantityValue\". The figure is named in a comment and "
+           "in description text; no field holds it. "
+           "Desired (ILLUSTRATIVE, from S13): a figure_reference field carrying \"Figure 3B\".",
+        expl="Current state: this is the project's mechanism for a value it deliberately refuses to "
+             "estimate, and it works today by NOT recording a quantity value and describing the "
+             "figure in prose. Direct inspection of all 40 canonical files returns zero occurrences "
+             "of a structured figure field, and the pinned schema release does not define one "
+             "(S01, S02). So this is N, not Y — a reviewer can find the figure only by reading "
+             "description or comment text. "
+             "Desired-state support: EXPLICIT_FUTURE_REQUIREMENT — S13 (soma main, commit "
+             "45b4af56), whose unreleased `figure_reference` slot documentation instructs that the "
+             "figure be recorded whenever a quantitative result lives in a figure or chart, even "
+             "when no exact value could be read from it, so that a reviewer knows where to look. "
+             "That is precisely this project's need and it is built but not released or adopted. "
+             "The figure would be referenced by printed label and not stored, so it stays "
+             "addressable only through the evidence item that cites it.",
         ct="C001; C002; C003; C004",
     ),
     9: dict(  # EI.COMPOSITE.EXTERNAL_RECORD
@@ -209,13 +231,14 @@ _rows = {
         loc="LOCAL;EXTERNAL",
         form="FREE_TEXT",
         addr="YES",
-        attrs="The verbatim quote; the cited publication identifier and title; the article section "
-              "the quote came from; the direction of support; a curator explanation of how the "
-              "passage bears on the specific claim it is attached to.",
+        attrs="The verbatim quote; the cited publication identifier and title; the direction of "
+              "support; a curator explanation of how the passage bears on the specific claim it is "
+              "attached to. DESIRED ADDITION: the section of the publication the passage came "
+              "from, which is currently stated only in prose.",
         kinds="Authors' own statements of a finding that corresponds to the claim being modelled — "
               "typically drawn from the abstract, results or discussion.",
         ex="snippet: \"was a significant reduction in the measured ratio of FEV1/FVC in the men\", "
-           "article_section: results, supports: SUPPORT, explanation: \"States the direction and "
+           "supports: SUPPORT, explanation: \"States the direction and "
            "significance of the FEV1/FVC change between seasons that this assay records.\" "
            "A second example attached to a Key Event Relationship claim: snippet: \"high PM 2.5 may "
            "impact the activation of pro-oncogenic signaling\".",
@@ -243,7 +266,7 @@ _rows = {
         form="FREE_TEXT",
         addr="YES",
         attrs="As for EI.PRIOR_CLAIM.DIRECT_TEXT: verbatim quote, cited publication and title, "
-              "article section, direction of support, curator explanation.",
+              "direction of support, curator explanation.",
         kinds="Passages reporting a distinct finding interpreted as supporting the target claim — "
               "for example a systemic or mechanistic observation quoted as context for a "
               "physiological claim; a statement of the exposure contrast quoted in support of a "
@@ -365,23 +388,26 @@ _rows = {
         loc="LOCAL;EXTERNAL",
         form="FREE_TEXT",
         addr="YES",
-        attrs="The exact quote, reproduced word-for-word from the cited publication; the cited "
-              "publication identifier and title; the article section the passage was taken from "
-              "(abstract, introduction, methods, results, discussion, figure caption, table, "
-              "supplementary); the figure or table label where the underlying data sits; the "
-              "direction of support; and a curator explanation of how the passage bears on the "
-              "specific claim it is attached to. "
-              "DESIRED ADDITION: the verification state of the quote — which tool checked it, "
+        attrs="CURRENT, all six fields of the object: the exact quote, reproduced word-for-word "
+              "from the cited publication; the cited publication identifier and title; the kind of "
+              "study the cited publication reports; the direction of support; and a curator "
+              "explanation of how the passage bears on the specific claim it is attached to. "
+              "DESIRED ADDITIONS, neither present today: (a) the locus of the passage within the "
+              "publication — the section it came from and the figure or table label where the "
+              "underlying data sits — which is currently stated only in prose inside the "
+              "explanation; and (b) the verification state of the quote — which tool checked it, "
               "against which cached copy of the publication, whether that copy was full text or "
               "abstract only, on what date, and with what outcome.",
         kinds="Quoted table rows reporting group values; quoted sentences stating a finding; "
               "quoted figure captions; quoted methods sentences establishing a dose or condition.",
-        ex="E01 — one evidence item in full: {reference: \"PMID:41469766\", reference_title: "
-           "\"Seasonal impact of PM(2.5) on pro-oncogenic drivers among participants of a thermal "
-           "power plant in India.\", supports: SUPPORT, evidence_source: HUMAN_CLINICAL, snippet: "
-           "\"FEV1/FVC (measured) 90.06+/-6.19 84.32+/-3.86 0.00\", explanation: \"Table 3 row "
-           "giving the measured FEV1/FVC values this assay records for the monsoon and spring "
-           "visits, with the paired t-test p-value.\"}",
+        ex="E01 — one evidence item in full, exactly as it appears in the file: {reference: "
+           "\"PMID:41469766\", reference_title: \"Seasonal impact of PM(2.5) on pro-oncogenic "
+           "drivers among participants of a thermal power plant in India.\", supports: SUPPORT, "
+           "evidence_source: HUMAN_CLINICAL, snippet: \"FEV1/FVC (measured) 90.06+/-6.19 "
+           "84.32+/-3.86 0.00\", explanation: \"Table 3 row giving the measured FEV1/FVC values "
+           "this assay records for the monsoon and spring visits, with the paired t-test "
+           "p-value.\"} Note that \"Table 3\" reaches the data only as English inside the "
+           "explanation.",
         expl="ADDED BY THE PROJECT as a custom row, because the verbatim quoted passage is this "
              "project's actual unit of evidence representation and addressability, and it "
              "cross-cuts the content-based rows above. "
@@ -394,6 +420,10 @@ _rows = {
              "the direction of support attaches to, and what is machine-verified; so the project "
              "needs it representable in its own right and not only as a free-text rendering of "
              "some other evidence type. "
+             "The passage is also where the project's within-publication locus belongs. Today that "
+             "locus exists only as English inside the explanation field ('Table 3 row giving ...'), "
+             "so it cannot be queried; the soma main branch has added structured section and figure "
+             "slots for it (S13) but they are unreleased and unused. "
              "What makes this item type distinctive in this project is that it is VERIFIABLE: the "
              "quote must appear word-for-word in a cached copy of the cited publication, and CI "
              "checks this across the whole corpus on every run (S02, S06). Where a publisher "

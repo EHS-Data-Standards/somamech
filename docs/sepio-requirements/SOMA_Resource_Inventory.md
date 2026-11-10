@@ -46,7 +46,7 @@ These, and only these, controlled the F1 / current-state column.
 
 | Source ID | Name | Type | Location | Version | Role |
 |---|---|---|---|---|---|
-| **S01** | SOMA publication knowledge base | Canonical dataset, 41 YAML files | `somamech:kb/publications/*.yaml` | commit `d8f40d9` (branch `main`), retrieved 2026-11-05 | `CURRENT_STATE_CANONICAL` |
+| **S01** | SOMA publication knowledge base | Canonical dataset, 40 YAML files | `somamech:kb/publications/*.yaml` | commit `d8f40d9` (branch `main`), retrieved 2026-11-05 | `CURRENT_STATE_CANONICAL` |
 | **S02** | soma-schema LinkML schema | Schema source | `soma:src/soma/schema/{soma,evidence,assay_base,aop_framework,assay_microschemas,publication_stub}.yaml` | `soma-schema` 0.2.4 (installed release) | `CURRENT_STATE_CANONICAL_COMPANION` |
 
 S02 is designated a canonical companion because the YAML data files cannot be interpreted without
@@ -59,8 +59,9 @@ data product and its data dictionary.
   agent, date, model, method or version slot of any kind.
 - Four classes carry an `evidence` list: `Assay`, `AssayOutputMeasurement`, `KeyEvent`,
   `KeyEventRelationship`.
-- `EvidenceItem` has eight slots: `reference`, `reference_title`, `supports`, `evidence_source`,
-  `snippet`, `explanation`, `article_section`, `figure_reference`.
+- `EvidenceItem` has **six** slots in the pinned 0.2.4 release: `reference`, `reference_title`,
+  `supports`, `evidence_source`, `snippet`, `explanation`. It records no structured locus within the
+  cited publication; where a quote came from is stated only as prose inside `explanation`.
 - `snippet` declares `implements: linkml:excerpt`; `reference` declares
   `implements: linkml:authoritative_reference`; `reference_title` declares `implements: dcterms:title`.
   These annotations are what make the quote and title machine-checkable.
@@ -68,7 +69,7 @@ data product and its data dictionary.
   empty value; the slot is not required.
 - `KeyEventRelationship` carries `evidence_support` (strong/moderate/weak/not_specified) and
   `quantitative_understanding` (high/moderate/low/not_specified) as slots on the relationship.
-- `ResponseComparison` carries `derivation` (`reported_in_paper`, 400 uses / `computed`),
+- `ResponseComparison` carries `derivation` (`reported_in_paper`, 412 uses / `computed`),
   `p_value`, `statistical_test`, and a `change_value` with `confidence_interval_95` bounds.
 - No slot anywhere carries an epistemic confidence value. The only `confidence_interval_*` fields
   are statistical dispersion on measurements.
@@ -90,6 +91,7 @@ explanation field.
 | **S10** | Repository AI-generated content notice | `somamech:README.md` | `DOCUMENTED_MODEL_INTENT` | That content is AI-authored and humans direct and review |
 | **S11** | Ontology grounding tooling and report | `somamech:ontology_grounding_report.tsv`, `scripts/run_term_validator.sh`, `scripts/generate_ontology_mappings.py` | `EXISTING_PROJECT_CAPABILITY_NOT_IN_CANONICAL_EXPORT` | Semantic alignment method types and specifications |
 | **S12** | Git history and pull-request records | `somamech` repository history | `EXISTING_PROJECT_CAPABILITY_NOT_IN_CANONICAL_EXPORT` | Agent, date and reviewer for every file |
+| **S13** | `soma` main branch ahead of the pinned release | `soma` repo, commit `45b4af56` "Add figure and section provenance to evidence and outputs" | `EXPLICIT_FUTURE_REQUIREMENT` | Within-publication locus (section, figure/table label) |
 
 ### Sources considered and excluded
 
@@ -104,7 +106,7 @@ explanation field.
 
 | Example ID | State | Source | Requirement pattern demonstrated |
 |---|---|---|---|
-| **E01** | Current | S01 — `Container-ghosh2025-pm25-egfr-pi3k-akt.yaml`, evidence item on `LF:ghosh-pm25-seasonal-spirometry` | A verbatim quoted table row as the unit of evidence, carrying direction, article section, figure label and curator explanation — content and interpretation fused in one object |
+| **E01** | Current | S01 — `Container-ghosh2025-pm25-egfr-pi3k-akt.yaml`, evidence item on `LF:ghosh-pm25-seasonal-spirometry` | A verbatim quoted table row as the unit of evidence, carrying direction of support and a curator explanation — content and interpretation fused in one object, with the source table named only inside the explanation prose |
 | **E02** | Current | S01 — same file, `LF:...-output-spring` | A measurement claim as an implicit slot/value on a parent record, with a nested `QuantityValue` carrying unit, central tendency, sample size and variability |
 | **E03** | Current | S01 — same file, `KER:ghosh-pi3k-akt-to-suppressed-apoptosis` | A reified subject-predicate-object claim with a categorical weight-of-evidence judgement asserted on the claim rather than on an interpreted argument |
 | **E04** | Current | S01 — same file, `COMP:ghosh-lf-fev1fvc` | A reified comparison claim with structured statistical metrics, a 95% confidence interval, and `derivation` recording that the value was reported by the authors |
@@ -119,6 +121,14 @@ the distinction between a described direction and a measured value.
 ## 5. Conflicts, gaps and access notes
 
 - **No conflicts found between S01 and S02.** The schema and the data agree; CI enforces that.
+- **A version trap worth flagging to any future reviewer.** The `soma` repository's `main` branch is
+  *ahead* of the pinned `soma-schema` 0.2.4 release that `somamech` depends on. Commit `45b4af56`
+  adds `article_section` and `figure_reference` slots to `EvidenceItem` on `main`; neither is in the
+  0.2.4 release and neither appears in any of the 40 canonical files. Reading the schema from a
+  working copy of `main` therefore overstates the current state. **S02 means the released 0.2.4
+  schema, not the `soma` working tree.** The unreleased slots are admitted as S13, for desired state
+  only. An earlier draft of this review made exactly this mistake and marked two evidence item types
+  as currently represented on the strength of slots the data does not use.
 - **Scope boundary requiring care.** S05, S06, S07 and S12 describe real, enforced project
   capabilities that are *absent from the canonical data*. The temptation to mark the corresponding
   provenance rows as current must be resisted: they are desired-state support only. This was the

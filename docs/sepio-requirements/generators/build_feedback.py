@@ -48,7 +48,7 @@ OBSERVATIONS = [
         ),
         evidence=(
             "soma/src/soma/schema/evidence.yaml, class EvidenceItem, slots: reference, reference_title, "
-            "supports, evidence_source, snippet, explanation, article_section, figure_reference. "
+            "supports, evidence_source, snippet, explanation (six slots in the pinned 0.2.4 release). "
             "Registry summary for EINT.FLAT_COLLAPSE: 'Current SEPIO gap - no native single object that "
             "collapses Evidence Item content and EvidenceLine interpretation.'"
         ),
@@ -94,8 +94,8 @@ OBSERVATIONS = [
         ),
         evidence=(
             "Real evidence item from kb/publications/Container-ghosh2025-pm25-egfr-pi3k-akt.yaml: "
-            "snippet: 'FEV1/FVC (measured) 90.06+/-6.19 84.32+/-3.86 0.00', article_section: table, "
-            "explanation: 'Table 3 row giving the measured FEV1/FVC values ... with the paired t-test p-value.' "
+            "snippet: 'FEV1/FVC (measured) 90.06+/-6.19 84.32+/-3.86 0.00', explanation: 'Table 3 row giving "
+            "the measured FEV1/FVC values ... with the paired t-test p-value.' "
             "That one string carries two group means, two SDs and a p-value, quoted out of a table, as text."
         ),
         suggestion=(
@@ -127,24 +127,31 @@ OBSERVATIONS = [
         reqs="PROV.EI.RETRIEVAL_SOURCE; EI.COMPOSITE.FIGURE",
         category="Provenance granularity",
         finding=(
-            "There is no provenance type for WHERE INSIDE a source document an evidence item was taken from. "
-            "SOMA records this on every evidence item and treats it as load-bearing for how much the evidence "
-            "counts: article_section (abstract/methods/results/discussion/figure_caption/table/supplementary) "
-            "and figure_reference (e.g. 'Figure 3B', 'Table 2'). The schema's own comment states the point - a "
-            "dose quoted from Methods storage boilerplate is weaker provenance than one quoted from Results. "
-            "PROV.EI.RETRIEVAL_SOURCE maps to InformationEntity.sources but identifies the document, not the "
-            "locus within it."
+            "There is no provenance type for WHERE INSIDE a source document an evidence item was taken from, "
+            "and no form row prompts a project to report that it needs one. The project treats this locus as "
+            "load-bearing for how much a piece of evidence counts - a dose quoted from Methods storage "
+            "boilerplate is weaker provenance than a value quoted from Results - and has built schema slots "
+            "for it on its main branch, though they are unreleased and no canonical record uses them yet. "
+            "Today the locus survives only as English inside the curator's explanation text, where it cannot "
+            "be queried. PROV.EI.RETRIEVAL_SOURCE identifies the source document but not the locus within it, "
+            "so a project in this position has nowhere to state the requirement."
         ),
         evidence=(
-            "soma evidence.yaml slots article_section (range ArticleSectionEnum, 9 values) and figure_reference. "
-            "Example: snippet 'FEV1/FVC (measured) 90.06+/-6.19 84.32+/-3.86 0.00' with article_section: table. "
-            "No PROV row in the form, and no registry target, corresponds to either slot."
+            "Current canonical state: zero occurrences of any structured section or figure field across all 40 "
+            "files in kb/publications/; the pinned soma-schema 0.2.4 EvidenceItem has six slots and defines "
+            "neither. The locus reaches the data only as prose - explanation: 'Table 3 row giving the measured "
+            "FEV1/FVC values ...'. Project intent: soma main commit 45b4af56 'Add figure and section "
+            "provenance to evidence and outputs' adds article_section (9 permissible values) and "
+            "figure_reference, with slot documentation stating the Results-versus-Methods weighting rationale. "
+            "The guidance's own worked DisMech example also cites 'additional information about the location of "
+            "the passage in the text' as an input to interpretation, yet no form row collects it."
         ),
         suggestion=(
             "Add a within-source locus to evidence item provenance (section type plus a source-labelled "
             "figure/table reference). This is also the practical substitute for EI.COMPOSITE.FIGURE when a "
             "value lives only in a chart: SOMA deliberately records no number but names the figure so a "
-            "reviewer can find it."
+            "reviewer can find it. Note the evidence for this request is a project that built the capability "
+            "in its schema before any consortium model offered a place to put it."
         ),
         entry="Suggested enhancement",
         applicability="Potentially cross-project",
@@ -447,7 +454,7 @@ OBSERVATIONS = [
             "a different granularity from the evidence item type being assessed. In this project an individual "
             "measurement is NOT separately addressable - it is a named slot on an output record with no "
             "identifier of its own - but the quoted passage that reports it IS addressable, and carries the "
-            "direction of support, the article section and the curator's explanation. Answering F5 per row "
+            "direction of support and the curator's explanation. Answering F5 per row "
             "forces a choice that misreports one or the other: YES overstates the measurement's status, NO "
             "hides that the project does attach interpretation metadata at a specific granularity."
         ),

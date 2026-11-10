@@ -1,8 +1,8 @@
 """SOMA answers for PO, CT, CRS, RCS sheets.
 
 Source IDs are defined in SOMA_Resource_Inventory.md:
-  S01 kb/publications/*.yaml (41 files) @ somamech d8f40d9   CURRENT_STATE_CANONICAL
-  S02 soma-schema 0.2.4 schema sources                        CURRENT_STATE_CANONICAL_COMPANION
+  S01 kb/publications/*.yaml (40 files) @ somamech d8f40d9   CURRENT_STATE_CANONICAL
+  S02 soma-schema 0.2.4 schema sources (the PINNED RELEASE)   CURRENT_STATE_CANONICAL_COMPANION
   S03 .claude/skills/claim-paper/SKILL.md                     DESIRED_STATE_SUPPORT
   S04 .claude/skills/extraction-pr-review/SKILL.md            DESIRED_STATE_SUPPORT
   S05 verification/*.json + scripts/snippet_receipts.py       DESIRED_STATE_SUPPORT
@@ -13,6 +13,10 @@ Source IDs are defined in SOMA_Resource_Inventory.md:
   S10 somamech README.md (AI-generated content notice)        DESIRED_STATE_SUPPORT
   S11 ontology_grounding_report.tsv + run_term_validator.sh   DESIRED_STATE_SUPPORT
   S12 git history and pull-request records                    DESIRED_STATE_SUPPORT
+  S13 soma repository main branch, ahead of the 0.2.4 release DESIRED_STATE_SUPPORT
+      (commit 45b4af56 "Add figure and section provenance to evidence and outputs" adds
+      article_section and figure_reference slots to EvidenceItem; unreleased and used by
+      no canonical file, so it supports F2 only and never F1)
 """
 
 PO = "xl/worksheets/sheet1.xml"
@@ -36,7 +40,7 @@ po = {
           "BALF/sputum inflammatory markers, spirometry and target-gene expression. "
           "The knowledge base is built one publication at a time: an AI extraction agent, "
           "directed and reviewed by a human contributor, reads an open-access paper and emits one "
-          "Container YAML file per paper (41 files at the time of this review), in which every "
+          "Container YAML file per paper (40 files at the time of this review), in which every "
           "claim-bearing object carries evidence items that quote the source publication verbatim. "
           "Entities are grounded to GO, ChEBI, CL, UBERON, MONDO, HPO, UO, ENVO and OBI. "
           "Primary users are EHS outcomes researchers and AOP developers; generated products "
@@ -46,8 +50,8 @@ po = {
           "than authorship (S10).",
     "B4": "The project's central requirement is that a consumer can verify any extracted value "
           "against the publication it came from. Each evidence item carries an exact quote, the "
-          "cited PMID, the publication title, the article section the quote came from, and the "
-          "figure or table that reports the underlying data. Two of these fields are machine-"
+          "cited PMID, the publication title, the kind of study the publication reports, the "
+          "direction of support and a curator explanation. Two of these fields are machine-"
           "checked in CI across the whole corpus: the quote must appear word-for-word in a cached "
           "copy of the cited publication, and the recorded title must match the real publication "
           "title (S02, S06). Where a publisher blocks full-text caching, a committed receipt of "
@@ -78,13 +82,15 @@ _ct_rows = [
         ex="In 33 asymptomatic adult male participants of a thermal power plant at the "
            "high-PM2.5 spring visit, measured FEV1/FVC was 84.32 +/- 3.86 percent (n = 33) "
            "[E02; LF:ghosh-pm25-seasonal-spirometry-output-spring].",
-        epn="Needs the verbatim source passage reporting the value, the cited publication, the "
-            "article section and the figure/table label that reports it, and the direction of "
-            "support. Needs the extraction provenance described in the Project Overview form "
-            "(agent, model, skill version, human reviewer, date, cache content type, verification "
-            "status), none of which is currently in the data. Where a value exists only in a "
-            "figure, project rules forbid estimating it, so the record carries the figure "
-            "reference and a described direction but no quantity value.",
+        epn="Needs the verbatim source passage reporting the value, the cited publication, and the "
+            "direction of support — all three present today. Needs, and does not yet have in "
+            "queryable form, the locus of the passage within the publication (the section, and the "
+            "figure or table that reports the data), which currently survives only as prose inside "
+            "the curator explanation. Needs the extraction provenance described in the Project "
+            "Overview form (agent, model, skill version, human reviewer, date, cache content type, "
+            "verification status), none of which is in the data either. Where a value exists only "
+            "in a figure, project rules forbid estimating it, so the record carries a described "
+            "direction and no quantity value, and names the figure in prose.",
         note="This is the most numerous claim type in the knowledge base and the one that is NOT "
              "represented as a first-class object: the claim is implicit in an output-measurement "
              "record plus its named measurement slot, its exposure condition and its experimental "
@@ -235,12 +241,17 @@ crs = {
     "G4": "Y",
     "H4": "Partially used today, and this is a distinction worth recording carefully. Two claim "
           "types ARE represented as first-class objects with their own identifiers, independently "
-          "referenceable and carrying their own evidence lists: ResponseComparison for C002 "
-          "(id COMP:ghosh-lf-fev1fvc, referencing the control and treated output records it "
-          "compares; E04) and KeyEventRelationship for C004 (id "
-          "KER:ghosh-pi3k-akt-to-suppressed-apoptosis, with explicit upstream event, relationship "
-          "type and downstream event; E03). Key Events (C003) are nested objects with stable reused "
-          "identifiers. The measurement claim C001 is NOT reified. "
+          "referenceable: ResponseComparison for C002 (id COMP:ghosh-lf-fev1fvc, referencing the "
+          "control and treated output records it compares; E04) and KeyEventRelationship for C004 "
+          "(id KER:ghosh-pi3k-akt-to-suppressed-apoptosis, with explicit upstream event, "
+          "relationship type and downstream event; E03). Key Events (C003) are nested objects with "
+          "stable reused identifiers. The measurement claim C001 is NOT reified. "
+          "IMPORTANT ASYMMETRY FOR THE MODELLING GROUP: only KeyEventRelationship among these "
+          "carries an evidence list. ResponseComparison has no evidence slot at all, and no "
+          "response comparison in the corpus has evidence attached — a reified claim with no "
+          "evidence attachment point, whose supporting evidence is reachable only indirectly "
+          "through its derived_from_assay reference to the assay that produced the compared "
+          "values. The project wants evidence attachable to comparison claims directly. "
           "Desired: continue to support reified claim objects for C002 and C004. "
           "OPEN FOR HUMAN REVIEW: whether C001 measurement claims should also become first-class "
           "claim objects. Reification would let evidence, strength and provenance attach per "

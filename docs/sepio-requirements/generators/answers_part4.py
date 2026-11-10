@@ -142,20 +142,22 @@ _rows = {
     ),
     10: dict(  # PROV.EI.QUALITY
         f1="N", f2="M",
-        ex="Not represented as a quality field. The nearest existing signal is article_section, "
-           "which distinguishes a value quoted from results from one quoted from methods.",
+        ex="Not represented. No information-quality or study-rigour field exists in the canonical "
+           "data, and no structured proxy for it either.",
         expl="Current state: direct inspection establishes no information-quality or study-rigour "
              "field (S01, S02). "
-             "Desired state recorded as M, with a documented partial basis. The project already "
-             "operates a reliability distinction that is quality-adjacent: the schema states that "
-             "recording the article section makes provenance reviewable, because a dose or "
-             "response value quoted from Results carries more weight than one quoted from a "
-             "Methods sentence about how a compound was stored, and instructs that Results-cited "
-             "values be preferred when both exist (S02). That is a judgement about the reliability "
-             "of the reported information, expressed through locus rather than through a quality "
-             "grade. Desired-state support: DOCUMENTED_MODEL_INTENT — S02 (evidence.yaml slot "
-             "documentation for article_section). Whether the project wants an explicit quality "
-             "grade in addition is unresolved and flagged for review.",
+             "Desired state recorded as M, with a documented partial basis. The project has "
+             "articulated a reliability distinction that is quality-adjacent, but has not yet put "
+             "it in the data: the unreleased locus slots on the soma main branch are documented as "
+             "making provenance reviewable, on the grounds that a dose or response value quoted "
+             "from Results carries more weight than one quoted from a Methods sentence about how a "
+             "compound was stored, with Results-cited values to be preferred when both exist. That "
+             "is a judgement about the reliability of reported information, expressed through "
+             "locus rather than through a quality grade — and it is a statement of intent rather "
+             "than a current capability. Desired-state support: DOCUMENTED_MODEL_INTENT — S13 "
+             "(soma main, commit 45b4af56, slot documentation). "
+             "FLAGGED FOR HUMAN REVIEW: whether the project wants an explicit quality grade in "
+             "addition to locus is unresolved.",
     ),
     11: dict(  # PROV.EI.GENERATION_CONTEXT
         f1="Y", f2="Y",
@@ -367,7 +369,7 @@ _rows = {
     ),
     29: dict(  # PROV.ASSERTION.METHOD_TYPES
         f1="Y", f2="Y",
-        ex="derivation: reported_in_paper — used 400 times across the corpus; the alternative "
+        ex="derivation: reported_in_paper — used 412 times across the corpus; the alternative "
            "permissible value is computed, meaning the value was calculated from extracted control "
            "and treated values rather than stated by the authors.",
         expl="Partially represented, and this is a genuine and easily overlooked Y. For comparison "
