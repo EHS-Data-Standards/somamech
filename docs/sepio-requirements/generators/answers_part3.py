@@ -36,7 +36,7 @@ _eint = {
              "separate value for genuinely equivocal evidence and has not needed one so far. "
              "The vocabulary is explicitly direction-only: the schema states that it says nothing "
              "about how strong the evidence is (S02).",
-        ex="Across the 41 canonical files: supports: SUPPORT occurs 1312 times, supports: REFUTE "
+        ex="Across the 40 canonical files: supports: SUPPORT occurs 1312 times, supports: REFUTE "
            "23 times, supports: NO_EVIDENCE once. (One evidence item has an empty value for this "
            "field; the slot is not required by the schema. Flagged for project follow-up.)",
     ),

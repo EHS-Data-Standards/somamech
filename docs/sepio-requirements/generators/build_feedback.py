@@ -64,10 +64,10 @@ OBSERVATIONS = [
         priority="High",
         confidence="High",
         impact=(
-            "Decides whether SOMA's ~41 kb files can round-trip through SEPIO without an EvidenceLine "
+            "Decides whether SOMA's 40 kb files can round-trip through SEPIO without an EvidenceLine "
             "explosion: the corpus has thousands of evidence items, each currently one object."
         ),
-        source="soma repo: src/soma/schema/evidence.yaml (lines 48-68)",
+        source="soma-schema 0.2.4: evidence.yaml, class EvidenceItem (slots reference, reference_title, supports, evidence_source, snippet, explanation)",
         related="OBS-005",
     ),
     dict(
@@ -141,7 +141,7 @@ OBSERVATIONS = [
             "files in kb/publications/; the pinned soma-schema 0.2.4 EvidenceItem has six slots and defines "
             "neither. The locus reaches the data only as prose - explanation: 'Table 3 row giving the measured "
             "FEV1/FVC values ...'. Project intent: soma main commit 45b4af56 'Add figure and section "
-            "provenance to evidence and outputs' adds article_section (9 permissible values) and "
+            "provenance to evidence and outputs' adds article_section (eight permissible values) and "
             "figure_reference, with slot documentation stating the Results-versus-Methods weighting rationale. "
             "The guidance's own worked DisMech example also cites 'additional information about the location of "
             "the passage in the text' as an input to interpretation, yet no form row collects it."
@@ -161,7 +161,7 @@ OBSERVATIONS = [
             "Without it, the section/figure qualifiers are dropped on transform, and the project loses the "
             "distinction it uses to weigh evidence."
         ),
-        source="soma repo: src/soma/schema/evidence.yaml (lines 135-151, 197-235)",
+        source="soma-schema 0.2.4: evidence.yaml, class EvidenceItem (no locus slot); soma main 45b4af56: slots article_section, figure_reference and ArticleSectionEnum (unreleased)",
         related="OBS-002",
     ),
     dict(
@@ -239,7 +239,7 @@ OBSERVATIONS = [
         priority="Medium",
         confidence="High",
         impact="Affects F1 accuracy on three EINT rows and the choice of covering-model carrier for strength.",
-        source="soma repo: src/soma/schema/aop_framework.yaml (KeyEventRelationship; EvidenceSupportEnum)",
+        source="soma-schema 0.2.4: aop_framework.yaml, class KeyEventRelationship; EvidenceSupportEnum",
         related="OBS-001",
     ),
     dict(
@@ -325,7 +325,7 @@ OBSERVATIONS = [
             "provenance requirement set and would badly understate the project; a maximal scope is needed for "
             "the PROV forms to be meaningful."
         ),
-        source="soma repo: src/soma/schema/soma.yaml (Container, lines 60-96); somamech README.md",
+        source="soma-schema 0.2.4: soma.yaml, class Container (slot source_publication plus entity collections only); somamech README.md",
         related="OBS-004; OBS-008",
     ),
     dict(
@@ -392,7 +392,7 @@ OBSERVATIONS = [
             "soma evidence.yaml slot evidence_source, range EvidenceSourceEnum (5 values), with the comment "
             "'classify the paper, not the person doing the extraction'. Registry summary for "
             "PROV.EI.GENERATION_CONTEXT: 'Partial SEPIO coverage - no single slot for "
-            "study/experiment/model-system generation context.' In use on every evidence item in all 41 kb files."
+            "study/experiment/model-system generation context.' In use on every evidence item in all 40 kb files."
         ),
         suggestion=(
             "Independent second-project confirmation that this gap is worth closing with a first-class slot "
@@ -405,7 +405,7 @@ OBSERVATIONS = [
         priority="Medium",
         confidence="High",
         impact="A high-use, low-cost field that would otherwise transform into a verbose Activity pattern.",
-        source="soma repo: src/soma/schema/evidence.yaml (lines 114-118, 237-261)",
+        source="soma-schema 0.2.4: evidence.yaml, slot evidence_source and EvidenceSourceEnum",
         related="",
     ),
     dict(
@@ -439,7 +439,7 @@ OBSERVATIONS = [
         priority="Medium",
         confidence="Medium",
         impact="Small but silent: a wrong mapping here changes the meaning of recorded evidence.",
-        source="soma repo: src/soma/schema/evidence.yaml (lines 180-195); forms: EINT row A3",
+        source="soma-schema 0.2.4: evidence.yaml, EvidenceItemSupportEnum; forms: EINT row A3",
         related="",
     ),
     dict(
@@ -481,8 +481,8 @@ OBSERVATIONS = [
             "Affects every EIT row the project marked LOCAL, and the answer feeds directly into whether a "
             "covering model needs first-class identified evidence objects."
         ),
-        source="forms: 'EIT 5-Evidence Item Type Form' column J; soma repo: src/soma/schema/evidence.yaml, "
-               "assay_base.yaml",
+        source="forms: 'EIT 5-Evidence Item Type Form' column J; soma-schema 0.2.4: evidence.yaml class "
+               "EvidenceItem; assay_base.yaml class AssayOutputMeasurement",
         related="OBS-002",
     ),
     dict(
