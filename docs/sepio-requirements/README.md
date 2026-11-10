@@ -1,158 +1,133 @@
 # SEPIO requirements collection — SOMA
 
-Working state for SOMA's submission to the [SEPIO](https://github.com/sepio-framework/sepio-linkml)
-consortium's Evidence, Provenance and Confidence (EPC) requirements collection.
+SOMA's submission to the [SEPIO](https://github.com/sepio-framework/sepio-linkml) consortium's
+Evidence, Provenance and Confidence (EPC) requirements collection.
 
-SEPIO's process is requirements-first: it does not want SOMA mapped to SEPIO yet. It wants a reviewed
-statement of what SOMA represents now and what it should support, from which the modelers build a covering
-model and LinkML-Map transformations in a separate workflow.
+SEPIO's process is requirements-first: it does not want SOMA mapped to SEPIO yet. It wants a
+reviewed statement of what SOMA represents now and what it should support, from which the modelling
+group builds a covering model and LinkML-Map transformations in a separate workflow. Accordingly,
+the Requirement → SEPIO Mapping Registry was not used, and the workbook's `SEPIO Mapping Summary`
+columns are untouched.
 
-- **Run** `SOMA-20261105-R01`, drafted 2026-11-05
+- **Run** `SOMA-20261109-R01`, prepared 2026-11-09
 - **Upstream** `sepio-framework/sepio-linkml` @ `main`, `docs/requirements-collection/`
   (forms sha256 `22e6c85a…`, guidance sha256 `8a39ffdb…`)
-- **Read against** `soma-schema` 0.2.4 and the 41 files in `kb/publications/`
+- **Read against** `soma-schema` 0.2.4 and the 41 files in `kb/publications/` at `somamech` `d8f40d9`
+- **Status** agent-prepared first pass — **a draft until the project representative validates it**
 
 ## Deliverables
 
-| # | Deliverable | Status | Location |
-|---|---|---|---|
-| 1 | Scope statement | decided, not yet written up | this file, below |
-| 2 | Resource inventory | not started | `SOMA_Resource_Inventory.md` |
-| 3 | Requirements workbook (8 forms) | not started | `SOMA_Requirements_v0.1_<date>_<time>.xlsx` |
-| 4 | Project feedback log | drafted, 10 observations | `SOMA_Feedback_v0.1_20261105.xlsx` |
+| Deliverable | File |
+|---|---|
+| Scope statement and resource inventory | [`SOMA_Resource_Inventory.md`](SOMA_Resource_Inventory.md) |
+| Populated requirements workbook (8 forms, 596 cells) | `SOMA_Requirements_v0.1_20261109_1130.xlsx` |
+| Requirements Review Memo (12 sections) + source-access status | [`SOMA_Requirements_Review_Memo_v0.1_20261109_1130.md`](SOMA_Requirements_Review_Memo_v0.1_20261109_1130.md) |
+| Project feedback log (14 observations) | `SOMA_Requirements_Feedback_Log_v0.1_20261109_1130.xlsx` |
 
-A Requirements Review Memo accompanies the workbook, stating the scope, the sources and versions used, the
-conclusions, the open questions and worked examples.
+Both workbooks are generated, not hand-edited. See [`generators/`](generators/).
 
-The feedback log is a project-run observation log, not a change request: it records difficulties and
-ambiguities met while completing the forms, for a separate consolidation step. Agent columns A–V are
-populated; W–AD (master linkage, consolidation, governance, implementation, validation) are deliberately left
-blank for the consortium. It was generated from SEPIO's `Feedback_Log_Template.xlsx` with the three
-instruction sheets intact.
+The feedback log is a project-run observation log, not a change request: it records difficulties
+and ambiguities met while completing the forms, for a separate consolidation step. Agent columns
+A–V are populated; W–AD (master linkage, consolidation, governance, implementation, validation) are
+left blank for the consortium.
 
-## How SOMA looks in SEPIO's vocabulary
+## Regenerating the workbooks
 
-Two features of the schema drive nearly every answer.
+Answers live in Python data structures, so a revision after representative review is an edit to a
+data structure rather than a hand edit to a spreadsheet cell.
 
-**There is no reified claim.** Evidence attaches to four classes — `Assay`, `AssayOutputMeasurement`,
-`KeyEvent` and `KeyEventRelationship` — and in three of those four the proposition is implicit in the parent
-record plus its slot values. "Under 45.28 µg/m³ ambient PM2.5, measured FEV1/FVC in this cohort fell to
-84.32%" is a claim a reader can extract, but no object in the file states it. Only `KeyEventRelationship` is
-natively subject–predicate–object.
+```sh
+# fetch the blank templates from sepio-linkml first, then:
+uv run --with openpyxl python -I docs/sepio-requirements/generators/build_workbook.py \
+    /path/to/Requirements_Collection_Forms.xlsx \
+    docs/sepio-requirements/SOMA_Requirements_v0.1_20261109_1130.xlsx
 
-**Evidence item and interpretation are one flat object.** `EvidenceItem` holds both the quoted passage and the
-judgement about it, and nothing groups items into arguments. SEPIO's own mapping registry records this shape
-as a gap whose transform is "not automatic".
+uv run --with openpyxl python -I docs/sepio-requirements/generators/build_feedback.py \
+    /path/to/Feedback_Log_Template.xlsx
+```
 
-### Field-level reading
+`build_workbook.py` runs the completeness and consistency checks that SEPIO's rule 41 and guidance
+section IV require, and exits non-zero on any problem: required `Y`/`N`/`M` columns complete and
+using exact labels, EIT conditional columns populated and drawn from their controlled vocabularies,
+required CT and PO fields present, every row where current differs from desired naming a
+desired-state support type or carrying a human-review flag, and the `SEPIO Mapping Summary` columns
+unchanged from the template.
 
-| SOMA field | Nearest SEPIO target | Status |
+`xlsx_cells.py` writes cells by editing the sheet XML inside the template's own zip container and
+copying every other part byte-for-byte. This is required by rules 36–40 of
+`REQUIREMENTS_FORM_PROMPT.md`: the template carries Excel Tables, drawings, VML drawings and legacy
+comments that common Python spreadsheet libraries do not round-trip faithfully, and the returned
+workbook must open without an Excel repair warning. Current result: **8 of 41 parts changed, 33
+byte-identical** — all styles, tables, drawings and comments preserved.
+
+## How SOMA reads in SEPIO's vocabulary
+
+**Claim representation is not uniform.** Measurement, key-event, assay-method and exposure claims
+are implicit slot/values and nested objects on parent records. Comparison claims
+(`ResponseComparison`) and key-event-relationship claims (`KeyEventRelationship`) *are* genuinely
+reified first-class objects with their own identifiers and evidence lists. No graph-edge
+representation exists in the canonical data.
+
+**Evidence item and interpretation are one flat object.** `EvidenceItem` holds the quote, the cited
+publication and title, the article section, the figure or table label, the direction of support and
+a curator explanation. Nothing groups items into arguments. This is an intentional implementation
+preference — the extraction agents emit it, the validators check it, and the DuckDB builder, pooled
+workbook and review site all read it.
+
+**The claim types do not share one evidence model.** Five share a flat per-item profile with
+direction only; key-event-relationship claims need a categorical weight-of-evidence judgement over
+a *group* of evidence items, drawn from the OECD AOP framework. A SEPIO-based representation needs
+both, selected per claim type. This is the most important structural finding for the modelling
+group.
+
+**The canonical data carries no provenance beyond the cited publication.** `Container` has exactly
+one provenance slot, `source_publication`. There is no agent, date, model, method or version field
+anywhere in 41 files. Hence the dominant pattern of this submission:
+
+| Form | Current Y/N/M | Desired Y/N/M |
 |---|---|---|
-| `reference` | `InformationEntity.sources` | maps |
-| `reference_title` | `dcterms:title` | maps |
-| `snippet` | `Statement.statementText` *or* `DataItem` | ambiguous — see Q4 |
-| `supports` | `EvidenceLine.directionOfEvidenceProvided` | carrier differs |
-| `explanation` | `EvidenceLine` (description) | carrier differs |
-| `evidence_source` | `PROV.EI.GENERATION_CONTEXT` | SEPIO gap |
-| `article_section` | — none — | SEPIO gap |
-| `figure_reference` | — none — | SEPIO gap |
-| `KeyEventRelationship.evidence_support` | `EvidenceLine.strengthOfEvidenceProvided` | carrier differs |
-| `KeyEventRelationship.quantitative_understanding` | — none — | SEPIO gap |
+| Claim Representation Structure | 3/2/0 | 3/1/1 |
+| Reified Claim Semantics | 3/1/0 | 3/1/0 |
+| Evidence Item Types | 9/11/0 | 9/11/0 |
+| Evidence Interpretation | 9/3/0 | 9/0/3 |
+| Provenance Types | 8/34/1 | 24/9/10 |
+| **Total** | **32/51/1** | **48/22/14** |
 
-### The provenance that exists but is not in the data
+Everything the project knows about how a file came to exist — which agent and model, which
+extraction-skill version, which human directed and reviewed it, on what date, against a full-text
+or abstract-only cached copy, verified or not — lives in skills, receipts, CI configuration and
+pull-request history, and none of it is readable from the data. Closing that gap is the project's
+leading desired-state requirement and is a `soma` schema change independent of SEPIO.
 
-`Container` has exactly one provenance slot, `source_publication`. No agent, no date, no model, no method, no
-version. Everything about how a file came to exist lives outside it: in git history, in pull-request records,
-in the `claim-paper` skill definition, and in `verification/*.json` receipts that record the validator used,
-the date, whether the cached source was full text or abstract only, and a SHA-256 per snippet. There are 3
-such receipts for 41 files.
+## Open questions for the project representative
 
-This is the largest finding of the read, and it is a schema change in the
-[`soma`](https://github.com/EHS-Data-Standards/soma) repository rather than a SEPIO issue.
+Listed in full in §6 of the Review Memo, in descending order of value. In brief: how far the
+desired per-file provenance block should reach across SEPIO's provenance levels; whether
+`EI.CUSTOM.001` (verbatim quoted source passage) is the right call or should fold into `FREE_TEXT`
+on the content rows; whether evidence grouping and stacking should be adopted for AOP claims;
+whether any confidence value should be represented at all, given that the asserting agent is
+usually an AI agent; whether measurement claims should be reified; whether six claim types or four;
+and the representative and submission boundary.
 
-## Decisions
+Fourteen rows across the workbook are marked `M` pending those decisions, which is the mechanism
+the guidance prescribes — a partially completed workbook with clearly marked unknowns is preferable
+to a fully populated one containing inferred requirements.
 
-### Q1 · Scope — **maximal**
+## Highest-priority feedback to the consortium
 
-The canonical YAML (`kb/publications/*.yaml`) and the installed `soma-schema` control current-state answers.
-The wider repository may inform desired-state answers: the `claim-paper` and `extraction-pr-review` skills,
-the `verification/` receipts, the DuckDB export and its `measurement_full` view, the reference cache, and the
-corpus re-review epic.
-
-This lets the forms say "we do not store the extracting agent, but we know it and want to" rather than simply
-"no". A minimal scope would have answered "no" to roughly thirty provenance rows the project in fact has
-answers for.
-
-A third scope was considered and set aside: SOMA has two legitimate products, the YAML knowledge base and the
-generated DuckDB/TSV/workbook exports, and the exports flatten evidence differently. Giving them their own
-scope stays available if the consortium turns out to care about the queryable product.
-
-### Q2 · Claim types — **six**
-
-Measurement, comparison (`response_comparisons`), key event, key-event relationship, assay-method and
-exposure are all reported as claim types in their own right, rather than folding the last two in as qualifying
-context. This is the more faithful reading of the file structure: a protocol and an exposure condition each
-carry their own asserted content.
-
-The cost lands on the claim–evidence matrix, where assay-method and exposure rows will take much the same
-evidence as the claims they contextualise. Note this in the review memo so the modelers do not read the
-repetition as an error.
-
-### Q5 · Evidence lines — **both, split by claim type**
-
-The flat `EvidenceItem` must be preserved for measurement and comparison claims: the parsers, the review skill
-and the snippet validator all work with it. Evidence lines are wanted for key-event-relationship claims, where
-grouping and AOP weight-of-evidence strength are real and currently recorded on the claim with no link to the
-items that justify them.
-
-So SOMA needs a profile split rather than one evidence model, which is also the answer to the form's question
-about whether different claim types need different evidence models.
-
-### Q6 · Extraction provenance — **into the data, top desired-state priority**
-
-A per-file provenance block covering agent and model, skill and version, human director and reviewer,
-extraction date, cache content type, and verification status with tool and date.
-
-Reported as the project's leading desired-state requirement and worth raising as a `soma` repository issue in
-its own right, independent of what SEPIO adopts. The repository README already insists that a human name on a
-commit means direction and review rather than authorship — exactly the distinction SEPIO's provenance levels
-draw, recorded nowhere a data consumer can read it.
-
-## Open questions
-
-| # | Question | Leaning |
-|---|---|---|
-| Q3 | Reify claims, or keep them implicit and let the transform reconstruct them? | "Maybe", with `KeyEventRelationship` reified first — already SPO-shaped and few in number |
-| Q4 | Is a quoted snippet the evidence item, or a pointer to one? | The passage is the item: free text, individually addressable, filed as a custom type. The numbers it reports are already modeled as measurements, so calling it a data item double-counts them |
-| Q7 | Does ontology grounding carry per-step confidence? | Agent, method and date yes; per-step confidence no, unless there are genuinely uncertain groundings in the corpus worth flagging |
-| Q8 | Project representative, and one submission or two? | One submission covering both repositories, named for the schema, with the inventory marking which repo is canonical for which dimension |
-
-## Feedback observations
-
-Ten observations, recorded while reading the forms against the schema. Full detail, evidence and suggested
-improvements are in the workbook; this table is the index.
-
-| ID | Finding | Category | Priority |
-|---|---|---|---|
-| OBS-001 | SOMA is the flat evidence/interpretation collapse SEPIO records as a gap; the transform to `InformationEntity` + `EvidenceLine` is documented as not automatic | Model coverage gap | High |
-| OBS-002 | No evidence item type for a quoted passage reporting a measurement; the two text-passage rows are scoped to prior claims | Ambiguous definition | High |
-| OBS-003 | No provenance type for where inside a document a quote came from, which SOMA records and uses to weigh evidence | Provenance granularity | Medium |
-| OBS-004 | No provenance type for mechanical verification of a quote against a stored source copy — SOMA's main trust signal | Missing requirement | High |
-| OBS-005 | Categorical strength sits on the claim, not an evidence line, so a literal current-state reading would wrongly say "not represented" | Mapping mismatch | Medium |
-| OBS-006 | The Claim Type form presupposes subject–predicate–object claims; enumerating implicit claims is a modeling act the form treats as reporting | Workflow / usability | Medium |
-| OBS-007 | Canonical files carry no agent, date, method or version provenance at all, producing a systematic no-but-we-have-it pattern across ~30 rows | Source evidence / scope | High |
-| OBS-008 | Verification receipts cover 3 of 41 files, so per-item provenance cannot be answered uniformly; the forms have no way to say "partial" | Source evidence / scope | Medium |
-| OBS-009 | Second-project confirmation that evidence generation context deserves a first-class slot; SOMA requires it on every item | Model coverage gap | Medium |
-| OBS-010 | `NO_EVIDENCE` means "the source turned out not to bear on this claim", which is not neutral evidence and would be lost in a three-value direction enum | Response options | Medium |
-
-## Next steps
-
-1. Write the scope statement into SEPIO's requirements prompt, and build the resource inventory: the two
-   repositories, the schema version, the corpus size, and four or five representative examples given IDs. The
-   Ghosh 2025 file (`Container-ghosh2025-pm25-egfr-pi3k-akt.yaml`) is a good hard case — its molecular results
-   exist only in figures and carry no quantity values at all.
-2. Fill the eight forms. Current state from the canonical YAML and schema only; desired state cited to the
-   sources the inventory allows.
-3. Draft the review memo, flagging the high-priority feedback observations with references.
-4. Hand the workbook, memo and feedback log to the consortium, and open the Q6 provenance block as a `soma`
-   repository issue.
+1. **No provenance area for mechanical verification of an evidence item against a stored source
+   copy.** This is SOMA's central trust mechanism, enforced corpus-wide in CI, and it is
+   inexpressible in the current forms. `PROV.SA.REVIEW` covers human review of an alignment;
+   `PROV.EI.QUALITY` covers the rigour of the source study. Neither covers "this quote was checked
+   word-for-word against a cached copy of the cited publication by this tool on this date, and the
+   copy was full text."
+2. **The five provenance levels cannot be declared coincident.** In a single-pass AI curation
+   workflow, semantic alignment, interpretation, assertion and encoding are one activity by one
+   agent at one time, so about sixteen rows want the same three values with no way to say so. This
+   will recur for every AI-assisted curation project in the consortium.
+3. **No within-source locus provenance.** SOMA records which section of a publication a quote came
+   from and which figure or table reports the data, and treats the distinction as load-bearing. The
+   guidance's own worked example cites "the location of the passage in the text" as an input to
+   interpretation, but no form row collects it.
+4. **No evidence item type names a quoted source passage**, so a literature-extraction project's
+   primary evidence unit has to be a custom row.
